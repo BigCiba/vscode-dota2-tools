@@ -5,7 +5,7 @@
 	"version": "0.0.1",
 	"publisher": "bigciba",
 	"engines": {
-		"vscode": "^1.40.0"
+		"vscode": "^1.39.0"
 	},
 	"categories": [
 		"Other"
@@ -17,20 +17,20 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
-            {
-                "command": "extension.localization",
-                "title": "合并文本"
-            }
+			{
+				"command": "extension.localization",
+				"title": "合并文本"
+			}
 		],
-        "menus": {
-            "editor/context": [
-                {
-                    "when": "editorFocus",
-                    "command": "extension.localization",
-                    "group": "navigation"
-                }
-            ]
-        }
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorFocus",
+					"command": "extension.localization",
+					"group": "navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -43,7 +43,7 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.40.0",
+		"@types/vscode": "^1.39.0",
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
 		"typescript": "^3.3.1",
