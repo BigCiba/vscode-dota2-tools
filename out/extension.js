@@ -18,7 +18,8 @@ function activate(context) {
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "dota2-tools" is now active!');
-    let localization = vscode.commands.registerCommand('extension.localization', () => __awaiter(this, void 0, void 0, function* () {
+    // 合并文本
+    let Localization = vscode.commands.registerCommand('extension.Localization', () => __awaiter(this, void 0, void 0, function* () {
         const folders = vscode.workspace.workspaceFolders;
         let root_path;
         if (folders !== undefined) {
@@ -67,7 +68,25 @@ function activate(context) {
             });
         }
     }));
-    context.subscriptions.push(localization);
+    // 添加英雄基本文件
+    let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
+        const folders = vscode.workspace.workspaceFolders;
+        let root_path;
+        if (folders !== undefined) {
+            root_path = folders[0].uri.fsPath;
+        }
+        else {
+            return;
+        }
+        // 原版数据
+        const scripts_path = root_path + '/game/dota_addons/dota_imba/scripts';
+        var text_editor = yield vscode.window.showTextDocument(vscode.Uri.file(scripts_path + '/npc/npc_heroes_custom.txt'));
+        text_editor.edit(function (edit_builder) {
+            edit_builder.insert(new vscode.Position(text_editor.document.lineCount - 1, 0), '"npc_dota_hero_enigma"\n');
+        });
+    }));
+    context.subscriptions.push(Localization);
+    context.subscriptions.push(AddHero);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

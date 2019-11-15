@@ -12,21 +12,31 @@
 	],
 	"activationEvents": [
 		"*",
-		"onCommand:extension.localization"
+		"onCommand:extension.Localization",
+		"onCommand:extension.AddHero"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.localization",
+				"command": "extension.Localization",
 				"title": "合并文本"
+			},
+			{
+				"command": "extension.AddHero",
+				"title": "添加英雄"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
 					"when": "editorFocus",
-					"command": "extension.localization",
+					"command": "extension.Localization",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "extension.AddHero",
 					"group": "navigation"
 				}
 			]
