@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-tools",
 	"description": "dota2插件",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "bigciba",
 	"engines": {
 		"vscode": "^1.39.0"
