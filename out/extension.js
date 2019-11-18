@@ -215,9 +215,22 @@ function activate(context) {
         if (root_path === undefined) {
             return;
         }
+        let addon_path = vscode.workspace.getConfiguration().get('dota2-tools.addon_path');
+        if (addon_path === undefined || addon_path === '') {
+            vscode.window.showErrorMessage('请设置dota2项目路径', '设置').then(function () {
+                vscode.window.showInputBox({
+                    password: false,
+                    ignoreFocusOut: true,
+                    prompt: '示例：C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
+                }).then(function (msg) {
+                    vscode.workspace.getConfiguration().update('dota2-tools.addon_path', msg, true);
+                });
+            });
+            return;
+        }
         // 读取英雄资料
-        const npc_heroes_uri = vscode.Uri.file('C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta/game/dota/scripts/npc/npc_heroes.txt');
-        const npc_abilities_uri = vscode.Uri.file('C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta/game/dota/scripts/npc/npc_abilities.txt');
+        const npc_heroes_uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_heroes.txt');
+        const npc_abilities_uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_abilities.txt');
         let heroes_data = yield ReadKeyValue(npc_heroes_uri);
         let abilities_data = yield ReadKeyValue(npc_abilities_uri);
         // 选择英雄
@@ -326,7 +339,7 @@ function activate(context) {
             sub_text = '';
             for (let line = 0; line < document_english.lineCount; line++) {
                 let lineText = document_english.lineAt(line).text;
-                if (lineText.search(hero_name_lite) !== -1) {
+                if (String(lineText.split('"')[1]).search(hero_name_lite) !== -1) {
                     sub_text += lineText.substr(2, lineText.length) + '\n';
                 }
             }

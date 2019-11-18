@@ -40,6 +40,17 @@
 					"group": "navigation"
 				}
 			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "Dota2插件",
+			"properties": {
+				"dota2-tools.addon_path": {
+					"type": "string",
+					"default": "",
+					"description": "dota2项目路径"
+				}
+			}
 		}
 	},
 	"scripts": {
