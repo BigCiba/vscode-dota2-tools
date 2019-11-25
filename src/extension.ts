@@ -193,15 +193,57 @@ export function activate(context: vscode.ExtensionContext) {
 			return Promise.resolve(lang);
 		}
 	});
+	// 监听文本
+	async function WatchLocalization() {
+		// let root_path:string|undefined = GetRootPath();
+		// if (root_path === undefined) {
+		// 	return;
+		// }
+		// const localization_path: string = root_path + '/game/dota_addons/dota_imba/localization';
+		// var lang_folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(localization_path));
+		// for (let i: number = 0; i < lang_folders.length; i++) {
+		// 	const [folder_name, is_directory] = lang_folders[i];
+		// 	if (Number(is_directory) === vscode.FileType.Directory){
+		// 		const language_path: string = localization_path + '/' + folder_name;
+		// 		var language: string = '"lang"\n{\n\t"Language"\t\t"' + folder_name.charAt(0).toUpperCase() + folder_name.slice(1) + '"\n\t"Tokens"\n\t{\n';
+		// 		var promise: string = await ReadLanguage(language_path);
+		// 		language += promise;
+		// 		language += '\t}\n}';
+		// 		var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
+		// 		text_editor.edit(function (edit_builder) {
+		// 			edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
+		// 			edit_builder.insert(new vscode.Position(0,0),language);
+		// 		});
+		// 	}
+		// }
+		// var file_system_watcher = vscode.workspace.createFileSystemWatcher('**/design/4.kv配置表/npc_heroes_tower_skin.xlsx',true,false,true);
+		// file_system_watcher.onDidChange(function (uri) {
+		// 	GenerateSkinKV();
+		// });
+	}
+
 	// 添加英雄基本文件
 	let AddHero = vscode.commands.registerCommand('extension.AddHero', async () => {
 		let root_path:string|undefined = GetRootPath();
 		if (root_path === undefined) {
 			return;
 		}
+		let addon_path:string|undefined = vscode.workspace.getConfiguration().get('dota2-tools.addon_path');
+		if (addon_path === undefined || addon_path === '') {
+			vscode.window.showErrorMessage('请设置dota2项目路径','设置').then(function () {
+				vscode.window.showInputBox({
+					password:false,
+					ignoreFocusOut:true,
+					prompt:'示例：C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
+				}).then(function(msg){
+					vscode.workspace.getConfiguration().update('dota2-tools.addon_path',msg,true)
+				});
+			});
+			return;
+		}
 		// 读取英雄资料
-		const npc_heroes_uri:vscode.Uri = vscode.Uri.file('C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta/game/dota/scripts/npc/npc_heroes.txt');
-		const npc_abilities_uri:vscode.Uri = vscode.Uri.file('C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta/game/dota/scripts/npc/npc_abilities.txt');
+		const npc_heroes_uri:vscode.Uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_heroes.txt');
+		const npc_abilities_uri:vscode.Uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_abilities.txt');
 		let heroes_data:{[k: string]: any} = await ReadKeyValue(npc_heroes_uri);
 		let abilities_data:{[k: string]: any} = await ReadKeyValue(npc_abilities_uri);
 		// 选择英雄
@@ -247,7 +289,19 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 				edit_builder.insert(new vscode.Position(text_editor.document.lineCount - 1,0), '\t"' + quick_pick.value + '"\n\t{\n' + abilities + '\t}\n');
 			});
-			// 添加npc_heroes_custom
+			// 添加herolist
+			text_editor = await vscode.window.showTextDocument(vscode.Uri.file(scripts_path + '/npc/herolist.txt'));
+			text_editor.edit(function (edit_builder) {
+				var AddTab = function (length:number):string {
+					var tab:string = '';
+					for (let d = 0; d < 10 - Math.floor((4 + length + 2)/4); d++) {
+						tab += '\t';
+					}
+					return tab;
+				};
+				edit_builder.insert(new vscode.Position(text_editor.document.lineCount - 1,0), '\t"' + hero_name + '"' + AddTab(hero_name.length) + '"1"\n');
+			});
+			// 添加npc_abilities_custom
 			text_editor = await vscode.window.showTextDocument(vscode.Uri.file(scripts_path + '/npc/npc_abilities_custom.txt'));
 			text_editor.edit(function (edit_builder) {
 				edit_builder.insert(new vscode.Position(0,0), '#base "abilities/heroes/' + hero_name_lite + '.kv"\n');
@@ -310,7 +364,7 @@ export function activate(context: vscode.ExtensionContext) {
 			sub_text = '';
 			for (let line = 0; line < document_english.lineCount; line++) {
 				let lineText = document_english.lineAt(line).text;
-				if (lineText.search(hero_name_lite) !== -1) {
+				if (String(lineText.split('"')[1]).search(hero_name_lite) !== -1) {
 					sub_text += lineText.substr(2,lineText.length) + '\n';
 				}
 			}
