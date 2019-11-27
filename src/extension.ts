@@ -25,7 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
 			var left_brackets:number = 0;	// 记录{数量
 			var right_brackets:number = 0;	// 记录}数量
 			for (let line = start_line; line < document.lineCount; line++) {
-				var lineText = document.lineAt(line).text;
+				var text_line: vscode.TextLine = document.lineAt(line);
+				var lineText = text_line.text;
 				// var lineText = document.getText(new vscode.Range(new vscode.Position(line,0),new vscode.Position(line,100)));
 				var left_brackets_arr = lineText.match('{');
 				if (left_brackets_arr !== null) {
@@ -39,7 +40,10 @@ export function activate(context: vscode.ExtensionContext) {
 					return [obj,line];
 				}
 				if (lineText.search('//') !== -1) {
-					continue;
+					if (text_line.firstNonWhitespaceCharacterIndex === lineText.indexOf('//')) {
+						continue;
+
+					}
 				}
 				var arr = lineText.match(/"/g);
 				if (arr !== null) {
@@ -126,6 +130,9 @@ export function activate(context: vscode.ExtensionContext) {
 			return tab;
 		}
 		for (const key in obj) {
+			if (key === 'ID') {
+				continue;
+			}
 			const value = obj[key];
 			if (typeof(value) === 'string') {
 				str += AddDepthTab(depth, '"' + key + '"');
@@ -139,15 +146,109 @@ export function activate(context: vscode.ExtensionContext) {
 					str += AddDepthTab(depth + 1, '"BaseClass"' + AddIntervalTab(depth + 1, 'BaseClass') + '"ability_lua"\n');
 					str += AddDepthTab(depth + 1, '"ScriptFile"' + AddIntervalTab(depth + 1, 'ScriptFile') + '"abilities/' + hero_name + '/' + key +'"\n');
 					str += AddDepthTab(depth + 1, '"AbilityTextureName"' + AddIntervalTab(depth + 1, 'AbilityTextureName') + '"' + key.split('_imba')[0] + '"\n');
-					str += AddDepthTab(depth + 1, '"MaxLevel"' + AddIntervalTab(depth + 1, 'MaxLevel') + '"4"\n');
-					str += AddDepthTab(depth + 1, '"RequiredLevel"' + AddIntervalTab(depth + 1, 'RequiredLevel') + '"1"\n');
-					str += AddDepthTab(depth + 1, '"LevelsBetweenUpgrades"' + AddIntervalTab(depth + 1, 'LevelsBetweenUpgrades') + '"2"\n');
+					if (value.AbilityType !== undefined && value.AbilityType === 'DOTA_ABILITY_TYPE_ULTIMATE') {
+						str += AddDepthTab(depth + 1, '"MaxLevel"' + AddIntervalTab(depth + 1, 'MaxLevel') + '"3"\n');
+						str += AddDepthTab(depth + 1, '"RequiredLevel"' + AddIntervalTab(depth + 1, 'RequiredLevel') + '"6"\n');
+						str += AddDepthTab(depth + 1, '"LevelsBetweenUpgrades"' + AddIntervalTab(depth + 1, 'LevelsBetweenUpgrades') + '"6"\n');
+					} else {
+						str += AddDepthTab(depth + 1, '"MaxLevel"' + AddIntervalTab(depth + 1, 'MaxLevel') + '"4"\n');
+						str += AddDepthTab(depth + 1, '"RequiredLevel"' + AddIntervalTab(depth + 1, 'RequiredLevel') + '"1"\n');
+						str += AddDepthTab(depth + 1, '"LevelsBetweenUpgrades"' + AddIntervalTab(depth + 1, 'LevelsBetweenUpgrades') + '"2"\n');
+					}
 				}
 				str += WriteAbilitiesKV(value,depth + 1,hero_name);
 				str += AddDepthTab(depth, '}\n');
 			}
 		}
 		return str;
+	}
+	MapTest();
+	// maptest
+	async function MapTest() {
+		let root_path:string|undefined = GetRootPath();
+		if (root_path === undefined) {
+			return;
+		}
+		const document = await vscode.workspace.openTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/client.lua'));
+		var s = '';
+		for (const iterator of document.getText()) {
+			if (iterator === '\n') {
+				console.log('n');
+			}
+			s += iterator;
+		}
+		console.log(s);
+	}
+	async function LoadKeyValue(uri: vscode.Uri) {
+		const document: vscode.TextDocument = await vscode.workspace.openTextDocument(uri);
+		type State =
+		'NONE' | // 默认状态
+		'KEY' | // key值状态
+		'NEXT' | // 结束key值状态
+		'VALUE' | // value状态
+		'TABLE' | // table状态
+		'NOTE'; // 注释状态
+		class KVReader {
+			public state: State;
+			private state_save: State;
+			private key: string;
+			private value: string;
+
+			constructor() {
+				this.state = 'NONE';
+				this.state_save = 'NONE';
+				this.key = '';
+				this.value = '';
+			}
+			/**
+			 * Check
+			 */
+			public Check(char: string):State {
+				if (char === '"') {
+					if (this.state === 'NONE') {
+						this.state = 'KEY';
+					} else if (this.state === 'KEY') {
+						this.state = 'NEXT';
+					} else if (this.state === 'NEXT') {
+						this.state = 'VALUE';
+					} else if (this.state === 'VALUE') {
+						this.state = 'NONE';
+					}
+				} else if (char === '{' && this.state === 'NEXT') {
+					this.state = 'TABLE';
+				} else if (char === '}' && this.state === 'TABLE') {
+					this.state = 'NONE';
+				} else if (char === '//') {
+					this.state_save = this.state;
+					this.state = 'NOTE';
+				} else if (char === '\n' && this.state === 'NOTE') {
+					this.state = this.state_save;
+				}
+				return this.state;
+			}
+			/**
+			 * ReadChar
+			 */
+			public ReadChar(char: string) {
+				if (this.state === 'KEY') {
+					this.key += char;
+				} else if (this.state === 'VALUE') {
+					this.value += char;
+				}
+			}
+		}
+		var kv = new KVReader;
+		for (const char of document.getText()) {
+			//	-> 遇到"进入key状态
+			//		-> 遇到"结束key状态并进入value状态
+			//			-> 遇到"进入value_value状态
+			//			-> 遇到{进入value_table状态
+			//				-> 递归
+			//	-> 遇到//进入注释状态
+			//		-> 遇到\n结束注释状态
+			// 持续判断字符串，当形成一个键对或者一个表时返回并记录，
+			kv.Check(char);
+		}
 	}
 
 	// 合并文本
@@ -193,35 +294,22 @@ export function activate(context: vscode.ExtensionContext) {
 			return Promise.resolve(lang);
 		}
 	});
-	// 监听文本
+	// 监听文本变更
 	async function WatchLocalization() {
-		// let root_path:string|undefined = GetRootPath();
-		// if (root_path === undefined) {
-		// 	return;
-		// }
-		// const localization_path: string = root_path + '/game/dota_addons/dota_imba/localization';
-		// var lang_folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(localization_path));
-		// for (let i: number = 0; i < lang_folders.length; i++) {
-		// 	const [folder_name, is_directory] = lang_folders[i];
-		// 	if (Number(is_directory) === vscode.FileType.Directory){
-		// 		const language_path: string = localization_path + '/' + folder_name;
-		// 		var language: string = '"lang"\n{\n\t"Language"\t\t"' + folder_name.charAt(0).toUpperCase() + folder_name.slice(1) + '"\n\t"Tokens"\n\t{\n';
-		// 		var promise: string = await ReadLanguage(language_path);
-		// 		language += promise;
-		// 		language += '\t}\n}';
-		// 		var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
-		// 		text_editor.edit(function (edit_builder) {
-		// 			edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
-		// 			edit_builder.insert(new vscode.Position(0,0),language);
-		// 		});
-		// 	}
-		// }
-		// var file_system_watcher = vscode.workspace.createFileSystemWatcher('**/design/4.kv配置表/npc_heroes_tower_skin.xlsx',true,false,true);
-		// file_system_watcher.onDidChange(function (uri) {
-		// 	GenerateSkinKV();
+		let root_path:string|undefined = GetRootPath();
+		if (root_path === undefined) {
+			return;
+		}
+		// const localization_path: string = '**/game/dota_addons/dota_imba/localization/schinese/abilities/antimage.txt';
+		// const localization_watcher: vscode.FileSystemWatcher = vscode.workspace.createFileSystemWatcher(localization_path, false, false, false);
+		// localization_watcher.onDidChange(function (uri: vscode.Uri) {
+		// 	console.log(uri);
+		// });
+		// vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+		// 	console.log(document.uri);
 		// });
 	}
-
+	WatchLocalization();
 	// 添加英雄基本文件
 	let AddHero = vscode.commands.registerCommand('extension.AddHero', async () => {
 		let root_path:string|undefined = GetRootPath();
@@ -236,7 +324,7 @@ export function activate(context: vscode.ExtensionContext) {
 					ignoreFocusOut:true,
 					prompt:'示例：C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
 				}).then(function(msg){
-					vscode.workspace.getConfiguration().update('dota2-tools.addon_path',msg,true)
+					vscode.workspace.getConfiguration().update('dota2-tools.addon_path',msg,true);
 				});
 			});
 			return;
