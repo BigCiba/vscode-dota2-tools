@@ -188,53 +188,57 @@ function activate(context) {
             var s = '';
             for (const iterator of document.getText()) {
                 if (iterator === '\n') {
-                    console.log('n');
+                    // console.log('n');
                 }
                 s += iterator;
             }
-            console.log(s);
+            // console.log(s);
+            LoadKeyValue(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/test.kv'));
         });
     }
-    function LoadKeyValue(uri) {
+    function _LoadKeyValue(uri) {
         return __awaiter(this, void 0, void 0, function* () {
             const document = yield vscode.workspace.openTextDocument(uri);
             class KVReader {
-                constructor() {
+                constructor(text) {
                     this.state = 'NONE';
                     this.state_save = 'NONE';
                     this.key = '';
                     this.value = '';
+                    this.kv = {};
+                    this.text = text;
                 }
                 /**
                  * Check
                  */
                 Check(char) {
+                    var state = this.state;
                     if (char === '"') {
-                        if (this.state === 'NONE') {
-                            this.state = 'KEY';
+                        if (this.state === 'NONE' || this.state === 'VALUE_END') {
+                            state = 'KEY';
                         }
                         else if (this.state === 'KEY') {
-                            this.state = 'NEXT';
+                            state = 'KEY_END';
                         }
-                        else if (this.state === 'NEXT') {
-                            this.state = 'VALUE';
+                        else if (this.state === 'KEY_END') {
+                            state = 'VALUE';
                         }
                         else if (this.state === 'VALUE') {
-                            this.state = 'NONE';
+                            state = 'VALUE_END';
                         }
                     }
-                    else if (char === '{' && this.state === 'NEXT') {
-                        this.state = 'TABLE';
+                    else if (char === '{' && this.state === 'KEY_END') {
+                        state = 'TABLE';
                     }
                     else if (char === '}' && this.state === 'TABLE') {
-                        this.state = 'NONE';
+                        state = 'TABLE_END';
                     }
                     else if (char === '//') {
-                        this.state_save = this.state;
-                        this.state = 'NOTE';
+                        this.state_save = state;
+                        state = 'NOTE';
                     }
                     else if (char === '\n' && this.state === 'NOTE') {
-                        this.state = this.state_save;
+                        state = this.state_save;
                     }
                     return this.state;
                 }
@@ -248,19 +252,69 @@ function activate(context) {
                     else if (this.state === 'VALUE') {
                         this.value += char;
                     }
+                    else if (this.state === 'VALUE_END') {
+                        this.kv[this.key] = this.value;
+                    }
+                    else if (this.state === 'TABLE') {
+                        this.kv[this.key] = this.NewTable();
+                    }
+                }
+                NewTable() {
+                }
+                Parse() {
+                    for (const char of this.text) {
+                        var state = this.Check(char);
+                        this.ReadChar(char);
+                    }
+                    console.log(this.kv);
                 }
             }
-            var kv = new KVReader;
+            var kv = new KVReader(document.getText());
+            kv.Parse();
+        });
+    }
+    function LoadKeyValue(uri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const document = yield vscode.workspace.openTextDocument(uri);
+            var state = 'NONE';
+            var key_value = {
+                key: '',
+                value: '',
+                AddKey(char) { this.key += char; },
+                AddValue(char) { this.value += char; },
+            };
+            var text_data = document.getText();
+            for (let i = 0; i < text_data.length; i++) {
+                const char = text_data[i];
+                console.log(char);
+            }
             for (const char of document.getText()) {
-                //	-> 遇到"进入key状态
-                //		-> 遇到"结束key状态并进入value状态
-                //			-> 遇到"进入value_value状态
-                //			-> 遇到{进入value_table状态
-                //				-> 递归
-                //	-> 遇到//进入注释状态
-                //		-> 遇到\n结束注释状态
-                // 持续判断字符串，当形成一个键对或者一个表时返回并记录，
-                kv.Check(char);
+                if (char === '"') {
+                    if (state === 'NONE' || state === 'VALUE_END') {
+                        state = 'KEY';
+                        continue;
+                    }
+                    else if (state === 'KEY') {
+                        state = 'KEY_END';
+                        continue;
+                    }
+                    else if (state === 'KEY_END') {
+                        state = 'VALUE';
+                        continue;
+                    }
+                    else if (state === 'VALUE') {
+                        state = 'VALUE_END';
+                        continue;
+                    }
+                }
+                else if (char === '{') {
+                    if (state === 'KEY_END') {
+                        state = 'TABLE';
+                        // newtable
+                    }
+                }
+                else if (char === '/') {
+                }
             }
         });
     }
@@ -327,7 +381,7 @@ function activate(context) {
             // });
         });
     }
-    WatchLocalization();
+    // WatchLocalization();
     // 添加英雄基本文件
     let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
         let root_path = GetRootPath();
