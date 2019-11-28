@@ -162,7 +162,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		return str;
 	}
-	MapTest();
+	// MapTest();
 	// maptest
 	async function MapTest() {
 		let root_path:string|undefined = GetRootPath();
@@ -180,114 +180,97 @@ export function activate(context: vscode.ExtensionContext) {
 		// console.log(s);
 		LoadKeyValue(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/test.kv'));
 	}
-	async function _LoadKeyValue(uri: vscode.Uri) {
-		const document: vscode.TextDocument = await vscode.workspace.openTextDocument(uri);
-		type State =
-		'NONE' | // 默认状态
-		'KEY' | // key值状态
-		'KEY_END' | // key值状态
-		'VALUE' | // value状态
-		'VALUE_END' | // value状态
-		'TABLE' | // table状态
-		'TABLE_END' | // table状态
-		'NOTE'; // 注释状态
-		class KVReader {
-			public state: State;
-			private state_save: State;
-			private key: string;
-			private value: string;
-			private kv: {[k: string]: any};
-			private text: string;
-
-			constructor(text: string) {
-				this.state = 'NONE';
-				this.state_save = 'NONE';
-				this.key = '';
-				this.value = '';
-				this.kv = {};
-				this.text = text;
-			}
-			/**
-			 * Check
-			 */
-			public Check(char: string):State {
-				var state = this.state;
-				if (char === '"') {
-					if (this.state === 'NONE' || this.state === 'VALUE_END') {
-						state = 'KEY';
-					} else if (this.state === 'KEY') {
-						state = 'KEY_END';
-					} else if (this.state === 'KEY_END') {
-						state = 'VALUE';
-					} else if (this.state === 'VALUE') {
-						state = 'VALUE_END';
-					}
-				} else if (char === '{' && this.state === 'KEY_END') {
-					state = 'TABLE';
-				} else if (char === '}' && this.state === 'TABLE') {
-					state = 'TABLE_END';
-				} else if (char === '//') {
-					this.state_save = state;
-					state = 'NOTE';
-				} else if (char === '\n' && this.state === 'NOTE') {
-					state = this.state_save;
-				}
-				return this.state;
-			}
-			/**
-			 * ReadChar
-			 */
-			public ReadChar(char: string) {
-				if (this.state === 'KEY') {
-					this.key += char;
-				}else if (this.state === 'VALUE') {
-					this.value += char;
-				}else if (this.state === 'VALUE_END') {
-					this.kv[this.key] = this.value;
-				} else if (this.state === 'TABLE') {
-					this.kv[this.key] = this.NewTable();
-				}
-			}
-			private NewTable() {
-				
-			}
-			public Parse() {
-				for (const char of this.text) {
-					var state = this.Check(char);
-					this.ReadChar(char);
-				}
-				console.log(this.kv);
-			}
-		}
-		var kv = new KVReader(document.getText());
-		kv.Parse();
-	}
 	async function LoadKeyValue(uri: vscode.Uri) {
 		const document: vscode.TextDocument = await vscode.workspace.openTextDocument(uri);
-		type State =
-		'NONE' | // 默认状态
-		'KEY' | // key值状态
-		'KEY_END' | // key值状态
-		'VALUE' | // value状态
-		'VALUE_END' | // value状态
-		'TABLE' | // table状态
-		'TABLE_END' | // table状态
-		'NOTE'; // 注释状态
 		var state: string = 'NONE';
+		var state_save: string = 'NONE';
 		var key_value = {
 			key: '',
 			value: '',
 			AddKey(char: string){this.key += char;},
 			AddValue(char: string){this.value += char;},
+			Clear(){this.key = ''; this.value = '';},
 		};
+		var obj: {[k: string]: any} = {};
 		var text_data = document.getText();
+		var Next = (index: number) => text_data[index + 1];
+		var NewTable = (index: number):any => {
+			let state: string = 'NONE';
+			let state_save: string = 'NONE';
+			let key_value = {
+				key: '',
+				value: '',
+				AddKey(char: string){this.key += char;},
+				AddValue(char: string){this.value += char;},
+				Clear(){this.key = ''; this.value = '';},
+			};
+			let obj: {[k: string]: any} = {};
+			for (let i = index; i < text_data.length; i++) {
+				const char = text_data[i];
+				if (state === 'NOTE') {
+					if (char === '\n') {
+						state = state_save;
+						continue;
+					} else {
+						continue;
+					}
+				}
+				if (char === '"') {
+					if (state === 'NONE' || state === 'VALUE_END' || state === 'TABLE_END') {
+						state = 'KEY';
+						continue;
+					} else if (state === 'KEY') {
+						state = 'KEY_END';
+						continue;
+					} else if (state === 'KEY_END') {
+						state = 'VALUE';
+						continue;
+					} else if (state === 'VALUE') {
+						state = 'VALUE_END';
+						obj[key_value.key] = key_value.value;
+						key_value.Clear();
+						continue;
+					}
+				} else if (char === '{') {
+					if (state === 'KEY_END') {
+						state = 'TABLE';
+						let [new_obj, index] = NewTable(i + 1);
+						obj[key_value.key] = new_obj;
+						i = index;
+						key_value.Clear();
+						state = 'TABLE_END';
+						continue;
+					}
+				} else if (char === '}') {
+					return [obj,i];
+				} else if (char === '/' && state !== 'NOTE') {
+					if (Next(i) === '/') {
+						i += 1;
+						state_save = state;
+						state = 'NOTE';
+						// newtable
+						continue;
+					}
+				}
+				if (state === 'KEY') {
+					key_value.AddKey(char);
+				} else if (state === 'VALUE') {
+					key_value.AddValue(char);
+				}
+			}
+		};
 		for (let i = 0; i < text_data.length; i++) {
 			const char = text_data[i];
-			console.log(char);
-		}
-		for (const char of document.getText()) {
+			if (state === 'NOTE') {
+				if (char === '\n') {
+					state = state_save;
+					continue;
+				} else {
+					continue;
+				}
+			}
 			if (char === '"') {
-				if (state === 'NONE' || state === 'VALUE_END') {
+				if (state === 'NONE' || state === 'VALUE_END' || state === 'TABLE_END') {
 					state = 'KEY';
 					continue;
 				} else if (state === 'KEY') {
@@ -298,17 +281,37 @@ export function activate(context: vscode.ExtensionContext) {
 					continue;
 				} else if (state === 'VALUE') {
 					state = 'VALUE_END';
+					obj[key_value.key] = key_value.value;
+					key_value.Clear();
 					continue;
 				}
 			} else if (char === '{') {
 				if (state === 'KEY_END') {
 					state = 'TABLE';
+					let [new_obj, index] = NewTable(i + 1);
+					obj[key_value.key] = new_obj;
+					key_value.Clear();
+					i = index;
+					state = 'TABLE_END';
+					continue;
 					// newtable
 				}
-			} else if (char === '/') {
-				
+			} else if (char === '/' && state !== 'NOTE') {
+				if (Next(i) === '/') {
+					i += 1;
+					state_save = state;
+					state = 'NOTE';
+					// newtable
+					continue;
+				}
+			}
+			if (state === 'KEY') {
+				key_value.AddKey(char);
+			} else if (state === 'VALUE') {
+				key_value.AddValue(char);
 			}
 		}
+		return obj;
 	}
 
 	// 合并文本
@@ -392,8 +395,8 @@ export function activate(context: vscode.ExtensionContext) {
 		// 读取英雄资料
 		const npc_heroes_uri:vscode.Uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_heroes.txt');
 		const npc_abilities_uri:vscode.Uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_abilities.txt');
-		let heroes_data:{[k: string]: any} = await ReadKeyValue(npc_heroes_uri);
-		let abilities_data:{[k: string]: any} = await ReadKeyValue(npc_abilities_uri);
+		let heroes_data:{[k: string]: any} = await LoadKeyValue(npc_heroes_uri);
+		let abilities_data:{[k: string]: any} = await LoadKeyValue(npc_abilities_uri);
 		// 选择英雄
 		const quick_pick:vscode.QuickPick<vscode.QuickPickItem> = vscode.window.createQuickPick();
 		quick_pick.canSelectMany = false;
@@ -463,8 +466,8 @@ export function activate(context: vscode.ExtensionContext) {
 				var ability:object = {
 					[hero_name_lite]:ability_data,
 				};
-				ability_override.forEach(ability => {
-					ability_data[ability + '_imba'] = abilities_data.DOTAAbilities[ability];
+				ability_override.forEach(ability_name => {
+					ability_data[ability_name + '_imba'] = abilities_data.DOTAAbilities[ability_name];
 				});
 				edit_builder.insert(new vscode.Position(0,0), WriteAbilitiesKV(ability,0,hero_name_lite));
 			});
