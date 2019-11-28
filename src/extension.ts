@@ -358,11 +358,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// 添加英雄基本文件
 	let AddHero = vscode.commands.registerCommand('extension.AddHero', async () => {
-		let root_path:string|undefined = GetRootPath();
+		let root_path: string|undefined = GetRootPath();
 		if (root_path === undefined) {
 			return;
 		}
-		let addon_path:string|undefined = vscode.workspace.getConfiguration().get('dota2-tools.addon_path');
+		let addon_path: string|undefined = vscode.workspace.getConfiguration().get('dota2-tools.addon_path');
 		if (addon_path === undefined || addon_path === '') {
 			vscode.window.showErrorMessage('请设置dota2项目路径','设置').then(function () {
 				vscode.window.showInputBox({
@@ -370,8 +370,11 @@ export function activate(context: vscode.ExtensionContext) {
 					ignoreFocusOut:true,
 					value: 'C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
 					prompt:'示例：C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
-				}).then(function(msg){
-					vscode.workspace.getConfiguration().update('dota2-tools.addon_path',msg,true);
+				}).then(async function(msg){
+					if (msg !== undefined) {
+						await vscode.workspace.fs.readDirectory(vscode.Uri.file(msg));
+						vscode.workspace.getConfiguration().update('dota2-tools.addon_path',msg,true);
+					}
 				});
 			});
 			return;
@@ -512,9 +515,15 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
+	// 转到文本
+	let OpenLang = vscode.commands.registerCommand('extension.OpenLang', async () => {
+		
+	});
+
 	// 注册指令
 	context.subscriptions.push(Localization);
 	context.subscriptions.push(AddHero);
+	context.subscriptions.push(OpenLang);
 }
 
 // this method is called when your extension is deactivated

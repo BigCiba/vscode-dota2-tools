@@ -404,7 +404,12 @@ function activate(context) {
                     value: 'C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
                     prompt: '示例：C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
                 }).then(function (msg) {
-                    vscode.workspace.getConfiguration().update('dota2-tools.addon_path', msg, true);
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (msg !== undefined) {
+                            yield vscode.workspace.fs.readDirectory(vscode.Uri.file(msg));
+                            vscode.workspace.getConfiguration().update('dota2-tools.addon_path', msg, true);
+                        }
+                    });
                 });
             });
             return;
@@ -546,9 +551,13 @@ function activate(context) {
             });
         }));
     }));
+    // 转到文本
+    let OpenLang = vscode.commands.registerCommand('extension.OpenLang', () => __awaiter(this, void 0, void 0, function* () {
+    }));
     // 注册指令
     context.subscriptions.push(Localization);
     context.subscriptions.push(AddHero);
+    context.subscriptions.push(OpenLang);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

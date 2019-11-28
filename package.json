@@ -25,6 +25,10 @@
 			{
 				"command": "extension.AddHero",
 				"title": "添加英雄"
+			},
+			{
+				"command": "extension.OpenLang",
+				"title": "转到文本"
 			}
 		],
 		"menus": {
@@ -32,6 +36,11 @@
 				{
 					"when": "editorFocus",
 					"command": "extension.AddHero",
+					"group": "navigation"
+				},
+				{
+					"when": "resource =~ /abilities/",
+					"command": "extension.OpenLang",
 					"group": "navigation"
 				}
 			]
