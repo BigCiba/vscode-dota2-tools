@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as fs from 'fs';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -162,24 +163,6 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		return str;
 	}
-	// MapTest();
-	// maptest
-	async function MapTest() {
-		let root_path:string|undefined = GetRootPath();
-		if (root_path === undefined) {
-			return;
-		}
-		const document = await vscode.workspace.openTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/client.lua'));
-		var s = '';
-		for (const iterator of document.getText()) {
-			if (iterator === '\n') {
-				// console.log('n');
-			}
-			s += iterator;
-		}
-		// console.log(s);
-		LoadKeyValue(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/test.kv'));
-	}
 	async function LoadKeyValue(uri: vscode.Uri) {
 		const document: vscode.TextDocument = await vscode.workspace.openTextDocument(uri);
 		var state: string = 'NONE';
@@ -330,11 +313,12 @@ export function activate(context: vscode.ExtensionContext) {
 				var promise: string = await ReadLanguage(language_path);
 				language += promise;
 				language += '\t}\n}';
-				var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
-				text_editor.edit(function (edit_builder) {
-					edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
-					edit_builder.insert(new vscode.Position(0,0),language);
-				});
+				fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt',language);
+				// var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
+				// text_editor.edit(function (edit_builder) {
+				// 	edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
+				// 	edit_builder.insert(new vscode.Position(0,0),language);
+				// });
 			}
 		}
 		async function ReadLanguage(path:string):Promise<string> {
@@ -357,22 +341,21 @@ export function activate(context: vscode.ExtensionContext) {
 			return Promise.resolve(lang);
 		}
 	});
+
 	// 监听文本变更
 	async function WatchLocalization() {
 		let root_path:string|undefined = GetRootPath();
 		if (root_path === undefined) {
 			return;
 		}
-		// const localization_path: string = '**/game/dota_addons/dota_imba/localization/schinese/abilities/antimage.txt';
-		// const localization_watcher: vscode.FileSystemWatcher = vscode.workspace.createFileSystemWatcher(localization_path, false, false, false);
-		// localization_watcher.onDidChange(function (uri: vscode.Uri) {
-		// 	console.log(uri);
-		// });
-		// vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-		// 	console.log(document.uri);
-		// });
+		vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+			if (document.uri.fsPath.search('localization') !== -1) {
+				vscode.commands.executeCommand('extension.Localization');
+			}
+		});
 	}
-	// WatchLocalization();
+	WatchLocalization();
+
 	// 添加英雄基本文件
 	let AddHero = vscode.commands.registerCommand('extension.AddHero', async () => {
 		let root_path:string|undefined = GetRootPath();
@@ -385,6 +368,7 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.window.showInputBox({
 					password:false,
 					ignoreFocusOut:true,
+					value: 'C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
 					prompt:'示例：C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
 				}).then(function(msg){
 					vscode.workspace.getConfiguration().update('dota2-tools.addon_path',msg,true);

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
+const fs = require("fs");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -175,26 +176,6 @@ function activate(context) {
             }
         }
         return str;
-    }
-    // MapTest();
-    // maptest
-    function MapTest() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let root_path = GetRootPath();
-            if (root_path === undefined) {
-                return;
-            }
-            const document = yield vscode.workspace.openTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/client.lua'));
-            var s = '';
-            for (const iterator of document.getText()) {
-                if (iterator === '\n') {
-                    // console.log('n');
-                }
-                s += iterator;
-            }
-            // console.log(s);
-            LoadKeyValue(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/test.kv'));
-        });
     }
     function LoadKeyValue(uri) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -362,11 +343,12 @@ function activate(context) {
                 var promise = yield ReadLanguage(language_path);
                 language += promise;
                 language += '\t}\n}';
-                var text_editor = yield vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
-                text_editor.edit(function (edit_builder) {
-                    edit_builder.delete(new vscode.Range(new vscode.Position(0, 0), text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
-                    edit_builder.insert(new vscode.Position(0, 0), language);
-                });
+                fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt', language);
+                // var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
+                // text_editor.edit(function (edit_builder) {
+                // 	edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
+                // 	edit_builder.insert(new vscode.Position(0,0),language);
+                // });
             }
         }
         function ReadLanguage(path) {
@@ -399,17 +381,14 @@ function activate(context) {
             if (root_path === undefined) {
                 return;
             }
-            // const localization_path: string = '**/game/dota_addons/dota_imba/localization/schinese/abilities/antimage.txt';
-            // const localization_watcher: vscode.FileSystemWatcher = vscode.workspace.createFileSystemWatcher(localization_path, false, false, false);
-            // localization_watcher.onDidChange(function (uri: vscode.Uri) {
-            // 	console.log(uri);
-            // });
-            // vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-            // 	console.log(document.uri);
-            // });
+            vscode.workspace.onDidSaveTextDocument((document) => {
+                if (document.uri.fsPath.search('localization') !== -1) {
+                    vscode.commands.executeCommand('extension.Localization');
+                }
+            });
         });
     }
-    // WatchLocalization();
+    WatchLocalization();
     // 添加英雄基本文件
     let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
         let root_path = GetRootPath();
@@ -422,6 +401,7 @@ function activate(context) {
                 vscode.window.showInputBox({
                     password: false,
                     ignoreFocusOut: true,
+                    value: 'C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
                     prompt: '示例：C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta',
                 }).then(function (msg) {
                     vscode.workspace.getConfiguration().update('dota2-tools.addon_path', msg, true);

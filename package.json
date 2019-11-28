@@ -31,11 +31,6 @@
 			"editor/context": [
 				{
 					"when": "editorFocus",
-					"command": "extension.Localization",
-					"group": "navigation"
-				},
-				{
-					"when": "editorFocus",
 					"command": "extension.AddHero",
 					"group": "navigation"
 				}
