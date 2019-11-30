@@ -552,12 +552,44 @@ function activate(context) {
         }));
     }));
     // 转到文本
-    let OpenLang = vscode.commands.registerCommand('extension.OpenLang', () => __awaiter(this, void 0, void 0, function* () {
+    let OpenLang = vscode.commands.registerCommand('extension.OpenLang', (uri) => __awaiter(this, void 0, void 0, function* () {
+        let addon_path = vscode.workspace.getConfiguration().get('dota2-tools.addon_path');
+        let path_array = uri.fsPath.split('\\');
+        let full_file_name = path_array[path_array.length - 1];
+        let file_name = full_file_name.split('.')[0];
+        let ext_name = full_file_name.split('.')[1];
+        if (ext_name === 'kv') {
+            vscode.window.showTextDocument(vscode.Uri.file(addon_path + '/game/dota_addons/dota_imba/localization/schinese/abilities/' + file_name + '.txt'));
+        }
+        else if (ext_name === 'lua') {
+            vscode.window.showTextDocument(vscode.Uri.file(addon_path + '/game/dota_addons/dota_imba/localization/schinese/abilities/' + path_array[path_array.length - 2] + '.txt'));
+        }
+    }));
+    // 转到kv
+    let OpenKV = vscode.commands.registerCommand('extension.OpenKV', (uri) => __awaiter(this, void 0, void 0, function* () {
+        let addon_path = vscode.workspace.getConfiguration().get('dota2-tools.addon_path');
+        let path_array = uri.fsPath.split('\\');
+        let full_file_name = path_array[path_array.length - 1];
+        let file_name = full_file_name.split('.')[0];
+        let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(addon_path + '/game/dota_addons/dota_imba/scripts/npc/abilities/heroes/' + path_array[path_array.length - 2] + '.kv'));
+        for (let line = 0; line < document.lineCount; line++) {
+            const line_text = document.lineAt(line);
+            if (line_text.text.search(file_name) !== -1) {
+                const options = {
+                    selection: line_text.range,
+                    preview: false,
+                    viewColumn: vscode.ViewColumn.Two
+                };
+                vscode.window.showTextDocument(document, options);
+                break;
+            }
+        }
     }));
     // 注册指令
     context.subscriptions.push(Localization);
     context.subscriptions.push(AddHero);
     context.subscriptions.push(OpenLang);
+    context.subscriptions.push(OpenKV);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

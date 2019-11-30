@@ -24,11 +24,19 @@
 			},
 			{
 				"command": "extension.AddHero",
-				"title": "添加英雄"
+				"title": "添加英雄",
+				"icon": {
+					"light": "./images/skin_tool_light.svg",
+					"dark": "./images/skin_tool_dark.svg"
+				}
 			},
 			{
 				"command": "extension.OpenLang",
 				"title": "转到文本"
+			},
+			{
+				"command": "extension.OpenKV",
+				"title": "转到kv"
 			}
 		],
 		"menus": {
@@ -39,8 +47,19 @@
 					"group": "navigation"
 				},
 				{
-					"when": "resource =~ /abilities/",
+					"when": "resource =~ /abilities/ && resourceExtname == '.lua' || resourceExtname == '.kv'",
 					"command": "extension.OpenLang",
+					"group": "navigation"
+				},
+				{
+					"when": "resource =~ /abilities/ && resourceExtname == '.lua'",
+					"command": "extension.OpenKV",
+					"group": "navigation"
+				}
+			],
+			"view/title": [
+				{
+					"command": "extension.AddHero",
 					"group": "navigation"
 				}
 			]
