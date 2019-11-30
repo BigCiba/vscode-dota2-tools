@@ -31,33 +31,28 @@
 				}
 			},
 			{
-				"command": "extension.OpenLang",
-				"title": "转到文本"
+				"command": "extension.OpenKV",
+				"title": "转到技能kv"
 			},
 			{
-				"command": "extension.OpenKV",
-				"title": "转到kv"
+				"command": "extension.OpenLang",
+				"title": "转到文本"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"when": "editorFocus",
-					"command": "extension.AddHero",
+					"when": "resource =~ /abilities/ && resourceExtname == '.lua'",
+					"command": "extension.OpenKV",
 					"group": "navigation"
 				},
 				{
 					"when": "resource =~ /abilities/ && resourceExtname == '.lua' || resourceExtname == '.kv'",
 					"command": "extension.OpenLang",
 					"group": "navigation"
-				},
-				{
-					"when": "resource =~ /abilities/ && resourceExtname == '.lua'",
-					"command": "extension.OpenKV",
-					"group": "navigation"
 				}
 			],
-			"view/title": [
+			"editor/title": [
 				{
 					"command": "extension.AddHero",
 					"group": "navigation"
