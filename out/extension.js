@@ -18,6 +18,7 @@ const fs = require("fs");
 function activate(context) {
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
+    // passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
     console.log('Congratulations, your extension "dota2-tools" is now active!');
     // 获取根目录
     function GetRootPath() {
