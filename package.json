@@ -3,6 +3,7 @@
 	"displayName": "dota2-tools",
 	"description": "dota2插件",
 	"version": "0.0.5",
+	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
 		"vscode": "^1.39.0"
@@ -26,8 +27,8 @@
 				"command": "extension.AddHero",
 				"title": "添加英雄",
 				"icon": {
-					"light": "./images/skin_tool_light.svg",
-					"dark": "./images/skin_tool_dark.svg"
+					"light": "./images/hero_light.svg",
+					"dark": "./images/hero_dark.svg"
 				}
 			},
 			{
