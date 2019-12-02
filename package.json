@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-tools",
 	"description": "dota2插件",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
