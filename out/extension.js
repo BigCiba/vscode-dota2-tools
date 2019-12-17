@@ -14,6 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
+const watch = require("watch");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -383,11 +384,35 @@ function activate(context) {
             if (root_path === undefined) {
                 return;
             }
-            vscode.workspace.onDidSaveTextDocument((document) => {
-                if (document.uri.fsPath.search('localization') !== -1) {
-                    vscode.commands.executeCommand('extension.Localization');
+            watch.watchTree(root_path + '/game/dota_addons/dota_imba/localization', function (f, curr, prev) {
+                if (typeof f === "object" && prev === null && curr === null) {
+                    // Finished walking the tree
+                }
+                else if (prev === null) {
+                    // f is a new file
+                    console.log('f is a new file');
+                }
+                else if (curr.nlink === 0) {
+                    // f was removed
+                    console.log('f was removed');
+                }
+                else {
+                    // f was changed
+                    console.log('f was changed');
                 }
             });
+            var fileSystemWatcher = vscode.workspace.createFileSystemWatcher(root_path + '/game/dota_addons', false, false, false);
+            fileSystemWatcher.onDidChange(function (uri) {
+                console.log(uri);
+            });
+            fileSystemWatcher.onDidCreate(function (uri) {
+                console.log(uri);
+            });
+            // vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+            // 	if (document.uri.fsPath.search('localization') !== -1) {
+            // 		vscode.commands.executeCommand('extension.Localization');
+            // 	}
+            // });
         });
     }
     WatchLocalization();

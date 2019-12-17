@@ -101,5 +101,8 @@
 	"repository": {
 		"type": "git",
 		"url": "https://gitee.com/bigciba/dota2-tools.git"
+	},
+	"dependencies": {
+		"@types/watch": "^1.0.1"
 	}
 }
