@@ -81,4 +81,42 @@ function GetWebViewContent(context, templatePath) {
     return html;
 }
 exports.GetWebViewContent = GetWebViewContent;
+/**
+ * 取出中括号内的内容
+ * @param text
+ * @returns {string}
+ */
+function GetBracketStr(text) {
+    let result = '';
+    if (text === '') {
+        return result;
+    }
+    let regex = /\[(.+?)\]/g;
+    let options = text.match(regex);
+    if (options !== null && options.length > 0) {
+        let option = options[0];
+        result = option.substring(1, option.length - 1);
+    }
+    return result;
+}
+exports.GetBracketStr = GetBracketStr;
+/**
+ * 取出小括号内的内容
+ * @param text
+ * @returns {string}
+ */
+function GetParenthesesStr(text) {
+    let result = '';
+    if (text === '') {
+        return result;
+    }
+    let regex = /\((.+?)\)/g;
+    let options = text.match(regex);
+    if (options !== null && options.length > 0) {
+        let option = options[0];
+        result = option.substring(1, option.length - 1);
+    }
+    return result;
+}
+exports.GetParenthesesStr = GetParenthesesStr;
 //# sourceMappingURL=util.js.map

@@ -71,3 +71,40 @@ export function GetWebViewContent(context: any, templatePath: any) {
     });
     return html;
 }
+/**
+ * 取出中括号内的内容
+ * @param text
+ * @returns {string}
+ */
+export function GetBracketStr(text: string): string {
+    let result = '';
+    if (text === ''){
+        return result;
+	}
+    let regex = /\[(.+?)\]/g;
+	let options = text.match(regex);
+    if (options !== null && options.length > 0) {
+        let option = options[0];
+		result = option.substring(1, option.length - 1);
+    }
+    return result;
+}
+
+/**
+ * 取出小括号内的内容
+ * @param text
+ * @returns {string}
+ */
+export function GetParenthesesStr(text: string): string {
+	let result = '';
+    if (text === ''){
+        return result;
+	}
+    let regex = /\((.+?)\)/g;
+	let options = text.match(regex);
+    if (options !== null && options.length > 0) {
+        let option = options[0];
+		result = option.substring(1, option.length - 1);
+    }
+	return result;
+}

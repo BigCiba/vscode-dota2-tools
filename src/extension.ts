@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
 
@@ -595,16 +596,102 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 打开API
-	// let OpenAPI = vscode.commands.registerCommand('extension.OpenAPI', async (uri) => {
-		
-	// });
+	let OpenAPI = vscode.commands.registerCommand('extension.OpenAPI', async (uri) => {
+		let root_path:string|undefined = GetRootPath();
+		if (root_path === undefined) {
+			return;
+		}
+		const content = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
+		const rows = content.split(os.EOL);
+		let script = '# **Dota2 API**\n';
+		let class_list: {[k: string]: any} = {};
+		for(let i = 0; i < rows.length; i++) {
+			// 函数
+			let option = rows[i].match(/---\[\[.*\]\]/g);
+			if (option !== null && option.length > 0) {
+				let [fun_info, new_line] = ReadFunction(i);
+				if (class_list[fun_info.class] === undefined) {
+					class_list[fun_info.class] = [];
+				}
+				class_list[fun_info.class].push(fun_info);
+				i = new_line;
+			}
+			// 常数
+			if (rows[i].search('--- Enum ') !== -1) {
+				
+			}
+		}
+		for (const class_name in class_list) {
+			const fun_list = class_list[class_name];
+			script += '## **' + class_name + '**\n---\n';
+			for (let i = 0; i < fun_list.length; i++) {
+				const fun_info = fun_list[i];
+				script += '### `' + fun_info.return + ' ';
+				if (fun_info.class !== 'Globals') {
+					script += fun_info.class + ':';
+				}
+				script += fun_info.function + '(';
+				let count = 0;
+				for (let params_name in fun_info.params) {
+					if (count === 0) {
+						count ++;
+						script += params_name;
+					} else {
+						script += ', ' + params_name;
+					}
+				}
+				script += ' )`\n';
+				script += '#### Function Description\n' + fun_info.description + '\n';
+				if (Object.keys(fun_info.params).length > 0) {
+					script += '#### Parameters\nType|Name|Description\n--|--|--\n';
+					for (let params_name in fun_info.params) {
+						const params_type = fun_info.params[params_name];
+						script += params_type + '|' + params_name + '|No Description Set\n';
+					}
+				}
+				script += '---\n';
+			}
+		}
+		fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.md',script);
+		vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/dota_script_help2.lua'));
+		function ReadFunction(line: number):any {
+			let fun_info: {[k: string]: any} = {};
+			let param_list: {[k: string]: any} = {};
+			let end_line: number = 0;
+			for (let index = line; index < rows.length; index++) {
+				const text = rows[index];
+				let option = rows[index].match(/---\[\[.*\]\]/g);
+				if (option !== null && option.length > 0) {
+					fun_info.description = text.substr(6, text.length - 9);
+				} else if (text.search('-- @return') !== -1) {
+					fun_info.return = text.substr(11, text.length);
+				} else if (text.search('-- @param') !== -1) {
+					let arr = text.split(' ');
+					param_list[arr[2]] = arr[3];
+				} else if (text.search('function') !== -1) {
+					fun_info.function = text.split('(')[0].split('function ')[1];
+					fun_info.description = fun_info.description.split(fun_info.function + '  ')[1];
+					if (fun_info.function.search(':') === -1) {
+						fun_info.class = 'Globals';
+					} else {
+						fun_info.class = fun_info.function.split(':')[0];
+						fun_info.function = fun_info.function.split(':')[1];
+					}
+					end_line = index;
+					break;
+				}
+			}
+			fun_info.params = param_list;
+			return [fun_info,end_line];
+		}
+	});
 
 	// 注册指令
 	context.subscriptions.push(Localization);
 	context.subscriptions.push(AddHero);
 	context.subscriptions.push(OpenLang);
 	context.subscriptions.push(OpenKV);
-	// context.subscriptions.push(OpenAPI);
+	context.subscriptions.push(OpenAPI);
 }
 
 // this method is called when your extension is deactivated

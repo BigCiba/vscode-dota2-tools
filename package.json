@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-IMBA插件",
 	"description": "dota2 IMBA项目辅助工具",
-	"version": "0.0.8",
+	"version": "0.0.7",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -38,6 +38,10 @@
 			{
 				"command": "extension.OpenLang",
 				"title": "转到文本"
+			},
+			{
+				"command": "extension.OpenAPI",
+				"title": "打开API"
 			}
 		],
 		"menus": {
@@ -50,6 +54,10 @@
 				{
 					"when": "resource =~ /abilities/ && resourceExtname == '.lua' || resourceExtname == '.kv'",
 					"command": "extension.OpenLang",
+					"group": "navigation"
+				},
+				{
+					"command": "extension.OpenAPI",
 					"group": "navigation"
 				}
 			],
