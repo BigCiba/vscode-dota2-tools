@@ -78,7 +78,16 @@
 					"description": "dota2项目路径"
 				}
 			}
-		}
+		},
+		"viewsContainers": {
+			"activitybar": [
+			  {
+				"id": "package-explorer",
+				"title": "Package Explorer",
+				"icon": "images/dep.svg"
+			  }
+			]
+		  }
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

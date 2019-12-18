@@ -353,6 +353,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if (root_path === undefined) {
 			return;
 		}
+		// https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/
 		watch.watchTree(root_path + '/game/dota_addons/dota_imba/localization', function (f, curr, prev) {
 			if (typeof f === "object" && prev === null && curr === null) {
 				// Finished walking the tree
