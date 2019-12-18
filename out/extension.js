@@ -384,29 +384,29 @@ function activate(context) {
             if (root_path === undefined) {
                 return;
             }
+            // const nodeDependenciesProvider = new ApiTreeProvider(root_path);
+            // vscode.window.registerTreeDataProvider('nodeDependencies', nodeDependenciesProvider);
+            // const view = vscode.window.createTreeView('nodeDependencies', { treeDataProvider: nodeDependenciesProvider, showCollapseAll: true });
+            // https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/
             watch.watchTree(root_path + '/game/dota_addons/dota_imba/localization', function (f, curr, prev) {
                 if (typeof f === "object" && prev === null && curr === null) {
                     // Finished walking the tree
                 }
                 else if (prev === null) {
                     // f is a new file
-                    console.log('f is a new file');
+                    // console.log('f is a new file');
+                    vscode.commands.executeCommand('extension.Localization');
                 }
                 else if (curr.nlink === 0) {
                     // f was removed
-                    console.log('f was removed');
+                    // console.log('f was removed');
+                    vscode.commands.executeCommand('extension.Localization');
                 }
                 else {
                     // f was changed
-                    console.log('f was changed');
+                    // console.log('f was changed');
+                    vscode.commands.executeCommand('extension.Localization');
                 }
-            });
-            var fileSystemWatcher = vscode.workspace.createFileSystemWatcher(root_path + '/game/dota_addons', false, false, false);
-            fileSystemWatcher.onDidChange(function (uri) {
-                console.log(uri);
-            });
-            fileSystemWatcher.onDidCreate(function (uri) {
-                console.log(uri);
             });
             // vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
             // 	if (document.uri.fsPath.search('localization') !== -1) {
@@ -711,7 +711,7 @@ function activate(context) {
                 script += '---\n';
             }
         }
-        fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.md', script);
+        fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.json', JSON.stringify(class_list));
         vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/dota_script_help2.lua'));
         function ReadFunction(line) {
             let fun_info = {};

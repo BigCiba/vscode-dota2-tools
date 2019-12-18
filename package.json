@@ -14,7 +14,8 @@
 	"activationEvents": [
 		"*",
 		"onCommand:extension.Localization",
-		"onCommand:extension.AddHero"
+		"onCommand:extension.AddHero",
+		"onView:nodeDependencies"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -81,13 +82,21 @@
 		},
 		"viewsContainers": {
 			"activitybar": [
-			  {
-				"id": "package-explorer",
-				"title": "Package Explorer",
-				"icon": "images/dep.svg"
-			  }
+				{
+					"id": "package-explorer",
+					"title": "Package Explorer",
+					"icon": "images/dep.svg"
+				}
 			]
-		  }
+		},
+		"views": {
+			"package-explorer": [
+				{
+					"id": "nodeDependencies",
+					"name": "Node Dependencies"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
