@@ -645,6 +645,42 @@ export function activate(context: vscode.ExtensionContext) {
 				
 			}
 		}
+		let _sidebar: string = '';
+		for (const class_name in class_list) {
+			_sidebar += '* ' + class_name + '\n';
+			// fs.mkdirSync(context.extensionPath + '/resource/' + class_name);
+			const fun_list = class_list[class_name];
+			for (let i = 0; i < fun_list.length; i++) {
+				const fun_info = fun_list[i];
+				let fun_md: string = '# `' + fun_info.return + ' ';
+				if (fun_info.class !== 'Globals') {
+					fun_md += fun_info.class + ':';
+				}
+				fun_md += fun_info.function + '(';
+				let count = 0;
+				for (let params_name in fun_info.params) {
+					if (count === 0) {
+						count ++;
+						fun_md += params_name;
+					} else {
+						fun_md += ', ' + params_name;
+					}
+				}
+				fun_md += ' )`\n';
+				fun_md += '## Function Description\n' + fun_info.description + '\n';
+				if (Object.keys(fun_info.params).length > 0) {
+					fun_md += '## Parameters\nType|Name|Description\n--|--|--\n';
+					for (let params_name in fun_info.params) {
+						const params_type = fun_info.params[params_name];
+						fun_md += params_type + '|' + params_name + '|No Description Set\n';
+					}
+				}
+				fs.writeFileSync(context.extensionPath + '/resource/' + class_name + '/' + fun_info.function + '.md', fun_md);
+				_sidebar += '\t* [' + fun_info.function + '](' + class_name + '/' + fun_info.function + ')\n';
+			}
+		}
+		fs.writeFileSync(context.extensionPath + '/resource/_sidebar.md',_sidebar);
+		console.log('finish');
 		for (const class_name in class_list) {
 			const fun_list = class_list[class_name];
 			script += '## **' + class_name + '**\n---\n';
@@ -676,7 +712,8 @@ export function activate(context: vscode.ExtensionContext) {
 				script += '---\n';
 			}
 		}
-		fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.json',JSON.stringify(class_list));
+		// fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.json',JSON.stringify(class_list));
+		// fs.writeFileSync(context.extensionPath + '/resource/script_help2.md',JSON.stringify(class_list));
 		vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/dota_script_help2.lua'));
 		function ReadFunction(line: number):any {
 			let fun_info: {[k: string]: any} = {};
