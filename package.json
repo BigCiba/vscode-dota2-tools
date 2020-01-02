@@ -60,6 +60,10 @@
 				{
 					"command": "extension.OpenAPI",
 					"group": "navigation"
+				},
+				{
+					"command": "extension.GenerateAPI",
+					"group": "navigation"
 				}
 			],
 			"editor/title": [

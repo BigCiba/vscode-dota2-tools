@@ -660,15 +660,20 @@ function activate(context) {
         if (root_path === undefined) {
             return;
         }
-        const content = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
-        const rows = content.split(os.EOL);
+        vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/dota_script_help2.lua'));
+    }));
+    let GenerateAPI = vscode.commands.registerCommand('extension.GenerateAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
+        const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
+        const rows = dota_script_help2.split(os.EOL);
         let script = '# **Dota2 API**\n';
+        // 读取服务器API
         let class_list = {};
+        let enum_list = {};
         for (let i = 0; i < rows.length; i++) {
             // 函数
             let option = rows[i].match(/---\[\[.*\]\]/g);
             if (option !== null && option.length > 0) {
-                let [fun_info, new_line] = ReadFunction(i);
+                let [fun_info, new_line] = ReadFunction(i, rows);
                 if (class_list[fun_info.class] === undefined) {
                     class_list[fun_info.class] = [];
                 }
@@ -677,19 +682,83 @@ function activate(context) {
             }
             // 常数
             if (rows[i].search('--- Enum ') !== -1) {
+                let enum_name = rows[i].substr(9, rows[i].length);
+                if (enum_list[enum_name] === undefined) {
+                    enum_list[enum_name] = [];
+                }
+                let [enum_info, new_line] = ReadEnum(i, rows);
+                enum_list[enum_name] = enum_info;
+                i = new_line;
             }
         }
+        // 读取客户端API
+        const dota_cl_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_cl_script_help2.lua', 'utf-8');
+        const rows_cl = dota_cl_script_help2.split(os.EOL);
+        let class_list_cl = {};
+        let enum_list_cl = {};
+        for (let i = 0; i < rows_cl.length; i++) {
+            // 函数
+            let option = rows_cl[i].match(/---\[\[.*\]\]/g);
+            if (option !== null && option.length > 0) {
+                let [fun_info, new_line] = ReadFunction(i, rows_cl);
+                if (class_list_cl[fun_info.class] === undefined) {
+                    class_list_cl[fun_info.class] = [];
+                }
+                class_list_cl[fun_info.class].push(fun_info);
+                i = new_line;
+            }
+            // 常数
+            if (rows_cl[i].search('--- Enum ') !== -1) {
+                let enum_name = rows_cl[i].substr(9, rows_cl[i].length);
+                if (enum_list_cl[enum_name] === undefined) {
+                    enum_list_cl[enum_name] = [];
+                }
+                let [enum_info, new_line] = ReadEnum(i, rows_cl);
+                enum_list_cl[enum_name] = enum_info;
+                i = new_line;
+            }
+        }
+        console.log('读取客户端API');
+        // 合并API
+        for (const class_name in class_list) {
+            const fun_list = class_list[class_name];
+            // console.log('fun_list', fun_list);
+            for (let i = 0; i < fun_list.length; i++) {
+                const fun_info = fun_list[i];
+                let class_info_cl = class_list_cl[class_name];
+                if (class_info_cl === undefined) {
+                    class_info_cl = class_list_cl[class_name.replace('C', 'C_')];
+                }
+                if (class_info_cl !== undefined) {
+                    for (let j = 0; j < class_info_cl.length; j++) {
+                        if (class_info_cl[j].function === fun_info.function) {
+                            fun_info.client = true;
+                            fun_info.class_cl = class_info_cl[j].class;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        console.log('合并API');
+        // 生成API文档
+        let _sidebar_root = '';
         let _sidebar = '';
         for (const class_name in class_list) {
-            _sidebar += '* ' + class_name + '\n';
+            _sidebar_root += '* [**' + class_name + '**](' + class_name + '/_sidebar)\n';
+            _sidebar = '* [**' + class_name + '**](/)\n';
+            // 添加每个类的描述
+            fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + class_name + '.md', '# ' + class_name);
             // fs.mkdirSync(context.extensionPath + '/resource/' + class_name);
             const fun_list = class_list[class_name];
             for (let i = 0; i < fun_list.length; i++) {
                 const fun_info = fun_list[i];
-                let fun_md = '# `' + fun_info.return + ' ';
-                if (fun_info.class !== 'Globals') {
-                    fun_md += fun_info.class + ':';
-                }
+                let fun_md = '# ' + fun_info.function + '\n';
+                fun_md += '```js\n';
+                fun_md += fun_info.return + ' ';
+                // if (fun_info.class !== 'Globals') {
+                // 	fun_md += fun_info.class + ':';
+                // }
                 fun_md += fun_info.function + '(';
                 let count = 0;
                 for (let params_name in fun_info.params) {
@@ -701,57 +770,60 @@ function activate(context) {
                         fun_md += ', ' + params_name;
                     }
                 }
-                fun_md += ' )`\n';
-                fun_md += '## Function Description\n' + fun_info.description + '\n';
+                fun_md += ')\n';
+                fun_md += '```\n';
+                fun_md += '# Class\n';
+                fun_md += '✔ `Server: ' + fun_info.class + '`  \n';
+                fun_md += (fun_info.client === true ? '✔' : '✖') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
+                // fun_md += '# Support\n';
+                // fun_md += '> __✔ Server__  \n';
+                // fun_md += '> __' + (fun_info.client === true ? '✔':'✖') + ' Client__  \n';
+                fun_md += '# Function Description\n' + fun_info.description + '\n';
                 if (Object.keys(fun_info.params).length > 0) {
-                    fun_md += '## Parameters\nType|Name|Description\n--|--|--\n';
+                    fun_md += '# Parameters\nType|Name|Description\n--|--|--\n';
                     for (let params_name in fun_info.params) {
                         const params_type = fun_info.params[params_name];
                         fun_md += params_type + '|' + params_name + '|No Description Set\n';
                     }
                 }
-                fs.writeFileSync(context.extensionPath + '/resource/' + class_name + '/' + fun_info.function + '.md', fun_md);
+                fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
+                // _sidebar_root += '\t* [' + fun_info.function + '](' + class_name + '/' + fun_info.function + ')\n';
                 _sidebar += '\t* [' + fun_info.function + '](' + class_name + '/' + fun_info.function + ')\n';
+                fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/_sidebar.md', _sidebar);
             }
         }
-        fs.writeFileSync(context.extensionPath + '/resource/_sidebar.md', _sidebar);
+        // 遍历常数
+        _sidebar_root += '* [**Constants**](Constants/Constants)\n';
+        _sidebar = '* [**Constants**](/)\n';
+        for (const enum_name in enum_list) {
+            const enum_arr = enum_list[enum_name];
+            // 添加每个类的描述
+            fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/Constants.md', '# ' + enum_name);
+            _sidebar += '\t* [' + enum_name + '](Constants/' + enum_name + ')\n';
+            let enum_md = '# ' + enum_name + '\n';
+            enum_md += '?> No Description Set\n\n';
+            enum_md += 'Name|Value|' + (enum_name === 'modifierfunction' ? 'Lua Function|Description' : 'Description') + '|Client\n--|:--:|--' + (enum_name === 'modifierfunction' ? '|--' : '') + '|:--:\n';
+            for (let i = 0; i < enum_arr.length; i++) {
+                const enum_info = enum_arr[i];
+                // 判断客户端是否存在
+                let client = '✖';
+                let enum_arr_cl = enum_list_cl[enum_name];
+                if (enum_arr_cl !== undefined) {
+                    for (let j = 0; j < enum_arr_cl.length; j++) {
+                        const enum_info_cl = enum_arr_cl[j];
+                        if (enum_info_cl.name === enum_info.name) {
+                            client = '✔';
+                        }
+                    }
+                }
+                enum_md += enum_info.name + '|' + enum_info.value + '|' + (enum_name === 'modifierfunction' ? enum_info.function + '|No Description Set|' : 'No Description Set|') + client + '\n';
+            }
+            fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '.md', enum_md);
+        }
+        fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/_sidebar.md', _sidebar);
+        fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/_sidebar.md', _sidebar_root);
         console.log('finish');
-        for (const class_name in class_list) {
-            const fun_list = class_list[class_name];
-            script += '## **' + class_name + '**\n---\n';
-            for (let i = 0; i < fun_list.length; i++) {
-                const fun_info = fun_list[i];
-                script += '### `' + fun_info.return + ' ';
-                if (fun_info.class !== 'Globals') {
-                    script += fun_info.class + ':';
-                }
-                script += fun_info.function + '(';
-                let count = 0;
-                for (let params_name in fun_info.params) {
-                    if (count === 0) {
-                        count++;
-                        script += params_name;
-                    }
-                    else {
-                        script += ', ' + params_name;
-                    }
-                }
-                script += ' )`\n';
-                script += '#### Function Description\n' + fun_info.description + '\n';
-                if (Object.keys(fun_info.params).length > 0) {
-                    script += '#### Parameters\nType|Name|Description\n--|--|--\n';
-                    for (let params_name in fun_info.params) {
-                        const params_type = fun_info.params[params_name];
-                        script += params_type + '|' + params_name + '|No Description Set\n';
-                    }
-                }
-                script += '---\n';
-            }
-        }
-        // fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.json',JSON.stringify(class_list));
-        // fs.writeFileSync(context.extensionPath + '/resource/script_help2.md',JSON.stringify(class_list));
-        vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/dota_script_help2.lua'));
-        function ReadFunction(line) {
+        function ReadFunction(line, rows) {
             let fun_info = {};
             let param_list = {};
             let end_line = 0;
@@ -783,7 +855,32 @@ function activate(context) {
                 }
             }
             fun_info.params = param_list;
+            fun_info.server = true;
+            fun_info.client = false;
             return [fun_info, end_line];
+        }
+        function ReadEnum(line, rows) {
+            let enum_list = [];
+            let end_line = 0;
+            for (let index = line + 1; index < rows.length; index++) {
+                let enum_info = {};
+                const text = rows[index];
+                if (text === '') {
+                    end_line = index;
+                    break;
+                }
+                const info = text.split(' = ');
+                enum_info.name = info[0];
+                if (info[1].search('--') !== -1) {
+                    enum_info.value = info[1].split(' -- ')[0];
+                    enum_info.function = info[1].split(' -- ')[1];
+                }
+                else {
+                    enum_info.value = info[1];
+                }
+                enum_list.push(enum_info);
+            }
+            return [enum_list, end_line];
         }
     }));
     // 注册指令
@@ -792,6 +889,7 @@ function activate(context) {
     context.subscriptions.push(OpenLang);
     context.subscriptions.push(OpenKV);
     context.subscriptions.push(OpenAPI);
+    context.subscriptions.push(GenerateAPI);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

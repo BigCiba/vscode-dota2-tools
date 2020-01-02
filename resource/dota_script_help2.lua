@@ -92,14 +92,7 @@ function CreateHTTPRequestScriptVM( string_1, string_2 ) end
 -- @param handle_2 handle
 function CreateHeroForPlayer( string_1, handle_2 ) end
 
----[[ CreateIllusions  Create illusions of the passed hero that belong to passed unit using passed modifier data. ( hOwner, hHeroToCopy, hModiiferKeys, nNumIllusions, nPadding, bScramblePosition, bFindClearSpace )
--- Supported keys:
--- outgoing_damage
--- incoming_damage
--- bounty_base
--- bounty_growth
--- outgoing_damage_structure
--- outgoing_damage_roshan ]]
+---[[ CreateIllusions  Create illusions of the passed hero that belong to passed unit using passed modifier data. ( hOwner, hHeroToCopy, hModiiferKeys, nNumIllusions, nPadding, bScramblePosition, bFindClearSpace ) Supported keys: outgoing_damage, incoming_damage, bounty_base, bounty_growth, outgoing_damage_structure, outgoing_damage_roshan ]]
 -- @return table
 -- @param handle_1 handle
 -- @param handle_2 handle
@@ -1616,6 +1609,7 @@ DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL = 536870912
 DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT = 8388608
 DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK = 33554432
 DOTA_ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT = 262144
+DOTA_ABILITY_BEHAVIOR_FREE_DRAW_TARGETING = 0
 DOTA_ABILITY_BEHAVIOR_HIDDEN = 1
 DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING = 134217728
 DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL = 4194304
@@ -2469,6 +2463,7 @@ QUEST_TEXT_REPLACE_VALUE_TARGET_VALUE = 1
 SUBQUEST_NUM_TEXT_REPLACE_VALUES = 2
 SUBQUEST_TEXT_REPLACE_VALUE_CURRENT_VALUE = 0
 SUBQUEST_TEXT_REPLACE_VALUE_TARGET_VALUE = 1
+
 ---[[ CBaseAnimating:ActiveSequenceDuration  Returns the duration in seconds of the active sequence. ]]
 -- @return float
 function CBaseAnimating:ActiveSequenceDuration(  ) end
@@ -3195,7 +3190,7 @@ function CBodyComponent:AddVelocity( Vector_1, Vector_2 ) end
 function CBodyComponent:DetachFromParent(  ) end
 
 ---[[ CBodyComponent:GetSequence  Returns the active sequence
---  ]]
+-- ]]
 -- @return <unknown>
 function CBodyComponent:GetSequence(  ) end
 
@@ -3204,7 +3199,7 @@ function CBodyComponent:GetSequence(  ) end
 function CBodyComponent:IsAttachedToParent(  ) end
 
 ---[[ CBodyComponent:LookupSequence  Returns a sequence id given a name
---  ]]
+-- ]]
 -- @return <unknown>
 -- @param string_1 string
 function CBodyComponent:LookupSequence( string_1 ) end
@@ -4176,6 +4171,11 @@ function CDOTABaseGameMode:SetFountainPercentageHealthRegen( flPercentageHealthR
 -- @param flPercentageManaRegen float
 function CDOTABaseGameMode:SetFountainPercentageManaRegen( flPercentageManaRegen ) end
 
+---[[ CDOTABaseGameMode:SetFreeCourierModeEnabled  If set to true, enable 7.23 free courier mode. ]]
+-- @return void
+-- @param bEnabled bool
+function CDOTABaseGameMode:SetFreeCourierModeEnabled( bEnabled ) end
+
 ---[[ CDOTABaseGameMode:SetFriendlyBuildingMoveToEnabled  Allows clicks on friendly buildings to be handled normally. ]]
 -- @return void
 -- @param bEnabled bool
@@ -4857,6 +4857,11 @@ function CDOTAGamerules:SpawnAndReleaseCreeps(  ) end
 ---[[ CDOTAGamerules:State_Get  Get the current Gamerules state ]]
 -- @return int
 function CDOTAGamerules:State_Get(  ) end
+
+---[[ CDOTAPlayer:CheckForCourierSpawning  Attempt to spawn the appropriate couriers for this mode. ]]
+-- @return void
+-- @param hHero handle
+function CDOTAPlayer:CheckForCourierSpawning( hHero ) end
 
 ---[[ CDOTAPlayer:GetAssignedHero  Get the player's hero. ]]
 -- @return handle

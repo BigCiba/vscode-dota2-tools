@@ -793,6 +793,7 @@ DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL = 536870912
 DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT = 8388608
 DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK = 33554432
 DOTA_ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT = 262144
+DOTA_ABILITY_BEHAVIOR_FREE_DRAW_TARGETING = 0
 DOTA_ABILITY_BEHAVIOR_HIDDEN = 1
 DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING = 134217728
 DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL = 4194304
@@ -1292,6 +1293,7 @@ MODIFIER_STATE_TRUESIGHT_IMMUNE = 33
 MODIFIER_STATE_UNSELECTABLE = 14
 MODIFIER_STATE_UNSLOWABLE = 38
 MODIFIER_STATE_UNTARGETABLE = 34
+
 ---[[ CBodyComponent:AddImpulseAtPosition  Apply an impulse at a worldspace position to the physics ]]
 -- @return void
 -- @param Vector_1 Vector
@@ -1308,7 +1310,8 @@ function CBodyComponent:AddVelocity( Vector_1, Vector_2 ) end
 -- @return void
 function CBodyComponent:DetachFromParent(  ) end
 
----[[ CBodyComponent:GetSequence  Returns the active sequence ]]
+---[[ CBodyComponent:GetSequence  Returns the active sequence
+-- ]]
 -- @return <unknown>
 function CBodyComponent:GetSequence(  ) end
 
@@ -1316,7 +1319,8 @@ function CBodyComponent:GetSequence(  ) end
 -- @return bool
 function CBodyComponent:IsAttachedToParent(  ) end
 
----[[ CBodyComponent:LookupSequence  Returns a sequence id given a name ]]
+---[[ CBodyComponent:LookupSequence  Returns a sequence id given a name
+-- ]]
 -- @return <unknown>
 -- @param string_1 string
 function CBodyComponent:LookupSequence( string_1 ) end
