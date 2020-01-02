@@ -43,6 +43,14 @@
 			{
 				"command": "extension.OpenAPI",
 				"title": "打开API"
+			},
+			{
+				"command": "extension.GenerateAPI",
+				"title": "生成API"
+			},
+			{
+				"command": "extension.NoteAPI",
+				"title": "注释API"
 			}
 		],
 		"menus": {
@@ -62,7 +70,8 @@
 					"group": "navigation"
 				},
 				{
-					"command": "extension.GenerateAPI",
+					"when": "editorHasSelection",
+					"command": "extension.NoteAPI",
 					"group": "navigation"
 				}
 			],

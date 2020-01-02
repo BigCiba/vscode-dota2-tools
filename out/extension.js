@@ -14,6 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
+const util = require("./util");
 const watch = require("watch");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -662,8 +663,14 @@ function activate(context) {
         }
         vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/dota_script_help2.lua'));
     }));
+    // 生成API
     let GenerateAPI = vscode.commands.registerCommand('extension.GenerateAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
+        let root_path = GetRootPath();
+        if (root_path === undefined) {
+            return;
+        }
         const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
+        const api_note = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
         const rows = dota_script_help2.split(os.EOL);
         let script = '# **Dota2 API**\n';
         // 读取服务器API
@@ -673,7 +680,16 @@ function activate(context) {
             // 函数
             let option = rows[i].match(/---\[\[.*\]\]/g);
             if (option !== null && option.length > 0) {
-                let [fun_info, new_line] = ReadFunction(i, rows);
+                let [fun_info, new_line] = util.ReadFunction(i, rows);
+                if (api_note[fun_info.function] !== undefined) {
+                    fun_info.description = api_note[fun_info.function].description;
+                    for (const params_name in fun_info.params) {
+                        const params_info = fun_info.params[params_name];
+                        params_info.params_name = api_note[fun_info.function].params[params_name].params_name;
+                        params_info.description = api_note[fun_info.function].params[params_name].description;
+                    }
+                    fun_info.example = api_note[fun_info.function].example;
+                }
                 if (class_list[fun_info.class] === undefined) {
                     class_list[fun_info.class] = [];
                 }
@@ -686,7 +702,7 @@ function activate(context) {
                 if (enum_list[enum_name] === undefined) {
                     enum_list[enum_name] = [];
                 }
-                let [enum_info, new_line] = ReadEnum(i, rows);
+                let [enum_info, new_line] = util.ReadEnum(i, rows);
                 enum_list[enum_name] = enum_info;
                 i = new_line;
             }
@@ -700,7 +716,7 @@ function activate(context) {
             // 函数
             let option = rows_cl[i].match(/---\[\[.*\]\]/g);
             if (option !== null && option.length > 0) {
-                let [fun_info, new_line] = ReadFunction(i, rows_cl);
+                let [fun_info, new_line] = util.ReadFunction(i, rows_cl);
                 if (class_list_cl[fun_info.class] === undefined) {
                     class_list_cl[fun_info.class] = [];
                 }
@@ -713,7 +729,7 @@ function activate(context) {
                 if (enum_list_cl[enum_name] === undefined) {
                     enum_list_cl[enum_name] = [];
                 }
-                let [enum_info, new_line] = ReadEnum(i, rows_cl);
+                let [enum_info, new_line] = util.ReadEnum(i, rows_cl);
                 enum_list_cl[enum_name] = enum_info;
                 i = new_line;
             }
@@ -762,12 +778,13 @@ function activate(context) {
                 fun_md += fun_info.function + '(';
                 let count = 0;
                 for (let params_name in fun_info.params) {
+                    let params_name_note = fun_info.params[params_name].params_name || params_name;
                     if (count === 0) {
                         count++;
-                        fun_md += params_name;
+                        fun_md += params_name_note;
                     }
                     else {
-                        fun_md += ', ' + params_name;
+                        fun_md += ', ' + params_name_note;
                     }
                 }
                 fun_md += ')\n';
@@ -782,9 +799,15 @@ function activate(context) {
                 if (Object.keys(fun_info.params).length > 0) {
                     fun_md += '# Parameters\nType|Name|Description\n--|--|--\n';
                     for (let params_name in fun_info.params) {
-                        const params_type = fun_info.params[params_name];
-                        fun_md += params_type + '|' + params_name + '|No Description Set\n';
+                        const params_info = fun_info.params[params_name];
+                        let params_name_note = params_info.params_name || params_name;
+                        fun_md += params_info.type + '|' + params_name_note + '|' + params_info.description + '\n';
                     }
+                }
+                // 是否有Example
+                if (fun_info.example !== undefined) {
+                    fun_md += '\n# Example\n```lua\n';
+                    fun_md += fun_info.example + '\n```';
                 }
                 fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
                 // _sidebar_root += '\t* [' + fun_info.function + '](' + class_name + '/' + fun_info.function + ')\n';
@@ -823,64 +846,113 @@ function activate(context) {
         fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/_sidebar.md', _sidebar);
         fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/_sidebar.md', _sidebar_root);
         console.log('finish');
-        function ReadFunction(line, rows) {
-            let fun_info = {};
-            let param_list = {};
-            let end_line = 0;
-            for (let index = line; index < rows.length; index++) {
-                const text = rows[index];
-                let option = rows[index].match(/---\[\[.*\]\]/g);
-                if (option !== null && option.length > 0) {
-                    fun_info.description = text.substr(6, text.length - 9);
-                }
-                else if (text.search('-- @return') !== -1) {
-                    fun_info.return = text.substr(11, text.length);
-                }
-                else if (text.search('-- @param') !== -1) {
-                    let arr = text.split(' ');
-                    param_list[arr[2]] = arr[3];
-                }
-                else if (text.search('function') !== -1) {
-                    fun_info.function = text.split('(')[0].split('function ')[1];
-                    fun_info.description = fun_info.description.split(fun_info.function + '  ')[1];
-                    if (fun_info.function.search(':') === -1) {
-                        fun_info.class = 'Globals';
-                    }
-                    else {
-                        fun_info.class = fun_info.function.split(':')[0];
-                        fun_info.function = fun_info.function.split(':')[1];
-                    }
-                    end_line = index;
-                    break;
-                }
-            }
-            fun_info.params = param_list;
-            fun_info.server = true;
-            fun_info.client = false;
-            return [fun_info, end_line];
+    }));
+    // 注释API
+    let NoteAPI = vscode.commands.registerCommand('extension.NoteAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
+        var _a;
+        let root_path = GetRootPath();
+        if (root_path === undefined) {
+            return;
         }
-        function ReadEnum(line, rows) {
-            let enum_list = [];
-            let end_line = 0;
-            for (let index = line + 1; index < rows.length; index++) {
-                let enum_info = {};
-                const text = rows[index];
-                if (text === '') {
-                    end_line = index;
-                    break;
-                }
-                const info = text.split(' = ');
-                enum_info.name = info[0];
-                if (info[1].search('--') !== -1) {
-                    enum_info.value = info[1].split(' -- ')[0];
-                    enum_info.function = info[1].split(' -- ')[1];
-                }
-                else {
-                    enum_info.value = info[1];
-                }
-                enum_list.push(enum_info);
+        let active_text_editor = vscode.window.activeTextEditor;
+        if (active_text_editor !== undefined) {
+            let range_start = active_text_editor.selection.start;
+            let range_end = active_text_editor.selection.end;
+            const select_text = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.getText(new vscode.Range(range_start, range_end));
+            if (select_text === undefined) {
+                return;
             }
-            return [enum_list, end_line];
+            // 读取服务器API
+            const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
+            const rows = dota_script_help2.split(os.EOL);
+            let class_list = {};
+            let enum_list = {};
+            for (let i = 0; i < rows.length; i++) {
+                // 函数
+                let option = rows[i].match(/---\[\[.*\]\]/g);
+                if (option !== null && option.length > 0) {
+                    let [fun_info, new_line] = util.ReadFunction(i, rows);
+                    if (class_list[fun_info.class] === undefined) {
+                        class_list[fun_info.class] = [];
+                    }
+                    class_list[fun_info.class].push(fun_info);
+                    i = new_line;
+                }
+                // 常数
+                if (rows[i].search('--- Enum ') !== -1) {
+                    let enum_name = rows[i].substr(9, rows[i].length);
+                    if (enum_list[enum_name] === undefined) {
+                        enum_list[enum_name] = [];
+                    }
+                    let [enum_info, new_line] = util.ReadEnum(i, rows);
+                    enum_list[enum_name] = enum_info;
+                    i = new_line;
+                }
+            }
+            // 遍历函数名
+            for (const class_name in class_list) {
+                const fun_list = class_list[class_name];
+                for (let i = 0; i < fun_list.length; i++) {
+                    const fun_info = fun_list[i];
+                    if (fun_info.function === select_text) {
+                        let params = {};
+                        let note = {
+                            description: '',
+                            // params: Object.assign(fun_info.params),
+                            params: params,
+                            example: ''
+                        };
+                        let input_box = vscode.window.createInputBox();
+                        input_box.step = 1;
+                        input_box.ignoreFocusOut = true;
+                        input_box.totalSteps = 2 + Object.keys(fun_info.params).length;
+                        input_box.title = "添加注释";
+                        input_box.show();
+                        input_box.onDidAccept(function () {
+                            let text = input_box.value;
+                            if (input_box.step && input_box.totalSteps) {
+                                if (input_box.step === 1) {
+                                    note.description = text;
+                                }
+                                else if (input_box.step < input_box.totalSteps) {
+                                    let count = 2;
+                                    for (const params_name in fun_info.params) {
+                                        if (input_box.step === count) {
+                                            params[params_name] = {
+                                                params_name: params_name,
+                                                description: text
+                                            };
+                                            // note.params[params_name] = text;
+                                            // input_box.title = params_name;
+                                            break;
+                                        }
+                                        count += 1;
+                                    }
+                                }
+                                else {
+                                    // input_box.title = '示例';
+                                    if (text !== '') {
+                                        note.example = text;
+                                    }
+                                }
+                                input_box.value = '';
+                                if (input_box.step < input_box.totalSteps) {
+                                    input_box.step += 1;
+                                }
+                                else {
+                                    input_box.hide();
+                                    let output_obj = {};
+                                    output_obj[select_text] = note;
+                                    let read_obj = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
+                                    read_obj[select_text] = note;
+                                    fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', JSON.stringify(read_obj));
+                                }
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
         }
     }));
     // 注册指令
@@ -890,6 +962,7 @@ function activate(context) {
     context.subscriptions.push(OpenKV);
     context.subscriptions.push(OpenAPI);
     context.subscriptions.push(GenerateAPI);
+    context.subscriptions.push(NoteAPI);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

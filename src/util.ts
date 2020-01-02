@@ -108,3 +108,61 @@ export function GetParenthesesStr(text: string): string {
     }
 	return result;
 }
+export function ReadFunction(line: number, rows: any):any {
+	let fun_info: {[k: string]: any} = {};
+	let param_list: {[k: string]: any} = {};
+	let end_line: number = 0;
+	for (let index = line; index < rows.length; index++) {
+		const text = rows[index];
+		let option = rows[index].match(/---\[\[.*\]\]/g);
+		if (option !== null && option.length > 0) {
+			fun_info.description = text.substr(6, text.length - 9);
+		} else if (text.search('-- @return') !== -1) {
+			fun_info.return = text.substr(11, text.length);
+		} else if (text.search('-- @param') !== -1) {
+			let arr = text.split(' ');
+			param_list[arr[2]] = {
+				type: arr[3],
+				params_name: arr[2],
+				description: 'No Description Set'
+			};
+		} else if (text.search('function') !== -1) {
+			fun_info.function = text.split('(')[0].split('function ')[1];
+			fun_info.description = fun_info.description.split(fun_info.function + '  ')[1];
+			if (fun_info.function.search(':') === -1) {
+				fun_info.class = 'Globals';
+			} else {
+				fun_info.class = fun_info.function.split(':')[0];
+				fun_info.function = fun_info.function.split(':')[1];
+			}
+			end_line = index;
+			break;
+		}
+	}
+	fun_info.params = param_list;
+	fun_info.server = true;
+	fun_info.client = false;
+	return [fun_info,end_line];
+}
+export function ReadEnum(line: number, rows: any):any {
+	let enum_list: any[] = [];
+	let end_line: number = 0;
+	for (let index = line + 1; index < rows.length; index++) {
+		let enum_info: {[k: string]: any} = {};
+		const text = rows[index];
+		if (text === '') {
+			end_line = index;
+			break;
+		}
+		const info = text.split(' = ');
+		enum_info.name = info[0];
+		if (info[1].search('--') !== -1) {
+			enum_info.value = info[1].split(' -- ')[0];
+			enum_info.function = info[1].split(' -- ')[1];
+		} else {
+			enum_info.value = info[1];
+		}
+		enum_list.push(enum_info);
+	}
+	return [enum_list, end_line];
+}
