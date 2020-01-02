@@ -162,6 +162,7 @@ export function ReadEnum(line: number, rows: any):any {
 		} else {
 			enum_info.value = info[1];
 		}
+		enum_info.description = 'No Description Set';
 		enum_list.push(enum_info);
 	}
 	return [enum_list, end_line];
