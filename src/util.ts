@@ -167,3 +167,66 @@ export function ReadEnum(line: number, rows: any):any {
 	}
 	return [enum_list, end_line];
 }
+export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContext):string {
+	let content = `
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Dota2 API</title>
+			<link rel="stylesheet" href="`+ vscode.Uri.file(path.join(context.extensionPath,'lib','Skeleton-2.0.4','css','skeleton.css')).with({ scheme: 'vscode-resource' }).toString() + `">
+		</head>
+		<body>
+			<h4>` + fun_info.function + `</h4>
+			<h5>Function Description</h5>
+			<textarea rows="10" class="u-full-width" >` + fun_info.description + `</textarea>
+			<h5>Parameters</h5>
+			<table>
+				<thead>
+					<tr>
+					<th align="left">Type</td>
+					<th align="left">Name</td>
+					<th align="left">Description</td>
+					</tr>
+				</thead>
+				<tbody>
+					`+ AddParams(fun_info.params) +`
+				</tbody>
+			</table>
+			<button class="button-primary">确认</button>
+		</body>
+		<style>
+			/* 浅色主题 */
+			.body.vscode-light {
+				background: white;
+				color: black;
+			}
+			/* 深色主题 */
+			body.vscode-dark {
+				background: #252526;
+				color: white;
+			}
+			/* 高对比度主题 */
+			body.vscode-high-contrast {
+				background: white;
+				color: red;
+			}
+		</style>
+		</html>
+	`;
+	return content;
+	function AddParams(params:any):string {
+		let s = '';
+		for (const params_name in params) {
+			let params_info = params[params_name];
+			s += 
+			'<tr>\n' +
+			'<td>' + params_name + '</td>\n' + 
+			'<td><input type="text" value="' + params_info.params_name + '" /></td>\n' +
+			'<td><input type="text" value="' + params_info.description + '" /></td>\n' +
+			'</tr>\n';
+		}
+		return s;
+	}
+}
