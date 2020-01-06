@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-IMBA插件",
 	"description": "dota2 IMBA项目辅助工具",
-	"version": "0.0.18",
+	"version": "0.0.19",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
