@@ -673,7 +673,9 @@ export function activate(context: vscode.ExtensionContext) {
 				for (let j = 0; j < enum_info.length; j++) {
 					const enum_arr = enum_info[j];
 					if (api_note[enum_arr.name] !== undefined) {
+						enum_arr.description_lite = api_note[enum_arr.name].description_lite;
 						enum_arr.description = api_note[enum_arr.name].description;
+						enum_arr.example = api_note[enum_arr.name].example;
 					}
 				}
 				enum_list[enum_name] = enum_info;
@@ -737,7 +739,7 @@ export function activate(context: vscode.ExtensionContext) {
 			_sidebar_root += '* [**' + class_name + '**](' + class_name + '/_sidebar)\n';
 			_sidebar = '* [**' + class_name + '**](/)\n';
 			// 添加每个类的描述
-			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + class_name + '.md', '# ' + class_name);
+			// fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + class_name + '.md', '# ' + class_name);
 			// fs.mkdirSync(context.extensionPath + '/resource/' + class_name);
 			const fun_list = class_list[class_name];
 			for (let i = 0; i < fun_list.length; i++) {
@@ -793,8 +795,10 @@ export function activate(context: vscode.ExtensionContext) {
 		for (const enum_name in enum_list) {
 			const enum_arr = enum_list[enum_name];
 			// 添加每个类的描述
-			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/Constants.md', '# ' + enum_name);
-			_sidebar +=  '\t* [' + enum_name + '](Constants/' + enum_name + ')\n';
+			// fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/Constants.md', '# ' + enum_name);
+			// fs.mkdirSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name);
+			_sidebar +=  '\t* [' + enum_name + '](Constants/' + enum_name + '/' + enum_name + ')\n';
+			let enum_sidebar = '* [**' + enum_name + '**](/Constants/_sidebar)\n';
 			let enum_md = '# ' + enum_name + '\n';
 			enum_md += '?> No Description Set\n\n';
 			enum_md += 'Name|Value|' + (enum_name === 'modifierfunction' ? 'Lua Function|Description':'Description') + '|Client\n--|:--:|--' + (enum_name === 'modifierfunction' ? '|--':'') + '|:--:\n';
@@ -811,13 +815,34 @@ export function activate(context: vscode.ExtensionContext) {
 						}
 					}
 				}
-				enum_md += enum_info.name + '|' + enum_info.value + '|' + (enum_name === 'modifierfunction' ? enum_info.function + '|' + enum_info.description + '|':'' + enum_info.description + '|') + client + '\n';
+				enum_md += '['+enum_info.name+'](Constants/' + enum_name + '/' + enum_info.name + ')' + '|' + enum_info.value + '|' + (enum_name === 'modifierfunction' ? enum_info.function + '|' + enum_info.description_lite + '|':'' + enum_info.description_lite + '|') + client + '\n';
+				enum_sidebar += '\t* ['+enum_info.name+'](Constants/'+enum_name+'/'+enum_info.name+')\n';
+				// 生成常数详细页面
+				if (enum_info.description === undefined) {
+					enum_info.description = enum_info.description_lite;
+				}
+				if (enum_info.example === undefined) {
+					enum_info.example = 'No Example Set';
+				}
+				let enum_detail_md = 
+				'# ' + enum_info.name + '\n' + 
+				'# Description\n' +
+				enum_info.description + '\n' + 
+				'# Example\n```' +
+				enum_info.example + 
+				'```';
+				fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
+				
 			}
-			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '.md', enum_md);
+			// 生成常数详细页面侧边栏
+			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/_sidebar.md', enum_sidebar);
+			// 生成常数列表页面
+			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
 		}
+		// 生成常数侧边栏
 		fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/_sidebar.md', _sidebar);
-
-		fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/_sidebar.md',_sidebar_root);
+		// 生成侧边栏
+		fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/_sidebar.md', _sidebar_root);
 		console.log('finish');
 	});
 

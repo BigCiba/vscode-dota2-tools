@@ -9,28 +9,28 @@ const callbacks = {};
  * @param cb 可选的回调函数
  */
 function callVscode(data, cb) {
-    if (typeof data === 'string') {
-        data = { cmd: data };
-    }
-    if (cb) {
-        // 时间戳加上5位随机数
-        const cbid = Date.now() + '' + Math.round(Math.random() * 100000);
-        callbacks[cbid] = cb;
-        data.cbid = cbid;
-    }
-    vscode.postMessage(data);
+	if (typeof data === 'string') {
+		data = { cmd: data };
+	}
+	if (cb) {
+		// 时间戳加上5位随机数
+		const cbid = Date.now() + '' + Math.round(Math.random() * 100000);
+		callbacks[cbid] = cb;
+		data.cbid = cbid;
+	}
+	vscode.postMessage(data);
 }
 
 window.addEventListener('message', event => {
-    const message = event.data;
-    switch (message.cmd) {
-        case 'vscodeCallback':
-            console.log(message.data);
-            (callbacks[message.cbid] || function () { })(message.data);
-            delete callbacks[message.cbid];
-            break;
-        default: break;
-    }
+	const message = event.data;
+	switch (message.cmd) {
+		case 'vscodeCallback':
+			console.log(message.data);
+			(callbacks[message.cbid] || function () { })(message.data);
+			delete callbacks[message.cbid];
+			break;
+		default: break;
+	}
 });
 function Confirm() {
 	var description = document.getElementById("description");
@@ -51,9 +51,13 @@ function Confirm() {
 	vscode.postMessage(obj);
 }
 function ConfirmConstant() {
+	var description_lite = document.getElementById("description_lite");
 	var description = document.getElementById("description");
+	var example = document.getElementById("example");
 	var obj = {
+		description_lite: description_lite.value,
 		description: description.value,
+		example: example.value
 	}
 	vscode.postMessage(obj);
 }

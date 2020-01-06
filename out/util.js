@@ -179,7 +179,9 @@ function ReadEnum(line, rows) {
         else {
             enum_info.value = info[1];
         }
+        enum_info.description_lite = 'No Description Set';
         enum_info.description = 'No Description Set';
+        enum_info.example = 'No Example Set';
         enum_list.push(enum_info);
     }
     return [enum_list, end_line];
@@ -255,9 +257,12 @@ function GetConstantNoteContent(constant, context) {
 		</head>
 		<body>
 			<h4>` + constant + `</h4>
-			<h5>Function Description</h5>
+			<h5>Description Lite</h5>
+			<textarea id="description_lite" class="u-full-width" ></textarea>
+			<h5>Description</h5>
 			<textarea id="description" class="u-full-width" ></textarea>
 			<h5>Example</h5>
+			<textarea id="example" class="u-full-width" style="height:300px;"></textarea>
 			<button class="button-primary" onclick="ConfirmConstant()">确认</button>
 			<script src="` + vscode.Uri.file(path.join(context.extensionPath, 'resource', 'view', 'dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
 			<script src="../../src/view/test-webview.js"></script>
