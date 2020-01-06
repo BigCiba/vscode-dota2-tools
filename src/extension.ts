@@ -863,6 +863,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			// 读取服务器API
 			const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
+			const api_note = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
 			const rows = dota_script_help2.split(os.EOL);
 			let class_list: {[k: string]: any} = {};
 			let enum_list: {[k: string]: any} = {};
@@ -871,6 +872,15 @@ export function activate(context: vscode.ExtensionContext) {
 				let option = rows[i].match(/---\[\[.*\]\]/g);
 				if (option !== null && option.length > 0) {
 					let [fun_info, new_line] = util.ReadFunction(i, rows);
+					if (api_note[fun_info.function] !== undefined) {
+						fun_info.description = api_note[fun_info.function].description;
+						for (const params_name in fun_info.params) {
+							const params_info = fun_info.params[params_name];
+							params_info.params_name = api_note[fun_info.function].params[params_name].params_name;
+							params_info.description = api_note[fun_info.function].params[params_name].description;
+						}
+						fun_info.example = api_note[fun_info.function].example;
+					}
 					if (class_list[fun_info.class] === undefined) {
 						class_list[fun_info.class] = [];
 					}
@@ -884,6 +894,14 @@ export function activate(context: vscode.ExtensionContext) {
 						enum_list[enum_name] = [];
 					}
 					let [enum_info, new_line] = util.ReadEnum(i, rows);
+					for (let j = 0; j < enum_info.length; j++) {
+						const enum_arr = enum_info[j];
+						if (api_note[enum_arr.name] !== undefined) {
+							enum_arr.description_lite = api_note[enum_arr.name].description_lite;
+							enum_arr.description = api_note[enum_arr.name].description;
+							enum_arr.example = api_note[enum_arr.name].example;
+						}
+					}
 					enum_list[enum_name] = enum_info;
 					i = new_line;
 				}
@@ -942,7 +960,7 @@ export function activate(context: vscode.ExtensionContext) {
 								retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
 							}
 						);
-						panel.webview.html = util.GetConstantNoteContent(select_text, context);
+						panel.webview.html = util.GetConstantNoteContent(enum_info, context);
 						panel.webview.onDidReceiveMessage(message => {
 							let output_obj : {[k: string]: any} = {};
 							output_obj[select_text] = message;

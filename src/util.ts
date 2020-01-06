@@ -185,7 +185,7 @@ export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContex
 			<textarea id="description" class="u-full-width" >` + fun_info.description + `</textarea>` + 
 			AddParams() + `
 			<h5>Example</h5>
-			<textarea id="example" class="u-full-width" style="height:300px;"></textarea>
+			<textarea id="example" class="u-full-width" style="height:300px;">` + fun_info.example + `</textarea>
 			<button class="button-primary" onclick="Confirm()">确认</button>
 			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
 			<script src="../../src/view/test-webview.js"></script>
@@ -227,7 +227,7 @@ export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContex
 		return s;
 	}
 }
-export function GetConstantNoteContent(constant: string, context: vscode.ExtensionContext) {
+export function GetConstantNoteContent(enum_info: any, context: vscode.ExtensionContext) {
 	let content = `
 		<!DOCTYPE html>
 		<html lang="en">
@@ -238,13 +238,13 @@ export function GetConstantNoteContent(constant: string, context: vscode.Extensi
 			<link rel="stylesheet" href="`+ vscode.Uri.file(path.join(context.extensionPath,'lib','Skeleton-2.0.4','css','skeleton.css')).with({ scheme: 'vscode-resource' }).toString() + `">
 		</head>
 		<body>
-			<h4>` + constant + `</h4>
+			<h4>` + enum_info.name + `</h4>
 			<h5>Description Lite</h5>
-			<textarea id="description_lite" class="u-full-width" ></textarea>
+			<textarea id="description_lite" class="u-full-width" >` + enum_info.description_lite + `</textarea>
 			<h5>Description</h5>
-			<textarea id="description" class="u-full-width" ></textarea>
+			<textarea id="description" class="u-full-width" >` + (enum_info.description || '') + `</textarea>
 			<h5>Example</h5>
-			<textarea id="example" class="u-full-width" style="height:300px;"></textarea>
+			<textarea id="example" class="u-full-width" style="height:300px;">` + (enum_info.example || '') + `</textarea>
 			<button class="button-primary" onclick="ConfirmConstant()">确认</button>
 			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
 			<script src="../../src/view/test-webview.js"></script>
