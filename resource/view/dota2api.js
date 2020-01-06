@@ -56,8 +56,8 @@ function ConfirmConstant() {
 	var example = document.getElementById("example");
 	var obj = {
 		description_lite: description_lite.value,
-		description: description.value,
-		example: example.value
+		description: description.value || undefined,
+		example: example.value || undefined
 	}
 	vscode.postMessage(obj);
 }
