@@ -225,3 +225,26 @@ export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContex
 		return s;
 	}
 }
+export function GetConstantNoteContent(constant: string, context: vscode.ExtensionContext) {
+	let content = `
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Dota2 API</title>
+			<link rel="stylesheet" href="`+ vscode.Uri.file(path.join(context.extensionPath,'lib','Skeleton-2.0.4','css','skeleton.css')).with({ scheme: 'vscode-resource' }).toString() + `">
+		</head>
+		<body>
+			<h4>` + constant + `</h4>
+			<h5>Function Description</h5>
+			<textarea id="description" class="u-full-width" ></textarea>
+			<h5>Example</h5>
+			<button class="button-primary" onclick="ConfirmConstant()">确认</button>
+			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
+			<script src="../../src/view/test-webview.js"></script>
+		</body>
+		</html>
+	`;
+	return content;
+}

@@ -50,3 +50,10 @@ function Confirm() {
 	}
 	vscode.postMessage(obj);
 }
+function ConfirmConstant() {
+	var description = document.getElementById("description");
+	var obj = {
+		description: description.value,
+	}
+	vscode.postMessage(obj);
+}

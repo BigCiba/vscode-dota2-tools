@@ -788,7 +788,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}
 		// 遍历常数
-		_sidebar_root += '* [**Constants**](Constants/Constants)\n';
+		_sidebar_root += '* [**Constants**](Constants/_sidebar.md)\n';
 		_sidebar = '* [**Constants**](/)\n';
 		for (const enum_name in enum_list) {
 			const enum_arr = enum_list[enum_name];
@@ -907,20 +907,25 @@ export function activate(context: vscode.ExtensionContext) {
 						let note = {
 							description: ''
 						};
-						let input_box = vscode.window.createInputBox();
-						input_box.ignoreFocusOut = true;
-						input_box.title = "添加注释";
-						input_box.show();
-						input_box.onDidAccept(function(){
-							let text = input_box.value;
-							note.description = text;
-							input_box.hide();
+						// 创建webview
+						const panel = vscode.window.createWebviewPanel(
+							'dota2api', // viewType
+							"Dota2 API", // 视图标题
+							vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+							{
+								enableScripts: true, // 启用JS，默认禁用
+								retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+							}
+						);
+						panel.webview.html = util.GetConstantNoteContent(select_text, context);
+						panel.webview.onDidReceiveMessage(message => {
 							let output_obj : {[k: string]: any} = {};
-							output_obj[select_text] = note;
+							output_obj[select_text] = message;
 							let read_obj =  JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
-							read_obj[select_text] = note;
+							read_obj[select_text] = message;
 							fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', JSON.stringify(read_obj));
-						});
+							panel.dispose();
+						}, undefined, context.subscriptions);
 					}
 				}
 			}
