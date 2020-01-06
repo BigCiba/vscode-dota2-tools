@@ -180,43 +180,38 @@ export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContex
 		<body>
 			<h4>` + fun_info.function + `</h4>
 			<h5>Function Description</h5>
-			<textarea rows="10" class="u-full-width" >` + fun_info.description + `</textarea>
-			<h5>Parameters</h5>
-			<table>
-				<thead>
-					<tr>
-					<th align="left">Type</td>
-					<th align="left">Name</td>
-					<th align="left">Description</td>
-					</tr>
-				</thead>
-				<tbody>
-					`+ AddParams(fun_info.params) +`
-				</tbody>
-			</table>
-			<button class="button-primary">确认</button>
+			<textarea id="description" class="u-full-width" >` + fun_info.description + `</textarea>` + 
+			AddParams() + `
+			<h5>Example</h5>
+			<textarea id="example" class="u-full-width" style="height:300px;"></textarea>
+			<button class="button-primary" onclick="Confirm()">确认</button>
+			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
+			<script src="../../src/view/test-webview.js"></script>
 		</body>
-		<style>
-			/* 浅色主题 */
-			.body.vscode-light {
-				background: white;
-				color: black;
-			}
-			/* 深色主题 */
-			body.vscode-dark {
-				background: #252526;
-				color: white;
-			}
-			/* 高对比度主题 */
-			body.vscode-high-contrast {
-				background: white;
-				color: red;
-			}
-		</style>
 		</html>
 	`;
 	return content;
-	function AddParams(params:any):string {
+	function AddParams():string {
+		let s = '';
+		if (Object.keys(fun_info.params).length > 0) {
+			s = `<h5>Parameters</h5>
+				<table id="parameters">
+					<thead>
+						<tr>
+						<th align="left">Type</td>
+						<th align="left">Name</td>
+						<th align="left">Description</td>
+						</tr>
+					</thead>
+					<tbody>
+						`+ AddParameter(fun_info.params) +`
+					</tbody>
+				</table>`;
+		}
+		
+		return s;
+	}
+	function AddParameter(params:any):string {
 		let s = '';
 		for (const params_name in params) {
 			let params_info = params[params_name];

@@ -887,51 +887,15 @@ export function activate(context: vscode.ExtensionContext) {
 							}
 						);
 						panel.webview.html = util.GetNoteAPIContent(fun_info, context);
-					// 	let input_box = vscode.window.createInputBox();
-					// 	input_box.step = 1;
-					// 	input_box.ignoreFocusOut = true;
-					// 	input_box.totalSteps = 2 + Object.keys(fun_info.params).length;
-					// 	input_box.title = "添加注释";
-					// 	input_box.show();
-					// 	input_box.onDidAccept(function(){
-					// 		let text = input_box.value;
-					// 		if (input_box.step && input_box.totalSteps) {
-					// 			if (input_box.step === 1) {
-					// 				note.description = text;
-					// 			} else if (input_box.step < input_box.totalSteps) {
-					// 				let count = 2;
-					// 				for (const params_name in fun_info.params) {
-					// 					if (input_box.step === count) {
-					// 						params[params_name] = {
-					// 							params_name : params_name,
-					// 							description : text
-					// 						};
-					// 						// note.params[params_name] = text;
-					// 						// input_box.title = params_name;
-					// 						break;
-					// 					}
-					// 					count += 1;
-					// 				}
-					// 			} else {
-					// 				// input_box.title = '示例';
-					// 				if (text !== '') {
-					// 					note.example = text;
-					// 				}
-					// 			}
-					// 			input_box.value = '';
-					// 			if (input_box.step < input_box.totalSteps) {
-					// 				input_box.step += 1;
-					// 			} else {
-					// 				input_box.hide();
-					// 				let output_obj : {[k: string]: any} = {};
-					// 				output_obj[select_text] = note;
-					// 				let read_obj =  JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
-					// 				read_obj[select_text] = note;
-					// 				fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', JSON.stringify(read_obj));
-					// 			}
-					// 		}
-					// 	});
-					// 	break;
+						panel.webview.onDidReceiveMessage(message => {
+							console.log(message);
+							let output_obj : {[k: string]: any} = {};
+							output_obj[select_text] = message;
+							let read_obj =  JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
+							read_obj[select_text] = message;
+							fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', JSON.stringify(read_obj));
+							panel.dispose();
+						}, undefined, context.subscriptions);
 					}
 				}
 			}

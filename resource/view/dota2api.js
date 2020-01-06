@@ -32,40 +32,21 @@ window.addEventListener('message', event => {
         default: break;
     }
 });
-
-new Vue({
-    el: '#app',
-    data: {
-        projectName: '加载中',
-    },
-    mounted() {
-        callVscode('getProjectName', projectName => this.projectName = projectName);
-    },
-    watch: {
-    },
-    methods: {
-        // 模拟alert
-        alert(info) {
-            callVscode({ cmd: 'alert', info: info }, null);
-        },
-        // 弹出错误提示
-        error(info) {
-            callVscode({ cmd: 'error', info: info }, null);
-        },
-        openFileInFinder() {
-            callVscode({cmd: 'openFileInFinder', path: `package.json`}, () => {
-                this.alert('打开成功！');
-            });
-        },
-        openFileInVscode() {
-            callVscode({cmd: 'openFileInVscode', path: `package.json`}, () => {
-                this.alert('打开package.json成功！');
-            });
-        },
-        openUrlInBrowser() {
-            callVscode({cmd: 'openUrlInBrowser', url: `https://artist.alibaba.com/`}, () => {
-                this.alert('打开前端艺术家主页成功！');
-            });
-        }
-    }
-});
+function Confirm() {
+	var description = document.getElementById("description");
+	var example = document.getElementById("example");
+	var parameters = document.getElementById("parameters");
+	var params = {};
+	for (let row = 1; row < parameters.rows.length; row++) {
+		params[parameters.rows[row].cells[0].innerText] = {
+			params_name: parameters.rows[row].cells[1].children[0].value,
+			description: parameters.rows[row].cells[2].children[0].value
+		}
+	}
+	var obj = {
+		description: description.value,
+		example: example.value,
+		params: params
+	}
+	vscode.postMessage(obj);
+}
