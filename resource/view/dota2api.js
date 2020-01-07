@@ -37,16 +37,20 @@ function Confirm() {
 	var example = document.getElementById("example");
 	var parameters = document.getElementById("parameters");
 	var params = {};
-	for (let row = 1; row < parameters.rows.length; row++) {
-		params[parameters.rows[row].cells[0].innerText] = {
-			params_name: parameters.rows[row].cells[1].children[0].value,
-			description: parameters.rows[row].cells[2].children[0].value
+	if (parameters != undefined) {
+		for (let row = 1; row < parameters.rows.length; row++) {
+			params[parameters.rows[row].cells[0].innerText] = {
+				params_name: parameters.rows[row].cells[1].children[0].value,
+				description: parameters.rows[row].cells[2].children[0].value
+			}
 		}
 	}
 	var obj = {
 		description: description.value,
 		example: example.value,
-		params: params
+	}
+	if (parameters != undefined) {
+		obj.params = params
 	}
 	vscode.postMessage(obj);
 }
@@ -60,4 +64,16 @@ function ConfirmConstant() {
 		example: example.value || undefined
 	}
 	vscode.postMessage(obj);
+}
+function tab(obj){
+	if (event.keyCode == 9) {
+		event.preventDefault();
+		var indent = '\t';
+		var start = obj.selectionStart;
+		var end = obj.selectionEnd;
+		var selected = window.getSelection().toString();
+		selected = indent + selected.replace(/\n/g, '\n' + indent);
+		obj.value = obj.value.substring(0, start) + selected + obj.value.substring(end);
+		obj.setSelectionRange(start + indent.length, start + selected.length);
+	}
 }

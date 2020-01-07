@@ -200,10 +200,10 @@ function GetNoteAPIContent(fun_info, context) {
 		<body>
 			<h4>` + fun_info.function + `</h4>
 			<h5>Function Description</h5>
-			<textarea id="description" class="u-full-width" >` + fun_info.description + `</textarea>` +
+			<textarea id="description" class="u-full-width" onkeydown="tab(this)">` + fun_info.description + `</textarea>` +
         AddParams() + `
 			<h5>Example</h5>
-			<textarea id="example" class="u-full-width" style="height:300px;">` + fun_info.example + `</textarea>
+			<textarea id="example" class="u-full-width" style="height:300px;" onkeydown="tab(this)">` + fun_info.example + `</textarea>
 			<button class="button-primary" onclick="Confirm()">确认</button>
 			<script src="` + vscode.Uri.file(path.join(context.extensionPath, 'resource', 'view', 'dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
 			<script src="../../src/view/test-webview.js"></script>
@@ -258,11 +258,11 @@ function GetConstantNoteContent(enum_info, context) {
 		<body>
 			<h4>` + enum_info.name + `</h4>
 			<h5>Description Lite</h5>
-			<textarea id="description_lite" class="u-full-width" >` + enum_info.description_lite + `</textarea>
+			<textarea id="description_lite" class="u-full-width" onkeydown="tab(this)">` + enum_info.description_lite + `</textarea>
 			<h5>Description</h5>
 			<textarea id="description" class="u-full-width" >` + (enum_info.description || '') + `</textarea>
 			<h5>Example</h5>
-			<textarea id="example" class="u-full-width" style="height:300px;">` + (enum_info.example || '') + `</textarea>
+			<textarea id="example" class="u-full-width" style="height:300px;" onkeydown="tab(this)">` + (enum_info.example || '') + `</textarea>
 			<button class="button-primary" onclick="ConfirmConstant()">确认</button>
 			<script src="` + vscode.Uri.file(path.join(context.extensionPath, 'resource', 'view', 'dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
 			<script src="../../src/view/test-webview.js"></script>
