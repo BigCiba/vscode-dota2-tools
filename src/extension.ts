@@ -974,6 +974,75 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}
 	});
+
+	// 生成API文档
+	let GenerateDocument = vscode.commands.registerCommand('extension.GenerateDocument', async (uri) => {
+		let root_path:string|undefined = GetRootPath();
+		if (root_path === undefined) {
+			return;
+		}
+		const dota_script_help2: string = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
+		const dota_cl_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_cl_script_help2.lua', 'utf-8');
+		let [class_list, enum_list] = util.ReadAPI(dota_script_help2, dota_cl_script_help2);
+
+		let config = 
+		`module.exports = {\n` +
+		`\ttitle: 'Dota2 API',\n` +
+		`\tdescription: 'Dota2 API文档',\n` +
+		`\tthemeConfig: {\n` +
+		`\t\tsidebarDepth: 1,\n` +
+		`\t\tsidebar: [\n`;
+		for (const class_name in class_list) {
+			// 添加每个类的描述
+			const fun_list = class_list[class_name];
+			config += `\t\t\t['/`+class_name+`/','`+class_name+`'],\n`;
+			let readme = '# ' + class_name + '\n' +
+			'Function|Description|Client\n' + 
+			'--|--|:--:\n';
+			for (let i = 0; i < fun_list.length; i++) {
+				const fun_info = fun_list[i];
+				let fun_md: string = '# ' + fun_info.function + '\n';
+				fun_md += '```\n';
+				let signature = fun_info.return + ' ' + fun_info.function + '(';
+				let count = 0;
+				for (let params_name in fun_info.params) {
+					let params_name_note = fun_info.params[params_name].params_name || params_name;
+					if (count === 0) {
+						count ++;
+						signature += params_name_note;
+					} else {
+						signature += ', ' + params_name_note;
+					}
+				}
+				signature += ')';
+				readme += '['+signature + ']('+fun_info.function+')|'+fun_info.description+'|'+(fun_info.client === true ? '✔':'✖')+'\n';
+				fun_md += signature + '\n';
+				fun_md += '```\n';
+				fun_md += '# Class\n';
+				fun_md += '✔ `Server: ' + fun_info.class + '`  \n';
+				fun_md += (fun_info.client === true ? '✔':'✖') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
+				fun_md += '# Function Description\n' + fun_info.description + '\n';
+				if (Object.keys(fun_info.params).length > 0) {
+					fun_md += '# Parameters\nType|Name|Description\n--|--|--\n';
+					for (let params_name in fun_info.params) {
+						const params_info = fun_info.params[params_name];
+						let params_name_note = params_info.params_name || params_name;
+						fun_md += params_info.type + '|' + params_name_note + '|' + params_info.description +'\n';
+					}
+				}
+				// 是否有Example
+				if (fun_info.example !== undefined) {
+					fun_md += '\n# Example\n```lua\n';
+					fun_md += fun_info.example + '\n```';
+				}
+				fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
+			}
+			fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/README.md', readme);
+		}
+		config += '\t\t]\n\t}\n}';
+		
+		fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
+	});
 	// 注册指令
 	context.subscriptions.push(Localization);
 	context.subscriptions.push(AddHero);
@@ -982,6 +1051,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(OpenAPI);
 	context.subscriptions.push(GenerateAPI);
 	context.subscriptions.push(NoteAPI);
+	context.subscriptions.push(GenerateDocument);
 }
 
 // this method is called when your extension is deactivated

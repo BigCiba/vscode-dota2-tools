@@ -51,6 +51,10 @@
 			{
 				"command": "extension.NoteAPI",
 				"title": "注释API"
+			},
+			{
+				"command": "extension.GenerateDocument",
+				"title": "生成API文档"
 			}
 		],
 		"menus": {

@@ -772,7 +772,7 @@ function activate(context) {
             _sidebar_root += '* [**' + class_name + '**](' + class_name + '/_sidebar)\n';
             _sidebar = '* [**' + class_name + '**](/)\n';
             // 添加每个类的描述
-            // fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + class_name + '.md', '# ' + class_name);
+            // fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + class_name + '.md', '# ' + class_name);
             // fs.mkdirSync(context.extensionPath + '/resource/' + class_name);
             const fun_list = class_list[class_name];
             for (let i = 0; i < fun_list.length; i++) {
@@ -817,10 +817,10 @@ function activate(context) {
                     fun_md += '\n# Example\n```lua\n';
                     fun_md += fun_info.example + '\n```';
                 }
-                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
+                fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
                 // _sidebar_root += '\t* [' + fun_info.function + '](' + class_name + '/' + fun_info.function + ')\n';
                 _sidebar += '\t* [' + fun_info.function + '](' + class_name + '/' + fun_info.function + ')\n';
-                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/_sidebar.md', _sidebar);
+                fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/' + class_name + '/_sidebar.md', _sidebar);
             }
         }
         // 遍历常数
@@ -829,8 +829,8 @@ function activate(context) {
         for (const enum_name in enum_list) {
             const enum_arr = enum_list[enum_name];
             // 添加每个类的描述
-            // fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/Constants/Constants.md', '# ' + enum_name);
-            // fs.mkdirSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name);
+            // fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/Constants.md', '# ' + enum_name);
+            // fs.mkdirSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name);
             _sidebar += '\t* [' + enum_name + '](Constants/' + enum_name + '/' + enum_name + ')\n';
             let enum_sidebar = '* [**' + enum_name + '**](/Constants/_sidebar)\n';
             let enum_md = '# ' + enum_name + '\n';
@@ -864,17 +864,17 @@ function activate(context) {
                     '# Example\n```' +
                     enum_info.example +
                     '```';
-                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
+                fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
             }
             // 生成常数详细页面侧边栏
-            fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/_sidebar.md', enum_sidebar);
+            fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/_sidebar.md', enum_sidebar);
             // 生成常数列表页面
-            fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
+            fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
         }
         // 生成常数侧边栏
-        fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/Constants/_sidebar.md', _sidebar);
+        fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/Constants/_sidebar.md', _sidebar);
         // 生成侧边栏
-        fs.writeFileSync('C:/Users/lsj58/Documents/docsify/Dota2-API-Docsify/docs/_sidebar.md', _sidebar_root);
+        fs.writeFileSync('C:/Users/bigciba/Documents/docsify/Dota2-API-Docsify/docs/_sidebar.md', _sidebar_root);
         console.log('finish');
     }));
     // 注释API
@@ -1001,6 +1001,72 @@ function activate(context) {
             }
         }
     }));
+    // 生成API文档
+    let GenerateDocument = vscode.commands.registerCommand('extension.GenerateDocument', (uri) => __awaiter(this, void 0, void 0, function* () {
+        let root_path = GetRootPath();
+        if (root_path === undefined) {
+            return;
+        }
+        const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
+        const dota_cl_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_cl_script_help2.lua', 'utf-8');
+        let [class_list, enum_list] = util.ReadAPI(dota_script_help2, dota_cl_script_help2);
+        let config = `module.exports = {\n` +
+            `\ttitle: 'Dota2 API',\n` +
+            `\tdescription: 'Dota2 API文档',\n` +
+            `\tthemeConfig: {\n` +
+            `\t\tsidebarDepth: 1,\n` +
+            `\t\tsidebar: [\n`;
+        for (const class_name in class_list) {
+            // 添加每个类的描述
+            const fun_list = class_list[class_name];
+            config += `\t\t\t['/` + class_name + `/','` + class_name + `'],\n`;
+            let readme = '# ' + class_name + '\n' +
+                'Function|Description|Client\n' +
+                '--|--|:--:\n';
+            for (let i = 0; i < fun_list.length; i++) {
+                const fun_info = fun_list[i];
+                let fun_md = '# ' + fun_info.function + '\n';
+                fun_md += '```\n';
+                let signature = fun_info.return + ' ' + fun_info.function + '(';
+                let count = 0;
+                for (let params_name in fun_info.params) {
+                    let params_name_note = fun_info.params[params_name].params_name || params_name;
+                    if (count === 0) {
+                        count++;
+                        signature += params_name_note;
+                    }
+                    else {
+                        signature += ', ' + params_name_note;
+                    }
+                }
+                signature += ')';
+                readme += '[' + signature + '](' + fun_info.function + ')|' + fun_info.description + '|' + (fun_info.client === true ? '✔' : '✖') + '\n';
+                fun_md += signature + '\n';
+                fun_md += '```\n';
+                fun_md += '# Class\n';
+                fun_md += '✔ `Server: ' + fun_info.class + '`  \n';
+                fun_md += (fun_info.client === true ? '✔' : '✖') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
+                fun_md += '# Function Description\n' + fun_info.description + '\n';
+                if (Object.keys(fun_info.params).length > 0) {
+                    fun_md += '# Parameters\nType|Name|Description\n--|--|--\n';
+                    for (let params_name in fun_info.params) {
+                        const params_info = fun_info.params[params_name];
+                        let params_name_note = params_info.params_name || params_name;
+                        fun_md += params_info.type + '|' + params_name_note + '|' + params_info.description + '\n';
+                    }
+                }
+                // 是否有Example
+                if (fun_info.example !== undefined) {
+                    fun_md += '\n# Example\n```lua\n';
+                    fun_md += fun_info.example + '\n```';
+                }
+                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
+            }
+            fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/README.md', readme);
+        }
+        config += '\t\t]\n\t}\n}';
+        fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
+    }));
     // 注册指令
     context.subscriptions.push(Localization);
     context.subscriptions.push(AddHero);
@@ -1009,6 +1075,7 @@ function activate(context) {
     context.subscriptions.push(OpenAPI);
     context.subscriptions.push(GenerateAPI);
     context.subscriptions.push(NoteAPI);
+    context.subscriptions.push(GenerateDocument);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated
