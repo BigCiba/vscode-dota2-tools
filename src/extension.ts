@@ -990,6 +990,8 @@ export function activate(context: vscode.ExtensionContext) {
 		`\ttitle: 'Dota2 API',\n` +
 		`\tdescription: 'Dota2 API文档',\n` +
 		`\tthemeConfig: {\n` +
+		`\t\tnextLinks: false,\n` +
+		`\t\prevLinks: false,\n` +
 		`\t\tsidebarDepth: 1,\n` +
 		`\t\tsidebar: [\n`;
 		for (const class_name in class_list) {
@@ -1035,13 +1037,47 @@ export function activate(context: vscode.ExtensionContext) {
 					fun_md += '\n# Example\n```lua\n';
 					fun_md += fun_info.example + '\n```';
 				}
-				fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
+				fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
 			}
-			fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/README.md', readme);
+			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/README.md', readme);
 		}
-		config += '\t\t]\n\t}\n}';
+		config += `\t\t\t{\n` +
+		`\t\t\t\ttitle: 'Constants',\n` + 
+		`\t\t\t\tcollapsable: true,\n` +
+		`\t\t\t\tchildren: [\n`;
+		for (const enum_name in enum_list) {
+			const enum_arr = enum_list[enum_name];
+			let enum_md = '# ' + enum_name + '\n';
+			enum_md += '?> No Description Set\n\n';
+			enum_md += 'Name|Value|' + (enum_name === 'modifierfunction' ? 'Lua Function|Description':'Description') + '|Client\n--|:--:|--' + (enum_name === 'modifierfunction' ? '|--':'') + '|:--:\n';
+			// 添加每个类的描述
+			config += `\t\t\t\t\t['/Constants/`+enum_name+`','`+enum_name+`'],\n`;
+			for (let i = 0; i < enum_arr.length; i++) {
+				const enum_info = enum_arr[i];
+
+				enum_md += '['+enum_info.name+'](Constants/' + enum_name + '/' + enum_info.name + ')' + '|' + enum_info.value + '|' + (enum_name === 'modifierfunction' ? enum_info.function + '|' + enum_info.description_lite + '|':'' + enum_info.description_lite + '|') + enum_info.client + '\n';
+				// 生成常数详细页面
+				if (enum_info.description === undefined) {
+					enum_info.description = enum_info.description_lite;
+				}
+				if (enum_info.example === undefined) {
+					enum_info.example = 'No Example Set';
+				}
+				let enum_detail_md = 
+				'# ' + enum_info.name + '\n' + 
+				'# Description\n' +
+				enum_info.description + '\n' + 
+				'# Example\n```' +
+				enum_info.example + 
+				'```';
+				fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
+			}
+			// 生成常数列表页面
+			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
+		}
+		config += '\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
 		
-		fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
+		fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
 	});
 	// 注册指令
 	context.subscriptions.push(Localization);

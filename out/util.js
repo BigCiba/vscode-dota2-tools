@@ -142,6 +142,9 @@ function ReadFunction(line, rows) {
         }
         else if (text.search('-- @return') !== -1) {
             fun_info.return = text.substr(11, text.length);
+            if (fun_info.return === '<unknown>') {
+                fun_info.return = 'unknown';
+            }
         }
         else if (text.search('-- @param') !== -1) {
             let arr = text.split(' ');
@@ -193,6 +196,7 @@ function ReadEnum(line, rows) {
         enum_info.description_lite = 'No Description Set';
         enum_info.description = 'No Description Set';
         enum_info.example = 'No Example Set';
+        enum_info.client = '✖';
         enum_list.push(enum_info);
     }
     return [enum_list, end_line];
@@ -374,6 +378,22 @@ function ReadAPI(api, api_cl) {
                         fun_info.client = true;
                         fun_info.class_cl = class_info_cl[j].class;
                         break;
+                    }
+                }
+            }
+        }
+    }
+    for (const enum_name in enum_list) {
+        const enum_arr = enum_list[enum_name];
+        for (let i = 0; i < enum_arr.length; i++) {
+            const enum_info = enum_arr[i];
+            // 判断客户端是否存在
+            let enum_arr_cl = enum_list_cl[enum_name];
+            if (enum_arr_cl !== undefined) {
+                for (let j = 0; j < enum_arr_cl.length; j++) {
+                    const enum_info_cl = enum_arr_cl[j];
+                    if (enum_info_cl.name === enum_info.name) {
+                        enum_arr.client = '✔';
                     }
                 }
             }
