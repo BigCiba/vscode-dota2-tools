@@ -380,3 +380,8 @@ export function ReadAPI(api: string, api_cl:string): any {
 	}
 	return [class_list,enum_list];
 }
+export function GetFileInfo(path: string): any {
+	const arr = path.split('\\');
+	let file = arr[arr.length - 1];
+	return [file.split('.')[0],file.split('.')[1]];
+}

@@ -402,4 +402,10 @@ function ReadAPI(api, api_cl) {
     return [class_list, enum_list];
 }
 exports.ReadAPI = ReadAPI;
+function GetFileInfo(path) {
+    const arr = path.split('\\');
+    let file = arr[arr.length - 1];
+    return [file.split('.')[0], file.split('.')[1]];
+}
+exports.GetFileInfo = GetFileInfo;
 //# sourceMappingURL=util.js.map

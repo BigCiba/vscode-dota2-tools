@@ -417,6 +417,68 @@ function activate(context) {
         });
     }
     WatchLocalization();
+    // 版本控制
+    function WatchVersion() {
+        // sGameVersion
+        let root_path = GetRootPath();
+        if (root_path === undefined) {
+            return;
+        }
+        const setting = fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/settings.lua', 'utf-8');
+        const rows = setting.split(os.EOL);
+        let version = 'v0.01';
+        for (let i = 0; i < rows.length; i++) {
+            const line_text = rows[i];
+            if (line_text.search('sGameVersion') !== -1) {
+                version = line_text.split('\'')[1];
+            }
+        }
+        const version_data = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', 'utf-8'));
+        if (version_data[version] === undefined) {
+            version_data[version] = {
+                AddFile: {
+                    lua: [],
+                    kv: [],
+                },
+                DeleteFile: {
+                    lua: [],
+                    kv: [],
+                },
+                ChangeFile: {
+                    lua: [],
+                    kv: [],
+                },
+            };
+        }
+        watch.watchTree(root_path, function (f, curr, prev) {
+            if (typeof f === "object" && prev === null && curr === null) {
+                // Finished walking the tree
+            }
+            else if (prev === null) {
+                // f is a new file
+                // console.log('f is a new file');
+                if (typeof f === "string") {
+                    let [file_name, ext] = util.GetFileInfo(f);
+                    if (ext === 'lua') {
+                        version_data[version].AddFile.lua.push(file_name);
+                        console.log(version_data[version].AddFile.lua);
+                        fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', JSON.stringify(version_data));
+                    }
+                }
+            }
+            else if (curr.nlink === 0) {
+                // f was removed
+                // console.log('f was removed');
+                console.log(f);
+            }
+            else {
+                // f was changed
+                // console.log('f was changed');
+                console.log(f);
+            }
+        });
+    }
+    WatchVersion();
     // 添加英雄基本文件
     let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
         let root_path = GetRootPath();
