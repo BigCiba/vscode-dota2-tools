@@ -450,7 +450,7 @@ function activate(context) {
                 },
             };
         }
-        watch.watchTree(root_path, function (f, curr, prev) {
+        watch.watchTree(root_path + '/game/dota_addons/dota_imba', function (f, curr, prev) {
             if (typeof f === "object" && prev === null && curr === null) {
                 // Finished walking the tree
             }
@@ -472,9 +472,11 @@ function activate(context) {
                 console.log(f);
             }
             else {
-                // f was changed
+                // f was changed 
                 // console.log('f was changed');
                 console.log(f);
+                console.log(curr);
+                console.log(prev);
             }
         });
     }

@@ -419,7 +419,7 @@ export function activate(context: vscode.ExtensionContext) {
 			};
 		}
 
-		watch.watchTree(root_path, function (f, curr, prev) {
+		watch.watchTree(root_path + '/game/dota_addons/dota_imba', function (f, curr, prev) {
 			if (typeof f === "object" && prev === null && curr === null) {
 				// Finished walking the tree
 			} else if (prev === null) {
@@ -438,9 +438,11 @@ export function activate(context: vscode.ExtensionContext) {
 				// console.log('f was removed');
 				console.log(f);
 			} else {
-				// f was changed
+				// f was changed 
 				// console.log('f was changed');
 				console.log(f);
+				console.log(curr);
+				console.log(prev);
 			}
 		});
 	}
