@@ -446,8 +446,7 @@ function activate(context) {
             };
             version_data[version] = info;
         }
-        // 监听
-        watch.watchTree(root_path, function (f, curr, prev) {
+        watch.watchTree(root_path + '/game/dota_addons/dota_imba', function (f, curr, prev) {
             if (typeof f === "object" && prev === null && curr === null) {
                 // Finished walking the tree
             }
@@ -478,22 +477,11 @@ function activate(context) {
                 }
             }
             else {
-                // f was changed
+                // f was changed 
                 // console.log('f was changed');
-                if (typeof f === 'string') {
-                    let info = util.GetFileInfo(root_path, f);
-                    if (info.name !== 'version' && info.full_name.search('.git') === -1) {
-                        console.log(version_data);
-                        console.log(version_data[version]);
-                        console.log(version_data[version][info.ext]);
-                        if (version_data[version][info.ext][info.full_name] === undefined) {
-                            let file_info = {};
-                            version_data[version][info.ext][info.full_name] = file_info;
-                        }
-                        version_data[version][info.ext][info.full_name].change = true;
-                        fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', JSON.stringify(version_data));
-                    }
-                }
+                console.log(f);
+                console.log(curr);
+                console.log(prev);
             }
         });
     }
@@ -1212,6 +1200,36 @@ function activate(context) {
         config += '\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
         // fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
     }));
+    // 生成音效json
+    let IMBA_VSND_JSON = vscode.commands.registerCommand('extension.IMBA_VSND_JSON', (uri) => __awaiter(this, void 0, void 0, function* () {
+        let root_path = GetRootPath();
+        if (root_path === undefined) {
+            return;
+        }
+        const sound_path = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
+        ReadFolder(sound_path);
+        function ReadFolder(folder_name) {
+            return __awaiter(this, void 0, void 0, function* () {
+                var folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
+                for (let i = 0; i < folders.length; i++) {
+                    const [name, is_directory] = folders[i];
+                    if (Number(is_directory) === vscode.FileType.Directory) {
+                        ReadFolder(folder_name + '\\' + name);
+                    }
+                    else if (Number(is_directory) === vscode.FileType.File) {
+                        console.log(folder_name + '\\' + name);
+                        let text = fs.readFileSync(folder_name + '\\' + name, 'utf-8');
+                        text = text.replace(/(\t+)(.*) = /g, '$1"$2" : ');
+                        text = text.replace(/(.\t)(.*) = "(.*)"/g, '$1"$2" : "$3",');
+                        text = text.replace(/(.\t)(.*) = (.*).(.*)/g, '$1"$2" : "$3$4",');
+                        text = text.replace(/(.\t)(.*) = /g, '"$2" : \n');
+                        console.log(text);
+                        break;
+                    }
+                }
+            });
+        }
+    }));
     // 注册指令
     context.subscriptions.push(Localization);
     context.subscriptions.push(AddHero);
@@ -1221,6 +1239,7 @@ function activate(context) {
     context.subscriptions.push(GenerateAPI);
     context.subscriptions.push(NoteAPI);
     context.subscriptions.push(GenerateDocument);
+    context.subscriptions.push(IMBA_VSND_JSON);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

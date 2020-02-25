@@ -487,4 +487,32 @@ function DirExists(dir) {
     });
 }
 exports.DirExists = DirExists;
+function ReadKV3(path) {
+    let kv3_data = fs.readFileSync(path, 'utf-8');
+    const rows = kv3_data.split(os.EOL);
+    let obj = ReadTable(0);
+    function ReadTable(start_line) {
+        for (let i = start_line; i < rows.length; i++) {
+            // 字符类型的值
+            let table = {};
+            if (rows[i].search(/.* = ".*"/) !== -1) {
+                let kv = rows[i].replace(/\t/g, '').split(' = ');
+                let key = kv[0];
+                let value = kv[1].replace(/"/g, '');
+                table[key] = value;
+            }
+            // 数字类型的值
+            if (rows[i].search(/.* = -?\d+\.\d+/) !== -1) {
+                let kv = rows[i].replace(/\t/g, '').split(' = ');
+                let key = kv[0];
+                let value = kv[1];
+                table[key] = value;
+            }
+            // array类型的值
+            if (rows[i].search(/.* = -?\d+\.\d+/) !== -1) {
+            }
+        }
+    }
+}
+exports.ReadKV3 = ReadKV3;
 //# sourceMappingURL=util.js.map

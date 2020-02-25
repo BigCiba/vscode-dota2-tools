@@ -133,6 +133,12 @@ function CreateItemOnPositionSync( Vector_1, handle_2 ) end
 -- @param bool_7 bool
 function CreateModifierThinker( handle_1, handle_2, string_3, handle_4, Vector_5, int_6, bool_7 ) end
 
+---[[ CreateRune  Create a rune of the specified type (vLocation, iRuneType). ]]
+-- @return handle
+-- @param Vector_1 Vector
+-- @param int_2 int
+function CreateRune( Vector_1, int_2 ) end
+
 ---[[ CreateSceneEntity  Create a scene entity to play the specified scene. ]]
 -- @return handle
 -- @param string_1 string
@@ -365,6 +371,14 @@ function DoUniqueString( string_1 ) end
 -- @param Vector_2 Vector
 function DotProduct( Vector_1, Vector_2 ) end
 
+---[[ DropNeutralItemAtPositionForHero  Drop a neutral item for the team of the hero at the given tier. ]]
+-- @return void
+-- @param string_1 string
+-- @param Vector_2 Vector
+-- @param handle_3 handle
+-- @param int_4 int
+function DropNeutralItemAtPositionForHero( string_1, Vector_2, handle_3, int_4 ) end
+
 ---[[ EmitAnnouncerSound  Emit an announcer sound for all players. ]]
 -- @return void
 -- @param string_1 string
@@ -450,6 +464,11 @@ function FindClearRandomPositionAroundUnit( handle_1, handle_2, int_3 ) end
 -- @param Vector_2 Vector
 -- @param bool_3 bool
 function FindClearSpaceForUnit( handle_1, Vector_2, bool_3 ) end
+
+---[[ FindSpawnEntityForTeam  Find a spawn point for the given team. ]]
+-- @return handle
+-- @param int_1 int
+function FindSpawnEntityForTeam( int_1 ) end
 
 ---[[ FindUnitsInLine  Find units that intersect the given line with the given flags. ]]
 -- @return table
@@ -648,6 +667,11 @@ function GetWorldMinX(  ) end
 ---[[ GetWorldMinY  Gets the world's minimum Y position. ]]
 -- @return float
 function GetWorldMinY(  ) end
+
+---[[ GetXPNeededToReachNextLevel  Get amount of XP required to reach the next level. ]]
+-- @return int
+-- @param int_1 int
+function GetXPNeededToReachNextLevel( int_1 ) end
 
 ---[[ InitLogFile  InitLogFile is deprecated. Print to the console for logging instead. ]]
 -- @return void
@@ -1360,15 +1384,15 @@ DOTA_DAMAGE_FLAG_REFLECTION = 16
 DOTA_DAMAGE_FLAG_USE_COMBAT_PROFICIENCY = 256
 
 --- Enum DOTAHUDVisibility_t
-DOTA_HUD_CUSTOMUI_BEHIND_HUD_ELEMENTS = 27
+DOTA_HUD_CUSTOMUI_BEHIND_HUD_ELEMENTS = 28
 DOTA_HUD_VISIBILITY_ACTION_MINIMAP = 4
 DOTA_HUD_VISIBILITY_ACTION_PANEL = 3
-DOTA_HUD_VISIBILITY_COUNT = 28
-DOTA_HUD_VISIBILITY_ENDGAME = 21
-DOTA_HUD_VISIBILITY_ENDGAME_CHAT = 22
-DOTA_HUD_VISIBILITY_HERO_SELECTION_CLOCK = 15
-DOTA_HUD_VISIBILITY_HERO_SELECTION_GAME_NAME = 14
-DOTA_HUD_VISIBILITY_HERO_SELECTION_TEAMS = 13
+DOTA_HUD_VISIBILITY_COUNT = 29
+DOTA_HUD_VISIBILITY_ENDGAME = 22
+DOTA_HUD_VISIBILITY_ENDGAME_CHAT = 23
+DOTA_HUD_VISIBILITY_HERO_SELECTION_CLOCK = 16
+DOTA_HUD_VISIBILITY_HERO_SELECTION_GAME_NAME = 15
+DOTA_HUD_VISIBILITY_HERO_SELECTION_TEAMS = 14
 DOTA_HUD_VISIBILITY_INVALID = -1
 DOTA_HUD_VISIBILITY_INVENTORY_COURIER = 9
 DOTA_HUD_VISIBILITY_INVENTORY_GOLD = 11
@@ -1377,17 +1401,18 @@ DOTA_HUD_VISIBILITY_INVENTORY_PANEL = 5
 DOTA_HUD_VISIBILITY_INVENTORY_PROTECT = 10
 DOTA_HUD_VISIBILITY_INVENTORY_QUICKBUY = 8
 DOTA_HUD_VISIBILITY_INVENTORY_SHOP = 6
-DOTA_HUD_VISIBILITY_KILLCAM = 25
-DOTA_HUD_VISIBILITY_PREGAME_STRATEGYUI = 24
-DOTA_HUD_VISIBILITY_QUICK_STATS = 23
+DOTA_HUD_VISIBILITY_KILLCAM = 26
+DOTA_HUD_VISIBILITY_PREGAME_STRATEGYUI = 25
+DOTA_HUD_VISIBILITY_QUICK_STATS = 24
+DOTA_HUD_VISIBILITY_SHOP_COMMONITEMS = 13
 DOTA_HUD_VISIBILITY_SHOP_SUGGESTEDITEMS = 12
-DOTA_HUD_VISIBILITY_TOP_BAR = 26
-DOTA_HUD_VISIBILITY_TOP_BAR_BACKGROUND = 17
-DOTA_HUD_VISIBILITY_TOP_BAR_DIRE_TEAM = 19
-DOTA_HUD_VISIBILITY_TOP_BAR_RADIANT_TEAM = 18
-DOTA_HUD_VISIBILITY_TOP_BAR_SCORE = 20
+DOTA_HUD_VISIBILITY_TOP_BAR = 27
+DOTA_HUD_VISIBILITY_TOP_BAR_BACKGROUND = 18
+DOTA_HUD_VISIBILITY_TOP_BAR_DIRE_TEAM = 20
+DOTA_HUD_VISIBILITY_TOP_BAR_RADIANT_TEAM = 19
+DOTA_HUD_VISIBILITY_TOP_BAR_SCORE = 21
 DOTA_HUD_VISIBILITY_TOP_HEROES = 1
-DOTA_HUD_VISIBILITY_TOP_MENU_BUTTONS = 16
+DOTA_HUD_VISIBILITY_TOP_MENU_BUTTONS = 17
 DOTA_HUD_VISIBILITY_TOP_SCOREBOARD = 2
 DOTA_HUD_VISIBILITY_TOP_TIMEOFDAY = 0
 
@@ -1734,7 +1759,8 @@ DOTA_RUNE_XP = 7
 DOTA_SHOP_CUSTOM = 6
 DOTA_SHOP_GROUND = 3
 DOTA_SHOP_HOME = 0
-DOTA_SHOP_NONE = 7
+DOTA_SHOP_NEUTRALS = 7
+DOTA_SHOP_NONE = 8
 DOTA_SHOP_SECRET = 2
 DOTA_SHOP_SECRET2 = 5
 DOTA_SHOP_SIDE = 1
@@ -1790,14 +1816,14 @@ DOTA_DAMAGE_CATEGORY_SPELL = 0
 --- Enum DotaDefaultUIElement_t
 DOTA_DEFAULT_UI_ACTION_MINIMAP = 4
 DOTA_DEFAULT_UI_ACTION_PANEL = 3
-DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS = 27
-DOTA_DEFAULT_UI_ELEMENT_COUNT = 28
-DOTA_DEFAULT_UI_ENDGAME = 21
-DOTA_DEFAULT_UI_ENDGAME_CHAT = 22
+DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS = 28
+DOTA_DEFAULT_UI_ELEMENT_COUNT = 29
+DOTA_DEFAULT_UI_ENDGAME = 22
+DOTA_DEFAULT_UI_ENDGAME_CHAT = 23
 DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD = 2
-DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK = 15
-DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME = 14
-DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS = 13
+DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK = 16
+DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME = 15
+DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS = 14
 DOTA_DEFAULT_UI_INVALID = -1
 DOTA_DEFAULT_UI_INVENTORY_COURIER = 9
 DOTA_DEFAULT_UI_INVENTORY_GOLD = 11
@@ -1806,17 +1832,18 @@ DOTA_DEFAULT_UI_INVENTORY_PANEL = 5
 DOTA_DEFAULT_UI_INVENTORY_PROTECT = 10
 DOTA_DEFAULT_UI_INVENTORY_QUICKBUY = 8
 DOTA_DEFAULT_UI_INVENTORY_SHOP = 6
-DOTA_DEFAULT_UI_KILLCAM = 25
-DOTA_DEFAULT_UI_PREGAME_STRATEGYUI = 24
-DOTA_DEFAULT_UI_QUICK_STATS = 23
+DOTA_DEFAULT_UI_KILLCAM = 26
+DOTA_DEFAULT_UI_PREGAME_STRATEGYUI = 25
+DOTA_DEFAULT_UI_QUICK_STATS = 24
+DOTA_DEFAULT_UI_SHOP_COMMONITEMS = 13
 DOTA_DEFAULT_UI_SHOP_SUGGESTEDITEMS = 12
-DOTA_DEFAULT_UI_TOP_BAR = 26
-DOTA_DEFAULT_UI_TOP_BAR_BACKGROUND = 17
-DOTA_DEFAULT_UI_TOP_BAR_DIRE_TEAM = 19
-DOTA_DEFAULT_UI_TOP_BAR_RADIANT_TEAM = 18
-DOTA_DEFAULT_UI_TOP_BAR_SCORE = 20
+DOTA_DEFAULT_UI_TOP_BAR = 27
+DOTA_DEFAULT_UI_TOP_BAR_BACKGROUND = 18
+DOTA_DEFAULT_UI_TOP_BAR_DIRE_TEAM = 20
+DOTA_DEFAULT_UI_TOP_BAR_RADIANT_TEAM = 19
+DOTA_DEFAULT_UI_TOP_BAR_SCORE = 21
 DOTA_DEFAULT_UI_TOP_HEROES = 1
-DOTA_DEFAULT_UI_TOP_MENU_BUTTONS = 16
+DOTA_DEFAULT_UI_TOP_MENU_BUTTONS = 17
 DOTA_DEFAULT_UI_TOP_TIMEOFDAY = 0
 
 --- Enum EDOTA_ModifyGold_Reason
@@ -2420,6 +2447,7 @@ MODIFIER_STATE_DISARMED = 1
 MODIFIER_STATE_DOMINATED = 28
 MODIFIER_STATE_EVADE_DISABLED = 13
 MODIFIER_STATE_FAKE_ALLY = 31
+MODIFIER_STATE_FEARED = 41
 MODIFIER_STATE_FLYING = 23
 MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY = 32
 MODIFIER_STATE_FROZEN = 18
@@ -2428,7 +2456,7 @@ MODIFIER_STATE_IGNORING_MOVE_AND_ATTACK_ORDERS = 35
 MODIFIER_STATE_IGNORING_STOP_ORDERS = 40
 MODIFIER_STATE_INVISIBLE = 7
 MODIFIER_STATE_INVULNERABLE = 8
-MODIFIER_STATE_LAST = 41
+MODIFIER_STATE_LAST = 43
 MODIFIER_STATE_LOW_ATTACK_PRIORITY = 21
 MODIFIER_STATE_MAGIC_IMMUNE = 9
 MODIFIER_STATE_MUTED = 4
@@ -2446,6 +2474,7 @@ MODIFIER_STATE_ROOTED = 0
 MODIFIER_STATE_SILENCED = 3
 MODIFIER_STATE_SPECIALLY_DENIABLE = 17
 MODIFIER_STATE_STUNNED = 5
+MODIFIER_STATE_TAUNTED = 42
 MODIFIER_STATE_TETHERED = 39
 MODIFIER_STATE_TRUESIGHT_IMMUNE = 33
 MODIFIER_STATE_UNSELECTABLE = 14
@@ -4387,7 +4416,8 @@ function CDOTAGameManager:GetHeroUnitNameByID( int_1 ) end
 -- @param string_2 string
 -- @param int_3 int
 -- @param string_4 string
-function CDOTAGamerules:AddBotPlayerWithEntityScript( string_1, string_2, int_3, string_4 ) end
+-- @param bool_5 bool
+function CDOTAGamerules:AddBotPlayerWithEntityScript( string_1, string_2, int_3, string_4, bool_5 ) end
 
 ---[[ CDOTAGamerules:AddEventMetadataLeaderboardEntry  Event-only ( string szNameSuffix, int nStars, int nMaxStars, int nExtraData1, int nExtraData2 ) ]]
 -- @return bool
@@ -4601,6 +4631,11 @@ function CDOTAGamerules:Playtesting_UpdateAddOnKeyValues(  ) end
 -- @param float_1 float
 function CDOTAGamerules:PrepareSpawners( float_1 ) end
 
+---[[ CDOTAGamerules:RemoveFakeClient  Removes a fake client ]]
+-- @return void
+-- @param int_1 int
+function CDOTAGamerules:RemoveFakeClient( int_1 ) end
+
 ---[[ CDOTAGamerules:RemoveItemFromWhiteList  Remove an item from the whitelist ]]
 -- @return void
 -- @param string_1 string
@@ -4723,6 +4758,11 @@ function CDOTAGamerules:SetEventSignoutCustomTable( handle_1 ) end
 -- @return void
 -- @param bool_1 bool
 function CDOTAGamerules:SetFirstBloodActive( bool_1 ) end
+
+---[[ CDOTAGamerules:SetGameTimeFrozen  Freeze the game time. ]]
+-- @return void
+-- @param bool_1 bool
+function CDOTAGamerules:SetGameTimeFrozen( bool_1 ) end
 
 ---[[ CDOTAGamerules:SetGameWinner  Makes the specified team win ]]
 -- @return void
@@ -4854,6 +4894,10 @@ function CDOTAGamerules:SetWhiteListEnabled( bool_1 ) end
 -- @return void
 function CDOTAGamerules:SpawnAndReleaseCreeps(  ) end
 
+---[[ CDOTAGamerules:SpawnNeutralCreeps  Spawn and release the next set of neutral camps. ]]
+-- @return void
+function CDOTAGamerules:SpawnNeutralCreeps(  ) end
+
 ---[[ CDOTAGamerules:State_Get  Get the current Gamerules state ]]
 -- @return int
 function CDOTAGamerules:State_Get(  ) end
@@ -4895,6 +4939,11 @@ function CDOTAPlayer:SetMusicStatus( nMusicStatus, flIntensity ) end
 -- @return void
 -- @param pszHeroName string
 function CDOTAPlayer:SetSelectedHero( pszHeroName ) end
+
+---[[ CDOTAPlayer:SpawnCourierAtPosition  Spawn a courier for this player at the given position. ]]
+-- @return handle
+-- @param vLocation Vector
+function CDOTAPlayer:SpawnCourierAtPosition( vLocation ) end
 
 ---[[ CDOTATutorial:AddBot  Add a computer controlled bot. ]]
 -- @return bool
@@ -7205,10 +7254,6 @@ function CDOTA_BaseNPC_Hero:ShouldDoFlyHeightVisual(  ) end
 -- @param iCost int
 -- @param iReason int
 function CDOTA_BaseNPC_Hero:SpendGold( iCost, iReason ) end
-
----[[ CDOTA_BaseNPC_Hero:UnitCanRespawn   ]]
--- @return bool
-function CDOTA_BaseNPC_Hero:UnitCanRespawn(  ) end
 
 ---[[ CDOTA_BaseNPC_Hero:UpgradeAbility  This upgrades the passed ability if it exists and the hero has enough ability points. ]]
 -- @return void
