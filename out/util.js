@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const fs = require("fs");
@@ -158,7 +167,7 @@ function ReadFunction(line, rows) {
             fun_info.function = text.split('(')[0].split('function ')[1];
             fun_info.description = fun_info.description.split(fun_info.function + '  ')[1];
             if (fun_info.function.search(':') === -1) {
-                fun_info.class = 'Globals';
+                fun_info.class = 'Global';
             }
             else {
                 fun_info.class = fun_info.function.split(':')[0];
@@ -196,7 +205,7 @@ function ReadEnum(line, rows) {
         enum_info.description_lite = 'No Description Set';
         enum_info.description = 'No Description Set';
         enum_info.example = 'No Example Set';
-        enum_info.client = '✖';
+        enum_info.client = '❌';
         enum_list.push(enum_info);
     }
     return [enum_list, end_line];
@@ -393,7 +402,7 @@ function ReadAPI(api, api_cl) {
                 for (let j = 0; j < enum_arr_cl.length; j++) {
                     const enum_info_cl = enum_arr_cl[j];
                     if (enum_info_cl.name === enum_info.name) {
-                        enum_arr.client = '✔';
+                        enum_info.client = '✔️';
                     }
                 }
             }
@@ -402,10 +411,80 @@ function ReadAPI(api, api_cl) {
     return [class_list, enum_list];
 }
 exports.ReadAPI = ReadAPI;
-function GetFileInfo(path) {
-    const arr = path.split('\\');
+function GetFileInfo(root_path, path) {
+    if (root_path !== undefined) {
+        path = path.split(root_path)[1];
+    }
+    let arr = path.split('\\');
     let file = arr[arr.length - 1];
-    return [file.split('.')[0], file.split('.')[1]];
+    let info = {
+        full_name: path,
+        name: file.split('.')[0],
+        ext: file.split('.')[1],
+    };
+    return info;
 }
 exports.GetFileInfo = GetFileInfo;
+/**
+ * 读取路径信息
+ * @param {string} path 路径
+ */
+function GetStat(path) {
+    return new Promise((resolve, reject) => {
+        fs.stat(path, (err, stats) => {
+            if (err) {
+                resolve(false);
+            }
+            else {
+                resolve(stats);
+            }
+        });
+    });
+}
+exports.GetStat = GetStat;
+/**
+ * 创建路径
+ * @param {string} dir 路径
+ */
+function MakeDir(dir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            fs.mkdir(dir, err => {
+                if (err) {
+                    resolve(false);
+                }
+                else {
+                    resolve(true);
+                }
+            });
+        });
+    });
+}
+exports.MakeDir = MakeDir;
+/**
+ * 路径是否存在，不存在则创建
+ * @param {string} dir 路径
+ */
+function DirExists(dir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let isExists = yield GetStat(dir);
+        //如果该路径且不是文件，返回true
+        if (isExists && isExists !== true && isExists.isDirectory()) {
+            return true;
+        }
+        else if (isExists) { //如果该路径存在但是文件，返回false
+            return false;
+        }
+        //如果该路径不存在
+        let tempDir = path.parse(dir).dir; //拿到上级路径
+        //递归判断，如果上级目录也不存在，则会代码会在此处继续循环执行，直到目录存在
+        let status = yield DirExists(tempDir);
+        let mkdirStatus;
+        if (status) {
+            mkdirStatus = yield MakeDir(dir);
+        }
+        return mkdirStatus;
+    });
+}
+exports.DirExists = DirExists;
 //# sourceMappingURL=util.js.map

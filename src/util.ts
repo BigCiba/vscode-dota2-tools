@@ -71,14 +71,14 @@ export function OpenUrlInBrowser(url: string) {
 	exec(`open '${url}'`);
 }
 export function GetWebViewContent(context: any, templatePath: any) {
-    const resourcePath = GetExtensionFileAbsolutePath(context, templatePath);
-    const dirPath = path.dirname(resourcePath);
-    let html = fs.readFileSync(resourcePath, 'utf-8');
-    // vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
-    html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
-        return $1 + vscode.Uri.file(path.resolve(dirPath, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
-    });
-    return html;
+	const resourcePath = GetExtensionFileAbsolutePath(context, templatePath);
+	const dirPath = path.dirname(resourcePath);
+	let html = fs.readFileSync(resourcePath, 'utf-8');
+	// vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
+	html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
+		return $1 + vscode.Uri.file(path.resolve(dirPath, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
+	});
+	return html;
 }
 /**
  * 取出中括号内的内容
@@ -86,17 +86,17 @@ export function GetWebViewContent(context: any, templatePath: any) {
  * @returns {string}
  */
 export function GetBracketStr(text: string): string {
-    let result = '';
-    if (text === ''){
-        return result;
+	let result = '';
+	if (text === ''){
+		return result;
 	}
-    let regex = /\[(.+?)\]/g;
+	let regex = /\[(.+?)\]/g;
 	let options = text.match(regex);
-    if (options !== null && options.length > 0) {
-        let option = options[0];
+	if (options !== null && options.length > 0) {
+		let option = options[0];
 		result = option.substring(1, option.length - 1);
-    }
-    return result;
+	}
+	return result;
 }
 
 /**
@@ -106,15 +106,15 @@ export function GetBracketStr(text: string): string {
  */
 export function GetParenthesesStr(text: string): string {
 	let result = '';
-    if (text === ''){
-        return result;
+	if (text === ''){
+		return result;
 	}
-    let regex = /\((.+?)\)/g;
+	let regex = /\((.+?)\)/g;
 	let options = text.match(regex);
-    if (options !== null && options.length > 0) {
-        let option = options[0];
+	if (options !== null && options.length > 0) {
+		let option = options[0];
 		result = option.substring(1, option.length - 1);
-    }
+	}
 	return result;
 }
 export function ReadFunction(line: number, rows: any):any {
@@ -142,7 +142,7 @@ export function ReadFunction(line: number, rows: any):any {
 			fun_info.function = text.split('(')[0].split('function ')[1];
 			fun_info.description = fun_info.description.split(fun_info.function + '  ')[1];
 			if (fun_info.function.search(':') === -1) {
-				fun_info.class = 'Globals';
+				fun_info.class = 'Global';
 			} else {
 				fun_info.class = fun_info.function.split(':')[0];
 				fun_info.function = fun_info.function.split(':')[1];
@@ -177,7 +177,7 @@ export function ReadEnum(line: number, rows: any):any {
 		enum_info.description_lite = 'No Description Set';
 		enum_info.description = 'No Description Set';
 		enum_info.example = 'No Example Set';
-		enum_info.client = '✖';
+		enum_info.client = '❌';
 		enum_list.push(enum_info);
 	}
 	return [enum_list, end_line];
@@ -372,7 +372,7 @@ export function ReadAPI(api: string, api_cl:string): any {
 				for (let j = 0; j < enum_arr_cl.length; j++) {
 					const enum_info_cl = enum_arr_cl[j];
 					if (enum_info_cl.name === enum_info.name) {
-						enum_arr.client = '✔';
+						enum_info.client = '✔️';
 					}
 				}
 			}
@@ -380,8 +380,72 @@ export function ReadAPI(api: string, api_cl:string): any {
 	}
 	return [class_list,enum_list];
 }
-export function GetFileInfo(path: string): any {
-	const arr = path.split('\\');
+export function GetFileInfo(root_path: string|undefined, path: string): object {
+	if (root_path !== undefined) {
+		path = path.split(root_path)[1];
+	}
+	let arr = path.split('\\');
 	let file = arr[arr.length - 1];
-	return [file.split('.')[0],file.split('.')[1]];
+	let info: object = {
+		full_name : path,
+		name: file.split('.')[0],
+		ext: file.split('.')[1],
+	};
+
+	return info;
+}
+
+/**
+ * 读取路径信息
+ * @param {string} path 路径
+ */
+export function GetStat(path: string):Promise<boolean | fs.Stats>{
+	return new Promise((resolve, reject) => {
+		fs.stat(path, (err, stats) => {
+			if(err){
+				resolve(false);
+			}else{
+				resolve(stats);
+			}
+		});
+	});
+}
+ 
+/**
+ * 创建路径
+ * @param {string} dir 路径
+ */
+export async function MakeDir(dir: string):Promise<boolean>{
+	return new Promise((resolve, reject) => {
+		fs.mkdir(dir, err => {
+			if(err){
+				resolve(false);
+			}else{
+				resolve(true);
+			}
+		});
+	});
+}
+ 
+/**
+ * 路径是否存在，不存在则创建
+ * @param {string} dir 路径
+ */
+export async function DirExists(dir: string){
+	let isExists = await GetStat(dir);
+	//如果该路径且不是文件，返回true
+	if(isExists && isExists!== true && isExists.isDirectory()){
+		return true;
+	}else if(isExists){	 //如果该路径存在但是文件，返回false
+		return false;
+	}
+	//如果该路径不存在
+	let tempDir = path.parse(dir).dir;	  //拿到上级路径
+	//递归判断，如果上级目录也不存在，则会代码会在此处继续循环执行，直到目录存在
+	let status = await DirExists(tempDir);
+	let mkdirStatus;
+	if(status){
+		mkdirStatus = await MakeDir(dir);
+	}
+	return mkdirStatus;
 }
