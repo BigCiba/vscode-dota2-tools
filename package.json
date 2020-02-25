@@ -55,6 +55,10 @@
 			{
 				"command": "extension.GenerateDocument",
 				"title": "生成API文档"
+			},
+			{
+				"command": "extension.IMBA_VSND_JSON",
+				"title": "生成音效"
 			}
 		],
 		"menus": {
