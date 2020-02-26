@@ -1,0 +1,68 @@
+{
+	"title": "Dota2 文档",
+	"description": "Dota2 API文档",
+	"themeConfig": {
+		"nextLinks": false,
+		"prevLinks": false,
+		"nav": [
+			{
+				"text": "Overview",
+				"ariaLabel": "常用",
+				"items": [
+					{
+						"text": "BaseAbility",
+						"link": "/dota2-lua-api/CDOTABaseAbility/"
+					},
+					{
+						"text": "Ability_Lua",
+						"link": "/dota2-lua-api/CDOTA_Ability_Lua/"
+					},
+					{
+						"text": "BaseNPC",
+						"link": "/dota2-lua-api/CDOTA_BaseNPC/"
+					},
+					{
+						"text": "BaseNPC_Hero",
+						"link": "/dota2-lua-api/CDOTA_BaseNPC_Hero/"
+					},
+					{
+						"text": "Buff",
+						"link": "/dota2-lua-api/CDOTA_Buff/"
+					},
+					{
+						"text": "Item",
+						"link": "/dota2-lua-api/CDOTA_Item/"
+					},
+					{
+						"text": "Item_Lua",
+						"link": "/dota2-lua-api/CDOTA_Item_Lua/"
+					},
+					{
+						"text": "Modifier_Lua",
+						"link": "/dota2-lua-api/CDOTA_Modifier_Lua/"
+					},
+					{
+						"text": "ParticleManager",
+						"link": "/dota2-lua-api/CScriptParticleManager/"
+					},
+					{
+						"text": "modifierfunction",
+						"link": "/dota2-lua-api/Constants/modifierfunction/modifierfunction"
+					},
+					{
+						"text": "modifierstate",
+						"link": "/dota2-lua-api/Constants/modifierstate/modifierstate"
+					}
+				]
+			}
+		],
+		"sidebarDepth": 1,
+		"sidebar": [
+			{
+				"title": "Dota2 Lua API",
+				"collapsable": false,
+				"children": []
+			}
+		]
+	}
+}

@@ -419,11 +419,11 @@ function activate(context) {
     WatchLocalization();
     // 版本控制
     function WatchVersion() {
-        // sGameVersion
         let root_path = GetRootPath();
         if (root_path === undefined) {
             return;
         }
+        // 获取版本
         const setting = fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/settings.lua', 'utf-8');
         const rows = setting.split(os.EOL);
         let version = 'v0.01';
@@ -433,22 +433,18 @@ function activate(context) {
                 version = line_text.split('\'')[1];
             }
         }
+        // 获取版本变更信息
         const version_data = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', 'utf-8'));
         if (version_data[version] === undefined) {
-            version_data[version] = {
-                AddFile: {
-                    lua: [],
-                    kv: [],
-                },
-                DeleteFile: {
-                    lua: [],
-                    kv: [],
-                },
-                ChangeFile: {
-                    lua: [],
-                    kv: [],
-                },
+            let lua = {};
+            let kv = {};
+            let txt = {};
+            let info = {
+                lua: lua,
+                kv: kv,
+                txt: txt
             };
+            version_data[version] = info;
         }
         watch.watchTree(root_path + '/game/dota_addons/dota_imba', function (f, curr, prev) {
             if (typeof f === "object" && prev === null && curr === null) {
@@ -458,25 +454,45 @@ function activate(context) {
                 // f is a new file
                 // console.log('f is a new file');
                 if (typeof f === "string") {
-                    let [file_name, ext] = util.GetFileInfo(f);
-                    if (ext === 'lua') {
-                        version_data[version].AddFile.lua.push(file_name);
-                        console.log(version_data[version].AddFile.lua);
-                        fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', JSON.stringify(version_data));
+                    let info = util.GetFileInfo(root_path, f);
+                    if (version_data[version][info.ext][info.full_name] === undefined) {
+                        let file_info = {};
+                        version_data[version][info.ext][info.full_name] = file_info;
                     }
+                    version_data[version][info.ext][info.full_name].created = true;
+                    fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', version_data);
                 }
             }
             else if (curr.nlink === 0) {
                 // f was removed
                 // console.log('f was removed');
-                console.log(f);
+                if (typeof f === "string") {
+                    let info = util.GetFileInfo(root_path, f);
+                    if (version_data[version][info.ext][info.full_name] === undefined) {
+                        let file_info = {};
+                        version_data[version][info.ext][info.full_name] = file_info;
+                    }
+                    version_data[version][info.ext][info.full_name].removed = true;
+                    fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', version_data);
+                }
             }
             else {
                 // f was changed 
                 // console.log('f was changed');
-                console.log(f);
-                console.log(curr);
-                console.log(prev);
+                if (typeof f === 'string') {
+                    let info = util.GetFileInfo(root_path, f);
+                    if (info.name !== 'version' && info.full_name.search('.git') === -1) {
+                        console.log(version_data);
+                        console.log(version_data[version]);
+                        console.log(version_data[version][info.ext]);
+                        if (version_data[version][info.ext][info.full_name] === undefined) {
+                            let file_info = {};
+                            version_data[version][info.ext][info.full_name] = file_info;
+                        }
+                        version_data[version][info.ext][info.full_name].change = true;
+                        fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', JSON.stringify(version_data));
+                    }
+                }
             }
         });
     }
@@ -862,11 +878,11 @@ function activate(context) {
                 fun_md += ')\n';
                 fun_md += '```\n';
                 fun_md += '# Class\n';
-                fun_md += '✔ `Server: ' + fun_info.class + '`  \n';
-                fun_md += (fun_info.client === true ? '✔' : '✖') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
+                fun_md += '✔️ `Server: ' + fun_info.class + '`  \n';
+                fun_md += (fun_info.client === true ? '✔️' : '❌') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
                 // fun_md += '# Support\n';
-                // fun_md += '> __✔ Server__  \n';
-                // fun_md += '> __' + (fun_info.client === true ? '✔':'✖') + ' Client__  \n';
+                // fun_md += '> __✔️ Server__  \n';
+                // fun_md += '> __' + (fun_info.client === true ? '✔️':'❌') + ' Client__  \n';
                 fun_md += '# Function Description\n' + fun_info.description + '\n';
                 if (Object.keys(fun_info.params).length > 0) {
                     fun_md += '# Parameters\nType|Name|Description\n--|--|--\n';
@@ -898,18 +914,18 @@ function activate(context) {
             _sidebar += '\t* [' + enum_name + '](Constants/' + enum_name + '/' + enum_name + ')\n';
             let enum_sidebar = '* [**' + enum_name + '**](/Constants/_sidebar)\n';
             let enum_md = '# ' + enum_name + '\n';
-            enum_md += '?> No Description Set\n\n';
+            enum_md += '> No Description Set\n\n';
             enum_md += 'Name|Value|' + (enum_name === 'modifierfunction' ? 'Lua Function|Description' : 'Description') + '|Client\n--|:--:|--' + (enum_name === 'modifierfunction' ? '|--' : '') + '|:--:\n';
             for (let i = 0; i < enum_arr.length; i++) {
                 const enum_info = enum_arr[i];
                 // 判断客户端是否存在
-                let client = '✖';
+                let client = '❌';
                 let enum_arr_cl = enum_list_cl[enum_name];
                 if (enum_arr_cl !== undefined) {
                     for (let j = 0; j < enum_arr_cl.length; j++) {
                         const enum_info_cl = enum_arr_cl[j];
                         if (enum_info_cl.name === enum_info.name) {
-                            client = '✔';
+                            client = '✔️';
                         }
                     }
                 }
@@ -1035,6 +1051,7 @@ function activate(context) {
                     }
                 }
             }
+            // 遍历常数
             for (const enum_name in enum_list) {
                 const enum_arr = enum_list[enum_name];
                 for (let i = 0; i < enum_arr.length; i++) {
@@ -1073,26 +1090,53 @@ function activate(context) {
         }
         const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
         const dota_cl_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_cl_script_help2.lua', 'utf-8');
+        const api_note = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
         let [class_list, enum_list] = util.ReadAPI(dota_script_help2, dota_cl_script_help2);
+        // 侧边栏与一些配置
         let config = `module.exports = {\n` +
-            `\ttitle: 'Dota2 API',\n` +
+            `\ttitle: 'Dota2 文档',\n` +
             `\tdescription: 'Dota2 API文档',\n` +
             `\tthemeConfig: {\n` +
             `\t\tnextLinks: false,\n` +
-            `\t\prevLinks: false,\n` +
+            `\t\tprevLinks: false,\n` +
+            `\t\tnav: [\n` +
+            `\t\t\t{\n` +
+            `\t\t\t\ttext: 'Overview',\n` +
+            `\t\t\t\tariaLabel: '常用',\n` +
+            `\t\t\t\titems: [\n` +
+            `\t\t\t\t{ text: 'BaseAbility', link: '/dota2-lua-api/CDOTABaseAbility/' },\n` +
+            `\t\t\t\t{ text: 'Ability_Lua', link: '/dota2-lua-api/CDOTA_Ability_Lua/' },\n` +
+            `\t\t\t\t{ text: 'BaseNPC', link: '/dota2-lua-api/CDOTA_BaseNPC/' },\n` +
+            `\t\t\t\t{ text: 'BaseNPC_Hero', link: '/dota2-lua-api/CDOTA_BaseNPC_Hero/' },\n` +
+            `\t\t\t\t{ text: 'Buff', link: '/dota2-lua-api/CDOTA_Buff/' },\n` +
+            `\t\t\t\t{ text: 'Item', link: '/dota2-lua-api/CDOTA_Item/' },\n` +
+            `\t\t\t\t{ text: 'Item_Lua', link: '/dota2-lua-api/CDOTA_Item_Lua/' },\n` +
+            `\t\t\t\t{ text: 'Modifier_Lua', link: '/dota2-lua-api/CDOTA_Modifier_Lua/' },\n` +
+            `\t\t\t\t{ text: 'ParticleManager', link: '/dota2-lua-api/CScriptParticleManager/' },\n` +
+            `\t\t\t\t{ text: 'modifierfunction', link: '/dota2-lua-api/Constants/modifierfunction/modifierfunction' },\n` +
+            `\t\t\t\t{ text: 'modifierstate', link: '/dota2-lua-api/Constants/modifierstate/modifierstate' },\n` +
+            `\t\t\t\t]\n` +
+            `\t\t\t},\n` +
+            `\t\t],\n` +
+            `\t\tsearchMaxSuggestions: 20,\n` +
             `\t\tsidebarDepth: 1,\n` +
-            `\t\tsidebar: [\n`;
+            `\t\tsidebar: [\n` +
+            `\t\t\t{\n` +
+            `\t\t\t\ttitle: 'Dota2 Lua API',\n` +
+            `\t\t\t\tcollapsable: false,\n` +
+            `\t\t\t\tchildren: [\n`;
         for (const class_name in class_list) {
             // 添加每个类的描述
             const fun_list = class_list[class_name];
-            config += `\t\t\t['/` + class_name + `/','` + class_name + `'],\n`;
-            let readme = '# ' + class_name + '\n' +
+            config += `\t\t\t\t\t['/dota2-lua-api/` + class_name + `/','` + class_name + `'],\n`;
+            let readme = '# ' + class_name + '\n';
+            readme += (api_note[class_name] === undefined ? '> No Description Set' : api_note[class_name]) + '\n\n' +
                 'Function|Description|Client\n' +
                 '--|--|:--:\n';
             for (let i = 0; i < fun_list.length; i++) {
                 const fun_info = fun_list[i];
                 let fun_md = '# ' + fun_info.function + '\n';
-                fun_md += '```\n';
+                fun_md += '```lua\n';
                 let signature = fun_info.return + ' ' + fun_info.function + '(';
                 let count = 0;
                 for (let params_name in fun_info.params) {
@@ -1106,12 +1150,12 @@ function activate(context) {
                     }
                 }
                 signature += ')';
-                readme += '[' + signature + '](' + fun_info.function + ')|' + fun_info.description + '|' + (fun_info.client === true ? '✔' : '✖') + '\n';
+                readme += '[' + signature + '](' + fun_info.function + ')|' + fun_info.description + '|' + (fun_info.client === true ? '✔️' : '❌') + '\n';
                 fun_md += signature + '\n';
                 fun_md += '```\n';
                 fun_md += '# Class\n';
-                fun_md += '✔ `Server: ' + fun_info.class + '`  \n';
-                fun_md += (fun_info.client === true ? '✔' : '✖') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
+                fun_md += '✔️ `Server: ' + fun_info.class + '`  \n';
+                fun_md += (fun_info.client === true ? '✔️' : '❌') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
                 fun_md += '# Function Description\n' + fun_info.description + '\n';
                 if (Object.keys(fun_info.params).length > 0) {
                     fun_md += '# Parameters\nType|Name|Description\n--|--|--\n';
@@ -1126,24 +1170,25 @@ function activate(context) {
                     fun_md += '\n# Example\n```lua\n';
                     fun_md += fun_info.example + '\n```';
                 }
-                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/' + fun_info.function + '.md', fun_md);
+                yield util.DirExists('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name);
+                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name + '/' + fun_info.function + '.md', fun_md);
             }
-            fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/' + class_name + '/README.md', readme);
+            fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name + '/README.md', readme);
         }
-        config += `\t\t\t{\n` +
-            `\t\t\t\ttitle: 'Constants',\n` +
-            `\t\t\t\tcollapsable: true,\n` +
-            `\t\t\t\tchildren: [\n`;
+        config += `\t\t\t\t\t{\n` +
+            `\t\t\t\t\t\ttitle: 'Constants',\n` +
+            `\t\t\t\t\t\tcollapsable: true,\n` +
+            `\t\t\t\t\t\tchildren: [\n`;
         for (const enum_name in enum_list) {
             const enum_arr = enum_list[enum_name];
             let enum_md = '# ' + enum_name + '\n';
-            enum_md += '?> No Description Set\n\n';
+            enum_md += (api_note[enum_name] === undefined ? '> No Description Set' : api_note[enum_name]) + '\n\n';
             enum_md += 'Name|Value|' + (enum_name === 'modifierfunction' ? 'Lua Function|Description' : 'Description') + '|Client\n--|:--:|--' + (enum_name === 'modifierfunction' ? '|--' : '') + '|:--:\n';
             // 添加每个类的描述
-            config += `\t\t\t\t\t['/Constants/` + enum_name + `/` + enum_name + `','` + enum_name + `'],\n`;
+            config += `\t\t\t\t\t\t\t['/dota2-lua-api/Constants/` + enum_name + `/` + enum_name + `','` + enum_name + `'],\n`;
             for (let i = 0; i < enum_arr.length; i++) {
                 const enum_info = enum_arr[i];
-                enum_md += '[' + enum_info.name + '](Constants/' + enum_name + '/' + enum_info.name + ')' + '|' + enum_info.value + '|' + (enum_name === 'modifierfunction' ? enum_info.function + '|' + enum_info.description_lite + '|' : '' + enum_info.description_lite + '|') + enum_info.client + '\n';
+                enum_md += '[' + enum_info.name + '](' + enum_info.name + ')' + '|' + enum_info.value + '|' + (enum_name === 'modifierfunction' ? enum_info.function + '|' + enum_info.description_lite + '|' : '' + enum_info.description_lite + '|') + enum_info.client + '\n';
                 // 生成常数详细页面
                 if (enum_info.description === undefined) {
                     enum_info.description = enum_info.description_lite;
@@ -1157,13 +1202,14 @@ function activate(context) {
                     '# Example\n```' +
                     enum_info.example +
                     '```';
-                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
+                yield util.DirExists('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name);
+                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
             }
             // 生成常数列表页面
-            fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
+            fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
         }
-        config += '\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
-        fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
+        config += '\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
+        // fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
     }));
     // 生成音效json
     let IMBA_VSND_JSON = vscode.commands.registerCommand('extension.IMBA_VSND_JSON', (uri) => __awaiter(this, void 0, void 0, function* () {
