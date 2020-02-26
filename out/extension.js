@@ -1171,6 +1171,9 @@ function activate(context) {
         if (root_path === undefined) {
             return;
         }
+        let kv = util.ReadKV2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/game_sounds_heroes/game_sounds_luna.vsndevts', 'utf-8'));
+        console.log(kv);
+        return;
         const sound_path = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
         ReadFolder(sound_path);
         function ReadFolder(folder_name) {
@@ -1182,13 +1185,8 @@ function activate(context) {
                         ReadFolder(folder_name + '\\' + name);
                     }
                     else if (Number(is_directory) === vscode.FileType.File) {
-                        console.log(folder_name + '\\' + name);
-                        let text = fs.readFileSync(folder_name + '\\' + name, 'utf-8');
-                        text = text.replace(/(\t+)(.*) = /g, '$1"$2" : ');
-                        text = text.replace(/(.\t)(.*) = "(.*)"/g, '$1"$2" : "$3",');
-                        text = text.replace(/(.\t)(.*) = (.*).(.*)/g, '$1"$2" : "$3$4",');
-                        text = text.replace(/(.\t)(.*) = /g, '"$2" : \n');
-                        console.log(text);
+                        let data = util.ReadKV3(folder_name + '\\' + name);
+                        console.log(data);
                         break;
                     }
                 }

@@ -411,29 +411,157 @@ exports.GetFileInfo = GetFileInfo;
 function ReadKV3(path) {
     let kv3_data = fs.readFileSync(path, 'utf-8');
     const rows = kv3_data.split(os.EOL);
-    let obj = ReadTable(0);
-    function ReadTable(start_line) {
+    for (let i = 0; i < rows.length; i++) {
+        rows[i] = rows[i] + '\n';
+    }
+    let [obj, line] = ReadTable();
+    function ReadTable(start_line = 0) {
+        let table = {};
         for (let i = start_line; i < rows.length; i++) {
+            if (rows[i].search(/\}/) !== -1) {
+                return [table, i];
+            }
             // 字符类型的值
-            let table = {};
             if (rows[i].search(/.* = ".*"/) !== -1) {
                 let kv = rows[i].replace(/\t/g, '').split(' = ');
                 let key = kv[0];
-                let value = kv[1].replace(/"/g, '');
+                let value = kv[1].replace(/"/g, '').replace(/\n/, '');
                 table[key] = value;
             }
             // 数字类型的值
             if (rows[i].search(/.* = -?\d+\.\d+/) !== -1) {
                 let kv = rows[i].replace(/\t/g, '').split(' = ');
                 let key = kv[0];
-                let value = kv[1];
+                let value = kv[1].replace(/\n/, '');
                 table[key] = value;
             }
-            // array类型的值
-            if (rows[i].search(/.* = -?\d+\.\d+/) !== -1) {
+            // object或array类型的值
+            if (rows[i].search(/\t*.* = \n/) !== -1) {
+                let key = rows[i].replace(/\t/g, '').split(' = ')[0];
+                // array
+                if (rows[i + 1].search(/\[/) !== -1) {
+                    let [value, new_line] = ReadArray(i + 1);
+                    i = new_line;
+                    table[key] = value;
+                }
+                // object
+                if (rows[i + 1].search(/\{/) !== -1) {
+                    let [value, new_line] = ReadTable(i + 1);
+                    i = new_line;
+                    table[key] = value;
+                }
             }
         }
     }
+    function ReadArray(start_line) {
+        let arr = [];
+        for (let i = start_line; i < rows.length; i++) {
+            if (rows[i].search(/\[/) !== -1) {
+            }
+            if (rows[i].search(/\]/) !== -1) {
+                return [arr, i];
+            }
+            // float
+            if (rows[i].search(/-?\d+\.\d+/) !== -1) {
+                let value = rows[i].match(/-?\d+\.\d+/);
+                arr.push(value[0]);
+            }
+            // string
+            if (rows[i].search(/".*",/) !== -1) {
+                let value = rows[i].split('"');
+                arr.push(value[1]);
+            }
+        }
+    }
+    return obj;
 }
 exports.ReadKV3 = ReadKV3;
+// export function ReadKV2(kvdata:string) {
+// 	for (let i = 0; i < kvdata.length; i++) {
+// 		let substr = kvdata[i];
+// 		if (substr === '"') {
+// 			let [data, new_index] = ReadValue(i);
+// 			i = new_index;
+// 			continue;
+// 		}
+// 		if (substr === '{') {
+// 			let [data, new_index] = ReadTable(i);
+// 		}
+// 	}
+// 	function ReadValue(start_index:number):any {
+// 		let data = '';
+// 		for (let i = start_index + 1; i < kvdata.length; i++) {
+// 			let substr = kvdata[i];
+// 			if (substr === '"') {
+// 				return [data, i];
+// 			}
+// 			data += substr;
+// 		}
+// 	}
+// 	function ReadTable(start_index:number):any {
+// 	}
+// }
+function ReadKV2(kvdata) {
+    kvdata = kvdata.replace(/\t/g, '').replace(' ', '').replace(/\n/g, '');
+    for (let i = 0; i < kvdata.length; i++) {
+        let substr = kvdata[i];
+        if (substr === '"') {
+            let [data, new_index] = ReadKeyValue(i);
+            i = new_index;
+            continue;
+        }
+        if (substr === '{') {
+            let [data, new_index] = ReadTable(i);
+        }
+    }
+    function ReadKeyValue(start_index) {
+        let state = 'NONE';
+        let kv = {};
+        for (let i = start_index; i < kvdata.length; i++) {
+            let substr = kvdata[i];
+            // 进入key
+            if (substr === '"' && state === 'NONE') {
+                kv.key = '';
+                state = 'KEY';
+                continue;
+            }
+            // 结束key
+            if (substr === '"' && state === 'KEY') {
+                // kv.key = data;
+                // 如果下一个字符是{则是table否则是value
+                if (kvdata[i + 1] === '{') {
+                    state = 'TOTABLE';
+                }
+                else if (kvdata[i + 1] === '"') {
+                    kv.value = '';
+                    state = 'TOVALUE';
+                }
+                else {
+                    console.log(kvdata[i + 1]);
+                }
+                continue;
+            }
+            // 进入value
+            if (substr === '"' && state === 'TOVALUE') {
+                state = 'KEY';
+                continue;
+            }
+            if (substr === '"' && state === 'VALUE') {
+                state = 'KEY';
+                continue;
+            }
+            if (state === 'KEY') {
+                kv.key += substr;
+                continue;
+            }
+            if (state === 'VALUE') {
+                kv.value += substr;
+                continue;
+            }
+        }
+    }
+    function ReadTable(start_index) {
+    }
+}
+exports.ReadKV2 = ReadKV2;
 //# sourceMappingURL=util.js.map
