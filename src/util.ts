@@ -573,6 +573,10 @@ export function ReadKV2(kvdata:string) {
 				// 如果下一个字符是{则是table否则是value
 				if (kvdata[i + 1] === '{') {
 					state = 'TOTABLE';
+					let [data, new_index] = ReadTable(i);
+					i = new_index;
+					kv.value = data;
+					continue;
 				} else if (kvdata[i + 1] === '"') {
 					kv.value = '';
 					state = 'TOVALUE';
@@ -597,6 +601,10 @@ export function ReadKV2(kvdata:string) {
 			if (state === 'VALUE') {
 				kv.value += substr;
 				continue;
+			}
+			// 结束value
+			if (substr === '"' && state === 'KEY') {
+				return [kv,i];
 			}
 		}
 	}
