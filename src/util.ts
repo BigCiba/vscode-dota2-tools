@@ -517,98 +517,84 @@ export function ReadKV3(path: string):any {
 	}
 	return obj;
 }
-// export function ReadKV2(kvdata:string) {
-// 	for (let i = 0; i < kvdata.length; i++) {
-// 		let substr = kvdata[i];
-// 		if (substr === '"') {
-// 			let [data, new_index] = ReadValue(i);
-// 			i = new_index;
-// 			continue;
-// 		}
-// 		if (substr === '{') {
-// 			let [data, new_index] = ReadTable(i);
-// 		}
-// 	}
-// 	function ReadValue(start_index:number):any {
-// 		let data = '';
-// 		for (let i = start_index + 1; i < kvdata.length; i++) {
-// 			let substr = kvdata[i];
-// 			if (substr === '"') {
-// 				return [data, i];
-// 			}
-// 			data += substr;
-// 		}
-// 	}
-// 	function ReadTable(start_index:number):any {
-
-// 	}
-// }
-export function ReadKV2(kvdata:string) {
-	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\n/g,'');
+// 读取kv2格式为object
+export function ReadKV2(kvdata:string):any {
+	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
+	let kv_obj:any = {};
 	for (let i = 0; i < kvdata.length; i++) {
 		let substr = kvdata[i];
 		if (substr === '"') {
-			let [data, new_index] = ReadKeyValue(i);
-			i = new_index;
+			let key:any;
+			let value:any;
+			[key,value,i] = ReadKeyValue(i);
+			kv_obj[key] = value;
 			continue;
 		}
-		if (substr === '{') {
-			let [data, new_index] = ReadTable(i);
-		}
 	}
+	return kv_obj;
+	// 读取一对键对
 	function ReadKeyValue(start_index:number):any {
+		let key:string = '';
+		let value:any;
 		let state = 'NONE';
-		let kv:any = {};
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
-			// 进入key
+			// 读取key
 			if (substr === '"' && state === 'NONE') {
-				kv.key = '';
-				state = 'KEY';
+				[key,i] = GetContent(i);
+				state = 'VALUE';
 				continue;
 			}
-			// 结束key
-			if (substr === '"' && state === 'KEY') {
-				// kv.key = data;
-				// 如果下一个字符是{则是table否则是value
-				if (kvdata[i + 1] === '{') {
-					state = 'TOTABLE';
-					let [data, new_index] = ReadTable(i);
-					i = new_index;
-					kv.value = data;
-					continue;
-				} else if (kvdata[i + 1] === '"') {
-					kv.value = '';
-					state = 'TOVALUE';
-				} else {
-					console.log(kvdata[i + 1]);
-				}
-				continue;
-			}
-			// 进入value
-			if (substr === '"' && state === 'TOVALUE') {
-				state = 'KEY';
-				continue;
-			}
+			// 读取value
 			if (substr === '"' && state === 'VALUE') {
-				state = 'KEY';
+				[value,i] = GetContent(i);
+				return [key,value,i];
+			}
+			// 读取table
+			if (substr === '{' && state === 'VALUE') {
+				[value,i] = GetTable(i);
+				return [key,value,i];
+			}
+		}
+	}
+	function GetTable(start_index:number):any {
+		let kv:any = {};
+		let state = 'NONE';
+		for (let i = start_index; i < kvdata.length; i++) {
+			let substr = kvdata[i];
+			if (substr === '{' && state === 'NONE') {
+				state = 'READ';
 				continue;
 			}
-			if (state === 'KEY') {
-				kv.key += substr;
+			if (substr === '"' && state === 'READ') {
+				let key:any;
+				let value:any;
+				[key,value,i] = ReadKeyValue(i);
+				kv[key] = value;
 				continue;
 			}
-			if (state === 'VALUE') {
-				kv.value += substr;
-				continue;
-			}
-			// 结束value
-			if (substr === '"' && state === 'KEY') {
+			if (substr === '}' && state === 'READ') {
 				return [kv,i];
 			}
 		}
 	}
-	function ReadTable(start_index:number):any {
-		
+	// 获取引号里的内容
+	function GetContent(start_index:number):any {
+		let content:string = '';
+		let state = 'NONE';
+		for (let i = start_index; i < kvdata.length; i++) {
+			let substr = kvdata[i];
+			if (substr === '"' && state === 'NONE') {
+				state = 'READ';
+				continue;
+			}
+			if (state === 'READ') {
+				if (substr === '"') {
+					return [content,i];
+				} else {
+					content += substr;
+				}
+			}
+		}
 	}
 }
