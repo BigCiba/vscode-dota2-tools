@@ -518,7 +518,7 @@ export function ReadKV3(path: string):any {
 	return obj;
 }
 // 读取kv2格式为object
-export function ReadKV2(kvdata:string):any {
+export function ReadKeyValue2(kvdata:string):any {
 	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
 	let kv_obj:any = {};
 	for (let i = 0; i < kvdata.length; i++) {
@@ -593,6 +593,113 @@ export function ReadKV2(kvdata:string):any {
 					return [content,i];
 				} else {
 					content += substr;
+				}
+			}
+		}
+	}
+}
+// 读取kv3格式为object
+export function ReadKeyValue3(kvdata:string):any {
+	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
+	let kv_obj:any = {};
+	for (let i = 0; i < kvdata.length; i++) {
+		let substr = kvdata[i];
+		if (substr === '{') {
+			let [obj, new_line] = ReadTable(i);
+			kv_obj.push(obj);
+			i = new_line;
+			continue;
+		}
+	}
+	return kv_obj;
+	// 读取一对中括号里面的内容
+	function ReadTable(start_index:number):any {
+		let kv:any = {};
+		let key:string = '';
+		let value:string = '';
+		let state = 'NONE';
+		for (let i = start_index; i < kvdata.length; i++) {
+			let substr = kvdata[i];
+			if (substr === '{') {
+				state = 'KEY';
+				continue;
+			}
+			if (substr === '}') {
+				return [key, i];
+			}
+			if (state === 'KEY') {
+				if (substr === '=') {
+					state = 'VALUE';
+					continue;
+				} else {
+					key += substr;
+					continue;
+				}
+			}
+			if (state === 'VALUE') {
+				if (substr === '"') {
+					state = 'STRING';
+					continue;
+				}
+				if (substr === '{') {
+					// 读表
+					let [obj, new_line] = ReadTable(i);
+					kv[key] = obj;
+					key = '';
+					value = '';
+					i = new_line;
+					continue;
+				}
+				if (substr === '[') {
+					// 读数组
+					let [obj, new_line] = ReadTable(i);
+					kv[key] = obj;
+					key = '';
+					value = '';
+					i = new_line;
+					continue;
+				}
+			}
+			if (state === 'STRING') {
+				if (substr === '"') {
+					kv[key] = value;
+					key = '';
+					value = '';
+					continue;
+				} else {
+					value += substr;
+					continue;
+				}
+			}
+		}
+	}
+	// 读数组
+	function ReadArray(start_index:number) {
+		let arr:any = {};
+		let state = 'NONE';
+		let value = '';
+		for (let i = start_index; i < kvdata.length; i++) {
+			let substr = kvdata[i];
+			if (substr === '[') {
+				state = 'VALUE';
+				continue;
+			}
+			if (substr === ']') {
+				return [arr, i];
+			}
+			if (state === 'VALUE' && substr === '"') {
+				state = 'STRING';
+				continue;
+			}
+			if (state === 'STRING') {
+				if (substr === '"') {
+					arr.push(value);
+					value = '';
+					i++;
+					continue;
+				} else {
+					value += substr;
+					continue;
 				}
 			}
 		}

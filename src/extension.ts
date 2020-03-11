@@ -1196,7 +1196,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if (root_path === undefined) {
 			return;
 		}
-		let kv = util.ReadKV2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/game_sounds_heroes/game_sounds_luna.vsndevts', 'utf-8'));
+		let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/game_sounds_heroes/game_sounds_luna.vsndevts', 'utf-8'));
 		console.log(kv);
 		
 		return;
