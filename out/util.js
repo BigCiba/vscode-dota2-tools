@@ -14,6 +14,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const child_process_1 = require("child_process");
+const util_1 = require("util");
 // 获取根目录
 function GetRootPath() {
     const folders = vscode.workspace.workspaceFolders;
@@ -487,6 +488,33 @@ function DirExists(dir) {
     });
 }
 exports.DirExists = DirExists;
+// 判断object里是否有某个属性
+function ObjectHasKey(obj, _key) {
+    let bHas = false;
+    for (const key in obj) {
+        const value = obj[key];
+        if (key === _key) {
+            return true;
+        }
+        else if (util_1.isObject(value)) {
+            bHas = ObjectHasKey(value, _key);
+            if (bHas === true) {
+                return true;
+            }
+        }
+    }
+    return bHas;
+}
+exports.ObjectHasKey = ObjectHasKey;
+// 判断字符串是否是数字
+function IsNumber(s) {
+    var reg = /^[0-9]+.?[0-9]*$/;
+    if (reg.test(s)) {
+        return true;
+    }
+    return false;
+}
+exports.IsNumber = IsNumber;
 // 弃用
 function ReadKV3(path) {
     let kv3_data = fs.readFileSync(path, 'utf-8');
@@ -720,7 +748,7 @@ function ReadKeyValue3(kvdata) {
                     state = 'STRING';
                     continue;
                 }
-                if (substr === '{') {
+                else if (substr === '{') {
                     // 读表
                     let [obj, new_line] = ReadTable(i);
                     kv[key] = obj;
@@ -730,7 +758,7 @@ function ReadKeyValue3(kvdata) {
                     state = 'KEY';
                     continue;
                 }
-                if (substr === '[') {
+                else if (substr === '[') {
                     // 读数组
                     let [obj, new_line] = ReadArray(i);
                     kv[key] = obj;
@@ -739,6 +767,9 @@ function ReadKeyValue3(kvdata) {
                     i = new_line;
                     state = 'KEY';
                     continue;
+                }
+                else if (IsNumber(substr) === true || substr === '-') {
+                    state = 'NUMBER';
                 }
             }
             if (state === 'STRING') {
@@ -751,6 +782,20 @@ function ReadKeyValue3(kvdata) {
                 }
                 else {
                     value += substr;
+                    continue;
+                }
+            }
+            if (state === 'NUMBER') {
+                if (IsNumber(substr) === true || substr === '.') {
+                    value += substr;
+                    continue;
+                }
+                else {
+                    kv[key] = value;
+                    key = '';
+                    value = '';
+                    i--;
+                    state = 'KEY';
                     continue;
                 }
             }

@@ -4,6 +4,7 @@ import * as os from 'os';
 import * as path from 'path';
 import {exec} from 'child_process';
 import { setFlagsFromString } from 'v8';
+import { isObject } from 'util';
 
 // 获取根目录
 export function GetRootPath():string|undefined {
@@ -450,6 +451,30 @@ export async function DirExists(dir: string){
 	}
 	return mkdirStatus;
 }
+// 判断object里是否有某个属性
+export function ObjectHasKey(obj:any,_key:string):boolean {
+	let bHas = false;
+	for (const key in obj) {
+		const value = obj[key];
+		if (key === _key) {
+			return true;
+		} else if (isObject(value)) {
+			bHas = ObjectHasKey(value,_key);
+			if (bHas === true) {
+				return true;
+			}
+		}
+	}
+	return bHas;
+}
+// 判断字符串是否是数字
+export function IsNumber (s:string):boolean {
+	var reg = /^[0-9]+.?[0-9]*$/;
+	if (reg.test(s)) {
+		return true;
+	}
+	return false;
+}
 // 弃用
 export function ReadKV3(path: string):any {
 	let kv3_data = fs.readFileSync(path, 'utf-8');
@@ -678,8 +703,7 @@ export function ReadKeyValue3(kvdata:string):any {
 				if (substr === '"') {
 					state = 'STRING';
 					continue;
-				}
-				if (substr === '{') {
+				} else if (substr === '{') {
 					// 读表
 					let [obj, new_line] = ReadTable(i);
 					kv[key] = obj;
@@ -688,8 +712,7 @@ export function ReadKeyValue3(kvdata:string):any {
 					i = new_line;
 					state = 'KEY';
 					continue;
-				}
-				if (substr === '[') {
+				} else if (substr === '[') {
 					// 读数组
 					let [obj, new_line] = ReadArray(i);
 					kv[key] = obj;
@@ -698,6 +721,8 @@ export function ReadKeyValue3(kvdata:string):any {
 					i = new_line;
 					state = 'KEY';
 					continue;
+				} else if (IsNumber(substr) === true || substr === '-') {
+					state = 'NUMBER';
 				}
 			}
 			if (state === 'STRING') {
@@ -709,6 +734,19 @@ export function ReadKeyValue3(kvdata:string):any {
 					continue;
 				} else {
 					value += substr;
+					continue;
+				}
+			}
+			if (state === 'NUMBER') {
+				if (IsNumber(substr) === true || substr === '.') {
+					value += substr;
+					continue;
+				} else {
+					kv[key] = value;
+					key = '';
+					value = '';
+					i--;
+					state = 'KEY';
 					continue;
 				}
 			}

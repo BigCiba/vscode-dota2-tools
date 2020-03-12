@@ -1217,36 +1217,42 @@ function activate(context) {
         if (root_path === undefined) {
             return;
         }
-        // let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/music/yaskar_01/soundevents_stingers.vsndevts', 'utf-8'));
+        // let kv = util.ReadKeyValue3(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/game_sounds.vsndevts', 'utf-8'));
         // console.log(kv);
         // return;
         const sound_path = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
-        let json_obj = yield ReadFolder(sound_path);
+        let json_obj = {};
+        yield ReadFolder(sound_path);
         fs.writeFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', JSON.stringify(json_obj));
-        console.log(json_obj);
+        // console.log(json_obj);
         function ReadFolder(folder_name) {
             return __awaiter(this, void 0, void 0, function* () {
-                let json_obj = {};
-                var folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
+                let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
                 for (let i = 0; i < folders.length; i++) {
                     const [name, is_directory] = folders[i];
+                    if (name === undefined) {
+                        continue;
+                    }
                     if (Number(is_directory) === vscode.FileType.Directory) {
-                        json_obj = Object.assign(json_obj, yield ReadFolder(folder_name + '/' + name));
+                        yield ReadFolder(folder_name + '/' + name);
                     }
                     else if (Number(is_directory) === vscode.FileType.File) {
+                        console.log(folder_name + '/' + name);
                         let kvdata = fs.readFileSync(folder_name + '/' + name, 'utf-8');
                         if (kvdata[0] === '"') {
                             let kv = util.ReadKeyValue2(kvdata);
                             for (const key in kv) {
                                 const value = kv[key];
                                 if (value['0'] === undefined) {
-                                    let sound = value.operator_stacks.update_stack.reference_operator.operator_variables.vsnd_files.value;
-                                    if (sound !== undefined) {
-                                        let sound_arr = [];
-                                        for (const k in sound) {
-                                            sound_arr.push(sound[k]);
+                                    if (util.ObjectHasKey(value, 'vsnd_files') === true) {
+                                        let sound = value.operator_stacks.update_stack.reference_operator.operator_variables.vsnd_files.value;
+                                        if (sound !== undefined) {
+                                            let sound_arr = [];
+                                            for (const k in sound) {
+                                                sound_arr.push(sound[k]);
+                                            }
+                                            json_obj[key] = sound_arr;
                                         }
-                                        json_obj[key] = sound_arr;
                                     }
                                 }
                                 else {
@@ -1267,7 +1273,6 @@ function activate(context) {
                         }
                     }
                 }
-                return json_obj;
             });
         }
     }));
