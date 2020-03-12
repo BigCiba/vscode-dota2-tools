@@ -1196,18 +1196,30 @@ export function activate(context: vscode.ExtensionContext) {
 		if (root_path === undefined) {
 			return;
 		}
-		// let kv = util.ReadKeyValue3(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/game_sounds.vsndevts', 'utf-8'));
-		// console.log(kv);
-		// return;
+		let obj_data:any = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
+		const quickPick = vscode.window.createQuickPick();
+		quickPick.canSelectMany = false;
+		quickPick.ignoreFocusOut = true;
+		// quickPick.step = 1;
+		// quickPick.totalSteps = 3;
+		quickPick.placeholder = '皮肤名字';
+		quickPick.title = '输入皮肤名字';
+
+		// 添加选项
+		var items = new Array;
+		for (const key in obj_data) {
+			const element = obj_data[key];
+		}
+		quickPick.items = items;
+
+		quickPick.show();
 		
-		const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
+		/*const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
 		
 		let json_obj:any = {};
 		await ReadFolder(sound_path);
 		fs.writeFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json',JSON.stringify(json_obj));
-		// console.log(json_obj);
-		
-		
+
 		async function ReadFolder(folder_name:string) {
 			let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
 			for (let i: number = 0; i < folders.length; i++) {
@@ -1252,7 +1264,7 @@ export function activate(context: vscode.ExtensionContext) {
 					}
 				}
 			}
-		}
+		}*/
 	});
 
 	// 注册指令
