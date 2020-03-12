@@ -487,6 +487,7 @@ function DirExists(dir) {
     });
 }
 exports.DirExists = DirExists;
+// 弃用
 function ReadKV3(path) {
     let kv3_data = fs.readFileSync(path, 'utf-8');
     const rows = kv3_data.split(os.EOL);
@@ -555,8 +556,8 @@ function ReadKV3(path) {
     return obj;
 }
 exports.ReadKV3 = ReadKV3;
-// 读取kv2格式为object
-function ReadKV2(kvdata) {
+// 读取kv2格式为object(兼容kv3)
+function ReadKeyValue2(kvdata) {
     kvdata = kvdata.replace(/\t/g, '').replace(' ', '').replace(/\r\n/g, '');
     let kv_obj = {};
     for (let i = 0; i < kvdata.length; i++) {
@@ -604,6 +605,13 @@ function ReadKV2(kvdata) {
                 state = 'READ';
                 continue;
             }
+            // 插入kv3
+            if (substr === '<' && state === 'READ') {
+                let [block, new_index] = GetKv3Block(i);
+                kv = ReadKeyValue3(block);
+                i = new_index;
+                continue;
+            }
             if (substr === '"' && state === 'READ') {
                 let key;
                 let value;
@@ -636,6 +644,168 @@ function ReadKV2(kvdata) {
             }
         }
     }
+    // 获得kv3块
+    function GetKv3Block(start_index) {
+        let block = '';
+        let left = 0;
+        let right = 0;
+        let state = 'NONE';
+        for (let i = start_index; i < kvdata.length; i++) {
+            let substr = kvdata[i];
+            if (state === 'NONE' && substr === '<') {
+                state = 'HEAD';
+                continue;
+            }
+            if (state === 'HEAD') {
+                if (substr === '>') {
+                    state = 'NONE';
+                }
+                continue;
+            }
+            block += substr;
+            if (substr === '{') {
+                left++;
+            }
+            if (substr === '}') {
+                right++;
+                if (left === right) {
+                    return [block, i];
+                }
+            }
+        }
+    }
 }
-exports.ReadKV2 = ReadKV2;
+exports.ReadKeyValue2 = ReadKeyValue2;
+// 读取kv3格式为object
+function ReadKeyValue3(kvdata) {
+    kvdata = kvdata.replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
+    let kv_obj = [];
+    for (let i = 0; i < kvdata.length; i++) {
+        let substr = kvdata[i];
+        if (substr === '{') {
+            let [obj, new_line] = ReadTable(i);
+            kv_obj.push(obj);
+            i = new_line;
+            continue;
+        }
+    }
+    return kv_obj;
+    // 读取一对中括号里面的内容
+    function ReadTable(start_index) {
+        let kv = {};
+        let key = '';
+        let value = '';
+        let state = 'NONE';
+        for (let i = start_index; i < kvdata.length; i++) {
+            let substr = kvdata[i];
+            if (substr === '{' && state === 'NONE') {
+                state = 'KEY';
+                continue;
+            }
+            if (substr === '}') {
+                return [kv, i];
+            }
+            if (state === 'KEY') {
+                if (substr === '=') {
+                    state = 'VALUE';
+                    continue;
+                }
+                else {
+                    key += substr;
+                    continue;
+                }
+            }
+            if (state === 'VALUE') {
+                if (substr === '"') {
+                    state = 'STRING';
+                    continue;
+                }
+                if (substr === '{') {
+                    // 读表
+                    let [obj, new_line] = ReadTable(i);
+                    kv[key] = obj;
+                    key = '';
+                    value = '';
+                    i = new_line;
+                    state = 'KEY';
+                    continue;
+                }
+                if (substr === '[') {
+                    // 读数组
+                    let [obj, new_line] = ReadArray(i);
+                    kv[key] = obj;
+                    key = '';
+                    value = '';
+                    i = new_line;
+                    state = 'KEY';
+                    continue;
+                }
+            }
+            if (state === 'STRING') {
+                if (substr === '"') {
+                    kv[key] = value;
+                    key = '';
+                    value = '';
+                    state = 'KEY';
+                    continue;
+                }
+                else {
+                    value += substr;
+                    continue;
+                }
+            }
+        }
+    }
+    // 读数组
+    function ReadArray(start_index) {
+        let arr = [];
+        let state = 'NONE';
+        let value = '';
+        for (let i = start_index; i < kvdata.length; i++) {
+            let substr = kvdata[i];
+            if (substr === '[' && state === 'NONE') {
+                state = 'VALUE';
+                continue;
+            }
+            if (substr === ']') {
+                return [arr, i];
+            }
+            if (state === 'VALUE') {
+                if (substr === '"') {
+                    state = 'STRING';
+                    continue;
+                }
+                else {
+                    state = 'NUMBER';
+                }
+            }
+            if (state === 'STRING') {
+                if (substr === '"') {
+                    arr.push(value);
+                    value = '';
+                    i++;
+                    state = 'VALUE';
+                    continue;
+                }
+                else {
+                    value += substr;
+                    continue;
+                }
+            }
+            if (state === 'NUMBER') {
+                if (substr === ',') {
+                    arr.push(value);
+                    value = '';
+                    state = 'VALUE';
+                    continue;
+                }
+                else {
+                    value += substr;
+                    continue;
+                }
+            }
+        }
+    }
+}
+exports.ReadKeyValue3 = ReadKeyValue3;
 //# sourceMappingURL=util.js.map

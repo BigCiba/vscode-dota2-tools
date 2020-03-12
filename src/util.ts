@@ -450,6 +450,7 @@ export async function DirExists(dir: string){
 	}
 	return mkdirStatus;
 }
+// 弃用
 export function ReadKV3(path: string):any {
 	let kv3_data = fs.readFileSync(path, 'utf-8');
 	const rows = kv3_data.split(os.EOL);
@@ -517,7 +518,7 @@ export function ReadKV3(path: string):any {
 	}
 	return obj;
 }
-// 读取kv2格式为object
+// 读取kv2格式为object(兼容kv3)
 export function ReadKeyValue2(kvdata:string):any {
 	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
 	let kv_obj:any = {};
@@ -566,6 +567,13 @@ export function ReadKeyValue2(kvdata:string):any {
 				state = 'READ';
 				continue;
 			}
+			// 插入kv3
+			if (substr === '<' && state === 'READ') {
+				let [block,new_index] = GetKv3Block(i);
+				kv = ReadKeyValue3(block);
+				i = new_index;
+				continue;
+			}
 			if (substr === '"' && state === 'READ') {
 				let key:any;
 				let value:any;
@@ -597,11 +605,41 @@ export function ReadKeyValue2(kvdata:string):any {
 			}
 		}
 	}
+	// 获得kv3块
+	function GetKv3Block(start_index:number):any {
+		let block = '';
+		let left = 0;
+		let right = 0;
+		let state = 'NONE';
+		for (let i = start_index; i < kvdata.length; i++) {
+			let substr = kvdata[i];
+			if (state === 'NONE' && substr === '<') {
+				state = 'HEAD';
+				continue;
+			}
+			if (state === 'HEAD') {
+				if (substr === '>') {
+					state = 'NONE';
+				}
+				continue;
+			}
+			block += substr;
+			if (substr === '{') {
+				left++;
+			}
+			if (substr === '}') {
+				right++;
+				if (left === right) {
+					return [block,i];
+				}
+			}
+		}
+	}
 }
 // 读取kv3格式为object
 export function ReadKeyValue3(kvdata:string):any {
-	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
-	let kv_obj:any = {};
+	kvdata = kvdata.replace(/\t/g,'').replace(/\s+/g,'').replace(/\r\n/g,'');
+	let kv_obj:any = [];
 	for (let i = 0; i < kvdata.length; i++) {
 		let substr = kvdata[i];
 		if (substr === '{') {
@@ -620,12 +658,12 @@ export function ReadKeyValue3(kvdata:string):any {
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
-			if (substr === '{') {
+			if (substr === '{' && state === 'NONE') {
 				state = 'KEY';
 				continue;
 			}
 			if (substr === '}') {
-				return [key, i];
+				return [kv, i];
 			}
 			if (state === 'KEY') {
 				if (substr === '=') {
@@ -648,15 +686,17 @@ export function ReadKeyValue3(kvdata:string):any {
 					key = '';
 					value = '';
 					i = new_line;
+					state = 'KEY';
 					continue;
 				}
 				if (substr === '[') {
 					// 读数组
-					let [obj, new_line] = ReadTable(i);
+					let [obj, new_line] = ReadArray(i);
 					kv[key] = obj;
 					key = '';
 					value = '';
 					i = new_line;
+					state = 'KEY';
 					continue;
 				}
 			}
@@ -665,6 +705,7 @@ export function ReadKeyValue3(kvdata:string):any {
 					kv[key] = value;
 					key = '';
 					value = '';
+					state = 'KEY';
 					continue;
 				} else {
 					value += substr;
@@ -674,28 +715,44 @@ export function ReadKeyValue3(kvdata:string):any {
 		}
 	}
 	// 读数组
-	function ReadArray(start_index:number) {
-		let arr:any = {};
+	function ReadArray(start_index:number):any {
+		let arr:any = [];
 		let state = 'NONE';
 		let value = '';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
-			if (substr === '[') {
+			if (substr === '[' && state === 'NONE') {
 				state = 'VALUE';
 				continue;
 			}
 			if (substr === ']') {
 				return [arr, i];
 			}
-			if (state === 'VALUE' && substr === '"') {
-				state = 'STRING';
-				continue;
+			if (state === 'VALUE') {
+				if (substr === '"') {
+					state = 'STRING';
+					continue;
+				} else {
+					state = 'NUMBER';
+				}
 			}
 			if (state === 'STRING') {
 				if (substr === '"') {
 					arr.push(value);
 					value = '';
 					i++;
+					state = 'VALUE';
+					continue;
+				} else {
+					value += substr;
+					continue;
+				}
+			}
+			if (state === 'NUMBER') {
+				if (substr === ',') {
+					arr.push(value);
+					value = '';
+					state = 'VALUE';
 					continue;
 				} else {
 					value += substr;
