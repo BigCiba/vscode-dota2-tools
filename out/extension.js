@@ -496,7 +496,26 @@ function activate(context) {
             }
         });
     }
-    WatchVersion();
+    // WatchVersion();
+    // 自动替换音效文件
+    // let obj_data:any = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
+    // vscode.workspace.onDidChangeTextDocument((t)=>{
+    // 	let change_text = t.contentChanges[0].text;
+    // 	if (change_text.search(RegExp(/sounds.*vsnd/)) !== -1) {
+    // 		for (const key in obj_data) {
+    // 			const element = obj_data[key];
+    // 			for (let i = 0; i < element.length; i++) {
+    // 				const sound = element[i];
+    // 				if (sound === change_text) {
+    // 					vscode.window.activeTextEditor?.edit(editBuilder =>{
+    // 						let range = new vscode.Range(t.contentChanges[0].range.start, new vscode.Position(t.contentChanges[0].range.start.line, t.contentChanges[0].range.start.character + change_text.length));
+    // 						editBuilder.replace(range, key);
+    // 					});
+    // 				}
+    // 			}
+    // 		}
+    // 	}
+    // });
     // 添加英雄基本文件
     let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
         let root_path = GetRootPath();
@@ -1218,20 +1237,27 @@ function activate(context) {
             return;
         }
         let obj_data = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
-        const quickPick = vscode.window.createQuickPick();
-        quickPick.canSelectMany = false;
-        quickPick.ignoreFocusOut = true;
+        const quick_pick = vscode.window.createQuickPick();
+        quick_pick.canSelectMany = false;
+        quick_pick.ignoreFocusOut = true;
         // quickPick.step = 1;
         // quickPick.totalSteps = 3;
-        quickPick.placeholder = '皮肤名字';
-        quickPick.title = '输入皮肤名字';
+        // quick_pick.placeholder = '皮肤名字';
+        // quick_pick.title = '输入皮肤名字';
         // 添加选项
         var items = new Array;
         for (const key in obj_data) {
             const element = obj_data[key];
+            for (let i = 0; i < element.length; i++) {
+                const sound = element[i];
+                items.push({
+                    label: sound,
+                    description: key,
+                });
+            }
         }
-        quickPick.items = items;
-        quickPick.show();
+        quick_pick.items = items;
+        quick_pick.show();
         /*const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
         
         let json_obj:any = {};
