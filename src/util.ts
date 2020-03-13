@@ -4,7 +4,7 @@ import * as os from 'os';
 import * as path from 'path';
 import {exec} from 'child_process';
 import { setFlagsFromString } from 'v8';
-import { isObject } from 'util';
+import { isObject, log } from 'util';
 
 // 获取根目录
 export function GetRootPath():string|undefined {
@@ -82,11 +82,7 @@ export function GetWebViewContent(context: any, templatePath: any) {
 	});
 	return html;
 }
-/**
- * 取出中括号内的内容
- * @param text
- * @returns {string}
- */
+// 取出中括号内的内容
 export function GetBracketStr(text: string): string {
 	let result = '';
 	if (text === ''){
@@ -101,11 +97,7 @@ export function GetBracketStr(text: string): string {
 	return result;
 }
 
-/**
- * 取出小括号内的内容
- * @param text
- * @returns {string}
- */
+// 取出小括号内的内容
 export function GetParenthesesStr(text: string): string {
 	let result = '';
 	if (text === ''){
@@ -545,6 +537,7 @@ export function ReadKV3(path: string):any {
 }
 // 读取kv2格式为object(兼容kv3)
 export function ReadKeyValue2(kvdata:string):any {
+	kvdata = RemoveComment(kvdata);
 	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
 	let kv_obj:any = {};
 	for (let i = 0; i < kvdata.length; i++) {
@@ -554,6 +547,10 @@ export function ReadKeyValue2(kvdata:string):any {
 			let value:any;
 			[key,value,i] = ReadKeyValue(i);
 			kv_obj[key] = value;
+			continue;
+		}
+		if (substr === '#' && kvdata.substr(i, 5) === '#base') {
+			i = GetBase(i);
 			continue;
 		}
 	}
@@ -659,6 +656,47 @@ export function ReadKeyValue2(kvdata:string):any {
 				}
 			}
 		}
+	}
+	// #base
+	function GetBase(start_index:number):any {
+		let path = '';
+		let state = 'NONE';
+		for (let i = start_index; i < kvdata.length; i++) {
+			let substr = kvdata[i];
+			if (substr === '#') {
+				state = 'START';
+				continue;
+			}
+			if (substr === '"' && state === 'START') {
+				state = 'READ';
+				continue;
+			}
+			if (state === 'READ') {
+				if (substr === '"') {
+					return i;
+				} else {
+					path += substr;
+					continue;
+				}
+			}
+		}
+	}
+	// 去除注释
+	function RemoveComment(data:string):string {
+		let new_data = '';
+		const rows: string[] = data.split(os.EOL);
+		for(let i = 0; i < rows.length; i++) {
+			const line_text: string = rows[i];
+			for (let char = 0; char < line_text.length; char++) {
+				const substr = line_text[char];
+				if (substr === '/' && line_text[char + 1] === '/') {
+					break;
+				} else {
+					new_data += substr;
+				}
+			}
+		}
+		return new_data;
 	}
 }
 // 读取kv3格式为object
@@ -799,4 +837,30 @@ export function ReadKeyValue3(kvdata:string):any {
 			}
 		}
 	}
+}
+// 读取kv2格式为object（#base）
+export function ReadKeyValueWithBase(full_path:string) {
+	// 获取名字
+	let file_name:string = full_path.split('/').pop() || '';
+	let path = full_path.split(file_name)[0];
+
+	let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
+	let kvtable = kvdata[Object.keys(kvdata)[0]];
+	let kv_string = fs.readFileSync(full_path, 'utf-8');
+	const rows: string[] = kv_string.split(os.EOL);
+	for(let i = 0; i < rows.length; i++) {
+		const line_text: string = rows[i];
+		if (line_text.search(/#base ".*"/) !== -1) {
+			let base_path = line_text.split('"')[1];
+			let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
+			let table = kv[Object.keys(kv)[0]];
+			for (const key in table) {
+				const value = table[key];
+				kvtable[key] = value;
+			}
+		} else {
+			return kvdata;
+		}
+	}
+	
 }

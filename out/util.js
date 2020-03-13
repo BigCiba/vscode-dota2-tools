@@ -102,11 +102,7 @@ function GetWebViewContent(context, templatePath) {
     return html;
 }
 exports.GetWebViewContent = GetWebViewContent;
-/**
- * 取出中括号内的内容
- * @param text
- * @returns {string}
- */
+// 取出中括号内的内容
 function GetBracketStr(text) {
     let result = '';
     if (text === '') {
@@ -121,11 +117,7 @@ function GetBracketStr(text) {
     return result;
 }
 exports.GetBracketStr = GetBracketStr;
-/**
- * 取出小括号内的内容
- * @param text
- * @returns {string}
- */
+// 取出小括号内的内容
 function GetParenthesesStr(text) {
     let result = '';
     if (text === '') {
@@ -586,6 +578,7 @@ function ReadKV3(path) {
 exports.ReadKV3 = ReadKV3;
 // 读取kv2格式为object(兼容kv3)
 function ReadKeyValue2(kvdata) {
+    kvdata = RemoveComment(kvdata);
     kvdata = kvdata.replace(/\t/g, '').replace(' ', '').replace(/\r\n/g, '');
     let kv_obj = {};
     for (let i = 0; i < kvdata.length; i++) {
@@ -595,6 +588,10 @@ function ReadKeyValue2(kvdata) {
             let value;
             [key, value, i] = ReadKeyValue(i);
             kv_obj[key] = value;
+            continue;
+        }
+        if (substr === '#' && kvdata.substr(i, 5) === '#base') {
+            i = GetBase(i);
             continue;
         }
     }
@@ -701,6 +698,49 @@ function ReadKeyValue2(kvdata) {
                 }
             }
         }
+    }
+    // #base
+    function GetBase(start_index) {
+        let path = '';
+        let state = 'NONE';
+        for (let i = start_index; i < kvdata.length; i++) {
+            let substr = kvdata[i];
+            if (substr === '#') {
+                state = 'START';
+                continue;
+            }
+            if (substr === '"' && state === 'START') {
+                state = 'READ';
+                continue;
+            }
+            if (state === 'READ') {
+                if (substr === '"') {
+                    return i;
+                }
+                else {
+                    path += substr;
+                    continue;
+                }
+            }
+        }
+    }
+    // 去除注释
+    function RemoveComment(data) {
+        let new_data = '';
+        const rows = data.split(os.EOL);
+        for (let i = 0; i < rows.length; i++) {
+            const line_text = rows[i];
+            for (let char = 0; char < line_text.length; char++) {
+                const substr = line_text[char];
+                if (substr === '/' && line_text[char + 1] === '/') {
+                    break;
+                }
+                else {
+                    new_data += substr;
+                }
+            }
+        }
+        return new_data;
     }
 }
 exports.ReadKeyValue2 = ReadKeyValue2;
@@ -853,4 +893,30 @@ function ReadKeyValue3(kvdata) {
     }
 }
 exports.ReadKeyValue3 = ReadKeyValue3;
+// 读取kv2格式为object（#base）
+function ReadKeyValueWithBase(full_path) {
+    // 获取名字
+    let file_name = full_path.split('/').pop() || '';
+    let path = full_path.split(file_name)[0];
+    let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
+    let kvtable = kvdata[Object.keys(kvdata)[0]];
+    let kv_string = fs.readFileSync(full_path, 'utf-8');
+    const rows = kv_string.split(os.EOL);
+    for (let i = 0; i < rows.length; i++) {
+        const line_text = rows[i];
+        if (line_text.search(/#base ".*"/) !== -1) {
+            let base_path = line_text.split('"')[1];
+            let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
+            let table = kv[Object.keys(kv)[0]];
+            for (const key in table) {
+                const value = table[key];
+                kvtable[key] = value;
+            }
+        }
+        else {
+            return kvdata;
+        }
+    }
+}
+exports.ReadKeyValueWithBase = ReadKeyValueWithBase;
 //# sourceMappingURL=util.js.map

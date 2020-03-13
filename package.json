@@ -57,8 +57,12 @@
 				"title": "生成API文档"
 			},
 			{
-				"command": "extension.IMBA_VSND_JSON",
-				"title": "生成音效"
+				"command": "dota2tools.vsnd_selector",
+				"title": "vsnd转换",
+				"icon": {
+					"light": "./images/vsnd_light.svg",
+					"dark": "./images/vsnd_dark.svg"
+				}
 			}
 		],
 		"menus": {
@@ -86,6 +90,10 @@
 			"editor/title": [
 				{
 					"command": "extension.AddHero",
+					"group": "navigation"
+				},
+				{
+					"command": "dota2tools.vsnd_selector",
 					"group": "navigation"
 				}
 			]

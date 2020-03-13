@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
+import { Init } from './init';
 import * as watch from 'watch';
 // import { DepNodeProvider, Dependency } from './nodeDependencies';
 import { ApiTreeProvider, Dependency } from './api-tree';
@@ -385,7 +386,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// });
 	}
 	WatchLocalization();
-
+	
 	// 版本控制
 	function WatchVersion() {
 		let root_path:string|undefined = GetRootPath();
@@ -465,6 +466,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	// WatchVersion();
 	
+	Init(context);
 	// 自动替换音效文件
 	// let obj_data:any = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
 	// vscode.workspace.onDidChangeTextDocument((t)=>{
@@ -1211,7 +1213,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 生成音效json
-	let IMBA_VSND_JSON = vscode.commands.registerCommand('extension.IMBA_VSND_JSON', async (uri) => {
+	let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', async (uri) => {
 		let root_path:string|undefined = GetRootPath();
 		if (root_path === undefined) {
 			return;
@@ -1222,8 +1224,8 @@ export function activate(context: vscode.ExtensionContext) {
 		quick_pick.ignoreFocusOut = true;
 		// quickPick.step = 1;
 		// quickPick.totalSteps = 3;
-		// quick_pick.placeholder = '皮肤名字';
-		// quick_pick.title = '输入皮肤名字';
+		quick_pick.placeholder = '*.vsnd';
+		// quick_pick.title = 'vsnd转换';
 
 		// 添加选项
 		var items = new Array;
@@ -1240,58 +1242,93 @@ export function activate(context: vscode.ExtensionContext) {
 		quick_pick.items = items;
 
 		quick_pick.show();
-		
-		/*const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
-		
-		let json_obj:any = {};
-		await ReadFolder(sound_path);
-		fs.writeFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json',JSON.stringify(json_obj));
-
-		async function ReadFolder(folder_name:string) {
-			let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
-			for (let i: number = 0; i < folders.length; i++) {
-				const [name, is_directory] = folders[i];
-				if (name === undefined) {
-					continue;
-				}
-				if (Number(is_directory) === vscode.FileType.Directory){
-					await ReadFolder(folder_name + '/' + name);
-				} else if (Number(is_directory) === vscode.FileType.File) {
-					console.log(folder_name + '/' + name);
-					let kvdata = fs.readFileSync(folder_name + '/' + name, 'utf-8');
-					if (kvdata[0] === '"'){
-						let kv = util.ReadKeyValue2(kvdata);
-						for (const key in kv) {
-							const value = kv[key];
-							if (value['0'] === undefined) {
-								if (util.ObjectHasKey(value,'vsnd_files') === true) {
-									let sound = value.operator_stacks.update_stack.reference_operator.operator_variables.vsnd_files.value;
-									if (sound !== undefined) {
-										let sound_arr = [];
-										for (const k in sound) {
-											sound_arr.push(sound[k]);
-										}
-										json_obj[key] = sound_arr;
-									}
-								}
-							} else {
-								if (value['0'].vsnd_files !== undefined) {
-									json_obj[key] = value['0'].vsnd_files;
-								}
-							}
-						}
-					} else if(kvdata[0] === '{') {
-						let kv = util.ReadKeyValue3(kvdata);
-						for (const key in kv[0]) {
-							const value = kv[0][key];
-							if (value.vsnd_files !== undefined) {
-								json_obj[key] = value.vsnd_files;
-							}
-						}
+		quick_pick.onDidChangeSelection((t)=>{
+			quick_pick.value = t[0].label;
+			vscode.window.activeTextEditor?.edit(editBuilder =>{
+				if (vscode.window.activeTextEditor?.selection.start !== undefined && t[0].description !== undefined) {
+					console.log(vscode.window.activeTextEditor.selection);
+					if (vscode.window.activeTextEditor.selection.start.character === vscode.window.activeTextEditor.selection.end.character) {
+						editBuilder.insert(vscode.window.activeTextEditor?.selection.start, t[0].description);
+					} else {
+						editBuilder.replace(new vscode.Range(vscode.window.activeTextEditor?.selection.start, vscode.window.activeTextEditor?.selection.end), t[0].description);
 					}
+					quick_pick.hide();
 				}
-			}
-		}*/
+			});
+		});
+		
+		// let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/music/dsadowski_01/soundevents_stingers.vsndevts', 'utf-8'));
+		// console.log(kv);
+		// return;
+		// const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
+		
+		// let json_obj:any = {};
+		// await ReadFolder(sound_path);
+		// fs.writeFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json',JSON.stringify(json_obj));
+
+		// async function ReadFolder(folder_name:string) {
+		// 	let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
+		// 	for (let i: number = 0; i < folders.length; i++) {
+		// 		const [name, is_directory] = folders[i];
+		// 		if (name === undefined) {
+		// 			continue;
+		// 		}
+		// 		if (Number(is_directory) === vscode.FileType.Directory){
+		// 			await ReadFolder(folder_name + '/' + name);
+		// 		} else if (Number(is_directory) === vscode.FileType.File) {
+		// 			console.log(folder_name + '/' + name);
+		// 			let kvdata = fs.readFileSync(folder_name + '/' + name, 'utf-8');
+		// 			if (kvdata[0] === '"'){
+		// 				let kv = util.ReadKeyValue2(kvdata);
+		// 				for (const key in kv) {
+		// 					const value = kv[key];
+		// 					if (value['0'] === undefined) {
+		// 						if (util.ObjectHasKey(value,'vsnd_files') === true) {
+		// 							let sound = value.operator_stacks.update_stack.reference_operator.operator_variables.vsnd_files.value;
+		// 							if (sound !== undefined) {
+		// 								if (typeof(sound) === 'string') {
+		// 									json_obj[key] = [sound.replace(/\\\\/g, '/').replace(/\\/g, '/')];
+		// 								} else {
+		// 									let sound_arr = [];
+		// 									for (const k in sound) {
+		// 										sound_arr.push(sound[k].replace(/\\\\/g, '/').replace(/\\/g, '/'));
+		// 									}
+		// 									json_obj[key] = sound_arr;
+		// 								}
+		// 							}
+		// 						}
+		// 					} else {
+		// 						if (value['0'].vsnd_files !== undefined) {
+		// 							if (typeof(value['0'].vsnd_files) === 'string') {
+		// 								json_obj[key] = [value['0'].vsnd_files.replace(/\\\\/g, '/').replace(/\\/g, '/')];
+		// 							} else {
+		// 								json_obj[key] = value['0'].vsnd_files;
+		// 								for (const k in json_obj[key]) {
+		// 									json_obj[key][k] = json_obj[key][k].replace(/\\\\/g, '/').replace(/\\/g, '/');
+		// 								}
+		// 							}
+		// 						}
+		// 					}
+		// 				}
+		// 			} else if(kvdata[0] === '{') {
+		// 				let kv = util.ReadKeyValue3(kvdata);
+		// 				for (const key in kv[0]) {
+		// 					const value = kv[0][key];
+		// 					if (value.vsnd_files !== undefined) {
+		// 						if (typeof(value.vsnd_files) === 'string') {
+		// 							json_obj[key] = [value.vsnd_files.replace(/\\\\/g, '/').replace(/\\/g, '/')];
+		// 						} else {
+		// 							json_obj[key] = value.vsnd_files;
+		// 							for (const k in json_obj[key]) {
+		// 								json_obj[key][k] = json_obj[key][k].replace(/\\\\/g, '/').replace(/\\/g, '/');
+		// 							}
+		// 						}
+		// 					}
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
 	});
 
 	// 注册指令
@@ -1303,7 +1340,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(GenerateAPI);
 	context.subscriptions.push(NoteAPI);
 	context.subscriptions.push(GenerateDocument);
-	context.subscriptions.push(IMBA_VSND_JSON);
+	context.subscriptions.push(VsndSelector);
 }
 
 // this method is called when your extension is deactivated
