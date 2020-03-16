@@ -33,7 +33,7 @@
 				}
 			},
 			{
-				"command": "extension.OpenKV",
+				"command": "dota2tools.OpenKV",
 				"title": "转到技能kv"
 			},
 			{
@@ -69,7 +69,7 @@
 			"editor/context": [
 				{
 					"when": "resource =~ /abilities/ && resourceExtname == '.lua'",
-					"command": "extension.OpenKV",
+					"command": "dota2tools.OpenKV",
 					"group": "navigation"
 				},
 				{

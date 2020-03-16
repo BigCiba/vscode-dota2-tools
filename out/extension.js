@@ -734,27 +734,86 @@ function activate(context) {
         }
     }));
     // 转到kv
-    let OpenKV = vscode.commands.registerCommand('extension.OpenKV', (uri) => __awaiter(this, void 0, void 0, function* () {
-        let root_path = GetRootPath();
-        if (root_path === undefined) {
-            return;
-        }
-        let path_array = uri.fsPath.split('\\');
-        let full_file_name = path_array[path_array.length - 1];
-        let file_name = full_file_name.split('.')[0];
-        let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/npc/abilities/heroes/' + path_array[path_array.length - 2] + '.kv'));
-        for (let line = 0; line < document.lineCount; line++) {
-            const line_text = document.lineAt(line);
-            if (line_text.text.search(file_name) !== -1) {
-                const options = {
-                    selection: line_text.range,
-                    preview: false,
-                    viewColumn: vscode.ViewColumn.Two
-                };
-                vscode.window.showTextDocument(document, options);
-                break;
+    let OpenKV = vscode.commands.registerCommand('dota2tools.OpenKV', (uri) => __awaiter(this, void 0, void 0, function* () {
+        const text_editor = vscode.window.activeTextEditor;
+        if (text_editor !== undefined) {
+            let document = text_editor.document;
+            const fileName = document.fileName;
+            const position = text_editor.selection.start;
+            let word = document.getText(document.getWordRangeAtPosition(position));
+            // 如果是modifier则搜寻技能名（必须同一文件）
+            if (init_1.KV2LUA[word] === undefined) {
+                let kv_string = fs.readFileSync(fileName, 'utf-8');
+                const rows = kv_string.split(os.EOL);
+                for (let i = 0; i < rows.length; i++) {
+                    const line_text = rows[i];
+                    if (/.* = class/.test(line_text) === true && /modifier_.* = class/.test(line_text) === false) {
+                        word = line_text.split('=')[0].replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
+                    }
+                }
+            }
+            if (init_1.KV2LUA[word] !== undefined) {
+                let kv_string = fs.readFileSync(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt', 'utf-8');
+                const rows = kv_string.split(os.EOL);
+                for (let i = 0; i < rows.length; i++) {
+                    const line_text = rows[i];
+                    if (line_text.search(/#base ".*"/) !== -1) {
+                        let base_path = line_text.split('"')[1];
+                        let bFind = GetKVInfo(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/' + base_path, word);
+                        if (bFind !== false && typeof (bFind) === 'number') {
+                            let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/' + base_path));
+                            const options = {
+                                selection: new vscode.Range(new vscode.Position(bFind, 0), new vscode.Position(bFind, 0)),
+                                preview: false,
+                                viewColumn: vscode.ViewColumn.Two
+                            };
+                            vscode.window.showTextDocument(document, options);
+                            break;
+                        }
+                        continue;
+                    }
+                    else {
+                        if (line_text.search(word) !== -1) {
+                            let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt'));
+                            const options = {
+                                selection: new vscode.Range(new vscode.Position(i, 0), new vscode.Position(i, 0)),
+                                preview: false,
+                                viewColumn: vscode.ViewColumn.Two
+                            };
+                            vscode.window.showTextDocument(document, options);
+                            break;
+                        }
+                    }
+                }
             }
         }
+        function GetKVInfo(full_path, word) {
+            let kv_string = fs.readFileSync(full_path, 'utf-8');
+            const rows = kv_string.split(os.EOL);
+            for (let i = 0; i < rows.length; i++) {
+                const line_text = rows[i];
+                if (line_text.search(word) !== -1) {
+                    return i;
+                }
+            }
+            return false;
+        }
+        // let path_array: string[] = uri.fsPath.split('\\');
+        // let full_file_name: string = path_array[path_array.length - 1];
+        // let file_name: string = full_file_name.split('.')[0];
+        // let document: vscode.TextDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/npc/abilities/heroes/' + path_array[path_array.length - 2] + '.kv'));
+        // for (let line = 0; line < document.lineCount; line++) {
+        // 	const line_text: vscode.TextLine = document.lineAt(line);
+        // 	if (line_text.text.search(file_name) !== -1) {
+        // 		const options = {
+        // 			selection: line_text.range,
+        // 			preview: false,
+        // 			viewColumn: vscode.ViewColumn.Two
+        // 		};
+        // 		vscode.window.showTextDocument(document,options);
+        // 		break;
+        // 	}
+        // }
     }));
     // 打开API
     let OpenAPI = vscode.commands.registerCommand('extension.OpenAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
@@ -1266,7 +1325,6 @@ function activate(context) {
             (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.edit(editBuilder => {
                 var _a, _b, _c, _d;
                 if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.selection.start) !== undefined && t[0].description !== undefined) {
-                    console.log(vscode.window.activeTextEditor.selection);
                     if (vscode.window.activeTextEditor.selection.start.character === vscode.window.activeTextEditor.selection.end.character) {
                         editBuilder.insert((_b = vscode.window.activeTextEditor) === null || _b === void 0 ? void 0 : _b.selection.start, t[0].description);
                     }
