@@ -709,6 +709,7 @@ export function activate(context: vscode.ExtensionContext) {
 					if (line_text.search(/#base ".*"/) !== -1) {
 						let base_path = line_text.split('"')[1];
 						let bFind:number|boolean= GetKVInfo(GameDir + '/scripts/npc/' + base_path, word);
+						
 						if (bFind !== false && typeof(bFind) === 'number') {
 							let document: vscode.TextDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(GameDir + '/scripts/npc/' + base_path));
 							const options = {

@@ -830,6 +830,7 @@ export function ReadKeyValueWithBase(full_path:string) {
 	let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
 	let kvtable = kvdata[Object.keys(kvdata)[0]];
 	let kv_string = fs.readFileSync(full_path, 'utf-8');
+	kv_string = RemoveComment(kv_string);
 	const rows: string[] = kv_string.split(os.EOL);
 	for(let i = 0; i < rows.length; i++) {
 		const line_text: string = rows[i];
@@ -842,10 +843,10 @@ export function ReadKeyValueWithBase(full_path:string) {
 				kvtable[key] = value;
 			}
 		} else {
-			return kvdata;
+			continue;
 		}
 	}
-	
+	return kvdata;
 }
 
 // 去除注释
