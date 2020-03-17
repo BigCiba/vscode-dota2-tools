@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
-import { Init,KV2LUA, VSND } from './init';
+import { Init,KV2LUA, VSND, GameDir } from './init';
 import { CreateListener } from './listener';
 import * as watch from 'watch';
 // import { DepNodeProvider, Dependency } from './nodeDependencies';
@@ -1355,6 +1355,56 @@ export function activate(context: vscode.ExtensionContext) {
 		// 	}
 		// }
 	});
+	// kv2csv
+	let KV2CSV = vscode.commands.registerCommand('dota2tools.kv_to_csv', async (uri) => {
+		let arr:any = util.CSV2Array(fs.readFileSync(util.GetRootPath() + '/design/3.KV配置表/csv/abilities.csv', 'utf-8'));
+		let kv = util.ReadKeyValue2(fs.readFileSync(GameDir + '\\scripts\\npc\\abilities\\abilities.kv', 'utf-8'));
+		// console.log(kv);
+		
+		for (const key in kv.abilities) {
+			const value = kv.abilities[key];
+			for (let i = 2; i < arr.length; i++) {
+				const element = arr[i];	// 遍历csv数组
+				// 如果csv存在该技能则更新数据
+				if (key === element[0]) {
+					for (const _key in value) {
+						const _value = value[_key];
+						if (_key !== 'AbilitySpecial') {
+							// 寻找匹配键值
+							for (let j = 0; j < arr[2].length; j++) {
+								const name = arr[2][j];
+								if (name === _key) {
+									arr[i][j] = _value;
+									break;
+								}
+							}
+						} else {
+							// 遍历AbilitySpecial
+							let start = 0;
+							for (let j = 0; j < arr[1].length; j++) {
+								const name = arr[1][j];
+								if (name === 'AbilitySpecial') {
+									start = j;
+									break;
+								}
+							}
+							for (const index in _value) {
+								const special_name = Object.keys(_value[index])[1];
+								const special_value = _value[index][Object.keys(_value[index])[1]];
+								for (let start_index = start; start_index < arr[1].length; start_index++) {
+									arr[i][start_index] = special_name;
+									arr[i + 1][start_index] = special_value;
+									break;
+								}
+								start++;
+							}
+						}
+					}
+				}
+			}
+		}
+		fs.writeFileSync(util.GetRootPath() + '/design/3.KV配置表/csv/abilities.csv', util.Array2CSV(arr));
+	});
 
 	// 注册指令
 	context.subscriptions.push(Localization);
@@ -1366,6 +1416,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(NoteAPI);
 	context.subscriptions.push(GenerateDocument);
 	context.subscriptions.push(VsndSelector);
+	context.subscriptions.push(KV2CSV);
 }
 
 // this method is called when your extension is deactivated
