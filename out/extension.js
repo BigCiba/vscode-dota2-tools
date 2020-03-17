@@ -736,15 +736,15 @@ function activate(context) {
                 }
             }
             if (init_1.KV2LUA[word] !== undefined) {
-                let kv_string = fs.readFileSync(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt', 'utf-8');
+                let kv_string = fs.readFileSync(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt', 'utf-8');
                 const rows = kv_string.split(os.EOL);
                 for (let i = 0; i < rows.length; i++) {
                     const line_text = rows[i];
                     if (line_text.search(/#base ".*"/) !== -1) {
                         let base_path = line_text.split('"')[1];
-                        let bFind = GetKVInfo(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/' + base_path, word);
+                        let bFind = GetKVInfo(init_1.GameDir + '/scripts/npc/' + base_path, word);
                         if (bFind !== false && typeof (bFind) === 'number') {
-                            let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/' + base_path));
+                            let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(init_1.GameDir + '/scripts/npc/' + base_path));
                             const options = {
                                 selection: new vscode.Range(new vscode.Position(bFind, 0), new vscode.Position(bFind, 0)),
                                 preview: false,
@@ -757,7 +757,7 @@ function activate(context) {
                     }
                     else {
                         if (line_text.search(word) !== -1) {
-                            let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt'));
+                            let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt'));
                             const options = {
                                 selection: new vscode.Range(new vscode.Position(i, 0), new vscode.Position(i, 0)),
                                 preview: false,

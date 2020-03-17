@@ -701,15 +701,15 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			}
 			if (KV2LUA[word] !== undefined) {
-				let kv_string = fs.readFileSync(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt', 'utf-8');
+				let kv_string = fs.readFileSync(GameDir + '/scripts/npc/npc_abilities_custom.txt', 'utf-8');
 				const rows: string[] = kv_string.split(os.EOL);
 				for(let i = 0; i < rows.length; i++) {
 					const line_text: string = rows[i];
 					if (line_text.search(/#base ".*"/) !== -1) {
 						let base_path = line_text.split('"')[1];
-						let bFind:number|boolean= GetKVInfo(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/' + base_path, word);
+						let bFind:number|boolean= GetKVInfo(GameDir + '/scripts/npc/' + base_path, word);
 						if (bFind !== false && typeof(bFind) === 'number') {
-							let document: vscode.TextDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/' + base_path));
+							let document: vscode.TextDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(GameDir + '/scripts/npc/' + base_path));
 							const options = {
 								selection: new vscode.Range(new vscode.Position(bFind,0), new vscode.Position(bFind,0)),
 								preview: false,
@@ -721,7 +721,7 @@ export function activate(context: vscode.ExtensionContext) {
 						continue;
 					} else {
 						if (line_text.search(word) !== -1) {
-							let document: vscode.TextDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(util.GetRootPath() + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt'));
+							let document: vscode.TextDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(GameDir + '/scripts/npc/npc_abilities_custom.txt'));
 							const options = {
 								selection: new vscode.Range(new vscode.Position(i,0), new vscode.Position(i,0)),
 								preview: false,
