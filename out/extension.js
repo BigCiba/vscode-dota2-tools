@@ -501,25 +501,6 @@ function activate(context) {
     // WatchVersion();
     init_1.Init(context);
     listener_1.CreateListener();
-    // 自动替换音效文件
-    // let obj_data:any = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
-    // vscode.workspace.onDidChangeTextDocument((t)=>{
-    // 	let change_text = t.contentChanges[0].text;
-    // 	if (change_text.search(RegExp(/sounds.*vsnd/)) !== -1) {
-    // 		for (const key in obj_data) {
-    // 			const element = obj_data[key];
-    // 			for (let i = 0; i < element.length; i++) {
-    // 				const sound = element[i];
-    // 				if (sound === change_text) {
-    // 					vscode.window.activeTextEditor?.edit(editBuilder =>{
-    // 						let range = new vscode.Range(t.contentChanges[0].range.start, new vscode.Position(t.contentChanges[0].range.start.line, t.contentChanges[0].range.start.character + change_text.length));
-    // 						editBuilder.replace(range, key);
-    // 					});
-    // 				}
-    // 			}
-    // 		}
-    // 	}
-    // });
     // 添加英雄基本文件
     let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
         let root_path = GetRootPath();

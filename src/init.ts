@@ -3,15 +3,46 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as util from './util';
 import { isObject, log } from 'util';
-let KV2LUA:any = {};
+let KV2LUA:any = {};	// kv与lua文件关联数据
 let VSND = new Array;
+let GameDir:string = '';	// game目录
+let ContentDir:string = '';	// content目录
 // tslint:disable-next-line: no-unused-expression
-export {KV2LUA, VSND};	// kv与lua文件关联数据
+export {KV2LUA, VSND, GameDir, ContentDir};
 
-export function Init(context: vscode.ExtensionContext) {
+export async function Init(context: vscode.ExtensionContext) {
 	let root_path:string|undefined = util.GetRootPath();
 	if (root_path === undefined) {
 		return;
+	}
+	// 读取目录
+	let path_arr: string[]|false = await FindFile(root_path, 'maps');
+	if (path_arr !== false) {
+		[ContentDir, GameDir] = path_arr;
+	}
+	async function FindFile(path:string, file_name:string):Promise<string[]|false> {
+		let path_arr: string[] = [];
+		var lang_folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
+		for (let i: number = 0; i < lang_folders.length; i++) {
+			const [folder_name, is_directory] = lang_folders[i];
+			if (folder_name === '.git') {
+				continue;
+			}
+			if (folder_name === file_name) {
+				path_arr.push(path);
+			}
+			if (Number(is_directory) === vscode.FileType.Directory || Number(is_directory) === vscode.FileType.SymbolicLink + vscode.FileType.Directory){
+				let bFind: string[]|false = await FindFile(path + '\\' + folder_name, file_name);
+				if (bFind !== false) {
+					path_arr = path_arr.concat(bFind);
+				}
+			}
+		}
+		if (path_arr.length === 0) {
+			return false;
+		} else {
+			return path_arr;
+		}
 	}
 	// vsnd
 	let obj_data:any = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
@@ -26,12 +57,13 @@ export function Init(context: vscode.ExtensionContext) {
 			});
 		}
 	}
+
 	// 关联kv与lua
-	let ability_kv = util.ReadKeyValueWithBase(root_path + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt');
+	let ability_kv = util.ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
 	for (const key in ability_kv.DOTAAbilities) {
 		const value = ability_kv.DOTAAbilities[key];
 		if (isObject(value) === true) {
-			KV2LUA[key] = root_path + '/game/dota_addons/tui3/scripts/vscripts/' + value.ScriptFile + '.lua';
+			KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
 		}
 	}
 
@@ -55,7 +87,7 @@ export function Init(context: vscode.ExtensionContext) {
 			
 			if (new RegExp(`"ScriptFile"`).test(json)) {
 				let path = line.text.split('"')[3];
-				let destPath = `${root_path}/game/dota_addons/tui3/scripts/vscripts/${path}.lua`;
+				let destPath = `${GameDir}/scripts/vscripts/${path}.lua`;
 				console.log(destPath);
 				
 				if (fs.existsSync(destPath)) {

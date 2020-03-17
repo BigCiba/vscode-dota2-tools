@@ -3,6 +3,7 @@ import * as watch from 'watch';
 import xlsx from 'node-xlsx';
 import * as fs from 'fs';
 import * as os from 'os';
+import { GameDir } from './init';
 
 export function CreateListener() {
 	// WatchKeyValue();
@@ -19,7 +20,7 @@ function WatchCSV() {
 	}
 	// 暂停监听
 	watch.unwatchTree(root_path + '/design/3.KV配置表/csv');
-	watch.watchTree(root_path + '/game/dota_addons/tui3/scripts/npc/abilities', function (f, curr, prev) {
+	watch.watchTree(GameDir + '/scripts/npc/abilities', function (f, curr, prev) {
 		if (typeof f === "object" && prev === null && curr === null) {
 			// Finished walking the tree
 		} else if (prev === null) {
@@ -28,10 +29,10 @@ function WatchCSV() {
 			console.log('removed');
 		} else {
 			console.log(String(f));
-			if (String(f) !== root_path + '\\game\\dota_addons\\tui3\\scripts\\npc\\abilities\\abilities.kv') {
+			if (String(f) !== GameDir + '\\scripts\\npc\\abilities\\abilities.kv') {
 				return;
 			}
-			let arr:any = util.CSV2Array(fs.readFileSync(root_path + '/design/3.KV配置表/csv/ability.csv', 'utf-8'));
+			let arr:any = util.CSV2Array(fs.readFileSync(root_path + '/design/3.KV配置表/csv/abilities.csv', 'utf-8'));
 			let kv = util.ReadKeyValue2(fs.readFileSync(String(f), 'utf-8'));
 			// console.log(kv);
 			
@@ -77,7 +78,7 @@ function WatchCSV() {
 					}
 				}
 			}
-			fs.writeFileSync(root_path + '/design/3.KV配置表/csv/ability.csv', util.Array2CSV(arr));
+			fs.writeFileSync(root_path + '/design/3.KV配置表/csv/abilities.csv', util.Array2CSV(arr));
 		}
 		WatchAbilityCSV();
 	});
@@ -98,12 +99,12 @@ function WatchXlsm() {
 			console.log('removed');
 		} else {
 			console.log(String(f));
-			if (String(f) !== root_path + '\\design\\3.KV配置表\\ability.xlsm') {
+			if (String(f) !== root_path + '\\design\\3.KV配置表\\abilities.xlsm') {
 				return;
 			}
 			let sheet_list:any = xlsx.parse(String(f));
 			let csv = util.Array2CSV(sheet_list[0].data);
-			fs.writeFileSync(root_path + '/design/3.KV配置表/csv/ability.csv', '\uFEFF' + csv);
+			fs.writeFileSync(root_path + '/design/3.KV配置表/csv/abilities.csv', '\uFEFF' + csv);
 		}
 	});
 }
@@ -122,11 +123,11 @@ function WatchAbilityCSV() {
 			console.log('removed');
 		} else {
 			console.log('changed');
-			if (String(f) !== root_path + '\\design\\3.KV配置表\\csv\\ability.csv') {
+			if (String(f) !== root_path + '\\design\\3.KV配置表\\csv\\abilities.csv') {
 				return;
 			}
 			// 读取ability类型的csv
-			const csv_uri:string = root_path + '/design/3.KV配置表/csv/ability.csv';
+			const csv_uri:string = root_path + '/design/3.KV配置表/csv/abilities.csv';
 			let csv_data:any = {};
 			const csv:string = fs.readFileSync(csv_uri, 'utf-8');
 			let csv_arr:any = util.CSV2Array(csv);
@@ -164,7 +165,7 @@ function WatchAbilityCSV() {
 				i++;
 				csv_data[row[0]] = values_obj;
 			}
-			fs.writeFileSync(root_path + '/game/dota_addons/tui3/scripts/npc/abilities/abilities.kv', util.WriteKeyValue({abilities:csv_data}));
+			fs.writeFileSync(GameDir + '/scripts/npc/abilities/abilities.kv', util.WriteKeyValue({abilities:csv_data}));
 		}
 	});
 }
