@@ -737,6 +737,7 @@ function activate(context) {
             }
             if (init_1.KV2LUA[word] !== undefined) {
                 let kv_string = fs.readFileSync(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt', 'utf-8');
+                kv_string = util.RemoveComment(kv_string);
                 const rows = kv_string.split(os.EOL);
                 for (let i = 0; i < rows.length; i++) {
                     const line_text = rows[i];

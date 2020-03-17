@@ -702,6 +702,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			if (KV2LUA[word] !== undefined) {
 				let kv_string = fs.readFileSync(GameDir + '/scripts/npc/npc_abilities_custom.txt', 'utf-8');
+				kv_string = util.RemoveComment(kv_string);
 				const rows: string[] = kv_string.split(os.EOL);
 				for(let i = 0; i < rows.length; i++) {
 					const line_text: string = rows[i];

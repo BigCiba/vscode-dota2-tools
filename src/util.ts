@@ -681,23 +681,6 @@ export function ReadKeyValue2(kvdata:string):any {
 			}
 		}
 	}
-	// 去除注释
-	function RemoveComment(data:string):string {
-		let new_data = '';
-		const rows: string[] = data.split(os.EOL);
-		for(let i = 0; i < rows.length; i++) {
-			const line_text: string = rows[i];
-			for (let char = 0; char < line_text.length; char++) {
-				const substr = line_text[char];
-				if (substr === '/' && line_text[char + 1] === '/') {
-					break;
-				} else {
-					new_data += substr;
-				}
-			}
-		}
-		return new_data;
-	}
 }
 // 读取kv3格式为object
 export function ReadKeyValue3(kvdata:string):any {
@@ -863,6 +846,25 @@ export function ReadKeyValueWithBase(full_path:string) {
 		}
 	}
 	
+}
+
+// 去除注释
+export function RemoveComment(data:string):string {
+	let new_data = '';
+	const rows: string[] = data.split(os.EOL);
+	for(let i = 0; i < rows.length; i++) {
+		const line_text: string = rows[i];
+		for (let char = 0; char < line_text.length; char++) {
+			const substr = line_text[char];
+			if (substr === '/' && line_text[char + 1] === '/') {
+				break;
+			} else {
+				new_data += substr;
+			}
+		}
+		new_data += os.EOL;
+	}
+	return new_data;
 }
 // csv转array
 export function CSV2Array(csv:string):[] {
