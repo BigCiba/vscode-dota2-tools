@@ -919,4 +919,75 @@ function ReadKeyValueWithBase(full_path) {
     }
 }
 exports.ReadKeyValueWithBase = ReadKeyValueWithBase;
+// csv转array
+function CSV2Array(csv) {
+    const rows = csv.split(os.EOL);
+    let arr = [];
+    for (let i = 0; i < rows.length; i++) {
+        arr[i] = [];
+        const line_text = rows[i];
+        let values = line_text.split(',');
+        if (values.length === 1) {
+            continue;
+        }
+        for (let j = 0; j < values.length; j++) {
+            const value = values[j];
+            arr[i].push(value);
+        }
+    }
+    return arr;
+}
+exports.CSV2Array = CSV2Array;
+// array转csv
+function Array2CSV(arr) {
+    let csv = '';
+    // let length:number = arr[0].length;
+    for (let i = 0; i < arr.length; i++) {
+        const rows = arr[i];
+        for (let j = 0; j < rows.length; j++) {
+            const col = rows[j] === undefined ? '' : rows[j];
+            csv += col + (j + 1 === rows.length ? '' : ',');
+        }
+        csv += os.EOL;
+    }
+    return csv;
+}
+exports.Array2CSV = Array2CSV;
+// 写入kv
+function WriteKeyValue(obj, depth = 0) {
+    var str = '';
+    // 添加制表符
+    function AddDepthTab(depth, add_string) {
+        var tab = '';
+        for (let d = 0; d < depth; d++) {
+            tab += '\t';
+        }
+        tab += add_string;
+        return tab;
+    }
+    // 添加key与value之间制表符
+    function AddIntervalTab(depth, key) {
+        var tab = '';
+        for (let d = 0; d < 12 - Math.floor((depth * 4 + key.length + 2) / 4); d++) {
+            tab += '\t';
+        }
+        return tab;
+    }
+    for (const key in obj) {
+        const value = obj[key];
+        if (typeof (value) === 'string') {
+            str += AddDepthTab(depth, '"' + key + '"');
+            str += AddIntervalTab(depth, key);
+            str += '"' + value + '"\n';
+        }
+        else {
+            str += AddDepthTab(depth, '"' + key + '"\n');
+            str += AddDepthTab(depth, '{\n');
+            str += WriteKeyValue(value, depth + 1);
+            str += AddDepthTab(depth, '}\n');
+        }
+    }
+    return str;
+}
+exports.WriteKeyValue = WriteKeyValue;
 //# sourceMappingURL=util.js.map

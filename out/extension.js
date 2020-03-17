@@ -16,6 +16,7 @@ const fs = require("fs");
 const os = require("os");
 const util = require("./util");
 const init_1 = require("./init");
+const listener_1 = require("./listener");
 const watch = require("watch");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -499,6 +500,7 @@ function activate(context) {
     }
     // WatchVersion();
     init_1.Init(context);
+    listener_1.CreateListener();
     // 自动替换音效文件
     // let obj_data:any = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
     // vscode.workspace.onDidChangeTextDocument((t)=>{
@@ -1297,27 +1299,12 @@ function activate(context) {
         if (root_path === undefined) {
             return;
         }
-        let obj_data = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
+        let obj_data = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
         const quick_pick = vscode.window.createQuickPick();
         quick_pick.canSelectMany = false;
         quick_pick.ignoreFocusOut = true;
-        // quickPick.step = 1;
-        // quickPick.totalSteps = 3;
         quick_pick.placeholder = '*.vsnd';
-        // quick_pick.title = 'vsnd转换';
-        // 添加选项
-        var items = new Array;
-        for (const key in obj_data) {
-            const element = obj_data[key];
-            for (let i = 0; i < element.length; i++) {
-                const sound = element[i];
-                items.push({
-                    label: sound,
-                    description: key,
-                });
-            }
-        }
-        quick_pick.items = items;
+        quick_pick.items = init_1.VSND;
         quick_pick.show();
         quick_pick.onDidChangeSelection((t) => {
             var _a;
@@ -1331,7 +1318,7 @@ function activate(context) {
                     else {
                         editBuilder.replace(new vscode.Range((_c = vscode.window.activeTextEditor) === null || _c === void 0 ? void 0 : _c.selection.start, (_d = vscode.window.activeTextEditor) === null || _d === void 0 ? void 0 : _d.selection.end), t[0].description);
                     }
-                    quick_pick.hide();
+                    quick_pick.dispose();
                 }
             });
         });

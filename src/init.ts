@@ -4,15 +4,29 @@ import * as path from 'path';
 import * as util from './util';
 import { isObject, log } from 'util';
 let KV2LUA:any = {};
+let VSND = new Array;
 // tslint:disable-next-line: no-unused-expression
-export {KV2LUA};
+export {KV2LUA, VSND};	// kv与lua文件关联数据
+
 export function Init(context: vscode.ExtensionContext) {
 	let root_path:string|undefined = util.GetRootPath();
 	if (root_path === undefined) {
 		return;
 	}
+	// vsnd
+	let obj_data:any = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
+	// 添加选项
+	for (const key in obj_data) {
+		const element = obj_data[key];
+		for (let i = 0; i < element.length; i++) {
+			const sound = element[i];
+			VSND.push({
+				label:sound,
+				description:key,
+			});
+		}
+	}
 	// 关联kv与lua
-	// let kv2lua:any = {};
 	let ability_kv = util.ReadKeyValueWithBase(root_path + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt');
 	for (const key in ability_kv.DOTAAbilities) {
 		const value = ability_kv.DOTAAbilities[key];
@@ -20,7 +34,6 @@ export function Init(context: vscode.ExtensionContext) {
 			KV2LUA[key] = root_path + '/game/dota_addons/tui3/scripts/vscripts/' + value.ScriptFile + '.lua';
 		}
 	}
-	// console.log(kv2lua);
 
 	function provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
 		const fileName	= document.fileName;

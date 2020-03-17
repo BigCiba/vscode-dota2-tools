@@ -7,13 +7,27 @@ const util = require("./util");
 const util_1 = require("util");
 let KV2LUA = {};
 exports.KV2LUA = KV2LUA;
+let VSND = new Array;
+exports.VSND = VSND;
 function Init(context) {
     let root_path = util.GetRootPath();
     if (root_path === undefined) {
         return;
     }
+    // vsnd
+    let obj_data = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
+    // 添加选项
+    for (const key in obj_data) {
+        const element = obj_data[key];
+        for (let i = 0; i < element.length; i++) {
+            const sound = element[i];
+            VSND.push({
+                label: sound,
+                description: key,
+            });
+        }
+    }
     // 关联kv与lua
-    // let kv2lua:any = {};
     let ability_kv = util.ReadKeyValueWithBase(root_path + '/game/dota_addons/tui3/scripts/npc/npc_abilities_custom.txt');
     for (const key in ability_kv.DOTAAbilities) {
         const value = ability_kv.DOTAAbilities[key];
@@ -21,7 +35,6 @@ function Init(context) {
             KV2LUA[key] = root_path + '/game/dota_addons/tui3/scripts/vscripts/' + value.ScriptFile + '.lua';
         }
     }
-    // console.log(kv2lua);
     function provideDefinition(document, position, token) {
         const fileName = document.fileName;
         const workDir = path.dirname(fileName);

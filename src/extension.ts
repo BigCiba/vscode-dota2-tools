@@ -5,7 +5,8 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
-import { Init,KV2LUA as KV2LUA } from './init';
+import { Init,KV2LUA, VSND } from './init';
+import { CreateListener } from './listener';
 import * as watch from 'watch';
 // import { DepNodeProvider, Dependency } from './nodeDependencies';
 import { ApiTreeProvider, Dependency } from './api-tree';
@@ -467,6 +468,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// WatchVersion();
 	
 	Init(context);
+	CreateListener();
 	// 自动替换音效文件
 	// let obj_data:any = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
 	// vscode.workspace.onDidChangeTextDocument((t)=>{
@@ -1277,28 +1279,12 @@ export function activate(context: vscode.ExtensionContext) {
 		if (root_path === undefined) {
 			return;
 		}
-		let obj_data:any = JSON.parse(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', 'utf-8'));
+		let obj_data:any = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
 		const quick_pick = vscode.window.createQuickPick();
 		quick_pick.canSelectMany = false;
 		quick_pick.ignoreFocusOut = true;
-		// quickPick.step = 1;
-		// quickPick.totalSteps = 3;
 		quick_pick.placeholder = '*.vsnd';
-		// quick_pick.title = 'vsnd转换';
-
-		// 添加选项
-		var items = new Array;
-		for (const key in obj_data) {
-			const element = obj_data[key];
-			for (let i = 0; i < element.length; i++) {
-				const sound = element[i];
-				items.push({
-					label:sound,
-					description:key,
-				});
-			}
-		}
-		quick_pick.items = items;
+		quick_pick.items = VSND;
 
 		quick_pick.show();
 		quick_pick.onDidChangeSelection((t)=>{
@@ -1310,7 +1296,7 @@ export function activate(context: vscode.ExtensionContext) {
 					} else {
 						editBuilder.replace(new vscode.Range(vscode.window.activeTextEditor?.selection.start, vscode.window.activeTextEditor?.selection.end), t[0].description);
 					}
-					quick_pick.hide();
+					quick_pick.dispose();
 				}
 			});
 		});

@@ -864,3 +864,70 @@ export function ReadKeyValueWithBase(full_path:string) {
 	}
 	
 }
+// csv转array
+export function CSV2Array(csv:string):[] {
+	const rows:string[] = csv.split(os.EOL);
+	let arr:any = [];
+	for(let i = 0; i < rows.length; i++) {
+		arr[i] = [];
+		const line_text: string = rows[i];
+		let values: string[] = line_text.split(',');
+		if (values.length === 1) {
+			continue;
+		}
+		for (let j = 0; j < values.length; j++) {
+			const value = values[j];
+			arr[i].push(value);
+		}
+	}
+	return arr;
+}
+// array转csv
+export function Array2CSV(arr:any[]):string {
+	let csv:string = '';
+	// let length:number = arr[0].length;
+	for (let i = 0; i < arr.length; i++) {
+		const rows:any = arr[i];
+		for (let j = 0; j < rows.length; j++) {
+			const col = rows[j] === undefined ? '':rows[j];
+			csv += col + (j+1 === rows.length ? '':',');
+		}
+		csv += os.EOL;
+	}
+	return csv;
+}
+// 写入kv
+export function WriteKeyValue(obj:any,depth:number = 0) {
+	var str:string = '';
+	// 添加制表符
+	function AddDepthTab(depth:number,add_string:string):string {
+		var tab:string = '';
+		for (let d = 0; d < depth; d++) {
+			tab += '\t';
+		}
+		tab += add_string;
+		return tab;
+	}
+	// 添加key与value之间制表符
+	function AddIntervalTab(depth:number,key:string):string {
+		var tab:string = '';
+		for (let d = 0; d < 12 - Math.floor((depth * 4 + key.length + 2)/4); d++) {
+			tab += '\t';
+		}
+		return tab;
+	}
+	for (const key in obj) {
+		const value = obj[key];
+		if (typeof(value) === 'string') {
+			str += AddDepthTab(depth, '"' + key + '"');
+			str += AddIntervalTab(depth, key);
+			str += '"' + value + '"\n';
+		} else {
+			str += AddDepthTab(depth, '"' + key + '"\n');
+			str += AddDepthTab(depth, '{\n');
+			str += WriteKeyValue(value,depth + 1);
+			str += AddDepthTab(depth, '}\n');
+		}
+	}
+	return str;
+}

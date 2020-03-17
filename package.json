@@ -150,7 +150,9 @@
 		"url": "https://gitee.com/bigciba/dota2-tools.git"
 	},
 	"dependencies": {
+		"@types/node-xlsx": "^0.15.0",
 		"@types/watch": "^1.0.1",
+		"node-xlsx": "^0.15.0",
 		"watch": "^1.0.2"
 	}
 }
