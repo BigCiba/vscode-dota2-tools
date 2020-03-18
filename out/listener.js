@@ -19,9 +19,7 @@ function WatchCSV() {
     if (root_path === undefined) {
         return;
     }
-    // 暂停监听
-    watch.unwatchTree(root_path + '/design/3.KV配置表/csv');
-    watch.watchTree(init_1.GameDir + '/scripts/npc/abilities', function (f, curr, prev) {
+    watch.watchTree('C:\Users\bigciba\Documents\Dota Addons\Tui3\game\dota_addons\tui3\scripts\npc\abilities', function (f, curr, prev) {
         if (typeof f === "object" && prev === null && curr === null) {
             // Finished walking the tree
         }
@@ -33,58 +31,7 @@ function WatchCSV() {
         }
         else {
             console.log(String(f));
-            if (String(f) !== init_1.GameDir + '\\scripts\\npc\\abilities\\abilities.kv') {
-                return;
-            }
-            let arr = util.CSV2Array(fs.readFileSync(root_path + '/design/3.KV配置表/csv/abilities.csv', 'utf-8'));
-            let kv = util.ReadKeyValue2(fs.readFileSync(String(f), 'utf-8'));
-            // console.log(kv);
-            for (const key in kv.abilities) {
-                const value = kv.abilities[key];
-                for (let i = 2; i < arr.length; i++) {
-                    const element = arr[i]; // 遍历csv数组
-                    // 如果csv存在该技能则更新数据
-                    if (key === element[0]) {
-                        for (const _key in value) {
-                            const _value = value[_key];
-                            if (_key !== 'AbilitySpecial') {
-                                // 寻找匹配键值
-                                for (let j = 0; j < arr[2].length; j++) {
-                                    const name = arr[2][j];
-                                    if (name === _key) {
-                                        arr[i][j] = _value;
-                                        break;
-                                    }
-                                }
-                            }
-                            else {
-                                // 遍历AbilitySpecial
-                                let start = 0;
-                                for (let j = 0; j < arr[1].length; j++) {
-                                    const name = arr[1][j];
-                                    if (name === 'AbilitySpecial') {
-                                        start = j;
-                                        break;
-                                    }
-                                }
-                                for (const index in _value) {
-                                    const special_name = Object.keys(_value[index])[1];
-                                    const special_value = _value[index][Object.keys(_value[index])[1]];
-                                    for (let start_index = start; start_index < arr[1].length; start_index++) {
-                                        arr[i][start_index] = special_name;
-                                        arr[i + 1][start_index] = special_value;
-                                        break;
-                                    }
-                                    start++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            fs.writeFileSync(root_path + '/design/3.KV配置表/csv/abilities.csv', util.Array2CSV(arr));
         }
-        WatchAbilityCSV();
     });
 }
 // 监听excel
@@ -166,6 +113,9 @@ function WatchAbilityCSV() {
                             [col]: csv_arr[i + 1][j]
                         };
                         AbilitySpecial++;
+                    }
+                    else if (key === '') {
+                        continue;
                     }
                     else {
                         values_obj[key] = col;
