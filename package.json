@@ -110,6 +110,18 @@
 					"type": "string",
 					"default": "",
 					"description": "dota2项目路径"
+				},
+				"dota2-tools.abilities_excel_path": {
+					"type": "object",
+					"default": [],
+					"scope": "window",
+					"description": "监听excel路径"
+				},
+				"dota2-tools.abilities_kv_path": {
+					"type": "object",
+					"default": [],
+					"scope": "window",
+					"description": "输出kv路径"
 				}
 			}
 		},

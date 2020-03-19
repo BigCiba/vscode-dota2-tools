@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import {exec} from 'child_process';
-import { setFlagsFromString } from 'v8';
 import { isObject, log } from 'util';
 
 // 获取根目录
@@ -933,4 +932,8 @@ export function WriteKeyValue(obj:any,depth:number = 0) {
 		}
 	}
 	return str;
+}
+
+export interface Configuration {
+	[key: string]: string;
 }

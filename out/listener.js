@@ -3,14 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util = require("./util");
 const watch = require("watch");
 const node_xlsx_1 = require("node-xlsx");
+const path = require("path");
 const fs = require("fs");
-const init_1 = require("./init");
+const vscode = require("vscode");
 function CreateListener() {
-    // WatchKeyValue();
-    // WatchCSV();
     WatchXlsm();
-    WatchAbilityCSV();
-    // WatchLocalization();
 }
 exports.CreateListener = CreateListener;
 // 监听kv导出csv
@@ -36,96 +33,67 @@ function WatchCSV() {
 }
 // 监听excel
 function WatchXlsm() {
-    let root_path = util.GetRootPath();
-    if (root_path === undefined) {
-        return;
-    }
-    watch.watchTree(root_path + '/design/3.KV配置表', function (f, curr, prev) {
-        if (typeof f === "object" && prev === null && curr === null) {
-            // Finished walking the tree
-        }
-        else if (prev === null) {
-            console.log('new file');
-        }
-        else if (curr.nlink === 0) {
-            console.log('removed');
-        }
-        else {
-            console.log(String(f));
-            if (String(f) !== root_path + '\\design\\3.KV配置表\\abilities.xlsm') {
-                return;
-            }
-            let sheet_list = node_xlsx_1.default.parse(String(f));
-            let csv = util.Array2CSV(sheet_list[0].data);
-            fs.writeFileSync(root_path + '/design/3.KV配置表/csv/abilities.csv', '\uFEFF' + csv);
-        }
-    });
-}
-// 监听技能csv变化
-function WatchAbilityCSV() {
-    let root_path = util.GetRootPath();
-    if (root_path === undefined) {
-        return;
-    }
-    watch.watchTree(root_path + '/design/3.KV配置表/csv', function (f, curr, prev) {
-        if (typeof f === "object" && prev === null && curr === null) {
-            // Finished walking the tree
-        }
-        else if (prev === null) {
-            console.log('new file');
-        }
-        else if (curr.nlink === 0) {
-            console.log('removed');
-        }
-        else {
-            console.log('changed');
-            if (String(f) !== root_path + '\\design\\3.KV配置表\\csv\\abilities.csv') {
-                return;
-            }
-            // 读取ability类型的csv
-            const csv_uri = root_path + '/design/3.KV配置表/csv/abilities.csv';
-            let csv_data = {};
-            const csv = fs.readFileSync(csv_uri, 'utf-8');
-            let csv_arr = util.CSV2Array(csv);
-            const csv_key = csv_arr[1];
-            for (let i = 2; i < csv_arr.length; i++) {
-                const row = csv_arr[i];
-                if (row.length === 0) {
-                    continue;
+    const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
+    const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
+    if (excel_object !== undefined && kv_object !== undefined) {
+        for (const index in excel_object) {
+            const listen_path = excel_object[index].replace(/\\\\/g, '/');
+            fs.watchFile(listen_path, (curr, prev) => {
+                if (curr.nlink === 0) {
+                    console.log('removed');
                 }
-                let AbilitySpecial = 1;
-                let values_obj = {
-                    AbilitySpecial: {}
-                };
-                for (let j = 1; j < row.length; j++) {
-                    const col = row[j];
-                    // 跳过空值
-                    if (col === '') {
-                        continue;
-                    }
-                    let key = csv_key[j];
-                    // special值特殊处理
-                    if (key === 'AbilitySpecial') {
-                        key = ("0" + AbilitySpecial).substr(-2);
-                        let value = csv_arr[i + 1][j];
-                        values_obj.AbilitySpecial[key] = {
-                            var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
-                            [col]: csv_arr[i + 1][j]
+                else {
+                    console.log('changed');
+                    let sheet_list = node_xlsx_1.default.parse(listen_path);
+                    let csv = util.Array2CSV(sheet_list[0].data);
+                    let dir_name = path.dirname(listen_path);
+                    let file_name = listen_path.split(dir_name)[1].replace('/', '').split('\.')[0];
+                    util.DirExists(dir_name + '/csv');
+                    fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
+                    // 生成kv
+                    let csv_data = {};
+                    let csv_arr = util.CSV2Array(csv);
+                    const csv_key = csv_arr[1];
+                    for (let i = 2; i < csv_arr.length; i++) {
+                        const row = csv_arr[i];
+                        if (row.length === 0) {
+                            continue;
+                        }
+                        let AbilitySpecial = 1;
+                        let values_obj = {
+                            AbilitySpecial: {}
                         };
-                        AbilitySpecial++;
+                        for (let j = 1; j < row.length; j++) {
+                            const col = row[j];
+                            // 跳过空值
+                            if (col === '') {
+                                continue;
+                            }
+                            let key = csv_key[j];
+                            // special值特殊处理
+                            if (key === 'AbilitySpecial') {
+                                key = ("0" + AbilitySpecial).substr(-2);
+                                let value = csv_arr[i + 1][j];
+                                values_obj.AbilitySpecial[key] = {
+                                    var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
+                                    [col]: csv_arr[i + 1][j]
+                                };
+                                AbilitySpecial++;
+                            }
+                            else if (key === '') {
+                                continue;
+                            }
+                            else {
+                                values_obj[key] = col;
+                            }
+                        }
+                        i++;
+                        csv_data[row[0]] = values_obj;
                     }
-                    else if (key === '') {
-                        continue;
-                    }
-                    else {
-                        values_obj[key] = col;
-                    }
+                    fs.writeFileSync(kv_object[index], util.WriteKeyValue({ abilities: csv_data }));
                 }
-                i++;
-                csv_data[row[0]] = values_obj;
-            }
-            fs.writeFileSync(init_1.GameDir + '/scripts/npc/abilities/abilities.kv', util.WriteKeyValue({ abilities: csv_data }));
+            });
         }
-    });
+    }
 }
 //# sourceMappingURL=listener.js.map

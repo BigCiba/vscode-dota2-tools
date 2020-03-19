@@ -3218,8 +3218,7 @@ function CBodyComponent:AddVelocity( Vector_1, Vector_2 ) end
 -- @return void
 function CBodyComponent:DetachFromParent(  ) end
 
----[[ CBodyComponent:GetSequence  Returns the active sequence
--- ]]
+---[[ CBodyComponent:GetSequence  Returns the active sequence ]]
 -- @return <unknown>
 function CBodyComponent:GetSequence(  ) end
 
@@ -3227,8 +3226,7 @@ function CBodyComponent:GetSequence(  ) end
 -- @return bool
 function CBodyComponent:IsAttachedToParent(  ) end
 
----[[ CBodyComponent:LookupSequence  Returns a sequence id given a name
--- ]]
+---[[ CBodyComponent:LookupSequence  Returns a sequence id given a name ]]
 -- @return <unknown>
 -- @param string_1 string
 function CBodyComponent:LookupSequence( string_1 ) end
@@ -4498,6 +4496,11 @@ function CDOTAGamerules:ForceCreepSpawn(  ) end
 ---[[ CDOTAGamerules:ForceGameStart  Transition game state to DOTA_GAMERULES_STATE_GAME_IN_PROGRESS ]]
 -- @return void
 function CDOTAGamerules:ForceGameStart(  ) end
+
+---[[ CDOTAGamerules:GetAnnouncer  Get the announcer for a team ]]
+-- @return handle
+-- @param int_1 int
+function CDOTAGamerules:GetAnnouncer( int_1 ) end
 
 ---[[ CDOTAGamerules:GetCustomGameDifficulty  Returns the difficulty level of the custom game mode ]]
 -- @return int
@@ -5832,6 +5835,10 @@ function CDOTA_BaseNPC:GetMoveSpeedModifier( flBaseSpeed, bReturnUnslowed ) end
 -- @return bool
 function CDOTA_BaseNPC:GetMustReachEachGoalEntity(  ) end
 
+---[[ CDOTA_BaseNPC:GetNeutralSpawnerName  Get the name of this camp's neutral spawner. ]]
+-- @return string
+function CDOTA_BaseNPC:GetNeutralSpawnerName(  ) end
+
 ---[[ CDOTA_BaseNPC:GetNeverMoveToClearSpace  If set to true, we will never attempt to move this unit to clear space, even when it unphases. ]]
 -- @return bool
 function CDOTA_BaseNPC:GetNeverMoveToClearSpace(  ) end
@@ -6670,6 +6677,11 @@ function CDOTA_BaseNPC:SetUnitName( pName ) end
 ---[[ CDOTA_BaseNPC:ShouldIdleAcquire   ]]
 -- @return bool
 function CDOTA_BaseNPC:ShouldIdleAcquire(  ) end
+
+---[[ CDOTA_BaseNPC:SpeakConcept  Speak a response system concept with the TLK_DOTA_CUSTOM concept. ]]
+-- @return void
+-- @param hCriteriaTable handle
+function CDOTA_BaseNPC:SpeakConcept( hCriteriaTable ) end
 
 ---[[ CDOTA_BaseNPC:SpendMana  Spend mana from this unit, this can be used for spending mana from abilities or item usage. ]]
 -- @return void
@@ -9778,39 +9790,6 @@ function CSceneEntity:RemoveBroadcastTeamTarget( int_1 ) end
 -- @return void
 -- @param handle_1 handle
 function CSceneEntity:Start( handle_1 ) end
-
----[[ CScriptHTTPRequest:Send  Send a HTTP request. ]]
--- @return bool
--- @param handle_1 handle
-function CScriptHTTPRequest:Send( handle_1 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestAbsoluteTimeoutMS  Set the total timeout on the request. ]]
--- @return bool
--- @param unsigned_1 unsigned
-function CScriptHTTPRequest:SetHTTPRequestAbsoluteTimeoutMS( unsigned_1 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestGetOrPostParameter  Set a POST or GET parameter on the request. ]]
--- @return bool
--- @param string_1 string
--- @param string_2 string
-function CScriptHTTPRequest:SetHTTPRequestGetOrPostParameter( string_1, string_2 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestHeaderValue  Set a header value on the request. ]]
--- @return bool
--- @param string_1 string
--- @param string_2 string
-function CScriptHTTPRequest:SetHTTPRequestHeaderValue( string_1, string_2 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestNetworkActivityTimeout  Set the network timeout on the request - this timer is reset when any data is received. ]]
--- @return bool
--- @param unsigned_1 unsigned
-function CScriptHTTPRequest:SetHTTPRequestNetworkActivityTimeout( unsigned_1 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestRawPostBody  Set the literal body of a post - invalid after setting a post parameter. ]]
--- @return bool
--- @param string_1 string
--- @param string_2 string
-function CScriptHTTPRequest:SetHTTPRequestRawPostBody( string_1, string_2 ) end
 
 ---[[ CScriptHeroList:GetAllHeroes  Returns all the heroes in the world ]]
 -- @return table

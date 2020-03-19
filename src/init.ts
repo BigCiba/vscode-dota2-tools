@@ -15,6 +15,7 @@ export async function Init(context: vscode.ExtensionContext) {
 	if (root_path === undefined) {
 		return;
 	}
+	
 	// 读取目录
 	let path_arr: string[]|false = await FindFile(root_path, 'maps');
 	if (path_arr !== false) {
