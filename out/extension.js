@@ -501,7 +501,12 @@ function activate(context) {
     }
     // WatchVersion();
     init_1.Init(context);
-    listener_1.CreateListener();
+    let listener = new listener_1.Listener();
+    vscode.workspace.onDidChangeConfiguration((event) => {
+        if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
+            listener.WatchAbilityExcel();
+        }
+    });
     // 添加英雄基本文件
     let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
         let root_path = GetRootPath();

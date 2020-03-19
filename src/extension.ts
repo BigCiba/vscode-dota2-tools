@@ -6,7 +6,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
 import { Init,KV2LUA, VSND, GameDir } from './init';
-import { CreateListener } from './listener';
+import {Listener} from './listener';
 import * as watch from 'watch';
 
 // this method is called when your extension is activated
@@ -464,7 +464,13 @@ export function activate(context: vscode.ExtensionContext) {
 	// WatchVersion();
 	
 	Init(context);
-	CreateListener();
+	let listener = new Listener();
+	
+	vscode.workspace.onDidChangeConfiguration((event)=>{
+		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
+			listener.WatchAbilityExcel();
+		}
+	});
 
 	// 添加英雄基本文件
 	let AddHero = vscode.commands.registerCommand('extension.AddHero', async () => {
