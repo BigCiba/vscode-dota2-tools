@@ -11,7 +11,7 @@ import * as watch from 'watch';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
@@ -305,12 +305,12 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	// 合并文本
-	let Localization = vscode.commands.registerCommand('extension.Localization', async () => {
+	let Localization = vscode.commands.registerCommand('dota2tools.Localization', async () => {
 		let root_path:string|undefined = GetRootPath();
 		if (root_path === undefined) {
 			return;
 		}
-		const localization_path: string = root_path + '/game/dota_addons/dota_imba/localization';
+		const localization_path: string = GameDir + '/localization';
 		var lang_folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(localization_path));
 		for (let i: number = 0; i < lang_folders.length; i++) {
 			const [folder_name, is_directory] = lang_folders[i];
@@ -320,7 +320,7 @@ export function activate(context: vscode.ExtensionContext) {
 				var promise: string = await ReadLanguage(language_path);
 				language += promise;
 				language += '\t}\n}';
-				fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt',language);
+				fs.writeFileSync(GameDir + '/resource/addon_' + folder_name + '.txt',language);
 				// var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
 				// text_editor.edit(function (edit_builder) {
 				// 	edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
@@ -336,7 +336,11 @@ export function activate(context: vscode.ExtensionContext) {
 				if (Number(file_type) === vscode.FileType.File) {
 					var document: vscode.TextDocument = await vscode.workspace.openTextDocument(path + '/' + file_name);
 					for (let line: number = 0; line < document.lineCount; line++) {
-						const lineText: string = document.lineAt(line).text;
+						const text_line: vscode.TextLine = document.lineAt(line);
+						const char_start: number = text_line.firstNonWhitespaceCharacterIndex;
+						let lineText: string = document.lineAt(line).text;
+						lineText = lineText.substr(char_start, lineText.length);
+						
 						lang += '\t\t' + lineText + '\n';
 					}
 					lang += '\n';
@@ -348,41 +352,6 @@ export function activate(context: vscode.ExtensionContext) {
 			return Promise.resolve(lang);
 		}
 	});
-
-	// 监听文本变更
-	async function WatchLocalization() {
-		let root_path:string|undefined = GetRootPath();
-		if (root_path === undefined) {
-			return;
-		}
-		// const nodeDependenciesProvider = new ApiTreeProvider(root_path);
-		// vscode.window.registerTreeDataProvider('nodeDependencies', nodeDependenciesProvider);
-		// const view = vscode.window.createTreeView('nodeDependencies', { treeDataProvider: nodeDependenciesProvider, showCollapseAll: true });
-		// https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/
-		watch.watchTree(root_path + '/game/dota_addons/dota_imba/localization', function (f, curr, prev) {
-			if (typeof f === "object" && prev === null && curr === null) {
-				// Finished walking the tree
-			} else if (prev === null) {
-				// f is a new file
-				// console.log('f is a new file');
-				vscode.commands.executeCommand('extension.Localization');
-			} else if (curr.nlink === 0) {
-				// f was removed
-				// console.log('f was removed');
-				vscode.commands.executeCommand('extension.Localization');
-			} else {
-				// f was changed
-				// console.log('f was changed');
-				vscode.commands.executeCommand('extension.Localization');
-			}
-		});
-		// vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-		// 	if (document.uri.fsPath.search('localization') !== -1) {
-		// 		vscode.commands.executeCommand('extension.Localization');
-		// 	}
-		// });
-	}
-	WatchLocalization();
 	
 	// 版本控制
 	function WatchVersion() {
@@ -463,12 +432,19 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	// WatchVersion();
 	
-	Init(context);
+	await Init(context);
 	let listener = new Listener();
 	
 	vscode.workspace.onDidChangeConfiguration((event)=>{
 		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
 			listener.WatchAbilityExcel();
+		}
+		if (event.affectsConfiguration('dota2-tools.Listen Localization') === true) {
+			if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
+				listener.WatchLocalization();
+			} else {
+				listener.UnWatchLocalization();
+			}
 		}
 	});
 

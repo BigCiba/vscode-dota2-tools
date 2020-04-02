@@ -1,16 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const util = require("./util");
+const watch = require("watch");
 const node_xlsx_1 = require("node-xlsx");
 const path = require("path");
 const fs = require("fs");
 const vscode = require("vscode");
+const init_1 = require("./init");
 class Listener {
     constructor() {
-        this.WatchAbilityExcel();
+        this.WatchAbilityExcel(); //监听excel
+        if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
+            this.WatchLocalization(); //监听文本合并
+        }
     }
     WatchAbilityExcel() {
-        console.log(111);
         const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
         const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
         if (excel_object !== undefined && kv_object !== undefined) {
@@ -73,6 +77,31 @@ class Listener {
                 });
             }
         }
+    }
+    WatchLocalization() {
+        watch.watchTree(init_1.GameDir + '/localization', function (f, curr, prev) {
+            if (typeof f === "object" && prev === null && curr === null) {
+                // Finished walking the tree
+            }
+            else if (prev === null) {
+                // f is a new file
+                console.log('f is a new file');
+                vscode.commands.executeCommand('dota2tools.Localization');
+            }
+            else if (curr.nlink === 0) {
+                // f was removed
+                console.log('f was removed');
+                vscode.commands.executeCommand('dota2tools.Localization');
+            }
+            else {
+                // f was changed
+                console.log('f was changed');
+                vscode.commands.executeCommand('dota2tools.Localization');
+            }
+        });
+    }
+    UnWatchLocalization() {
+        watch.unwatchTree(init_1.GameDir + '/localization');
     }
 }
 exports.Listener = Listener;

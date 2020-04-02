@@ -32,6 +32,7 @@ function Init(context) {
         let path_arr = yield FindFile(root_path, 'maps');
         if (path_arr !== false) {
             exports.ContentDir = ContentDir = path_arr[0], exports.GameDir = GameDir = path_arr[1];
+            console.log(GameDir);
         }
         function FindFile(path, file_name) {
             return __awaiter(this, void 0, void 0, function* () {

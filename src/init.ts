@@ -20,6 +20,8 @@ export async function Init(context: vscode.ExtensionContext) {
 	let path_arr: string[]|false = await FindFile(root_path, 'maps');
 	if (path_arr !== false) {
 		[ContentDir, GameDir] = path_arr;
+		console.log(GameDir);
+		
 	}
 	async function FindFile(path:string, file_name:string):Promise<string[]|false> {
 		let path_arr: string[] = [];

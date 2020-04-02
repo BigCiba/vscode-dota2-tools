@@ -13,7 +13,7 @@
 	],
 	"activationEvents": [
 		"*",
-		"onCommand:extension.Localization",
+		"onCommand:dota2tools.Localization",
 		"onCommand:extension.AddHero",
 		"onView:nodeDependencies"
 	],
@@ -21,7 +21,7 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.Localization",
+				"command": "dota2tools.Localization",
 				"title": "合并文本"
 			},
 			{
@@ -122,6 +122,11 @@
 					"default": {},
 					"scope": "window",
 					"description": "输出kv路径"
+				},
+				"dota2-tools.Listen Localization": {
+					"type": "boolean",
+					"default": true,
+					"description": "是否监听文本变更"
 				}
 			}
 		},

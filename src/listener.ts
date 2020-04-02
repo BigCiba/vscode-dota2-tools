@@ -4,14 +4,16 @@ import xlsx from 'node-xlsx';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+import { Init,KV2LUA, VSND, GameDir } from './init';
 
 export class Listener {
 	constructor() {
-		this.WatchAbilityExcel();
+		this.WatchAbilityExcel();//监听excel
+		if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
+			this.WatchLocalization();//监听文本合并
+		}
 	}
 	WatchAbilityExcel() {
-		console.log(111);
-		
 		const excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
 		const kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
 		if (excel_object !== undefined && kv_object !== undefined) {
@@ -72,5 +74,27 @@ export class Listener {
 				});
 			}
 		}
+	}
+	WatchLocalization() {
+		watch.watchTree(GameDir + '/localization', function (f, curr, prev) {
+			if (typeof f === "object" && prev === null && curr === null) {
+				// Finished walking the tree
+			} else if (prev === null) {
+				// f is a new file
+				console.log('f is a new file');
+				vscode.commands.executeCommand('dota2tools.Localization');
+			} else if (curr.nlink === 0) {
+				// f was removed
+				console.log('f was removed');
+				vscode.commands.executeCommand('dota2tools.Localization');
+			} else {
+				// f was changed
+				console.log('f was changed');
+				vscode.commands.executeCommand('dota2tools.Localization');
+			}
+		});
+	}
+	UnWatchLocalization() {
+		watch.unwatchTree(GameDir + '/localization');
 	}
 }
