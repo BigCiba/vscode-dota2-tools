@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.0.29",
+	"version": "0.1.0",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -115,13 +115,29 @@
 					"type": "object",
 					"default": {},
 					"scope": "window",
-					"description": "监听excel路径"
+					"description": "监听技能excel路径"
 				},
 				"dota2-tools.abilities_kv_path": {
 					"type": "object",
 					"default": {},
 					"scope": "window",
-					"description": "输出kv路径"
+					"description": "输出技能kv路径"
+				},
+				"dota2-tools.units_excel_path": {
+					"type": "object",
+					"default": {
+						"0": ""
+					},
+					"scope": "window",
+					"description": "监听单位excel路径"
+				},
+				"dota2-tools.units_kv_path": {
+					"type": "object",
+					"default": {
+						"0": ""
+					},
+					"scope": "window",
+					"description": "输出单位kv路径"
 				},
 				"dota2-tools.Listen Localization": {
 					"type": "boolean",
