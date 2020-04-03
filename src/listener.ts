@@ -130,10 +130,9 @@ export class Listener {
 									values_obj[key] = col;
 								}
 							}
-							i++;
 							csv_data[row[0]] = values_obj;
 						}
-						fs.writeFileSync(kv_object[index], util.WriteKeyValue({abilities:csv_data}));
+						fs.writeFileSync(kv_object[index], util.WriteKeyValue({units:csv_data}));
 					}
 				});
 			}
