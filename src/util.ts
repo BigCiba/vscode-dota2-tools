@@ -259,6 +259,33 @@ export function GetConstantNoteContent(enum_info: any, context: vscode.Extension
 	`;
 	return content;
 }
+export function GetAbilityTextureContent(texture_info: any, context: vscode.ExtensionContext) {
+	let content = `
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Dota2 API</title>
+		</head>
+		<body>
+			`+ AddImage() +`
+			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','select_texture.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
+		</body>
+		</html>
+	`;
+	
+	function AddImage():string {
+		let content: string = '';
+		for (const key in texture_info) {
+			const value = texture_info[key];
+			content += `<img id="` + value + `" src="`+vscode.Uri.file(path.join(context.extensionPath,'resource','spellicons', value)).with({ scheme: 'vscode-resource' }).toString()+`" onclick="Confirm(this)" />
+			`;
+		}
+		return content;
+	}
+	return content;
+}
 export function ReadAPI(api: string, api_cl:string): any {
 	let root_path:string|undefined = GetRootPath();
 	if (root_path === undefined) {

@@ -27,6 +27,15 @@ class Listener {
                     }
                     else {
                         console.log('changed');
+                        // let excel_stat: fs.Stats = fs.statSync(listen_path);
+                        // let kv_stat: fs.Stats = fs.statSync(kv_object[index]);
+                        // console.log(excel_stat);
+                        // console.log(kv_stat);
+                        // console.log(excel_stat.mtimeMs < kv_stat.mtimeMs);
+                        // if (excel_stat.mtimeMs < kv_stat.mtimeMs) {
+                        // 	util.ShowError('Excel版本过旧，不生成kv');
+                        // 	return;
+                        // }
                         let sheet_list = node_xlsx_1.default.parse(listen_path);
                         let csv = util.Array2CSV(sheet_list[0].data);
                         let dir_name = path.dirname(listen_path);

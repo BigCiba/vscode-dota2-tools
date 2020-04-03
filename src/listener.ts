@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { Init,KV2LUA, VSND, GameDir } from './init';
+import { print } from 'util';
 
 export class Listener {
 	constructor() {
@@ -25,6 +26,15 @@ export class Listener {
 						console.log('removed');
 					} else {
 						console.log('changed');
+						// let excel_stat: fs.Stats = fs.statSync(listen_path);
+						// let kv_stat: fs.Stats = fs.statSync(kv_object[index]);
+						// console.log(excel_stat);
+						// console.log(kv_stat);
+						// console.log(excel_stat.mtimeMs < kv_stat.mtimeMs);
+						// if (excel_stat.mtimeMs < kv_stat.mtimeMs) {
+						// 	util.ShowError('Excel版本过旧，不生成kv');
+						// 	return;
+						// }
 						let sheet_list: any = xlsx.parse(listen_path);
 						let csv: string = util.Array2CSV(sheet_list[0].data);
 						let dir_name: string = path.dirname(listen_path);

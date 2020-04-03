@@ -1448,6 +1448,54 @@ function activate(context) {
                 }
             }
         }));
+        // 选择图标
+        let SelectAbilityTexture = vscode.commands.registerCommand('dota2tools.select_ability_texture', (uri) => __awaiter(this, void 0, void 0, function* () {
+            const panel = vscode.window.createWebviewPanel('SelectAbilityTexture', // viewType
+            "Select Ability Texture", // 视图标题
+            vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+            {
+                enableScripts: true,
+                retainContextWhenHidden: true,
+            });
+            const texture_path = context.extensionPath + '/resource/spellicons';
+            let texture_data = {};
+            yield ReadTextureFolder(texture_path);
+            function ReadTextureFolder(folder_name) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
+                    for (let i = 0; i < folders.length; i++) {
+                        const [name, is_directory] = folders[i];
+                        if (name === undefined) {
+                            continue;
+                        }
+                        if (Number(is_directory) === vscode.FileType.Directory) {
+                            yield ReadTextureFolder(folder_name + '/' + name);
+                        }
+                        else if (Number(is_directory) === vscode.FileType.File) {
+                            let texture_name = (folder_name + '/' + name).split(texture_path)[1];
+                            texture_name = texture_name.replace('/', '');
+                            texture_data[texture_name.replace('_png.png', '')] = texture_name;
+                        }
+                    }
+                });
+            }
+            panel.webview.html = util.GetAbilityTextureContent(texture_data, context);
+            panel.webview.onDidReceiveMessage(message => {
+                let texture = message.replace(/_png\.png/, '');
+                vscode.env.clipboard.writeText(texture);
+                util.ShowInfo('已将图标路径复制到剪切板');
+                // vscode.window.activeTextEditor?.edit(editBuilder =>{
+                // 	if (vscode.window.activeTextEditor?.selection.start !== undefined && texture !== undefined) {
+                // 		if (vscode.window.activeTextEditor.selection.start.character === vscode.window.activeTextEditor.selection.end.character) {
+                // 			editBuilder.insert(vscode.window.activeTextEditor?.selection.start, texture);
+                // 		} else {
+                // 			editBuilder.replace(new vscode.Range(vscode.window.activeTextEditor?.selection.start, vscode.window.activeTextEditor?.selection.end), texture);
+                // 		}
+                // 	}
+                // });
+                panel.dispose();
+            }, undefined, context.subscriptions);
+        }));
         // 注册指令
         context.subscriptions.push(Localization);
         context.subscriptions.push(AddHero);
@@ -1459,6 +1507,7 @@ function activate(context) {
         context.subscriptions.push(GenerateDocument);
         context.subscriptions.push(VsndSelector);
         context.subscriptions.push(KV2CSV);
+        context.subscriptions.push(SelectAbilityTexture);
     });
 }
 exports.activate = activate;

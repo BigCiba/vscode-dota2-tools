@@ -67,6 +67,14 @@
 			{
 				"command": "dota2tools.kv_to_csv",
 				"title": "kv转csv"
+			},
+			{
+				"command": "dota2tools.select_ability_texture",
+				"title": "选择技能图标",
+				"icon": {
+					"light": "./images/texture_light.svg",
+					"dark": "./images/texture_dark.svg"
+				}
 			}
 		],
 		"menus": {
@@ -98,6 +106,10 @@
 				},
 				{
 					"command": "dota2tools.vsnd_selector",
+					"group": "navigation"
+				},
+				{
+					"command": "dota2tools.select_ability_texture",
 					"group": "navigation"
 				}
 			]
