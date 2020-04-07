@@ -914,18 +914,22 @@ export function CSV2Array(csv:string):[] {
 // array转csv
 export function Array2CSV(arr:any[]):string {
 	let csv:string = '';
-	// let length:number = arr[0].length;
 	let title_count: number = arr[1].length;
 	for (let i = 0; i < arr.length; i++) {
 		const rows:any = arr[i];
 		for (let j = 0; j < rows.length; j++) {
+			if (rows[0] === undefined) {
+				break;
+			}
 			const col = rows[j] === undefined ? '':rows[j];
 			csv += col + (j+1 === rows.length ? '':',');
 		}
-		for (let q = 0; q < title_count - rows.length; q++) {
-			csv += ',';
+		if (rows[0] !== undefined) {
+			for (let q = 0; q < title_count - rows.length; q++) {
+				csv += ',';
+			}
+			csv += os.EOL;
 		}
-		csv += os.EOL;
 	}
 	return csv;
 }
@@ -954,12 +958,12 @@ export function WriteKeyValue(obj:any,depth:number = 0) {
 		if (typeof(value) === 'string') {
 			str += AddDepthTab(depth, '"' + key + '"');
 			str += AddIntervalTab(depth, key);
-			str += '"' + value + '"\n';
+			str += '"' + value + '"' + os.EOL;
 		} else {
-			str += AddDepthTab(depth, '"' + key + '"\n');
-			str += AddDepthTab(depth, '{\n');
+			str += AddDepthTab(depth, '"' + key + '"' + os.EOL);
+			str += AddDepthTab(depth, '{' + os.EOL);
 			str += WriteKeyValue(value,depth + 1);
-			str += AddDepthTab(depth, '}\n');
+			str += AddDepthTab(depth, '}' + os.EOL);
 		}
 	}
 	return str;
