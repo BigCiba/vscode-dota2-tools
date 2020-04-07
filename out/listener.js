@@ -112,7 +112,7 @@ class Listener {
                         const csv_key = csv_arr[1];
                         for (let i = 2; i < csv_arr.length; i++) {
                             const row = csv_arr[i];
-                            if (row.length === 0) {
+                            if (row.length === 0 || row[0] === '' || row[0] === undefined) {
                                 continue;
                             }
                             let AttachWearables = 1;
