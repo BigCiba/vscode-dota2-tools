@@ -119,13 +119,46 @@ export class Listener {
 									AttachWearables:{}
 								}
 							};
+							// 读取多层结构
+							let ReadBlock = function (index:number):any {
+								let block:any = {};
+								for (let i = index + 1; i < row.length; i++) {
+									const col:any = row[i];
+									const key:string = csv_key[i];
+									if (col === '') {
+										if (key.search('[{]') !== -1) {
+											let [_block, j] = ReadBlock(i);
+											i = j;
+											if (Object.keys(_block).length > 0) {
+												block[key.split('[{]')[0]] = _block;
+											}
+										} else if (key.search('[}]') !== -1) {
+											return [block, i];
+										}
+										continue;
+									}
+									if (key === '') {
+										continue;
+									} else {
+										block[key] = col;
+									}
+								}
+							};
 							for (let j = 1; j < row.length; j++) {
 								const col = row[j];
+								let key:string = csv_key[j];
 								// 跳过空值
 								if (col === '') {
+									// 处理多层结构
+									if (key.search('[{]') !== -1) {
+										let [block, i] = ReadBlock(j);
+										j = i;
+										if (Object.keys(block).length > 0) {
+											values_obj[key.split('[{]')[0]] = block;
+										}
+									}
 									continue;
 								}
-								let key:string = csv_key[j];
 								// special值特殊处理
 								if (key === 'AttachWearables') {
 									key = AttachWearables.toString();
@@ -134,11 +167,15 @@ export class Listener {
 										ItemDef:value
 									};
 									AttachWearables++;
+								// 跳过没有key的值
 								} else if (key === '') {
 									continue;
 								} else {
 									values_obj[key] = col;
 								}
+							}
+							if (Object.keys(values_obj.Creature.AttachWearables).length === 0) {
+								delete values_obj.Creature;
 							}
 							csv_data[row[0]] = values_obj;
 						}

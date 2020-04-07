@@ -1484,15 +1484,6 @@ function activate(context) {
                 let texture = message.replace(/_png\.png/, '');
                 vscode.env.clipboard.writeText(texture);
                 util.ShowInfo('已将图标路径复制到剪切板');
-                // vscode.window.activeTextEditor?.edit(editBuilder =>{
-                // 	if (vscode.window.activeTextEditor?.selection.start !== undefined && texture !== undefined) {
-                // 		if (vscode.window.activeTextEditor.selection.start.character === vscode.window.activeTextEditor.selection.end.character) {
-                // 			editBuilder.insert(vscode.window.activeTextEditor?.selection.start, texture);
-                // 		} else {
-                // 			editBuilder.replace(new vscode.Range(vscode.window.activeTextEditor?.selection.start, vscode.window.activeTextEditor?.selection.end), texture);
-                // 		}
-                // 	}
-                // });
                 panel.dispose();
             }, undefined, context.subscriptions);
         }));

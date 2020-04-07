@@ -915,11 +915,15 @@ export function CSV2Array(csv:string):[] {
 export function Array2CSV(arr:any[]):string {
 	let csv:string = '';
 	// let length:number = arr[0].length;
+	let title_count: number = arr[1].length;
 	for (let i = 0; i < arr.length; i++) {
 		const rows:any = arr[i];
 		for (let j = 0; j < rows.length; j++) {
 			const col = rows[j] === undefined ? '':rows[j];
 			csv += col + (j+1 === rows.length ? '':',');
+		}
+		for (let q = 0; q < title_count - rows.length; q++) {
+			csv += ',';
 		}
 		csv += os.EOL;
 	}

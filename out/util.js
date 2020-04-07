@@ -973,11 +973,15 @@ exports.CSV2Array = CSV2Array;
 function Array2CSV(arr) {
     let csv = '';
     // let length:number = arr[0].length;
+    let title_count = arr[1].length;
     for (let i = 0; i < arr.length; i++) {
         const rows = arr[i];
         for (let j = 0; j < rows.length; j++) {
             const col = rows[j] === undefined ? '' : rows[j];
             csv += col + (j + 1 === rows.length ? '' : ',');
+        }
+        for (let q = 0; q < title_count - rows.length; q++) {
+            csv += ',';
         }
         csv += os.EOL;
     }
