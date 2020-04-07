@@ -918,13 +918,13 @@ export function Array2CSV(arr:any[]):string {
 	for (let i = 0; i < arr.length; i++) {
 		const rows:any = arr[i];
 		for (let j = 0; j < rows.length; j++) {
-			if (rows[0] === undefined) {
+			if (rows[0] === undefined && rows.length === 0) {
 				break;
 			}
 			const col = rows[j] === undefined ? '':rows[j];
 			csv += col + (j+1 === rows.length ? '':',');
 		}
-		if (rows[0] !== undefined) {
+		if (rows[0] !== undefined || rows.length > 0) {
 			for (let q = 0; q < title_count - rows.length; q++) {
 				csv += ',';
 			}
