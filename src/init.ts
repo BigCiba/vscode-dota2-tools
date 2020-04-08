@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as util from './util';
 import { isObject, log } from 'util';
+import {Listener} from './listener';
 let KV2LUA:any = {};	// kv与lua文件关联数据
 let VSND = new Array;
 let GameDir:string = '';	// game目录
@@ -101,4 +102,24 @@ export async function Init(context: vscode.ExtensionContext) {
 	}
 	let def_jump = vscode.languages.registerDefinitionProvider([{pattern: '**/*.txt'},{pattern: '**/*.kv'}], {provideDefinition});
 	context.subscriptions.push(def_jump);
+
+	// 强行运行一遍csv转kv
+	const ability_excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
+	const ability_kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
+	if (ability_excel_object !== undefined && ability_kv_object !== undefined) {
+		for (const index in ability_excel_object) {
+			let listen_path = ability_excel_object[index].replace(/\\\\/g,'/');
+			listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
+			fs.writeFileSync(ability_kv_object[index], util.WriteKeyValue({abilities:util.AbilityCSV2KV(listen_path)}));
+		}
+	}
+	const unit_excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
+	const unit_kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
+	if (unit_excel_object !== undefined && unit_kv_object !== undefined) {
+		for (const index in unit_excel_object) {
+			let listen_path = unit_excel_object[index].replace(/\\\\/g,'/');
+			listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
+			fs.writeFileSync(unit_kv_object[index], util.WriteKeyValue({abilities:util.UnitCSV2KV(listen_path)}));
+		}
+	}
 }

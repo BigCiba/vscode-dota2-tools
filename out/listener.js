@@ -83,8 +83,7 @@ class Listener {
                             i++;
                             csv_data[row[0]] = values_obj;
                         }
-                        console.log(kv_object[index]);
-                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ abilities: csv_data }));
+                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ abilities: util.AbilityCSV2KV(listen_path) }));
                     }
                 });
             }
@@ -109,87 +108,7 @@ class Listener {
                         // let file_name: string = listen_path.split(dir_name)[1].replace('/','').split('\.')[0];
                         // util.DirExists(dir_name + '/csv');
                         // fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
-                        let csv = fs.readFileSync(listen_path, 'utf-8');
-                        // 生成kv
-                        let csv_data = {};
-                        let csv_arr = util.CSV2Array(csv);
-                        const csv_key = csv_arr[1];
-                        for (let i = 2; i < csv_arr.length; i++) {
-                            const row = csv_arr[i];
-                            if (row.length === 0 || row[0] === '' || row[0] === undefined) {
-                                continue;
-                            }
-                            let AttachWearables = 1;
-                            let values_obj = {
-                                Creature: {
-                                    AttachWearables: {}
-                                }
-                            };
-                            // 读取多层结构
-                            let ReadBlock = function (index) {
-                                let block = {};
-                                for (let i = index + 1; i < row.length; i++) {
-                                    const col = row[i];
-                                    const key = csv_key[i];
-                                    if (col === '') {
-                                        if (key.search('[{]') !== -1) {
-                                            let [_block, j] = ReadBlock(i);
-                                            i = j;
-                                            if (Object.keys(_block).length > 0) {
-                                                block[key.split('[{]')[0]] = _block;
-                                            }
-                                        }
-                                        else if (key.search('[}]') !== -1) {
-                                            return [block, i];
-                                        }
-                                        continue;
-                                    }
-                                    if (key === '') {
-                                        continue;
-                                    }
-                                    else {
-                                        block[key] = col;
-                                    }
-                                }
-                            };
-                            for (let j = 1; j < row.length; j++) {
-                                const col = row[j];
-                                let key = csv_key[j];
-                                // 跳过空值
-                                if (col === '') {
-                                    // 处理多层结构
-                                    if (key.search('[{]') !== -1) {
-                                        let [block, i] = ReadBlock(j);
-                                        j = i;
-                                        if (Object.keys(block).length > 0) {
-                                            values_obj[key.split('[{]')[0]] = block;
-                                        }
-                                    }
-                                    continue;
-                                }
-                                // special值特殊处理
-                                if (key === 'AttachWearables') {
-                                    key = AttachWearables.toString();
-                                    let value = col;
-                                    values_obj.Creature.AttachWearables[key] = {
-                                        ItemDef: value
-                                    };
-                                    AttachWearables++;
-                                    // 跳过没有key的值
-                                }
-                                else if (key === '') {
-                                    continue;
-                                }
-                                else {
-                                    values_obj[key] = col;
-                                }
-                            }
-                            if (Object.keys(values_obj.Creature.AttachWearables).length === 0) {
-                                delete values_obj.Creature;
-                            }
-                            csv_data[row[0]] = values_obj;
-                        }
-                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ units: csv_data }));
+                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ units: util.UnitCSV2KV(listen_path) }));
                     }
                 });
             }

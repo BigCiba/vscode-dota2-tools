@@ -1029,4 +1029,133 @@ function WriteKeyValue(obj, depth = 0) {
     return str;
 }
 exports.WriteKeyValue = WriteKeyValue;
+function AbilityCSV2KV(listen_path) {
+    let csv = fs.readFileSync(listen_path, 'utf-8');
+    // 生成kv
+    let csv_data = {};
+    let csv_arr = CSV2Array(csv);
+    const csv_key = csv_arr[1];
+    for (let i = 2; i < csv_arr.length; i++) {
+        const row = csv_arr[i];
+        if (row.length === 0) {
+            continue;
+        }
+        let AbilitySpecial = 1;
+        let values_obj = {
+            AbilitySpecial: {}
+        };
+        for (let j = 1; j < row.length; j++) {
+            const col = row[j];
+            // 跳过空值
+            if (col === '') {
+                continue;
+            }
+            let key = csv_key[j];
+            // special值特殊处理
+            if (key === 'AbilitySpecial') {
+                key = ("0" + AbilitySpecial).substr(-2);
+                let value = csv_arr[i + 1][j];
+                values_obj.AbilitySpecial[key] = {
+                    var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
+                    [col]: csv_arr[i + 1][j]
+                };
+                AbilitySpecial++;
+            }
+            else if (key === '') {
+                continue;
+            }
+            else {
+                values_obj[key] = col;
+            }
+        }
+        i++;
+        csv_data[row[0]] = values_obj;
+    }
+    return csv_data;
+}
+exports.AbilityCSV2KV = AbilityCSV2KV;
+function UnitCSV2KV(listen_path) {
+    let csv = fs.readFileSync(listen_path, 'utf-8');
+    // 生成kv
+    let csv_data = {};
+    let csv_arr = CSV2Array(csv);
+    const csv_key = csv_arr[1];
+    for (let i = 2; i < csv_arr.length; i++) {
+        const row = csv_arr[i];
+        if (row.length === 0 || row[0] === '' || row[0] === undefined) {
+            continue;
+        }
+        let AttachWearables = 1;
+        let values_obj = {
+            Creature: {
+                AttachWearables: {}
+            }
+        };
+        // 读取多层结构
+        let ReadBlock = function (index) {
+            let block = {};
+            for (let i = index + 1; i < row.length; i++) {
+                const col = row[i];
+                const key = csv_key[i];
+                if (col === '') {
+                    if (key.search('[{]') !== -1) {
+                        let [_block, j] = ReadBlock(i);
+                        i = j;
+                        if (Object.keys(_block).length > 0) {
+                            block[key.split('[{]')[0]] = _block;
+                        }
+                    }
+                    else if (key.search('[}]') !== -1) {
+                        return [block, i];
+                    }
+                    continue;
+                }
+                if (key === '') {
+                    continue;
+                }
+                else {
+                    block[key] = col;
+                }
+            }
+        };
+        for (let j = 1; j < row.length; j++) {
+            const col = row[j];
+            let key = csv_key[j];
+            // 跳过空值
+            if (col === '') {
+                // 处理多层结构
+                if (key.search('[{]') !== -1) {
+                    let [block, i] = ReadBlock(j);
+                    j = i;
+                    if (Object.keys(block).length > 0) {
+                        values_obj[key.split('[{]')[0]] = block;
+                    }
+                }
+                continue;
+            }
+            // special值特殊处理
+            if (key === 'AttachWearables') {
+                key = AttachWearables.toString();
+                let value = col;
+                values_obj.Creature.AttachWearables[key] = {
+                    ItemDef: value
+                };
+                AttachWearables++;
+                // 跳过没有key的值
+            }
+            else if (key === '') {
+                continue;
+            }
+            else {
+                values_obj[key] = col;
+            }
+        }
+        if (Object.keys(values_obj.Creature.AttachWearables).length === 0) {
+            delete values_obj.Creature;
+        }
+        csv_data[row[0]] = values_obj;
+    }
+    return csv_data;
+}
+exports.UnitCSV2KV = UnitCSV2KV;
 //# sourceMappingURL=util.js.map
