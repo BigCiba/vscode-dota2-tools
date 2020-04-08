@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util = require("./util");
 const watch = require("watch");
-const node_xlsx_1 = require("node-xlsx");
 const path = require("path");
 const fs = require("fs");
 const vscode = require("vscode");
@@ -20,7 +19,8 @@ class Listener {
         const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
         if (excel_object !== undefined && kv_object !== undefined) {
             for (const index in excel_object) {
-                const listen_path = excel_object[index].replace(/\\\\/g, '/');
+                let listen_path = excel_object[index].replace(/\\\\/g, '/');
+                listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
                 fs.watchFile(listen_path, (curr, prev) => {
                     if (curr.nlink === 0) {
                         console.log('removed');
@@ -36,12 +36,13 @@ class Listener {
                         // 	util.ShowError('Excel版本过旧，不生成kv');
                         // 	return;
                         // }
-                        let sheet_list = node_xlsx_1.default.parse(listen_path);
-                        let csv = util.Array2CSV(sheet_list[0].data);
-                        let dir_name = path.dirname(listen_path);
-                        let file_name = listen_path.split(dir_name)[1].replace('/', '').split('\.')[0];
-                        util.DirExists(dir_name + '/csv');
-                        fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
+                        // let sheet_list: any = xlsx.parse(listen_path);
+                        // let csv: string = util.Array2CSV(sheet_list[0].data);
+                        // let dir_name: string = path.dirname(listen_path);
+                        // let file_name: string = listen_path.split(dir_name)[1].replace('/','').split('\.')[0];
+                        // util.DirExists(dir_name + '/csv');
+                        // fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
+                        let csv = fs.readFileSync(listen_path, 'utf-8');
                         // 生成kv
                         let csv_data = {};
                         let csv_arr = util.CSV2Array(csv);
@@ -82,6 +83,7 @@ class Listener {
                             i++;
                             csv_data[row[0]] = values_obj;
                         }
+                        console.log(kv_object[index]);
                         fs.writeFileSync(kv_object[index], util.WriteKeyValue({ abilities: csv_data }));
                     }
                 });
@@ -93,19 +95,21 @@ class Listener {
         const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
         if (excel_object !== undefined && kv_object !== undefined) {
             for (const index in excel_object) {
-                const listen_path = excel_object[index].replace(/\\\\/g, '/');
+                let listen_path = excel_object[index].replace(/\\\\/g, '/');
+                listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
                 fs.watchFile(listen_path, (curr, prev) => {
                     if (curr.nlink === 0) {
                         console.log('removed');
                     }
                     else {
                         console.log('changed');
-                        let sheet_list = node_xlsx_1.default.parse(listen_path);
-                        let csv = util.Array2CSV(sheet_list[0].data);
-                        let dir_name = path.dirname(listen_path);
-                        let file_name = listen_path.split(dir_name)[1].replace('/', '').split('\.')[0];
-                        util.DirExists(dir_name + '/csv');
-                        fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
+                        // let sheet_list: any = xlsx.parse(listen_path);
+                        // let csv: string = util.Array2CSV(sheet_list[0].data);
+                        // let dir_name: string = path.dirname(listen_path);
+                        // let file_name: string = listen_path.split(dir_name)[1].replace('/','').split('\.')[0];
+                        // util.DirExists(dir_name + '/csv');
+                        // fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
+                        let csv = fs.readFileSync(listen_path, 'utf-8');
                         // 生成kv
                         let csv_data = {};
                         let csv_arr = util.CSV2Array(csv);

@@ -317,10 +317,19 @@ export async function activate(context: vscode.ExtensionContext) {
 			const [folder_name, is_directory] = lang_folders[i];
 			if (Number(is_directory) === vscode.FileType.Directory){
 				const language_path: string = localization_path + '/' + folder_name;
-				var language: string = '"lang"\n{\n\t"Language"\t\t"' + folder_name.charAt(0).toUpperCase() + folder_name.slice(1) + '"\n\t"Tokens"\n\t{\n';
+				var language: string = 
+`"lang"
+{
+	"Language"		"` + folder_name.charAt(0).toUpperCase() + folder_name.slice(1) + `"
+	"Tokens"
+	{
+`;
 				var promise: string = await ReadLanguage(language_path);
 				language += promise;
-				language += '\t}\n}';
+				language += 
+`
+	}
+}`;
 				fs.writeFileSync(GameDir + '/resource/addon_' + folder_name + '.txt',language);
 				// var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
 				// text_editor.edit(function (edit_builder) {
@@ -342,9 +351,9 @@ export async function activate(context: vscode.ExtensionContext) {
 						let lineText: string = document.lineAt(line).text;
 						lineText = lineText.substr(char_start, lineText.length);
 						
-						lang += '\t\t' + lineText + '\n';
+						lang += '\t\t' + lineText + os.EOL;
 					}
-					lang += '\n';
+					lang += os.EOL;
 				} else if (Number(file_type) === vscode.FileType.Directory) {
 					var promise: string = await ReadLanguage(path + '/' + file_name);
 					lang += promise;

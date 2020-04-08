@@ -25,14 +25,6 @@
 				"title": "合并文本"
 			},
 			{
-				"command": "extension.AddHero",
-				"title": "添加英雄",
-				"icon": {
-					"light": "./images/hero_light.svg",
-					"dark": "./images/hero_dark.svg"
-				}
-			},
-			{
 				"command": "dota2tools.OpenKV",
 				"title": "转到技能kv"
 			},
@@ -100,10 +92,6 @@
 				}
 			],
 			"editor/title": [
-				{
-					"command": "extension.AddHero",
-					"group": "navigation"
-				},
 				{
 					"command": "dota2tools.vsnd_selector",
 					"group": "navigation"
