@@ -6,7 +6,7 @@
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
-		"vscode": "^1.39.0"
+		"vscode": "^1.44.0"
 	},
 	"categories": [
 		"Other"
@@ -145,7 +145,18 @@
 					"description": "是否监听文本变更"
 				}
 			}
-		}
+		},
+		"customEditors": [
+			{
+				"viewType": "dota2tools.ActiveList",
+				"displayName": "ActiveList Editor",
+				"selector": [
+					{
+						"filenamePattern": "herolist.txt"
+					}
+				]
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -158,11 +169,11 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.39.0",
+		"@types/vscode": "^1.44.0",
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
+		"tslint": "^5.20.1",
 		"typescript": "^3.3.1",
-		"tslint": "^5.12.1",
 		"vscode-test": "^1.2.0"
 	},
 	"repository": {

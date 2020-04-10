@@ -19,6 +19,7 @@ const util = require("./util");
 const init_1 = require("./init");
 const listener_1 = require("./listener");
 const watch = require("watch");
+const activelistEditor_1 = require("./activelistEditor");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1507,6 +1508,7 @@ function activate(context) {
         context.subscriptions.push(VsndSelector);
         context.subscriptions.push(KV2CSV);
         context.subscriptions.push(SelectAbilityTexture);
+        context.subscriptions.push(activelistEditor_1.ActiveListEditorProvider.register(context));
     });
 }
 exports.activate = activate;

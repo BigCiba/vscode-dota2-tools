@@ -9,6 +9,7 @@ import { Init,KV2LUA, VSND, GameDir } from './init';
 import {Listener} from './listener';
 import * as watch from 'watch';
 import { log } from 'util';
+import { ActiveListEditorProvider } from './activelistEditor';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -20,7 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "dota2-tools" is now active!');
 	// 获取根目录
 	function GetRootPath():string|undefined {
-		const folders: vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
+		const folders: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
 		if (folders !== undefined) {
 			return folders[0].uri.fsPath;
 		} else {
@@ -1483,6 +1484,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(VsndSelector);
 	context.subscriptions.push(KV2CSV);
 	context.subscriptions.push(SelectAbilityTexture);
+	context.subscriptions.push(ActiveListEditorProvider.register(context));
 }
 
 // this method is called when your extension is deactivated

@@ -7,7 +7,7 @@ import { isObject, log } from 'util';
 
 // 获取根目录
 export function GetRootPath():string|undefined {
-	const folders: vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
+	const folders: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
 	if (folders !== undefined) {
 		return folders[0].uri.fsPath;
 	} else {
@@ -1094,4 +1094,12 @@ export function UnitCSV2KV(listen_path:string):any {
 		csv_data[row[0]] = values_obj;
 	}
 	return csv_data;
+}
+export function getNonce() {
+	let text = '';
+	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	for (let i = 0; i < 32; i++) {
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	}
+	return text;
 }
