@@ -41,9 +41,10 @@
 		
 		// Render the scratches
 		notesContainer.innerHTML = '';
-		console.log(json.CustomHeroList);
+		let key = Object.keys(json)[0];
+		console.log(json[key]);
 		
-		for (const note in json.CustomHeroList || []) {
+		for (const note in json[key] || []) {
 			const img = document.createElement('input');
 			img.type = 'image';
 			img.className = 'hero-icon';
@@ -53,7 +54,7 @@
 				
 			});
 			
-			if (json.CustomHeroList[note] == 0) {
+			if (json[key][note] == 0) {
 				img.className = 'hero-icon disable';
 			}
 			notesContainer.appendChild(img);

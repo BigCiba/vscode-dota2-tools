@@ -113,29 +113,21 @@
 				},
 				"dota2-tools.abilities_excel_path": {
 					"type": "object",
-					"default": {},
 					"scope": "window",
 					"description": "监听技能excel路径"
 				},
 				"dota2-tools.abilities_kv_path": {
 					"type": "object",
-					"default": {},
 					"scope": "window",
 					"description": "输出技能kv路径"
 				},
 				"dota2-tools.units_excel_path": {
 					"type": "object",
-					"default": {
-						"0": ""
-					},
 					"scope": "window",
 					"description": "监听单位excel路径"
 				},
 				"dota2-tools.units_kv_path": {
 					"type": "object",
-					"default": {
-						"0": ""
-					},
 					"scope": "window",
 					"description": "输出单位kv路径"
 				},
@@ -153,6 +145,9 @@
 				"selector": [
 					{
 						"filenamePattern": "herolist.txt"
+					},
+					{
+						"filenamePattern": "activelist.txt"
 					}
 				]
 			}

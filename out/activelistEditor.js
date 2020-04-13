@@ -149,14 +149,15 @@ class ActiveListEditorProvider {
         // if (!Array.isArray(json.CustomHeroList)) {
         // 	return;
         // }
-        let mark = json.CustomHeroList[id];
+        let key = Object.keys(json)[0];
+        let mark = json[key][id];
         if (mark === "0") {
             mark = "1";
         }
         else {
             mark = "0";
         }
-        json.CustomHeroList[id] = mark;
+        json[key][id] = mark;
         // json.scratches = json.scratches.filter((note: any) => note.id !== id);
         return this.updateTextDocument(document, json);
     }
