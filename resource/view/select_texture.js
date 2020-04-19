@@ -1,24 +1,86 @@
-const testMode = false; // 为true时可以在浏览器打开不报错
-// vscode webview 网页和普通网页的唯一区别：多了一个acquireVsCodeApi方法
-const vscode = testMode ? {} : acquireVsCodeApi();
-const callbacks = {};
+// Script run within the webview itself.
+const vscode = acquireVsCodeApi();
+const textureContainer = (document.querySelector('.texture-content'));
+const dropdownContainer = (document.querySelector('.dropdown-content'));
+const heroFilter = (document.querySelector('.hero-filter'));
+const filter = document.getElementById("filter")
+
+function updateContent(text, uri, heroes_data, heroUri) {
+	let filter_word = filter.value;
+
+	textureContainer.innerHTML = '';
+	for (const id in text || []) {
+		const img = document.createElement('input');
+		img.id = id;
+		img.type = 'image';
+		img.className = 'texture-icon';
+		img.src = uri + '/' + text[id];
+		
+		if (filter_word != '' && id.search(filter_word) == -1) {
+			img.style.display = "none"
+		}
+		img.addEventListener('click', () => {
+			vscode.postMessage(id);
+		});
+
+		textureContainer.appendChild(img);
+	}
+	console.log(heroes_data);
+	
+	for (const key in heroes_data) {
+		const img = document.createElement('input');
+		img.id = key;
+		img.type = 'image';
+		img.className = 'hero-icon';
+		img.src = heroUri + '/' + heroes_data[key];
+		img.addEventListener('click', () => {
+			if (key == 'default') {
+				filter.value = '';
+			} else {
+				filter.value = key;
+			}
+			heroFilter.src = img.src;
+			OnInput();
+		});
+		dropdownContainer.appendChild(img);
+	}
+}
 
 window.addEventListener('message', event => {
 	const message = event.data;
-	console.log(message);
-	for (const key in message) {
-		console.log(key);
-	}
-	// console.log(message);
-	switch (message.cmd) {
-		case 'vscodeCallback':
-			console.log(message.data);
-			(callbacks[message.cbid] || function () { })(message.data);
-			delete callbacks[message.cbid];
-			break;
-		default: break;
+	switch (message.type) {
+		case 'update':
+			const text = message.text;
+			const uri = message.uri;
+			const heroes_data = message.heroes_data;
+			const heroUri = message.heroUri;
+			
+
+			updateContent(text, uri, heroes_data, heroUri);
+			// Then persist state information.
+			// This state is returned in the call to `vscode.getState` below when a webview is reloaded.
+			vscode.setState({ text, uri, heroes_data, heroUri });
+
+			return;
 	}
 });
-function Confirm(image) {
-	vscode.postMessage(image.id);
+function OnInput() {
+	let children = textureContainer.children;
+	let filter_word = filter.value;
+	for (let index = 0; index < children.length; index++) {
+		const element = children[index];
+		if (filter_word != '' && element.id.search(filter_word) == -1) {
+			element.style.display = 'none'
+		} else {
+			element.style.display = '';
+		}
+	}
+	
+	// vscode.postMessage(image.id);
 }
+(function () {
+	const state = vscode.getState();
+	if (state) {
+		updateContent(state.text, state.uri, state.heroes_data, state.heroUri);
+	}
+}());

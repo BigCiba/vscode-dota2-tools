@@ -259,18 +259,36 @@ export function GetConstantNoteContent(enum_info: any, context: vscode.Extension
 	`;
 	return content;
 }
-export function GetAbilityTextureContent(texture_info: any, context: vscode.ExtensionContext) {
+export function GetAbilityTextureContent(webview: vscode.Webview, texture_info: any, context: vscode.ExtensionContext) {
+	const styleUri = webview.asWebviewUri(vscode.Uri.file(
+		path.join(context.extensionPath, 'resource', 'view', 'textureSelector.css')
+	));
+	const scriptUri = webview.asWebviewUri(vscode.Uri.file(
+		path.join(context.extensionPath, 'resource', 'view', 'select_texture.js')
+	));
 	let content = `
 		<!DOCTYPE html>
 		<html lang="en">
 		<head>
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title>Dota2 API</title>
+			<title>Texture Selector</title>
+			<link href="${styleUri}" rel="stylesheet" />
 		</head>
 		<body>
-			`+ AddImage() +`
-			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','select_texture.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
+			<div class="search">
+				<div class="search-content">
+					<div class="dropdown">
+						<img class="hero-filter" src="`+vscode.Uri.file(path.join(context.extensionPath,'images','heroes_icon', 'npc_dota_hero_default_png.png')).with({ scheme: 'vscode-resource' }).toString()+`"/>
+						<div class="dropdown-content"/>
+						</div>
+					</div>
+					<input id="filter" type="text" placeholder="Search" oninput="OnInput(event)">
+				</div>
+			</div>
+			<div class="texture-content">
+			</div>
+			<script src="${scriptUri}"></script>
 		</body>
 		</html>
 	`;
@@ -564,7 +582,8 @@ export function ReadKV3(path: string):any {
 // 读取kv2格式为object(兼容kv3)
 export function ReadKeyValue2(kvdata:string):any {
 	kvdata = RemoveComment(kvdata);
-	kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
+	// kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
+	kvdata = kvdata.replace(/\t/g,'').replace(/\r\n/g,'');
 	let kv_obj:any = {};
 	for (let i = 0; i < kvdata.length; i++) {
 		let substr = kvdata[i];
@@ -710,7 +729,8 @@ export function ReadKeyValue2(kvdata:string):any {
 }
 // 读取kv3格式为object
 export function ReadKeyValue3(kvdata:string):any {
-	kvdata = kvdata.replace(/\t/g,'').replace(/\s+/g,'').replace(/\r\n/g,'');
+	// kvdata = kvdata.replace(/\t/g,'').replace(/\s+/g,'').replace(/\r\n/g,'');
+	kvdata = kvdata.replace(/\t/g,'').replace(/\r\n/g,'');
 	let kv_obj:any = [];
 	for (let i = 0; i < kvdata.length; i++) {
 		let substr = kvdata[i];

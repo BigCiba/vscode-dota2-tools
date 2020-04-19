@@ -1026,7 +1026,7 @@ function activate(context) {
                 }
                 // 读取服务器API
                 const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
-                const api_note = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
+                const api_note = JSON.parse(fs.readFileSync(init_1.GameDir + '/scripts/vscripts/libraries/api_note.json', 'utf-8'));
                 const rows = dota_script_help2.split(os.EOL);
                 let class_list = {};
                 let enum_list = {};
@@ -1466,6 +1466,7 @@ function activate(context) {
                 enableScripts: true,
                 retainContextWhenHidden: true,
             });
+            // 读取图标数据
             const texture_path = context.extensionPath + '/resource/spellicons';
             let texture_data = {};
             yield ReadTextureFolder(texture_path);
@@ -1488,12 +1489,35 @@ function activate(context) {
                     }
                 });
             }
-            panel.webview.html = util.GetAbilityTextureContent(texture_data, context);
+            // 读取英雄头像数据
+            const heroes_path = context.extensionPath + '/images/heroes_icon';
+            let heroes_data = {};
+            let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(heroes_path));
+            for (let i = 0; i < folders.length; i++) {
+                const [name, is_directory] = folders[i];
+                if (name === undefined) {
+                    continue;
+                }
+                if (Number(is_directory) === vscode.FileType.File) {
+                    heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = name;
+                }
+            }
+            panel.webview.html = util.GetAbilityTextureContent(panel.webview, texture_data, context);
+            const imgUri = vscode.Uri.file(path.join(context.extensionPath, 'resource', 'spellicons')).with({ scheme: 'vscode-resource' }).toString();
+            const heroUri = vscode.Uri.file(path.join(context.extensionPath, 'images', 'heroes_icon')).with({ scheme: 'vscode-resource' }).toString();
+            panel.webview.postMessage({
+                type: "update",
+                text: texture_data,
+                heroes_data: heroes_data,
+                uri: imgUri,
+                heroUri: heroUri,
+            });
             panel.webview.onDidReceiveMessage(message => {
+                console.log(message);
                 let texture = message.replace(/_png\.png/, '');
                 vscode.env.clipboard.writeText(texture);
                 util.ShowInfo('已将图标路径复制到剪切板');
-                panel.dispose();
+                // panel.dispose();
             }, undefined, context.subscriptions);
         }));
         // 注册指令

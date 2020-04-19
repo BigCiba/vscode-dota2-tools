@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const util = require("./util");
 const watch = require("watch");
@@ -83,36 +92,55 @@ class Listener {
                             i++;
                             csv_data[row[0]] = values_obj;
                         }
-                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ abilities: util.AbilityCSV2KV(listen_path) }));
+                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(listen_path) }));
                     }
                 });
             }
         }
     }
     WatchUnitExcel() {
-        const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
-        const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
-        if (excel_object !== undefined && kv_object !== undefined) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
+            const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
+            if (excel_object === undefined || kv_object === undefined) {
+                return;
+            }
             for (const index in excel_object) {
                 let listen_path = excel_object[index].replace(/\\\\/g, '/');
-                listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
-                fs.watchFile(listen_path, (curr, prev) => {
+                let file_type = (yield vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
+                if (file_type === vscode.FileType.Directory) {
+                    let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
+                    for (let i = 0; i < files.length; i++) {
+                        let [file_name, is_file] = files[i];
+                        if (file_name === undefined) {
+                            continue;
+                        }
+                        if (is_file === vscode.FileType.File) {
+                            let file_path = listen_path + '/' + file_name;
+                            let csv_path = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+                            WatchFile(csv_path, kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv');
+                        }
+                    }
+                }
+                else if (file_type === vscode.FileType.File) {
+                    listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
+                    WatchFile(listen_path, kv_object[index]);
+                }
+            }
+            function WatchFile(csv_path, kv_path) {
+                console.log(csv_path);
+                console.log(kv_path);
+                fs.watchFile(csv_path, (curr, prev) => {
                     if (curr.nlink === 0) {
                         console.log('removed');
                     }
                     else {
-                        console.log('changed');
-                        // let sheet_list: any = xlsx.parse(listen_path);
-                        // let csv: string = util.Array2CSV(sheet_list[0].data);
-                        // let dir_name: string = path.dirname(listen_path);
-                        // let file_name: string = listen_path.split(dir_name)[1].replace('/','').split('\.')[0];
-                        // util.DirExists(dir_name + '/csv');
-                        // fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
-                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ units: util.UnitCSV2KV(listen_path) }));
+                        console.log(csv_path + 'changed');
+                        fs.writeFileSync(kv_path, util.WriteKeyValue({ KeyValue: util.UnitCSV2KV(csv_path) }));
                     }
                 });
             }
-        }
+        });
     }
     WatchLocalization() {
         watch.watchTree(init_1.GameDir + '/localization', function (f, curr, prev) {
