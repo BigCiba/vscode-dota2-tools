@@ -1004,10 +1004,9 @@ export function AbilityCSV2KV(listen_path:string):any {
 			continue;
 		}
 
-		let AbilitySpecial:number = 1;
-		let values_obj: any = {
-			AbilitySpecial:{}
-		};
+		let special_count:number = 1;
+		let AbilitySpecial:any = {};
+		let values_obj: any = {};
 		for (let j = 1; j < row.length; j++) {
 			const col = row[j];
 			// 跳过空值
@@ -1017,19 +1016,20 @@ export function AbilityCSV2KV(listen_path:string):any {
 			let key:string = csv_key[j];
 			// special值特殊处理
 			if (key === 'AbilitySpecial') {
-				key = ("0" + AbilitySpecial).substr(-2);
+				key = ("0" + special_count).substr(-2);
 				let value = csv_arr[i+1][j];
-				values_obj.AbilitySpecial[key] = {
+				AbilitySpecial[key] = {
 					var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT':'FIELD_INTEGER',
 					[col]: csv_arr[i+1][j]
 				};
-				AbilitySpecial++;
+				special_count++;
 			} else if (key === '') {
 				continue;
 			} else {
 				values_obj[key] = col;
 			}
 		}
+		values_obj.AbilitySpecial = AbilitySpecial;
 		i++;
 		csv_data[row[0]] = values_obj;
 	}
@@ -1047,12 +1047,9 @@ export function UnitCSV2KV(listen_path:string):any {
 			continue;
 		}
 
-		let AttachWearables:number = 1;
-		let values_obj: any = {
-			Creature:{
-				AttachWearables:{}
-			}
-		};
+		let wearable_count:number = 1;
+		let AttachWearables:any = {};
+		let values_obj: any = {};
 		// 读取多层结构
 		let ReadBlock = function (index:number):any {
 			let block:any = {};
@@ -1095,12 +1092,12 @@ export function UnitCSV2KV(listen_path:string):any {
 			}
 			// special值特殊处理
 			if (key === 'AttachWearables') {
-				key = AttachWearables.toString();
+				key = wearable_count.toString();
 				let value = col;
-				values_obj.Creature.AttachWearables[key] = {
+				AttachWearables[key] = {
 					ItemDef:value
 				};
-				AttachWearables++;
+				wearable_count++;
 			// 跳过没有key的值
 			} else if (key === '') {
 				continue;
@@ -1108,8 +1105,10 @@ export function UnitCSV2KV(listen_path:string):any {
 				values_obj[key] = col;
 			}
 		}
-		if (Object.keys(values_obj.Creature.AttachWearables).length === 0) {
-			delete values_obj.Creature;
+		if (Object.keys(AttachWearables).length > 0) {
+			values_obj.Creature = {
+				AttachWearables: AttachWearables
+			};
 		}
 		csv_data[row[0]] = values_obj;
 	}

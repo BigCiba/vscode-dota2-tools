@@ -1352,85 +1352,109 @@ export async function activate(context: vscode.ExtensionContext) {
 	let KV2CSV = vscode.commands.registerCommand('dota2tools.kv_to_csv', async (uri) => {
 		const excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
 		const kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
-		if (excel_object !== undefined && kv_object !== undefined) {
-			for (const index in kv_object) {
-				const kv_path = kv_object[index].replace(/\\\\/g,'/');
-				let csv_path = path.dirname(excel_object[index]);
-				let file_name: string = excel_object[index].split(csv_path)[1].replace('/','').split('\.')[0];
-				let csv:any = util.CSV2Array(fs.readFileSync(csv_path + '/csv/' + file_name + '.csv', 'utf-8'));
-				let kv = util.ReadKeyValue2(fs.readFileSync(kv_path, 'utf-8'));
-				let csv_title = csv[0];
-				let csv_key = csv[1];
-				let final_csv = [csv_title,csv_key];
-				for (const ability_name in kv[Object.keys(kv)[0]]) {
-					const ability_data = kv[Object.keys(kv)[0]][ability_name];
-					let normal_data:any = [];//第一行
-					normal_data[0] = ability_name;
-					let special_data:any = [];//第二行
-					for (const ability_key in ability_data) {
-						const ability_value = ability_data[ability_key];
-						if (ability_key === 'AbilitySpecial') {//特殊处理AbilitySpecial
-							let special_count:number = 1;//记录第几个special值
-							for (const special_index in ability_value) {//遍历special
-								const special_info = ability_value[special_index];
-								let special_name = Object.keys(special_info)[1];
-								let special_avlue = special_info[Object.keys(special_info)[1]];
-								
-								let counter:number = 0;
-								let has_find:boolean = false;
-								for (let i = 0; i < csv_key.length; i++) {// 寻找csv里的AbilitySpecial
-									const key_name = csv_key[i];
-									if (key_name === 'AbilitySpecial') {
-										counter++;
-										if (counter === special_count) {
-											normal_data[i] = special_name;
-											special_data[i] = special_avlue;
-											has_find = true;
-										}
+		if (excel_object === undefined || kv_object === undefined) {
+			return;
+		}
+		for (const index in kv_object) {
+			const kv_path = kv_object[index].replace(/\\\\/g,'/');
+			let file_type:vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(kv_path))).type;
+			if (file_type === vscode.FileType.Directory) {
+				let files:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(kv_path));
+				for (let i: number = 0; i < files.length; i++) {
+					let [file_name, is_file] = files[i];
+					if (file_name === undefined) {
+						continue;
+					}
+					if (is_file === vscode.FileType.File){
+						let file_path: string = kv_path + '/' + file_name;
+						let csv_path: string = path.join(excel_object[index], 'csv', file_name.replace(path.extname(file_name), '.csv'));
+						
+						KeyValue2CSV(file_path, csv_path);
+						// fs.writeFileSync(unit_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({KeyValue:util.UnitCSV2KV(csv_path)}));
+					}
+				}
+			} else if (file_type === vscode.FileType.File) {
+				KeyValue2CSV(kv_path, excel_object[index]);
+			}
+			
+		}
+		function KeyValue2CSV(kv_path:string,csv_path:string) {
+			// let csv_path = path.dirname(excel_object[index]);
+			if (fs.existsSync(csv_path) === false) {
+				return;
+			}
+			let csv:any = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
+			let kv = util.ReadKeyValue2(fs.readFileSync(kv_path, 'utf-8'));
+			let csv_title = csv[0];
+			let csv_key = csv[1];
+			let final_csv = [csv_title,csv_key];
+			for (const ability_name in kv[Object.keys(kv)[0]]) {
+				const ability_data = kv[Object.keys(kv)[0]][ability_name];
+				let normal_data:any = [];//第一行
+				normal_data[0] = ability_name;
+				let special_data:any = [];//第二行
+				for (const ability_key in ability_data) {
+					const ability_value = ability_data[ability_key];
+					if (ability_key === 'AbilitySpecial') {//特殊处理AbilitySpecial
+						let special_count:number = 1;//记录第几个special值
+						for (const special_index in ability_value) {//遍历special
+							const special_info = ability_value[special_index];
+							let special_name = Object.keys(special_info)[1];
+							let special_avlue = special_info[Object.keys(special_info)[1]];
+							
+							let counter:number = 0;
+							let has_find:boolean = false;
+							for (let i = 0; i < csv_key.length; i++) {// 寻找csv里的AbilitySpecial
+								const key_name = csv_key[i];
+								if (key_name === 'AbilitySpecial') {
+									counter++;
+									if (counter === special_count) {
+										normal_data[i] = special_name;
+										special_data[i] = special_avlue;
+										has_find = true;
 									}
 								}
-								if (has_find === false) {//如果csv中的AbilitySpecial值不够则往后加
-									csv_key.push('AbilitySpecial');
-									normal_data[csv_key.length - 1] = special_name;
-									special_data[csv_key.length - 1] = special_avlue;
-								}
-								special_count++;
 							}
-						} else {
-							let has_find:boolean = false;
-							for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
-								const key_name = csv_key[i];
-								if (key_name === ability_key) {
-									normal_data[i] = ability_value;
-									has_find = true;
-									break;
-								}
+							if (has_find === false) {//如果csv中的AbilitySpecial值不够则往后加
+								csv_key.push('AbilitySpecial');
+								normal_data[csv_key.length - 1] = special_name;
+								special_data[csv_key.length - 1] = special_avlue;
 							}
-							if (has_find === false) {
-								csv_key.push(ability_key);
-								normal_data[csv_key.length - 1] = ability_value;
+							special_count++;
+						}
+					} else {
+						let has_find:boolean = false;
+						for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
+							const key_name = csv_key[i];
+							if (key_name === ability_key) {
+								normal_data[i] = ability_value;
+								has_find = true;
+								break;
 							}
 						}
-					}
-					// 合并已有的csv数据
-					for (let i = 2; i < csv.length; i++) {
-						const csv_data = csv[i];
-						if (csv_data[0] === normal_data[0]) {//技能名字已有
-							for (let j = 0; j < csv_data.length; j++) {
-								const value = csv_data[j];
-								if (normal_data[j] === undefined) {
-									normal_data[j] = value;
-								}
-							}
+						if (has_find === false) {
+							csv_key.push(ability_key);
+							normal_data[csv_key.length - 1] = ability_value;
 						}
 					}
-					final_csv.push(normal_data);
-					final_csv.push(special_data);
 				}
-				fs.writeFileSync(csv_path + '/csv/' + file_name + '.csv', util.Array2CSV(final_csv));
+				// 合并已有的csv数据
+				for (let i = 2; i < csv.length; i++) {
+					const csv_data = csv[i];
+					if (csv_data[0] === normal_data[0]) {//技能名字已有
+						for (let j = 0; j < csv_data.length; j++) {
+							const value = csv_data[j];
+							if (normal_data[j] === undefined) {
+								normal_data[j] = value;
+							}
+						}
+					}
+				}
+				final_csv.push(normal_data);
+				final_csv.push(special_data);
 			}
+			fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
 		}
-		
 	});
 	// 选择图标
 	let SelectAbilityTexture = vscode.commands.registerCommand('dota2tools.select_ability_texture', async (uri) => {

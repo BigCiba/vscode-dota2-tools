@@ -110,24 +110,60 @@ function Init(context) {
         let def_jump = vscode.languages.registerDefinitionProvider([{ pattern: '**/*.txt' }, { pattern: '**/*.kv' }], { provideDefinition });
         context.subscriptions.push(def_jump);
         // 强行运行一遍csv转kv
-        // const ability_excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
-        // const ability_kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
-        // if (ability_excel_object !== undefined && ability_kv_object !== undefined) {
-        // 	for (const index in ability_excel_object) {
-        // 		let listen_path = ability_excel_object[index].replace(/\\\\/g,'/');
-        // 		listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
-        // 		fs.writeFileSync(ability_kv_object[index], util.WriteKeyValue({abilities:util.AbilityCSV2KV(listen_path)}));
-        // 	}
-        // }
-        // const unit_excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
-        // const unit_kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
-        // if (unit_excel_object !== undefined && unit_kv_object !== undefined) {
-        // 	for (const index in unit_excel_object) {
-        // 		let listen_path = unit_excel_object[index].replace(/\\\\/g,'/');
-        // 		listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
-        // 		fs.writeFileSync(unit_kv_object[index], util.WriteKeyValue({abilities:util.UnitCSV2KV(listen_path)}));
-        // 	}
-        // }
+        const ability_excel_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
+        const ability_kv_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
+        if (ability_excel_object === undefined || ability_kv_object === undefined) {
+            return;
+        }
+        for (const index in ability_excel_object) {
+            let listen_path = ability_excel_object[index].replace(/\\\\/g, '/');
+            let file_type = (yield vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
+            if (file_type === vscode.FileType.Directory) {
+                let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
+                for (let i = 0; i < files.length; i++) {
+                    let [file_name, is_file] = files[i];
+                    if (file_name === undefined) {
+                        continue;
+                    }
+                    if (is_file === vscode.FileType.File) {
+                        let file_path = listen_path + '/' + file_name;
+                        let csv_path = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+                        fs.writeFileSync(ability_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(csv_path) }));
+                    }
+                }
+            }
+            else if (file_type === vscode.FileType.File) {
+                listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
+                fs.writeFileSync(ability_kv_object[index], util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(listen_path) }));
+            }
+        }
+        const unit_excel_object = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
+        const unit_kv_object = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
+        if (unit_excel_object === undefined || unit_kv_object === undefined) {
+            return;
+        }
+        for (const index in unit_excel_object) {
+            let listen_path = unit_excel_object[index].replace(/\\\\/g, '/');
+            let file_type = (yield vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
+            if (file_type === vscode.FileType.Directory) {
+                let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
+                for (let i = 0; i < files.length; i++) {
+                    let [file_name, is_file] = files[i];
+                    if (file_name === undefined) {
+                        continue;
+                    }
+                    if (is_file === vscode.FileType.File) {
+                        let file_path = listen_path + '/' + file_name;
+                        let csv_path = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+                        fs.writeFileSync(unit_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({ KeyValue: util.UnitCSV2KV(csv_path) }));
+                    }
+                }
+            }
+            else if (file_type === vscode.FileType.File) {
+                listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
+                fs.writeFileSync(unit_kv_object[index], util.WriteKeyValue({ KeyValue: util.UnitCSV2KV(listen_path) }));
+            }
+        }
     });
 }
 exports.Init = Init;

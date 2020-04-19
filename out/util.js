@@ -1056,10 +1056,9 @@ function AbilityCSV2KV(listen_path) {
         if (row.length === 0) {
             continue;
         }
-        let AbilitySpecial = 1;
-        let values_obj = {
-            AbilitySpecial: {}
-        };
+        let special_count = 1;
+        let AbilitySpecial = {};
+        let values_obj = {};
         for (let j = 1; j < row.length; j++) {
             const col = row[j];
             // 跳过空值
@@ -1069,13 +1068,13 @@ function AbilityCSV2KV(listen_path) {
             let key = csv_key[j];
             // special值特殊处理
             if (key === 'AbilitySpecial') {
-                key = ("0" + AbilitySpecial).substr(-2);
+                key = ("0" + special_count).substr(-2);
                 let value = csv_arr[i + 1][j];
-                values_obj.AbilitySpecial[key] = {
+                AbilitySpecial[key] = {
                     var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
                     [col]: csv_arr[i + 1][j]
                 };
-                AbilitySpecial++;
+                special_count++;
             }
             else if (key === '') {
                 continue;
@@ -1084,6 +1083,7 @@ function AbilityCSV2KV(listen_path) {
                 values_obj[key] = col;
             }
         }
+        values_obj.AbilitySpecial = AbilitySpecial;
         i++;
         csv_data[row[0]] = values_obj;
     }
@@ -1101,12 +1101,9 @@ function UnitCSV2KV(listen_path) {
         if (row.length === 0 || row[0] === '' || row[0] === undefined) {
             continue;
         }
-        let AttachWearables = 1;
-        let values_obj = {
-            Creature: {
-                AttachWearables: {}
-            }
-        };
+        let wearable_count = 1;
+        let AttachWearables = {};
+        let values_obj = {};
         // 读取多层结构
         let ReadBlock = function (index) {
             let block = {};
@@ -1151,12 +1148,12 @@ function UnitCSV2KV(listen_path) {
             }
             // special值特殊处理
             if (key === 'AttachWearables') {
-                key = AttachWearables.toString();
+                key = wearable_count.toString();
                 let value = col;
-                values_obj.Creature.AttachWearables[key] = {
+                AttachWearables[key] = {
                     ItemDef: value
                 };
-                AttachWearables++;
+                wearable_count++;
                 // 跳过没有key的值
             }
             else if (key === '') {
@@ -1166,8 +1163,10 @@ function UnitCSV2KV(listen_path) {
                 values_obj[key] = col;
             }
         }
-        if (Object.keys(values_obj.Creature.AttachWearables).length === 0) {
-            delete values_obj.Creature;
+        if (Object.keys(AttachWearables).length > 0) {
+            values_obj.Creature = {
+                AttachWearables: AttachWearables
+            };
         }
         csv_data[row[0]] = values_obj;
     }

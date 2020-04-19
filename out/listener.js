@@ -24,79 +24,46 @@ class Listener {
         }
     }
     WatchAbilityExcel() {
-        const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
-        const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
-        if (excel_object !== undefined && kv_object !== undefined) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
+            const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
+            if (excel_object === undefined || kv_object === undefined) {
+                return;
+            }
             for (const index in excel_object) {
                 let listen_path = excel_object[index].replace(/\\\\/g, '/');
-                listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
-                fs.watchFile(listen_path, (curr, prev) => {
-                    if (curr.nlink === 0) {
-                        console.log('removed');
-                    }
-                    else {
-                        console.log('changed');
-                        // let excel_stat: fs.Stats = fs.statSync(listen_path);
-                        // let kv_stat: fs.Stats = fs.statSync(kv_object[index]);
-                        // console.log(excel_stat);
-                        // console.log(kv_stat);
-                        // console.log(excel_stat.mtimeMs < kv_stat.mtimeMs);
-                        // if (excel_stat.mtimeMs < kv_stat.mtimeMs) {
-                        // 	util.ShowError('Excel版本过旧，不生成kv');
-                        // 	return;
-                        // }
-                        // let sheet_list: any = xlsx.parse(listen_path);
-                        // let csv: string = util.Array2CSV(sheet_list[0].data);
-                        // let dir_name: string = path.dirname(listen_path);
-                        // let file_name: string = listen_path.split(dir_name)[1].replace('/','').split('\.')[0];
-                        // util.DirExists(dir_name + '/csv');
-                        // fs.writeFileSync(dir_name + '/csv/' + file_name + '.csv', '\uFEFF' + csv);
-                        let csv = fs.readFileSync(listen_path, 'utf-8');
-                        // 生成kv
-                        let csv_data = {};
-                        let csv_arr = util.CSV2Array(csv);
-                        const csv_key = csv_arr[1];
-                        for (let i = 2; i < csv_arr.length; i++) {
-                            const row = csv_arr[i];
-                            if (row.length === 0) {
-                                continue;
-                            }
-                            let AbilitySpecial = 1;
-                            let values_obj = {
-                                AbilitySpecial: {}
-                            };
-                            for (let j = 1; j < row.length; j++) {
-                                const col = row[j];
-                                // 跳过空值
-                                if (col === '') {
-                                    continue;
-                                }
-                                let key = csv_key[j];
-                                // special值特殊处理
-                                if (key === 'AbilitySpecial') {
-                                    key = ("0" + AbilitySpecial).substr(-2);
-                                    let value = csv_arr[i + 1][j];
-                                    values_obj.AbilitySpecial[key] = {
-                                        var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
-                                        [col]: csv_arr[i + 1][j]
-                                    };
-                                    AbilitySpecial++;
-                                }
-                                else if (key === '') {
-                                    continue;
-                                }
-                                else {
-                                    values_obj[key] = col;
-                                }
-                            }
-                            i++;
-                            csv_data[row[0]] = values_obj;
+                let file_type = (yield vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
+                if (file_type === vscode.FileType.Directory) {
+                    let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
+                    for (let i = 0; i < files.length; i++) {
+                        let [file_name, is_file] = files[i];
+                        if (file_name === undefined) {
+                            continue;
                         }
-                        fs.writeFileSync(kv_object[index], util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(listen_path) }));
+                        if (is_file === vscode.FileType.File) {
+                            let file_path = listen_path + '/' + file_name;
+                            let csv_path = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+                            WatchFile(csv_path, kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv');
+                        }
                     }
-                });
+                }
+                else if (file_type === vscode.FileType.File) {
+                    listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
+                    WatchFile(listen_path, kv_object[index]);
+                }
+                function WatchFile(csv_path, kv_path) {
+                    fs.watchFile(csv_path, (curr, prev) => {
+                        if (curr.nlink === 0) {
+                            console.log('removed');
+                        }
+                        else {
+                            console.log(csv_path + 'changed');
+                            fs.writeFileSync(kv_path, util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(csv_path) }));
+                        }
+                    });
+                }
             }
-        }
+        });
     }
     WatchUnitExcel() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -128,8 +95,6 @@ class Listener {
                 }
             }
             function WatchFile(csv_path, kv_path) {
-                console.log(csv_path);
-                console.log(kv_path);
                 fs.watchFile(csv_path, (curr, prev) => {
                     if (curr.nlink === 0) {
                         console.log('removed');
