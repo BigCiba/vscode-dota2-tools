@@ -318,15 +318,6 @@ function GetAbilityTextureContent(webview, texture_info, context) {
 		</body>
 		</html>
 	`;
-    function AddImage() {
-        let content = '';
-        for (const key in texture_info) {
-            const value = texture_info[key];
-            content += `<img id="` + value + `" src="` + vscode.Uri.file(path.join(context.extensionPath, 'resource', 'spellicons', value)).with({ scheme: 'vscode-resource' }).toString() + `" onclick="Confirm(this)" />
-			`;
-        }
-        return content;
-    }
     return content;
 }
 exports.GetAbilityTextureContent = GetAbilityTextureContent;

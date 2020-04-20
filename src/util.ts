@@ -292,16 +292,6 @@ export function GetAbilityTextureContent(webview: vscode.Webview, texture_info: 
 		</body>
 		</html>
 	`;
-	
-	function AddImage():string {
-		let content: string = '';
-		for (const key in texture_info) {
-			const value = texture_info[key];
-			content += `<img id="` + value + `" src="`+vscode.Uri.file(path.join(context.extensionPath,'resource','spellicons', value)).with({ scheme: 'vscode-resource' }).toString()+`" onclick="Confirm(this)" />
-			`;
-		}
-		return content;
-	}
 	return content;
 }
 export function ReadAPI(api: string, api_cl:string): any {

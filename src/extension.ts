@@ -1468,7 +1468,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		);
 		// 读取图标数据
-		const texture_path: string = context.extensionPath + '/resource/spellicons';
+		const texture_path: string = context.extensionPath + '/images/spellicons';
 		let texture_data:any = {};
 		await ReadTextureFolder(texture_path);
 		async function ReadTextureFolder(folder_name:string) {
@@ -1502,7 +1502,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 		
 		panel.webview.html = util.GetAbilityTextureContent(panel.webview, texture_data, context);
-		const imgUri = vscode.Uri.file(path.join(context.extensionPath,'resource','spellicons')).with({ scheme: 'vscode-resource' }).toString();
+		const imgUri = vscode.Uri.file(path.join(context.extensionPath,'images','spellicons')).with({ scheme: 'vscode-resource' }).toString();
 		const heroUri = vscode.Uri.file(path.join(context.extensionPath,'images','heroes_icon')).with({ scheme: 'vscode-resource' }).toString();
 		panel.webview.postMessage({
 			type: "update",
