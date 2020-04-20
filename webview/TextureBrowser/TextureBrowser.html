@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Texture Selector</title>
+	<link href="TextureBrowser.css" rel="stylesheet" />
+	<link href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" >
+</head>
+
+<body>
+	<div class="search">
+		<div class="texture-type-content">
+			<input class="texture-type selected" type="button" name="texture-type" value="技能" onclick="ToggleType(this)">
+			<input class="texture-type" type="button" name="texture-type" value="物品" onclick="ToggleType(this)">
+		</div>
+		<div class="search-content">
+			<div class="dropdown">
+				<img class="hero-filter" src="../../images/heroes_icon/npc_dota_hero_default_png.png">
+				<div class="dropdown-content">
+				</div>
+				<div class="dropdown-blur">
+				</div>
+			</div>
+			<input id="filter" type="text" placeholder="Search" oninput="OnInput(event)">
+		</div>
+		<!-- <i class="fa fa-cog" style="font-size:36px"></i> -->
+	</div>
+	<div class="texture-content">
+	</div>
+	<div class="item-texture-content">
+	</div>
+	<script src="TextureBrowser.js"></script>
+</body>
+
+</html>

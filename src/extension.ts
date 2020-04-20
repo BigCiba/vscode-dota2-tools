@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
-import { Init,KV2LUA, VSND, GameDir } from './init';
+import { Init,KV2LUA, VSND, GameDir, ContentDir } from './init';
 import {Listener} from './listener';
 import * as watch from 'watch';
 import { log } from 'util';
@@ -1467,11 +1467,20 @@ export async function activate(context: vscode.ExtensionContext) {
 				retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
 			}
 		);
-		// 读取图标数据
+		// 读取技能图标数据
 		const texture_path: string = context.extensionPath + '/images/spellicons';
 		let texture_data:any = {};
-		await ReadTextureFolder(texture_path);
-		async function ReadTextureFolder(folder_name:string) {
+		const item_texture_path: string = context.extensionPath + '/images/items';
+		let item_texture_data:any = {};
+		const custom_spellicons_path: string = ContentDir + '/panorama/images/spellicons';
+		const custom_itemicons_path: string = ContentDir + '/panorama/images/items';
+		let custom_spellicons_data:any = {};
+		let custom_itemicons_data:any = {};
+		await ReadTextureFolder(texture_path,texture_data,texture_path);
+		await ReadTextureFolder(custom_spellicons_path,custom_spellicons_data,custom_spellicons_path);
+		await ReadTextureFolder(item_texture_path,item_texture_data,item_texture_path);
+		await ReadTextureFolder(custom_itemicons_path,custom_itemicons_data,custom_itemicons_path);
+		async function ReadTextureFolder(folder_name:string,texture_data:any,texture_path:string) {
 			let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
 			for (let i: number = 0; i < folders.length; i++) {
 				const [name, is_directory] = folders[i];
@@ -1479,7 +1488,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					continue;
 				}
 				if (Number(is_directory) === vscode.FileType.Directory){
-					await ReadTextureFolder(folder_name + '/' + name);
+					await ReadTextureFolder(folder_name + '/' + name,texture_data,texture_path);
 				} else if (Number(is_directory) === vscode.FileType.File) {
 					let texture_name = (folder_name + '/' + name).split(texture_path)[1];
 					texture_name = texture_name.replace('/','');
@@ -1500,16 +1509,26 @@ export async function activate(context: vscode.ExtensionContext) {
 				heroes_data[name.replace('_png.png','').replace('npc_dota_hero_','')] = name;
 			}
 		}
+		// console.log(util.GetWebViewContent(context, 'webview/TextureBrowser/TextureBrowser.html'));
 		
-		panel.webview.html = util.GetAbilityTextureContent(panel.webview, texture_data, context);
-		const imgUri = vscode.Uri.file(path.join(context.extensionPath,'images','spellicons')).with({ scheme: 'vscode-resource' }).toString();
-		const heroUri = vscode.Uri.file(path.join(context.extensionPath,'images','heroes_icon')).with({ scheme: 'vscode-resource' }).toString();
+		panel.webview.html = util.GetWebViewContent(context, 'webview/TextureBrowser/TextureBrowser.html');
+		const spellicons_uri: string = vscode.Uri.file(path.join(context.extensionPath,'images','spellicons')).with({ scheme: 'vscode-resource' }).toString();
+		const heroes_icon_uri: string = vscode.Uri.file(path.join(context.extensionPath,'images','heroes_icon')).with({ scheme: 'vscode-resource' }).toString();
+		const items_icon_uri: string = vscode.Uri.file(path.join(context.extensionPath,'images','items')).with({ scheme: 'vscode-resource' }).toString();
+		const custom_spellicons_uri: string = vscode.Uri.file(path.join(ContentDir,'panorama','images','spellicons')).with({ scheme: 'vscode-resource' }).toString();
+		const custom_itemicons_uri: string = vscode.Uri.file(path.join(ContentDir,'panorama','images','items')).with({ scheme: 'vscode-resource' }).toString();
 		panel.webview.postMessage({
 			type: "update",
-			text: texture_data,
+			texture_data: texture_data,
+			item_texture_data: item_texture_data,
 			heroes_data: heroes_data,
-			uri: imgUri,
-			heroUri: heroUri,
+			spellicons_uri: spellicons_uri,
+			items_icon_uri: items_icon_uri,
+			heroes_icon_uri: heroes_icon_uri,
+			custom_spellicons_data: custom_spellicons_data,
+			custom_itemicons_data: custom_itemicons_data,
+			custom_spellicons_uri: custom_spellicons_uri,
+			custom_itemicons_uri: custom_itemicons_uri,
 		});
 		panel.webview.onDidReceiveMessage(message => {
 			console.log(message);
