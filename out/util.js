@@ -1186,4 +1186,36 @@ function GetVscodeResourceUri(path) {
     return vscode.Uri.file(path).with({ scheme: 'vscode-resource' }).toString();
 }
 exports.GetVscodeResourceUri = GetVscodeResourceUri;
+function GetLuaScriptSnippet(filename, path) {
+    return `LinkLuaModifier( "modifier_${filename}", "${path}.lua", LUA_MODIFIER_MOTION_NONE )
+--Abilities
+if ${filename} == nil then
+	${filename} = class({})
+end
+function ${filename}:GetIntrinsicModifierName()
+	return "modifier_${filename}"
+end
+---------------------------------------------------------------------
+--Modifiers
+if modifier_${filename} == nil then
+	modifier_${filename} = class({})
+end
+function modifier_${filename}:OnCreated(params)
+	if IsServer() then
+	end
+end
+function modifier_${filename}:OnRefresh(params)
+	if IsServer() then
+	end
+end
+function modifier_${filename}:OnDestroy()
+	if IsServer() then
+	end
+end
+function modifier_${filename}:DeclareFunctions()
+	return {
+	}
+end`;
+}
+exports.GetLuaScriptSnippet = GetLuaScriptSnippet;
 //# sourceMappingURL=util.js.map

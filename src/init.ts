@@ -87,15 +87,19 @@ export async function Init(context: vscode.ExtensionContext) {
 		// 只处理package.json文件
 		if (/.*\.kv/.test(fileName) || /.*\.txt/.test(fileName)) {
 			const json = document.getText();
-			console.log(new RegExp(`"ScriptFile".*"${word}"`).test(json));
+			// console.log(new RegExp(`"ScriptFile".*"${word}"`).test(json));
+			// console.log(new RegExp(`"ScriptFile"`).test(line.text));
 			
-			if (new RegExp(`"ScriptFile"`).test(json)) {
-				let path = line.text.split('"')[3];
-				let destPath = `${GameDir}/scripts/vscripts/${path}.lua`;
-				console.log(destPath);
+			if (new RegExp(`"ScriptFile"`).test(line.text)) {
+				let lua_path = line.text.split('"')[3];
+				let destPath = `${GameDir}/scripts/vscripts/${lua_path}.lua`;
+				// console.log(destPath);
 				
 				if (fs.existsSync(destPath)) {
 					return new vscode.Location(vscode.Uri.file(destPath), new vscode.Position(0, 0));
+				} else {
+					util.DirExists(path.dirname(destPath));
+					fs.writeFileSync(destPath, util.GetLuaScriptSnippet(path.basename(lua_path).replace('.lua',''), lua_path));
 				}
 			}
 		}
