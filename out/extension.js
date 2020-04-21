@@ -1400,7 +1400,8 @@ function activate(context) {
                     }
                 }
                 else if (file_type === vscode.FileType.File) {
-                    KeyValue2CSV(kv_path, excel_object[index]);
+                    let csv_path = path.join(path.dirname(excel_object[index]), 'csv', path.basename(excel_object[index]).replace(path.extname(excel_object[index]), '.csv'));
+                    KeyValue2CSV(kv_path, csv_path);
                 }
             }
             function KeyValue2CSV(kv_path, csv_path) {
@@ -1491,69 +1492,88 @@ function activate(context) {
                 retainContextWhenHidden: true,
             });
             // 读取技能图标数据
-            const texture_path = context.extensionPath + '/images/spellicons';
-            let texture_data = {};
-            const item_texture_path = context.extensionPath + '/images/items';
-            let item_texture_data = {};
-            const custom_spellicons_path = init_1.ContentDir + '/panorama/images/spellicons';
-            const custom_itemicons_path = init_1.ContentDir + '/panorama/images/items';
-            let custom_spellicons_data = {};
-            let custom_itemicons_data = {};
-            yield ReadTextureFolder(texture_path, texture_data, texture_path);
-            yield ReadTextureFolder(custom_spellicons_path, custom_spellicons_data, custom_spellicons_path);
-            yield ReadTextureFolder(item_texture_path, item_texture_data, item_texture_path);
-            yield ReadTextureFolder(custom_itemicons_path, custom_itemicons_data, custom_itemicons_path);
-            function ReadTextureFolder(folder_name, texture_data, texture_path) {
+            const path_list = {
+                spellicons: context.extensionPath + '/images/spellicons',
+                items: context.extensionPath + '/images/items',
+                heroes: context.extensionPath + '/images/heroes_icon',
+                custom_spellicons: vscode.workspace.getConfiguration().get('dota2-tools.Custom Spellicons Path'),
+                custom_items: vscode.workspace.getConfiguration().get('dota2-tools.Custom Items Path'),
+            };
+            let icons_data = {
+                spellicons: {
+                    path: util.GetVscodeResourceUri(path_list.spellicons),
+                    data: yield ReadIconFolder(path_list.spellicons, path_list.spellicons)
+                },
+                items: {
+                    path: util.GetVscodeResourceUri(path_list.items),
+                    data: yield ReadIconFolder(path_list.items, path_list.items)
+                },
+                heroes: {
+                    path: util.GetVscodeResourceUri(path_list.heroes),
+                    data: yield ReadHeroesIcon(path_list.heroes)
+                },
+            };
+            // 读取英雄头像数据
+            function ReadHeroesIcon(heroes_path) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
+                    let heroes_data = {};
+                    let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(heroes_path));
                     for (let i = 0; i < folders.length; i++) {
                         const [name, is_directory] = folders[i];
                         if (name === undefined) {
                             continue;
                         }
-                        if (Number(is_directory) === vscode.FileType.Directory) {
-                            yield ReadTextureFolder(folder_name + '/' + name, texture_data, texture_path);
-                        }
-                        else if (Number(is_directory) === vscode.FileType.File) {
-                            let texture_name = (folder_name + '/' + name).split(texture_path)[1];
-                            texture_name = texture_name.replace('/', '');
-                            texture_data[texture_name.replace('_png.png', '')] = texture_name;
+                        if (Number(is_directory) === vscode.FileType.File) {
+                            heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = name;
                         }
                     }
+                    return heroes_data;
                 });
             }
-            // 读取英雄头像数据
-            const heroes_path = context.extensionPath + '/images/heroes_icon';
-            let heroes_data = {};
-            let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(heroes_path));
-            for (let i = 0; i < folders.length; i++) {
-                const [name, is_directory] = folders[i];
-                if (name === undefined) {
-                    continue;
-                }
-                if (Number(is_directory) === vscode.FileType.File) {
-                    heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = name;
-                }
+            function ReadIconFolder(path, root_path) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    let icons_data = {};
+                    function ReadFolder(path, root_path) {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            let icons_data = {};
+                            let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
+                            for (let i = 0; i < folders.length; i++) {
+                                const [name, is_directory] = folders[i];
+                                if (name === undefined) {
+                                    continue;
+                                }
+                                if (Number(is_directory) === vscode.FileType.Directory) {
+                                    let data = yield ReadFolder(path + '/' + name, root_path);
+                                    icons_data = Object.assign(icons_data, data);
+                                }
+                                else if (Number(is_directory) === vscode.FileType.File) {
+                                    // icons_data[name.replace('_png.png','')] = name;
+                                    let texture_name = (path + '/' + name).split(root_path)[1];
+                                    texture_name = texture_name.replace('/', '');
+                                    icons_data[texture_name.replace('_png.png', '')] = texture_name;
+                                }
+                            }
+                            return icons_data;
+                        });
+                    }
+                    if (typeof (path) === 'string' && typeof (root_path) === 'string') {
+                        let data = yield ReadFolder(path, root_path);
+                        icons_data = Object.assign(icons_data, data);
+                    }
+                    else {
+                        for (let i = 0; i < path.length; i++) {
+                            const _path = path[i];
+                            let data = yield ReadFolder(_path, root_path[i]);
+                            icons_data = Object.assign(icons_data, data);
+                        }
+                    }
+                    return icons_data;
+                });
             }
-            // console.log(util.GetWebViewContent(context, 'webview/TextureBrowser/TextureBrowser.html'));
             panel.webview.html = util.GetWebViewContent(context, 'webview/TextureBrowser/TextureBrowser.html');
-            const spellicons_uri = vscode.Uri.file(path.join(context.extensionPath, 'images', 'spellicons')).with({ scheme: 'vscode-resource' }).toString();
-            const heroes_icon_uri = vscode.Uri.file(path.join(context.extensionPath, 'images', 'heroes_icon')).with({ scheme: 'vscode-resource' }).toString();
-            const items_icon_uri = vscode.Uri.file(path.join(context.extensionPath, 'images', 'items')).with({ scheme: 'vscode-resource' }).toString();
-            const custom_spellicons_uri = vscode.Uri.file(path.join(init_1.ContentDir, 'panorama', 'images', 'spellicons')).with({ scheme: 'vscode-resource' }).toString();
-            const custom_itemicons_uri = vscode.Uri.file(path.join(init_1.ContentDir, 'panorama', 'images', 'items')).with({ scheme: 'vscode-resource' }).toString();
             panel.webview.postMessage({
                 type: "update",
-                texture_data: texture_data,
-                item_texture_data: item_texture_data,
-                heroes_data: heroes_data,
-                spellicons_uri: spellicons_uri,
-                items_icon_uri: items_icon_uri,
-                heroes_icon_uri: heroes_icon_uri,
-                custom_spellicons_data: custom_spellicons_data,
-                custom_itemicons_data: custom_itemicons_data,
-                custom_spellicons_uri: custom_spellicons_uri,
-                custom_itemicons_uri: custom_itemicons_uri,
+                icons_data: icons_data,
             });
             panel.webview.onDidReceiveMessage(message => {
                 console.log(message);

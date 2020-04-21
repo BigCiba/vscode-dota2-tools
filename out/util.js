@@ -998,6 +998,12 @@ function Array2CSV(arr) {
             }
             csv += os.EOL;
         }
+        if (rows.length === 0) {
+            for (let i = 0; i < title_count - 1; i++) {
+                csv += ',';
+            }
+            csv += os.EOL;
+        }
     }
     return csv;
 }
@@ -1176,4 +1182,8 @@ function getNonce() {
     return text;
 }
 exports.getNonce = getNonce;
+function GetVscodeResourceUri(path) {
+    return vscode.Uri.file(path).with({ scheme: 'vscode-resource' }).toString();
+}
+exports.GetVscodeResourceUri = GetVscodeResourceUri;
 //# sourceMappingURL=util.js.map

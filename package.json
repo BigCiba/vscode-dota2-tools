@@ -135,6 +135,14 @@
 					"type": "boolean",
 					"default": true,
 					"description": "是否监听文本变更"
+				},
+				"dota2-tools.Custom Spellicons Path": {
+					"type": "array",
+					"description": "自定义技能图标路径"
+				},
+				"dota2-tools.Custom Items Path": {
+					"type": "array",
+					"description": "自定义物品图标路径"
 				}
 			}
 		},

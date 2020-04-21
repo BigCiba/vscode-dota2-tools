@@ -1374,7 +1374,8 @@ export async function activate(context: vscode.ExtensionContext) {
 					}
 				}
 			} else if (file_type === vscode.FileType.File) {
-				KeyValue2CSV(kv_path, excel_object[index]);
+				let csv_path = path.join(path.dirname(excel_object[index]), 'csv', path.basename(excel_object[index]).replace(path.extname(excel_object[index]), '.csv'));
+				KeyValue2CSV(kv_path, csv_path);
 			}
 			
 		}
@@ -1468,67 +1469,96 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		);
 		// 读取技能图标数据
-		const texture_path: string = context.extensionPath + '/images/spellicons';
-		let texture_data:any = {};
-		const item_texture_path: string = context.extensionPath + '/images/items';
-		let item_texture_data:any = {};
-		const custom_spellicons_path: string = ContentDir + '/panorama/images/spellicons';
-		const custom_itemicons_path: string = ContentDir + '/panorama/images/items';
-		let custom_spellicons_data:any = {};
-		let custom_itemicons_data:any = {};
-		await ReadTextureFolder(texture_path,texture_data,texture_path);
-		await ReadTextureFolder(custom_spellicons_path,custom_spellicons_data,custom_spellicons_path);
-		await ReadTextureFolder(item_texture_path,item_texture_data,item_texture_path);
-		await ReadTextureFolder(custom_itemicons_path,custom_itemicons_data,custom_itemicons_path);
-		async function ReadTextureFolder(folder_name:string,texture_data:any,texture_path:string) {
-			let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
+		const path_list: any = {
+			spellicons: context.extensionPath + '/images/spellicons',
+			items: context.extensionPath + '/images/items',
+			heroes: context.extensionPath + '/images/heroes_icon',
+			custom_spellicons: vscode.workspace.getConfiguration().get('dota2-tools.Custom Spellicons Path'),
+			custom_items: vscode.workspace.getConfiguration().get('dota2-tools.Custom Items Path'),
+		};
+		interface IconsData {
+			[key: string]: {
+				path: string|string[]|undefined,
+				data: {}|[]
+			};
+		}
+		let icons_data: IconsData = {
+			spellicons: {
+				path: util.GetVscodeResourceUri(path_list.spellicons),
+				data: await ReadIconFolder(path_list.spellicons, path_list.spellicons)
+			},
+			items: {
+				path: util.GetVscodeResourceUri(path_list.items),
+				data: await ReadIconFolder(path_list.items, path_list.items)
+			},
+			heroes: {
+				path: util.GetVscodeResourceUri(path_list.heroes),
+				data: await ReadHeroesIcon(path_list.heroes)
+			},
+			// custom_spellicons: {
+			// 	path: util.GetVscodeResourceUri(path_list.custom_spellicons),
+			// 	data: await ReadIconFolder(path_list.custom_spellicons, path_list.custom_spellicons)
+			// },
+			// custom_items: {
+			// 	path: util.GetVscodeResourceUri(path_list.custom_items),
+			// 	data: await ReadIconFolder(path_list.custom_items, path_list.custom_items)
+			// },
+		};
+		// 读取英雄头像数据
+		async function ReadHeroesIcon(heroes_path: string) {
+			let heroes_data:any = {};
+			let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(heroes_path));
 			for (let i: number = 0; i < folders.length; i++) {
 				const [name, is_directory] = folders[i];
 				if (name === undefined) {
 					continue;
 				}
-				if (Number(is_directory) === vscode.FileType.Directory){
-					await ReadTextureFolder(folder_name + '/' + name,texture_data,texture_path);
-				} else if (Number(is_directory) === vscode.FileType.File) {
-					let texture_name = (folder_name + '/' + name).split(texture_path)[1];
-					texture_name = texture_name.replace('/','');
-					texture_data[texture_name.replace('_png.png','')] = texture_name;
+				if (Number(is_directory) === vscode.FileType.File) {
+					heroes_data[name.replace('_png.png','').replace('npc_dota_hero_','')] = name;
 				}
 			}
+			return heroes_data;
 		}
-		// 读取英雄头像数据
-		const heroes_path: string = context.extensionPath + '/images/heroes_icon';
-		let heroes_data:any = {};
-		let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(heroes_path));
-		for (let i: number = 0; i < folders.length; i++) {
-			const [name, is_directory] = folders[i];
-			if (name === undefined) {
-				continue;
+		async function ReadIconFolder(path: string|[], root_path: string|[]) {
+			let icons_data:any = {};
+			async function ReadFolder(path:string, root_path:string) {
+				let icons_data:any = {};
+				let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
+				for (let i: number = 0; i < folders.length; i++) {
+					const [name, is_directory] = folders[i];
+					if (name === undefined) {
+						continue;
+					}
+					if (Number(is_directory) === vscode.FileType.Directory){
+						let data = await ReadFolder(path + '/' + name, root_path);
+						icons_data = Object.assign(icons_data, data);
+					} else if (Number(is_directory) === vscode.FileType.File) {
+						// icons_data[name.replace('_png.png','')] = name;
+						let texture_name = (path + '/' + name).split(root_path)[1];
+						texture_name = texture_name.replace('/','');
+						icons_data[texture_name.replace('_png.png','')] = texture_name;
+					}
+				}
+				return icons_data;
 			}
-			if (Number(is_directory) === vscode.FileType.File) {
-				heroes_data[name.replace('_png.png','').replace('npc_dota_hero_','')] = name;
+			if (typeof(path) === 'string' && typeof(root_path) === 'string') {
+				let data = await ReadFolder(path, root_path);
+				icons_data = Object.assign(icons_data, data);
+			} else {
+				for (let i = 0; i < path.length; i++) {
+					const _path = path[i];
+					let data = await ReadFolder(_path, root_path[i]);
+					icons_data = Object.assign(icons_data, data);
+				}
 			}
+			return icons_data;
 		}
-		// console.log(util.GetWebViewContent(context, 'webview/TextureBrowser/TextureBrowser.html'));
 		
 		panel.webview.html = util.GetWebViewContent(context, 'webview/TextureBrowser/TextureBrowser.html');
-		const spellicons_uri: string = vscode.Uri.file(path.join(context.extensionPath,'images','spellicons')).with({ scheme: 'vscode-resource' }).toString();
-		const heroes_icon_uri: string = vscode.Uri.file(path.join(context.extensionPath,'images','heroes_icon')).with({ scheme: 'vscode-resource' }).toString();
-		const items_icon_uri: string = vscode.Uri.file(path.join(context.extensionPath,'images','items')).with({ scheme: 'vscode-resource' }).toString();
-		const custom_spellicons_uri: string = vscode.Uri.file(path.join(ContentDir,'panorama','images','spellicons')).with({ scheme: 'vscode-resource' }).toString();
-		const custom_itemicons_uri: string = vscode.Uri.file(path.join(ContentDir,'panorama','images','items')).with({ scheme: 'vscode-resource' }).toString();
+
 		panel.webview.postMessage({
 			type: "update",
-			texture_data: texture_data,
-			item_texture_data: item_texture_data,
-			heroes_data: heroes_data,
-			spellicons_uri: spellicons_uri,
-			items_icon_uri: items_icon_uri,
-			heroes_icon_uri: heroes_icon_uri,
-			custom_spellicons_data: custom_spellicons_data,
-			custom_itemicons_data: custom_itemicons_data,
-			custom_spellicons_uri: custom_spellicons_uri,
-			custom_itemicons_uri: custom_itemicons_uri,
+			icons_data: icons_data,
 		});
 		panel.webview.onDidReceiveMessage(message => {
 			console.log(message);

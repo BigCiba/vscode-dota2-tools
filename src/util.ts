@@ -943,6 +943,12 @@ export function Array2CSV(arr:any[]):string {
 			}
 			csv += os.EOL;
 		}
+		if (rows.length === 0) {
+			for (let i = 0; i < title_count - 1; i++) {
+				csv += ',';
+			}
+			csv += os.EOL;
+		}
 	}
 	return csv;
 }
@@ -1114,4 +1120,7 @@ export function getNonce() {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
 	return text;
+}
+export function GetVscodeResourceUri(path: string) {
+	return vscode.Uri.file(path).with({ scheme: 'vscode-resource' }).toString();
 }
