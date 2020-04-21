@@ -1499,6 +1499,24 @@ function activate(context) {
                 custom_spellicons: vscode.workspace.getConfiguration().get('dota2-tools.Custom Spellicons Path'),
                 custom_items: vscode.workspace.getConfiguration().get('dota2-tools.Custom Items Path'),
             };
+            let custom_spellicons = [{}];
+            let custom_items = [];
+            for (let index = 0; index < path_list.custom_spellicons.length; index++) {
+                const icon_path = init_1.ContentDir + path_list.custom_spellicons[index];
+                util.DirExists(icon_path);
+                custom_spellicons.push({
+                    path: util.GetVscodeResourceUri(icon_path),
+                    data: yield ReadIconFolder(icon_path, icon_path)
+                });
+            }
+            for (let index = 0; index < path_list.custom_items.length; index++) {
+                const icon_path = init_1.ContentDir + path_list.custom_items[index];
+                util.DirExists(icon_path);
+                custom_items.push({
+                    path: util.GetVscodeResourceUri(icon_path),
+                    data: yield ReadIconFolder(icon_path, icon_path)
+                });
+            }
             let icons_data = {
                 spellicons: {
                     path: util.GetVscodeResourceUri(path_list.spellicons),
@@ -1512,6 +1530,8 @@ function activate(context) {
                     path: util.GetVscodeResourceUri(path_list.heroes),
                     data: yield ReadHeroesIcon(path_list.heroes)
                 },
+                custom_spellicons: custom_spellicons,
+                custom_items: custom_items,
             };
             // 读取英雄头像数据
             function ReadHeroesIcon(heroes_path) {
@@ -1550,7 +1570,7 @@ function activate(context) {
                                     // icons_data[name.replace('_png.png','')] = name;
                                     let texture_name = (path + '/' + name).split(root_path)[1];
                                     texture_name = texture_name.replace('/', '');
-                                    icons_data[texture_name.replace('_png.png', '')] = texture_name;
+                                    icons_data[texture_name.replace('_png.png', '').replace('.png', '')] = texture_name;
                                 }
                             }
                             return icons_data;

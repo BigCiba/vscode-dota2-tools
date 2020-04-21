@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.1.16",
+	"version": "0.2.0",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -138,10 +138,16 @@
 				},
 				"dota2-tools.Custom Spellicons Path": {
 					"type": "array",
+					"default": [
+						"/panorama/images/spellicons"
+					],
 					"description": "自定义技能图标路径"
 				},
 				"dota2-tools.Custom Items Path": {
 					"type": "array",
+					"default": [
+						"/panorama/images/items"
+					],
 					"description": "自定义物品图标路径"
 				}
 			}

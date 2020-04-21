@@ -1480,7 +1480,25 @@ export async function activate(context: vscode.ExtensionContext) {
 			[key: string]: {
 				path: string|string[]|undefined,
 				data: {}|[]
-			};
+			}|IconsData[];
+		}
+		let custom_spellicons: any = [{}];
+		let custom_items: any = [];
+		for (let index = 0; index < path_list.custom_spellicons.length; index++) {
+			const icon_path: string = ContentDir + path_list.custom_spellicons[index];
+			util.DirExists(icon_path);
+			custom_spellicons.push({
+				path: util.GetVscodeResourceUri(icon_path),
+				data: await ReadIconFolder(icon_path, icon_path)
+			});
+		}
+		for (let index = 0; index < path_list.custom_items.length; index++) {
+			const icon_path: string = ContentDir + path_list.custom_items[index];
+			util.DirExists(icon_path);
+			custom_items.push({
+				path: util.GetVscodeResourceUri(icon_path),
+				data: await ReadIconFolder(icon_path, icon_path)
+			});
 		}
 		let icons_data: IconsData = {
 			spellicons: {
@@ -1495,14 +1513,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				path: util.GetVscodeResourceUri(path_list.heroes),
 				data: await ReadHeroesIcon(path_list.heroes)
 			},
-			// custom_spellicons: {
-			// 	path: util.GetVscodeResourceUri(path_list.custom_spellicons),
-			// 	data: await ReadIconFolder(path_list.custom_spellicons, path_list.custom_spellicons)
-			// },
-			// custom_items: {
-			// 	path: util.GetVscodeResourceUri(path_list.custom_items),
-			// 	data: await ReadIconFolder(path_list.custom_items, path_list.custom_items)
-			// },
+			custom_spellicons: custom_spellicons,
+			custom_items: custom_items,
 		};
 		// 读取英雄头像数据
 		async function ReadHeroesIcon(heroes_path: string) {
@@ -1536,7 +1548,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						// icons_data[name.replace('_png.png','')] = name;
 						let texture_name = (path + '/' + name).split(root_path)[1];
 						texture_name = texture_name.replace('/','');
-						icons_data[texture_name.replace('_png.png','')] = texture_name;
+						icons_data[texture_name.replace('_png.png','').replace('.png','')] = texture_name;
 					}
 				}
 				return icons_data;
