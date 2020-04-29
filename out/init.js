@@ -127,7 +127,7 @@ function Init(context) {
                 let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
                 for (let i = 0; i < files.length; i++) {
                     let [file_name, is_file] = files[i];
-                    if (file_name === undefined) {
+                    if (file_name === undefined || file_name.search('~$') !== -1) {
                         continue;
                     }
                     if (is_file === vscode.FileType.File) {
@@ -154,7 +154,7 @@ function Init(context) {
                 let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
                 for (let i = 0; i < files.length; i++) {
                     let [file_name, is_file] = files[i];
-                    if (file_name === undefined) {
+                    if (file_name === undefined || file_name.search('~$') !== -1) {
                         continue;
                     }
                     if (is_file === vscode.FileType.File) {
@@ -166,6 +166,7 @@ function Init(context) {
             }
             else if (file_type === vscode.FileType.File) {
                 listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
+                console.log(listen_path);
                 fs.writeFileSync(unit_kv_object[index], util.WriteKeyValue({ KeyValue: util.UnitCSV2KV(listen_path) }));
             }
         }

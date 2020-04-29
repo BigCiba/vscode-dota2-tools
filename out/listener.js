@@ -37,7 +37,7 @@ class Listener {
                     let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
                     for (let i = 0; i < files.length; i++) {
                         let [file_name, is_file] = files[i];
-                        if (file_name === undefined) {
+                        if (file_name === undefined || file_name.search('~$') !== -1) {
                             continue;
                         }
                         if (is_file === vscode.FileType.File) {
@@ -52,12 +52,13 @@ class Listener {
                     WatchFile(listen_path, kv_object[index]);
                 }
                 function WatchFile(csv_path, kv_path) {
+                    console.log('watch ' + csv_path);
                     fs.watchFile(csv_path, (curr, prev) => {
                         if (curr.nlink === 0) {
                             console.log('removed');
                         }
                         else {
-                            console.log(csv_path + 'changed');
+                            vscode.window.setStatusBarMessage(path.basename(csv_path) + ' changed');
                             fs.writeFileSync(kv_path, util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(csv_path) }));
                         }
                     });
@@ -79,7 +80,7 @@ class Listener {
                     let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
                     for (let i = 0; i < files.length; i++) {
                         let [file_name, is_file] = files[i];
-                        if (file_name === undefined) {
+                        if (file_name === undefined || file_name.search('~$') !== -1) {
                             continue;
                         }
                         if (is_file === vscode.FileType.File) {
@@ -100,7 +101,8 @@ class Listener {
                         console.log('removed');
                     }
                     else {
-                        console.log(csv_path + 'changed');
+                        vscode.window.setStatusBarMessage(path.basename(csv_path) + ' changed');
+                        console.log(csv_path + ' changed');
                         fs.writeFileSync(kv_path, util.WriteKeyValue({ KeyValue: util.UnitCSV2KV(csv_path) }));
                     }
                 });

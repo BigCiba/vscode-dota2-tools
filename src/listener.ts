@@ -28,7 +28,7 @@ export class Listener {
 				let files:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
 				for (let i: number = 0; i < files.length; i++) {
 					let [file_name, is_file] = files[i];
-					if (file_name === undefined) {
+					if (file_name === undefined || file_name.search('~$') !== -1) {
 						continue;
 					}
 					if (is_file === vscode.FileType.File){
@@ -42,11 +42,12 @@ export class Listener {
 				WatchFile(listen_path, kv_object[index]);
 			}
 			function WatchFile(csv_path: string, kv_path: string) {
+				console.log('watch ' + csv_path);
 				fs.watchFile(csv_path, (curr, prev) => {
 					if (curr.nlink === 0) {
 						console.log('removed');
 					} else {
-						console.log(csv_path + 'changed');
+						vscode.window.setStatusBarMessage(path.basename(csv_path) + ' changed');
 						fs.writeFileSync(kv_path, util.WriteKeyValue({KeyValue:util.AbilityCSV2KV(csv_path)}));
 					}
 				});
@@ -66,7 +67,7 @@ export class Listener {
 				let files:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
 				for (let i: number = 0; i < files.length; i++) {
 					let [file_name, is_file] = files[i];
-					if (file_name === undefined) {
+					if (file_name === undefined || file_name.search('~$') !== -1) {
 						continue;
 					}
 					if (is_file === vscode.FileType.File){
@@ -85,7 +86,8 @@ export class Listener {
 				if (curr.nlink === 0) {
 					console.log('removed');
 				} else {
-					console.log(csv_path + 'changed');
+					vscode.window.setStatusBarMessage(path.basename(csv_path) + ' changed');
+					console.log(csv_path + ' changed');
 					fs.writeFileSync(kv_path, util.WriteKeyValue({KeyValue:util.UnitCSV2KV(csv_path)}));
 				}
 			});
