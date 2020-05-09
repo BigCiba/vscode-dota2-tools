@@ -137,17 +137,19 @@
 					"description": "是否监听文本变更"
 				},
 				"dota2-tools.Custom Spellicons Path": {
-					"type": "array",
-					"default": [
-						"/panorama/images/spellicons"
-					],
+					"type": "object",
+					"default": {
+						"content": "/panorama/images/spellicons",
+						"game": "/resource/flash3/images/spellicons"
+					},
 					"description": "自定义技能图标路径"
 				},
 				"dota2-tools.Custom Items Path": {
-					"type": "array",
-					"default": [
-						"/panorama/images/items"
-					],
+					"type": "object",
+					"default": {
+						"content": "/panorama/images/items",
+						"game": "/resource/flash3/images/items"
+					},
 					"description": "自定义物品图标路径"
 				}
 			}

@@ -1484,16 +1484,16 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 		let custom_spellicons: any = [{}];
 		let custom_items: any = [];
-		for (let index = 0; index < path_list.custom_spellicons.length; index++) {
-			const icon_path: string = ContentDir + path_list.custom_spellicons[index];
+		for (const key in path_list.custom_spellicons) {
+			const icon_path: string = (key === 'content' ? ContentDir:GameDir) + path_list.custom_spellicons[key];
 			util.DirExists(icon_path);
 			custom_spellicons.push({
 				path: util.GetVscodeResourceUri(icon_path),
 				data: await ReadIconFolder(icon_path, icon_path)
 			});
 		}
-		for (let index = 0; index < path_list.custom_items.length; index++) {
-			const icon_path: string = ContentDir + path_list.custom_items[index];
+		for (const key in path_list.custom_items) {
+			const icon_path: string = (key === 'content' ? ContentDir:GameDir) + path_list.custom_items[key];
 			util.DirExists(icon_path);
 			custom_items.push({
 				path: util.GetVscodeResourceUri(icon_path),
@@ -1594,7 +1594,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(VsndSelector);
 	context.subscriptions.push(KV2CSV);
 	context.subscriptions.push(SelectAbilityTexture);
-	context.subscriptions.push(ActiveListEditorProvider.register(context));
+	// context.subscriptions.push(ActiveListEditorProvider.register(context));
 }
 
 // this method is called when your extension is deactivated

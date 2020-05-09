@@ -19,7 +19,6 @@ const util = require("./util");
 const init_1 = require("./init");
 const listener_1 = require("./listener");
 const watch = require("watch");
-const activelistEditor_1 = require("./activelistEditor");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1501,16 +1500,16 @@ function activate(context) {
             };
             let custom_spellicons = [{}];
             let custom_items = [];
-            for (let index = 0; index < path_list.custom_spellicons.length; index++) {
-                const icon_path = init_1.ContentDir + path_list.custom_spellicons[index];
+            for (const key in path_list.custom_spellicons) {
+                const icon_path = (key === 'content' ? init_1.ContentDir : init_1.GameDir) + path_list.custom_spellicons[key];
                 util.DirExists(icon_path);
                 custom_spellicons.push({
                     path: util.GetVscodeResourceUri(icon_path),
                     data: yield ReadIconFolder(icon_path, icon_path)
                 });
             }
-            for (let index = 0; index < path_list.custom_items.length; index++) {
-                const icon_path = init_1.ContentDir + path_list.custom_items[index];
+            for (const key in path_list.custom_items) {
+                const icon_path = (key === 'content' ? init_1.ContentDir : init_1.GameDir) + path_list.custom_items[key];
                 util.DirExists(icon_path);
                 custom_items.push({
                     path: util.GetVscodeResourceUri(icon_path),
@@ -1615,7 +1614,7 @@ function activate(context) {
         context.subscriptions.push(VsndSelector);
         context.subscriptions.push(KV2CSV);
         context.subscriptions.push(SelectAbilityTexture);
-        context.subscriptions.push(activelistEditor_1.ActiveListEditorProvider.register(context));
+        // context.subscriptions.push(ActiveListEditorProvider.register(context));
     });
 }
 exports.activate = activate;
