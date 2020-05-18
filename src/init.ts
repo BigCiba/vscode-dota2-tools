@@ -120,7 +120,7 @@ export async function Init(context: vscode.ExtensionContext) {
 			let files:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
 			for (let i: number = 0; i < files.length; i++) {
 				let [file_name, is_file] = files[i];
-				if (file_name === undefined || file_name.search('~$') !== -1) {
+				if (file_name === undefined || file_name.search(/~\$/) !== -1) {
 					continue;
 				}
 				if (is_file === vscode.FileType.File){
@@ -146,7 +146,7 @@ export async function Init(context: vscode.ExtensionContext) {
 			let files:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
 			for (let i: number = 0; i < files.length; i++) {
 				let [file_name, is_file] = files[i];
-				if (file_name === undefined || file_name.search('~$') !== -1) {
+				if (file_name === undefined || file_name.search(/~\$/) !== -1) {
 					continue;
 				}
 				if (is_file === vscode.FileType.File){

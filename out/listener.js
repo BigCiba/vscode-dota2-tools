@@ -37,7 +37,7 @@ class Listener {
                     let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
                     for (let i = 0; i < files.length; i++) {
                         let [file_name, is_file] = files[i];
-                        if (file_name === undefined || file_name.search('~$') !== -1) {
+                        if (file_name === undefined || file_name.search(/~\$/) !== -1) {
                             continue;
                         }
                         if (is_file === vscode.FileType.File) {
@@ -80,7 +80,7 @@ class Listener {
                     let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
                     for (let i = 0; i < files.length; i++) {
                         let [file_name, is_file] = files[i];
-                        if (file_name === undefined || file_name.search('~$') !== -1) {
+                        if (file_name === undefined || file_name.search(/~\$/) !== -1) {
                             continue;
                         }
                         if (is_file === vscode.FileType.File) {
