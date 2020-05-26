@@ -907,6 +907,54 @@ export function RemoveComment(data:string):string {
 	return new_data;
 }
 // csv转array
+export function CSVParse(csv:string) {
+	csv = csv.replace(/\r\n/g,'\n');
+	let arr:any = [];
+	let col = 0;
+	let row = 0;
+	for (let i = 0; i < csv.length; i++) {
+		i = ReadValue(i);
+	}
+	return arr;
+	function ReadValue(index:number):any {
+		let value = "";
+		let state = "normal";
+		for (let i = index; i < csv.length; i++) {
+			let substr = csv[i];
+			if (substr === "\"" && state === "normal") {
+				state = "string";
+				continue;
+			}
+			if (substr === "\"" && state === "string") {
+				state = "normal";
+				continue;
+			}
+			if (substr === "\n" && state === "string") {
+				value += substr;
+				continue;
+			}
+			if (substr === "\n" && state === "normal") {
+				if (arr[row] === undefined) {
+					arr[row] = [];
+				}
+				arr[row][col] = value;
+				row++;
+				col = 0;
+				return i;
+			}
+			if (substr === ",") {
+				if (arr[row] === undefined) {
+					arr[row] = [];
+				}
+				arr[row][col] = value;
+				col++;
+				return i;
+			}
+			value += substr;
+		}
+	}
+}
+// csv转array(无法处理单元格换行问题)
 export function CSV2Array(csv:string):[] {
 	const rows:string[] = csv.split(os.EOL);
 	let arr:any = [];
@@ -995,7 +1043,8 @@ export function AbilityCSV2KV(listen_path:string):any {
 	let csv = fs.readFileSync(listen_path, 'utf-8');
 	// 生成kv
 	let csv_data:any = {};
-	let csv_arr:any = CSV2Array(csv);
+	let csv_arr:any = CSVParse(csv);
+	// let csv_arr:any = CSV2Array(csv);
 	const csv_key:[] = csv_arr[1];
 	for (let i = 2; i < csv_arr.length; i++) {
 		const row:any = csv_arr[i];
@@ -1017,10 +1066,18 @@ export function AbilityCSV2KV(listen_path:string):any {
 			if (key === 'AbilitySpecial') {
 				key = ("0" + special_count).substr(-2);
 				let value = csv_arr[i+1][j];
+				// 拆分key
+				let key_arr = col.split("\n");
+				// 拆分value
+				let value_arr = value.split("\n");
 				AbilitySpecial[key] = {
 					var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT':'FIELD_INTEGER',
-					[col]: csv_arr[i+1][j]
+					// [col]: csv_arr[i+1][j]
 				};
+				for (let i = 0; i < key_arr.length; i++) {
+					const _key = key_arr[i];
+					AbilitySpecial[key][_key] = value_arr[i];
+				}
 				special_count++;
 			} else if (key === '') {
 				continue;
@@ -1038,7 +1095,7 @@ export function UnitCSV2KV(listen_path:string):any {
 	let csv = fs.readFileSync(listen_path, 'utf-8');
 	// 生成kv
 	let csv_data:any = {};
-	let csv_arr:any = CSV2Array(csv);
+	let csv_arr:any = CSVParse(csv);
 	const csv_key:[] = csv_arr[1];
 	for (let i = 2; i < csv_arr.length; i++) {
 		const row:any = csv_arr[i];
