@@ -75,6 +75,10 @@
 			{
 				"command": "dota2tools.ability_export",
 				"title": "导出技能csv"
+			},
+			{
+				"command": "dota2tools.unit_export",
+				"title": "导出单位csv"
 			}
 		],
 		"menus": {
@@ -113,6 +117,11 @@
 				{
 					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
 					"command": "dota2tools.ability_export",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
+					"command": "dota2tools.unit_export",
 					"group": "navigation"
 				}
 			]

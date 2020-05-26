@@ -1275,4 +1275,10 @@ function modifier_${filename}:DeclareFunctions()
 end`;
 }
 exports.GetLuaScriptSnippet = GetLuaScriptSnippet;
+function FormatPath(path) {
+    path = path.replace(/\\/g, '/');
+    path = path.charAt(0).toUpperCase() + path.slice(1);
+    return path;
+}
+exports.FormatPath = FormatPath;
 //# sourceMappingURL=util.js.map

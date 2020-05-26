@@ -1457,27 +1457,28 @@ export async function activate(context: vscode.ExtensionContext) {
 			fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
 		}
 	});
+	// 导出技能csv
 	let AbilityExport = vscode.commands.registerCommand('dota2tools.ability_export', async (uri) => {
 		const excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
 		const kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
 		if (excel_object === undefined || kv_object === undefined) {
 			return;
 		}
-		let file_path:string = uri.fsPath.replace(/\\\\/g,'/');
+		// 当前文件路径
+		let file_path:string = util.FormatPath(uri.fsPath);
 		for (const index in kv_object) {
-			const kv_path = kv_object[index].replace(/\\\\/g,'/');
-			console.log(kv_path);
-			console.log(file_path);
+			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g,'/'));
 			if (file_path.search(kv_path) !== -1) {
-				let csv_path = path.join(path.dirname(excel_object[index]), 'csv', path.basename(excel_object[index]).replace(path.extname(excel_object[index]), '.csv'));
-				console.log(csv_path);
-				
+				let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+				KeyValue2CSV(file_path, csv_path);
+				break;
 			}
 		}
 		// KeyValue2CSV(uri.fsPath, 'C:/Users/wan/Documents/Dota Addons/Guarding Athena/design/3.kv配置表/abilities/csv/ability_enemy.csv');
 		function KeyValue2CSV(kv_path:string,csv_path:string) {
 			// let csv_path = path.dirname(excel_object[index]);
 			if (fs.existsSync(csv_path) === false) {
+				util.ShowError("不存在csv文件");
 				return;
 			}
 			let csv:any = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
@@ -1496,8 +1497,22 @@ export async function activate(context: vscode.ExtensionContext) {
 						let special_count:number = 1;//记录第几个special值
 						for (const special_index in ability_value) {//遍历special
 							const special_info = ability_value[special_index];
-							let special_name = Object.keys(special_info)[1];
-							let special_avlue = special_info[Object.keys(special_info)[1]];
+							// 遍历special里面的额外键值
+							let special_name:string = '';
+							let special_value:string = '';
+							for (const _special_name in special_info) {
+								const _special_value = special_info[_special_name];
+								if (_special_name !== 'var_type') {
+									special_name += (special_name === '') ? _special_name:('\n' + _special_name);
+									special_value += (special_value === '') ? _special_value:('\n' + _special_value);
+								}
+							}
+							if (Object.keys(special_info).length > 2) {
+								special_name = '"' + special_name + '"';
+								special_value = '"' + special_value + '"';
+							}
+							// let special_name = Object.keys(special_info)[1];
+							// let special_avlue = special_info[Object.keys(special_info)[1]];
 							
 							let counter:number = 0;
 							let has_find:boolean = false;
@@ -1507,7 +1522,7 @@ export async function activate(context: vscode.ExtensionContext) {
 									counter++;
 									if (counter === special_count) {
 										normal_data[i] = special_name;
-										special_data[i] = special_avlue;
+										special_data[i] = special_value;
 										has_find = true;
 									}
 								}
@@ -1515,7 +1530,7 @@ export async function activate(context: vscode.ExtensionContext) {
 							if (has_find === false) {//如果csv中的AbilitySpecial值不够则往后加
 								csv_key.push('AbilitySpecial');
 								normal_data[csv_key.length - 1] = special_name;
-								special_data[csv_key.length - 1] = special_avlue;
+								special_data[csv_key.length - 1] = special_value;
 							}
 							special_count++;
 						}
@@ -1551,6 +1566,116 @@ export async function activate(context: vscode.ExtensionContext) {
 				final_csv.push(special_data);
 			}
 			fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
+		}
+	});
+	// 导出单位csv
+	let UnitExport = vscode.commands.registerCommand('dota2tools.unit_export', async (uri) => {
+		const excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
+		const kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
+		if (excel_object === undefined || kv_object === undefined) {
+			return;
+		}
+		// 当前文件路径
+		let file_path:string = util.FormatPath(uri.fsPath);
+		for (const index in kv_object) {
+			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g,'/'));
+			if (file_path.search(kv_path) !== -1) {
+				let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+				KeyValue2CSV(file_path, csv_path);
+				break;
+			}
+		}
+		function KeyValue2CSV(kv_path:string,csv_path:string) {
+			// let csv_path = path.dirname(excel_object[index]);
+			if (fs.existsSync(csv_path) === false) {
+				util.ShowError("不存在csv文件");
+				return;
+			}
+			let csv:any = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
+			let kv = util.ReadKeyValue2(fs.readFileSync(kv_path, 'utf-8'));
+			let csv_title = csv[0];
+			let csv_key = csv[1];
+			let final_csv = [csv_title,csv_key];
+			for (const unit_name in kv[Object.keys(kv)[0]]) {
+				const unit_data = kv[Object.keys(kv)[0]][unit_name];
+				let csv_data:any = [];//第一行
+				csv_data[0] = unit_name;
+				for (const unit_key in unit_data) {
+					const unit_value = unit_data[unit_key];
+					if (unit_key === 'Creature') {//特殊处理AttachWearables
+						let wearable_count:number = 1;//记录第几个AttachWearables值
+						for (const wearable_index in unit_value.AttachWearables) {//遍历AttachWearables
+							const ItemDef = unit_value.AttachWearables[wearable_index].ItemDef;
+							
+							let counter:number = 0;
+							let has_find:boolean = false;
+							for (let i = 0; i < csv_key.length; i++) {// 寻找csv里的AttachWearables
+								const key_name = csv_key[i];
+								if (key_name === 'AttachWearables') {
+									counter++;
+									if (counter === wearable_count) {
+										csv_data[i] = ItemDef;
+										has_find = true;
+									}
+								}
+							}
+							if (has_find === false) {//如果csv中的AbilitySpecial值不够则往后加
+								csv_key.push('AttachWearables');
+								csv_data[csv_key.length - 1] = ItemDef;
+							}
+							wearable_count++;
+						}
+					} else if (typeof(unit_value) === 'string'){
+						let has_find:boolean = false;
+						for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
+							const key_name = csv_key[i];
+							if (key_name === unit_key) {
+								csv_data[i] = unit_value;
+								has_find = true;
+								break;
+							}
+						}
+						if (has_find === false) {
+							csv_key.push(unit_key);
+							csv_data[csv_key.length - 1] = unit_value;
+						}
+					} else {
+						// 多层结构先寻找csv是否存在此key，存在则导入数据，不存在则往后加
+						// let has_find:boolean = false;
+						// for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
+						// 	const key_name = csv_key[i];
+						// 	if (key_name === unit_key + '[{]') {
+								
+						// 		has_find = true;
+						// 		break;
+						// 	}
+						// }
+						// if (has_find === false) {
+						// 	csv_key.push(unit_key + '[{]');
+						// }
+						// if (unit_key) {
+							
+						// }
+					}
+				}
+				// 合并已有的csv数据
+				for (let i = 2; i < csv.length; i++) {
+					const csv_data = csv[i];
+					if (csv_data[0] === csv_data[0]) {//单位名字已有
+						for (let j = 0; j < csv_data.length; j++) {
+							const value = csv_data[j];
+							if (csv_data[j] === undefined) {
+								csv_data[j] = value;
+							}
+						}
+					}
+				}
+				final_csv.push(csv_data);
+			}
+			fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
+		}
+		function ReadBlock() {
+			
 		}
 	});
 	// 选择图标
@@ -1691,6 +1816,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(VsndSelector);
 	context.subscriptions.push(KV2CSV);
 	context.subscriptions.push(AbilityExport);
+	context.subscriptions.push(UnitExport);
 	context.subscriptions.push(SelectAbilityTexture);
 	// context.subscriptions.push(ActiveListEditorProvider.register(context));
 }

@@ -1212,3 +1212,8 @@ function modifier_${filename}:DeclareFunctions()
 	}
 end`;
 }
+export function FormatPath(path:string):string {
+	path = path.replace(/\\/g,'/');
+	path = path.charAt(0).toUpperCase() + path.slice(1);
+	return path;
+}
