@@ -71,6 +71,10 @@
 					"light": "./images/texture_light.svg",
 					"dark": "./images/texture_dark.svg"
 				}
+			},
+			{
+				"command": "dota2tools.ability_export",
+				"title": "导出技能csv"
 			}
 		],
 		"menus": {
@@ -102,6 +106,13 @@
 				},
 				{
 					"command": "dota2tools.select_ability_texture",
+					"group": "navigation"
+				}
+			],
+			"editor/title/context": [
+				{
+					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
+					"command": "dota2tools.ability_export",
 					"group": "navigation"
 				}
 			]

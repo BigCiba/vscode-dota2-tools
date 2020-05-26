@@ -52,7 +52,7 @@ class Listener {
                     WatchFile(listen_path, kv_object[index]);
                 }
                 function WatchFile(csv_path, kv_path) {
-                    console.log('watch ' + csv_path);
+                    // console.log('watch ' + csv_path);
                     fs.watchFile(csv_path, (curr, prev) => {
                         if (curr.nlink === 0) {
                             console.log('removed');
