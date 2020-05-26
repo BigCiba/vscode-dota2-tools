@@ -1245,7 +1245,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		// fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
 	});
 
-	// 生成音效json
+	// 选择音效
 	let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', async (uri) => {
 		let root_path:string|undefined = GetRootPath();
 		if (root_path === undefined) {
@@ -1278,11 +1278,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		// let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/music/dsadowski_01/soundevents_stingers.vsndevts', 'utf-8'));
 		// console.log(kv);
 		// return;
-		const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
+		const sound_path: string = 'C:/Users/wan/Desktop/作图工具/soundevents';
 		
 		let json_obj:any = {};
 		await ReadFolder(sound_path);
-		fs.writeFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json',JSON.stringify(json_obj));
+		fs.writeFileSync('C:/Users/wan/Desktop/作图工具/soundevents.json',JSON.stringify(json_obj));
 
 		async function ReadFolder(folder_name:string) {
 			let folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
@@ -1591,6 +1591,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(GenerateAPI);
 	context.subscriptions.push(NoteAPI);
 	context.subscriptions.push(GenerateDocument);
+	context.subscriptions.push(VsndGenerator);
 	context.subscriptions.push(VsndSelector);
 	context.subscriptions.push(KV2CSV);
 	context.subscriptions.push(SelectAbilityTexture);

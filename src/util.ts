@@ -722,8 +722,8 @@ export function ReadKeyValue2(kvdata:string):any {
 }
 // 读取kv3格式为object
 export function ReadKeyValue3(kvdata:string):any {
-	// kvdata = kvdata.replace(/\t/g,'').replace(/\s+/g,'').replace(/\r\n/g,'');
-	kvdata = kvdata.replace(/\t/g,'').replace(/\r\n/g,'');
+	kvdata = kvdata.replace(/\t/g,'').replace(/\s+/g,'').replace(/\r\n/g,'');
+	// kvdata = kvdata.replace(/\t/g,'').replace(/\r\n/g,'');
 	let kv_obj:any = [];
 	for (let i = 0; i < kvdata.length; i++) {
 		let substr = kvdata[i];

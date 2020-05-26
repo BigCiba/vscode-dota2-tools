@@ -1262,7 +1262,7 @@ function activate(context) {
             config += '\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
             // fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
         }));
-        // 生成音效json
+        // 选择音效
         let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', (uri) => __awaiter(this, void 0, void 0, function* () {
             let root_path = GetRootPath();
             if (root_path === undefined) {
@@ -1297,10 +1297,10 @@ function activate(context) {
             // let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/music/dsadowski_01/soundevents_stingers.vsndevts', 'utf-8'));
             // console.log(kv);
             // return;
-            const sound_path = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
+            const sound_path = 'C:/Users/wan/Desktop/作图工具/soundevents';
             let json_obj = {};
             yield ReadFolder(sound_path);
-            fs.writeFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', JSON.stringify(json_obj));
+            fs.writeFileSync('C:/Users/wan/Desktop/作图工具/soundevents.json', JSON.stringify(json_obj));
             function ReadFolder(folder_name) {
                 return __awaiter(this, void 0, void 0, function* () {
                     let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
@@ -1611,6 +1611,7 @@ function activate(context) {
         context.subscriptions.push(GenerateAPI);
         context.subscriptions.push(NoteAPI);
         context.subscriptions.push(GenerateDocument);
+        context.subscriptions.push(VsndGenerator);
         context.subscriptions.push(VsndSelector);
         context.subscriptions.push(KV2CSV);
         context.subscriptions.push(SelectAbilityTexture);

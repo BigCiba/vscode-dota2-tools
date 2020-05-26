@@ -49,6 +49,10 @@
 				"title": "生成API文档"
 			},
 			{
+				"command": "dota2tools.vsnd_generator",
+				"title": "生成vsnd json"
+			},
+			{
 				"command": "dota2tools.vsnd_selector",
 				"title": "vsnd转换",
 				"icon": {
