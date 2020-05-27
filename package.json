@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.1.21",
+	"version": "0.1.24",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -49,6 +49,10 @@
 				"title": "生成API文档"
 			},
 			{
+				"command": "dota2tools.vsnd_generator",
+				"title": "生成vsnd json"
+			},
+			{
 				"command": "dota2tools.vsnd_selector",
 				"title": "vsnd转换",
 				"icon": {
@@ -69,8 +73,16 @@
 				}
 			},
 			{
+				"command": "dota2tools.ability_export",
+				"title": "导出技能csv"
+			},
+			{
 				"command": "dota2tools.kv_to_js_config",
 				"title": "kv转js(根据npc目录的kv_js_config.txt配置)"
+			},
+			{
+				"command": "dota2tools.unit_export",
+				"title": "导出单位csv"
 			}
 		],
 		"menus": {
@@ -102,6 +114,18 @@
 				},
 				{
 					"command": "dota2tools.select_ability_texture",
+					"group": "navigation"
+				}
+			],
+			"editor/title/context": [
+				{
+					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
+					"command": "dota2tools.ability_export",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
+					"command": "dota2tools.unit_export",
 					"group": "navigation"
 				}
 			]

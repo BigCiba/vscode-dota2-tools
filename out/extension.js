@@ -1262,7 +1262,7 @@ function activate(context) {
             config += '\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
             // fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
         }));
-        // 生成音效json
+        // 选择音效
         let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', (uri) => __awaiter(this, void 0, void 0, function* () {
             let root_path = GetRootPath();
             if (root_path === undefined) {
@@ -1297,10 +1297,10 @@ function activate(context) {
             // let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/music/dsadowski_01/soundevents_stingers.vsndevts', 'utf-8'));
             // console.log(kv);
             // return;
-            const sound_path = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
+            const sound_path = 'C:/Users/wan/Desktop/作图工具/soundevents';
             let json_obj = {};
             yield ReadFolder(sound_path);
-            fs.writeFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents.json', JSON.stringify(json_obj));
+            fs.writeFileSync('C:/Users/wan/Desktop/作图工具/soundevents.json', JSON.stringify(json_obj));
             function ReadFolder(folder_name) {
                 return __awaiter(this, void 0, void 0, function* () {
                     let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
@@ -1481,6 +1481,225 @@ function activate(context) {
                 fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
             }
         }));
+        // 导出技能csv
+        let AbilityExport = vscode.commands.registerCommand('dota2tools.ability_export', (uri) => __awaiter(this, void 0, void 0, function* () {
+            const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
+            const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
+            if (excel_object === undefined || kv_object === undefined) {
+                return;
+            }
+            // 当前文件路径
+            let file_path = util.FormatPath(uri.fsPath);
+            for (const index in kv_object) {
+                const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g, '/'));
+                if (file_path.search(kv_path) !== -1) {
+                    let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+                    KeyValue2CSV(file_path, csv_path);
+                    break;
+                }
+            }
+            // KeyValue2CSV(uri.fsPath, 'C:/Users/wan/Documents/Dota Addons/Guarding Athena/design/3.kv配置表/abilities/csv/ability_enemy.csv');
+            function KeyValue2CSV(kv_path, csv_path) {
+                // let csv_path = path.dirname(excel_object[index]);
+                if (fs.existsSync(csv_path) === false) {
+                    util.ShowError("不存在csv文件");
+                    return;
+                }
+                let csv = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
+                let kv = util.ReadKeyValue2(fs.readFileSync(kv_path, 'utf-8'));
+                let csv_title = csv[0];
+                let csv_key = csv[1];
+                let final_csv = [csv_title, csv_key];
+                for (const ability_name in kv[Object.keys(kv)[0]]) {
+                    const ability_data = kv[Object.keys(kv)[0]][ability_name];
+                    let normal_data = []; //第一行
+                    normal_data[0] = ability_name;
+                    let special_data = []; //第二行
+                    for (const ability_key in ability_data) {
+                        const ability_value = ability_data[ability_key];
+                        if (ability_key === 'AbilitySpecial') { //特殊处理AbilitySpecial
+                            let special_count = 1; //记录第几个special值
+                            for (const special_index in ability_value) { //遍历special
+                                const special_info = ability_value[special_index];
+                                // 遍历special里面的额外键值
+                                let special_name = '';
+                                let special_value = '';
+                                for (const _special_name in special_info) {
+                                    const _special_value = special_info[_special_name];
+                                    if (_special_name !== 'var_type') {
+                                        special_name += (special_name === '') ? _special_name : ('\n' + _special_name);
+                                        special_value += (special_value === '') ? _special_value : ('\n' + _special_value);
+                                    }
+                                }
+                                if (Object.keys(special_info).length > 2) {
+                                    special_name = '"' + special_name + '"';
+                                    special_value = '"' + special_value + '"';
+                                }
+                                // let special_name = Object.keys(special_info)[1];
+                                // let special_avlue = special_info[Object.keys(special_info)[1]];
+                                let counter = 0;
+                                let has_find = false;
+                                for (let i = 0; i < csv_key.length; i++) { // 寻找csv里的AbilitySpecial
+                                    const key_name = csv_key[i];
+                                    if (key_name === 'AbilitySpecial') {
+                                        counter++;
+                                        if (counter === special_count) {
+                                            normal_data[i] = special_name;
+                                            special_data[i] = special_value;
+                                            has_find = true;
+                                        }
+                                    }
+                                }
+                                if (has_find === false) { //如果csv中的AbilitySpecial值不够则往后加
+                                    csv_key.push('AbilitySpecial');
+                                    normal_data[csv_key.length - 1] = special_name;
+                                    special_data[csv_key.length - 1] = special_value;
+                                }
+                                special_count++;
+                            }
+                        }
+                        else {
+                            let has_find = false;
+                            for (let i = 0; i < csv_key.length; i++) { //csv中是否有此key
+                                const key_name = csv_key[i];
+                                if (key_name === ability_key) {
+                                    normal_data[i] = ability_value;
+                                    has_find = true;
+                                    break;
+                                }
+                            }
+                            if (has_find === false) {
+                                csv_key.push(ability_key);
+                                normal_data[csv_key.length - 1] = ability_value;
+                            }
+                        }
+                    }
+                    // 合并已有的csv数据
+                    for (let i = 2; i < csv.length; i++) {
+                        const csv_data = csv[i];
+                        if (csv_data[0] === normal_data[0]) { //技能名字已有
+                            for (let j = 0; j < csv_data.length; j++) {
+                                const value = csv_data[j];
+                                if (normal_data[j] === undefined) {
+                                    normal_data[j] = value;
+                                }
+                            }
+                        }
+                    }
+                    final_csv.push(normal_data);
+                    final_csv.push(special_data);
+                }
+                fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
+            }
+        }));
+        // 导出单位csv
+        let UnitExport = vscode.commands.registerCommand('dota2tools.unit_export', (uri) => __awaiter(this, void 0, void 0, function* () {
+            const excel_object = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
+            const kv_object = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
+            if (excel_object === undefined || kv_object === undefined) {
+                return;
+            }
+            // 当前文件路径
+            let file_path = util.FormatPath(uri.fsPath);
+            for (const index in kv_object) {
+                const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g, '/'));
+                if (file_path.search(kv_path) !== -1) {
+                    let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+                    KeyValue2CSV(file_path, csv_path);
+                    break;
+                }
+            }
+            function KeyValue2CSV(kv_path, csv_path) {
+                // let csv_path = path.dirname(excel_object[index]);
+                if (fs.existsSync(csv_path) === false) {
+                    util.ShowError("不存在csv文件");
+                    return;
+                }
+                let csv = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
+                let kv = util.ReadKeyValue2(fs.readFileSync(kv_path, 'utf-8'));
+                let csv_title = csv[0];
+                let csv_key = csv[1];
+                let final_csv = [csv_title, csv_key];
+                for (const unit_name in kv[Object.keys(kv)[0]]) {
+                    const unit_data = kv[Object.keys(kv)[0]][unit_name];
+                    let csv_data = []; //第一行
+                    csv_data[0] = unit_name;
+                    for (const unit_key in unit_data) {
+                        const unit_value = unit_data[unit_key];
+                        if (unit_key === 'Creature') { //特殊处理AttachWearables
+                            let wearable_count = 1; //记录第几个AttachWearables值
+                            for (const wearable_index in unit_value.AttachWearables) { //遍历AttachWearables
+                                const ItemDef = unit_value.AttachWearables[wearable_index].ItemDef;
+                                let counter = 0;
+                                let has_find = false;
+                                for (let i = 0; i < csv_key.length; i++) { // 寻找csv里的AttachWearables
+                                    const key_name = csv_key[i];
+                                    if (key_name === 'AttachWearables') {
+                                        counter++;
+                                        if (counter === wearable_count) {
+                                            csv_data[i] = ItemDef;
+                                            has_find = true;
+                                        }
+                                    }
+                                }
+                                if (has_find === false) { //如果csv中的AbilitySpecial值不够则往后加
+                                    csv_key.push('AttachWearables');
+                                    csv_data[csv_key.length - 1] = ItemDef;
+                                }
+                                wearable_count++;
+                            }
+                        }
+                        else if (typeof (unit_value) === 'string') {
+                            let has_find = false;
+                            for (let i = 0; i < csv_key.length; i++) { //csv中是否有此key
+                                const key_name = csv_key[i];
+                                if (key_name === unit_key) {
+                                    csv_data[i] = unit_value;
+                                    has_find = true;
+                                    break;
+                                }
+                            }
+                            if (has_find === false) {
+                                csv_key.push(unit_key);
+                                csv_data[csv_key.length - 1] = unit_value;
+                            }
+                        }
+                        else {
+                            // 多层结构先寻找csv是否存在此key，存在则导入数据，不存在则往后加
+                            // let has_find:boolean = false;
+                            // for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
+                            // 	const key_name = csv_key[i];
+                            // 	if (key_name === unit_key + '[{]') {
+                            // 		has_find = true;
+                            // 		break;
+                            // 	}
+                            // }
+                            // if (has_find === false) {
+                            // 	csv_key.push(unit_key + '[{]');
+                            // }
+                            // if (unit_key) {
+                            // }
+                        }
+                    }
+                    // 合并已有的csv数据
+                    for (let i = 2; i < csv.length; i++) {
+                        const csv_data = csv[i];
+                        if (csv_data[0] === csv_data[0]) { //单位名字已有
+                            for (let j = 0; j < csv_data.length; j++) {
+                                const value = csv_data[j];
+                                if (csv_data[j] === undefined) {
+                                    csv_data[j] = value;
+                                }
+                            }
+                        }
+                    }
+                    final_csv.push(csv_data);
+                }
+                fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
+            }
+            function ReadBlock() {
+            }
+        }));
         // 选择图标
         let SelectAbilityTexture = vscode.commands.registerCommand('dota2tools.select_ability_texture', (uri) => __awaiter(this, void 0, void 0, function* () {
             const panel = vscode.window.createWebviewPanel('SelectAbilityTexture', // viewType
@@ -1635,8 +1854,11 @@ function activate(context) {
         context.subscriptions.push(GenerateAPI);
         context.subscriptions.push(NoteAPI);
         context.subscriptions.push(GenerateDocument);
+        context.subscriptions.push(VsndGenerator);
         context.subscriptions.push(VsndSelector);
         context.subscriptions.push(KV2CSV);
+        context.subscriptions.push(AbilityExport);
+        context.subscriptions.push(UnitExport);
         context.subscriptions.push(SelectAbilityTexture);
         context.subscriptions.push(KVToJs);
         // context.subscriptions.push(ActiveListEditorProvider.register(context));
