@@ -20,7 +20,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
 	console.log('Congratulations, your extension "dota2-tools" is now active!');
 	// 获取根目录（弃用）
-	function GetRootPath():string|undefined {
+	function GetRootPath(): string | undefined {
 		const folders: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
 		if (folders !== undefined) {
 			return folders[0].uri.fsPath;
@@ -29,11 +29,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	}
 	// 读取kv文件（弃用）
-	async function ReadKeyValue(uri:vscode.Uri) {
-		function NewTable(start_line:number,document:vscode.TextDocument):any {
-			var obj: {[k: string]: any} = {};
-			var left_brackets:number = 0;	// 记录{数量
-			var right_brackets:number = 0;	// 记录}数量
+	async function ReadKeyValue(uri: vscode.Uri) {
+		function NewTable(start_line: number, document: vscode.TextDocument): any {
+			var obj: { [k: string]: any } = {};
+			var left_brackets: number = 0;	// 记录{数量
+			var right_brackets: number = 0;	// 记录}数量
 			for (let line = start_line; line < document.lineCount; line++) {
 				var text_line: vscode.TextLine = document.lineAt(line);
 				var lineText = text_line.text;
@@ -86,8 +86,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		return obj;
 	}
 	//（弃用）
-	function WriteKeyValue(obj:any,depth:number) {
-		var str:string = '';
+	function WriteKeyValue(obj: any, depth: number) {
+		var str: string = '';
 		// 添加制表符
 		function AddDepthTab(depth: number, add_string: string): string {
 			var tab: string = '';
@@ -449,7 +449,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// 监听
 	let listener = new Listener();
 	// 配置变更
-	vscode.workspace.onDidChangeConfiguration((event)=>{
+	vscode.workspace.onDidChangeConfiguration((event) => {
 		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
 			listener.WatchAbilityExcel();
 		}
@@ -1282,10 +1282,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		// console.log(kv);
 		// return;
 		const sound_path: string = 'C:/Users/wan/Desktop/作图工具/soundevents';
-		
-		let json_obj:any = {};
+
+		let json_obj: any = {};
 		await ReadFolder(sound_path);
-		fs.writeFileSync('C:/Users/wan/Desktop/作图工具/soundevents.json',JSON.stringify(json_obj));
+		fs.writeFileSync('C:/Users/wan/Desktop/作图工具/soundevents.json', JSON.stringify(json_obj));
 
 		async function ReadFolder(folder_name: string) {
 			let folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
@@ -1462,15 +1462,15 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 	// 导出技能csv
 	let AbilityExport = vscode.commands.registerCommand('dota2tools.ability_export', async (uri) => {
-		const excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
-		const kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
+		const excel_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
+		const kv_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
 		if (excel_object === undefined || kv_object === undefined) {
 			return;
 		}
 		// 当前文件路径
-		let file_path:string = util.FormatPath(uri.fsPath);
+		let file_path: string = util.FormatPath(uri.fsPath);
 		for (const index in kv_object) {
-			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g,'/'));
+			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g, '/'));
 			if (file_path.search(kv_path) !== -1) {
 				let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
 				KeyValue2CSV(file_path, csv_path);
@@ -1478,36 +1478,36 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		}
 		// KeyValue2CSV(uri.fsPath, 'C:/Users/wan/Documents/Dota Addons/Guarding Athena/design/3.kv配置表/abilities/csv/ability_enemy.csv');
-		function KeyValue2CSV(kv_path:string,csv_path:string) {
+		function KeyValue2CSV(kv_path: string, csv_path: string) {
 			// let csv_path = path.dirname(excel_object[index]);
 			if (fs.existsSync(csv_path) === false) {
 				util.ShowError("不存在csv文件");
 				return;
 			}
-			let csv:any = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
+			let csv: any = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
 			let kv = util.ReadKeyValue2(fs.readFileSync(kv_path, 'utf-8'));
 			let csv_title = csv[0];
 			let csv_key = csv[1];
-			let final_csv = [csv_title,csv_key];
+			let final_csv = [csv_title, csv_key];
 			for (const ability_name in kv[Object.keys(kv)[0]]) {
 				const ability_data = kv[Object.keys(kv)[0]][ability_name];
-				let normal_data:any = [];//第一行
+				let normal_data: any = [];//第一行
 				normal_data[0] = ability_name;
-				let special_data:any = [];//第二行
+				let special_data: any = [];//第二行
 				for (const ability_key in ability_data) {
 					const ability_value = ability_data[ability_key];
 					if (ability_key === 'AbilitySpecial') {//特殊处理AbilitySpecial
-						let special_count:number = 1;//记录第几个special值
+						let special_count: number = 1;//记录第几个special值
 						for (const special_index in ability_value) {//遍历special
 							const special_info = ability_value[special_index];
 							// 遍历special里面的额外键值
-							let special_name:string = '';
-							let special_value:string = '';
+							let special_name: string = '';
+							let special_value: string = '';
 							for (const _special_name in special_info) {
 								const _special_value = special_info[_special_name];
 								if (_special_name !== 'var_type') {
-									special_name += (special_name === '') ? _special_name:('\n' + _special_name);
-									special_value += (special_value === '') ? _special_value:('\n' + _special_value);
+									special_name += (special_name === '') ? _special_name : ('\n' + _special_name);
+									special_value += (special_value === '') ? _special_value : ('\n' + _special_value);
 								}
 							}
 							if (Object.keys(special_info).length > 2) {
@@ -1516,9 +1516,9 @@ export async function activate(context: vscode.ExtensionContext) {
 							}
 							// let special_name = Object.keys(special_info)[1];
 							// let special_avlue = special_info[Object.keys(special_info)[1]];
-							
-							let counter:number = 0;
-							let has_find:boolean = false;
+
+							let counter: number = 0;
+							let has_find: boolean = false;
 							for (let i = 0; i < csv_key.length; i++) {// 寻找csv里的AbilitySpecial
 								const key_name = csv_key[i];
 								if (key_name === 'AbilitySpecial') {
@@ -1538,7 +1538,7 @@ export async function activate(context: vscode.ExtensionContext) {
 							special_count++;
 						}
 					} else {
-						let has_find:boolean = false;
+						let has_find: boolean = false;
 						for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
 							const key_name = csv_key[i];
 							if (key_name === ability_key) {
@@ -1573,45 +1573,45 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 	// 导出单位csv
 	let UnitExport = vscode.commands.registerCommand('dota2tools.unit_export', async (uri) => {
-		const excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
-		const kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
+		const excel_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
+		const kv_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
 		if (excel_object === undefined || kv_object === undefined) {
 			return;
 		}
 		// 当前文件路径
-		let file_path:string = util.FormatPath(uri.fsPath);
+		let file_path: string = util.FormatPath(uri.fsPath);
 		for (const index in kv_object) {
-			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g,'/'));
+			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g, '/'));
 			if (file_path.search(kv_path) !== -1) {
 				let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
 				KeyValue2CSV(file_path, csv_path);
 				break;
 			}
 		}
-		function KeyValue2CSV(kv_path:string,csv_path:string) {
+		function KeyValue2CSV(kv_path: string, csv_path: string) {
 			// let csv_path = path.dirname(excel_object[index]);
 			if (fs.existsSync(csv_path) === false) {
 				util.ShowError("不存在csv文件");
 				return;
 			}
-			let csv:any = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
+			let csv: any = util.CSV2Array(fs.readFileSync(csv_path, 'utf-8'));
 			let kv = util.ReadKeyValue2(fs.readFileSync(kv_path, 'utf-8'));
 			let csv_title = csv[0];
 			let csv_key = csv[1];
-			let final_csv = [csv_title,csv_key];
+			let final_csv = [csv_title, csv_key];
 			for (const unit_name in kv[Object.keys(kv)[0]]) {
 				const unit_data = kv[Object.keys(kv)[0]][unit_name];
-				let csv_data:any = [];//第一行
+				let csv_data: any = [];//第一行
 				csv_data[0] = unit_name;
 				for (const unit_key in unit_data) {
 					const unit_value = unit_data[unit_key];
 					if (unit_key === 'Creature') {//特殊处理AttachWearables
-						let wearable_count:number = 1;//记录第几个AttachWearables值
+						let wearable_count: number = 1;//记录第几个AttachWearables值
 						for (const wearable_index in unit_value.AttachWearables) {//遍历AttachWearables
 							const ItemDef = unit_value.AttachWearables[wearable_index].ItemDef;
-							
-							let counter:number = 0;
-							let has_find:boolean = false;
+
+							let counter: number = 0;
+							let has_find: boolean = false;
 							for (let i = 0; i < csv_key.length; i++) {// 寻找csv里的AttachWearables
 								const key_name = csv_key[i];
 								if (key_name === 'AttachWearables') {
@@ -1628,8 +1628,8 @@ export async function activate(context: vscode.ExtensionContext) {
 							}
 							wearable_count++;
 						}
-					} else if (typeof(unit_value) === 'string'){
-						let has_find:boolean = false;
+					} else if (typeof (unit_value) === 'string') {
+						let has_find: boolean = false;
 						for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
 							const key_name = csv_key[i];
 							if (key_name === unit_key) {
@@ -1648,7 +1648,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						// for (let i = 0; i < csv_key.length; i++) {//csv中是否有此key
 						// 	const key_name = csv_key[i];
 						// 	if (key_name === unit_key + '[{]') {
-								
+
 						// 		has_find = true;
 						// 		break;
 						// 	}
@@ -1657,7 +1657,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						// 	csv_key.push(unit_key + '[{]');
 						// }
 						// if (unit_key) {
-							
+
 						// }
 					}
 				}
@@ -1678,7 +1678,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
 		}
 		function ReadBlock() {
-			
+
 		}
 	});
 	// 选择图标
@@ -1819,9 +1819,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		for (const sKVName in KVFiles) {
 			let sPath = KVFiles[sKVName];
-			let sTotalPath = GameDir + '/scripts/' + sPath;
+			let sTotalPath = GameDir + '/scripts/npc/' + sPath;
 			let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
-			let js = util.Obj2Str(kv, true);
+			let js = util.Obj2Str(kv[Object.keys(kv)[0]]);
 			let fileData = "GameUI." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
 			fs.writeFileSync(jsPath, fileData);
