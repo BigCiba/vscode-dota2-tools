@@ -27,7 +27,7 @@ function activate(context) {
         // This line of code will only be executed once when your extension is activated
         // passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
         console.log('Congratulations, your extension "dota2-tools" is now active!');
-        // 获取根目录
+        // 获取根目录（弃用）
         function GetRootPath() {
             const folders = vscode.workspace.workspaceFolders;
             if (folders !== undefined) {
@@ -37,7 +37,7 @@ function activate(context) {
                 return;
             }
         }
-        // 读取kv文件
+        // 读取kv文件（弃用）
         function ReadKeyValue(uri) {
             return __awaiter(this, void 0, void 0, function* () {
                 function NewTable(start_line, document) {
@@ -95,6 +95,7 @@ function activate(context) {
                 return obj;
             });
         }
+        //（弃用）
         function WriteKeyValue(obj, depth) {
             var str = '';
             // 添加制表符
@@ -185,6 +186,7 @@ function activate(context) {
             }
             return str;
         }
+        //（弃用）
         function LoadKeyValue(uri) {
             return __awaiter(this, void 0, void 0, function* () {
                 const document = yield vscode.workspace.openTextDocument(uri);
@@ -474,7 +476,9 @@ function activate(context) {
         }
         // WatchVersion();
         yield init_1.Init(context);
+        // 监听
         let listener = new listener_1.Listener();
+        // 配置变更
         vscode.workspace.onDidChangeConfiguration((event) => {
             if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
                 listener.WatchAbilityExcel();
@@ -488,7 +492,7 @@ function activate(context) {
                 }
             }
         });
-        // 添加英雄基本文件
+        // 添加英雄基本文件（IMBA功能）
         let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
             let root_path = GetRootPath();
             if (root_path === undefined) {
@@ -1821,6 +1825,25 @@ function activate(context) {
                 // panel.dispose();
             }, undefined, context.subscriptions);
         }));
+        // kv转js
+        let KVToJs = vscode.commands.registerCommand('dota2tools.kv_to_js_config', () => __awaiter(this, void 0, void 0, function* () {
+            let root_path = GetRootPath();
+            if (root_path === undefined) {
+                return;
+            }
+            let sKvPath = (init_1.GameDir + '/scripts/npc/kv_js_config.txt').replace("\\", "/");
+            let KVFiles = util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8'));
+            KVFiles = KVFiles[Object.keys(KVFiles)[0]];
+            for (const sKVName in KVFiles) {
+                let sPath = KVFiles[sKVName];
+                let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
+                let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
+                let js = util.Obj2Str(kv, true);
+                let fileData = "const " + sKVName + " = " + js + ";";
+                let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
+                fs.writeFileSync(jsPath, fileData);
+            }
+        }));
         // 注册指令
         context.subscriptions.push(Localization);
         context.subscriptions.push(AddHero);
@@ -1836,6 +1859,7 @@ function activate(context) {
         context.subscriptions.push(AbilityExport);
         context.subscriptions.push(UnitExport);
         context.subscriptions.push(SelectAbilityTexture);
+        context.subscriptions.push(KVToJs);
         // context.subscriptions.push(ActiveListEditorProvider.register(context));
     });
 }

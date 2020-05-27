@@ -77,6 +77,10 @@
 				"title": "导出技能csv"
 			},
 			{
+				"command": "dota2tools.kv_to_js_config",
+				"title": "kv转js(根据npc目录的kv_js_config.txt配置)"
+			},
+			{
 				"command": "dota2tools.unit_export",
 				"title": "导出单位csv"
 			}
@@ -159,6 +163,11 @@
 					"type": "boolean",
 					"default": true,
 					"description": "是否监听文本变更"
+				},
+				"dota2-tools.KV to Js Config": {
+					"type": "string",
+					"default": "/scripts/npc/kv_js_config.txt",
+					"description": "KV导出JS配置文件"
 				},
 				"dota2-tools.Custom Spellicons Path": {
 					"type": "object",

@@ -2,11 +2,11 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import {exec} from 'child_process';
-import { isObject, log } from 'util';
+import { exec } from 'child_process';
+import { isObject, log, print } from 'util';
 
 // 获取根目录
-export function GetRootPath():string|undefined {
+export function GetRootPath(): string | undefined {
 	const folders: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
 	if (folders !== undefined) {
 		return folders[0].uri.fsPath;
@@ -24,19 +24,18 @@ export function FindStrInFile(filePath: string, reg: string | RegExp) {
 	const content = fs.readFileSync(filePath, 'utf-8');
 	reg = typeof reg === 'string' ? new RegExp(reg, 'm') : reg;
 	// 没找到直接返回
-	if (content.search(reg) < 0) 
-	{
-		return {row: 0, col: 0};
+	if (content.search(reg) < 0) {
+		return { row: 0, col: 0 };
 	}
 	const rows = content.split(os.EOL);
 	// 分行查找只为了拿到行
-	for(let i = 0; i < rows.length; i++) {
+	for (let i = 0; i < rows.length; i++) {
 		let col = rows[i].search(reg);
-		if(col >= 0) {
-			return {row: i, col};
+		if (col >= 0) {
+			return { row: i, col };
 		}
 	}
-	return {row: 0, col: 0};
+	return { row: 0, col: 0 };
 }
 export function GetStrRangeInFile(filePath: string, str: string) {
 	var pos = FindStrInFile(filePath, str);
@@ -87,7 +86,7 @@ export function GetWebViewContent(context: any, templatePath: any) {
 // 取出中括号内的内容
 export function GetBracketStr(text: string): string {
 	let result = '';
-	if (text === ''){
+	if (text === '') {
 		return result;
 	}
 	let regex = /\[(.+?)\]/g;
@@ -102,7 +101,7 @@ export function GetBracketStr(text: string): string {
 // 取出小括号内的内容
 export function GetParenthesesStr(text: string): string {
 	let result = '';
-	if (text === ''){
+	if (text === '') {
 		return result;
 	}
 	let regex = /\((.+?)\)/g;
@@ -113,9 +112,9 @@ export function GetParenthesesStr(text: string): string {
 	}
 	return result;
 }
-export function ReadFunction(line: number, rows: any):any {
-	let fun_info: {[k: string]: any} = {};
-	let param_list: {[k: string]: any} = {};
+export function ReadFunction(line: number, rows: any): any {
+	let fun_info: { [k: string]: any } = {};
+	let param_list: { [k: string]: any } = {};
 	let end_line: number = 0;
 	for (let index = line; index < rows.length; index++) {
 		const text = rows[index];
@@ -150,13 +149,13 @@ export function ReadFunction(line: number, rows: any):any {
 	fun_info.params = param_list;
 	fun_info.server = true;
 	fun_info.client = false;
-	return [fun_info,end_line];
+	return [fun_info, end_line];
 }
-export function ReadEnum(line: number, rows: any):any {
+export function ReadEnum(line: number, rows: any): any {
 	let enum_list: any[] = [];
 	let end_line: number = 0;
 	for (let index = line + 1; index < rows.length; index++) {
-		let enum_info: {[k: string]: any} = {};
+		let enum_info: { [k: string]: any } = {};
 		const text = rows[index];
 		if (text === '') {
 			end_line = index;
@@ -178,7 +177,7 @@ export function ReadEnum(line: number, rows: any):any {
 	}
 	return [enum_list, end_line];
 }
-export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContext):string {
+export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContext): string {
 	let content = `
 		<!DOCTYPE html>
 		<html lang="en">
@@ -186,23 +185,23 @@ export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContex
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<title>Dota2 API</title>
-			<link rel="stylesheet" href="`+ vscode.Uri.file(path.join(context.extensionPath,'lib','Skeleton-2.0.4','css','skeleton.css')).with({ scheme: 'vscode-resource' }).toString() + `">
+			<link rel="stylesheet" href="`+ vscode.Uri.file(path.join(context.extensionPath, 'lib', 'Skeleton-2.0.4', 'css', 'skeleton.css')).with({ scheme: 'vscode-resource' }).toString() + `">
 		</head>
 		<body>
 			<h4>` + fun_info.function + `</h4>
 			<h5>Function Description</h5>
-			<textarea id="description" class="u-full-width" onkeydown="tab(this)">` + fun_info.description + `</textarea>` + 
-			AddParams() + `
+			<textarea id="description" class="u-full-width" onkeydown="tab(this)">` + fun_info.description + `</textarea>` +
+		AddParams() + `
 			<h5>Example</h5>
 			<textarea id="example" class="u-full-width" style="height:300px;" onkeydown="tab(this)">` + fun_info.example + `</textarea>
 			<button class="button-primary" onclick="Confirm()">确认</button>
-			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
+			<script src="` + vscode.Uri.file(path.join(context.extensionPath, 'resource', 'view', 'dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
 			<script src="../../src/view/test-webview.js"></script>
 		</body>
 		</html>
 	`;
 	return content;
-	function AddParams():string {
+	function AddParams(): string {
 		let s = '';
 		if (Object.keys(fun_info.params).length > 0) {
 			s = `<h5>Parameters</h5>
@@ -215,23 +214,23 @@ export function GetNoteAPIContent(fun_info: any, context: vscode.ExtensionContex
 						</tr>
 					</thead>
 					<tbody>
-						`+ AddParameter(fun_info.params) +`
+						`+ AddParameter(fun_info.params) + `
 					</tbody>
 				</table>`;
 		}
-		
+
 		return s;
 	}
-	function AddParameter(params:any):string {
+	function AddParameter(params: any): string {
 		let s = '';
 		for (const params_name in params) {
 			let params_info = params[params_name];
-			s += 
-			'<tr>\n' +
-			'<td>' + params_name + '</td>\n' + 
-			'<td><input type="text" value="' + params_info.params_name + '" /></td>\n' +
-			'<td><input type="text" value="' + params_info.description + '" /></td>\n' +
-			'</tr>\n';
+			s +=
+				'<tr>\n' +
+				'<td>' + params_name + '</td>\n' +
+				'<td><input type="text" value="' + params_info.params_name + '" /></td>\n' +
+				'<td><input type="text" value="' + params_info.description + '" /></td>\n' +
+				'</tr>\n';
 		}
 		return s;
 	}
@@ -244,7 +243,7 @@ export function GetConstantNoteContent(enum_info: any, context: vscode.Extension
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<title>Dota2 API</title>
-			<link rel="stylesheet" href="`+ vscode.Uri.file(path.join(context.extensionPath,'lib','Skeleton-2.0.4','css','skeleton.css')).with({ scheme: 'vscode-resource' }).toString() + `">
+			<link rel="stylesheet" href="`+ vscode.Uri.file(path.join(context.extensionPath, 'lib', 'Skeleton-2.0.4', 'css', 'skeleton.css')).with({ scheme: 'vscode-resource' }).toString() + `">
 		</head>
 		<body>
 			<h4>` + enum_info.name + `</h4>
@@ -255,7 +254,7 @@ export function GetConstantNoteContent(enum_info: any, context: vscode.Extension
 			<h5>Example</h5>
 			<textarea id="example" class="u-full-width" style="height:300px;" onkeydown="tab(this)">` + (enum_info.example || '') + `</textarea>
 			<button class="button-primary" onclick="ConfirmConstant()">确认</button>
-			<script src="` + vscode.Uri.file(path.join(context.extensionPath,'resource','view','dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
+			<script src="` + vscode.Uri.file(path.join(context.extensionPath, 'resource', 'view', 'dota2api.js')).with({ scheme: 'vscode-resource' }).toString() + `"></script>
 			<script src="../../src/view/test-webview.js"></script>
 		</body>
 		</html>
@@ -282,7 +281,7 @@ export function GetAbilityTextureContent(webview: vscode.Webview, texture_info: 
 			<div class="search">
 				<div class="search-content">
 					<div class="dropdown">
-						<img class="hero-filter" src="`+vscode.Uri.file(path.join(context.extensionPath,'images','heroes_icon', 'npc_dota_hero_default_png.png')).with({ scheme: 'vscode-resource' }).toString()+`"/>
+						<img class="hero-filter" src="`+ vscode.Uri.file(path.join(context.extensionPath, 'images', 'heroes_icon', 'npc_dota_hero_default_png.png')).with({ scheme: 'vscode-resource' }).toString() + `"/>
 						<div class="dropdown-content"/>
 						</div>
 					</div>
@@ -297,17 +296,17 @@ export function GetAbilityTextureContent(webview: vscode.Webview, texture_info: 
 	`;
 	return content;
 }
-export function ReadAPI(api: string, api_cl:string): any {
-	let root_path:string|undefined = GetRootPath();
+export function ReadAPI(api: string, api_cl: string): any {
+	let root_path: string | undefined = GetRootPath();
 	if (root_path === undefined) {
 		return;
 	}
 	const api_note = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
 	// 读取服务器API
 	const rows = api.split(os.EOL);
-	let class_list: {[k: string]: any} = {};
-	let enum_list: {[k: string]: any} = {};
-	for(let i = 0; i < rows.length; i++) {
+	let class_list: { [k: string]: any } = {};
+	let enum_list: { [k: string]: any } = {};
+	for (let i = 0; i < rows.length; i++) {
 		// 函数
 		let option = rows[i].match(/---\[\[.*\]\]/g);
 		if (option !== null && option.length > 0) {
@@ -348,9 +347,9 @@ export function ReadAPI(api: string, api_cl:string): any {
 	}
 	// 读取客户端API
 	const rows_cl = api_cl.split(os.EOL);
-	let class_list_cl: {[k: string]: any} = {};
-	let enum_list_cl: {[k: string]: any} = {};
-	for(let i = 0; i < rows_cl.length; i++) {
+	let class_list_cl: { [k: string]: any } = {};
+	let enum_list_cl: { [k: string]: any } = {};
+	for (let i = 0; i < rows_cl.length; i++) {
 		// 函数
 		let option = rows_cl[i].match(/---\[\[.*\]\]/g);
 		if (option !== null && option.length > 0) {
@@ -380,7 +379,7 @@ export function ReadAPI(api: string, api_cl:string): any {
 			const fun_info = fun_list[i];
 			let class_info_cl = class_list_cl[class_name];
 			if (class_info_cl === undefined) {
-				class_info_cl = class_list_cl[class_name.replace('C','C_')];
+				class_info_cl = class_list_cl[class_name.replace('C', 'C_')];
 			}
 			if (class_info_cl !== undefined) {
 				for (let j = 0; j < class_info_cl.length; j++) {
@@ -409,16 +408,16 @@ export function ReadAPI(api: string, api_cl:string): any {
 			}
 		}
 	}
-	return [class_list,enum_list];
+	return [class_list, enum_list];
 }
-export function GetFileInfo(root_path: string|undefined, path: string): object {
+export function GetFileInfo(root_path: string | undefined, path: string): object {
 	if (root_path !== undefined) {
 		path = path.split(root_path)[1];
 	}
 	let arr = path.split('\\');
 	let file = arr[arr.length - 1];
 	let info: object = {
-		full_name : path,
+		full_name: path,
 		name: file.split('.')[0],
 		ext: file.split('.')[1],
 	};
@@ -430,44 +429,44 @@ export function GetFileInfo(root_path: string|undefined, path: string): object {
  * 读取路径信息
  * @param {string} path 路径
  */
-export function GetStat(path: string):Promise<boolean | fs.Stats>{
+export function GetStat(path: string): Promise<boolean | fs.Stats> {
 	return new Promise((resolve, reject) => {
 		fs.stat(path, (err, stats) => {
-			if(err){
+			if (err) {
 				resolve(false);
-			}else{
+			} else {
 				resolve(stats);
 			}
 		});
 	});
 }
- 
+
 /**
  * 创建路径
  * @param {string} dir 路径
  */
-export async function MakeDir(dir: string):Promise<boolean>{
+export async function MakeDir(dir: string): Promise<boolean> {
 	return new Promise((resolve, reject) => {
 		fs.mkdir(dir, err => {
-			if(err){
+			if (err) {
 				resolve(false);
-			}else{
+			} else {
 				resolve(true);
 			}
 		});
 	});
 }
- 
+
 /**
  * 路径是否存在，不存在则创建
  * @param {string} dir 路径
  */
-export async function DirExists(dir: string){
+export async function DirExists(dir: string) {
 	let isExists = await GetStat(dir);
 	//如果该路径且不是文件，返回true
-	if(isExists && isExists!== true && isExists.isDirectory()){
+	if (isExists && isExists !== true && isExists.isDirectory()) {
 		return true;
-	}else if(isExists){	 //如果该路径存在但是文件，返回false
+	} else if (isExists) {	 //如果该路径存在但是文件，返回false
 		return false;
 	}
 	//如果该路径不存在
@@ -475,20 +474,20 @@ export async function DirExists(dir: string){
 	//递归判断，如果上级目录也不存在，则会代码会在此处继续循环执行，直到目录存在
 	let status = await DirExists(tempDir);
 	let mkdirStatus;
-	if(status){
+	if (status) {
 		mkdirStatus = await MakeDir(dir);
 	}
 	return mkdirStatus;
 }
 // 判断object里是否有某个属性
-export function ObjectHasKey(obj:any,_key:string):boolean {
+export function ObjectHasKey(obj: any, _key: string): boolean {
 	let bHas = false;
 	for (const key in obj) {
 		const value = obj[key];
 		if (key === _key) {
 			return true;
 		} else if (isObject(value)) {
-			bHas = ObjectHasKey(value,_key);
+			bHas = ObjectHasKey(value, _key);
 			if (bHas === true) {
 				return true;
 			}
@@ -497,7 +496,7 @@ export function ObjectHasKey(obj:any,_key:string):boolean {
 	return bHas;
 }
 // 判断字符串是否是数字
-export function IsNumber (s:string):boolean {
+export function IsNumber(s: string): boolean {
 	var reg = /^[0-9]+.?[0-9]*$/;
 	if (reg.test(s)) {
 		return true;
@@ -505,16 +504,16 @@ export function IsNumber (s:string):boolean {
 	return false;
 }
 // 弃用
-export function ReadKV3(path: string):any {
+export function ReadKV3(path: string): any {
 	let kv3_data = fs.readFileSync(path, 'utf-8');
 	const rows = kv3_data.split(os.EOL);
-	for(let i = 0; i < rows.length; i++) {
+	for (let i = 0; i < rows.length; i++) {
 		rows[i] = rows[i] + '\n';
 	}
 	let [obj, line] = ReadTable();
-	function ReadTable(start_line: number = 0):any {
+	function ReadTable(start_line: number = 0): any {
 		let table: any = {};
-		for(let i = start_line; i < rows.length; i++) {
+		for (let i = start_line; i < rows.length; i++) {
 			if (rows[i].search(/\}/) !== -1) {
 				return [table, i];
 			}
@@ -522,14 +521,14 @@ export function ReadKV3(path: string):any {
 			if (rows[i].search(/.* = ".*"/) !== -1) {
 				let kv = rows[i].replace(/\t/g, '').split(' = ');
 				let key = kv[0];
-				let value = kv[1].replace(/"/g,'').replace(/\n/,'');
+				let value = kv[1].replace(/"/g, '').replace(/\n/, '');
 				table[key] = value;
 			}
 			// 数字类型的值
 			if (rows[i].search(/.* = -?\d+\.\d+/) !== -1) {
 				let kv = rows[i].replace(/\t/g, '').split(' = ');
 				let key = kv[0];
-				let value = kv[1].replace(/\n/,'');
+				let value = kv[1].replace(/\n/, '');
 				table[key] = value;
 			}
 			// object或array类型的值
@@ -537,22 +536,22 @@ export function ReadKV3(path: string):any {
 				let key = rows[i].replace(/\t/g, '').split(' = ')[0];
 				// array
 				if (rows[i + 1].search(/\[/) !== -1) {
-					let [value,new_line] = ReadArray(i + 1);
+					let [value, new_line] = ReadArray(i + 1);
 					i = new_line;
 					table[key] = value;
 				}
 				// object
 				if (rows[i + 1].search(/\{/) !== -1) {
-					let [value,new_line] = ReadTable(i + 1);
+					let [value, new_line] = ReadTable(i + 1);
 					i = new_line;
 					table[key] = value;
 				}
 			}
 		}
 	}
-	function ReadArray(start_line:number):any {
+	function ReadArray(start_line: number): any {
 		let arr = [];
-		for(let i = start_line; i < rows.length; i++) {
+		for (let i = start_line; i < rows.length; i++) {
 			if (rows[i].search(/\[/) !== -1) {
 			}
 			if (rows[i].search(/\]/) !== -1) {
@@ -560,12 +559,12 @@ export function ReadKV3(path: string):any {
 			}
 			// float
 			if (rows[i].search(/-?\d+\.\d+/) !== -1) {
-				let value:any = rows[i].match(/-?\d+\.\d+/);
+				let value: any = rows[i].match(/-?\d+\.\d+/);
 				arr.push(value[0]);
 			}
 			// string
 			if (rows[i].search(/".*",/) !== -1) {
-				let value:any = rows[i].split('"');
+				let value: any = rows[i].split('"');
 				arr.push(value[1]);
 			}
 		}
@@ -573,17 +572,17 @@ export function ReadKV3(path: string):any {
 	return obj;
 }
 // 读取kv2格式为object(兼容kv3)
-export function ReadKeyValue2(kvdata:string):any {
+export function ReadKeyValue2(kvdata: string): any {
 	kvdata = RemoveComment(kvdata);
 	// kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
-	kvdata = kvdata.replace(/\t/g,'').replace(/\r\n/g,'');
-	let kv_obj:any = {};
+	kvdata = kvdata.replace(/\t/g, '').replace(/\r\n/g, '');
+	let kv_obj: any = {};
 	for (let i = 0; i < kvdata.length; i++) {
 		let substr = kvdata[i];
 		if (substr === '"') {
-			let key:any;
-			let value:any;
-			[key,value,i] = ReadKeyValue(i);
+			let key: any;
+			let value: any;
+			[key, value, i] = ReadKeyValue(i);
 			kv_obj[key] = value;
 			continue;
 		}
@@ -594,32 +593,32 @@ export function ReadKeyValue2(kvdata:string):any {
 	}
 	return kv_obj;
 	// 读取一对键对
-	function ReadKeyValue(start_index:number):any {
-		let key:string = '';
-		let value:any;
+	function ReadKeyValue(start_index: number): any {
+		let key: string = '';
+		let value: any;
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
 			// 读取key
 			if (substr === '"' && state === 'NONE') {
-				[key,i] = GetContent(i);
+				[key, i] = GetContent(i);
 				state = 'VALUE';
 				continue;
 			}
 			// 读取value
 			if (substr === '"' && state === 'VALUE') {
-				[value,i] = GetContent(i);
-				return [key,value,i];
+				[value, i] = GetContent(i);
+				return [key, value, i];
 			}
 			// 读取table
 			if (substr === '{' && state === 'VALUE') {
-				[value,i] = GetTable(i);
-				return [key,value,i];
+				[value, i] = GetTable(i);
+				return [key, value, i];
 			}
 		}
 	}
-	function GetTable(start_index:number):any {
-		let kv:any = {};
+	function GetTable(start_index: number): any {
+		let kv: any = {};
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
@@ -629,26 +628,26 @@ export function ReadKeyValue2(kvdata:string):any {
 			}
 			// 插入kv3
 			if (substr === '<' && state === 'READ') {
-				let [block,new_index] = GetKv3Block(i);
+				let [block, new_index] = GetKv3Block(i);
 				kv = ReadKeyValue3(block);
 				i = new_index;
 				continue;
 			}
 			if (substr === '"' && state === 'READ') {
-				let key:any;
-				let value:any;
-				[key,value,i] = ReadKeyValue(i);
+				let key: any;
+				let value: any;
+				[key, value, i] = ReadKeyValue(i);
 				kv[key] = value;
 				continue;
 			}
 			if (substr === '}' && state === 'READ') {
-				return [kv,i];
+				return [kv, i];
 			}
 		}
 	}
 	// 获取引号里的内容
-	function GetContent(start_index:number):any {
-		let content:string = '';
+	function GetContent(start_index: number): any {
+		let content: string = '';
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
@@ -658,7 +657,7 @@ export function ReadKeyValue2(kvdata:string):any {
 			}
 			if (state === 'READ') {
 				if (substr === '"') {
-					return [content,i];
+					return [content, i];
 				} else {
 					content += substr;
 				}
@@ -666,7 +665,7 @@ export function ReadKeyValue2(kvdata:string):any {
 		}
 	}
 	// 获得kv3块
-	function GetKv3Block(start_index:number):any {
+	function GetKv3Block(start_index: number): any {
 		let block = '';
 		let left = 0;
 		let right = 0;
@@ -690,13 +689,13 @@ export function ReadKeyValue2(kvdata:string):any {
 			if (substr === '}') {
 				right++;
 				if (left === right) {
-					return [block,i];
+					return [block, i];
 				}
 			}
 		}
 	}
 	// #base
-	function GetBase(start_index:number):any {
+	function GetBase(start_index: number): any {
 		let path = '';
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
@@ -736,10 +735,10 @@ export function ReadKeyValue3(kvdata:string):any {
 	}
 	return kv_obj;
 	// 读取一对中括号里面的内容
-	function ReadTable(start_index:number):any {
-		let kv:any = {};
-		let key:string = '';
-		let value:string = '';
+	function ReadTable(start_index: number): any {
+		let kv: any = {};
+		let key: string = '';
+		let value: string = '';
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
@@ -813,8 +812,8 @@ export function ReadKeyValue3(kvdata:string):any {
 		}
 	}
 	// 读数组
-	function ReadArray(start_index:number):any {
-		let arr:any = [];
+	function ReadArray(start_index: number): any {
+		let arr: any = [];
 		let state = 'NONE';
 		let value = '';
 		for (let i = start_index; i < kvdata.length; i++) {
@@ -861,9 +860,9 @@ export function ReadKeyValue3(kvdata:string):any {
 	}
 }
 // 读取kv2格式为object（#base）
-export function ReadKeyValueWithBase(full_path:string) {
+export function ReadKeyValueWithBase(full_path: string) {
 	// 获取名字
-	let file_name:string = full_path.split('/').pop() || '';
+	let file_name: string = full_path.split('/').pop() || '';
 	let path = full_path.split(file_name)[0];
 
 	let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
@@ -871,7 +870,7 @@ export function ReadKeyValueWithBase(full_path:string) {
 	let kv_string = fs.readFileSync(full_path, 'utf-8');
 	kv_string = RemoveComment(kv_string);
 	const rows: string[] = kv_string.split(os.EOL);
-	for(let i = 0; i < rows.length; i++) {
+	for (let i = 0; i < rows.length; i++) {
 		const line_text: string = rows[i];
 		if (line_text.search(/#base ".*"/) !== -1) {
 			let base_path = line_text.split('"')[1];
@@ -889,10 +888,10 @@ export function ReadKeyValueWithBase(full_path:string) {
 }
 
 // 去除注释
-export function RemoveComment(data:string):string {
+export function RemoveComment(data: string): string {
 	let new_data = '';
 	const rows: string[] = data.split(os.EOL);
-	for(let i = 0; i < rows.length; i++) {
+	for (let i = 0; i < rows.length; i++) {
 		const line_text: string = rows[i];
 		for (let char = 0; char < line_text.length; char++) {
 			const substr = line_text[char];
@@ -973,17 +972,17 @@ export function CSV2Array(csv:string):[] {
 	return arr;
 }
 // array转csv
-export function Array2CSV(arr:any[]):string {
-	let csv:string = '';
+export function Array2CSV(arr: any[]): string {
+	let csv: string = '';
 	let title_count: number = arr[1].length;
 	for (let i = 0; i < arr.length; i++) {
-		const rows:any = arr[i];
+		const rows: any = arr[i];
 		for (let j = 0; j < rows.length; j++) {
 			if (rows[0] === undefined && rows.length === 0) {
 				break;
 			}
-			const col = rows[j] === undefined ? '':rows[j];
-			csv += col + (j+1 === rows.length ? '':',');
+			const col = rows[j] === undefined ? '' : rows[j];
+			csv += col + (j + 1 === rows.length ? '' : ',');
 		}
 		if (rows[0] !== undefined || rows.length > 0) {
 			for (let q = 0; q < title_count - rows.length; q++) {
@@ -1001,11 +1000,11 @@ export function Array2CSV(arr:any[]):string {
 	return csv;
 }
 // 写入kv
-export function WriteKeyValue(obj:any,depth:number = 0) {
-	var str:string = '';
+export function WriteKeyValue(obj: any, depth: number = 0) {
+	var str: string = '';
 	// 添加制表符
-	function AddDepthTab(depth:number,add_string:string):string {
-		var tab:string = '';
+	function AddDepthTab(depth: number, add_string: string): string {
+		var tab: string = '';
 		for (let d = 0; d < depth; d++) {
 			tab += '\t';
 		}
@@ -1013,23 +1012,23 @@ export function WriteKeyValue(obj:any,depth:number = 0) {
 		return tab;
 	}
 	// 添加key与value之间制表符
-	function AddIntervalTab(depth:number,key:string):string {
-		var tab:string = '';
-		for (let d = 0; d < 12 - Math.floor((depth * 4 + key.length + 2)/4); d++) {
+	function AddIntervalTab(depth: number, key: string): string {
+		var tab: string = '';
+		for (let d = 0; d < 12 - Math.floor((depth * 4 + key.length + 2) / 4); d++) {
 			tab += '\t';
 		}
 		return tab;
 	}
 	for (const key in obj) {
 		const value = obj[key];
-		if (typeof(value) === 'string') {
+		if (typeof (value) === 'string') {
 			str += AddDepthTab(depth, '"' + key + '"');
 			str += AddIntervalTab(depth, key);
 			str += '"' + value + '"' + os.EOL;
 		} else {
 			str += AddDepthTab(depth, '"' + key + '"' + os.EOL);
 			str += AddDepthTab(depth, '{' + os.EOL);
-			str += WriteKeyValue(value,depth + 1);
+			str += WriteKeyValue(value, depth + 1);
 			str += AddDepthTab(depth, '}' + os.EOL);
 		}
 	}
@@ -1039,7 +1038,7 @@ export function WriteKeyValue(obj:any,depth:number = 0) {
 export interface Configuration {
 	[key: string]: string;
 }
-export function AbilityCSV2KV(listen_path:string):any {
+export function AbilityCSV2KV(listen_path: string): any {
 	let csv = fs.readFileSync(listen_path, 'utf-8');
 	// 生成kv
 	let csv_data:any = {};
@@ -1047,13 +1046,13 @@ export function AbilityCSV2KV(listen_path:string):any {
 	// let csv_arr:any = CSV2Array(csv);
 	const csv_key:[] = csv_arr[1];
 	for (let i = 2; i < csv_arr.length; i++) {
-		const row:any = csv_arr[i];
+		const row: any = csv_arr[i];
 		if (row.length === 0) {
 			continue;
 		}
 
-		let special_count:number = 1;
-		let AbilitySpecial:any = {};
+		let special_count: number = 1;
+		let AbilitySpecial: any = {};
 		let values_obj: any = {};
 		for (let j = 1; j < row.length; j++) {
 			const col = row[j];
@@ -1061,7 +1060,7 @@ export function AbilityCSV2KV(listen_path:string):any {
 			if (col === '') {
 				continue;
 			}
-			let key:string = csv_key[j];
+			let key: string = csv_key[j];
 			// special值特殊处理
 			if (key === 'AbilitySpecial') {
 				key = ("0" + special_count).substr(-2);
@@ -1091,27 +1090,27 @@ export function AbilityCSV2KV(listen_path:string):any {
 	}
 	return csv_data;
 }
-export function UnitCSV2KV(listen_path:string):any {
+export function UnitCSV2KV(listen_path: string): any {
 	let csv = fs.readFileSync(listen_path, 'utf-8');
 	// 生成kv
 	let csv_data:any = {};
 	let csv_arr:any = CSVParse(csv);
 	const csv_key:[] = csv_arr[1];
 	for (let i = 2; i < csv_arr.length; i++) {
-		const row:any = csv_arr[i];
+		const row: any = csv_arr[i];
 		if (row.length === 0 || row[0] === '' || row[0] === undefined) {
 			continue;
 		}
 
-		let wearable_count:number = 1;
-		let AttachWearables:any = {};
+		let wearable_count: number = 1;
+		let AttachWearables: any = {};
 		let values_obj: any = {};
 		// 读取多层结构
-		let ReadBlock = function (index:number):any {
-			let block:any = {};
+		let ReadBlock = function (index: number): any {
+			let block: any = {};
 			for (let i = index + 1; i < row.length; i++) {
-				const col:any = row[i];
-				const key:string = csv_key[i];
+				const col: any = row[i];
+				const key: string = csv_key[i];
 				if (col === '') {
 					if (key.search('[{]') !== -1) {
 						let [_block, j] = ReadBlock(i);
@@ -1133,7 +1132,7 @@ export function UnitCSV2KV(listen_path:string):any {
 		};
 		for (let j = 1; j < row.length; j++) {
 			const col = row[j];
-			let key:string = csv_key[j];
+			let key: string = csv_key[j];
 			// 跳过空值
 			if (col === '') {
 				// 处理多层结构
@@ -1151,10 +1150,10 @@ export function UnitCSV2KV(listen_path:string):any {
 				key = wearable_count.toString();
 				let value = col;
 				AttachWearables[key] = {
-					ItemDef:value
+					ItemDef: value
 				};
 				wearable_count++;
-			// 跳过没有key的值
+				// 跳过没有key的值
 			} else if (key === '') {
 				continue;
 			} else {
@@ -1181,7 +1180,7 @@ export function getNonce() {
 export function GetVscodeResourceUri(path: string) {
 	return vscode.Uri.file(path).with({ scheme: 'vscode-resource' }).toString();
 }
-export function GetLuaScriptSnippet(filename:string,path:string):string {
+export function GetLuaScriptSnippet(filename: string, path: string): string {
 	return `LinkLuaModifier( "modifier_${filename}", "${path}.lua", LUA_MODIFIER_MOTION_NONE )
 --Abilities
 if ${filename} == nil then
@@ -1216,4 +1215,44 @@ export function FormatPath(path:string):string {
 	path = path.replace(/\\/g,'/');
 	path = path.charAt(0).toUpperCase() + path.slice(1);
 	return path;
+}
+
+// 把js的obj转成字符串
+// obj:要转的数据对象，bSkipFirstLevel: 跳过第一层(主要是kv的第一层key没用)
+export function Obj2Str(obj: { [k: string]: any }, bSkipFirstLevel: boolean = false): string {
+	let ret = "";
+	if (!bSkipFirstLevel) {
+		ret = "{";
+	}
+
+	for (const key in obj) {
+		const element: { [k: string]: object } = obj[key];
+		if (typeof (element) === "object") {
+			if (bSkipFirstLevel) {
+				ret += Obj2Str(element);
+				break;
+			} else {
+				ret += '"' + key + "\":" + Obj2Str(element) + ",";
+			}
+		} else {
+			if (key === "AbilitySpecial") {
+			}
+			if (bSkipFirstLevel) {
+				return "{}";
+			}
+			if (IsNumber(element)) {
+				ret += '"' + key + "\":" + element + ",";
+			} else {
+				ret += '"' + key + "\":\"" + element + "\",";
+			}
+
+		}
+	}
+	if (!bSkipFirstLevel) {
+		if (ret[ret.length - 1] === ",") {
+			ret = ret.slice(0, -1);// 去掉最后一个逗号
+		}
+		ret += "}";
+	}
+	return ret;
 }
