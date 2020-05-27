@@ -1839,7 +1839,7 @@ function activate(context) {
                 let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
                 let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
                 let js = util.Obj2Str(kv, true);
-                let fileData = "const " + sKVName + " = " + js + ";";
+                let fileData = "GameUI." + sKVName + " = " + js + ";";
                 let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
                 fs.writeFileSync(jsPath, fileData);
             }

@@ -1822,7 +1822,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			let sTotalPath = GameDir + '/scripts/' + sPath;
 			let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
 			let js = util.Obj2Str(kv, true);
-			let fileData = "const " + sKVName + " = " + js + ";";
+			let fileData = "GameUI." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
 			fs.writeFileSync(jsPath, fileData);
 		}
