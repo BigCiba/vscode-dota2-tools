@@ -1471,11 +1471,22 @@ export async function activate(context: vscode.ExtensionContext) {
 		let file_path: string = util.FormatPath(uri.fsPath);
 		for (const index in kv_object) {
 			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g, '/'));
-			if (file_path.search(kv_path) !== -1) {
-				let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
-				KeyValue2CSV(file_path, csv_path);
-				break;
+			let file_type: vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(kv_path))).type;
+			if (file_type === vscode.FileType.Directory) {
+				if (file_path.search(kv_path) !== -1) {
+					let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+					KeyValue2CSV(file_path, csv_path);
+					break;
+				}
+			} else if (file_type === vscode.FileType.File) {
+				if (file_path === kv_path) {
+					let csv_path = path.join(path.dirname(excel_object[index]), 'csv', path.basename(excel_object[index]).replace(path.extname(excel_object[index]), '.csv'));
+					KeyValue2CSV(file_path, csv_path);
+					break;
+				}
 			}
+			
+			
 		}
 		// KeyValue2CSV(uri.fsPath, 'C:/Users/wan/Documents/Dota Addons/Guarding Athena/design/3.kv配置表/abilities/csv/ability_enemy.csv');
 		function KeyValue2CSV(kv_path: string, csv_path: string) {
@@ -1579,17 +1590,31 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 		// 当前文件路径
+		
 		let file_path: string = util.FormatPath(uri.fsPath);
 		for (const index in kv_object) {
 			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g, '/'));
-			if (file_path.search(kv_path) !== -1) {
-				let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
-				KeyValue2CSV(file_path, csv_path);
-				break;
+
+			let file_type: vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(kv_path))).type;
+			if (file_type === vscode.FileType.Directory) {
+				if (file_path.search(kv_path) !== -1) {
+					let csv_path = path.join(excel_object[index], 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
+					KeyValue2CSV(file_path, csv_path);
+					break;
+				}
+			} else if (file_type === vscode.FileType.File) {
+				console.log(file_path);
+				console.log(kv_path);
+				
+				if (file_path === kv_path) {
+					let csv_path = path.join(path.dirname(excel_object[index]), 'csv', path.basename(excel_object[index]).replace(path.extname(excel_object[index]), '.csv'));
+					KeyValue2CSV(file_path, csv_path);
+					break;
+				}
 			}
+			
 		}
 		function KeyValue2CSV(kv_path: string, csv_path: string) {
-			// let csv_path = path.dirname(excel_object[index]);
 			if (fs.existsSync(csv_path) === false) {
 				util.ShowError("不存在csv文件");
 				return;
