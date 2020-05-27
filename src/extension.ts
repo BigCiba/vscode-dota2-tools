@@ -19,7 +19,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	// passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
 	console.log('Congratulations, your extension "dota2-tools" is now active!');
-	// 获取根目录
+	// 获取根目录（弃用）
 	function GetRootPath():string|undefined {
 		const folders: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
 		if (folders !== undefined) {
@@ -28,7 +28,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 	}
-	// 读取kv文件
+	// 读取kv文件（弃用）
 	async function ReadKeyValue(uri:vscode.Uri) {
 		function NewTable(start_line:number,document:vscode.TextDocument):any {
 			var obj: {[k: string]: any} = {};
@@ -85,6 +85,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 		return obj;
 	}
+	//（弃用）
 	function WriteKeyValue(obj:any,depth:number) {
 		var str:string = '';
 		// 添加制表符
@@ -172,6 +173,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 		return str;
 	}
+	//（弃用）
 	async function LoadKeyValue(uri: vscode.Uri) {
 		const document: vscode.TextDocument = await vscode.workspace.openTextDocument(uri);
 		var state: string = 'NONE';
@@ -444,8 +446,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	// WatchVersion();
 	
 	await Init(context);
+	// 监听
 	let listener = new Listener();
-	
+	// 配置变更
 	vscode.workspace.onDidChangeConfiguration((event)=>{
 		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
 			listener.WatchAbilityExcel();
@@ -459,7 +462,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	// 添加英雄基本文件
+	// 添加英雄基本文件（IMBA功能）
 	let AddHero = vscode.commands.registerCommand('extension.AddHero', async () => {
 		let root_path: string|undefined = GetRootPath();
 		if (root_path === undefined) {
