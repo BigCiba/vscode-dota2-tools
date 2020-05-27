@@ -1836,10 +1836,10 @@ function activate(context) {
             KVFiles = KVFiles[Object.keys(KVFiles)[0]];
             for (const sKVName in KVFiles) {
                 let sPath = KVFiles[sKVName];
-                let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
+                let sTotalPath = init_1.GameDir + '/scripts/npc/' + sPath;
                 let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
-                let js = util.Obj2Str(kv, true);
-                let fileData = "const " + sKVName + " = " + js + ";";
+                let js = util.Obj2Str(kv[Object.keys(kv)[0]]);
+                let fileData = "GameUI." + sKVName + " = " + js + ";";
                 let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
                 fs.writeFileSync(jsPath, fileData);
             }

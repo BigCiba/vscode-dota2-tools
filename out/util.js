@@ -1282,29 +1282,15 @@ function FormatPath(path) {
 }
 exports.FormatPath = FormatPath;
 // 把js的obj转成字符串
-// obj:要转的数据对象，bSkipFirstLevel: 跳过第一层(主要是kv的第一层key没用)
-function Obj2Str(obj, bSkipFirstLevel = false) {
-    let ret = "";
-    if (!bSkipFirstLevel) {
-        ret = "{";
-    }
+// obj:要转的数据对象 
+function Obj2Str(obj) {
+    let ret = "{";
     for (const key in obj) {
         const element = obj[key];
         if (typeof (element) === "object") {
-            if (bSkipFirstLevel) {
-                ret += Obj2Str(element);
-                break;
-            }
-            else {
-                ret += '"' + key + "\":" + Obj2Str(element) + ",";
-            }
+            ret += '"' + key + "\":" + Obj2Str(element) + ",";
         }
         else {
-            if (key === "AbilitySpecial") {
-            }
-            if (bSkipFirstLevel) {
-                return "{}";
-            }
             if (IsNumber(element)) {
                 ret += '"' + key + "\":" + element + ",";
             }
@@ -1313,12 +1299,10 @@ function Obj2Str(obj, bSkipFirstLevel = false) {
             }
         }
     }
-    if (!bSkipFirstLevel) {
-        if (ret[ret.length - 1] === ",") {
-            ret = ret.slice(0, -1); // 去掉最后一个逗号
-        }
-        ret += "}";
+    if (ret[ret.length - 1] === ",") {
+        ret = ret.slice(0, -1); // 去掉最后一个逗号
     }
+    ret += "}";
     return ret;
 }
 exports.Obj2Str = Obj2Str;
