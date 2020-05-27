@@ -67,6 +67,10 @@
 					"light": "./images/texture_light.svg",
 					"dark": "./images/texture_dark.svg"
 				}
+			},
+			{
+				"command": "dota2tools.kv_to_js_config",
+				"title": "kv转js(根据npc目录的kv_js_config.txt配置)"
 			}
 		],
 		"menus": {

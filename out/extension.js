@@ -1602,6 +1602,30 @@ function activate(context) {
                 // panel.dispose();
             }, undefined, context.subscriptions);
         }));
+        // kv转js
+        let KVToJs = vscode.commands.registerCommand('dota2tools.kv_to_js_config', () => __awaiter(this, void 0, void 0, function* () {
+            let root_path = GetRootPath();
+            if (root_path === undefined) {
+                return;
+            }
+            let sKvPath = (root_path + '/game/dota_td/scripts/npc/kv_js_config.txt').replace("\\", "/");
+            let KVFiles = util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8'));
+            KVFiles = KVFiles.KVJSConfig;
+            // let KVFiles: { [k: string]: string } = {
+            // "AbilitiesKv": "scripts/npc/npc_abilities_custom.txt",
+            // "AssetModifiersKv": "scripts/npc/asset_modifiers.kv",
+            // "BannerGoodsKv": "scripts/npc/kv/banner_goods.kv",
+            // };
+            for (const sKVName in KVFiles) {
+                let sPath = KVFiles[sKVName];
+                let sTotalPath = root_path + '/game/dota_td/scripts/npc/' + sPath;
+                let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
+                let js = util.Obj2Str(kv, true);
+                let fileData = "const " + sKVName + " = " + js + ";";
+                let jsPath = (root_path + "/content/dota_td/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
+                fs.writeFileSync(jsPath, fileData);
+            }
+        }));
         // 注册指令
         context.subscriptions.push(Localization);
         context.subscriptions.push(AddHero);
@@ -1614,6 +1638,7 @@ function activate(context) {
         context.subscriptions.push(VsndSelector);
         context.subscriptions.push(KV2CSV);
         context.subscriptions.push(SelectAbilityTexture);
+        context.subscriptions.push(KVToJs);
         // context.subscriptions.push(ActiveListEditorProvider.register(context));
     });
 }
