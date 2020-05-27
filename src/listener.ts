@@ -4,7 +4,7 @@ import xlsx from 'node-xlsx';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
-import { Init,KV2LUA, VSND, GameDir } from './init';
+import { Init,KV2LUA, VSND, GameDir, ContentDir } from './init';
 import { print, log } from 'util';
 
 export class Listener {
@@ -13,6 +13,9 @@ export class Listener {
 		this.WatchUnitExcel();		//监听单位excel
 		if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
 			this.WatchLocalization();//监听文本合并
+		}
+		if (vscode.workspace.getConfiguration().get('dota2-tools.Listen KV to Js') === true) {
+			this.WatchKeyValue();//监听kv
 		}
 	}
 	async WatchAbilityExcel() {
@@ -115,5 +118,26 @@ export class Listener {
 	}
 	UnWatchLocalization() {
 		watch.unwatchTree(GameDir + '/localization');
+	}
+	WatchKeyValue() {
+		let Config:any = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+		let KVFiles = util.ReadKeyValue2(fs.readFileSync(path.join(GameDir, Config), 'utf-8'));
+		KVFiles = KVFiles[Object.keys(KVFiles)[0]];
+		for (const sKVName in KVFiles) {
+			let sPath = KVFiles[sKVName];
+			let sTotalPath = GameDir + '/scripts/' + sPath;
+			fs.watchFile(sTotalPath, (curr, prev) => {
+				if (curr.nlink === 0) {
+					console.log('removed');
+				} else {
+					let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
+					let js = util.Obj2Str(kv, true);
+					let fileData = "const " + sKVName + " = " + js + ";";
+					let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
+					fs.writeFileSync(jsPath, fileData);
+				}
+			});
+			
+		}
 	}
 }

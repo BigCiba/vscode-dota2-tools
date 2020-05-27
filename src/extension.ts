@@ -1813,7 +1813,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		let sKvPath = (GameDir + '/scripts/npc/kv_js_config.txt').replace("\\", "/");
+		let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+		let sKvPath = (GameDir + Config).replace("\\", "/");
 		let KVFiles = util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8'));
 		KVFiles = KVFiles[Object.keys(KVFiles)[0]];
 

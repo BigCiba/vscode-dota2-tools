@@ -164,6 +164,11 @@
 					"default": true,
 					"description": "是否监听文本变更"
 				},
+				"dota2-tools.Listen KV to Js": {
+					"type": "boolean",
+					"default": true,
+					"description": "是否自动将KV生成JS文件"
+				},
 				"dota2-tools.KV to Js Config": {
 					"type": "string",
 					"default": "/scripts/npc/kv_js_config.txt",

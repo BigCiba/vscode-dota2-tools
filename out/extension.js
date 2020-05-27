@@ -1831,7 +1831,8 @@ function activate(context) {
             if (root_path === undefined) {
                 return;
             }
-            let sKvPath = (init_1.GameDir + '/scripts/npc/kv_js_config.txt').replace("\\", "/");
+            let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+            let sKvPath = (init_1.GameDir + Config).replace("\\", "/");
             let KVFiles = util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8'));
             KVFiles = KVFiles[Object.keys(KVFiles)[0]];
             for (const sKVName in KVFiles) {

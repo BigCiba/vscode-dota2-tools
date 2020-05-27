@@ -22,6 +22,9 @@ class Listener {
         if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
             this.WatchLocalization(); //监听文本合并
         }
+        if (vscode.workspace.getConfiguration().get('dota2-tools.Listen KV to Js') === true) {
+            this.WatchKeyValue(); //监听kv
+        }
     }
     WatchAbilityExcel() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -133,6 +136,27 @@ class Listener {
     }
     UnWatchLocalization() {
         watch.unwatchTree(init_1.GameDir + '/localization');
+    }
+    WatchKeyValue() {
+        let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+        let KVFiles = util.ReadKeyValue2(fs.readFileSync(path.join(init_1.GameDir, Config), 'utf-8'));
+        KVFiles = KVFiles[Object.keys(KVFiles)[0]];
+        for (const sKVName in KVFiles) {
+            let sPath = KVFiles[sKVName];
+            let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
+            fs.watchFile(sTotalPath, (curr, prev) => {
+                if (curr.nlink === 0) {
+                    console.log('removed');
+                }
+                else {
+                    let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
+                    let js = util.Obj2Str(kv, true);
+                    let fileData = "const " + sKVName + " = " + js + ";";
+                    let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
+                    fs.writeFileSync(jsPath, fileData);
+                }
+            });
+        }
     }
 }
 exports.Listener = Listener;
