@@ -1485,8 +1485,8 @@ export async function activate(context: vscode.ExtensionContext) {
 					break;
 				}
 			}
-			
-			
+
+
 		}
 		// KeyValue2CSV(uri.fsPath, 'C:/Users/wan/Documents/Dota Addons/Guarding Athena/design/3.kv配置表/abilities/csv/ability_enemy.csv');
 		function KeyValue2CSV(kv_path: string, csv_path: string) {
@@ -1590,7 +1590,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 		// 当前文件路径
-		
+
 		let file_path: string = util.FormatPath(uri.fsPath);
 		for (const index in kv_object) {
 			const kv_path = util.FormatPath(kv_object[index].replace(/\\\\/g, '/'));
@@ -1605,14 +1605,14 @@ export async function activate(context: vscode.ExtensionContext) {
 			} else if (file_type === vscode.FileType.File) {
 				console.log(file_path);
 				console.log(kv_path);
-				
+
 				if (file_path === kv_path) {
 					let csv_path = path.join(path.dirname(excel_object[index]), 'csv', path.basename(excel_object[index]).replace(path.extname(excel_object[index]), '.csv'));
 					KeyValue2CSV(file_path, csv_path);
 					break;
 				}
 			}
-			
+
 		}
 		function KeyValue2CSV(kv_path: string, csv_path: string) {
 			if (fs.existsSync(csv_path) === false) {
@@ -1846,6 +1846,22 @@ export async function activate(context: vscode.ExtensionContext) {
 			let sPath = KVFiles[sKVName];
 			let sTotalPath = GameDir + '/scripts/npc/' + sPath;
 			let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
+			// 特殊处理
+			if (sPath.search("npc_abilities_custom") !== -1) { // 技能合并
+				let npc_abilities_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/"));
+				let npc_abilities_override_kv = util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/"));
+				kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
+			} else if (sPath.search("npc_units_custom") !== -1) { // 单位合并
+				let npc_units_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/"));
+				kv = util.OverrideKeyValue(npc_units_kv, kv);
+			} else if (sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
+				let npc_heroes_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/"));
+				kv = util.OverrideKeyValue(npc_heroes_kv, kv);
+			} else if (sPath.search("npc_items_custom") !== -1) { // 物品合并
+				let items_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace("\\", "/"));
+				let npc_abilities_override_kv = util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/"));
+				kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
+			}
 			let js = util.Obj2Str(kv[Object.keys(kv)[0]]);
 			let fileData = "GameUI." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
