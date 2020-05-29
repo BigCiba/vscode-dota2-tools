@@ -940,6 +940,15 @@ function ReadKeyValueWithBase(full_path) {
     return kvdata;
 }
 exports.ReadKeyValueWithBase = ReadKeyValueWithBase;
+// 获取从ReadKeyValue2、ReadKeyValue3、ReadKeyValueWithBase得到的对象里的第index个对象，用于去掉外层，使其与DOTA2读取的KV结构一致
+function GetKeyValueObjectByIndex(Obj, index = 0) {
+    if (typeof (Obj) !== "object") {
+        return;
+    }
+    return Obj[Object.keys(Obj)[index]];
+}
+exports.GetKeyValueObjectByIndex = GetKeyValueObjectByIndex;
+// 对象覆盖
 function OverrideKeyValue(mainObj, Obj) {
     if (typeof (mainObj) !== "object") {
         return Obj;

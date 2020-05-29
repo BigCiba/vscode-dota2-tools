@@ -1839,8 +1839,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 
 		let sKvPath = (GameDir + '/scripts/npc/kv_js_config.txt').replace("\\", "/");
-		let KVFiles = util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8'));
-		KVFiles = KVFiles[Object.keys(KVFiles)[0]];
+		let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
 
 		for (const sKVName in KVFiles) {
 			let sPath = KVFiles[sKVName];
@@ -1848,21 +1847,21 @@ export async function activate(context: vscode.ExtensionContext) {
 			let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
 			// 特殊处理
 			if (sPath.search("npc_abilities_custom") !== -1) { // 技能合并
-				let npc_abilities_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/"));
-				let npc_abilities_override_kv = util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/"));
+				let npc_abilities_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/")));
+				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
 				kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
 			} else if (sPath.search("npc_units_custom") !== -1) { // 单位合并
-				let npc_units_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/"));
+				let npc_units_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/")));
 				kv = util.OverrideKeyValue(npc_units_kv, kv);
 			} else if (sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
-				let npc_heroes_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/"));
+				let npc_heroes_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/")));
 				kv = util.OverrideKeyValue(npc_heroes_kv, kv);
 			} else if (sPath.search("npc_items_custom") !== -1) { // 物品合并
-				let items_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace("\\", "/"));
-				let npc_abilities_override_kv = util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/"));
+				let items_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace("\\", "/")));
+				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
 				kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
 			}
-			let js = util.Obj2Str(kv[Object.keys(kv)[0]]);
+			let js = util.Obj2Str(kv);
 			let fileData = "GameUI." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
 			fs.writeFileSync(jsPath, fileData);
