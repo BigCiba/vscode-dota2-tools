@@ -1857,7 +1857,7 @@ function activate(context) {
             for (const sKVName in KVFiles) {
                 let sPath = KVFiles[sKVName];
                 let sTotalPath = init_1.GameDir + '/scripts/npc/' + sPath;
-                let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
+                let kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/")));
                 // 特殊处理
                 if (sPath.search("npc_abilities_custom") !== -1) { // 技能合并
                     let npc_abilities_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/")));
