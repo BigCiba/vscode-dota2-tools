@@ -497,7 +497,7 @@ export function ObjectHasKey(obj: any, _key: string): boolean {
 }
 // 判断字符串是否是数字
 export function IsNumber(s: string): boolean {
-	var reg = /^[0-9]+.?[0-9]*$/;
+	var reg = /^(-?\d+)(\.\d+)?$/;
 	if (reg.test(s)) {
 		return true;
 	}

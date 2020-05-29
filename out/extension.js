@@ -1859,6 +1859,25 @@ function activate(context) {
                 let sPath = KVFiles[sKVName];
                 let sTotalPath = init_1.GameDir + '/scripts/npc/' + sPath;
                 let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
+                // 特殊处理
+                if (sPath.search("npc_abilities_custom") !== -1) { // 技能合并
+                    let npc_abilities_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/"));
+                    let npc_abilities_override_kv = util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/"));
+                    kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
+                }
+                else if (sPath.search("npc_units_custom") !== -1) { // 单位合并
+                    let npc_units_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/"));
+                    kv = util.OverrideKeyValue(npc_units_kv, kv);
+                }
+                else if (sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
+                    let npc_heroes_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/"));
+                    kv = util.OverrideKeyValue(npc_heroes_kv, kv);
+                }
+                else if (sPath.search("npc_items_custom") !== -1) { // 物品合并
+                    let items_kv = util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace("\\", "/"));
+                    let npc_abilities_override_kv = util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/"));
+                    kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
+                }
                 let js = util.Obj2Str(kv[Object.keys(kv)[0]]);
                 let fileData = "GameUI." + sKVName + " = " + js + ";";
                 let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");

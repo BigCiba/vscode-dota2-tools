@@ -535,7 +535,7 @@ function ObjectHasKey(obj, _key) {
 exports.ObjectHasKey = ObjectHasKey;
 // 判断字符串是否是数字
 function IsNumber(s) {
-    var reg = /^[0-9]+.?[0-9]*$/;
+    var reg = /^(-?\d+)(\.\d+)?$/;
     if (reg.test(s)) {
         return true;
     }
@@ -940,6 +940,25 @@ function ReadKeyValueWithBase(full_path) {
     return kvdata;
 }
 exports.ReadKeyValueWithBase = ReadKeyValueWithBase;
+function OverrideKeyValue(mainObj, Obj) {
+    if (typeof (mainObj) !== "object") {
+        return Obj;
+    }
+    if (typeof (Obj) !== "object") {
+        return mainObj;
+    }
+    for (const k in Obj) {
+        const v = Obj[k];
+        if (typeof (v) === "object") {
+            mainObj[k] = OverrideKeyValue(mainObj[k], v);
+        }
+        else {
+            mainObj[k] = v;
+        }
+    }
+    return mainObj;
+}
+exports.OverrideKeyValue = OverrideKeyValue;
 // 去除注释
 function RemoveComment(data) {
     let new_data = '';
