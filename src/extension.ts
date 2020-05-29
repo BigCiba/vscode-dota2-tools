@@ -1858,7 +1858,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 		for (const sKVName in KVFiles) {
 			let sPath = KVFiles[sKVName];
-			let sTotalPath = GameDir + '/scripts/npc/' + sPath;
+			let sTotalPath = GameDir + '/scripts/' + sPath;
 			let kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/")));
 			// 特殊处理
 			if (KVHeaders.OverrideAbilities === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
