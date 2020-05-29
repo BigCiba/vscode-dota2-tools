@@ -1270,3 +1270,14 @@ export function Obj2Str(obj: { [k: string]: any }): string {
 	ret += "}";
 	return ret;
 }
+
+export function StringToAny(str: string): any {
+	if (str === "true") {
+		return true;
+	} else if (str === "false") {
+		return false;
+	} else if (Number(str) !== NaN) {
+		return Number(str);
+	}
+	return str;
+}

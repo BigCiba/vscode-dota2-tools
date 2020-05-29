@@ -1334,4 +1334,17 @@ function Obj2Str(obj) {
     return ret;
 }
 exports.Obj2Str = Obj2Str;
+function StringToAny(str) {
+    if (str === "true") {
+        return true;
+    }
+    else if (str === "false") {
+        return false;
+    }
+    else if (Number(str) !== NaN) {
+        return Number(str);
+    }
+    return str;
+}
+exports.StringToAny = StringToAny;
 //# sourceMappingURL=util.js.map
