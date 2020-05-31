@@ -477,7 +477,7 @@ function activate(context) {
         // WatchVersion();
         yield init_1.Init(context);
         // 监听
-        let listener = new listener_1.Listener();
+        let listener = new listener_1.Listener(context);
         // 配置变更
         vscode.workspace.onDidChangeConfiguration((event) => {
             if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
@@ -1852,7 +1852,8 @@ function activate(context) {
             if (root_path === undefined) {
                 return;
             }
-            let sKvPath = (init_1.GameDir + '/scripts/npc/kv_js_config.txt').replace("\\", "/");
+            let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+            let sKvPath = (init_1.GameDir + Config).replace("\\", "/");
             let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
             let KVString = fs.readFileSync(sKvPath, 'utf-8');
             let KVHeaders = {};

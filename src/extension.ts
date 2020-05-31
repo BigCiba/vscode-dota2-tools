@@ -447,7 +447,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	await Init(context);
 	// 监听
-	let listener = new Listener();
+	let listener = new Listener(context);
 	// 配置变更
 	vscode.workspace.onDidChangeConfiguration((event) => {
 		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {

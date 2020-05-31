@@ -15,8 +15,10 @@ const path = require("path");
 const fs = require("fs");
 const vscode = require("vscode");
 const init_1 = require("./init");
+const os = require("os");
 class Listener {
-    constructor() {
+    constructor(context) {
+        this.context = context;
         this.WatchAbilityExcel(); //监听技能excel
         this.WatchUnitExcel(); //监听单位excel
         if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
@@ -139,8 +141,24 @@ class Listener {
     }
     WatchKeyValue() {
         let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
-        let KVFiles = util.ReadKeyValue2(fs.readFileSync(path.join(init_1.GameDir, Config), 'utf-8'));
-        KVFiles = KVFiles[Object.keys(KVFiles)[0]];
+        let sKvPath = (init_1.GameDir + Config).replace("\\", "/");
+        let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
+        let KVString = fs.readFileSync(sKvPath, 'utf-8');
+        let KVHeaders = {};
+        const rows = KVString.split(os.EOL);
+        for (let i = 0; i < rows.length; i++) {
+            const line_text = rows[i];
+            let aHeaders = line_text.match(/@.+?\b\s.+?\b/g);
+            if (aHeaders) {
+                for (let sHeader of aHeaders) {
+                    sHeader = sHeader.replace(/@/g, "");
+                    let a = sHeader.split(" ");
+                    if (a) {
+                        KVHeaders[a[0]] = util.StringToAny(a[1]);
+                    }
+                }
+            }
+        }
         for (const sKVName in KVFiles) {
             let sPath = KVFiles[sKVName];
             let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
@@ -149,9 +167,28 @@ class Listener {
                     console.log('removed');
                 }
                 else {
-                    let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
-                    let js = util.Obj2Str(kv, true);
-                    let fileData = "const " + sKVName + " = " + js + ";";
+                    let kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/")));
+                    // 特殊处理
+                    if (KVHeaders.OverrideAbilities === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
+                        let npc_abilities_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/")));
+                        let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
+                        kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
+                    }
+                    else if (KVHeaders.OverrideUnits === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
+                        let npc_units_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/")));
+                        kv = util.OverrideKeyValue(npc_units_kv, kv);
+                    }
+                    else if (KVHeaders.OverrideHeroes === true && sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
+                        let npc_heroes_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/")));
+                        kv = util.OverrideKeyValue(npc_heroes_kv, kv);
+                    }
+                    else if (KVHeaders.OverrideItems === true && sPath.search("npc_items_custom") !== -1) { // 物品合并
+                        let items_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/items.txt').replace("\\", "/")));
+                        let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
+                        kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
+                    }
+                    let js = util.Obj2Str(kv);
+                    let fileData = "GameUI." + sKVName + " = " + js + ";";
                     let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
                     fs.writeFileSync(jsPath, fileData);
                 }
