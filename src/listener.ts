@@ -131,7 +131,7 @@ export class Listener {
 					console.log('removed');
 				} else {
 					let kv = util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/"));
-					let js = util.Obj2Str(kv, true);
+					let js = util.Obj2Str(kv);
 					let fileData = "const " + sKVName + " = " + js + ";";
 					let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
 					fs.writeFileSync(jsPath, fileData);

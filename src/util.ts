@@ -497,7 +497,7 @@ export function ObjectHasKey(obj: any, _key: string): boolean {
 }
 // 判断字符串是否是数字
 export function IsNumber(s: string): boolean {
-	var reg = /^[0-9]+.?[0-9]*$/;
+	var reg = /^(-?\d+)(\.\d+)?$/;
 	if (reg.test(s)) {
 		return true;
 	}
@@ -720,10 +720,10 @@ export function ReadKeyValue2(kvdata: string): any {
 	}
 }
 // 读取kv3格式为object
-export function ReadKeyValue3(kvdata:string):any {
-	kvdata = kvdata.replace(/\t/g,'').replace(/\s+/g,'').replace(/\r\n/g,'');
+export function ReadKeyValue3(kvdata: string): any {
+	kvdata = kvdata.replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
 	// kvdata = kvdata.replace(/\t/g,'').replace(/\r\n/g,'');
-	let kv_obj:any = [];
+	let kv_obj: any = [];
 	for (let i = 0; i < kvdata.length; i++) {
 		let substr = kvdata[i];
 		if (substr === '{') {
@@ -887,6 +887,35 @@ export function ReadKeyValueWithBase(full_path: string) {
 	return kvdata;
 }
 
+// 获取从ReadKeyValue2、ReadKeyValue3、ReadKeyValueWithBase得到的对象里的第index个对象，用于去掉外层，使其与DOTA2读取的KV结构一致
+export function GetKeyValueObjectByIndex(Obj: any, index: number = 0) {
+	if (typeof (Obj) !== "object") {
+		return;
+	}
+	return Obj[Object.keys(Obj)[index]];
+}
+
+// 对象覆盖
+export function OverrideKeyValue(mainObj: any, Obj: any): object {
+	if (typeof (mainObj) !== "object") {
+		return Obj;
+	}
+	if (typeof (Obj) !== "object") {
+		return mainObj;
+	}
+
+	for (const k in Obj) {
+		const v = Obj[k];
+		if (typeof (v) === "object") {
+			mainObj[k] = OverrideKeyValue(mainObj[k], v);
+		} else {
+			mainObj[k] = v;
+		}
+	}
+
+	return mainObj;
+}
+
 // 去除注释
 export function RemoveComment(data: string): string {
 	let new_data = '';
@@ -906,16 +935,16 @@ export function RemoveComment(data: string): string {
 	return new_data;
 }
 // csv转array
-export function CSVParse(csv:string) {
-	csv = csv.replace(/\r\n/g,'\n');
-	let arr:any = [];
+export function CSVParse(csv: string) {
+	csv = csv.replace(/\r\n/g, '\n');
+	let arr: any = [];
 	let col = 0;
 	let row = 0;
 	for (let i = 0; i < csv.length; i++) {
 		i = ReadValue(i);
 	}
 	return arr;
-	function ReadValue(index:number):any {
+	function ReadValue(index: number): any {
 		let value = "";
 		let state = "normal";
 		for (let i = index; i < csv.length; i++) {
@@ -954,10 +983,10 @@ export function CSVParse(csv:string) {
 	}
 }
 // csv转array(无法处理单元格换行问题)
-export function CSV2Array(csv:string):[] {
-	const rows:string[] = csv.split(os.EOL);
-	let arr:any = [];
-	for(let i = 0; i < rows.length; i++) {
+export function CSV2Array(csv: string): [] {
+	const rows: string[] = csv.split(os.EOL);
+	let arr: any = [];
+	for (let i = 0; i < rows.length; i++) {
 		arr[i] = [];
 		const line_text: string = rows[i];
 		let values: string[] = line_text.split(',');
@@ -1041,10 +1070,10 @@ export interface Configuration {
 export function AbilityCSV2KV(listen_path: string): any {
 	let csv = fs.readFileSync(listen_path, 'utf-8');
 	// 生成kv
-	let csv_data:any = {};
-	let csv_arr:any = CSVParse(csv);
+	let csv_data: any = {};
+	let csv_arr: any = CSVParse(csv);
 	// let csv_arr:any = CSV2Array(csv);
-	const csv_key:[] = csv_arr[1];
+	const csv_key: [] = csv_arr[1];
 	for (let i = 2; i < csv_arr.length; i++) {
 		const row: any = csv_arr[i];
 		if (row.length === 0) {
@@ -1064,13 +1093,13 @@ export function AbilityCSV2KV(listen_path: string): any {
 			// special值特殊处理
 			if (key === 'AbilitySpecial') {
 				key = ("0" + special_count).substr(-2);
-				let value = csv_arr[i+1][j];
+				let value = csv_arr[i + 1][j];
 				// 拆分key
 				let key_arr = col.split("\n");
 				// 拆分value
 				let value_arr = value.split("\n");
 				AbilitySpecial[key] = {
-					var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT':'FIELD_INTEGER',
+					var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
 					// [col]: csv_arr[i+1][j]
 				};
 				for (let i = 0; i < key_arr.length; i++) {
@@ -1093,9 +1122,9 @@ export function AbilityCSV2KV(listen_path: string): any {
 export function UnitCSV2KV(listen_path: string): any {
 	let csv = fs.readFileSync(listen_path, 'utf-8');
 	// 生成kv
-	let csv_data:any = {};
-	let csv_arr:any = CSVParse(csv);
-	const csv_key:[] = csv_arr[1];
+	let csv_data: any = {};
+	let csv_arr: any = CSVParse(csv);
+	const csv_key: [] = csv_arr[1];
 	for (let i = 2; i < csv_arr.length; i++) {
 		const row: any = csv_arr[i];
 		if (row.length === 0 || row[0] === '' || row[0] === undefined) {
@@ -1211,35 +1240,22 @@ function modifier_${filename}:DeclareFunctions()
 	}
 end`;
 }
-export function FormatPath(path:string):string {
-	path = path.replace(/\\/g,'/');
+export function FormatPath(path: string): string {
+	path = path.replace(/\\/g, '/');
 	path = path.charAt(0).toUpperCase() + path.slice(1);
 	return path;
 }
 
 // 把js的obj转成字符串
-// obj:要转的数据对象，bSkipFirstLevel: 跳过第一层(主要是kv的第一层key没用)
-export function Obj2Str(obj: { [k: string]: any }, bSkipFirstLevel: boolean = false): string {
-	let ret = "";
-	if (!bSkipFirstLevel) {
-		ret = "{";
-	}
+// obj:要转的数据对象 
+export function Obj2Str(obj: { [k: string]: any }): string {
+	let ret = "{";
 
 	for (const key in obj) {
 		const element: { [k: string]: object } = obj[key];
 		if (typeof (element) === "object") {
-			if (bSkipFirstLevel) {
-				ret += Obj2Str(element);
-				break;
-			} else {
-				ret += '"' + key + "\":" + Obj2Str(element) + ",";
-			}
+			ret += '"' + key + "\":" + Obj2Str(element) + ",";
 		} else {
-			if (key === "AbilitySpecial") {
-			}
-			if (bSkipFirstLevel) {
-				return "{}";
-			}
 			if (IsNumber(element)) {
 				ret += '"' + key + "\":" + element + ",";
 			} else {
@@ -1248,11 +1264,20 @@ export function Obj2Str(obj: { [k: string]: any }, bSkipFirstLevel: boolean = fa
 
 		}
 	}
-	if (!bSkipFirstLevel) {
-		if (ret[ret.length - 1] === ",") {
-			ret = ret.slice(0, -1);// 去掉最后一个逗号
-		}
-		ret += "}";
+	if (ret[ret.length - 1] === ",") {
+		ret = ret.slice(0, -1);// 去掉最后一个逗号
 	}
+	ret += "}";
 	return ret;
+}
+
+export function StringToAny(str: string): any {
+	if (str === "true") {
+		return true;
+	} else if (str === "false") {
+		return false;
+	} else if (Number(str) !== NaN) {
+		return Number(str);
+	}
+	return str;
 }

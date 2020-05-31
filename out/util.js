@@ -535,7 +535,7 @@ function ObjectHasKey(obj, _key) {
 exports.ObjectHasKey = ObjectHasKey;
 // 判断字符串是否是数字
 function IsNumber(s) {
-    var reg = /^[0-9]+.?[0-9]*$/;
+    var reg = /^(-?\d+)(\.\d+)?$/;
     if (reg.test(s)) {
         return true;
     }
@@ -940,6 +940,34 @@ function ReadKeyValueWithBase(full_path) {
     return kvdata;
 }
 exports.ReadKeyValueWithBase = ReadKeyValueWithBase;
+// 获取从ReadKeyValue2、ReadKeyValue3、ReadKeyValueWithBase得到的对象里的第index个对象，用于去掉外层，使其与DOTA2读取的KV结构一致
+function GetKeyValueObjectByIndex(Obj, index = 0) {
+    if (typeof (Obj) !== "object") {
+        return;
+    }
+    return Obj[Object.keys(Obj)[index]];
+}
+exports.GetKeyValueObjectByIndex = GetKeyValueObjectByIndex;
+// 对象覆盖
+function OverrideKeyValue(mainObj, Obj) {
+    if (typeof (mainObj) !== "object") {
+        return Obj;
+    }
+    if (typeof (Obj) !== "object") {
+        return mainObj;
+    }
+    for (const k in Obj) {
+        const v = Obj[k];
+        if (typeof (v) === "object") {
+            mainObj[k] = OverrideKeyValue(mainObj[k], v);
+        }
+        else {
+            mainObj[k] = v;
+        }
+    }
+    return mainObj;
+}
+exports.OverrideKeyValue = OverrideKeyValue;
 // 去除注释
 function RemoveComment(data) {
     let new_data = '';
@@ -1282,29 +1310,15 @@ function FormatPath(path) {
 }
 exports.FormatPath = FormatPath;
 // 把js的obj转成字符串
-// obj:要转的数据对象，bSkipFirstLevel: 跳过第一层(主要是kv的第一层key没用)
-function Obj2Str(obj, bSkipFirstLevel = false) {
-    let ret = "";
-    if (!bSkipFirstLevel) {
-        ret = "{";
-    }
+// obj:要转的数据对象 
+function Obj2Str(obj) {
+    let ret = "{";
     for (const key in obj) {
         const element = obj[key];
         if (typeof (element) === "object") {
-            if (bSkipFirstLevel) {
-                ret += Obj2Str(element);
-                break;
-            }
-            else {
-                ret += '"' + key + "\":" + Obj2Str(element) + ",";
-            }
+            ret += '"' + key + "\":" + Obj2Str(element) + ",";
         }
         else {
-            if (key === "AbilitySpecial") {
-            }
-            if (bSkipFirstLevel) {
-                return "{}";
-            }
             if (IsNumber(element)) {
                 ret += '"' + key + "\":" + element + ",";
             }
@@ -1313,13 +1327,24 @@ function Obj2Str(obj, bSkipFirstLevel = false) {
             }
         }
     }
-    if (!bSkipFirstLevel) {
-        if (ret[ret.length - 1] === ",") {
-            ret = ret.slice(0, -1); // 去掉最后一个逗号
-        }
-        ret += "}";
+    if (ret[ret.length - 1] === ",") {
+        ret = ret.slice(0, -1); // 去掉最后一个逗号
     }
+    ret += "}";
     return ret;
 }
 exports.Obj2Str = Obj2Str;
+function StringToAny(str) {
+    if (str === "true") {
+        return true;
+    }
+    else if (str === "false") {
+        return false;
+    }
+    else if (Number(str) !== NaN) {
+        return Number(str);
+    }
+    return str;
+}
+exports.StringToAny = StringToAny;
 //# sourceMappingURL=util.js.map
