@@ -63,6 +63,9 @@ export async function Init(context: vscode.ExtensionContext) {
 	}
 
 	// 关联kv与lua
+	if (await util.GetStat(GameDir + '/scripts/npc/npc_abilities_custom.txt') === false) {
+		return;
+	}
 	let ability_kv = util.ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
 	for (const key in ability_kv.DOTAAbilities) {
 		const value = ability_kv.DOTAAbilities[key];

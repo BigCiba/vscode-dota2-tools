@@ -122,9 +122,12 @@ export class Listener {
 	UnWatchLocalization() {
 		watch.unwatchTree(GameDir + '/localization');
 	}
-	WatchKeyValue() {
+	async WatchKeyValue() {
 		let Config:any = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
 		let sKvPath = (GameDir + Config).replace("\\", "/");
+		if (await util.GetStat(sKvPath) === false) {
+			return;
+		}
 		let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
 		let KVString = fs.readFileSync(sKvPath, 'utf-8');
 		let KVHeaders: { [k: string]: any } = {};
