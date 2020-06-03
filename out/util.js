@@ -1153,7 +1153,7 @@ function AbilityCSV2KV(listen_path) {
                 // 拆分value
                 let value_arr = value.split("\n");
                 AbilitySpecial[key] = {
-                    var_type: value.search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
+                    var_type: value_arr[0].search(/\./g) !== -1 ? 'FIELD_FLOAT' : 'FIELD_INTEGER',
                 };
                 for (let i = 0; i < key_arr.length; i++) {
                     const _key = key_arr[i];
