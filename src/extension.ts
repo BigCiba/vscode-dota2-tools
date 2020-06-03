@@ -448,20 +448,20 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	await Init(context);
 	// 监听
-	let listener = new Listener(context);
-	// 配置变更
-	vscode.workspace.onDidChangeConfiguration((event) => {
-		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
-			listener.WatchAbilityExcel();
-		}
-		if (event.affectsConfiguration('dota2-tools.Listen Localization') === true) {
-			if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
-				listener.WatchLocalization();
-			} else {
-				listener.UnWatchLocalization();
-			}
-		}
-	});
+	// let listener = new Listener(context);
+	// // 配置变更
+	// vscode.workspace.onDidChangeConfiguration((event) => {
+	// 	if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
+	// 		listener.WatchAbilityExcel();
+	// 	}
+	// 	if (event.affectsConfiguration('dota2-tools.Listen Localization') === true) {
+	// 		if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
+	// 			listener.WatchLocalization();
+	// 		} else {
+	// 			listener.UnWatchLocalization();
+	// 		}
+	// 	}
+	// });
 
 	// 添加英雄基本文件（IMBA功能）
 	let AddHero = vscode.commands.registerCommand('extension.AddHero', async () => {
