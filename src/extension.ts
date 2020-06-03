@@ -10,11 +10,12 @@ import { Listener } from './listener';
 import * as watch from 'watch';
 import { log, print } from 'util';
 import { ActiveListEditorProvider } from './activelistEditor';
+import { KVServer } from './kv_server/KVServer';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
-
+	KVServer.Install(context);
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	// passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
@@ -424,7 +425,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', version_data);
 				}
 			} else {
-				// f was changed 
+				// f was changed
 				// console.log('f was changed');
 				if (typeof f === 'string') {
 					let info: any = util.GetFileInfo(root_path, f);
