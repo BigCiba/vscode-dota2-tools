@@ -46,9 +46,9 @@ export class KVServer {
 					const fileName = path.slice(path.lastIndexOf('/') + 1, path.length)
 
 					const str = "GameUI." + fileName.slice(0, fileName.indexOf('.')) + " = " + body
-					console.log(str);
-
 					fs.writeFileSync((js_path + fileName), str)
+
+					vscode.window.showInformationMessage('Download kv ' + fileName + 'succend.');
 				}
 			)
 		}

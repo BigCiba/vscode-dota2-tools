@@ -45,9 +45,6 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 				((error: any, response: request.Response, body: any) => {
 					if (response.statusCode == 200) {
 						const data = JSON.parse(body);
-						console.log('Hello');
-
-						console.log(data);
 						this.list = {}
 						for (const addonname in data) {
 							const v = data[addonname];
@@ -56,12 +53,8 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 								js_path: v._index.file_path
 							}
 						}
-						console.log(this.list);
-
 						resolve(1);
 					}
-					console.log(333);
-
 				}).bind(this)
 			)
 		})
@@ -89,16 +82,11 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 	}
 
 	getTreeItem(node: kvNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
-		console.log(222);
 		const fileName = node.file_path.slice(node.file_path.lastIndexOf('/') + 1, node.file_path.length)
 		let treeItem: vscode.TreeItem = new vscode.TreeItem(fileName, node.type == "addon" ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
 		if (node.type == "addon") {
 			let files: any = this.getFiles(node.file_path)
 			// files = Promise.resolve(files)
-			console.log("files");
-
-			console.log(files);
-
 			treeItem.command = {
 				command: KVDOWNLOADALL_COMMAND,
 				title: 'downloadall',
@@ -118,7 +106,6 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 	}
 
 	async getChildren(node?: kvNode | undefined): Promise<kvNode[]> {
-		console.log(333);
 		if (node) {
 			if (node.type == "addon") {
 				const files = this.getFiles(node.file_path)
@@ -126,10 +113,7 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 			}
 			return Promise.resolve([node]);
 		} else {
-			console.log('8888');
 			await this.request();
-			console.log('9999');
-
 			const addons = this.getAddons()
 			return Promise.resolve(addons);
 		}

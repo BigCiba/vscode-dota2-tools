@@ -38,8 +38,6 @@ class KvProvider {
                 }, ((error, response, body) => {
                     if (response.statusCode == 200) {
                         const data = JSON.parse(body);
-                        console.log('Hello');
-                        console.log(data);
                         this.list = {};
                         for (const addonname in data) {
                             const v = data[addonname];
@@ -48,10 +46,8 @@ class KvProvider {
                                 js_path: v._index.file_path
                             };
                         }
-                        console.log(this.list);
                         resolve(1);
                     }
-                    console.log(333);
                 }).bind(this));
             });
         });
@@ -76,14 +72,11 @@ class KvProvider {
         return res;
     }
     getTreeItem(node) {
-        console.log(222);
         const fileName = node.file_path.slice(node.file_path.lastIndexOf('/') + 1, node.file_path.length);
         let treeItem = new vscode.TreeItem(fileName, node.type == "addon" ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
         if (node.type == "addon") {
             let files = this.getFiles(node.file_path);
             // files = Promise.resolve(files)
-            console.log("files");
-            console.log(files);
             treeItem.command = {
                 command: KVServer_1.KVDOWNLOADALL_COMMAND,
                 title: 'downloadall',
@@ -103,7 +96,6 @@ class KvProvider {
     }
     getChildren(node) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(333);
             if (node) {
                 if (node.type == "addon") {
                     const files = this.getFiles(node.file_path);
@@ -112,9 +104,7 @@ class KvProvider {
                 return Promise.resolve([node]);
             }
             else {
-                console.log('8888');
                 yield this.request();
-                console.log('9999');
                 const addons = this.getAddons();
                 return Promise.resolve(addons);
             }
