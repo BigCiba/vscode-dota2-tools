@@ -2,10 +2,10 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as request from 'request';
-import { KVServer, KVDOWNLOADALL_COMMAND, KVDOWNLOAD_COMMAND } from './KVServer';
+import { KVServer, KVDOWNLOADALL_COMMAND, KVDOWNLOAD_COMMAND, KV_OPEN_FILE_COMMAND } from './KVServer';
 
 interface kvlist {
-	[addonname: string]: { files: string[], js_path: string }
+	[addonname: string]: { files: string[], file_index: { [fileName: string]: string } }
 }
 
 export interface kvNode {
@@ -43,6 +43,10 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 					})
 				},
 				((error: any, response: request.Response, body: any) => {
+					const data = JSON.parse(body);
+					console.log(11111);
+					console.log(data);
+
 					if (response.statusCode == 200) {
 						const data = JSON.parse(body);
 						this.list = {}
@@ -50,7 +54,7 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 							const v = data[addonname];
 							this.list[addonname] = {
 								files: v.files,
-								js_path: v._index.file_path
+								file_index: v._index
 							}
 						}
 						resolve(1);
@@ -63,11 +67,12 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 	getFiles(addonname: string): kvNode[] {
 		const res: kvNode[] = []
 		if (this.list && this.list[addonname]) {
-			const js_path = this.list[addonname].js_path
+			const file_index = this.list[addonname].file_index
 			const files = this.list[addonname].files
 			for (const k in files) {
 				const file_path = files[k];
-				res.push({ type: "file", file_path: file_path, js_path: js_path })
+				const file_name = file_path.slice(file_path.lastIndexOf('/') + 1, file_path.length)
+				res.push({ type: "file", file_path: file_path, js_path: file_index[file_name] })
 			}
 		}
 		return res
@@ -87,15 +92,15 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 		if (node.type == "addon") {
 			let files: any = this.getFiles(node.file_path)
 			// files = Promise.resolve(files)
-			treeItem.command = {
-				command: KVDOWNLOADALL_COMMAND,
-				title: 'downloadall',
-				arguments: [node]
-			};
+			// treeItem.command = {
+			// command: KVDOWNLOADALL_COMMAND,
+			// title: 'downloadall',
+			// arguments: [node]
+			// };
 		} else if (node.type == "file") {
 			treeItem.command = {
-				command: KVDOWNLOAD_COMMAND,
-				title: 'download',
+				command: KV_OPEN_FILE_COMMAND,
+				title: 'open',
 				arguments: [node]
 			};
 		}

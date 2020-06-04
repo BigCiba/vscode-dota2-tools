@@ -36,6 +36,9 @@ class KvProvider {
                         steamid: KVServer_1.KVServer.steamid,
                     })
                 }, ((error, response, body) => {
+                    const data = JSON.parse(body);
+                    console.log(11111);
+                    console.log(data);
                     if (response.statusCode == 200) {
                         const data = JSON.parse(body);
                         this.list = {};
@@ -43,7 +46,7 @@ class KvProvider {
                             const v = data[addonname];
                             this.list[addonname] = {
                                 files: v.files,
-                                js_path: v._index.file_path
+                                file_index: v._index
                             };
                         }
                         resolve(1);
@@ -55,11 +58,12 @@ class KvProvider {
     getFiles(addonname) {
         const res = [];
         if (this.list && this.list[addonname]) {
-            const js_path = this.list[addonname].js_path;
+            const file_index = this.list[addonname].file_index;
             const files = this.list[addonname].files;
             for (const k in files) {
                 const file_path = files[k];
-                res.push({ type: "file", file_path: file_path, js_path: js_path });
+                const file_name = file_path.slice(file_path.lastIndexOf('/') + 1, file_path.length);
+                res.push({ type: "file", file_path: file_path, js_path: file_index[file_name] });
             }
         }
         return res;
@@ -77,16 +81,16 @@ class KvProvider {
         if (node.type == "addon") {
             let files = this.getFiles(node.file_path);
             // files = Promise.resolve(files)
-            treeItem.command = {
-                command: KVServer_1.KVDOWNLOADALL_COMMAND,
-                title: 'downloadall',
-                arguments: [node]
-            };
+            // treeItem.command = {
+            // command: KVDOWNLOADALL_COMMAND,
+            // title: 'downloadall',
+            // arguments: [node]
+            // };
         }
         else if (node.type == "file") {
             treeItem.command = {
-                command: KVServer_1.KVDOWNLOAD_COMMAND,
-                title: 'download',
+                command: KVServer_1.KV_OPEN_FILE_COMMAND,
+                title: 'open',
                 arguments: [node]
             };
         }

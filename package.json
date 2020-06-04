@@ -121,6 +121,10 @@
 					"light": "res/download.svg",
 					"dark": "res/download.svg"
 				}
+			},
+			{
+				"command": "tss.kvTools.openFile",
+				"title": "open file"
 			}
 		],
 		"menus": {

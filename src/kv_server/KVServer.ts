@@ -7,6 +7,7 @@ import { KvProvider, kvNode } from './KVProvider';
 export const KVREFRESH_COMMAND = "tss.kvTools.refresh"
 export const KVDOWNLOAD_COMMAND = "tss.kvTools.download"
 export const KVDOWNLOADALL_COMMAND = "tss.kvTools.downloadall"
+export const KV_OPEN_FILE_COMMAND = "tss.kvTools.openFile"
 
 export class KVServer {
 	static ConfigUrl = "dota2-tools.KV Server"
@@ -34,21 +35,31 @@ export class KVServer {
 
 		const download = (file_path: string, js_path: string) => {
 			const url = KVServer.url
+			let msg: string
 			let res = request.post(
 				url + '?action=d1&mod=kv_ctx',
 				{
 					body: JSON.stringify({
-						file_path: file_path,
+						// file_path: file_path,
+						file_path: "select_item_spellcard.ts",
 					})
 				},
 				(error: any, response: Response, body: any) => {
 					const path = file_path
 					const fileName = path.slice(path.lastIndexOf('/') + 1, path.length)
 
-					const str = "GameUI." + fileName.slice(0, fileName.indexOf('.')) + " = " + body
-					fs.writeFileSync((js_path + fileName), str)
+					if (response.statusCode == 200) {
+						let str = body
+						if (fileName.indexOf('.js')) {
+							str = "GameUI." + fileName.slice(0, fileName.indexOf('.')) + " = " + body
+						}
+						fs.writeFileSync((js_path + fileName), str)
+						msg = 'Download kv ' + fileName + ' succend.'
+					} else {
+						msg = 'Download kv ' + fileName + ' failed.'
+					}
 
-					vscode.window.showInformationMessage('Download kv ' + fileName + 'succend.');
+					vscode.window.showInformationMessage(msg);
 				}
 			)
 		}
@@ -61,6 +72,11 @@ export class KVServer {
 				const node = nodes[k];
 				download(node.file_path, node.js_path)
 			}
+		})
+		vscode.commands.registerCommand(KV_OPEN_FILE_COMMAND, (node: kvNode) => {
+			const path = node.file_path
+			const fileName = path.slice(path.lastIndexOf('/') + 1, path.length)
+			vscode.workspace.openTextDocument(node.js_path + fileName);
 		})
 	}
 }
