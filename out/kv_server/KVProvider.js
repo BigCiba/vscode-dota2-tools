@@ -89,13 +89,16 @@ class KvProvider {
         }
         else if (node.type == "file") {
             treeItem.command = {
-                command: KVServer_1.KV_OPEN_FILE_COMMAND,
-                title: 'open',
+                command: KVServer_1.KVDOWNLOAD_COMMAND,
+                title: 'download',
                 arguments: [node]
             };
         }
         // treeItem.iconPath = this.getIcon(valueNode);
         treeItem.contextValue = node.type;
+        treeItem.file_path = node.file_path;
+        treeItem.js_path = node.js_path;
+        treeItem.type = node.type;
         return treeItem;
     }
     getChildren(node) {

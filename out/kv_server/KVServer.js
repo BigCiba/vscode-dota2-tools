@@ -35,9 +35,9 @@ class KVServer {
                 const fileName = path.slice(path.lastIndexOf('/') + 1, path.length);
                 if (response.statusCode == 200) {
                     let str = body;
-                    if (fileName.indexOf('.js')) {
-                        str = "GameUI." + fileName.slice(0, fileName.indexOf('.')) + " = " + body;
-                    }
+                    // if (fileName.indexOf('.js') > -1) {
+                    // 	str = "GameUI." + fileName.slice(0, fileName.indexOf('.')) + " = " + body
+                    // }
                     fs.writeFileSync((js_path + fileName), str);
                     msg = 'Download kv ' + fileName + ' succend.';
                 }

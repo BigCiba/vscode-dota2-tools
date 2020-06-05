@@ -88,7 +88,7 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 
 	getTreeItem(node: kvNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
 		const fileName = node.file_path.slice(node.file_path.lastIndexOf('/') + 1, node.file_path.length)
-		let treeItem: vscode.TreeItem = new vscode.TreeItem(fileName, node.type == "addon" ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
+		let treeItem: any = new vscode.TreeItem(fileName, node.type == "addon" ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
 		if (node.type == "addon") {
 			let files: any = this.getFiles(node.file_path)
 			// files = Promise.resolve(files)
@@ -99,14 +99,17 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 			// };
 		} else if (node.type == "file") {
 			treeItem.command = {
-				command: KV_OPEN_FILE_COMMAND,
-				title: 'open',
+				command: KVDOWNLOAD_COMMAND,
+				title: 'download',
 				arguments: [node]
 			};
 		}
 
 		// treeItem.iconPath = this.getIcon(valueNode);
 		treeItem.contextValue = node.type;
+		treeItem.file_path = node.file_path
+		treeItem.js_path = node.js_path
+		treeItem.type = node.type
 		return treeItem;
 	}
 
