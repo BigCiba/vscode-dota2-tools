@@ -24,13 +24,11 @@ class KVServer {
         vscode.window.registerTreeDataProvider('kvdownloadExplorer', kvProvider);
         vscode.commands.registerCommand(exports.KVREFRESH_COMMAND, () => kvProvider.refresh());
         const download = (file_path, js_path) => {
-            console.log(file_path);
             const url = KVServer.url;
             let msg;
             let res = request.post(url + '?action=d1&mod=kv_ctx', {
                 body: JSON.stringify({
-                    // file_path: file_path,
-                    file_path: "select_item_spellcard.ts",
+                    file_path: file_path,
                 })
             }, (error, response, body) => {
                 const path = file_path;
@@ -46,10 +44,6 @@ class KVServer {
                 else {
                     msg = 'Download kv ' + fileName + ' failed.';
                 }
-                console.log(error);
-                console.log(response);
-                console.log(body);
-                console.log('-------');
                 vscode.window.showInformationMessage(msg);
             });
         };

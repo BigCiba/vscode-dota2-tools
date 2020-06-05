@@ -40,8 +40,7 @@ export class KVServer {
 				url + '?action=d1&mod=kv_ctx',
 				{
 					body: JSON.stringify({
-						// file_path: file_path,
-						file_path: "select_item_spellcard.ts",
+						file_path: file_path,
 					})
 				},
 				(error: any, response: Response, body: any) => {
