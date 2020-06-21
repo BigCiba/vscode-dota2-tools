@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.1.28",
+	"version": "0.1.34",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -19,6 +19,23 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "kvdownload",
+					"title": "kvdownload",
+					"icon": "res/kv_dark.png"
+				}
+			]
+		},
+		"views": {
+			"kvdownload": [
+				{
+					"id": "kvdownloadExplorer",
+					"name": "kvdownloadExplorer"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "dota2tools.Localization",
@@ -83,6 +100,31 @@
 			{
 				"command": "dota2tools.unit_export",
 				"title": "导出单位csv"
+			},
+			{
+				"command": "tss.kvTools.refresh",
+				"title": "refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "tss.kvTools.download",
+				"title": "download",
+				"icon": {
+					"light": "res/download.svg",
+					"dark": "res/download.svg"
+				}
+			},
+			{
+				"command": "tss.kvTools.downloadall",
+				"title": "downloadall",
+				"icon": {
+					"light": "res/download.svg",
+					"dark": "res/download.svg"
+				}
+			},
+			{
+				"command": "tss.kvTools.openFile",
+				"title": "open file"
 			}
 		],
 		"menus": {
@@ -128,6 +170,25 @@
 					"command": "dota2tools.unit_export",
 					"group": "navigation"
 				}
+			],
+			"view/title": [
+				{
+					"command": "tss.kvTools.refresh",
+					"when": "view == kvdownloadExplorer",
+					"group": "navigation@10"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "tss.kvTools.download",
+					"when": "view == kvdownloadExplorer && viewItem == file",
+					"group": "inline"
+				},
+				{
+					"command": "tss.kvTools.downloadall",
+					"when": "view == kvdownloadExplorer && viewItem == addon",
+					"group": "inline"
+				}
 			]
 		},
 		"configuration": {
@@ -164,6 +225,11 @@
 					"default": true,
 					"description": "是否监听文本变更"
 				},
+				"dota2-tools.Listen KV to Js": {
+					"type": "boolean",
+					"default": true,
+					"description": "是否自动将KV生成JS文件"
+				},
 				"dota2-tools.KV to Js Config": {
 					"type": "string",
 					"default": "/scripts/npc/kv_js_config.txt",
@@ -184,6 +250,16 @@
 						"game": "/resource/flash3/images/items"
 					},
 					"description": "自定义物品图标路径"
+				},
+				"dota2-tools.KV Server": {
+					"type": "string",
+					"default": "127.0.0.1",
+					"description": "自定义KV Server 地址"
+				},
+				"dota2-tools.KV Server Steamid": {
+					"type": "string",
+					"default": "123456789",
+					"description": "自定义KV Server Steamid"
 				}
 			}
 		},
@@ -226,8 +302,10 @@
 	},
 	"dependencies": {
 		"@types/node-xlsx": "^0.15.0",
+		"@types/request": "^2.48.5",
 		"@types/watch": "^1.0.1",
 		"node-xlsx": "^0.15.0",
+		"request": "^2.88.2",
 		"watch": "^1.0.2"
 	}
 }

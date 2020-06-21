@@ -19,10 +19,12 @@ const util = require("./util");
 const init_1 = require("./init");
 const listener_1 = require("./listener");
 const watch = require("watch");
+const KVServer_1 = require("./kv_server/KVServer");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
     return __awaiter(this, void 0, void 0, function* () {
+        KVServer_1.KVServer.Install(context);
         // Use the console to output diagnostic information (console.log) and errors (console.error)
         // This line of code will only be executed once when your extension is activated
         // passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
@@ -455,7 +457,7 @@ function activate(context) {
                     }
                 }
                 else {
-                    // f was changed 
+                    // f was changed
                     // console.log('f was changed');
                     if (typeof f === 'string') {
                         let info = util.GetFileInfo(root_path, f);
@@ -477,7 +479,7 @@ function activate(context) {
         // WatchVersion();
         yield init_1.Init(context);
         // 监听
-        let listener = new listener_1.Listener();
+        let listener = new listener_1.Listener(context);
         // 配置变更
         vscode.workspace.onDidChangeConfiguration((event) => {
             if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
@@ -1852,7 +1854,8 @@ function activate(context) {
             if (root_path === undefined) {
                 return;
             }
-            let sKvPath = (init_1.GameDir + '/scripts/npc/kv_js_config.txt').replace("\\", "/");
+            let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+            let sKvPath = (init_1.GameDir + Config).replace("\\", "/");
             let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
             let KVString = fs.readFileSync(sKvPath, 'utf-8');
             let KVHeaders = {};

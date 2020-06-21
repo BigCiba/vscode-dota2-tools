@@ -4,15 +4,21 @@ import xlsx from 'node-xlsx';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
-import { Init,KV2LUA, VSND, GameDir } from './init';
+import { Init,KV2LUA, VSND, GameDir, ContentDir } from './init';
 import { print, log } from 'util';
+import * as os from 'os';
 
 export class Listener {
-	constructor() {
+	context: vscode.ExtensionContext;
+	constructor(context: vscode.ExtensionContext) {
+		this.context = context;
 		this.WatchAbilityExcel();	//监听技能excel
 		this.WatchUnitExcel();		//监听单位excel
 		if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
 			this.WatchLocalization();//监听文本合并
+		}
+		if (vscode.workspace.getConfiguration().get('dota2-tools.Listen KV to Js') === true) {
+			this.WatchKeyValue();//监听kv
 		}
 	}
 	async WatchAbilityExcel() {
@@ -115,5 +121,61 @@ export class Listener {
 	}
 	UnWatchLocalization() {
 		watch.unwatchTree(GameDir + '/localization');
+	}
+	async WatchKeyValue() {
+		let Config:any = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+		let sKvPath = (GameDir + Config).replace("\\", "/");
+		if (await util.GetStat(sKvPath) === false) {
+			return;
+		}
+		let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
+		let KVString = fs.readFileSync(sKvPath, 'utf-8');
+		let KVHeaders: { [k: string]: any } = {};
+		const rows: string[] = KVString.split(os.EOL);
+		for (let i = 0; i < rows.length; i++) {
+			const line_text: string = rows[i];
+			let aHeaders = line_text.match(/@.+?\b\s.+?\b/g);
+			if (aHeaders) {
+				for (let sHeader of aHeaders) {
+					sHeader = sHeader.replace(/@/g, "");
+					let a = sHeader.split(" ");
+					if (a) {
+						KVHeaders[a[0]] = util.StringToAny(a[1]);
+					}
+				}
+			}
+		}
+		for (const sKVName in KVFiles) {
+			let sPath = KVFiles[sKVName];
+			let sTotalPath = GameDir + '/scripts/' + sPath;
+			fs.watchFile(sTotalPath, (curr, prev) => {
+				if (curr.nlink === 0) {
+					console.log('removed');
+				} else {
+					let kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/")));
+					// 特殊处理
+					if (KVHeaders.OverrideAbilities === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
+						let npc_abilities_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/")));
+						let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
+						kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
+					} else if (KVHeaders.OverrideUnits === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
+						let npc_units_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/")));
+						kv = util.OverrideKeyValue(npc_units_kv, kv);
+					} else if (KVHeaders.OverrideHeroes === true && sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
+						let npc_heroes_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/")));
+						kv = util.OverrideKeyValue(npc_heroes_kv, kv);
+					} else if (KVHeaders.OverrideItems === true && sPath.search("npc_items_custom") !== -1) { // 物品合并
+						let items_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((this.context.extensionPath + '/resource/npc/items.txt').replace("\\", "/")));
+						let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
+						kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
+					}
+					let js = util.Obj2Str(kv);
+					let fileData = "GameUI." + sKVName + " = " + js + ";";
+					let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
+					fs.writeFileSync(jsPath, fileData);
+				}
+			});
+			
+		}
 	}
 }

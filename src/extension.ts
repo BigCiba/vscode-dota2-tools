@@ -10,11 +10,12 @@ import { Listener } from './listener';
 import * as watch from 'watch';
 import { log, print } from 'util';
 import { ActiveListEditorProvider } from './activelistEditor';
+import { KVServer } from './kv_server/KVServer';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
-
+	KVServer.Install(context);
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	// passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
@@ -424,7 +425,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', version_data);
 				}
 			} else {
-				// f was changed 
+				// f was changed
 				// console.log('f was changed');
 				if (typeof f === 'string') {
 					let info: any = util.GetFileInfo(root_path, f);
@@ -447,7 +448,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	await Init(context);
 	// 监听
-	let listener = new Listener();
+	let listener = new Listener(context);
 	// 配置变更
 	vscode.workspace.onDidChangeConfiguration((event) => {
 		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
@@ -1838,7 +1839,9 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		let sKvPath = (GameDir + '/scripts/npc/kv_js_config.txt').replace("\\", "/");
+		let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+
+		let sKvPath = (GameDir + Config).replace("\\", "/");
 		let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
 		let KVString = fs.readFileSync(sKvPath, 'utf-8');
 		let KVHeaders: { [k: string]: any } = {};
