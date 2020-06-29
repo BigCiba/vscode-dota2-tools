@@ -914,30 +914,37 @@ function ReadKeyValue3(kvdata) {
 exports.ReadKeyValue3 = ReadKeyValue3;
 // 读取kv2格式为object（#base）
 function ReadKeyValueWithBase(full_path) {
-    // 获取名字
-    let file_name = full_path.split('/').pop() || '';
-    let path = full_path.split(file_name)[0];
-    let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
-    let kvtable = kvdata[Object.keys(kvdata)[0]];
-    let kv_string = fs.readFileSync(full_path, 'utf-8');
-    kv_string = RemoveComment(kv_string);
-    const rows = kv_string.split(os.EOL);
-    for (let i = 0; i < rows.length; i++) {
-        const line_text = rows[i];
-        if (line_text.search(/#base ".*"/) !== -1) {
-            let base_path = line_text.split('"')[1];
-            let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
-            let table = kv[Object.keys(kv)[0]];
-            for (const key in table) {
-                const value = table[key];
-                kvtable[key] = value;
+    return __awaiter(this, void 0, void 0, function* () {
+        // 获取名字
+        let file_name = full_path.split('/').pop() || '';
+        let path = full_path.split(file_name)[0];
+        let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
+        let kvtable = kvdata[Object.keys(kvdata)[0]];
+        let kv_string = fs.readFileSync(full_path, 'utf-8');
+        kv_string = RemoveComment(kv_string);
+        const rows = kv_string.split(os.EOL);
+        for (let i = 0; i < rows.length; i++) {
+            const line_text = rows[i];
+            if (line_text.search(/#base ".*"/) !== -1) {
+                let base_path = line_text.split('"')[1];
+                // 找不到文件则跳过
+                if ((yield GetStat(path + base_path)) === false) {
+                    ShowError("文件缺失：" + path + base_path);
+                    continue;
+                }
+                let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
+                let table = kv[Object.keys(kv)[0]];
+                for (const key in table) {
+                    const value = table[key];
+                    kvtable[key] = value;
+                }
+            }
+            else {
+                continue;
             }
         }
-        else {
-            continue;
-        }
-    }
-    return kvdata;
+        return kvdata;
+    });
 }
 exports.ReadKeyValueWithBase = ReadKeyValueWithBase;
 // 获取从ReadKeyValue2、ReadKeyValue3、ReadKeyValueWithBase得到的对象里的第index个对象，用于去掉外层，使其与DOTA2读取的KV结构一致

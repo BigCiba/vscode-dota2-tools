@@ -860,7 +860,7 @@ export function ReadKeyValue3(kvdata: string): any {
 	}
 }
 // 读取kv2格式为object（#base）
-export function ReadKeyValueWithBase(full_path: string) {
+export async function ReadKeyValueWithBase(full_path: string) {
 	// 获取名字
 	let file_name: string = full_path.split('/').pop() || '';
 	let path = full_path.split(file_name)[0];
@@ -874,6 +874,11 @@ export function ReadKeyValueWithBase(full_path: string) {
 		const line_text: string = rows[i];
 		if (line_text.search(/#base ".*"/) !== -1) {
 			let base_path = line_text.split('"')[1];
+			// 找不到文件则跳过
+			if (await GetStat(path + base_path) === false) {
+				ShowError("文件缺失：" + path + base_path);
+				continue;
+			}
 			let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
 			let table = kv[Object.keys(kv)[0]];
 			for (const key in table) {

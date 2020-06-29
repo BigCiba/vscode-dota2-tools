@@ -66,7 +66,7 @@ export async function Init(context: vscode.ExtensionContext) {
 	if (await util.GetStat(GameDir + '/scripts/npc/npc_abilities_custom.txt') === false) {
 		return;
 	}
-	let ability_kv = util.ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
+	let ability_kv: any = await util.ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
 	for (const key in ability_kv.DOTAAbilities) {
 		const value = ability_kv.DOTAAbilities[key];
 		if (isObject(value) === true) {
