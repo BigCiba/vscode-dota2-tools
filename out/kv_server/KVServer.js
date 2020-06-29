@@ -48,6 +48,7 @@ class KVServer {
             });
         };
         vscode.commands.registerCommand(exports.KVDOWNLOAD_COMMAND, (node) => {
+            console.log(node);
             download(node.file_path, node.js_path);
         });
         vscode.commands.registerCommand(exports.KVDOWNLOADALL_COMMAND, (node) => {

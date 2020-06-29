@@ -1136,6 +1136,7 @@ function AbilityCSV2KV(listen_path) {
         }
         let special_count = 1;
         let AbilitySpecial = {};
+        let precache = {};
         let values_obj = {};
         for (let j = 1; j < row.length; j++) {
             const col = row[j];
@@ -1164,11 +1165,20 @@ function AbilityCSV2KV(listen_path) {
             else if (key === '') {
                 continue;
             }
+            else if (key === 'precache') {
+                let value = csv_arr[i + 1][j];
+                precache[col] = value;
+            }
             else {
                 values_obj[key] = col;
             }
         }
-        values_obj.AbilitySpecial = AbilitySpecial;
+        if (Object.keys(AbilitySpecial).length > 0) {
+            values_obj.AbilitySpecial = AbilitySpecial;
+        }
+        if (Object.keys(precache).length > 0) {
+            values_obj.precache = precache;
+        }
         i++;
         csv_data[row[0]] = values_obj;
     }

@@ -43,9 +43,6 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 					})
 				},
 				((error: any, response: request.Response, body: any) => {
-					const data = JSON.parse(body);
-					console.log(11111);
-					console.log(data);
 
 					if (response.statusCode == 200) {
 						const data = JSON.parse(body);
