@@ -16599,7 +16599,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hop_distance"					"500"
+				"hop_distance"				"500"
 				"RequiresScepter"			"1"
 			}
 			"02"
@@ -31870,7 +31870,7 @@
 	}
 
 	//=================================================================================================================
-	// Abaddon: Death Coil
+	// Abaddon: Death Coil (mist coil)
 	//=================================================================================================================
 	"abaddon_death_coil"
 	{
@@ -33507,6 +33507,9 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_EarthSpirit.Magnetize.Cast"
+
+		"AbilityDraftPreAbility"		"earth_spirit_stone_caller"
+		"AbilityDraftUltScepterAbility" "earth_spirit_petrify"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -64400,6 +64403,7 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"value"				"120"
+				"ad_linked_ability"			"earth_spirit_rolling_boulder"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
 	}
@@ -64446,6 +64450,7 @@
 			{
 				"var_type"					"FIELD_FLOAT"
 				"value"				"0.6"
+				"ad_linked_ability"			"earth_spirit_rolling_boulder"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
 	}
@@ -64469,11 +64474,13 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"value"				"325"
+				"ad_linked_ability"			"earth_spirit_rolling_boulder"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"value2"				"650"
+				"ad_linked_ability"			"earth_spirit_rolling_boulder"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
 	}
@@ -69614,14 +69621,14 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"8020"	// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_ITEM | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
-		"AbilityCastAnimation"			"ACT_INVALID"	
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"	
 		"MaxLevel"						"1"
 		"AssociatedConsumable"			"17549"
 		"AbilityTextureName"			"consumables/seasonal_ti10_disco_ball"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"400"
+		"AbilityCastRange"				"600"
 		"AbilityCastPoint"				"0.1"
 
 		// Time		
@@ -69652,8 +69659,8 @@
 			}
 			"03"
 			{
-				"var_type"				"FIELD_INTEGER"
-				"idle_lifetime"			"5"
+				"var_type"				"FIELD_FLOAT"
+				"idle_lifetime"			"0.25"
 			}
 		}
 	}

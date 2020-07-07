@@ -36,9 +36,6 @@ class KvProvider {
                         steamid: KVServer_1.KVServer.steamid,
                     })
                 }, ((error, response, body) => {
-                    const data = JSON.parse(body);
-                    console.log(11111);
-                    console.log(data);
                     if (response.statusCode == 200) {
                         const data = JSON.parse(body);
                         this.list = {};

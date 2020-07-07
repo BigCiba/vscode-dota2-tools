@@ -52,6 +52,7 @@ export class KVServer {
 						// if (fileName.indexOf('.js') > -1) {
 						// 	str = "GameUI." + fileName.slice(0, fileName.indexOf('.')) + " = " + body
 						// }
+						
 						fs.writeFileSync((js_path + fileName), str)
 						msg = 'Download kv ' + fileName + ' succend.'
 					} else {
@@ -63,6 +64,8 @@ export class KVServer {
 			)
 		}
 		vscode.commands.registerCommand(KVDOWNLOAD_COMMAND, (node: kvNode) => {
+			console.log(node);
+			
 			download(node.file_path, node.js_path)
 		})
 		vscode.commands.registerCommand(KVDOWNLOADALL_COMMAND, (node: kvNode) => {

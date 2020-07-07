@@ -860,7 +860,7 @@ export function ReadKeyValue3(kvdata: string): any {
 	}
 }
 // 读取kv2格式为object（#base）
-export function ReadKeyValueWithBase(full_path: string) {
+export async function ReadKeyValueWithBase(full_path: string) {
 	// 获取名字
 	let file_name: string = full_path.split('/').pop() || '';
 	let path = full_path.split(file_name)[0];
@@ -874,6 +874,11 @@ export function ReadKeyValueWithBase(full_path: string) {
 		const line_text: string = rows[i];
 		if (line_text.search(/#base ".*"/) !== -1) {
 			let base_path = line_text.split('"')[1];
+			// 找不到文件则跳过
+			if (await GetStat(path + base_path) === false) {
+				ShowError("文件缺失：" + path + base_path);
+				continue;
+			}
 			let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
 			let table = kv[Object.keys(kv)[0]];
 			for (const key in table) {
@@ -1082,6 +1087,7 @@ export function AbilityCSV2KV(listen_path: string): any {
 
 		let special_count: number = 1;
 		let AbilitySpecial: any = {};
+		let precache: any = {};
 		let values_obj: any = {};
 		for (let j = 1; j < row.length; j++) {
 			const col = row[j];
@@ -1109,11 +1115,19 @@ export function AbilityCSV2KV(listen_path: string): any {
 				special_count++;
 			} else if (key === '') {
 				continue;
+			} else if (key === 'precache') {
+				let value = csv_arr[i + 1][j];
+				precache[col] = value;
 			} else {
 				values_obj[key] = col;
 			}
 		}
-		values_obj.AbilitySpecial = AbilitySpecial;
+		if (Object.keys(AbilitySpecial).length > 0) {
+			values_obj.AbilitySpecial = AbilitySpecial;
+		}
+		if (Object.keys(precache).length > 0) {
+			values_obj.precache = precache;
+		}
 		i++;
 		csv_data[row[0]] = values_obj;
 	}
