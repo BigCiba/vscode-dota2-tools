@@ -1736,19 +1736,27 @@ export async function activate(context: vscode.ExtensionContext) {
 		let custom_items: any = [];
 		for (const key in path_list.custom_spellicons) {
 			const icon_path: string = (key === 'content' ? ContentDir : GameDir) + path_list.custom_spellicons[key];
-			util.DirExists(icon_path);
-			custom_spellicons.push({
-				path: util.GetVscodeResourceUri(icon_path),
-				data: await ReadIconFolder(icon_path, icon_path)
-			});
+			if (await util.GetStat(icon_path) !== false) {
+				custom_spellicons.push({
+					path: util.GetVscodeResourceUri(icon_path),
+					data: await ReadIconFolder(icon_path, icon_path)
+				});
+			}
+			// util.DirExists(icon_path);
+			// custom_spellicons.push({
+			// 	path: util.GetVscodeResourceUri(icon_path),
+			// 	data: await ReadIconFolder(icon_path, icon_path)
+			// });
 		}
 		for (const key in path_list.custom_items) {
 			const icon_path: string = (key === 'content' ? ContentDir : GameDir) + path_list.custom_items[key];
-			util.DirExists(icon_path);
-			custom_items.push({
-				path: util.GetVscodeResourceUri(icon_path),
-				data: await ReadIconFolder(icon_path, icon_path)
-			});
+			if (await util.GetStat(icon_path) !== false) {
+				// util.DirExists(icon_path);
+				custom_items.push({
+					path: util.GetVscodeResourceUri(icon_path),
+					data: await ReadIconFolder(icon_path, icon_path)
+				});
+			}
 		}
 		let icons_data: IconsData = {
 			spellicons: {
