@@ -3109,7 +3109,7 @@ function GlobalSys:CommandLineFloat( string_1, float_2 ) end
 -- @param int_2 int
 function GlobalSys:CommandLineInt( string_1, int_2 ) end
 
----[[ GlobalSys:CommandLineStr  CommandLineStr(name) : returns the command line param as a string. ]]
+--[[ GlobalSys:CommandLineStr  CommandLineStr(name) : returns the command line param as a string. ]]
 -- @return table
 -- @param string_1 string
 -- @param string_2 string
