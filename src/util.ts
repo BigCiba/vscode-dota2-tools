@@ -1221,7 +1221,7 @@ export function getNonce() {
 	return text;
 }
 export function GetVscodeResourceUri(path: string) {
-	return vscode.Uri.file(path).with({ scheme: 'vscode-resource' }).toString();
+	return vscode.Uri.file(path).with({ scheme: 'vscode-webview-resource' }).toString();
 }
 export function GetLuaScriptSnippet(filename: string, path: string): string {
 	return `LinkLuaModifier( "modifier_${filename}", "${path}.lua", LUA_MODIFIER_MOTION_NONE )

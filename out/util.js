@@ -1285,7 +1285,7 @@ function getNonce() {
 }
 exports.getNonce = getNonce;
 function GetVscodeResourceUri(path) {
-    return vscode.Uri.file(path).with({ scheme: 'vscode-resource' }).toString();
+    return vscode.Uri.file(path).with({ scheme: 'vscode-webview-resource' }).toString();
 }
 exports.GetVscodeResourceUri = GetVscodeResourceUri;
 function GetLuaScriptSnippet(filename, path) {
