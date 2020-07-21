@@ -1798,7 +1798,8 @@ function activate(context) {
                             continue;
                         }
                         if (Number(is_directory) === vscode.FileType.File) {
-                            heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = name;
+                            let wb = panel.webview.asWebviewUri(vscode.Uri.file(heroes_path + '/' + name));
+                            heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority: wb.authority }).toString();
                         }
                     }
                     return heroes_data;
@@ -1824,7 +1825,8 @@ function activate(context) {
                                     // icons_data[name.replace('_png.png','')] = name;
                                     let texture_name = (path + '/' + name).split(root_path)[1];
                                     texture_name = texture_name.replace('/', '');
-                                    icons_data[texture_name.replace('_png.png', '').replace('.png', '')] = texture_name;
+                                    let wb = panel.webview.asWebviewUri(vscode.Uri.file(path + '/' + name));
+                                    icons_data[texture_name.replace('_png.png', '').replace('.png', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority: wb.authority }).toString();
                                 }
                             }
                             return icons_data;
