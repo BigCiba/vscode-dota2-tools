@@ -1867,49 +1867,35 @@ function activate(context) {
             }
             let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
             let sKvPath = (init_1.GameDir + Config).replace("\\", "/");
-            let KVFiles = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
-            let KVString = fs.readFileSync(sKvPath, 'utf-8');
-            let KVHeaders = {};
-            const rows = KVString.split(os.EOL);
-            for (let i = 0; i < rows.length; i++) {
-                const line_text = rows[i];
-                let aHeaders = line_text.match(/@([\s|\S]+?)\b\s([\s|\S]*)/g);
-                if (aHeaders) {
-                    for (let sHeader of aHeaders) {
-                        sHeader = sHeader.replace(/@/g, "");
-                        let a = sHeader.split(" ");
-                        if (a) {
-                            KVHeaders[a[0]] = util.StringToAny(a[1]);
-                        }
-                    }
-                }
-            }
+            let KVJSConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
+            let Configs = KVJSConfig.configs;
+            let KVFiles = KVJSConfig.kvfiles;
             for (const sKVName in KVFiles) {
                 let sPath = KVFiles[sKVName];
                 let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
                 let kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/")));
                 // 特殊处理
-                if (KVHeaders.OverrideAbilities === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
+                if (util.StringToAny(Configs.OverrideAbilities) === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
                     let npc_abilities_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/")));
                     let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
                     kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
                 }
-                else if (KVHeaders.OverrideUnits === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
+                else if (util.StringToAny(Configs.OverrideUnits) === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
                     let npc_units_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/")));
                     kv = util.OverrideKeyValue(npc_units_kv, kv);
                 }
-                else if (KVHeaders.OverrideHeroes === true && sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
+                else if (util.StringToAny(Configs.OverrideHeroes) === true && sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
                     let npc_heroes_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/")));
                     kv = util.OverrideKeyValue(npc_heroes_kv, kv);
                 }
-                else if (KVHeaders.OverrideItems === true && sPath.search("npc_items_custom") !== -1) { // 物品合并
+                else if (util.StringToAny(Configs.OverrideItems) === true && sPath.search("npc_items_custom") !== -1) { // 物品合并
                     let items_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace("\\", "/")));
                     let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
                     kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
                 }
                 let sObjectName = "GameUI";
-                if (typeof (KVHeaders.ObjectName) === "string") {
-                    sObjectName = KVHeaders.ObjectName;
+                if (typeof (util.StringToAny(Configs.ObjectName)) === "string") {
+                    sObjectName = util.StringToAny(Configs.ObjectName);
                 }
                 let js = util.Obj2Str(kv);
                 let fileData = sObjectName + "." + sKVName + " = " + js + ";";
