@@ -1872,7 +1872,7 @@ function activate(context) {
             const rows = KVString.split(os.EOL);
             for (let i = 0; i < rows.length; i++) {
                 const line_text = rows[i];
-                let aHeaders = line_text.match(/@.+?\b\s.+?\b/g);
+                let aHeaders = line_text.match(/@([\s|\S]+?)\b\s([\s|\S]*)/g);
                 if (aHeaders) {
                     for (let sHeader of aHeaders) {
                         sHeader = sHeader.replace(/@/g, "");
@@ -1906,8 +1906,12 @@ function activate(context) {
                     let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
                     kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
                 }
+                let sObjectName = "GameUI";
+                if (typeof (KVHeaders.ObjectName) === "string") {
+                    sObjectName = KVHeaders.ObjectName;
+                }
                 let js = util.Obj2Str(kv);
-                let fileData = "GameUI." + sKVName + " = " + js + ";";
+                let fileData = sObjectName + "." + sKVName + " = " + js + ";";
                 let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
                 fs.writeFileSync(jsPath, fileData);
             }

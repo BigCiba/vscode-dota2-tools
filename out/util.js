@@ -1352,14 +1352,16 @@ function Obj2Str(obj) {
 }
 exports.Obj2Str = Obj2Str;
 function StringToAny(str) {
+    console.log(Number(str));
     if (str === "true") {
         return true;
     }
     else if (str === "false") {
         return false;
     }
-    else if (Number(str) !== NaN) {
-        return Number(str);
+    else if (!isNaN(Number(str))) {
+        let n = Number(str);
+        return n;
     }
     return str;
 }

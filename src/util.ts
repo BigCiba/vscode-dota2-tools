@@ -1290,7 +1290,7 @@ export function StringToAny(str: string): any {
 		return true;
 	} else if (str === "false") {
 		return false;
-	} else if (Number(str) !== NaN) {
+	} else if (!isNaN(Number(str))) {
 		return Number(str);
 	}
 	return str;

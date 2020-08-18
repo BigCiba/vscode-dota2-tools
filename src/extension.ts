@@ -1785,7 +1785,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				}
 				if (Number(is_directory) === vscode.FileType.File) {
 					let wb = panel.webview.asWebviewUri(vscode.Uri.file(heroes_path + '/' + name));
-					heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority:wb.authority }).toString();
+					heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority: wb.authority }).toString();
 				}
 			}
 			return heroes_data;
@@ -1808,7 +1808,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						let texture_name = (path + '/' + name).split(root_path)[1];
 						texture_name = texture_name.replace('/', '');
 						let wb = panel.webview.asWebviewUri(vscode.Uri.file(path + '/' + name));
-						icons_data[texture_name.replace('_png.png', '').replace('.png', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority:wb.authority }).toString();
+						icons_data[texture_name.replace('_png.png', '').replace('.png', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority: wb.authority }).toString();
 					}
 				}
 				return icons_data;
@@ -1858,7 +1858,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		const rows: string[] = KVString.split(os.EOL);
 		for (let i = 0; i < rows.length; i++) {
 			const line_text: string = rows[i];
-			let aHeaders = line_text.match(/@.+?\b\s.+?\b/g);
+			let aHeaders = line_text.match(/@([\s|\S]+?)\b\s([\s|\S]*)/g);
 			if (aHeaders) {
 				for (let sHeader of aHeaders) {
 					sHeader = sHeader.replace(/@/g, "");
@@ -1889,8 +1889,12 @@ export async function activate(context: vscode.ExtensionContext) {
 				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
 				kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
 			}
+			let sObjectName = "GameUI";
+			if (typeof (KVHeaders.ObjectName) === "string") {
+				sObjectName = KVHeaders.ObjectName;
+			}
 			let js = util.Obj2Str(kv);
-			let fileData = "GameUI." + sKVName + " = " + js + ";";
+			let fileData = sObjectName + "." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
 			fs.writeFileSync(jsPath, fileData);
 		}
