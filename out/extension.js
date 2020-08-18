@@ -1908,7 +1908,7 @@ function activate(context) {
                     kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
                 }
                 let js = util.Obj2Str(kv);
-                let fileData = "GameUI." + sKVName + " = " + js + ";";
+                let fileData = "CustomUIConfig." + sKVName + " = " + js + ";";
                 let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
                 fs.writeFileSync(jsPath, fileData);
             }
