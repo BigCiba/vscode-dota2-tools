@@ -1227,10 +1227,10 @@ function activate(context) {
                         fun_md += '\n# Example\n```lua\n';
                         fun_md += fun_info.example + '\n```';
                     }
-                    yield util.DirExists('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name);
-                    fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name + '/' + fun_info.function + '.md', fun_md);
+                    yield util.DirExists('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name);
+                    fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name + '/' + fun_info.function + '.md', fun_md);
                 }
-                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name + '/README.md', readme);
+                fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name + '/README.md', readme);
             }
             config += `\t\t\t\t\t{\n` +
                 `\t\t\t\t\t\ttitle: 'Constants',\n` +
@@ -1259,14 +1259,14 @@ function activate(context) {
                         '# Example\n```' +
                         enum_info.example +
                         '```';
-                    yield util.DirExists('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name);
-                    fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
+                    yield util.DirExists('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name);
+                    fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name + '/' + enum_info.name + '.md', enum_detail_md);
                 }
                 // 生成常数列表页面
-                fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
+                fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
             }
             config += '\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
-            // fs.writeFileSync('C:/Users/lsj58/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
+            // fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
         }));
         // 选择音效
         let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', (uri) => __awaiter(this, void 0, void 0, function* () {
@@ -1772,7 +1772,8 @@ function activate(context) {
             }
             let icons_data = {
                 spellicons: {
-                    path: util.GetVscodeResourceUri(path_list.spellicons),
+                    // path: util.GetVscodeResourceUri(path_list.spellicons),
+                    path: panel.webview.asWebviewUri(path_list.spellicons).toString(),
                     data: yield ReadIconFolder(path_list.spellicons, path_list.spellicons)
                 },
                 items: {
