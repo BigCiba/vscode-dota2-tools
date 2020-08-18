@@ -1890,7 +1890,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
 			}
 			let js = util.Obj2Str(kv);
-			let fileData = "GameUI." + sKVName + " = " + js + ";";
+			let fileData = "CustomUIConfig." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
 			fs.writeFileSync(jsPath, fileData);
 		}

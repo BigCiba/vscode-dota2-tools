@@ -1328,12 +1328,15 @@ function FormatPath(path) {
 exports.FormatPath = FormatPath;
 // 把js的obj转成字符串
 // obj:要转的数据对象 
-function Obj2Str(obj) {
-    let ret = "{";
+function Obj2Str(obj, depth = 1) {
+    let ret = "{\n";
     for (const key in obj) {
         const element = obj[key];
+        for (let index = 0; index < depth; index++) {
+            ret += "\t";
+        }
         if (typeof (element) === "object") {
-            ret += '"' + key + "\":" + Obj2Str(element) + ",";
+            ret += '"' + key + "\":" + Obj2Str(element, depth + 1) + ",";
         }
         else {
             if (IsNumber(element)) {
@@ -1343,9 +1346,13 @@ function Obj2Str(obj) {
                 ret += '"' + key + "\":\"" + element + "\",";
             }
         }
+        ret += "\n";
     }
     if (ret[ret.length - 1] === ",") {
         ret = ret.slice(0, -1); // 去掉最后一个逗号
+    }
+    for (let index = 0; index < depth - 1; index++) {
+        ret += "\t";
     }
     ret += "}";
     return ret;

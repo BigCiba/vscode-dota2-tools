@@ -1262,24 +1262,30 @@ export function FormatPath(path: string): string {
 
 // 把js的obj转成字符串
 // obj:要转的数据对象 
-export function Obj2Str(obj: { [k: string]: any }): string {
-	let ret = "{";
+export function Obj2Str(obj: { [k: string]: any }, depth: number = 1): string {
+	let ret = "{\n";
 
 	for (const key in obj) {
 		const element: { [k: string]: object } = obj[key];
+		for (let index = 0; index < depth; index++) {
+			ret += "\t";
+		}
 		if (typeof (element) === "object") {
-			ret += '"' + key + "\":" + Obj2Str(element) + ",";
+			ret += '"' + key + "\":" + Obj2Str(element, depth + 1) + ",";
 		} else {
 			if (IsNumber(element)) {
 				ret += '"' + key + "\":" + element + ",";
 			} else {
 				ret += '"' + key + "\":\"" + element + "\",";
 			}
-
 		}
+		ret += "\n";
 	}
 	if (ret[ret.length - 1] === ",") {
 		ret = ret.slice(0, -1);// 去掉最后一个逗号
+	}
+	for (let index = 0; index < depth - 1; index++) {
+		ret += "\t";
 	}
 	ret += "}";
 	return ret;
