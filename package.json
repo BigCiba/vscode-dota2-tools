@@ -125,6 +125,10 @@
 			{
 				"command": "tss.kvTools.openFile",
 				"title": "open file"
+			},
+			{
+				"command": "dota2tools.CSVToPHPArray",
+				"title": "CSV 转 PHP 配置"
 			}
 		],
 		"menus": {

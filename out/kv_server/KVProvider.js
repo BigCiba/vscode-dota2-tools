@@ -36,7 +36,7 @@ class KvProvider {
                         steamid: KVServer_1.KVServer.steamid,
                     })
                 }, ((error, response, body) => {
-                    if (response.statusCode == 200) {
+                    if (response && response.statusCode == 200) {
                         const data = JSON.parse(body);
                         this.list = {};
                         for (const addonname in data) {

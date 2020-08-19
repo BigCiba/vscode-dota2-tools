@@ -1010,6 +1010,7 @@ function CSVParse(csv) {
         let state = "normal";
         for (let i = index; i < csv.length; i++) {
             let substr = csv[i];
+            let bLast = (i == csv.length - 1);
             if (substr === "\"" && state === "normal") {
                 state = "string";
                 continue;
@@ -1031,12 +1032,22 @@ function CSVParse(csv) {
                 col = 0;
                 return i;
             }
-            if (substr === ",") {
+            if (substr === "," && state !== "string") {
                 if (arr[row] === undefined) {
                     arr[row] = [];
                 }
                 arr[row][col] = value;
                 col++;
+                return i;
+            }
+            if (bLast && state === "normal") {
+                if (arr[row] === undefined) {
+                    arr[row] = [];
+                }
+                value += substr;
+                arr[row][col] = value;
+                row++;
+                col = 0;
                 return i;
             }
             value += substr;
@@ -1328,22 +1339,22 @@ function FormatPath(path) {
 exports.FormatPath = FormatPath;
 // 把js的obj转成字符串
 // obj:要转的数据对象 
-function Obj2Str(obj, depth = 1) {
-    let ret = "{\n";
+function Obj2Str(obj, bracket_left = "{", bracket_right = "}", sSeparator = ":", depth = 1) {
+    let ret = bracket_left + "\n";
     for (const key in obj) {
         const element = obj[key];
         for (let index = 0; index < depth; index++) {
             ret += "\t";
         }
         if (typeof (element) === "object") {
-            ret += '"' + key + "\":" + Obj2Str(element, depth + 1) + ",";
+            ret += '"' + key + '"' + sSeparator + "" + Obj2Str(element, bracket_left, bracket_right, sSeparator, depth + 1) + ",";
         }
         else {
             if (IsNumber(element)) {
-                ret += '"' + key + "\":" + element + ",";
+                ret += '"' + key + '"' + sSeparator + "" + element + ",";
             }
             else {
-                ret += '"' + key + "\":\"" + element + "\",";
+                ret += '"' + key + '"' + sSeparator + '"' + element + "\",";
             }
         }
         ret += "\n";
@@ -1354,7 +1365,7 @@ function Obj2Str(obj, depth = 1) {
     for (let index = 0; index < depth - 1; index++) {
         ret += "\t";
     }
-    ret += "}";
+    ret += bracket_right;
     return ret;
 }
 exports.Obj2Str = Obj2Str;

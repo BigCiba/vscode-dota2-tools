@@ -1843,6 +1843,76 @@ export async function activate(context: vscode.ExtensionContext) {
 		}, undefined, context.subscriptions);
 	});
 
+	let CSV2PHPArray = vscode.commands.registerCommand("dota2tools.CSVToPHPArray", async () => {
+		let root_path: string | undefined = GetRootPath();
+		if (root_path === undefined) {
+			return;
+		}
+
+		let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
+		let sKvPath = (GameDir + Config).replace("\\", "/");
+
+		let KVJSConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
+		let ServiceConfig = KVJSConfig.ServiceConfig;
+		let sTotalCSVPath = (root_path + ServiceConfig.csvPath).replace("\\", "/");
+
+		let sPHPStr = "<?PHP\n";
+		let fFiles = fs.readdirSync(sTotalCSVPath);
+		fFiles.forEach(fileName => {
+			if (fileName.indexOf(".csv") != -1) {
+				let filePath = sTotalCSVPath + fileName;
+				let sfNameSimple = fileName.substr(0, fileName.length - 4);
+				let sCSV = fs.readFileSync(filePath, "utf-8");
+				if (!sCSV) {
+					return;
+				}
+				// 跳过不编译的
+				if (ServiceConfig.NoCompile[sfNameSimple] == 1) {
+					return;
+				}
+				let arrCSV: any[][] = util.CSVParse(sCSV);
+				let csvConfigs: any = {};
+				let bVertical = ServiceConfig.VerticalSettingCSV[sfNameSimple] == 1;
+				if (bVertical) {
+					for (let i = 0; i < arrCSV.length; i++) {
+						let arrLine = arrCSV[i];
+						csvConfigs[arrLine[1]] = arrLine[2];
+					}
+				} else {
+					if (arrCSV.length < 3) {
+						return;
+					}
+					let keys: any[] = arrCSV[1];
+					for (let i = 2; i < arrCSV.length; i++) {
+						let arrLine = arrCSV[i];
+						let id: any = arrLine[0];
+						if (id) {
+							csvConfigs[id] = {};
+							for (let j = 1; j < arrLine.length; j++) {
+								if (keys[j]) {
+									let value = arrLine[j];
+									if (value == undefined || value == "") {
+									} else {
+										csvConfigs[id][keys[j]] = arrLine[j];
+									}
+								}
+							}
+						}
+					}
+				}
+				let result = "$" + sfNameSimple + " = " + util.Obj2Str(csvConfigs, "[", "]", " => ") + ";\n";
+				sPHPStr += result;
+			}
+		});
+		const phpPath = sTotalCSVPath + 'game_config.php';
+		fs.writeFileSync(phpPath, sPHPStr);
+		const options = {
+			// 显示在第二个编辑器
+			viewColumn: vscode.ViewColumn.Two
+		};
+		vscode.window.showTextDocument(vscode.Uri.file(phpPath), options);
+	})
+
 	// kv转js
 	let KVToJs = vscode.commands.registerCommand('dota2tools.kv_to_js_config', async () => {
 		let root_path: string | undefined = GetRootPath();
@@ -1904,6 +1974,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(UnitExport);
 	context.subscriptions.push(SelectAbilityTexture);
 	context.subscriptions.push(KVToJs);
+	context.subscriptions.push(CSV2PHPArray);
 	// context.subscriptions.push(ActiveListEditorProvider.register(context));
 }
 
