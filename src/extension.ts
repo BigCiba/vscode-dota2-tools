@@ -11,6 +11,7 @@ import * as watch from 'watch';
 import { log, print } from 'util';
 import { ActiveListEditorProvider } from './activelistEditor';
 import { KVServer } from './kv_server/KVServer';
+import { InheritTable } from "./table_inherit";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -1843,6 +1844,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}, undefined, context.subscriptions);
 	});
 
+	// 暂时没啥用
 	let CSV2PHPArray = vscode.commands.registerCommand("dota2tools.CSVToPHPArray", async () => {
 		let root_path: string | undefined = GetRootPath();
 		if (root_path === undefined) {
@@ -1911,7 +1913,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			viewColumn: vscode.ViewColumn.Two
 		};
 		vscode.window.showTextDocument(vscode.Uri.file(phpPath), options);
-	})
+	});
 
 	// kv转js
 	let KVToJs = vscode.commands.registerCommand('dota2tools.kv_to_js_config', async () => {
@@ -1958,6 +1960,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	let CmdInheritTable = vscode.commands.registerCommand("dota2tools.inherit_table", InheritTable);
+
 	// 注册指令
 	context.subscriptions.push(Localization);
 	context.subscriptions.push(AddHero);
@@ -1975,6 +1979,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(SelectAbilityTexture);
 	context.subscriptions.push(KVToJs);
 	context.subscriptions.push(CSV2PHPArray);
+	context.subscriptions.push(CmdInheritTable);
 	// context.subscriptions.push(ActiveListEditorProvider.register(context));
 }
 

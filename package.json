@@ -129,6 +129,10 @@
 			{
 				"command": "dota2tools.CSVToPHPArray",
 				"title": "CSV 转 PHP 配置"
+			},
+			{
+				"command": "dota2tools.inherit_table",
+				"title": "Test表继承"
 			}
 		],
 		"menus": {

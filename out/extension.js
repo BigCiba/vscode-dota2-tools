@@ -20,6 +20,7 @@ const init_1 = require("./init");
 const listener_1 = require("./listener");
 const watch = require("watch");
 const KVServer_1 = require("./kv_server/KVServer");
+const table_inherit_1 = require("./table_inherit");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1859,6 +1860,7 @@ function activate(context) {
                 // panel.dispose();
             }, undefined, context.subscriptions);
         }));
+        // 暂时没啥用
         let CSV2PHPArray = vscode.commands.registerCommand("dota2tools.CSVToPHPArray", () => __awaiter(this, void 0, void 0, function* () {
             let root_path = GetRootPath();
             if (root_path === undefined) {
@@ -1971,6 +1973,7 @@ function activate(context) {
                 fs.writeFileSync(jsPath, fileData);
             }
         }));
+        let CmdInheritTable = vscode.commands.registerCommand("dota2tools.inherit_table", table_inherit_1.InheritTable);
         // 注册指令
         context.subscriptions.push(Localization);
         context.subscriptions.push(AddHero);
@@ -1988,6 +1991,7 @@ function activate(context) {
         context.subscriptions.push(SelectAbilityTexture);
         context.subscriptions.push(KVToJs);
         context.subscriptions.push(CSV2PHPArray);
+        context.subscriptions.push(CmdInheritTable);
         // context.subscriptions.push(ActiveListEditorProvider.register(context));
     });
 }
