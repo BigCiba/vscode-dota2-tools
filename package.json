@@ -132,7 +132,7 @@
 			},
 			{
 				"command": "dota2tools.inherit_table",
-				"title": "Test表继承"
+				"title": "继承表生成工具"
 			}
 		],
 		"menus": {
