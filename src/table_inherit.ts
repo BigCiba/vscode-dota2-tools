@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as util from './util';
 
 /**
- * 读取路径信息
+ * 将CSV的字符串或者数组转成Object
  * @param {any} CSV csv string 或者 any[][]
  * @param {boolean} bVertical 是否为纵向配置，每一行像这样：中文解释,key,value
  */
@@ -24,79 +24,109 @@ export function CSV2Obj(CSV: any, bVertical = false): any {
 		if (arrCSV.length < 3) {
 			return csvConfigs;
 		}
-		// 第二行为key
-		let keys: any[] = arrCSV[1];
+		let keys: any[] = arrCSV[1];// 第二行 key
+
 		for (let i = 2; i < arrCSV.length; i++) {
 			let arrLine = arrCSV[i];
-			let id: any = arrLine[0];
-			if (!id) {
+			let lineID: any = arrLine[0];
+			if (!lineID) {
 				continue;
 			}
-			csvConfigs[id] = {};
-			for (let j = 1; j < arrLine.length; j++) {
-				if (!keys[j]) {
+			csvConfigs[lineID] = {};
+			for (let j = 0; j < arrLine.length; j++) {
+				if (!keys[j] || keys[j] == "") {
 					continue;
 				}
-				let value = arrLine[j];
-				if (value == undefined || value == "") {
-					continue;
-				}
+				let value = arrLine[j] || "";
+				// if (value == undefined || value == "") {
+				// 	continue;
+				// }
+				// 因为多个key都叫AttachWearables，处理成AttachWearables1234
+				let columnKey = keys[j];
 				if (keys[j] == "AttachWearables") {
 					for (let index = 1; index < 30; index++) {
-						if (csvConfigs[id]["AttachWearables" + index]) {
-							continue;
+						if (!csvConfigs[lineID]["AttachWearables" + index]) {
+							columnKey = "AttachWearables" + index;
+							break;
 						}
-						csvConfigs[id]["AttachWearables" + index] = value;
+					}
+				}
+				csvConfigs[lineID][columnKey] = value;
+			}
+		}
+		// 中文行处理
+		csvConfigs["__key_sc"] = {};
+		for (let j = 0; j < keys.length; j++) {
+			let sc = arrCSV[0][j] || "";
+			let columnKey = keys[j];
+			if (keys[j] == "AttachWearables") {
+				for (let index = 1; index < 30; index++) {
+					if (!csvConfigs["__key_sc"]["AttachWearables" + index]) {
+						columnKey = "AttachWearables" + index;
+						sc = "AttachWearables" + index;
 						break;
 					}
-				} else {
-					csvConfigs[id][keys[j]] = value;
 				}
 			}
+			csvConfigs["__key_sc"][columnKey] = sc;
 		}
 	}
 	return csvConfigs;
 }
 
-// 写得好丑，先不用了
-export function Obj2CSV(Obj: any, sParentIndexKey: string, tKey2SChinese: any) {
-	let line1 = "";
-	let line2 = "";
-	for (let key in tKey2SChinese) {
-		let sChineseKey = tKey2SChinese[key];
-		line1 += '"' + sChineseKey + '",';
-		line2 += key + ',';
-	}
-	// 去除一个逗号
-	line1 = line1.substr(0, line1.length - 1);
-	line2 = line2.substr(0, line2.length - 1);
-	let str = (line1 + "\n" + line2 + "\n");
-
-	for (let lineKey in Obj) {
-		let oLineInfo = Obj[lineKey];
-		let sLine = "";
-		for (let key in tKey2SChinese) {
-			let value = oLineInfo[key];
-			let sValue = "";
-			if (value) {
-				if (util.IsNumber(value)) {
-					sValue = value;
-				} else {
-					sValue = '"' + value + '"';
-				}
+// Obj转csv
+export function Obj2CSV(Obj: any) {
+	let __key_sc = Obj.__key_sc;
+	if (!__key_sc) {
+		// 默认中英文key一样
+		__key_sc = {};
+		for (let lineID in Obj) {
+			let lineInfo = Obj[lineID];
+			for (let columnKey in lineInfo) {
+				__key_sc[columnKey] = columnKey;
 			}
-			sLine += sValue + ",";
 		}
-		// 去除一个逗号
-		sLine = sLine.substr(0, sLine.length - 1);
-		str += (sLine + "\n");
 	}
-	return str;
+	// 前两行
+	let arrCSV: any[] = [];
+	arrCSV[0] = [];
+	arrCSV[1] = [];
+	for (let key in __key_sc) {
+		let sChineseKey = __key_sc[key];
+		arrCSV[0].push(sChineseKey);
+		if (key.indexOf("AttachWearables") != -1) {
+			arrCSV[1].push("AttachWearables");
+		} else {
+			arrCSV[1].push(key);
+		}
+	}
+
+	let y = 2;
+	for (let lineID in Obj) {
+		if (lineID == "__key_sc") {
+			continue;
+		}
+		arrCSV[y] = [];
+		let oLineInfo = Obj[lineID];
+		for (let columnKey in __key_sc) {
+			let value = oLineInfo[columnKey] || '';
+			arrCSV[y].push(value);
+		}
+		y++;
+	}
+	return util.Array2CSV(arrCSV);
+}
+
+function isEmptyCSVValue(anything: any) {
+	if (anything == undefined || anything == null || anything == "") {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /**
- * 创建路径
- * @param {string} dir 路径
+ * 继承表
  */
 export async function InheritTable() {
 	let root_path: string | undefined = util.GetRootPath();
@@ -107,103 +137,129 @@ export async function InheritTable() {
 	let sConfigPath = (root_path + "/eom_config.txt").replace("\\", "/");
 	let EOMProjectConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sConfigPath, 'utf-8')));
 	let InheritConfig = EOMProjectConfig.InheritConfig;
-	if (InheritConfig) {
-		let abilities_excel_paths: util.Configuration = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path') || {};
-		let abilities_kv_paths: util.Configuration = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path') || {};
-		let units_excel_paths: util.Configuration = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path') || {};
-		let units_kv_paths: util.Configuration = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path') || {};
-		let abilities_excel_path = abilities_excel_paths[0];
-		let abilities_kv_path = abilities_kv_paths[0];
-		let units_excel_path = units_excel_paths[0];
-		let units_kv_path = units_kv_paths[0];
-		// todo:支持多个配置
+	if (!InheritConfig) {
+		return;
+	}
+	let abilities_excel_paths: util.Configuration = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path') || {};
+	let units_excel_paths: util.Configuration = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path') || {};
 
+	// 可能配置了多个路径，每个一一对应来生成继承表
+	for (let configIndex = 0; configIndex < 100; configIndex++) {
+		let abilities_excel_path = abilities_excel_paths[configIndex];
+		let units_excel_path = units_excel_paths[configIndex];
+		// 任意一个没有就不算合格的配置
+		if (!abilities_excel_path || !units_excel_path) {
+			break;
+		}
+		// 读取每一个继承表的配置
 		for (const key in InheritConfig) {
 			const config = InheritConfig[key];
-
+			// 缺少必填项
 			if (!config.type || !config.parent || !config.transition || !config.child || !config.inherit_column) {
 				continue;
 			}
-
-			let sParentPath, sTransitionPath = "invalid";
+			// 读取配置的三项路径
+			let sParentPath, sTransitionPath, sChildPath = "invalid";
 			if (config.type == "ability") {
 				sParentPath = abilities_excel_path + "/csv/" + config.parent + ".csv";
 				sTransitionPath = abilities_excel_path + "/csv/" + config.transition + ".csv";
+				sChildPath = abilities_excel_path + "/csv/" + config.child + ".csv";
 			} else if (config.type == "unit") {
 				sParentPath = units_excel_path + "/csv/" + config.parent + ".csv";
 				sTransitionPath = units_excel_path + "/csv/" + config.transition + ".csv";
+				sChildPath = units_excel_path + "/csv/" + config.child + ".csv";
 			} else {
 				continue;
 			}
 
-			let sParentCSV = fs.readFileSync(sParentPath, "utf-8");
-			if (!sParentCSV) return;
-			let sTransitionCSV = fs.readFileSync(sTransitionPath, "utf-8");
-			if (!sTransitionCSV) return;
-
-			let oParent = CSV2Obj(sParentCSV);
-			let oTransition = CSV2Obj(sTransitionCSV);
-			let oChild: any = {};
-
-			for (let lineKey in oTransition) {
-				let line = oTransition[lineKey];
-
-				let sParentID = line[config.inherit_column];
-				if (!sParentID || sParentID == "") continue;
-
-				let oParentLine = oParent[sParentID];
-				if (!oParentLine) continue;
-
-				let oChildLine: any = {};
-				oChildLine = Object.assign(oChildLine, oParentLine);
-				// 如果有，去掉parent的所有饰品
-				for (let index = 1; index < 30; index++) {
-					delete oChildLine["AttachWearables" + index];
-				}
-				// 如果有，去掉parent不需要继承的属性
-				if (config.no_inherits) {
-					for (let no_inherit in config.no_inherits) {
-						delete oChildLine[no_inherit];
-					}
-				}
-				// 用transition的数据覆盖parent的数据
-				for (let k in line) {
-					let value = line[k];
-					oChildLine[k] = value;
-				}
-				// 如果有，生成creature
-				for (let index = 1; index < 30; index++) {
-					let value = oChildLine["AttachWearables" + index];
-					if (!value) {
-						break;
-					}
-					if (!oChildLine.Creature) {
-						oChildLine.Creature = { AttachWearables: {} };
-					}
-					oChildLine.Creature.AttachWearables[index] = { ItemDef: value };
-					delete oChildLine["AttachWearables" + index];
-				}
-				// 如果有，生成EOMAbility
-				for (let index = 1; index < 35; index++) {
-					let value = oChildLine["Ability" + index];
-					if (!value) {
-						continue;
-					}
-					oChildLine["EOMAbility" + index] = value;
-					delete oChildLine["Ability" + index];
-				}
-				oChild[lineKey] = oChildLine;
-			}
-
-			let oKV = { KeyValue: oChild };
-			let sKV = util.WriteKeyValue(oKV);
-			let sKVPath = "";
-			if (config.type == "ability") {
-				sKVPath = abilities_kv_path + "/" + config.child + ".kv";
-			} else if (config.type == "unit") {
-				sKVPath = units_kv_path + "/" + config.child + ".kv";
-			}
-			fs.writeFileSync(sKVPath, sKV);
+			generateInheritTable(sParentPath, sTransitionPath, sChildPath, config);
 		}
 	}
+}
+
+export async function generateInheritTable(sParentPath: string, sTransitionPath: string, sChildPath: string, config: any) {
+	// 文件内容的string
+	let sParentCSV = fs.readFileSync(sParentPath, "utf-8");
+	if (!sParentCSV) return;
+	let sTransitionCSV = fs.readFileSync(sTransitionPath, "utf-8");
+	if (!sTransitionCSV) return;
+	// 文件内容转为obj
+	let oParent = CSV2Obj(sParentCSV);
+	let oTransition = CSV2Obj(sTransitionCSV);
+	let oChild: any = {};
+	// 中文key的处理
+	if (oTransition.__key_sc) {
+		oChild.__key_sc = Object.assign(oTransition.__key_sc);
+		for (let sColumnKey in oParent.__key_sc) {
+			let sC = oParent.__key_sc[sColumnKey];
+			if (isEmptyCSVValue(oChild.__key_sc[sColumnKey])) {
+				if (!isEmptyCSVValue(sC)) {
+					oChild.__key_sc[sColumnKey] = sC;
+				}
+			}
+		}
+		// 不继承的项目
+		if (config.no_inherits) {
+			for (let no_inherit in config.no_inherits) {
+				delete oChild.__key_sc[no_inherit];
+			}
+		}
+	}
+	// 根据Transition的每一行继承parent，生成child的一行
+	for (let lineKey in oTransition) {
+		if (lineKey == "__key_sc") {
+			continue;
+		}
+		let line = oTransition[lineKey];
+		// 根据inherit_column指定的id找到parent的一行去继承
+		let sParentID = line[config.inherit_column];
+		if (!sParentID || sParentID == "") continue;
+		// parent中没这行
+		let oParentLine = oParent[sParentID];
+		if (!oParentLine) continue;
+		// 复制parent的数据
+		let oChildLine: any = {};
+		oChildLine = Object.assign(oChildLine, oParentLine);
+		// 如果有，去掉parent的所有饰品
+		for (let index = 1; index < 30; index++) {
+			delete oChildLine["AttachWearables" + index];
+		}
+		// 如果有，去掉parent不需要继承的属性
+		if (config.no_inherits) {
+			for (let no_inherit in config.no_inherits) {
+				delete oChildLine[no_inherit];
+			}
+		}
+		// 用transition的数据覆盖parent的数据
+		for (let k in line) {
+			let value = line[k];
+			oChildLine[k] = value;
+		}
+		//处理EOMAbility
+		if (config.eom_ability == 1) {
+			for (let index = 1; index < 35; index++) {
+				let value = oChildLine["Ability" + index];
+				if (!value) {
+					continue;
+				}
+				oChildLine["EOMAbility" + index] = value;
+				delete oChildLine["Ability" + index];
+			}
+			// 中文key处理
+			if (oChild.__key_sc) {
+				for (let index = 1; index < 35; index++) {
+					if (oChild.__key_sc.hasOwnProperty("Ability" + index)) {
+						let sC = oChild.__key_sc["Ability" + index];
+						oChild.__key_sc["EOMAbility" + index] = sC;
+						delete oChild.__key_sc["Ability" + index];
+					}
+				}
+			}
+		}
+		oChild[lineKey] = oChildLine;
+	}
+
+	// object 转csv
+	let sChildCSV = Obj2CSV(oChild);
+	fs.writeFileSync(sChildPath, sChildCSV);
 }

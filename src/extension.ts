@@ -452,16 +452,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	let listener = new Listener(context);
 	// 配置变更
 	vscode.workspace.onDidChangeConfiguration((event) => {
-		if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
-			listener.WatchAbilityExcel();
-		}
-		if (event.affectsConfiguration('dota2-tools.Listen Localization') === true) {
-			if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
-				listener.WatchLocalization();
-			} else {
-				listener.UnWatchLocalization();
-			}
-		}
+		listener.OnConfigChanged(event);
 	});
 
 	// 添加英雄基本文件（IMBA功能）
@@ -1960,6 +1951,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	// 表继承功能
 	let CmdInheritTable = vscode.commands.registerCommand("dota2tools.inherit_table", InheritTable);
 
 	// 注册指令

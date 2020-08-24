@@ -483,17 +483,7 @@ function activate(context) {
         let listener = new listener_1.Listener(context);
         // 配置变更
         vscode.workspace.onDidChangeConfiguration((event) => {
-            if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
-                listener.WatchAbilityExcel();
-            }
-            if (event.affectsConfiguration('dota2-tools.Listen Localization') === true) {
-                if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
-                    listener.WatchLocalization();
-                }
-                else {
-                    listener.UnWatchLocalization();
-                }
-            }
+            listener.OnConfigChanged(event);
         });
         // 添加英雄基本文件（IMBA功能）
         let AddHero = vscode.commands.registerCommand('extension.AddHero', () => __awaiter(this, void 0, void 0, function* () {
@@ -1973,6 +1963,7 @@ function activate(context) {
                 fs.writeFileSync(jsPath, fileData);
             }
         }));
+        // 表继承功能
         let CmdInheritTable = vscode.commands.registerCommand("dota2tools.inherit_table", table_inherit_1.InheritTable);
         // 注册指令
         context.subscriptions.push(Localization);

@@ -16,8 +16,10 @@ const fs = require("fs");
 const vscode = require("vscode");
 const init_1 = require("./init");
 const os = require("os");
+const table_inherit_1 = require("./table_inherit");
 class Listener {
     constructor(context) {
+        this.InheritCSVInfo = [];
         this.context = context;
         this.WatchAbilityExcel(); //监听技能excel
         this.WatchUnitExcel(); //监听单位excel
@@ -27,6 +29,31 @@ class Listener {
         if (vscode.workspace.getConfiguration().get('dota2-tools.Listen KV to Js') === true) {
             this.WatchKeyValue(); //监听kv
         }
+        this.WatchInheritCSV();
+    }
+    OnConfigChanged(event) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (event.affectsConfiguration('dota2-tools.abilities_excel_path') === true || event.affectsConfiguration('dota2-tools.abilities_kv_path') === true) {
+                this.WatchAbilityExcel();
+            }
+            if (event.affectsConfiguration('dota2-tools.Listen Localization') === true) {
+                if (vscode.workspace.getConfiguration().get('dota2-tools.Listen Localization') === true) {
+                    this.WatchLocalization();
+                }
+                else {
+                    this.UnWatchLocalization();
+                }
+            }
+            // 和监听表相关的配置变更了的话
+            let inheritConfigs = ["dota2-tools.abilities_excel_path", "dota2-tools.units_excel_path"];
+            for (let index = 0; index < inheritConfigs.length; index++) {
+                if (event.affectsConfiguration(inheritConfigs[index]) === true) {
+                    this.UnWatchInheritCSVInfo();
+                    this.WatchInheritCSV(true);
+                    break;
+                }
+            }
+        });
     }
     WatchAbilityExcel() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -138,6 +165,100 @@ class Listener {
     }
     UnWatchLocalization() {
         watch.unwatchTree(init_1.GameDir + '/localization');
+    }
+    // 把现在正在监听的所有基础csv文件取消监听
+    UnWatchInheritCSVInfo() {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let index = 0; index < this.InheritCSVInfo.length; index++) {
+                const info = this.InheritCSVInfo[index];
+                fs.unwatchFile(info.parent);
+                fs.unwatchFile(info.transition);
+            }
+        });
+    }
+    // 监听表继承的几个表文件
+    WatchInheritCSV(bGenerateNew = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let root_path = util.GetRootPath();
+            if (root_path === undefined) {
+                return;
+            }
+            let sConfigPath = (root_path + "/eom_config.txt").replace("\\", "/");
+            // 监听配置文件的变动
+            fs.watchFile(sConfigPath, (curr, prev) => {
+                if (curr.nlink === 0) {
+                    console.log('removed');
+                }
+                else {
+                    console.log("WatchInheritCSV on config changed");
+                    this.UnWatchInheritCSVInfo();
+                    this.WatchInheritCSV(true);
+                }
+            });
+            let EOMProjectConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sConfigPath, 'utf-8')));
+            let InheritConfig = EOMProjectConfig.InheritConfig;
+            if (!InheritConfig) {
+                return;
+            }
+            let abilities_excel_paths = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path') || {};
+            let units_excel_paths = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path') || {};
+            // 可能配置了多个路径，每个一一对应来生成继承表
+            for (let configIndex = 0; configIndex < 100; configIndex++) {
+                let abilities_excel_path = abilities_excel_paths[configIndex];
+                let units_excel_path = units_excel_paths[configIndex];
+                // 任意一个没有就不算合格的配置
+                if (!abilities_excel_path || !units_excel_path) {
+                    break;
+                }
+                // 读取每一个继承表的配置
+                for (const key in InheritConfig) {
+                    const config = InheritConfig[key];
+                    // 缺少必填项
+                    if (!config.type || !config.parent || !config.transition || !config.child || !config.inherit_column) {
+                        continue;
+                    }
+                    // 读取配置的三项路径
+                    let sParentPath, sTransitionPath, sChildPath = "invalid";
+                    if (config.type == "ability") {
+                        sParentPath = abilities_excel_path + "/csv/" + config.parent + ".csv";
+                        sTransitionPath = abilities_excel_path + "/csv/" + config.transition + ".csv";
+                        sChildPath = abilities_excel_path + "/csv/" + config.child + ".csv";
+                    }
+                    else if (config.type == "unit") {
+                        sParentPath = units_excel_path + "/csv/" + config.parent + ".csv";
+                        sTransitionPath = units_excel_path + "/csv/" + config.transition + ".csv";
+                        sChildPath = units_excel_path + "/csv/" + config.child + ".csv";
+                    }
+                    else {
+                        continue;
+                    }
+                    let watchInfo = { parent: sParentPath, transition: sTransitionPath };
+                    this.InheritCSVInfo.push(watchInfo);
+                    WatchInheritCSVFiles(sParentPath, sTransitionPath, sChildPath, config);
+                    if (bGenerateNew) {
+                        table_inherit_1.generateInheritTable(sParentPath, sTransitionPath, sChildPath, config);
+                    }
+                }
+            }
+            function WatchInheritCSVFiles(sParentPath, sTransitionPath, sChildPath, config) {
+                let result = fs.watchFile(sParentPath, (curr, prev) => {
+                    if (curr.nlink === 0) {
+                        console.log('removed');
+                    }
+                    else {
+                        table_inherit_1.generateInheritTable(sParentPath, sTransitionPath, sChildPath, config);
+                    }
+                });
+                fs.watchFile(sTransitionPath, (curr, prev) => {
+                    if (curr.nlink === 0) {
+                        console.log('removed');
+                    }
+                    else {
+                        table_inherit_1.generateInheritTable(sParentPath, sTransitionPath, sChildPath, config);
+                    }
+                });
+            }
+        });
     }
     WatchKeyValue() {
         return __awaiter(this, void 0, void 0, function* () {
