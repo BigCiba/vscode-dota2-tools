@@ -3,129 +3,6 @@ import * as fs from 'fs';
 import * as util from './util';
 
 /**
- * 将CSV的字符串或者数组转成Object
- * @param {any} CSV csv string 或者 any[][]
- * @param {boolean} bVertical 是否为纵向配置，每一行像这样：中文解释,key,value
- */
-export function CSV2Obj(CSV: any, bVertical = false): any {
-	let arrCSV: any[][] = CSV;
-	if (typeof (CSV) == "string") {
-		arrCSV = util.CSVParse(CSV);
-	}
-
-	let csvConfigs: any = {};
-	if (bVertical) {
-		for (let i = 0; i < arrCSV.length; i++) {
-			let arrLine = arrCSV[i];
-			csvConfigs[arrLine[1]] = arrLine[2];
-		}
-	} else {
-		// 横向的至少要有三行，第一行中文，第二行key， 第三行内容
-		if (arrCSV.length < 3) {
-			return csvConfigs;
-		}
-		let keys: any[] = arrCSV[1];// 第二行 key
-
-		for (let i = 2; i < arrCSV.length; i++) {
-			let arrLine = arrCSV[i];
-			let lineID: any = arrLine[0];
-			if (!lineID) {
-				continue;
-			}
-			csvConfigs[lineID] = {};
-			for (let j = 0; j < arrLine.length; j++) {
-				if (!keys[j] || keys[j] == "") {
-					continue;
-				}
-				let value = arrLine[j] || "";
-				// if (value == undefined || value == "") {
-				// 	continue;
-				// }
-				// 因为多个key都叫AttachWearables，处理成AttachWearables1234
-				let columnKey = keys[j];
-				if (keys[j] == "AttachWearables") {
-					for (let index = 1; index < 30; index++) {
-						if (!csvConfigs[lineID]["AttachWearables" + index]) {
-							columnKey = "AttachWearables" + index;
-							break;
-						}
-					}
-				}
-				csvConfigs[lineID][columnKey] = value;
-			}
-		}
-		// 中文行处理
-		csvConfigs["__key_sc"] = {};
-		for (let j = 0; j < keys.length; j++) {
-			let sc = arrCSV[0][j] || "";
-			let columnKey = keys[j];
-			if (keys[j] == "AttachWearables") {
-				for (let index = 1; index < 30; index++) {
-					if (!csvConfigs["__key_sc"]["AttachWearables" + index]) {
-						columnKey = "AttachWearables" + index;
-						sc = "AttachWearables" + index;
-						break;
-					}
-				}
-			}
-			csvConfigs["__key_sc"][columnKey] = sc;
-		}
-	}
-	return csvConfigs;
-}
-
-// Obj转csv
-export function Obj2CSV(Obj: any) {
-	let __key_sc = Obj.__key_sc;
-	if (!__key_sc) {
-		// 默认中英文key一样
-		__key_sc = {};
-		for (let lineID in Obj) {
-			let lineInfo = Obj[lineID];
-			for (let columnKey in lineInfo) {
-				__key_sc[columnKey] = columnKey;
-			}
-		}
-	}
-	// 前两行
-	let arrCSV: any[] = [];
-	arrCSV[0] = [];
-	arrCSV[1] = [];
-	for (let key in __key_sc) {
-		let sChineseKey = __key_sc[key];
-		arrCSV[0].push(sChineseKey);
-		if (key.indexOf("AttachWearables") != -1) {
-			arrCSV[1].push("AttachWearables");
-		} else {
-			arrCSV[1].push(key);
-		}
-	}
-
-	let y = 2;
-	for (let lineID in Obj) {
-		if (lineID == "__key_sc") {
-			continue;
-		}
-		arrCSV[y] = [];
-		let oLineInfo = Obj[lineID];
-		for (let columnKey in __key_sc) {
-			let value = oLineInfo[columnKey] || '';
-			arrCSV[y].push(value);
-		}
-		y++;
-	}
-	return util.Array2CSV(arrCSV);
-}
-
-function isEmptyCSVValue(anything: any) {
-	if (anything == undefined || anything == null || anything == "") {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-/**
  * 继承表
  */
 export async function InheritTable() {
@@ -184,16 +61,16 @@ export async function generateInheritTable(sParentPath: string, sTransitionPath:
 	let sTransitionCSV = fs.readFileSync(sTransitionPath, "utf-8");
 	if (!sTransitionCSV) return;
 	// 文件内容转为obj
-	let oParent = CSV2Obj(sParentCSV);
-	let oTransition = CSV2Obj(sTransitionCSV);
+	let oParent = util.CSV2Obj(sParentCSV);
+	let oTransition = util.CSV2Obj(sTransitionCSV);
 	let oChild: any = {};
 	// 中文key的处理
 	if (oTransition.__key_sc) {
 		oChild.__key_sc = Object.assign(oTransition.__key_sc);
 		for (let sColumnKey in oParent.__key_sc) {
 			let sC = oParent.__key_sc[sColumnKey];
-			if (isEmptyCSVValue(oChild.__key_sc[sColumnKey])) {
-				if (!isEmptyCSVValue(sC)) {
+			if (util.isEmptyCSVValue(oChild.__key_sc[sColumnKey])) {
+				if (!util.isEmptyCSVValue(sC)) {
 					oChild.__key_sc[sColumnKey] = sC;
 				}
 			}
@@ -260,6 +137,6 @@ export async function generateInheritTable(sParentPath: string, sTransitionPath:
 	}
 
 	// object 转csv
-	let sChildCSV = Obj2CSV(oChild);
+	let sChildCSV = util.Obj2CSV(oChild);
 	fs.writeFileSync(sChildPath, sChildCSV);
 }

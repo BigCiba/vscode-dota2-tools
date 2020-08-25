@@ -133,6 +133,14 @@
 			{
 				"command": "dota2tools.inherit_table",
 				"title": "继承表生成工具"
+			},
+			{
+				"command": "dota2tools.localization_csv",
+				"title": "翻译文件生成翻译数据表"
+			},
+			{
+				"command": "dota2tools.localization_text",
+				"title": "翻译数据表转翻译文件"
 			}
 		],
 		"menus": {
@@ -176,6 +184,16 @@
 				{
 					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
 					"command": "dota2tools.unit_export",
+					"group": "navigation"
+				},
+				{
+					"when":	"resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
+					"command": "dota2tools.localization_csv",
+					"group": "navigation"
+				},
+				{
+					"when":	"resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
+					"command": "dota2tools.localization_text",
 					"group": "navigation"
 				}
 			],

@@ -1843,11 +1843,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 
 		let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
-		let sKvPath = (GameDir + Config).replace("\\", "/");
+		let sKvPath = (GameDir + Config).replace(/\\/g, "/");
 
 		let KVJSConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
 		let ServiceConfig = KVJSConfig.ServiceConfig;
-		let sTotalCSVPath = (root_path + ServiceConfig.csvPath).replace("\\", "/");
+		let sTotalCSVPath = (root_path + ServiceConfig.csvPath).replace(/\\/g, "/");
 
 		let sPHPStr = "<?PHP\n";
 		let fFiles = fs.readdirSync(sTotalCSVPath);
@@ -1915,7 +1915,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
 
-		let sKvPath = (GameDir + Config).replace("\\", "/");
+		let sKvPath = (GameDir + Config).replace(/\\/g, "/");
 		let KVJSConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
 		let Configs = KVJSConfig.configs;
 		let KVFiles = KVJSConfig.kvfiles;
@@ -1923,21 +1923,21 @@ export async function activate(context: vscode.ExtensionContext) {
 		for (const sKVName in KVFiles) {
 			let sPath = KVFiles[sKVName];
 			let sTotalPath = GameDir + '/scripts/' + sPath;
-			let kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase(sTotalPath.replace("\\", "/")));
+			let kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase(sTotalPath.replace(/\\/g, "/")));
 			// 特殊处理
 			if (util.StringToAny(Configs.OverrideAbilities) === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
-				let npc_abilities_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace("\\", "/")));
-				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
+				let npc_abilities_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace(/\\/g, "/")));
+				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
 				kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
 			} else if (util.StringToAny(Configs.OverrideUnits) === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
-				let npc_units_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace("\\", "/")));
+				let npc_units_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace(/\\/g, "/")));
 				kv = util.OverrideKeyValue(npc_units_kv, kv);
 			} else if (util.StringToAny(Configs.OverrideHeroes) === true && sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
-				let npc_heroes_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace("\\", "/")));
+				let npc_heroes_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace(/\\/g, "/")));
 				kv = util.OverrideKeyValue(npc_heroes_kv, kv);
 			} else if (util.StringToAny(Configs.OverrideItems) === true && sPath.search("npc_items_custom") !== -1) { // 物品合并
-				let items_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace("\\", "/")));
-				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace("\\", "/")));
+				let items_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace(/\\/g, "/")));
+				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
 				kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
 			}
 			let sObjectName = "GameUI";
@@ -1946,13 +1946,97 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 			let js = util.Obj2Str(kv);
 			let fileData = sObjectName + "." + sKVName + " = " + js + ";";
-			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace("\\", "/");
+			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace(/\\/g, "/");
 			fs.writeFileSync(jsPath, fileData);
 		}
 	});
 
 	// 表继承功能
 	let CmdInheritTable = vscode.commands.registerCommand("dota2tools.inherit_table", InheritTable);
+
+	// 翻译txt转csv
+	let CmdLocalizationCSV = vscode.commands.registerCommand("dota2tools.localization_csv", async () => {
+		let localPaths = [
+			(GameDir + "/panorama/localization/").replace(/\\/g, "/"),
+			(GameDir + "/resource/").replace(/\\/g, "/"),
+		];
+		let csvPaths = [
+			(GameDir + "/panorama/localization/csv/localization.csv").replace(/\\/g, "/"),
+			(GameDir + "/resource/csv/localization_resource.csv").replace(/\\/g, "/"),
+		];
+		for (let index = 0; index < localPaths.length; index++) {
+			let sLocalizationPath = localPaths[index];
+			let fFiles = fs.readdirSync(sLocalizationPath);
+			let objTotal: any = {};
+			fFiles.forEach(fileName => {
+				if (fileName.indexOf("addon_") != -1) {
+					let sLanguage = fileName.substr(6, fileName.length - 4 - 6);
+					let oLocalization = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sLocalizationPath + fileName, 'utf-8')));
+					if (oLocalization.Tokens) {
+						oLocalization = oLocalization.Tokens;
+					}
+					for (let key in oLocalization) {
+						if (!objTotal[key]) {
+							objTotal[key] = { id: key };
+						}
+						objTotal[key][sLanguage] = oLocalization[key];
+					}
+				}
+			});
+			let sLocalizationCSV = util.Obj2CSV(objTotal, true);
+			let sCSVPath = csvPaths[index];
+			fs.writeFileSync(sCSVPath, "\uFEFF" + sLocalizationCSV);
+		}
+	});
+
+	// 翻译csv转回txt
+	let CmdLocalizationCSV2Text = vscode.commands.registerCommand("dota2tools.localization_text", async () => {
+		let localPaths = [
+			(GameDir + "/panorama/localization/").replace(/\\/g, "/"),
+			(GameDir + "/resource/").replace(/\\/g, "/"),
+		];
+		let csvPaths = [
+			(GameDir + "/panorama/localization/csv/localization.csv").replace(/\\/g, "/"),
+			(GameDir + "/resource/csv/localization_resource.csv").replace(/\\/g, "/"),
+		];
+		for (let index = 0; index < csvPaths.length; index++) {
+			let oCSV = util.CSV2Obj(fs.readFileSync(csvPaths[index], "utf-8"));
+			let oLocalizations: any = {};
+			// 拆分成多个语言
+			for (let key in oCSV) {
+				let info = oCSV[key];
+				for (let localKey in info) {
+					if (util.isEmptyCSVValue(localKey) || localKey == "id") {
+						continue;
+					}
+					if (!oLocalizations[localKey]) {
+						oLocalizations[localKey] = {};
+					}
+					if (!util.isEmptyCSVValue(info[localKey])) {
+						oLocalizations[localKey][key] = info[localKey];
+					}
+				}
+			}
+			// panorama的翻译
+			if (index == 0) {
+				for (let localKey in oLocalizations) {
+					let oLocal: any = {};
+					oLocal.addon = oLocalizations[localKey];
+					delete oLocal.addon.__key_sc;
+					let sKV = util.WriteKeyValue(oLocal);
+					fs.writeFileSync(localPaths[index] + "addon_" + localKey + ".txt", sKV);
+				}
+			} else {
+				for (let localKey in oLocalizations) {
+					let oLocal: any = { addon: { Language: localKey } };
+					oLocal.addon.Tokens = oLocalizations[localKey];
+					delete oLocal.addon.Tokens.__key_sc;
+					let sKV = util.WriteKeyValue(oLocal);
+					fs.writeFileSync(localPaths[index] + "addon_" + localKey + ".txt", sKV);
+				}
+			}
+		}
+	});
 
 	// 注册指令
 	context.subscriptions.push(Localization);
@@ -1972,6 +2056,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(KVToJs);
 	context.subscriptions.push(CSV2PHPArray);
 	context.subscriptions.push(CmdInheritTable);
+	context.subscriptions.push(CmdLocalizationCSV);
+	context.subscriptions.push(CmdLocalizationCSV2Text);
 	// context.subscriptions.push(ActiveListEditorProvider.register(context));
 }
 
