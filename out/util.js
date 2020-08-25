@@ -1080,7 +1080,7 @@ function CSV2Array(csv) {
 }
 exports.CSV2Array = CSV2Array;
 // array转csv
-function Array2CSV(arr, bYingHao = false) {
+function Array2CSV(arr) {
     let csv = '';
     let title_count = arr[1].length;
     for (let i = 0; i < arr.length; i++) {
@@ -1090,7 +1090,7 @@ function Array2CSV(arr, bYingHao = false) {
                 break;
             }
             let col = rows[j] === undefined ? '' : rows[j];
-            if (bYingHao) {
+            if (col.indexOf(",") != -1) {
                 col = '"' + col + '"';
             }
             csv += col + (j + 1 === rows.length ? '' : ',');
@@ -1462,7 +1462,7 @@ function CSV2Obj(CSV, bVertical = false) {
 }
 exports.CSV2Obj = CSV2Obj;
 // Obj转csv
-function Obj2CSV(Obj, bYingHao = false) {
+function Obj2CSV(Obj) {
     let __key_sc = Obj.__key_sc;
     if (!__key_sc) {
         // 默认中英文key一样
@@ -1501,7 +1501,7 @@ function Obj2CSV(Obj, bYingHao = false) {
         }
         y++;
     }
-    return Array2CSV(arrCSV, bYingHao);
+    return Array2CSV(arrCSV);
 }
 exports.Obj2CSV = Obj2CSV;
 // 是否是CSV空值

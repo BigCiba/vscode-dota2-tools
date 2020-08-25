@@ -1994,7 +1994,7 @@ function activate(context) {
                         }
                     }
                 });
-                let sLocalizationCSV = util.Obj2CSV(objTotal, true);
+                let sLocalizationCSV = util.Obj2CSV(objTotal);
                 let sCSVPath = csvPaths[index];
                 fs.writeFileSync(sCSVPath, "\uFEFF" + sLocalizationCSV);
             }
