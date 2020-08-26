@@ -1979,7 +1979,8 @@ export async function activate(context: vscode.ExtensionContext) {
 						if (!objTotal[key]) {
 							objTotal[key] = { id: key };
 						}
-						objTotal[key][sLanguage] = oLocalization[key];
+						// 前面加一个单引号禁用公式
+						objTotal[key][sLanguage] = "'" + oLocalization[key];
 					}
 				}
 			});
@@ -2013,7 +2014,8 @@ export async function activate(context: vscode.ExtensionContext) {
 						oLocalizations[localKey] = {};
 					}
 					if (!util.isEmptyCSVValue(info[localKey])) {
-						oLocalizations[localKey][key] = info[localKey];
+						// 去除 前面加一个单引号禁用公式
+						oLocalizations[localKey][key] = info[localKey].substr(1);
 					}
 				}
 			}
