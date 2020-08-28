@@ -288,21 +288,7 @@
 					"description": "自定义KV Server Steamid"
 				}
 			}
-		},
-		"customEditors": [
-			{
-				"viewType": "dota2tools.ActiveList",
-				"displayName": "ActiveList Editor",
-				"selector": [
-					{
-						"filenamePattern": "herolist.txt"
-					},
-					{
-						"filenamePattern": "activelist.txt"
-					}
-				]
-			}
-		]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
