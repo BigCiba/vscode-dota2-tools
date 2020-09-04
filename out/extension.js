@@ -1979,6 +1979,16 @@ function activate(context) {
                 let sLocalizationPath = localPaths[index];
                 let fFiles = fs.readdirSync(sLocalizationPath);
                 let objTotal = {};
+                // 排序让中文在第一，这样生成的key的顺序就和中文的一样了
+                fFiles.sort((a, b) => {
+                    if (a == "addon_schinese.txt") {
+                        return -1;
+                    }
+                    if (b == "addon_schinese.txt") {
+                        return 1;
+                    }
+                    return (a < b) ? -1 : a > b ? 1 : 0;
+                });
                 fFiles.forEach(fileName => {
                     if (fileName.indexOf("addon_") != -1) {
                         let sLanguage = fileName.substr(6, fileName.length - 4 - 6);
@@ -1987,6 +1997,9 @@ function activate(context) {
                             oLocalization = oLocalization.Tokens;
                         }
                         for (let key in oLocalization) {
+                            if (util.isEmptyCSVValue(oLocalization[key])) {
+                                continue;
+                            }
                             if (!objTotal[key]) {
                                 objTotal[key] = { id: key };
                             }
