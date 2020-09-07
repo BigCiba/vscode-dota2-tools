@@ -975,6 +975,28 @@ function OverrideKeyValue(mainObj, Obj) {
     return mainObj;
 }
 exports.OverrideKeyValue = OverrideKeyValue;
+// 对象替换
+function ReplaceKeyValue(mainObj, Obj) {
+    if (typeof (mainObj) !== "object") {
+        return Obj;
+    }
+    if (typeof (Obj) !== "object") {
+        return mainObj;
+    }
+    for (const k in Obj) {
+        const v = Obj[k];
+        if (mainObj[k] !== undefined && mainObj[k] !== null) {
+            if (typeof (v) === "object") {
+                mainObj[k] = OverrideKeyValue(mainObj[k], v);
+            }
+            else {
+                mainObj[k] = v;
+            }
+        }
+    }
+    return mainObj;
+}
+exports.ReplaceKeyValue = ReplaceKeyValue;
 // 去除注释
 function RemoveComment(data) {
     let new_data = '';

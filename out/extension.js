@@ -1938,7 +1938,7 @@ function activate(context) {
                 if (util.StringToAny(Configs.OverrideAbilities) === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
                     let npc_abilities_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace(/\\/g, "/")));
                     let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
-                    kv = util.OverrideKeyValue(util.OverrideKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
+                    kv = util.OverrideKeyValue(util.ReplaceKeyValue(npc_abilities_kv, npc_abilities_override_kv), kv);
                 }
                 else if (util.StringToAny(Configs.OverrideUnits) === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
                     let npc_units_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace(/\\/g, "/")));
@@ -1951,7 +1951,7 @@ function activate(context) {
                 else if (util.StringToAny(Configs.OverrideItems) === true && sPath.search("npc_items_custom") !== -1) { // 物品合并
                     let items_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace(/\\/g, "/")));
                     let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
-                    kv = util.OverrideKeyValue(util.OverrideKeyValue(items_kv, npc_abilities_override_kv), kv);
+                    kv = util.OverrideKeyValue(util.ReplaceKeyValue(items_kv, npc_abilities_override_kv), kv);
                 }
                 let sObjectName = "GameUI";
                 if (typeof (util.StringToAny(Configs.ObjectName)) === "string") {
