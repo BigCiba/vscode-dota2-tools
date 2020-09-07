@@ -921,6 +921,29 @@ export function OverrideKeyValue(mainObj: any, Obj: any): object {
 	return mainObj;
 }
 
+// 对象替换
+export function ReplaceKeyValue(mainObj: any, Obj: any): object {
+	if (typeof (mainObj) !== "object") {
+		return Obj;
+	}
+	if (typeof (Obj) !== "object") {
+		return mainObj;
+	}
+
+	for (const k in Obj) {
+		const v = Obj[k];
+		if (mainObj[k] !== undefined && mainObj[k] !== null) {
+			if (typeof (v) === "object") {
+				mainObj[k] = OverrideKeyValue(mainObj[k], v);
+			} else {
+				mainObj[k] = v;
+			}
+		}
+	}
+
+	return mainObj;
+}
+
 // 去除注释
 export function RemoveComment(data: string): string {
 	let new_data = '';
