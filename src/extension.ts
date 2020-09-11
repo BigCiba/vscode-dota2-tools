@@ -12,6 +12,7 @@ import { log, print } from 'util';
 import { ActiveListEditorProvider } from './activelistEditor';
 import { KVServer } from './kv_server/KVServer';
 import { InheritTable } from "./table_inherit";
+import { DropHeroString } from "./drop_string";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -2051,6 +2052,30 @@ export async function activate(context: vscode.ExtensionContext) {
 				}
 			}
 		}
+	});
+
+	// 轮回谷生成英雄掉落卡片的vtex和vpcf
+	let cmdDropVPCf = vscode.commands.registerCommand("samsara.hero_drop", async () => {
+		let sTgaPath = (ContentDir + "/materials/items/").replace(/\\/g, "/");
+		let sVTEXPath = (ContentDir + "/materials/").replace(/\\/g, "/");
+		let sVPCFPath = (ContentDir + "/particles/generic_gameplay/").replace(/\\/g, "/");
+		let fTGAs = fs.readdirSync(sTgaPath);
+		fTGAs.forEach(fileName => {
+			if (fileName.indexOf("npc_dota_hero_") !== -1) {
+				let sHeroName = fileName.substr(14, fileName.length - 14 - 4);
+				let sShortFileName = fileName.substr(0, fileName.length - 4);
+				let sVTEXFileName = `${sVTEXPath}${sShortFileName}.vtex`;
+				let sVPCFFileName = `${sVPCFPath}dropped_item_${sHeroName}.vpcf`;
+				let oHeroString = new DropHeroString(sHeroName);
+				// 已存在就不生成
+				if (!fs.existsSync(sVTEXFileName)) {
+					fs.writeFileSync(sVTEXFileName, oHeroString.strDropVtex);
+				}
+				if (!fs.existsSync(sVPCFFileName)) {
+					fs.writeFileSync(sVPCFFileName, oHeroString.strDropVPCF);
+				}
+			}
+		});
 	});
 
 	// 注册指令
