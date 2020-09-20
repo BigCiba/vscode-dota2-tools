@@ -921,15 +921,43 @@ export function OverrideKeyValue(mainObj: any, Obj: any): object {
 	return mainObj;
 }
 
+// 对象替换
+export function ReplaceKeyValue(mainObj: any, Obj: any): object {
+	if (typeof (mainObj) !== "object") {
+		return Obj;
+	}
+	if (typeof (Obj) !== "object") {
+		return mainObj;
+	}
+
+	for (const k in Obj) {
+		const v = Obj[k];
+		if (mainObj[k] !== undefined && mainObj[k] !== null) {
+			if (typeof (v) === "object") {
+				mainObj[k] = OverrideKeyValue(mainObj[k], v);
+			} else {
+				mainObj[k] = v;
+			}
+		}
+	}
+
+	return mainObj;
+}
+
 // 去除注释
 export function RemoveComment(data: string): string {
 	let new_data = '';
 	const rows: string[] = data.split(os.EOL);
 	for (let i = 0; i < rows.length; i++) {
 		const line_text: string = rows[i];
+		let state = 0;// 用于处理引号内的//注释
 		for (let char = 0; char < line_text.length; char++) {
 			const substr = line_text[char];
-			if (substr === '/' && line_text[char + 1] === '/') {
+			if (substr === '"') {
+				state = (state == 0) ? 1 : 0;
+			}
+			//引号里的// 不处理
+			if (state != 1 && substr === '/' && line_text[char + 1] === '/') {
 				break;
 			} else {
 				new_data += substr;
@@ -954,6 +982,7 @@ export function CSVParse(csv: string) {
 		let state = "normal";
 		for (let i = index; i < csv.length; i++) {
 			let substr = csv[i];
+			let bLast = (i == csv.length - 1);
 			if (substr === "\"" && state === "normal") {
 				state = "string";
 				continue;
@@ -975,12 +1004,22 @@ export function CSVParse(csv: string) {
 				col = 0;
 				return i;
 			}
-			if (substr === ",") {
+			if (substr === "," && state !== "string") {
 				if (arr[row] === undefined) {
 					arr[row] = [];
 				}
 				arr[row][col] = value;
 				col++;
+				return i;
+			}
+			if (bLast && state === "normal") {
+				if (arr[row] === undefined) {
+					arr[row] = [];
+				}
+				value += substr;
+				arr[row][col] = value;
+				row++;
+				col = 0;
 				return i;
 			}
 			value += substr;
@@ -1015,7 +1054,10 @@ export function Array2CSV(arr: any[]): string {
 			if (rows[0] === undefined && rows.length === 0) {
 				break;
 			}
-			const col = rows[j] === undefined ? '' : rows[j];
+			let col = rows[j] === undefined ? '' : rows[j];
+			if (col.indexOf(",") != -1) {
+				col = '"' + col + '"';
+			}
 			csv += col + (j + 1 === rows.length ? '' : ',');
 		}
 		if (rows[0] !== undefined || rows.length > 0) {
@@ -1221,7 +1263,7 @@ export function getNonce() {
 	return text;
 }
 export function GetVscodeResourceUri(path: string) {
-	return vscode.Uri.file(path).with({ scheme: 'vscode-resource' }).toString();
+	return vscode.Uri.file(path).with({ scheme: 'vscode-webview-resource' }).toString();
 }
 export function GetLuaScriptSnippet(filename: string, path: string): string {
 	return `LinkLuaModifier( "modifier_${filename}", "${path}.lua", LUA_MODIFIER_MOTION_NONE )
@@ -1262,26 +1304,32 @@ export function FormatPath(path: string): string {
 
 // 把js的obj转成字符串
 // obj:要转的数据对象 
-export function Obj2Str(obj: { [k: string]: any }): string {
-	let ret = "{";
+export function Obj2Str(obj: { [k: string]: any }, bracket_left: string = "{", bracket_right: string = "}", sSeparator: string = ":", depth: number = 1): string {
+	let ret = bracket_left + "\n";
 
 	for (const key in obj) {
 		const element: { [k: string]: object } = obj[key];
+		for (let index = 0; index < depth; index++) {
+			ret += "\t";
+		}
 		if (typeof (element) === "object") {
-			ret += '"' + key + "\":" + Obj2Str(element) + ",";
+			ret += '"' + key + '"' + sSeparator + "" + Obj2Str(element, bracket_left, bracket_right, sSeparator, depth + 1) + ",";
 		} else {
 			if (IsNumber(element)) {
-				ret += '"' + key + "\":" + element + ",";
+				ret += '"' + key + '"' + sSeparator + "" + element + ",";
 			} else {
-				ret += '"' + key + "\":\"" + element + "\",";
+				ret += '"' + key + '"' + sSeparator + '"' + element + "\",";
 			}
-
 		}
+		ret += "\n";
 	}
 	if (ret[ret.length - 1] === ",") {
 		ret = ret.slice(0, -1);// 去掉最后一个逗号
 	}
-	ret += "}";
+	for (let index = 0; index < depth - 1; index++) {
+		ret += "\t";
+	}
+	ret += bracket_right;
 	return ret;
 }
 
@@ -1290,8 +1338,132 @@ export function StringToAny(str: string): any {
 		return true;
 	} else if (str === "false") {
 		return false;
-	} else if (Number(str) !== NaN) {
+	} else if (!isNaN(Number(str))) {
 		return Number(str);
 	}
 	return str;
+}
+
+/**
+ * 将CSV的字符串或者数组转成Object
+ * @param {any} CSV csv string 或者 any[][]
+ * @param {boolean} bVertical 是否为纵向配置，每一行像这样：中文解释,key,value
+ */
+export function CSV2Obj(CSV: any, bVertical = false): any {
+	let arrCSV: any[][] = CSV;
+	if (typeof (CSV) == "string") {
+		arrCSV = CSVParse(CSV);
+	}
+
+	let csvConfigs: any = {};
+	if (bVertical) {
+		for (let i = 0; i < arrCSV.length; i++) {
+			let arrLine = arrCSV[i];
+			csvConfigs[arrLine[1]] = arrLine[2];
+		}
+	} else {
+		// 横向的至少要有三行，第一行中文，第二行key， 第三行内容
+		if (arrCSV.length < 3) {
+			return csvConfigs;
+		}
+		let keys: any[] = arrCSV[1];// 第二行 key
+
+		for (let i = 2; i < arrCSV.length; i++) {
+			let arrLine = arrCSV[i];
+			let lineID: any = arrLine[0];
+			if (!lineID) {
+				continue;
+			}
+			csvConfigs[lineID] = {};
+			for (let j = 0; j < arrLine.length; j++) {
+				if (!keys[j] || keys[j] == "") {
+					continue;
+				}
+				let value = arrLine[j] || "";
+				// if (value == undefined || value == "") {
+				// 	continue;
+				// }
+				// 因为多个key都叫AttachWearables，处理成AttachWearables1234
+				let columnKey = keys[j];
+				if (keys[j] == "AttachWearables") {
+					for (let index = 1; index < 30; index++) {
+						if (!csvConfigs[lineID]["AttachWearables" + index]) {
+							columnKey = "AttachWearables" + index;
+							break;
+						}
+					}
+				}
+				csvConfigs[lineID][columnKey] = value;
+			}
+		}
+		// 中文行处理
+		csvConfigs["__key_sc"] = {};
+		for (let j = 0; j < keys.length; j++) {
+			let sc = arrCSV[0][j] || "";
+			let columnKey = keys[j];
+			if (keys[j] == "AttachWearables") {
+				for (let index = 1; index < 30; index++) {
+					if (!csvConfigs["__key_sc"]["AttachWearables" + index]) {
+						columnKey = "AttachWearables" + index;
+						sc = "AttachWearables" + index;
+						break;
+					}
+				}
+			}
+			csvConfigs["__key_sc"][columnKey] = sc;
+		}
+	}
+	return csvConfigs;
+}
+
+// Obj转csv
+export function Obj2CSV(Obj: any) {
+	let __key_sc = Obj.__key_sc;
+	if (!__key_sc) {
+		// 默认中英文key一样
+		__key_sc = {};
+		for (let lineID in Obj) {
+			let lineInfo = Obj[lineID];
+			for (let columnKey in lineInfo) {
+				__key_sc[columnKey] = columnKey;
+			}
+		}
+	}
+	// 前两行
+	let arrCSV: any[] = [];
+	arrCSV[0] = [];
+	arrCSV[1] = [];
+	for (let key in __key_sc) {
+		let sChineseKey = __key_sc[key];
+		arrCSV[0].push(sChineseKey);
+		if (key.indexOf("AttachWearables") != -1) {
+			arrCSV[1].push("AttachWearables");
+		} else {
+			arrCSV[1].push(key);
+		}
+	}
+
+	let y = 2;
+	for (let lineID in Obj) {
+		if (lineID == "__key_sc") {
+			continue;
+		}
+		arrCSV[y] = [];
+		let oLineInfo = Obj[lineID];
+		for (let columnKey in __key_sc) {
+			let value = oLineInfo[columnKey] || '';
+			arrCSV[y].push(value);
+		}
+		y++;
+	}
+	return Array2CSV(arrCSV);
+}
+
+// 是否是CSV空值
+export function isEmptyCSVValue(anything: any) {
+	if (anything == undefined || anything == null || anything == "") {
+		return true;
+	} else {
+		return false;
+	}
 }

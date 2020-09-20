@@ -54,7 +54,7 @@ function InitAbilityContent(icons_data) {
 		img.id = id;
 		img.type = 'image';
 		img.className = 'texture-icon';
-		img.src = root_path + '/' + data[id];
+		img.src = data[id];
 		img.addEventListener('click', () => {
 			vscode.postMessage(id);
 		});
@@ -72,7 +72,7 @@ function InitAbilityContent(icons_data) {
 			img.id = id;
 			img.type = 'image';
 			img.className = 'texture-icon';
-			img.src = root_path + '/' + data[id];
+			img.src = data[id];
 			img.addEventListener('click', () => {
 				vscode.postMessage(id);
 			});
@@ -92,7 +92,7 @@ function InitItemContent(icons_data) {
 		img.id = id;
 		img.type = 'image';
 		img.className = 'item-texture-icon';
-		img.src = root_path + '/' + data[id];
+		img.src = data[id];
 		img.addEventListener('click', () => {
 			vscode.postMessage(id);
 		});
@@ -110,7 +110,7 @@ function InitItemContent(icons_data) {
 			img.id = id;
 			img.type = 'image';
 			img.className = 'item-texture-icon';
-			img.src = root_path + '/' + data[id];
+			img.src = data[id];
 			img.addEventListener('click', () => {
 				vscode.postMessage(id);
 			});
@@ -123,12 +123,13 @@ function InitHeroFilter(icons_data) {
 	let heroes_data = icons_data.heroes
 	let root_path = heroes_data.path;
 	let data = heroes_data.data;
+	console.log(data);
 	for (const key in data) {
 		const img = document.createElement('input');
 		img.id = key;
 		img.type = 'image';
 		img.className = 'hero-icon';
-		img.src = root_path + '/' + data[key];
+		img.src = data[key];
 		img.addEventListener('click', () => {
 			if (key == 'default') {
 				filter.value = '';

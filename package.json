@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.1.41",
+	"version": "0.1.47",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -125,6 +125,26 @@
 			{
 				"command": "tss.kvTools.openFile",
 				"title": "open file"
+			},
+			{
+				"command": "dota2tools.CSVToPHPArray",
+				"title": "CSV 转 PHP 配置"
+			},
+			{
+				"command": "dota2tools.inherit_table",
+				"title": "继承表生成工具"
+			},
+			{
+				"command": "dota2tools.localization_csv",
+				"title": "翻译文件生成翻译数据表"
+			},
+			{
+				"command": "dota2tools.localization_text",
+				"title": "翻译数据表转翻译文件"
+			},
+			{
+				"command": "samsara.hero_drop",
+				"title": "生成轮回谷英雄掉落卡片特效"
 			}
 		],
 		"menus": {
@@ -168,6 +188,16 @@
 				{
 					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
 					"command": "dota2tools.unit_export",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
+					"command": "dota2tools.localization_csv",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
+					"command": "dota2tools.localization_text",
 					"group": "navigation"
 				}
 			],
@@ -262,21 +292,7 @@
 					"description": "自定义KV Server Steamid"
 				}
 			}
-		},
-		"customEditors": [
-			{
-				"viewType": "dota2tools.ActiveList",
-				"displayName": "ActiveList Editor",
-				"selector": [
-					{
-						"filenamePattern": "herolist.txt"
-					},
-					{
-						"filenamePattern": "activelist.txt"
-					}
-				]
-			}
-		]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
