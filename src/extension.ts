@@ -1920,6 +1920,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		let KVJSConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
 		let Configs = KVJSConfig.configs;
 		let KVFiles = KVJSConfig.kvfiles;
+		let sOutputPath = Configs.OutputPath || "panorama/scripts/kv";
 
 		for (const sKVName in KVFiles) {
 			let sPath = KVFiles[sKVName];
@@ -1947,7 +1948,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 			let js = util.Obj2Str(kv);
 			let fileData = sObjectName + "." + sKVName + " = " + js + ";";
-			let jsPath = (ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace(/\\/g, "/");
+			let jsPath = (ContentDir + "/"+sOutputPath+"/" + sKVName + ".js").replace(/\\/g, "/");
 			fs.writeFileSync(jsPath, fileData);
 		}
 	});
