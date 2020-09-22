@@ -141,6 +141,10 @@
 			{
 				"command": "dota2tools.localization_text",
 				"title": "翻译数据表转翻译文件"
+			},
+			{
+				"command": "samsara.hero_drop",
+				"title": "生成轮回谷英雄掉落卡片特效"
 			}
 		],
 		"menus": {

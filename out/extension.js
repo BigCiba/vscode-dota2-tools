@@ -21,6 +21,7 @@ const listener_1 = require("./listener");
 const watch = require("watch");
 const KVServer_1 = require("./kv_server/KVServer");
 const table_inherit_1 = require("./table_inherit");
+const drop_string_1 = require("./drop_string");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1930,6 +1931,7 @@ function activate(context) {
             let KVJSConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
             let Configs = KVJSConfig.configs;
             let KVFiles = KVJSConfig.kvfiles;
+            let sOutputPath = Configs.OutputPath || "panorama/scripts/kv";
             for (const sKVName in KVFiles) {
                 let sPath = KVFiles[sKVName];
                 let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
@@ -1959,7 +1961,7 @@ function activate(context) {
                 }
                 let js = util.Obj2Str(kv);
                 let fileData = sObjectName + "." + sKVName + " = " + js + ";";
-                let jsPath = (init_1.ContentDir + "/panorama/scripts/kv/" + sKVName + ".js").replace(/\\/g, "/");
+                let jsPath = (init_1.ContentDir + "/" + sOutputPath + "/" + sKVName + ".js").replace(/\\/g, "/");
                 fs.writeFileSync(jsPath, fileData);
             }
         }));
@@ -2062,6 +2064,29 @@ function activate(context) {
                     }
                 }
             }
+        }));
+        // 轮回谷生成英雄掉落卡片的vtex和vpcf
+        let cmdDropVPCf = vscode.commands.registerCommand("samsara.hero_drop", () => __awaiter(this, void 0, void 0, function* () {
+            let sTgaPath = (init_1.ContentDir + "/materials/items/").replace(/\\/g, "/");
+            let sVTEXPath = (init_1.ContentDir + "/materials/").replace(/\\/g, "/");
+            let sVPCFPath = (init_1.ContentDir + "/particles/generic_gameplay/").replace(/\\/g, "/");
+            let fTGAs = fs.readdirSync(sTgaPath);
+            fTGAs.forEach(fileName => {
+                if (fileName.indexOf("npc_dota_hero_") !== -1) {
+                    let sHeroName = fileName.substr(14, fileName.length - 14 - 4);
+                    let sShortFileName = fileName.substr(0, fileName.length - 4);
+                    let sVTEXFileName = `${sVTEXPath}${sShortFileName}.vtex`;
+                    let sVPCFFileName = `${sVPCFPath}dropped_item_${sHeroName}.vpcf`;
+                    let oHeroString = new drop_string_1.DropHeroString(sHeroName);
+                    // 已存在就不生成
+                    if (!fs.existsSync(sVTEXFileName)) {
+                        fs.writeFileSync(sVTEXFileName, oHeroString.strDropVtex);
+                    }
+                    if (!fs.existsSync(sVPCFFileName)) {
+                        fs.writeFileSync(sVPCFFileName, oHeroString.strDropVPCF);
+                    }
+                }
+            });
         }));
         // 注册指令
         context.subscriptions.push(Localization);
