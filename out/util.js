@@ -1153,7 +1153,9 @@ function WriteKeyValue(obj, depth = 0) {
         }
         return tab;
     }
-    for (const key in obj) {
+    let keys = Object.keys(obj).sort(function (a, b) { return Number(a) - Number(b); });
+    for (let index = 0; index < keys.length; index++) {
+        const key = keys[index];
         const value = obj[key];
         if (typeof (value) === 'string') {
             str += AddDepthTab(depth, '"' + key + '"');
