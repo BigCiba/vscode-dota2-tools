@@ -68,12 +68,16 @@ export class Listener {
 					if (is_file === vscode.FileType.File) {
 						let file_path: string = listen_path + '/' + file_name;
 						let csv_path: string = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
-						WatchFile(csv_path, kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv');
+						if (fs.existsSync(csv_path)) {
+							WatchFile(csv_path, kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv');
+						}
 					}
 				}
 			} else if (file_type === vscode.FileType.File) {
 				listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
-				WatchFile(listen_path, kv_object[index]);
+				if (fs.existsSync(listen_path)) {
+					WatchFile(listen_path, kv_object[index]);
+				}
 			}
 			function WatchFile(csv_path: string, kv_path: string) {
 				// console.log('watch ' + csv_path);

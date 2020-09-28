@@ -13,6 +13,7 @@ import { ActiveListEditorProvider } from './activelistEditor';
 import { KVServer } from './kv_server/KVServer';
 import { InheritTable } from "./table_inherit";
 import { DropHeroString } from "./drop_string";
+import { exec } from 'child_process';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -1823,11 +1824,15 @@ export async function activate(context: vscode.ExtensionContext) {
 			icons_data: icons_data,
 		});
 		panel.webview.onDidReceiveMessage(message => {
-			console.log(message);
-
-			let texture: string = message.replace(/_png\.png/, '');
-			vscode.env.clipboard.writeText(texture);
-			util.ShowInfo('已将图标路径复制到剪切板');
+			// console.log(message);
+			if (message.event == "click") {
+				let texture: string = message.id.replace(/_png\.png/, '');
+				vscode.env.clipboard.writeText(texture);
+				util.ShowInfo('已将图标路径复制到剪切板');
+			} else if (message.event == "contextmenu") {
+				let fullpath = path.join(context.extensionPath, 'images', message.type, message.id);
+				exec(`explorer.exe /select,"${fullpath}_png.png"`)
+			}
 			// panel.dispose();
 		}, undefined, context.subscriptions);
 	});

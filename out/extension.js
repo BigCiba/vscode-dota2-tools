@@ -22,6 +22,7 @@ const watch = require("watch");
 const KVServer_1 = require("./kv_server/KVServer");
 const table_inherit_1 = require("./table_inherit");
 const drop_string_1 = require("./drop_string");
+const child_process_1 = require("child_process");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1840,10 +1841,16 @@ function activate(context) {
                 icons_data: icons_data,
             });
             panel.webview.onDidReceiveMessage(message => {
-                console.log(message);
-                let texture = message.replace(/_png\.png/, '');
-                vscode.env.clipboard.writeText(texture);
-                util.ShowInfo('已将图标路径复制到剪切板');
+                // console.log(message);
+                if (message.event == "click") {
+                    let texture = message.id.replace(/_png\.png/, '');
+                    vscode.env.clipboard.writeText(texture);
+                    util.ShowInfo('已将图标路径复制到剪切板');
+                }
+                else if (message.event == "contextmenu") {
+                    let fullpath = path.join(context.extensionPath, 'images', message.type, message.id);
+                    child_process_1.exec(`explorer.exe /select,"${fullpath}_png.png"`);
+                }
                 // panel.dispose();
             }, undefined, context.subscriptions);
         }));
