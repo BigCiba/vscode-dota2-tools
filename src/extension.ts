@@ -1244,10 +1244,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// 选择音效
 	let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', async (uri) => {
-		let root_path: string | undefined = GetRootPath();
-		if (root_path === undefined) {
-			return;
-		}
 		let obj_data: any = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
 		const quick_pick = vscode.window.createQuickPick();
 		quick_pick.canSelectMany = false;

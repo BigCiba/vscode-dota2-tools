@@ -1262,10 +1262,6 @@ function activate(context) {
         }));
         // 选择音效
         let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', (uri) => __awaiter(this, void 0, void 0, function* () {
-            let root_path = GetRootPath();
-            if (root_path === undefined) {
-                return;
-            }
             let obj_data = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
             const quick_pick = vscode.window.createQuickPick();
             quick_pick.canSelectMany = false;
