@@ -102,6 +102,7 @@ function GetWebViewContent(context, templatePath) {
         }
         return $1 + $2 + '"';
     });
+    html = html.replace(/<html lang="(.*)">/, `<html lang="${locale()}"`);
     return html;
 }
 exports.GetWebViewContent = GetWebViewContent;
@@ -667,7 +668,7 @@ function ReadKeyValue2(kvdata) {
                 continue;
             }
             // 插入kv3
-            if (substr === '<' && state === 'READ') {
+            if (substr === '<' && kvdata.substr(i, i + 7) === '<!-- kv3' && state === 'READ') {
                 let [block, new_index] = GetKv3Block(i);
                 kv = ReadKeyValue3(block);
                 i = new_index;
@@ -691,6 +692,12 @@ function ReadKeyValue2(kvdata) {
         let state = 'NONE';
         for (let i = start_index; i < kvdata.length; i++) {
             let substr = kvdata[i];
+            // 跳过转义符
+            if (substr === '\\' && kvdata[i + 1] === '"') {
+                content += substr;
+                i++;
+                continue;
+            }
             if (substr === '"' && state === 'NONE') {
                 state = 'READ';
                 continue;
@@ -1538,4 +1545,9 @@ function isEmptyCSVValue(anything) {
     }
 }
 exports.isEmptyCSVValue = isEmptyCSVValue;
+function locale() {
+    const config = JSON.parse(String(process.env.VSCODE_NLS_CONFIG));
+    return config['locale'] || 'en';
+}
+exports.locale = locale;
 //# sourceMappingURL=util.js.map

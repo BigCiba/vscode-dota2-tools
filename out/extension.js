@@ -2091,6 +2091,35 @@ function activate(context) {
                 }
             });
         }));
+        // 将items_game.txt的套装信息解析出来
+        // ItemsGameParse();
+        function ItemsGameParse() {
+            let sFilePath = path.join(context.extensionPath, "resource/items_game.txt");
+            let tItemsData = util.ReadKeyValue2(fs.readFileSync(sFilePath, 'utf-8')).items_game.items;
+            for (const index in tItemsData) {
+                const element = tItemsData[index];
+                delete element.portraits;
+            }
+            fs.writeFileSync(path.join(context.extensionPath, "resource/items_game.json"), JSON.stringify(tItemsData));
+        }
+        let ItemsBrowser = vscode.commands.registerCommand("dota2tools.items_browser", () => __awaiter(this, void 0, void 0, function* () {
+            const panel = vscode.window.createWebviewPanel('ItemsBrowser', // viewType
+            "Items Browser", // 视图标题
+            vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+            {
+                enableScripts: true,
+                retainContextWhenHidden: true,
+            });
+            panel.webview.postMessage({
+                type: "init",
+                data: JSON.parse(fs.readFileSync(path.join(context.extensionPath, "resource/items_game.json"), 'utf-8')),
+                localize_data: {
+                    "zh-cn": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_schinese.txt"), 'utf-8')).lang.Tokens,
+                    "en": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_english.txt"), 'utf-8')).lang.Tokens,
+                }
+            });
+            panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
+        }));
         // 注册指令
         context.subscriptions.push(Localization);
         context.subscriptions.push(AddHero);

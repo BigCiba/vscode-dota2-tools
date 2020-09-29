@@ -145,6 +145,10 @@
 			{
 				"command": "samsara.hero_drop",
 				"title": "生成轮回谷英雄掉落卡片特效"
+			},
+			{
+				"command": "dota2tools.items_browser",
+				"title": "Dota2饰品工具"
 			}
 		],
 		"menus": {

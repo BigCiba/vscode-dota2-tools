@@ -81,6 +81,7 @@ export function GetWebViewContent(context: any, templatePath: any) {
 		}
 		return $1 + $2 + '"';
 	});
+	html = html.replace(/<html lang="(.*)">/, `<html lang="${locale()}"`);
 	return html;
 }
 // 取出中括号内的内容
@@ -627,7 +628,7 @@ export function ReadKeyValue2(kvdata: string): any {
 				continue;
 			}
 			// 插入kv3
-			if (substr === '<' && state === 'READ') {
+			if (substr === '<' && kvdata.substr(i, i + 7) === '<!-- kv3' && state === 'READ') {
 				let [block, new_index] = GetKv3Block(i);
 				kv = ReadKeyValue3(block);
 				i = new_index;
@@ -651,6 +652,12 @@ export function ReadKeyValue2(kvdata: string): any {
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
+			// 跳过转义符
+			if (substr === '\\' && kvdata[i + 1] === '"') {
+				content += substr;
+				i++;
+				continue;
+			}
 			if (substr === '"' && state === 'NONE') {
 				state = 'READ';
 				continue;
@@ -1468,4 +1475,8 @@ export function isEmptyCSVValue(anything: any) {
 	} else {
 		return false;
 	}
+}
+export function locale(): string {
+	const config = JSON.parse(String(process.env.VSCODE_NLS_CONFIG));
+	return config['locale'] || 'en';
 }
