@@ -663,12 +663,13 @@ function OnInput() {
 		index = String(filter_word);
 		console.log("Number",index);
 	}
-	if (index != undefined) {
+	if (index != undefined && state.data[index] != undefined) {
 		Render(index, state.data[index]);
 	}
 }
 
 function Render(index, ItemData) {
+	console.log(ItemData);
 	let lang = document.documentElement.lang;
 	let RenderData = function (type, data) {
 		if (data != undefined && typeof(data) == 'string') {
@@ -697,7 +698,7 @@ Asset Modifier|type|asset|modifier|style|frequency
 ${RenderData('index', index)}
 ${RenderData('item_name', ItemData.item_name)}
 ${RenderData('item_description', ItemData.item_description)}
-${RenderData('used_by_heroes', Object.keys(ItemData.used_by_heroes)[0])}
+${RenderData('used_by_heroes', ItemData.used_by_heroes == undefined ? undefined:Object.keys(ItemData.used_by_heroes)[0])}
 ${RenderData('item_rarity', ItemData.item_rarity == undefined ? undefined:`Rarity_${ItemData.item_rarity.slice(0,1).toUpperCase() + ItemData.item_rarity.slice(1).toLowerCase()}`)}
 ${RenderData('prefab', ItemData.prefab)}
 ${RenderData('item_type_name', ItemData.item_type_name)}

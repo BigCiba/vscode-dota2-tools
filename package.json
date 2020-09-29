@@ -148,7 +148,11 @@
 			},
 			{
 				"command": "dota2tools.items_browser",
-				"title": "Dota2饰品工具"
+				"title": "Dota2饰品查询工具",
+				"icon": {
+					"light": "./images/hero_light.svg",
+					"dark": "./images/hero_dark.svg"
+				}
 			}
 		],
 		"menus": {
@@ -180,6 +184,10 @@
 				},
 				{
 					"command": "dota2tools.select_ability_texture",
+					"group": "navigation"
+				},
+				{
+					"command": "dota2tools.items_browser",
 					"group": "navigation"
 				}
 			],

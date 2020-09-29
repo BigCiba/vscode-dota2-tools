@@ -573,8 +573,10 @@ export function ReadKV3(path: string): any {
 	return obj;
 }
 // 读取kv2格式为object(兼容kv3)
-export function ReadKeyValue2(kvdata: string): any {
-	kvdata = RemoveComment(kvdata);
+export function ReadKeyValue2(kvdata: string, bRemoveComment: boolean = true): any {
+	if (bRemoveComment === true) {
+		kvdata = RemoveComment(kvdata);
+	}
 	// kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
 	kvdata = kvdata.replace(/\t/g, '').replace(/\r\n/g, '');
 	let kv_obj: any = {};

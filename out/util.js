@@ -613,8 +613,10 @@ function ReadKV3(path) {
 }
 exports.ReadKV3 = ReadKV3;
 // 读取kv2格式为object(兼容kv3)
-function ReadKeyValue2(kvdata) {
-    kvdata = RemoveComment(kvdata);
+function ReadKeyValue2(kvdata, bRemoveComment = true) {
+    if (bRemoveComment === true) {
+        kvdata = RemoveComment(kvdata);
+    }
     // kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
     kvdata = kvdata.replace(/\t/g, '').replace(/\r\n/g, '');
     let kv_obj = {};

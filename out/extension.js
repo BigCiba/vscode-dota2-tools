@@ -2114,8 +2114,8 @@ function activate(context) {
                 type: "init",
                 data: JSON.parse(fs.readFileSync(path.join(context.extensionPath, "resource/items_game.json"), 'utf-8')),
                 localize_data: {
-                    "zh-cn": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_schinese.txt"), 'utf-8')).lang.Tokens,
-                    "en": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_english.txt"), 'utf-8')).lang.Tokens,
+                    "zh-cn": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_schinese.txt"), 'utf-8'), false).lang.Tokens,
+                    "en": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_english.txt"), 'utf-8'), false).lang.Tokens,
                 }
             });
             panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
