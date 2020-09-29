@@ -14,6 +14,7 @@ const LOCALIZE = {
 		"item_rarity": "稀有度",
 		"item_slot": "物品槽位",
 		"item_type_name": "物品类型",
+		"price_info": "商品信息",
 		"bundle"						:"捆绑包",
 		"misc"							:"杂项",
 		"wearable"						:"可佩带",
@@ -322,6 +323,7 @@ const LOCALIZE = {
 		"item_rarity": "Rarity",
 		"item_slot": "Item Slot",
 		"item_type_name": "Item Type Name",
+		"price_info": "Price Info",
 		"bundle"						:"Bundle",
 		"misc"							:"Misc",
 		"wearable"						:"Wearable",
@@ -669,7 +671,6 @@ function OnInput() {
 }
 
 function Render(index, ItemData) {
-	console.log(ItemData);
 	let lang = document.documentElement.lang;
 	let RenderData = function (type, data) {
 		if (data != undefined && typeof(data) == 'string') {
@@ -691,6 +692,12 @@ Asset Modifier|type|asset|modifier|style|frequency
 				}
 				return result;
 			}
+		} else if (type == 'price_info' && data != undefined) {
+			let result = `# ${LOCALIZE[lang][type]}
+bucket|class|category_tags|date|price
+----|----|----|----|----
+${data.bucket}|${data.class}|${data.category_tags}|${data.date}|${data.price}`;
+			return result;
 		}
 		return '';
 	}
@@ -705,6 +712,7 @@ ${RenderData('item_type_name', ItemData.item_type_name)}
 ${RenderData('item_slot', ItemData.item_slot == undefined ? undefined:`LoadoutSlot_${ItemData.item_slot}`.toLowerCase())}
 ${RenderData('model_player', ItemData.model_player)}
 ${RenderData('visuals', ItemData.visuals)}
+${RenderData('price_info', ItemData.price_info)}
 `;
 
 	document.querySelector('.markdown-body').innerHTML = marked(content);
