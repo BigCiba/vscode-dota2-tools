@@ -1949,7 +1949,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 			let js = util.Obj2Str(kv);
 			let fileData = sObjectName + "." + sKVName + " = " + js + ";";
-			let jsPath = (ContentDir + "/"+sOutputPath+"/" + sKVName + ".js").replace(/\\/g, "/");
+			let jsPath = (ContentDir + "/" + sOutputPath + "/" + sKVName + ".js").replace(/\\/g, "/");
 			fs.writeFileSync(jsPath, fileData);
 		}
 	});
