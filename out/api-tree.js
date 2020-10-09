@@ -1,99 +1,58 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
-const fs = require("fs");
-const path = require("path");
 class ApiTreeProvider {
-    constructor(workspaceRoot) {
-        this.workspaceRoot = workspaceRoot;
-        this._onDidChangeTreeData = new vscode.EventEmitter();
-        this.onDidChangeTreeData = this._onDidChangeTreeData.event;
-    }
-    refresh() {
-        this._onDidChangeTreeData.fire();
+    constructor(class_list, enum_list) {
+        this.class_list = class_list;
+        this.enum_list = enum_list;
     }
     getTreeItem(element) {
         return element;
     }
     getChildren(element) {
-        if (!this.workspaceRoot) {
-            vscode.window.showInformationMessage('No dependency in empty workspace');
-            return Promise.resolve([]);
-        }
+        console.log(element);
         if (element) {
-            return Promise.resolve(this.getDepsInPackageJson(path.join(this.workspaceRoot, 'node_modules', element.label, 'package.json')));
-        }
-        else {
-            const packageJsonPath = path.join(this.workspaceRoot, 'game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.json');
-            if (this.pathExists(packageJsonPath)) {
-                return Promise.resolve(this.getDepsInPackageJson(packageJsonPath));
+            let funcItems = [];
+            if (element.itemType === ItemType.Class) {
+                for (const funcName in this.class_list[element.label]) {
+                    let funcData = this.class_list[element.label][funcName];
+                    funcItems.push(new NodeItem(`${funcData.return} ${funcData.function}`, vscode.TreeItemCollapsibleState.None, ItemType.Function, funcData.description));
+                }
+            }
+            else if (element.itemType === ItemType.Function) {
             }
             else {
-                vscode.window.showInformationMessage('Workspace has no package.json');
-                return Promise.resolve([]);
             }
-        }
-    }
-    /**
-     * Given the path to package.json, read all its dependencies and devDependencies.
-     */
-    getDepsInPackageJson(packageJsonPath) {
-        if (this.pathExists(packageJsonPath)) {
-            const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-            const toDep = (moduleName, version) => {
-                if (this.pathExists(path.join(this.workspaceRoot, 'node_modules', moduleName))) {
-                    return new Dependency(moduleName, version, vscode.TreeItemCollapsibleState.Collapsed);
-                }
-                else {
-                    return new Dependency(moduleName, version, vscode.TreeItemCollapsibleState.None, {
-                        command: 'extension.openPackageOnNpm',
-                        title: '',
-                        arguments: [moduleName]
-                    });
-                }
-            };
-            const deps = packageJson.dependencies
-                ? Object.keys(packageJson.dependencies).map(dep => toDep(dep, packageJson.dependencies[dep]))
-                : [];
-            const devDeps = packageJson.devDependencies
-                ? Object.keys(packageJson.devDependencies).map(dep => toDep(dep, packageJson.devDependencies[dep]))
-                : [];
-            return deps.concat(devDeps);
+            return Promise.resolve(funcItems);
         }
         else {
-            return [];
+            let classItems = [];
+            for (const class_name in this.class_list) {
+                classItems.push(new NodeItem(class_name, vscode.TreeItemCollapsibleState.Collapsed, ItemType.Class));
+            }
+            return Promise.resolve(classItems);
         }
-    }
-    pathExists(p) {
-        try {
-            fs.accessSync(p);
-        }
-        catch (err) {
-            return false;
-        }
-        return true;
     }
 }
 exports.ApiTreeProvider = ApiTreeProvider;
-class Dependency extends vscode.TreeItem {
-    constructor(label, version, collapsibleState, command) {
+// 类型
+var ItemType;
+(function (ItemType) {
+    ItemType[ItemType["Class"] = 0] = "Class";
+    ItemType[ItemType["Function"] = 1] = "Function";
+})(ItemType || (ItemType = {}));
+class NodeItem extends vscode.TreeItem {
+    constructor(label, // 用来保存名字
+    collapsibleState, // 折叠状态
+    itemType, // 类型
+    tooltip) {
         super(label, collapsibleState);
         this.label = label;
-        this.version = version;
         this.collapsibleState = collapsibleState;
-        this.command = command;
-        this.iconPath = {
-            light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
-            dark: path.join(__filename, '..', '..', 'resources', 'dark', 'dependency.svg')
-        };
-        this.contextValue = 'dependency';
-    }
-    get tooltip() {
-        return `${this.label}-${this.version}`;
-    }
-    get description() {
-        return this.version;
+        this.itemType = itemType;
+        this.tooltip = tooltip;
+        this.contextValue = 'NodeItem';
     }
 }
-exports.Dependency = Dependency;
+exports.NodeItem = NodeItem;
 //# sourceMappingURL=api-tree.js.map

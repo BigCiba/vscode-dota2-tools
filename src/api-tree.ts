@@ -2,108 +2,54 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export class ApiTreeProvider implements vscode.TreeDataProvider<Dependency> {
+export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 
-	private _onDidChangeTreeData: vscode.EventEmitter<Dependency | undefined> = new vscode.EventEmitter<Dependency | undefined>();
-	readonly onDidChangeTreeData: vscode.Event<Dependency | undefined> = this._onDidChangeTreeData.event;
-
-	constructor(private workspaceRoot: string) {
+	constructor(private class_list: any, private enum_list: any) {
 	}
 
-	refresh(): void {
-		this._onDidChangeTreeData.fire();
-	}
-
-	getTreeItem(element: Dependency): vscode.TreeItem {
+	getTreeItem(element: NodeItem): vscode.TreeItem {
 		return element;
 	}
 
-	getChildren(element?: Dependency): Thenable<Dependency[]> {
-		if (!this.workspaceRoot) {
-			vscode.window.showInformationMessage('No dependency in empty workspace');
-			return Promise.resolve([]);
-		}
-
+	getChildren(element?: NodeItem): Thenable<NodeItem[]> {
+		console.log(element);
+		
 		if (element) {
-			return Promise.resolve(this.getDepsInPackageJson(path.join(this.workspaceRoot, 'node_modules', element.label, 'package.json')));
-		} else {
-			const packageJsonPath = path.join(this.workspaceRoot, 'game/dota_addons/dota_imba/scripts/vscripts/libraries/script_help2.json');
-			if (this.pathExists(packageJsonPath)) {
-				return Promise.resolve(this.getDepsInPackageJson(packageJsonPath));
-			} else {
-				vscode.window.showInformationMessage('Workspace has no package.json');
-				return Promise.resolve([]);
-			}
-		}
-
-	}
-
-	/**
-	 * Given the path to package.json, read all its dependencies and devDependencies.
-	 */
-	private getDepsInPackageJson(packageJsonPath: string): Dependency[] {
-		if (this.pathExists(packageJsonPath)) {
-			const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-
-			const toDep = (moduleName: string, version: string): Dependency => {
-				if (this.pathExists(path.join(this.workspaceRoot, 'node_modules', moduleName))) {
-					return new Dependency(moduleName, version, vscode.TreeItemCollapsibleState.Collapsed);
-				} else {
-					return new Dependency(moduleName, version, vscode.TreeItemCollapsibleState.None, {
-						command: 'extension.openPackageOnNpm',
-						title: '',
-						arguments: [moduleName]
-					});
+			let funcItems = [];
+			if (element.itemType === ItemType.Class) {
+				for (const funcName in this.class_list[element.label]) {
+					let funcData = this.class_list[element.label][funcName];
+					funcItems.push(new NodeItem(`${funcData.return} ${funcData.function}`, vscode.TreeItemCollapsibleState.None, ItemType.Function, funcData.description));
 				}
-			};
-
-			const deps = packageJson.dependencies
-				? Object.keys(packageJson.dependencies).map(dep => toDep(dep, packageJson.dependencies[dep]))
-				: [];
-			const devDeps = packageJson.devDependencies
-				? Object.keys(packageJson.devDependencies).map(dep => toDep(dep, packageJson.devDependencies[dep]))
-				: [];
-			return deps.concat(devDeps);
+			} else if (element.itemType === ItemType.Function) {
+				
+			} else {
+				
+			}
+			return Promise.resolve(funcItems);
 		} else {
-			return [];
+			let classItems = [];
+			for (const class_name in this.class_list) {
+				classItems.push(new NodeItem(class_name, vscode.TreeItemCollapsibleState.Collapsed, ItemType.Class));
+			}
+			return Promise.resolve(classItems);
 		}
-	}
-
-	private pathExists(p: string): boolean {
-		try {
-			fs.accessSync(p);
-		} catch (err) {
-			return false;
-		}
-
-		return true;
 	}
 }
-
-export class Dependency extends vscode.TreeItem {
-
+// 类型
+enum ItemType {
+	Class = 0,
+	Function = 1,
+}
+export class NodeItem extends vscode.TreeItem {
 	constructor(
-		public readonly label: string,
-		private version: string,
-		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-		public readonly command?: vscode.Command
+		public readonly label: string,	// 用来保存名字
+		public readonly collapsibleState: vscode.TreeItemCollapsibleState,	// 折叠状态
+		public readonly itemType: ItemType,	// 类型
+		public readonly tooltip?: string,	// tooltip
 	) {
 		super(label, collapsibleState);
 	}
 
-	get tooltip(): string {
-		return `${this.label}-${this.version}`;
-	}
-
-	get description(): string {
-		return this.version;
-	}
-
-	iconPath = {
-		light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
-		dark: path.join(__filename, '..', '..', 'resources', 'dark', 'dependency.svg')
-	};
-
-	contextValue = 'dependency';
-
+	contextValue = 'NodeItem';
 }

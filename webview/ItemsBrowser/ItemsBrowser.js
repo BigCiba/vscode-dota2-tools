@@ -15,6 +15,7 @@ const LOCALIZE = {
 		"item_slot": "物品槽位",
 		"item_type_name": "物品类型",
 		"price_info": "商品信息",
+		"bundle_contain": "含有该物品的捆绑包",
 		"bundle"						:"捆绑包",
 		"misc"							:"杂项",
 		"wearable"						:"可佩带",
@@ -324,6 +325,7 @@ const LOCALIZE = {
 		"item_slot": "Item Slot",
 		"item_type_name": "Item Type Name",
 		"price_info": "Price Info",
+		"bundle_contain": "Bundles Contain",
 		"bundle"						:"Bundle",
 		"misc"							:"Misc",
 		"wearable"						:"Wearable",
@@ -655,6 +657,44 @@ function GetIndexByModelName(ModelName) {
 	}
 	return undefined;
 }
+// 根据模型名字索引编号
+function GetIndexByName(Name) {
+	const ItemsData = vscode.getState().data;
+	for (const index in ItemsData) {
+		const ItemData = ItemsData[index];
+		if (ItemData.name == Name) {
+			return index;
+		}
+	}
+	return undefined;
+}
+// 根据名字索引物品
+function GetItemByName(Name) {
+	const ItemsData = vscode.getState().data;
+	for (const index in ItemsData) {
+		const ItemData = ItemsData[index];
+		if (ItemData.name == Name) {
+			return ItemData;
+		}
+	}
+	return undefined;
+}
+// 根据名字索引捆绑包信息
+function GetBundlesByName(Name) {
+	let Bundles = {};
+	const ItemsData = vscode.getState().data;
+	for (const index in ItemsData) {
+		const ItemData = ItemsData[index];
+		if (ItemData.bundle !== undefined) {
+			for (const BundleItemName in ItemData.bundle) {
+				if (BundleItemName == Name) {
+					Bundles[index] = ItemData;
+				}
+			}
+		}
+	}
+	return Bundles;
+}
 function OnInput() {
 	const state = vscode.getState();
 	let filter_word = filter.value;
@@ -663,7 +703,6 @@ function OnInput() {
 		index = GetIndexByModelName(filter_word);
 	} else if (!isNaN(Number(filter_word)) == true) {
 		index = String(filter_word);
-		console.log("Number",index);
 	}
 	if (index != undefined && state.data[index] != undefined) {
 		Render(index, state.data[index]);
@@ -673,11 +712,11 @@ function OnInput() {
 function Render(index, ItemData) {
 	let lang = document.documentElement.lang;
 	let RenderData = function (type, data) {
-		if (data != undefined && typeof(data) == 'string') {
+		if (data != undefined && typeof(data) == 'string') {	// 通用属性处理
 			return `# ${LOCALIZE[lang][type]}  
 ${Localize(data)}  
 `
-		} else if (type == 'visuals' && data != undefined) {
+		} else if (type == 'visuals' && data != undefined) {	// 处理资源修改相关信息
 			if (data.hasOwnProperty('asset_modifier') || data.hasOwnProperty('asset_modifier0')) {
 				let result = `# ${LOCALIZE[lang][type]}
 Asset Modifier|type|asset|modifier|style|frequency
@@ -692,11 +731,35 @@ Asset Modifier|type|asset|modifier|style|frequency
 				}
 				return result;
 			}
-		} else if (type == 'price_info' && data != undefined) {
+		} else if (type == 'price_info' && data != undefined) {	// 处理商品相关信息
 			let result = `# ${LOCALIZE[lang][type]}
 bucket|class|category_tags|date|price
 ----|----|----|----|----
 ${data.bucket}|${data.class}|${data.category_tags}|${data.date}|${data.price}`;
+			return result;
+		} else if (type == 'bundle' && data != undefined) {	// 处理捆绑包
+			let result = `# ${LOCALIZE[lang][type]}
+${Localize('index')}|${Localize('item_name')}
+----|----
+`;
+			for (const key in data) {
+				const element = data[key];
+				let BundleItemData = GetItemByName(key);
+				let BundleItemIndex = GetIndexByName(key);
+				result += `${BundleItemIndex}|${Localize(BundleItemData.item_name)}
+`
+			}
+			return result;
+		} else if (type == 'bundle_contain' && data != undefined && Object.keys(data).length != 0) {	// 处理包含该物品捆绑包信息
+			let result = `# ${LOCALIZE[lang][type]}
+${Localize('index')}|${Localize('bundle')}
+----|----
+`;
+			for (const key in data) {
+				const element = data[key];
+				result += `${key}|${Localize(element.item_name)}
+`
+			}
 			return result;
 		}
 		return '';
@@ -711,16 +774,18 @@ ${RenderData('prefab', ItemData.prefab)}
 ${RenderData('item_type_name', ItemData.item_type_name)}
 ${RenderData('item_slot', ItemData.item_slot == undefined ? undefined:`LoadoutSlot_${ItemData.item_slot}`.toLowerCase())}
 ${RenderData('model_player', ItemData.model_player)}
+${RenderData('bundle', ItemData.bundle)}
+${RenderData('bundle_contain', GetBundlesByName(ItemData.name))}
 ${RenderData('visuals', ItemData.visuals)}
 ${RenderData('price_info', ItemData.price_info)}
 `;
-
+	console.log(content);
 	document.querySelector('.markdown-body').innerHTML = marked(content);
 }
 
 window.addEventListener('message', event => {
 	const message = event.data;
-	if (message.type === 'init') {
+	if (message.type == 'init') {
 		vscode.setState({ 
 			data: message.data,
 			localize_data: message.localize_data

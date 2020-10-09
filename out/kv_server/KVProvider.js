@@ -17,7 +17,7 @@ class KvProvider {
         this.list = null;
         this._onDidChangeTreeData = new vscode.EventEmitter();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
-        this.request();
+        // this.request()
     }
     refresh(kvNode) {
         if (kvNode) {

@@ -15,7 +15,7 @@
 		"*",
 		"onCommand:dota2tools.Localization",
 		"onCommand:extension.AddHero",
-		"onView:nodeDependencies"
+		"onView:dota2apiExplorer"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -25,6 +25,11 @@
 					"id": "kvdownload",
 					"title": "kvdownload",
 					"icon": "res/kv_dark.png"
+				},
+				{
+					"id": "dota2api",
+					"title": "Dota2 API",
+					"icon": "images/dep.svg"
 				}
 			]
 		},
@@ -33,6 +38,12 @@
 				{
 					"id": "kvdownloadExplorer",
 					"name": "kvdownloadExplorer"
+				}
+			],
+			"dota2api": [
+				{
+					"id": "dota2apiExplorer",
+					"name": "Dota2 API"
 				}
 			]
 		},

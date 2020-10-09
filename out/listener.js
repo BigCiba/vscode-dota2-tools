@@ -188,6 +188,9 @@ class Listener {
                 return;
             }
             let sConfigPath = (root_path + "/eom_config.txt").replace("\\", "/");
+            if (fs.existsSync(sConfigPath) === false) {
+                return;
+            }
             // 监听配置文件的变动
             fs.watchFile(sConfigPath, (curr, prev) => {
                 if (curr.nlink === 0) {
