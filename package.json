@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.1.49",
+	"version": "0.1.51",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -15,7 +15,7 @@
 		"*",
 		"onCommand:dota2tools.Localization",
 		"onCommand:extension.AddHero",
-		"onView:nodeDependencies"
+		"onView:dota2apiExplorer"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -25,6 +25,11 @@
 					"id": "kvdownload",
 					"title": "kvdownload",
 					"icon": "res/kv_dark.png"
+				},
+				{
+					"id": "dota2api",
+					"title": "Dota2 API",
+					"icon": "images/dep.svg"
 				}
 			]
 		},
@@ -33,6 +38,12 @@
 				{
 					"id": "kvdownloadExplorer",
 					"name": "kvdownloadExplorer"
+				}
+			],
+			"dota2api": [
+				{
+					"id": "dota2apiExplorer",
+					"name": "Dota2 API"
 				}
 			]
 		},
@@ -145,6 +156,14 @@
 			{
 				"command": "samsara.hero_drop",
 				"title": "生成轮回谷英雄掉落卡片特效"
+			},
+			{
+				"command": "dota2tools.items_browser",
+				"title": "Dota2饰品查询工具",
+				"icon": {
+					"light": "./images/hero_light.svg",
+					"dark": "./images/hero_dark.svg"
+				}
 			}
 		],
 		"menus": {
@@ -176,6 +195,10 @@
 				},
 				{
 					"command": "dota2tools.select_ability_texture",
+					"group": "navigation"
+				},
+				{
+					"command": "dota2tools.items_browser",
 					"group": "navigation"
 				}
 			],

@@ -102,6 +102,7 @@ function GetWebViewContent(context, templatePath) {
         }
         return $1 + $2 + '"';
     });
+    html = html.replace(/<html lang="(.*)">/, `<html lang="${locale()}"`);
     return html;
 }
 exports.GetWebViewContent = GetWebViewContent;
@@ -612,8 +613,10 @@ function ReadKV3(path) {
 }
 exports.ReadKV3 = ReadKV3;
 // 读取kv2格式为object(兼容kv3)
-function ReadKeyValue2(kvdata) {
-    kvdata = RemoveComment(kvdata);
+function ReadKeyValue2(kvdata, bRemoveComment = true) {
+    if (bRemoveComment === true) {
+        kvdata = RemoveComment(kvdata);
+    }
     // kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
     kvdata = kvdata.replace(/\t/g, '').replace(/\r\n/g, '');
     let kv_obj = {};
@@ -667,7 +670,7 @@ function ReadKeyValue2(kvdata) {
                 continue;
             }
             // 插入kv3
-            if (substr === '<' && state === 'READ') {
+            if (substr === '<' && kvdata.substr(i, i + 7) === '<!-- kv3' && state === 'READ') {
                 let [block, new_index] = GetKv3Block(i);
                 kv = ReadKeyValue3(block);
                 i = new_index;
@@ -691,6 +694,12 @@ function ReadKeyValue2(kvdata) {
         let state = 'NONE';
         for (let i = start_index; i < kvdata.length; i++) {
             let substr = kvdata[i];
+            // 跳过转义符
+            if (substr === '\\' && kvdata[i + 1] === '"') {
+                content += substr;
+                i++;
+                continue;
+            }
             if (substr === '"' && state === 'NONE') {
                 state = 'READ';
                 continue;
@@ -1153,7 +1162,9 @@ function WriteKeyValue(obj, depth = 0) {
         }
         return tab;
     }
-    for (const key in obj) {
+    let keys = Object.keys(obj).sort(function (a, b) { return Number(a) - Number(b); });
+    for (let index = 0; index < keys.length; index++) {
+        const key = keys[index];
         const value = obj[key];
         if (typeof (value) === 'string') {
             str += AddDepthTab(depth, '"' + key + '"');
@@ -1536,4 +1547,9 @@ function isEmptyCSVValue(anything) {
     }
 }
 exports.isEmptyCSVValue = isEmptyCSVValue;
+function locale() {
+    const config = JSON.parse(String(process.env.VSCODE_NLS_CONFIG));
+    return config['locale'] || 'en';
+}
+exports.locale = locale;
 //# sourceMappingURL=util.js.map

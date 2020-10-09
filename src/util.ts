@@ -81,6 +81,7 @@ export function GetWebViewContent(context: any, templatePath: any) {
 		}
 		return $1 + $2 + '"';
 	});
+	html = html.replace(/<html lang="(.*)">/, `<html lang="${locale()}"`);
 	return html;
 }
 // 取出中括号内的内容
@@ -572,8 +573,10 @@ export function ReadKV3(path: string): any {
 	return obj;
 }
 // 读取kv2格式为object(兼容kv3)
-export function ReadKeyValue2(kvdata: string): any {
-	kvdata = RemoveComment(kvdata);
+export function ReadKeyValue2(kvdata: string, bRemoveComment: boolean = true): any {
+	if (bRemoveComment === true) {
+		kvdata = RemoveComment(kvdata);
+	}
 	// kvdata = kvdata.replace(/\t/g,'').replace(' ','').replace(/\r\n/g,'');
 	kvdata = kvdata.replace(/\t/g, '').replace(/\r\n/g, '');
 	let kv_obj: any = {};
@@ -627,7 +630,7 @@ export function ReadKeyValue2(kvdata: string): any {
 				continue;
 			}
 			// 插入kv3
-			if (substr === '<' && state === 'READ') {
+			if (substr === '<' && kvdata.substr(i, i + 7) === '<!-- kv3' && state === 'READ') {
 				let [block, new_index] = GetKv3Block(i);
 				kv = ReadKeyValue3(block);
 				i = new_index;
@@ -651,6 +654,12 @@ export function ReadKeyValue2(kvdata: string): any {
 		let state = 'NONE';
 		for (let i = start_index; i < kvdata.length; i++) {
 			let substr = kvdata[i];
+			// 跳过转义符
+			if (substr === '\\' && kvdata[i + 1] === '"') {
+				content += substr;
+				i++;
+				continue;
+			}
 			if (substr === '"' && state === 'NONE') {
 				state = 'READ';
 				continue;
@@ -1095,7 +1104,9 @@ export function WriteKeyValue(obj: any, depth: number = 0) {
 		}
 		return tab;
 	}
-	for (const key in obj) {
+	let keys = Object.keys(obj).sort(function(a,b){return Number(a)-Number(b)});
+	for (let index = 0; index < keys.length; index++) {
+		const key = keys[index]
 		const value = obj[key];
 		if (typeof (value) === 'string') {
 			str += AddDepthTab(depth, '"' + key + '"');
@@ -1466,4 +1477,8 @@ export function isEmptyCSVValue(anything: any) {
 	} else {
 		return false;
 	}
+}
+export function locale(): string {
+	const config = JSON.parse(String(process.env.VSCODE_NLS_CONFIG));
+	return config['locale'] || 'en';
 }

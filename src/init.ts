@@ -129,12 +129,16 @@ export async function Init(context: vscode.ExtensionContext) {
 				if (is_file === vscode.FileType.File){
 					let file_path: string = listen_path + '/' + file_name;
 					let csv_path: string = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
-					fs.writeFileSync(ability_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({KeyValue:util.AbilityCSV2KV(csv_path)}));
+					if (fs.existsSync(csv_path)) {
+						fs.writeFileSync(ability_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({KeyValue:util.AbilityCSV2KV(csv_path)}));
+					}
 				}
 			}
 		} else if (file_type === vscode.FileType.File) {
 			listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
-			fs.writeFileSync(ability_kv_object[index], util.WriteKeyValue({KeyValue:util.AbilityCSV2KV(listen_path)}));
+			if (fs.existsSync(listen_path)) {
+				fs.writeFileSync(ability_kv_object[index], util.WriteKeyValue({KeyValue:util.AbilityCSV2KV(listen_path)}));
+			}
 		}
 	}
 	const unit_excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');

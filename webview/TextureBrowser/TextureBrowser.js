@@ -56,7 +56,18 @@ function InitAbilityContent(icons_data) {
 		img.className = 'texture-icon';
 		img.src = data[id];
 		img.addEventListener('click', () => {
-			vscode.postMessage(id);
+			vscode.postMessage({
+				event: 'click',
+				type: 'spellicons',
+				id: id,
+			});
+		});
+		img.addEventListener('contextmenu', () => {
+			vscode.postMessage({
+				event: 'contextmenu',
+				type: 'spellicons',
+				id: id,
+			});
 		});
 
 		textureContainer.appendChild(img);
@@ -74,7 +85,11 @@ function InitAbilityContent(icons_data) {
 			img.className = 'texture-icon';
 			img.src = data[id];
 			img.addEventListener('click', () => {
-				vscode.postMessage(id);
+				vscode.postMessage({
+					event: 'click',
+					type: 'spellicons',
+					id: id,
+				});
 			});
 	
 			textureContainer.appendChild(img);
@@ -94,7 +109,18 @@ function InitItemContent(icons_data) {
 		img.className = 'item-texture-icon';
 		img.src = data[id];
 		img.addEventListener('click', () => {
-			vscode.postMessage(id);
+			vscode.postMessage({
+				event: 'click',
+				type: 'items',
+				id: id,
+			});
+		});
+		img.addEventListener('contextmenu', () => {
+			vscode.postMessage({
+				event: 'contextmenu',
+				type: 'items',
+				id: id,
+			});
 		});
 
 		itemTextureContainer.appendChild(img);
@@ -112,7 +138,11 @@ function InitItemContent(icons_data) {
 			img.className = 'item-texture-icon';
 			img.src = data[id];
 			img.addEventListener('click', () => {
-				vscode.postMessage(id);
+				vscode.postMessage({
+					event: 'click',
+					type: 'items',
+					id: id,
+				});
 			});
 	
 			itemTextureContainer.appendChild(img);

@@ -21,7 +21,7 @@ export class KvProvider implements vscode.TreeDataProvider<kvNode> {
 	readonly onDidChangeTreeData: vscode.Event<kvNode | null> = this._onDidChangeTreeData.event;
 
 	constructor(context: vscode.ExtensionContext) {
-		this.request()
+		// this.request()
 	}
 
 	refresh(kvNode?: kvNode): void {

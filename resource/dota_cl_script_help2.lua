@@ -1353,8 +1353,7 @@ function CBodyComponent:AddVelocity( Vector_1, Vector_2 ) end
 -- @return void
 function CBodyComponent:DetachFromParent(  ) end
 
----[[ CBodyComponent:GetSequence  Returns the active sequence
- ]]
+---[[ CBodyComponent:GetSequence  Returns the active sequence ]]
 -- @return <unknown>
 function CBodyComponent:GetSequence(  ) end
 

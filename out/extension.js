@@ -19,9 +19,11 @@ const util = require("./util");
 const init_1 = require("./init");
 const listener_1 = require("./listener");
 const watch = require("watch");
+const api_tree_1 = require("./api-tree");
 const KVServer_1 = require("./kv_server/KVServer");
 const table_inherit_1 = require("./table_inherit");
 const drop_string_1 = require("./drop_string");
+const child_process_1 = require("child_process");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1262,10 +1264,6 @@ function activate(context) {
         }));
         // 选择音效
         let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', (uri) => __awaiter(this, void 0, void 0, function* () {
-            let root_path = GetRootPath();
-            if (root_path === undefined) {
-                return;
-            }
             let obj_data = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
             const quick_pick = vscode.window.createQuickPick();
             quick_pick.canSelectMany = false;
@@ -1844,10 +1842,16 @@ function activate(context) {
                 icons_data: icons_data,
             });
             panel.webview.onDidReceiveMessage(message => {
-                console.log(message);
-                let texture = message.replace(/_png\.png/, '');
-                vscode.env.clipboard.writeText(texture);
-                util.ShowInfo('已将图标路径复制到剪切板');
+                // console.log(message);
+                if (message.event == "click") {
+                    let texture = message.id.replace(/_png\.png/, '');
+                    vscode.env.clipboard.writeText(texture);
+                    util.ShowInfo('已将图标路径复制到剪切板');
+                }
+                else if (message.event == "contextmenu") {
+                    let fullpath = path.join(context.extensionPath, 'images', message.type, message.id);
+                    child_process_1.exec(`explorer.exe /select,"${fullpath}_png.png"`);
+                }
                 // panel.dispose();
             }, undefined, context.subscriptions);
         }));
@@ -2088,6 +2092,111 @@ function activate(context) {
                 }
             });
         }));
+        // 将items_game.txt的套装信息解析出来
+        // ItemsGameParse();
+        function ItemsGameParse() {
+            let sFilePath = path.join(context.extensionPath, "resource/items_game.txt");
+            let tItemsData = util.ReadKeyValue2(fs.readFileSync(sFilePath, 'utf-8')).items_game.items;
+            for (const index in tItemsData) {
+                const element = tItemsData[index];
+                delete element.portraits;
+            }
+            fs.writeFileSync(path.join(context.extensionPath, "resource/items_game.json"), JSON.stringify(tItemsData));
+        }
+        let ItemsBrowser = vscode.commands.registerCommand("dota2tools.items_browser", () => __awaiter(this, void 0, void 0, function* () {
+            const panel = vscode.window.createWebviewPanel('ItemsBrowser', // viewType
+            "Items Browser", // 视图标题
+            vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+            {
+                enableScripts: true,
+                retainContextWhenHidden: true,
+            });
+            panel.webview.postMessage({
+                type: "init",
+                data: JSON.parse(fs.readFileSync(path.join(context.extensionPath, "resource/items_game.json"), 'utf-8')),
+                localize_data: {
+                    "zh-cn": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_schinese.txt"), 'utf-8'), false).lang.Tokens,
+                    "en": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_english.txt"), 'utf-8'), false).lang.Tokens,
+                }
+            });
+            panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
+        }));
+        // 解析api文件
+        APIParse();
+        function APIParse() {
+            let PraseFile = function (sDotaScriptHelp) {
+                const api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
+                const rows = sDotaScriptHelp.split(os.EOL);
+                let class_list = {};
+                let enum_list = {};
+                for (let i = 0; i < rows.length; i++) {
+                    // 函数
+                    let option = rows[i].match(/---\[\[.*\]\]/g);
+                    if (option !== null && option.length > 0) {
+                        let [fun_info, new_line] = util.ReadFunction(i, rows);
+                        if (api_note[fun_info.function] !== undefined) {
+                            fun_info.description = api_note[fun_info.function].description;
+                            for (const params_name in fun_info.params) {
+                                const params_info = fun_info.params[params_name];
+                                params_info.params_name = api_note[fun_info.function].params[params_name].params_name;
+                                params_info.description = api_note[fun_info.function].params[params_name].description;
+                            }
+                            fun_info.example = api_note[fun_info.function].example;
+                        }
+                        if (class_list[fun_info.class] === undefined) {
+                            class_list[fun_info.class] = [];
+                        }
+                        class_list[fun_info.class].push(fun_info);
+                        i = new_line;
+                    }
+                    // 常数
+                    if (rows[i].search('--- Enum ') !== -1) {
+                        let enum_name = rows[i].substr(9, rows[i].length);
+                        if (enum_list[enum_name] === undefined) {
+                            enum_list[enum_name] = [];
+                        }
+                        let [enum_info, new_line] = util.ReadEnum(i, rows);
+                        for (let j = 0; j < enum_info.length; j++) {
+                            const enum_arr = enum_info[j];
+                            if (api_note[enum_arr.name] !== undefined) {
+                                enum_arr.description_lite = api_note[enum_arr.name].description_lite;
+                                enum_arr.description = api_note[enum_arr.name].description;
+                                enum_arr.example = api_note[enum_arr.name].example;
+                            }
+                        }
+                        enum_list[enum_name] = enum_info;
+                        i = new_line;
+                    }
+                }
+                return [class_list, enum_list];
+            };
+            let Combine = function (class_list, class_list_cl) {
+                for (const class_name in class_list) {
+                    const fun_list = class_list[class_name];
+                    // console.log('fun_list', fun_list);
+                    for (let i = 0; i < fun_list.length; i++) {
+                        const fun_info = fun_list[i];
+                        let class_info_cl = class_list_cl[class_name];
+                        if (class_info_cl === undefined) {
+                            class_info_cl = class_list_cl[class_name.replace('C', 'C_')];
+                        }
+                        if (class_info_cl !== undefined) {
+                            for (let j = 0; j < class_info_cl.length; j++) {
+                                if (class_info_cl[j].function === fun_info.function) {
+                                    fun_info.client = true;
+                                    fun_info.class_cl = class_info_cl[j].class;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            let sHelp = path.join(context.extensionPath, "resource/dota_script_help2.lua");
+            let sHelpClient = path.join(context.extensionPath, "resource/dota_script_help2.lua");
+            let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
+            vscode.window.registerTreeDataProvider('dota2apiExplorer', new api_tree_1.ApiTreeProvider(class_list, enum_list));
+        }
         // 注册指令
         context.subscriptions.push(Localization);
         context.subscriptions.push(AddHero);
