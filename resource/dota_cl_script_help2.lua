@@ -1361,8 +1361,7 @@ function CBodyComponent:GetSequence(  ) end
 -- @return bool
 function CBodyComponent:IsAttachedToParent(  ) end
 
----[[ CBodyComponent:LookupSequence  Returns a sequence id given a name
- ]]
+---[[ CBodyComponent:LookupSequence  Returns a sequence id given a name ]]
 -- @return <unknown>
 -- @param string_1 string
 function CBodyComponent:LookupSequence( string_1 ) end

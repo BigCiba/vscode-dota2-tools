@@ -2121,6 +2121,27 @@ function activate(context) {
             });
             panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
         }));
+        let APIBrowserView = undefined;
+        vscode.commands.registerCommand("dota2tools.api_browser", (funInfo, infoType) => __awaiter(this, void 0, void 0, function* () {
+            console.log(funInfo);
+            if (APIBrowserView == undefined) {
+                APIBrowserView = vscode.window.createWebviewPanel('APIBrowser', // viewType
+                "API Browser", // 视图标题
+                vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+                {
+                    enableScripts: true,
+                    retainContextWhenHidden: true,
+                });
+                APIBrowserView.onDidDispose(() => {
+                    APIBrowserView = undefined;
+                });
+            }
+            APIBrowserView.webview.postMessage({
+                type: infoType,
+                data: funInfo,
+            });
+            APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
+        }));
         // 解析api文件
         APIParse();
         function APIParse() {
@@ -2193,8 +2214,10 @@ function activate(context) {
                 }
             };
             let sHelp = path.join(context.extensionPath, "resource/dota_script_help2.lua");
-            let sHelpClient = path.join(context.extensionPath, "resource/dota_script_help2.lua");
+            let sHelpClient = path.join(context.extensionPath, "resource/dota_cl_script_help2.lua");
             let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
+            let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
+            Combine(class_list, class_list_cl);
             vscode.window.registerTreeDataProvider('dota2apiExplorer', new api_tree_1.ApiTreeProvider(class_list, enum_list));
         }
         // 注册指令

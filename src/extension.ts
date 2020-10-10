@@ -10,7 +10,7 @@ import { Listener } from './listener';
 import * as watch from 'watch';
 import { log, print } from 'util';
 import { ActiveListEditorProvider } from './activelistEditor';
-import { ApiTreeProvider } from './api-tree';
+import { APIType, ApiTreeProvider } from './api-tree';
 import { KVServer } from './kv_server/KVServer';
 import { InheritTable } from "./table_inherit";
 import { DropHeroString } from "./drop_string";
@@ -2114,6 +2114,32 @@ export async function activate(context: vscode.ExtensionContext) {
 		panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
 	});
 
+	let APIBrowserView: vscode.WebviewPanel|undefined = undefined;
+	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType) => {
+		console.log(funInfo);
+		
+		
+		if (APIBrowserView == undefined) {
+			APIBrowserView = vscode.window.createWebviewPanel(
+				'APIBrowser', // viewType
+				"API Browser", // 视图标题
+				vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+				{
+					enableScripts: true, // 启用JS，默认禁用
+					retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+				}
+			);
+			APIBrowserView.onDidDispose(() => {
+				APIBrowserView = undefined;
+			});
+		}
+		APIBrowserView.webview.postMessage({
+			type: infoType,
+			data: funInfo,
+		});
+		APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
+	});
+
 	// 解析api文件
 	APIParse();
 	function APIParse() {
@@ -2186,8 +2212,10 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		}
 		let sHelp: string = path.join(context.extensionPath, "resource/dota_script_help2.lua");
-		let sHelpClient: string = path.join(context.extensionPath, "resource/dota_script_help2.lua");
+		let sHelpClient: string = path.join(context.extensionPath, "resource/dota_cl_script_help2.lua");
 		let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
+		let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
+		Combine(class_list, class_list_cl);
 		vscode.window.registerTreeDataProvider('dota2apiExplorer', new ApiTreeProvider(class_list, enum_list));
 	}
 	// 注册指令
