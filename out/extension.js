@@ -788,11 +788,7 @@ function activate(context) {
         }));
         // 打开API
         let OpenAPI = vscode.commands.registerCommand('extension.OpenAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
-            let root_path = GetRootPath();
-            if (root_path === undefined) {
-                return;
-            }
-            vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/dota_script_help2.lua'));
+            vscode.window.showTextDocument(vscode.Uri.file(path.join(context.extensionPath, "resource/dota_script_help2.lua")));
         }));
         // 生成API
         let GenerateAPI = vscode.commands.registerCommand('extension.GenerateAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
@@ -1011,12 +1007,13 @@ function activate(context) {
         // 注释API
         let NoteAPI = vscode.commands.registerCommand('extension.NoteAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
             var _a;
-            let root_path = GetRootPath();
-            if (root_path === undefined) {
+            let api_note_path = vscode.workspace.getConfiguration().get('dota2-tools.API Note Path') || '';
+            if (api_note_path === undefined || api_note_path === '') {
+                util.ShowError("设置中未定义API Note Path");
                 return;
             }
             let active_text_editor = vscode.window.activeTextEditor;
-            if (active_text_editor !== undefined) {
+            if (active_text_editor !== undefined && api_note_path !== undefined) {
                 let range_start = active_text_editor.selection.start;
                 let range_end = active_text_editor.selection.end;
                 const select_text = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.getText(new vscode.Range(range_start, range_end));
@@ -1025,7 +1022,7 @@ function activate(context) {
                 }
                 // 读取服务器API
                 const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
-                const api_note = JSON.parse(fs.readFileSync(init_1.GameDir + '/scripts/vscripts/libraries/api_note.json', 'utf-8'));
+                const api_note = JSON.parse(fs.readFileSync(api_note_path, 'utf-8'));
                 const rows = dota_script_help2.split(os.EOL);
                 let class_list = {};
                 let enum_list = {};
@@ -1034,14 +1031,15 @@ function activate(context) {
                     let option = rows[i].match(/---\[\[.*\]\]/g);
                     if (option !== null && option.length > 0) {
                         let [fun_info, new_line] = util.ReadFunction(i, rows);
-                        if (api_note[fun_info.function] !== undefined) {
-                            fun_info.description = api_note[fun_info.function].description;
+                        if ((api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) || api_note[fun_info.function] !== undefined) {
+                            let note = api_note[fun_info.class][fun_info.function] || api_note[fun_info.function];
+                            fun_info.description = note.description;
                             for (const params_name in fun_info.params) {
                                 const params_info = fun_info.params[params_name];
-                                params_info.params_name = api_note[fun_info.function].params[params_name].params_name;
-                                params_info.description = api_note[fun_info.function].params[params_name].description;
+                                params_info.params_name = note.params[params_name].params_name;
+                                params_info.description = note.params[params_name].description;
                             }
-                            fun_info.example = api_note[fun_info.function].example;
+                            fun_info.example = note.example;
                         }
                         if (class_list[fun_info.class] === undefined) {
                             class_list[fun_info.class] = [];
@@ -1094,9 +1092,12 @@ function activate(context) {
                                 console.log(message);
                                 let output_obj = {};
                                 output_obj[select_text] = message;
-                                let read_obj = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
-                                read_obj[select_text] = message;
-                                fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', JSON.stringify(read_obj));
+                                if (api_note[message.class] == undefined) {
+                                    api_note[message.class] = {};
+                                }
+                                api_note[message.class][select_text] = message;
+                                fs.writeFileSync(api_note_path, JSON.stringify(api_note));
+                                fs.writeFileSync(context.extensionPath + '/resource/api_note.json', JSON.stringify(api_note));
                                 panel.dispose();
                             }, undefined, context.subscriptions);
                         }
@@ -1123,9 +1124,9 @@ function activate(context) {
                             panel.webview.onDidReceiveMessage(message => {
                                 let output_obj = {};
                                 output_obj[select_text] = message;
-                                let read_obj = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
-                                read_obj[select_text] = message;
-                                fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', JSON.stringify(read_obj));
+                                api_note[select_text] = message;
+                                fs.writeFileSync(api_note_path, JSON.stringify(api_note));
+                                fs.writeFileSync(context.extensionPath + '/resource/api_note.json', JSON.stringify(api_note));
                                 panel.dispose();
                             }, undefined, context.subscriptions);
                         }
@@ -2219,6 +2220,18 @@ function activate(context) {
             let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
             Combine(class_list, class_list_cl);
             vscode.window.registerTreeDataProvider('dota2apiExplorer', new api_tree_1.ApiTreeProvider(class_list, enum_list));
+            // modifier function 对应
+            let modifierfunctionPath = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
+            if (modifierfunctionPath !== undefined && modifierfunctionPath !== '') {
+                let modifierfunction = 'return {\n';
+                for (const property in enum_list.modifierfunction) {
+                    const element = enum_list.modifierfunction[property];
+                    modifierfunction += `	[${element.name}] = "${element.function || ''}",
+`;
+                }
+                modifierfunction += '}';
+                fs.writeFileSync(path.join(init_1.GameDir, modifierfunctionPath), modifierfunction);
+            }
         }
         // 注册指令
         context.subscriptions.push(Localization);

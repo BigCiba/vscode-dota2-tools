@@ -220,6 +220,8 @@ function GetNoteAPIContent(fun_info, context) {
 		</head>
 		<body>
 			<h4>` + fun_info.function + `</h4>
+			<h5>Class</h5>
+			<p id="Class">${fun_info.class}</p>
 			<h5>Function Description</h5>
 			<textarea id="description" class="u-full-width" onkeydown="tab(this)">` + fun_info.description + `</textarea>` +
         AddParams() + `

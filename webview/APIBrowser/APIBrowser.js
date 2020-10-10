@@ -1,13 +1,14 @@
 const vscode = acquireVsCodeApi();
 
 function RenderFunction(fun_info) {
+	console.log(fun_info);
 	let fun_md = '# ' + fun_info.function + '\n';
 	fun_md += '```lua\n';
 	fun_md += fun_info.return + ' ';
 	// if (fun_info.class !== 'Globals') {
 	// 	fun_md += fun_info.class + ':';
 	// }
-	fun_md +=  + fun_info.function + '(';
+	fun_md += fun_info.function + '(';
 	let count = 0;
 	for (let params_name in fun_info.params) {
 		let params_name_note = fun_info.params[params_name].params_name || params_name;

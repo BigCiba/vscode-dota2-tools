@@ -164,6 +164,14 @@
 					"light": "./images/hero_light.svg",
 					"dark": "./images/hero_dark.svg"
 				}
+			},
+			{
+				"command": "dota2tools.items_browser",
+				"title": "Dota2饰品查询工具",
+				"icon": {
+					"light": "./images/hero_light.svg",
+					"dark": "./images/hero_dark.svg"
+				}
 			}
 		],
 		"menus": {
@@ -313,6 +321,14 @@
 					"type": "string",
 					"default": "123456789",
 					"description": "自定义KV Server Steamid"
+				},
+				"dota2-tools.modifierfunction path": {
+					"type": "string",
+					"description": "用于生成modifierfunction对应关系，不填路径不会生成，路径范例'/scripts/vscripts/utils/modifierfunction.lua'"
+				},
+				"dota2-tools.API Note Path": {
+					"type": "string",
+					"description": "用于保存注释api的json文件路径，不填路径不会生成，填绝对路径，带文件名。"
 				}
 			}
 		}

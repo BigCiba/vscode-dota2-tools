@@ -1,83 +1,244 @@
 {
 	"Global": "全局函数，可以在没有任何类的情况下调用。",
-	"CBaseAnimating": "extends [CBaseModelEntity](../CBaseModelEntity)",
-	"CBaseCombatCharacter": "extends [CBaseFlex](../CBaseFlex)",
-	"CBaseEntity": "extends [CEntityInstance](../CEntityInstance)",
-	"CBaseFlex": "extends [CBaseAnimating](../CBaseAnimating)",
-	"CBaseModelEntity": "extends [CBaseEntity](../CBaseEntity)",
-	"CBasePlayer": "extends [CBaseCombatCharacter](../CBaseCombatCharacter)",
-	"CBaseTrigger": "extends [CBaseEntity](../CBaseEntity)",
-	"CBodyComponent": "No Description Set",
-	"CCustomGameEventManager": "全局访问变量：CustomGameEventManager",
-	"CCustomNetTableManager": "全局访问变量：CustomNetTables",
-	"CDOTABaseAbility": "extends [CBaseEntity](../CBaseEntity)",
-	"CDOTABaseGameMode": "extends [CBaseEntity](../CBaseEntity)",
-	"CDOTAGameManager": "No Description Set",
-	"CDOTAGamerules": "全局访问变量：GameRules",
-	"CDOTAPlayer": "extends [CBaseAnimating](../CBaseAnimating)",
-	"CDOTATutorial": "全局访问变量：Tutorial",
-	"CDOTAVoteSystem": "No Description Set",
-	"CDOTA_Ability_Animation_Attack": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_Ability_Animation_TailSpin": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_Ability_DataDriven": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_Ability_Lua": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_Ability_Nian_Dive": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_Ability_Nian_Leap": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_Ability_Nian_Roar": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_BaseNPC": "extends [CBaseFlex](../CBaseFlex)",
-	"CDOTA_BaseNPC_Building": "extends [CDOTA_BaseNPC](../CDOTA_BaseNPC)",
-	"CDOTA_BaseNPC_Creature": "extends [CDOTA_BaseNPC](../CDOTA_BaseNPC)",
-	"CDOTA_BaseNPC_Hero": "extends [CDOTA_BaseNPC](../CDOTA_BaseNPC)",
-	"CDOTA_BaseNPC_RotatableBuilding": "extends [CDOTA_BaseNPC](../CDOTA_BaseNPC)",
-	"CDOTA_BaseNPC_Shop": "extends [CDOTA_BaseNPC_Building](../CDOTA_BaseNPC_Building)",
-	"CDOTA_BaseNPC_Trap_Ward": "extends [CDOTA_BaseNPC_Creature](../CDOTA_BaseNPC_Creature)",
-	"CDOTA_Buff": "No Description Set",
-	"CDOTA_CustomUIManager": "全局访问变量：CustomUI",
-	"CDOTA_Item": "extends [CDOTABaseAbility](../CDOTABaseAbility)",
-	"CDOTA_ItemSpawner": "extends [CBaseEntity](../CBaseEntity)",
-	"CDOTA_Item_DataDriven": "extends [CDOTA_Item](../CDOTA_Item)",
-	"CDOTA_Item_Lua": "extends [CDOTA_Item](../CDOTA_Item)",
-	"CDOTA_Item_Physical": "extends [CBaseAnimating](../CBaseAnimating)",
-	"CDOTA_MapTree": "extends [CBaseEntity](../CBaseEntity)",
-	"CDOTA_Modifier_Lua": "extends [CDOTA_Buff](../CDOTA_Buff)",
-	"CDOTA_Modifier_Lua_Horizontal_Motion": "extends [CDOTA_Modifier_Lua](../CDOTA_Modifier_Lua)",
-	"CDOTA_Modifier_Lua_Motion_Both": "extends [CDOTA_Modifier_Lua](../CDOTA_Modifier_Lua)",
-	"CDOTA_Modifier_Lua_Vertical_Motion": "extends [CDOTA_Modifier_Lua](../CDOTA_Modifier_Lua)",
-	"CDOTA_PlayerResource": "extends [CBaseEntity](../CBaseEntity)",
-	"CDOTA_ShopTrigger": "extends [CBaseTrigger](../CBaseTrigger)",
-	"CDOTA_SimpleObstruction": "extends [CBaseEntity](../CBaseEntity)",
-	"CDOTA_Unit_Courier": "extends [CDOTA_BaseNPC](../CDOTA_BaseNPC)",
-	"CDOTA_Unit_Nian": "extends [CDOTA_BaseNPC_Creature](../CDOTA_BaseNPC_Creature)",
-	"CDebugOverlayScriptHelper": "No Description Set",
-	"CDotaQuest": "extends [CBaseEntity](../CBaseEntity)",
-	"CDotaSubquestBase": "extends [CBaseEntity](../CBaseEntity)",
-	"CEntities": "全局访问变量：Entities",
-	"CEntityInstance": "No Description Set",
-	"CEntityScriptFramework": "No Description Set",
-	"CEnvEntityMaker": "extends [CBaseEntity](../CBaseEntity)",
-	"CEnvProjectedTexture": "extends [CBaseEntity](../CBaseEntity)",
-	"CInfoData": "extends [CBaseEntity](../CBaseEntity)",
-	"CInfoWorldLayer": "extends [CBaseEntity](../CBaseEntity)",
-	"CLogicScript": "extends [CBaseEntity](../CBaseEntity)",
-	"CMarkupVolumeTagged": "extends [CBaseEntity](../CBaseEntity)",
-	"CNativeOutputs": "No Description Set",
-	"CParticleSystem": "extends [CBaseModelEntity](../CBaseModelEntity)",
-	"CPhysicsProp": "extends [CBaseAnimating](../CBaseAnimating)",
-	"CPointClientUIWorldPanel": "extends [CBaseModelEntity](../CBaseModelEntity)",
-	"CPointTemplate": "extends [CBaseEntity](../CBaseEntity)",
-	"CPointWorldText": "extends [CBaseModelEntity](../CBaseModelEntity)",
-	"CPropHMDAvatar": "extends [CBaseAnimating](../CBaseAnimating)",
-	"CPropVRHand": "extends [CBaseAnimating](../CBaseAnimating)",
-	"CSceneEntity": "extends [CBaseEntity](../CBaseEntity)",
-	"CScriptHeroList": "全局访问变量：HeroList",
-	"CScriptKeyValues": "No Description Set",
-	"CScriptParticleManager": "全局访问变量：ParticleManager",
-	"CScriptPrecacheContext": "No Description Set",
-	"Convars": "extends [Convars](../Convars)\n全局访问变量：ConVars",
-	"GlobalSys": "extends [GlobalSys](../GlobalSys)",
-	"GridNav": "extends [GridNav](../GridNav)",
-	"ProjectileManager": "extends [ProjectileManager](../ProjectileManager)",
-	"SteamInfo": "extends [SteamInfo](../SteamInfo)",
+	"CBaseAnimating": {
+		"description": "extends CBaseModelEntity"
+	},
+	"CBaseCombatCharacter": {
+		"description": "extends CBaseFlex"
+	},
+	"CBaseEntity": {
+		"description": "extends CEntityInstance"
+	},
+	"CBaseFlex": {
+		"description": "extends CBaseAnimating"
+	},
+	"CBaseModelEntity": {
+		"description": "extends CBaseEntity"
+	},
+	"CBasePlayer": {
+		"description": "extends CBaseCombatCharacter"
+	},
+	"CBaseTrigger": {
+		"description": "extends CBaseEntity"
+	},
+	"CBodyComponent": {
+		"description": "No Description Set"
+	},
+	"CCustomGameEventManager": {
+		"description": "全局访问变量：CustomGameEventManager"
+	},
+	"CCustomNetTableManager": {
+		"description": "全局访问变量：CustomNetTables"
+	},
+	"CDOTABaseAbility": {
+		"description": "extends CBaseEntity"
+	},
+	"CDOTABaseGameMode": {
+		"description": "extends CBaseEntity"
+	},
+	"CDOTAGameManager": {
+		"description": "No Description Set"
+	},
+	"CDOTAGamerules": {
+		"description": "Gamerules"
+	},
+	"CDOTAPlayer": {
+		"description": "extends CBaseAnimating"
+	},
+	"CDOTATutorial": {
+		"description": "全局访问变量：Tutorial"
+	},
+	"CDOTAVoteSystem": {
+		"description": "No Description Set"
+	},
+	"CDOTA_Ability_Animation_Attack": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_Ability_Animation_TailSpin": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_Ability_DataDriven": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_Ability_Lua": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_Ability_Nian_Dive": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_Ability_Nian_Leap": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_Ability_Nian_Roar": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_BaseNPC": {
+		"description": "extends CBaseFlex"
+	},
+	"CDOTA_BaseNPC_Building": {
+		"description": "extends CDOTA_BaseNPC"
+	},
+	"CDOTA_BaseNPC_Creature": {
+		"description": "extends CDOTA_BaseNPC"
+	},
+	"CDOTA_BaseNPC_Hero": {
+		"description": "extends CDOTA_BaseNPC"
+	},
+	"CDOTA_BaseNPC_RotatableBuilding": {
+		"description": "extends CDOTA_BaseNPC"
+	},
+	"CDOTA_BaseNPC_Shop": {
+		"description": "extends CDOTA_BaseNPC_Building"
+	},
+	"CDOTA_BaseNPC_Trap_Ward": {
+		"description": "extends CDOTA_BaseNPC_Creature"
+	},
+	"CDOTA_Buff": {
+		"description": "No Description Set"
+	},
+	"CDOTA_CustomUIManager": {
+		"description": "全局访问变量：CustomUI"
+	},
+	"CDOTA_Item": {
+		"description": "extends CDOTABaseAbility"
+	},
+	"CDOTA_ItemSpawner": {
+		"description": "extends CBaseEntity"
+	},
+	"CDOTA_Item_DataDriven": {
+		"description": "extends CDOTA_Item"
+	},
+	"CDOTA_Item_Lua": {
+		"description": "extends CDOTA_Item",
+		"GetIntrinsicModifierName": {
+			"class": "CDOTA_Item_Lua",
+			"description": "返回此技能被动给予的修饰器的名称",
+			"example": "function phantom_assassin_blur_imba:GetIntrinsicModifierName()\n\treturn \"modifier_phantom_assassin_blur_imba\"\nend"
+		}
+	},
+	"CDOTA_Item_Physical": {
+		"description": "extends CBaseAnimating"
+	},
+	"CDOTA_MapTree": {
+		"description": "extends CBaseEntity"
+	},
+	"CDOTA_Modifier_Lua": {
+		"description": "extends CDOTA_Buff"
+	},
+	"CDOTA_Modifier_Lua_Horizontal_Motion": {
+		"description": "extends CDOTA_Modifier_Lua"
+	},
+	"CDOTA_Modifier_Lua_Motion_Both": {
+		"description": "extends CDOTA_Modifier_Lua"
+	},
+	"CDOTA_Modifier_Lua_Vertical_Motion": {
+		"description": "extends CDOTA_Modifier_Lua"
+	},
+	"CDOTA_PlayerResource": {
+		"description": "extends CBaseEntity"
+	},
+	"CDOTA_ShopTrigger": {
+		"description": "extends CBaseTrigger"
+	},
+	"CDOTA_SimpleObstruction": {
+		"description": "extends CBaseEntity"
+	},
+	"CDOTA_Unit_Courier": {
+		"description": "extends CDOTA_BaseNPC"
+	},
+	"CDOTA_Unit_Nian": {
+		"description": "extends CDOTA_BaseNPC_Creature"
+	},
+	"CDebugOverlayScriptHelper": {
+		"description": "No Description Set"
+	},
+	"CDotaQuest": {
+		"description": "extends CBaseEntity"
+	},
+	"CDotaSubquestBase": {
+		"description": "extends CBaseEntity"
+	},
+	"CEntities": {
+		"description": "全局访问变量：Entities"
+	},
+	"CEntityInstance": {
+		"description": "No Description Set"
+	},
+	"CEntityScriptFramework": {
+		"description": "No Description Set"
+	},
+	"CEnvEntityMaker": {
+		"description": "extends CBaseEntity"
+	},
+	"CEnvProjectedTexture": {
+		"description": "extends CBaseEntity"
+	},
+	"CInfoData": {
+		"description": "extends CBaseEntity"
+	},
+	"CInfoWorldLayer": {
+		"description": "extends CBaseEntity"
+	},
+	"CLogicScript": {
+		"description": "extends CBaseEntity"
+	},
+	"CMarkupVolumeTagged": {
+		"description": "extends CBaseEntity"
+	},
+	"CNativeOutputs": {
+		"description": "No Description Set"
+	},
+	"CParticleSystem": {
+		"description": "extends CBaseModelEntity"
+	},
+	"CPhysicsProp": {
+		"description": "extends CBaseAnimating"
+	},
+	"CPointClientUIWorldPanel": {
+		"description": "extends CBaseModelEntity"
+	},
+	"CPointTemplate": {
+		"description": "extends CBaseEntity"
+	},
+	"CPointWorldText": {
+		"description": "extends CBaseModelEntity"
+	},
+	"CPropHMDAvatar": {
+		"description": "extends CBaseAnimating"
+	},
+	"CPropVRHand": {
+		"description": "extends CBaseAnimating"
+	},
+	"CSceneEntity": {
+		"description": "extends CBaseEntity"
+	},
+	"CScriptHeroList": {
+		"description": "全局访问变量：HeroList"
+	},
+	"CScriptKeyValues": {
+		"description": "No Description Set"
+	},
+	"CScriptParticleManager": {
+		"description": "全局访问变量：ParticleManager"
+	},
+	"CScriptPrecacheContext": {
+		"description": "No Description Set"
+	},
+	"Convars": {
+		"description": "extends Convars\n全局访问变量：ConVars"
+	},
+	"GlobalSys": {
+		"description": "extends GlobalSys"
+	},
+	"GridNav": {
+		"description": "extends GridNav"
+	},
+	"ProjectileManager": {
+		"description": "extends ProjectileManager"
+	},
+	"SteamInfo": {
+		"description": "extends SteamInfo"
+	},
 	"ABILITY_TYPES": "技能类型",
 	"AbilityLearnResult_t": "技能可升级类型",
 	"AddFOWViewer": {

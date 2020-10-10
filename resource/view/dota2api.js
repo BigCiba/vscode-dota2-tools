@@ -36,6 +36,7 @@ function Confirm() {
 	var description = document.getElementById("description");
 	var example = document.getElementById("example");
 	var parameters = document.getElementById("parameters");
+	var Class = document.getElementById("Class");
 	var params = {};
 	if (parameters != undefined) {
 		for (let row = 1; row < parameters.rows.length; row++) {
@@ -46,12 +47,15 @@ function Confirm() {
 		}
 	}
 	var obj = {
+		class: Class.innerText,
 		description: description.value,
 		example: example.value,
 	}
+	console.log(obj);
 	if (parameters != undefined) {
 		obj.params = params
 	}
+	console.log(obj);
 	vscode.postMessage(obj);
 }
 function ConfirmConstant() {
