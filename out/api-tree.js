@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
+const fs = require("fs");
+const path = require("path");
 // 类型
 var APIType;
 (function (APIType) {
@@ -8,9 +10,12 @@ var APIType;
     APIType["Enum"] = "enum";
 })(APIType = exports.APIType || (exports.APIType = {}));
 class ApiTreeProvider {
-    constructor(class_list, enum_list) {
+    constructor(context, class_list, enum_list) {
+        this.context = context;
         this.class_list = class_list;
         this.enum_list = enum_list;
+        this.api_note = {};
+        this.api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
     }
     getTreeItem(element) {
         return element;
@@ -22,7 +27,7 @@ class ApiTreeProvider {
                 let funcItems = [];
                 for (const funcName in this.class_list[element.label]) {
                     let funcData = this.class_list[element.label][funcName];
-                    funcItems.push(new NodeItem(funcData.function, vscode.TreeItemCollapsibleState.None, ItemType.Function, funcData.description, {
+                    funcItems.push(new NodeItem(funcData.function, vscode.TreeItemCollapsibleState.None, ItemType.Function, undefined, funcData.description, {
                         command: 'dota2tools.api_browser',
                         title: '',
                         arguments: [funcData, APIType.Function]
@@ -41,7 +46,7 @@ class ApiTreeProvider {
                 let enumItems = [];
                 for (let i = 0; i < this.enum_list[element.label].length; i++) {
                     let enumItem = this.enum_list[element.label][i];
-                    enumItems.push(new NodeItem(enumItem.name, vscode.TreeItemCollapsibleState.None, ItemType.Enum, enumItem.description_lite || enumItem.description, {
+                    enumItems.push(new NodeItem(enumItem.name, vscode.TreeItemCollapsibleState.None, ItemType.Enum, undefined, enumItem.description_lite || enumItem.description, {
                         command: 'dota2tools.api_browser',
                         title: '',
                         arguments: [enumItem, APIType.Enum]
@@ -58,7 +63,7 @@ class ApiTreeProvider {
         else {
             let classItems = [];
             for (const class_name in this.class_list) {
-                classItems.push(new NodeItem(class_name, vscode.TreeItemCollapsibleState.Collapsed, ItemType.Class));
+                classItems.push(new NodeItem(class_name, vscode.TreeItemCollapsibleState.Collapsed, ItemType.Class, this.api_note[class_name] === undefined ? undefined : this.api_note[class_name].description));
             }
             classItems.push(new NodeItem('Constants', vscode.TreeItemCollapsibleState.Collapsed, ItemType.Constants));
             return Promise.resolve(classItems);
@@ -79,6 +84,7 @@ class NodeItem extends vscode.TreeItem {
     constructor(label, // 用来保存名字
     collapsibleState, // 折叠状态
     itemType, // 类型
+    description, // 描述
     tooltip, // tooltip
     command // 注册指令
     ) {
@@ -86,9 +92,19 @@ class NodeItem extends vscode.TreeItem {
         this.label = label;
         this.collapsibleState = collapsibleState;
         this.itemType = itemType;
+        this.description = description;
         this.tooltip = tooltip;
         this.command = command;
         this.contextValue = 'NodeItem';
+        if (this.itemType === ItemType.Function) {
+            this.iconPath = path.join(__filename, '..', '..', 'images', 'function.svg');
+        }
+        else if (this.itemType === ItemType.Class) {
+            this.iconPath = path.join(__filename, '..', '..', 'images', 'class.svg');
+        }
+        else if (this.itemType === ItemType.Enum) {
+            this.iconPath = path.join(__filename, '..', '..', 'images', 'enum.svg');
+        }
     }
 }
 exports.NodeItem = NodeItem;

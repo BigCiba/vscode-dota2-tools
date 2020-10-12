@@ -2219,7 +2219,7 @@ function activate(context) {
             let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
             let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
             Combine(class_list, class_list_cl);
-            vscode.window.registerTreeDataProvider('dota2apiExplorer', new api_tree_1.ApiTreeProvider(class_list, enum_list));
+            vscode.window.registerTreeDataProvider('dota2apiExplorer', new api_tree_1.ApiTreeProvider(context, class_list, enum_list));
             // modifier function 对应
             let modifierfunctionPath = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
             if (modifierfunctionPath !== undefined && modifierfunctionPath !== '') {

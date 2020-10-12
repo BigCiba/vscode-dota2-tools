@@ -1,5 +1,7 @@
 {
-	"Global": "全局函数，可以在没有任何类的情况下调用。",
+	"Global": {
+		"description": "全局函数，可以在没有任何类的情况下调用。"
+	},
 	"CBaseAnimating": {
 		"description": "extends CBaseModelEntity"
 	},

@@ -2217,7 +2217,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
 		let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
 		Combine(class_list, class_list_cl);
-		vscode.window.registerTreeDataProvider('dota2apiExplorer', new ApiTreeProvider(class_list, enum_list));
+		vscode.window.registerTreeDataProvider('dota2apiExplorer', new ApiTreeProvider(context, class_list, enum_list));
 
 		// modifier function 对应
 		let modifierfunctionPath:string|undefined = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
