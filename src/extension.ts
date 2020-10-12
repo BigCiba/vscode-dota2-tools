@@ -10,7 +10,7 @@ import { Listener } from './listener';
 import * as watch from 'watch';
 import { log, print } from 'util';
 import { ActiveListEditorProvider } from './activelistEditor';
-import { APIType, ApiTreeProvider } from './api-tree';
+import { APIType, ApiTreeProvider, NodeItem } from './api-tree';
 import { KVServer } from './kv_server/KVServer';
 import { InheritTable } from "./table_inherit";
 import { DropHeroString } from "./drop_string";
@@ -2115,34 +2115,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
 	});
 
-	let APIBrowserView: vscode.WebviewPanel|undefined = undefined;
-	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType) => {
-		console.log(funInfo);
-		
-		
-		if (APIBrowserView == undefined) {
-			APIBrowserView = vscode.window.createWebviewPanel(
-				'APIBrowser', // viewType
-				"API Browser", // 视图标题
-				vscode.ViewColumn.One, // 显示在编辑器的哪个部位
-				{
-					enableScripts: true, // 启用JS，默认禁用
-					retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
-				}
-			);
-			APIBrowserView.onDidDispose(() => {
-				APIBrowserView = undefined;
-			});
-		}
-		APIBrowserView.webview.postMessage({
-			type: infoType,
-			data: funInfo,
-		});
-		APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
-	});
-
 	// 解析api文件
-	APIParse();
+	let ApiTree: ApiTreeProvider;
+	let [class_list, enum_list] = APIParse();
 	function APIParse() {
 		let PraseFile = function (sDotaScriptHelp:string): any[] {
 			const api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
@@ -2211,13 +2186,56 @@ export async function activate(context: vscode.ExtensionContext) {
 					}
 				}
 			}
+			// 补充client api6
+			for (const class_name in class_list_cl) {
+				const fun_list = class_list_cl[class_name];
+				for (let i = 0; i < fun_list.length; i++) {
+					const fun_info = fun_list[i];
+					let bHasServer = false;
+					for (let i = 0; i < class_list[class_name.replace('C_', 'C')].length; i++) {
+						const server_fun_info = class_list[class_name.replace('C_', 'C')][i];
+						if (fun_info.function == server_fun_info.function) {
+							bHasServer = true;
+							break;
+						}
+					}
+					if (bHasServer == false) {
+						fun_info.server = false;
+						fun_info.client = true;
+						fun_info.class = undefined;
+						fun_info.class_cl = class_name.replace('C_', 'C');
+						class_list[class_name.replace('C_', 'C')].push(fun_info);
+					}
+				}
+			}
+			//重新排序
+			for (const class_name in class_list) {
+				let fun_list = class_list[class_name];
+				let sort_func_list:any[] = [];
+				let funcName = [];
+				for (let i = 0; i < fun_list.length; i++) {
+					const fun_info = fun_list[i];
+					funcName.push(fun_info.function);
+				}
+				funcName.sort();
+				for (let i = 0; i < funcName.length; i++) {
+					for (let j = 0; j < fun_list.length; j++) {
+						if (funcName[i] == fun_list[j].function) {
+							sort_func_list.push(fun_list[j]);
+							break;
+						}
+					}
+				}
+				class_list[class_name] = sort_func_list;
+			}
 		}
 		let sHelp: string = path.join(context.extensionPath, "resource/dota_script_help2.lua");
 		let sHelpClient: string = path.join(context.extensionPath, "resource/dota_cl_script_help2.lua");
 		let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
 		let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
 		Combine(class_list, class_list_cl);
-		vscode.window.registerTreeDataProvider('dota2apiExplorer', new ApiTreeProvider(context, class_list, enum_list));
+		ApiTree = new ApiTreeProvider(context, class_list, enum_list);
+		vscode.window.registerTreeDataProvider('dota2apiExplorer', ApiTree);
 
 		// modifier function 对应
 		let modifierfunctionPath:string|undefined = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
@@ -2232,8 +2250,96 @@ export async function activate(context: vscode.ExtensionContext) {
 			
 			fs.writeFileSync(path.join(GameDir , modifierfunctionPath), modifierfunction);
 		}
-
+		return [class_list, enum_list];
 	}
+
+	let APIBrowserView: vscode.WebviewPanel|undefined = undefined;
+
+	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType) => {
+		if (APIBrowserView == undefined) {
+			APIBrowserView = vscode.window.createWebviewPanel(
+				'APIBrowser', // viewType
+				"API Browser", // 视图标题
+				vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+				{
+					enableScripts: true, // 启用JS，默认禁用
+					retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+				}
+			);
+			APIBrowserView.onDidDispose(() => {
+				APIBrowserView = undefined;
+			});
+		}
+		APIBrowserView.webview.postMessage({
+			type: infoType,
+			data: funInfo,
+		});
+		APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
+		if (infoType == APIType.Function) {
+			vscode.env.clipboard.writeText(funInfo.function);
+		} else if (infoType == APIType.Enum) {
+			vscode.env.clipboard.writeText(funInfo.name);
+		}
+	});
+	vscode.commands.registerCommand("dota2tools.dota2api.filter", async () => {
+		vscode.window.showInputBox( { prompt: "输入过滤词搜索API" } ).then((msg) =>{
+			if (msg !== undefined) {
+				let filter_class_list:any = {};
+				let filter_enum_list:any = {};
+
+				for (const class_name in class_list) {
+					const fun_list = class_list[class_name];
+					for (let i = 0; i < fun_list.length; i++) {
+						const fun_info = fun_list[i];
+						if (fun_info.function.search(new RegExp(msg, 'i')) !== -1) {
+							if (filter_class_list[class_name] === undefined) {
+								filter_class_list[class_name] = [];
+							}
+							filter_class_list[class_name].push(fun_info);
+						}
+					}
+				}
+				for (const enum_name in enum_list) {
+					const enum_arr = enum_list[enum_name];
+					for (let i = 0; i < enum_arr.length; i++) {
+						const enum_info = enum_arr[i];
+						if (enum_info.name.search(new RegExp(msg, 'i')) !== -1 || (enum_info.function !== undefined && enum_info.function.search(new RegExp(msg, 'i')) !== -1)) {
+							if (filter_enum_list[enum_name] === undefined) {
+								filter_enum_list[enum_name] = [];
+							}
+							filter_enum_list[enum_name].push(enum_info);
+						}
+					}
+				}
+				ApiTree.class_list = filter_class_list;
+				ApiTree.enum_list = filter_enum_list;
+				ApiTree.refresh();
+				context.workspaceState.update('filtered', true);
+				vscode.commands.executeCommand( 'setContext', 'dota2tools-filtered', context.workspaceState.get( 'filtered', true ) );
+			}
+		});
+	});
+	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.clearfilter", async () => {
+		ApiTree.class_list = class_list;
+		ApiTree.enum_list = enum_list;
+		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+		ApiTree.refresh();
+		context.workspaceState.update('filtered', false);
+		vscode.commands.executeCommand( 'setContext', 'dota2tools-filtered', context.workspaceState.get( 'filtered', false ) );
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.expand", async () => {
+		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+		ApiTree.rebuild();
+		context.workspaceState.update('expanded', true);
+		vscode.commands.executeCommand( 'setContext', 'dota2tools-expanded', context.workspaceState.get( 'expanded', true ) );
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.collapse", async () => {
+		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+		ApiTree.rebuild();
+		context.workspaceState.update('expanded', false);
+		vscode.commands.executeCommand( 'setContext', 'dota2tools-expanded', context.workspaceState.get( 'expanded', false ) );
+	}));
+
 	// 注册指令
 	context.subscriptions.push(Localization);
 	context.subscriptions.push(AddHero);

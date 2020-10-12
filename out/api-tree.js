@@ -15,13 +15,30 @@ class ApiTreeProvider {
         this.class_list = class_list;
         this.enum_list = enum_list;
         this.api_note = {};
+        this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+        this._onDidChangeTreeData = new vscode.EventEmitter();
+        this.onDidChangeTreeData = this._onDidChangeTreeData.event;
         this.api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
+    }
+    refresh() {
+        this._onDidChangeTreeData.fire();
+    }
+    rebuild() {
+        let class_list = this.class_list;
+        let enum_list = this.enum_list;
+        this.class_list = {};
+        this.enum_list = {};
+        this._onDidChangeTreeData.fire();
+        setTimeout(() => {
+            this.class_list = class_list;
+            this.enum_list = enum_list;
+            this._onDidChangeTreeData.fire();
+        }, 10);
     }
     getTreeItem(element) {
         return element;
     }
     getChildren(element) {
-        console.log(element);
         if (element) {
             if (element.itemType === ItemType.Class) {
                 let funcItems = [];
@@ -38,15 +55,15 @@ class ApiTreeProvider {
             else if (element.itemType === ItemType.Constants) {
                 let enumTypeItems = [];
                 for (const enumName in this.enum_list) {
-                    enumTypeItems.push(new NodeItem(enumName, vscode.TreeItemCollapsibleState.Collapsed, ItemType.EnumType));
+                    enumTypeItems.push(new NodeItem(enumName, this.collapsibleState, ItemType.EnumType, this.enum_list[enumName].description_lite));
                 }
                 return Promise.resolve(enumTypeItems);
             }
-            else if (element.itemType === ItemType.EnumType) {
+            else if (element.itemType === ItemType.EnumType) { // 常量类型
                 let enumItems = [];
                 for (let i = 0; i < this.enum_list[element.label].length; i++) {
                     let enumItem = this.enum_list[element.label][i];
-                    enumItems.push(new NodeItem(enumItem.name, vscode.TreeItemCollapsibleState.None, ItemType.Enum, undefined, enumItem.description_lite || enumItem.description, {
+                    enumItems.push(new NodeItem(enumItem.name, vscode.TreeItemCollapsibleState.None, ItemType.Enum, enumItem.description_lite, enumItem.description_lite || enumItem.description, {
                         command: 'dota2tools.api_browser',
                         title: '',
                         arguments: [enumItem, APIType.Enum]
@@ -54,7 +71,7 @@ class ApiTreeProvider {
                 }
                 return Promise.resolve(enumItems);
             }
-            else if (element.itemType === ItemType.Enum) {
+            else if (element.itemType === ItemType.Enum) { // 常量
             }
             else if (element.itemType === ItemType.Function) {
             }
@@ -63,9 +80,11 @@ class ApiTreeProvider {
         else {
             let classItems = [];
             for (const class_name in this.class_list) {
-                classItems.push(new NodeItem(class_name, vscode.TreeItemCollapsibleState.Collapsed, ItemType.Class, this.api_note[class_name] === undefined ? undefined : this.api_note[class_name].description));
+                classItems.push(new NodeItem(class_name, this.collapsibleState, ItemType.Class, this.api_note[class_name] === undefined ? undefined : this.api_note[class_name].description));
             }
-            classItems.push(new NodeItem('Constants', vscode.TreeItemCollapsibleState.Collapsed, ItemType.Constants));
+            if (Object.keys(this.enum_list).length > 0) {
+                classItems.push(new NodeItem('Constants', this.collapsibleState, ItemType.Constants));
+            }
             return Promise.resolve(classItems);
         }
     }

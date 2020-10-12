@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import { print } from 'util';
 
 // 类型
 export enum APIType {
@@ -10,8 +11,27 @@ export enum APIType {
 
 export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 	api_note: any = {};
-	constructor(private context: vscode.ExtensionContext, private class_list: any, private enum_list: any) {
+	public collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+	private _onDidChangeTreeData: vscode.EventEmitter<NodeItem | undefined> = new vscode.EventEmitter<NodeItem | undefined>();
+	readonly onDidChangeTreeData: vscode.Event<NodeItem | undefined> = this._onDidChangeTreeData.event;
+
+	constructor(private context: vscode.ExtensionContext, public class_list: any, public enum_list: any) {
 		this.api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
+	}
+	refresh(): void {
+		this._onDidChangeTreeData.fire();
+	}
+	rebuild(): void {
+		let class_list = this.class_list;
+		let enum_list = this.enum_list;
+		this.class_list = {};
+		this.enum_list = {};
+		this._onDidChangeTreeData.fire();
+		setTimeout(() => {
+			this.class_list = class_list;
+			this.enum_list = enum_list;
+			this._onDidChangeTreeData.fire();
+		}, 10);
 	}
 
 	getTreeItem(element: NodeItem): vscode.TreeItem {
@@ -19,8 +39,6 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 	}
 
 	getChildren(element?: NodeItem): Thenable<NodeItem[]> {
-		console.log(element);
-		
 		if (element) {
 			if (element.itemType === ItemType.Class) {
 				let funcItems = [];
@@ -36,30 +54,32 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 			} else if (element.itemType === ItemType.Constants) {
 				let enumTypeItems = [];
 				for (const enumName in this.enum_list) {
-					enumTypeItems.push(new NodeItem(enumName, vscode.TreeItemCollapsibleState.Collapsed, ItemType.EnumType));
+					enumTypeItems.push(new NodeItem(enumName, this.collapsibleState, ItemType.EnumType, this.enum_list[enumName].description_lite ));
 				}
 				return Promise.resolve(enumTypeItems);
-			} else if (element.itemType === ItemType.EnumType) {
+			} else if (element.itemType === ItemType.EnumType) {	// 常量类型
 				let enumItems = [];
 				for (let i = 0; i < this.enum_list[element.label].length; i++) {
 					let enumItem = this.enum_list[element.label][i];
-					enumItems.push(new NodeItem(enumItem.name, vscode.TreeItemCollapsibleState.None, ItemType.Enum, undefined, enumItem.description_lite || enumItem.description, {
+					enumItems.push(new NodeItem(enumItem.name, vscode.TreeItemCollapsibleState.None, ItemType.Enum, enumItem.description_lite, enumItem.description_lite || enumItem.description, {
 						command: 'dota2tools.api_browser',
 						title: '',
 						arguments: [enumItem, APIType.Enum]
 					}));
 				}
 				return Promise.resolve(enumItems);
-			} else if (element.itemType === ItemType.Enum) {
+			} else if (element.itemType === ItemType.Enum) {	// 常量
 			} else if (element.itemType === ItemType.Function) {
 			}
 			return Promise.resolve([]);
 		} else {
 			let classItems = [];
 			for (const class_name in this.class_list) {
-				classItems.push(new NodeItem(class_name, vscode.TreeItemCollapsibleState.Collapsed, ItemType.Class, this.api_note[class_name] === undefined ? undefined:this.api_note[class_name].description));
+				classItems.push(new NodeItem(class_name, this.collapsibleState, ItemType.Class, this.api_note[class_name] === undefined ? undefined:this.api_note[class_name].description));
 			}
-			classItems.push(new NodeItem('Constants', vscode.TreeItemCollapsibleState.Collapsed, ItemType.Constants));
+			if (Object.keys(this.enum_list).length > 0) {
+				classItems.push(new NodeItem('Constants', this.collapsibleState, ItemType.Constants));
+			}
 			return Promise.resolve(classItems);
 		}
 	}
@@ -75,7 +95,7 @@ enum ItemType {
 export class NodeItem extends vscode.TreeItem {
 	constructor(
 		public readonly label: string,	// 用来保存名字
-		public readonly collapsibleState: vscode.TreeItemCollapsibleState,	// 折叠状态
+		public collapsibleState: vscode.TreeItemCollapsibleState,	// 折叠状态
 		public readonly itemType: ItemType,	// 类型
 		public readonly description?: string,	// 描述
 		public readonly tooltip?: string,	// tooltip

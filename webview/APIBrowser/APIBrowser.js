@@ -22,7 +22,8 @@ function RenderFunction(fun_info) {
 	fun_md += ')\n';
 	fun_md += '```\n';
 	fun_md += '# Class\n';
-	fun_md += '✔️ `Server: ' + fun_info.class + '`  \n';
+	// fun_md += '✔️ `Server: ' + fun_info.class + '`  \n';
+	fun_md += (fun_info.server === true ? '✔️' : '❌') + ' `Server: ' + fun_info.class + '`  \n\n';
 	fun_md += (fun_info.client === true ? '✔️' : '❌') + ' `Client: ' + fun_info.class_cl + '`  \n\n';
 	// fun_md += '# Support\n';
 	// fun_md += '> __✔️ Server__  \n';
@@ -47,14 +48,25 @@ function RenderFunction(fun_info) {
 	// lua_code_block.innerHTML = element.innerHTML.replace(/(function|local|end|true|false|self)/g, '<span class="hllua-keyword">$1</span>');
 }
 function RenderEnum(enum_info) {
-	let enum_detail_md = `# ${enum_info.name}
+	let funcName = enum_info.function;
+	let enum_detail_md = `# ${enum_info.name}`
+	if (funcName != undefined) {
+		enum_detail_md += `
+# Function
+${funcName}`
+	}
+	enum_detail_md += `
 # Description
 ${enum_info.description||enum_info.description_lite}
+`;
+if (enum_info.example !== undefined) {
+	enum_detail_md += `
 # Example
 \`\`\`
 ${enum_info.example}
 \`\`\`
 `;
+}
 	document.querySelector('.markdown-body').innerHTML = marked(enum_detail_md);
 }
 window.addEventListener('message', event => {

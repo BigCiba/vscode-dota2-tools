@@ -118,6 +118,26 @@
 				"icon": "$(refresh)"
 			},
 			{
+				"command": "dota2tools.dota2api.filter",
+				"title": "搜索",
+				"icon": "$(filter)"
+			},
+			{
+				"command": "dota2tools.dota2api.clearfilter",
+				"title": "清除搜索",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "dota2tools.dota2api.expand",
+				"title": "全部展开",
+				"icon": "$(expand-all)"
+			},
+			{
+				"command": "dota2tools.dota2api.collapse",
+				"title": "全部缩起",
+				"icon": "$(collapse-all)"
+			},
+			{
 				"command": "tss.kvTools.download",
 				"title": "download",
 				"icon": {
@@ -237,6 +257,26 @@
 					"command": "tss.kvTools.refresh",
 					"when": "view == kvdownloadExplorer",
 					"group": "navigation@10"
+				},
+				{
+					"command": "dota2tools.dota2api.filter",
+					"when": "view == dota2apiExplorer && dota2tools-filtered == false",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2api.clearfilter",
+					"when": "view == dota2apiExplorer && dota2tools-filtered == true",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2api.expand",
+					"when": "view == dota2apiExplorer && dota2tools-expanded == false",
+					"group": "navigation@7"
+				},
+				{
+					"command": "dota2tools.dota2api.collapse",
+					"when": "view == dota2apiExplorer && dota2tools-expanded == true",
+					"group": "navigation@7"
 				}
 			],
 			"view/item/context": [
