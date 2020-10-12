@@ -2,6 +2,7 @@
 ## 简介
 提供一些可能有用的便利功能。水平有限，只实现功能，不讲究效率。
 ## 功能
+- DOTA2 API 查询功能
 - 监听本地化文件变化并自动合并，在项目game目录下新建localization\schinese文件夹，插件会将里面的文件自动合并至addon_schinese.txt。english同理。可在设置中关闭监听功能。  
 
 	![Localization](https://gitee.com/bigciba/dota2-tools/raw/master/images/README/localization.gif)
