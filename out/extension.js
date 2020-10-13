@@ -2249,7 +2249,7 @@ function activate(context) {
                 let modifierfunction = 'return {\n';
                 for (const property in enum_list.modifierfunction) {
                     const element = enum_list.modifierfunction[property];
-                    modifierfunction += `	[${element.name}] = "${element.function || ''}",
+                    modifierfunction += `	${element.name} = "${element.function || ''}",
 `;
                 }
                 modifierfunction += '}';

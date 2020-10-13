@@ -2243,7 +2243,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			let modifierfunction = 'return {\n';
 			for (const property in enum_list.modifierfunction) {
 				const element = enum_list.modifierfunction[property];
-				modifierfunction += `	[${element.name}] = "${element.function||''}",
+				modifierfunction += `	${element.name} = "${element.function||''}",
 `;
 			}
 			modifierfunction += '}';
