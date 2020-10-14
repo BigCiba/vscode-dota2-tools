@@ -1,5 +1,5 @@
----[[ AddFOWViewer  Add temporary vision for a given team ( nTeamID, vLocation, flRadius, flDuration, bObstructedVision) ]]
--- @return void
+---[[ AddFOWViewer  Add temporary vision for a given team, returns a ViewerID ( nTeamID, vLocation, flRadius, flDuration, bObstructedVision) ]]
+-- @return int
 -- @param int_1 int
 -- @param Vector_2 Vector
 -- @param float_3 float
@@ -103,7 +103,7 @@ function CreateHTTPRequestScriptVM( string_1, string_2 ) end
 -- @param handle_2 handle
 function CreateHeroForPlayer( string_1, handle_2 ) end
 
----[[ CreateIllusions  Create illusions of the passed hero that belong to passed unit using passed modifier data. ( hOwner, hHeroToCopy, hModiiferKeys, nNumIllusions, nPadding, bScramblePosition, bFindClearSpace ) Supported keys: outgoing_damage, incoming_damage, bounty_base, bounty_growth, outgoing_damage_structure, outgoing_damage_roshan ]]
+---[[ CreateIllusions  Create illusions of the passed hero that belong to passed unit using passed modifier data. ( hOwner, hHeroToCopy, hModiiferKeys, nNumIllusions, nPadding, bScramblePosition, bFindClearSpace ) Supported keys: outgoing_damageincoming_damagebounty_basebounty_growthoutgoing_damage_structureoutgoing_damage_roshan ]]
 -- @return table
 -- @param handle_1 handle
 -- @param handle_2 handle
@@ -955,6 +955,12 @@ function RegisterSpawnGroupFilterProxy( string_1 ) end
 ---[[ ReloadMOTD  Reloads the MotD file ]]
 -- @return void
 function ReloadMOTD(  ) end
+
+---[[ RemoveFOWViewer  Remove temporary vision for a given team ( nTeamID, nViewerID ) ]]
+-- @return void
+-- @param int_1 int
+-- @param int_2 int
+function RemoveFOWViewer( int_1, int_2 ) end
 
 ---[[ RemoveSpawnGroupFilterProxy  Remove the C proxy for a script-based spawn group filter ]]
 -- @return void
@@ -3262,47 +3268,13 @@ function CBaseModelEntity:SetSize( mins, maxs ) end
 -- @param iSkin int
 function CBaseModelEntity:SetSkin( iSkin ) end
 
----[[ CBasePlayer:AreChaperoneBoundsVisible  Returns whether this player's chaperone bounds are visible. ]]
--- @return bool
-function CBasePlayer:AreChaperoneBoundsVisible(  ) end
-
----[[ CBasePlayer:GetHMDAnchor  Returns the HMD anchor entity for this player if it exists. ]]
--- @return handle
-function CBasePlayer:GetHMDAnchor(  ) end
-
----[[ CBasePlayer:GetHMDAvatar  Returns the HMD Avatar entity for this player if it exists. ]]
--- @return handle
-function CBasePlayer:GetHMDAvatar(  ) end
-
----[[ CBasePlayer:GetPlayArea  Returns the Vector position of the point you ask for. Pass 0-3 to get the four points. ]]
--- @return Vector
--- @param nPoint int
-function CBasePlayer:GetPlayArea( nPoint ) end
-
 ---[[ CBasePlayer:GetUserID  Returns the player's user id. ]]
 -- @return int
 function CBasePlayer:GetUserID(  ) end
 
----[[ CBasePlayer:GetVRControllerType  Returns the type of controller being used while in VR. ]]
--- @return <unknown>
-function CBasePlayer:GetVRControllerType(  ) end
-
 ---[[ CBasePlayer:IsNoclipping  Returns true if the player is in noclip mode. ]]
 -- @return bool
 function CBasePlayer:IsNoclipping(  ) end
-
----[[ CBasePlayer:IsUsePressed  Returns true if the use key is pressed. ]]
--- @return bool
-function CBasePlayer:IsUsePressed(  ) end
-
----[[ CBasePlayer:IsVRControllerButtonPressed  Returns true if the controller button is pressed. ]]
--- @return bool
--- @param nButton int
-function CBasePlayer:IsVRControllerButtonPressed( nButton ) end
-
----[[ CBasePlayer:IsVRDashboardShowing  Returns true if the SteamVR dashboard is showing for this player. ]]
--- @return bool
-function CBasePlayer:IsVRDashboardShowing(  ) end
 
 ---[[ CBaseTrigger:Disable  Disable's the trigger ]]
 -- @return void
@@ -4179,6 +4151,11 @@ function CDOTABaseGameMode:RemoveRealTimeCombatAnalyzerQuery( nQueryID ) end
 -- @param hFunction handle
 -- @param hContext handle
 function CDOTABaseGameMode:SetAbilityTuningValueFilter( hFunction, hContext ) end
+
+---[[ CDOTABaseGameMode:SetAllowNeutralItemDrops  If set to true, neutral items will be dropped on killing neutral monsters.  Otherwise nothing will be dropped. ]]
+-- @return void
+-- @param bEnabled bool
+function CDOTABaseGameMode:SetAllowNeutralItemDrops( bEnabled ) end
 
 ---[[ CDOTABaseGameMode:SetAlwaysShowPlayerInventory  Show the player hero's inventory in the HUD, regardless of what unit is selected. ]]
 -- @return void
@@ -9968,6 +9945,15 @@ function CInfoData:QueryString( tok, pDefault ) end
 -- @param vDefault Vector
 function CInfoData:QueryVector( tok, vDefault ) end
 
+---[[ CInfoPlayerStartDota:IsEnabled  Returns whether the object is currently active ]]
+-- @return bool
+function CInfoPlayerStartDota:IsEnabled(  ) end
+
+---[[ CInfoPlayerStartDota:SetEnabled  Enable or disable the obstruction ]]
+-- @return void
+-- @param bEnabled bool
+function CInfoPlayerStartDota:SetEnabled( bEnabled ) end
+
 ---[[ CInfoWorldLayer:HideWorldLayer  Hides this layer ]]
 -- @return void
 function CInfoWorldLayer:HideWorldLayer(  ) end
@@ -10055,75 +10041,6 @@ function CPointTemplate:SetSpawnCallback( hCallbackFunc, hCallbackScope ) end
 -- @return void
 -- @param pMessage string
 function CPointWorldText:SetMessage( pMessage ) end
-
----[[ CPropHMDAvatar:GetVRHand  Get VR hand by ID ]]
--- @return handle
--- @param nHandID int
-function CPropHMDAvatar:GetVRHand( nHandID ) end
-
----[[ CPropVRHand:AddHandAttachment  Add the attachment to this hand ]]
--- @return void
--- @param hAttachment handle
-function CPropVRHand:AddHandAttachment( hAttachment ) end
-
----[[ CPropVRHand:AddHandModelOverride  Add a model override for this hand ]]
--- @return handle
--- @param pModelName string
-function CPropVRHand:AddHandModelOverride( pModelName ) end
-
----[[ CPropVRHand:FindHandModelOverride  Find a specific model override for this hand ]]
--- @return handle
--- @param pModelName string
-function CPropVRHand:FindHandModelOverride( pModelName ) end
-
----[[ CPropVRHand:FireHapticPulse  Fire a haptic pulse on this hand. [0,2] for strength. ]]
--- @return void
--- @param nStrength int
-function CPropVRHand:FireHapticPulse( nStrength ) end
-
----[[ CPropVRHand:FireHapticPulsePrecise  Fire a haptic pulse on this hand. Specify the duration in micro seconds. ]]
--- @return void
--- @param nPulseDuration int
-function CPropVRHand:FireHapticPulsePrecise( nPulseDuration ) end
-
----[[ CPropVRHand:GetHandAttachment  Get the attachment on this hand ]]
--- @return handle
-function CPropVRHand:GetHandAttachment(  ) end
-
----[[ CPropVRHand:GetHandID  Get hand ID ]]
--- @return int
-function CPropVRHand:GetHandID(  ) end
-
----[[ CPropVRHand:GetLiteralHandType  Get literal type for this hand ]]
--- @return int
-function CPropVRHand:GetLiteralHandType(  ) end
-
----[[ CPropVRHand:GetPlayer  Get the player for this hand ]]
--- @return handle
-function CPropVRHand:GetPlayer(  ) end
-
----[[ CPropVRHand:GetVelocity  Get the filtered controller velocity. ]]
--- @return Vector
-function CPropVRHand:GetVelocity(  ) end
-
----[[ CPropVRHand:RemoveAllHandModelOverrides  Remove all model overrides for this hand ]]
--- @return void
-function CPropVRHand:RemoveAllHandModelOverrides(  ) end
-
----[[ CPropVRHand:RemoveHandAttachmentByHandle  Remove hand attachment by handle ]]
--- @return void
--- @param hAttachment handle
-function CPropVRHand:RemoveHandAttachmentByHandle( hAttachment ) end
-
----[[ CPropVRHand:RemoveHandModelOverride  Remove a model override for this hand ]]
--- @return void
--- @param pModelName string
-function CPropVRHand:RemoveHandModelOverride( pModelName ) end
-
----[[ CPropVRHand:SetHandAttachment  Set the attachment for this hand ]]
--- @return void
--- @param hAttachment handle
-function CPropVRHand:SetHandAttachment( hAttachment ) end
 
 ---[[ CSceneEntity:AddBroadcastTeamTarget  Adds a team (by index) to the broadcast list ]]
 -- @return void

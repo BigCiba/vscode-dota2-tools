@@ -2270,6 +2270,9 @@ export async function activate(context: vscode.ExtensionContext) {
 				APIBrowserView = undefined;
 			});
 		}
+		if (APIBrowserView.active === false) {
+			APIBrowserView.reveal(vscode.ViewColumn.One)
+		}
 		APIBrowserView.webview.postMessage({
 			type: infoType,
 			data: funInfo,
@@ -2289,9 +2292,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
 				for (const class_name in class_list) {
 					const fun_list = class_list[class_name];
+					const filterClassName = class_name.search(new RegExp(msg, 'i')) !== -1 ? true:false;
 					for (let i = 0; i < fun_list.length; i++) {
 						const fun_info = fun_list[i];
-						if (fun_info.function.search(new RegExp(msg, 'i')) !== -1) {
+						if (fun_info.function.search(new RegExp(msg, 'i')) !== -1 || filterClassName === true) {
 							if (filter_class_list[class_name] === undefined) {
 								filter_class_list[class_name] = [];
 							}
@@ -2301,9 +2305,10 @@ export async function activate(context: vscode.ExtensionContext) {
 				}
 				for (const enum_name in enum_list) {
 					const enum_arr = enum_list[enum_name];
+					const filterEnumName = enum_name.search(new RegExp(msg, 'i')) !== -1 ? true:false;
 					for (let i = 0; i < enum_arr.length; i++) {
 						const enum_info = enum_arr[i];
-						if (enum_info.name.search(new RegExp(msg, 'i')) !== -1 || (enum_info.function !== undefined && enum_info.function.search(new RegExp(msg, 'i')) !== -1)) {
+						if (enum_info.name.search(new RegExp(msg, 'i')) !== -1 || (enum_info.function !== undefined && enum_info.function.search(new RegExp(msg, 'i')) !== -1) || filterEnumName == true) {
 							if (filter_enum_list[enum_name] === undefined) {
 								filter_enum_list[enum_name] = [];
 							}

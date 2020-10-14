@@ -1310,6 +1310,14 @@ function UnitCSV2KV(listen_path) {
                     ItemDef: value
                 };
                 wearable_count++;
+                // 一些Creature特殊键值
+            }
+            else if (key === 'CanRespawn' || key === 'DisableClumpingBehavior' || key === 'UsesGestureBasedAttackAnimation' || key === 'ShouldDoFlyHeightVisual' || key === 'IsHybridFlyer') {
+                if (values_obj.Creature == undefined) {
+                    values_obj.Creature = {};
+                }
+                values_obj.Creature[key] = col;
+                continue;
                 // 跳过没有key的值
             }
             else if (key === '') {
