@@ -37,9 +37,11 @@ let ApiTree; // ApiTreeProvider
 exports.ApiTree = ApiTree;
 let class_list;
 let enum_list;
+let func_api_parse;
 function UpDataApiNote(note) {
     ApiNote = note;
-    ApiTree.refresh();
+    [class_list, enum_list] = func_api_parse();
+    ApiTree.reopen();
 }
 exports.UpDataApiNote = UpDataApiNote;
 function GetApiNote() {
@@ -102,7 +104,7 @@ function Init(context) {
                         ApiNote = result;
                         // console.log(JSON.parse(ApiNote).Global);
                         [class_list, enum_list] = APIParse();
-                        ApiTree.refresh();
+                        ApiTree.reopen();
                         ftpClient.end();
                     });
                 });
@@ -123,7 +125,7 @@ function Init(context) {
                     if (option !== null && option.length > 0) {
                         let [fun_info, new_line] = util.ReadFunction(i, rows);
                         if ((api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) || api_note[fun_info.function] !== undefined) {
-                            let note = api_note[fun_info.class][fun_info.function] || api_note[fun_info.function];
+                            let note = (api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) ? api_note[fun_info.class][fun_info.function] : api_note[fun_info.function];
                             fun_info.description = note.description;
                             for (const params_name in fun_info.params) {
                                 const params_info = fun_info.params[params_name];
@@ -242,6 +244,7 @@ function Init(context) {
             }
             return [class_list, enum_list];
         }
+        func_api_parse = APIParse;
         function FindFile(path, file_name) {
             return __awaiter(this, void 0, void 0, function* () {
                 let path_arr = [];

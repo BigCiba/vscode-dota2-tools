@@ -141,21 +141,29 @@
 				"command": "tss.kvTools.download",
 				"title": "download",
 				"icon": {
-					"light": "res/download.svg",
-					"dark": "res/download.svg"
+					"light": "images/light/boolean.svg",
+					"dark": "images/dark/boolean.svg"
 				}
 			},
 			{
 				"command": "tss.kvTools.downloadall",
 				"title": "downloadall",
 				"icon": {
-					"light": "res/download.svg",
-					"dark": "res/download.svg"
+					"light": "images/light/boolean.svg",
+					"dark": "images/dark/boolean.svg"
 				}
 			},
 			{
 				"command": "tss.kvTools.openFile",
 				"title": "open file"
+			},
+			{
+				"command": "dota2tools.dota2api.edit",
+				"title": "编辑",
+				"icon": {
+					"light": "images/light/edit.svg",
+					"dark": "images/dark/edit.svg"
+				}
 			},
 			{
 				"command": "dota2tools.CSVToPHPArray",
@@ -288,6 +296,11 @@
 				{
 					"command": "tss.kvTools.downloadall",
 					"when": "view == kvdownloadExplorer && viewItem == addon",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.dota2api.edit",
+					"when": "view == dota2apiExplorer && viewItem == NodeItem",
 					"group": "inline"
 				}
 			]

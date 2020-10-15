@@ -1006,16 +1006,19 @@ function activate(context) {
             console.log('finish');
         }));
         // 注释API
-        let NoteAPI = vscode.commands.registerCommand('extension.NoteAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
+        let NoteAPI = vscode.commands.registerCommand('extension.NoteAPI', (uri, funcName) => __awaiter(this, void 0, void 0, function* () {
             var _a;
-            let active_text_editor = vscode.window.activeTextEditor;
-            if (active_text_editor !== undefined) {
-                let range_start = active_text_editor.selection.start;
-                let range_end = active_text_editor.selection.end;
-                const select_text = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.getText(new vscode.Range(range_start, range_end));
-                if (select_text === undefined) {
-                    return;
+            console.log(uri, funcName);
+            let select_text = funcName;
+            if (select_text == undefined) {
+                let active_text_editor = vscode.window.activeTextEditor;
+                if (active_text_editor !== undefined) {
+                    let range_start = active_text_editor.selection.start;
+                    let range_end = active_text_editor.selection.end;
+                    select_text = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.getText(new vscode.Range(range_start, range_end));
                 }
+            }
+            if (select_text !== undefined) {
                 // 读取服务器API
                 const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
                 const api_note = JSON.parse(init_1.GetApiNote());

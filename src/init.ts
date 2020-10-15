@@ -15,11 +15,13 @@ let ApiNote:string = '';	// api_note.json
 let ApiTree: ApiTreeProvider;	// ApiTreeProvider
 let class_list: any;
 let enum_list: any;
+let func_api_parse:any;
 // tslint:disable-next-line: no-unused-expression
 export {KV2LUA, VSND, GameDir, ContentDir, ApiTree};
 export function UpDataApiNote(note: string) {
 	ApiNote = note;
-	ApiTree.refresh();
+	[class_list, enum_list] = func_api_parse();
+	ApiTree.reopen();
 }
 export function GetApiNote() {
 	return ApiNote;
@@ -65,7 +67,7 @@ export async function Init(context: vscode.ExtensionContext) {
 				ApiNote = result;
 				// console.log(JSON.parse(ApiNote).Global);
 				[class_list, enum_list] = APIParse();
-				ApiTree.refresh();
+				ApiTree.reopen();
 				ftpClient.end();
 			});
 		});
@@ -85,7 +87,8 @@ export async function Init(context: vscode.ExtensionContext) {
 				if (option !== null && option.length > 0) {
 					let [fun_info, new_line] = util.ReadFunction(i, rows);
 					if ((api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) || api_note[fun_info.function] !== undefined) {
-						let note = api_note[fun_info.class][fun_info.function] || api_note[fun_info.function];
+						let note = (api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) ? api_note[fun_info.class][fun_info.function] : api_note[fun_info.function];
+						
 						fun_info.description = note.description;
 						for (const params_name in fun_info.params) {
 							const params_info = fun_info.params[params_name];
@@ -206,6 +209,7 @@ export async function Init(context: vscode.ExtensionContext) {
 		}
 		return [class_list, enum_list];
 	}
+	func_api_parse = APIParse;
 
 	async function FindFile(path:string, file_name:string):Promise<string[]|false> {
 		let path_arr: string[] = [];

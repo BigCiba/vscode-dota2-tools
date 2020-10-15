@@ -18,11 +18,19 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 
 	constructor(private context: vscode.ExtensionContext, public class_list: any, public enum_list: any) {
 		this.api_note = JSON.parse(GetApiNote());
+		vscode.commands.registerCommand('dota2tools.dota2api.edit', (nodeItem:NodeItem) => {
+			console.log(nodeItem);
+			vscode.commands.executeCommand( 'extension.NoteAPI', nodeItem.itemType, nodeItem.label );
+		})
 	}
-	refresh(): void {
+	reopen(): void {
 		this.api_note = JSON.parse(GetApiNote());
 		this.class_list = GetClassList();
 		this.enum_list = GetEnumList();
+		this._onDidChangeTreeData.fire();
+	}
+	refresh(): void {
+		this.api_note = JSON.parse(GetApiNote());
 		this._onDidChangeTreeData.fire();
 	}
 	rebuild(): void {

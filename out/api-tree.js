@@ -19,11 +19,19 @@ class ApiTreeProvider {
         this._onDidChangeTreeData = new vscode.EventEmitter();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
         this.api_note = JSON.parse(init_1.GetApiNote());
+        vscode.commands.registerCommand('dota2tools.dota2api.edit', (nodeItem) => {
+            console.log(nodeItem);
+            vscode.commands.executeCommand('extension.NoteAPI', nodeItem.itemType, nodeItem.label);
+        });
     }
-    refresh() {
+    reopen() {
         this.api_note = JSON.parse(init_1.GetApiNote());
         this.class_list = init_1.GetClassList();
         this.enum_list = init_1.GetEnumList();
+        this._onDidChangeTreeData.fire();
+    }
+    refresh() {
+        this.api_note = JSON.parse(init_1.GetApiNote());
         this._onDidChangeTreeData.fire();
     }
     rebuild() {
