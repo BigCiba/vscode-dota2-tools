@@ -303,22 +303,30 @@
 				},
 				"dota2-tools.abilities_excel_path": {
 					"type": "object",
-					"scope": "window",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"description": "监听技能excel路径"
 				},
 				"dota2-tools.abilities_kv_path": {
 					"type": "object",
-					"scope": "window",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"description": "输出技能kv路径"
 				},
 				"dota2-tools.units_excel_path": {
 					"type": "object",
-					"scope": "window",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"description": "监听单位excel路径"
 				},
 				"dota2-tools.units_kv_path": {
 					"type": "object",
-					"scope": "window",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"description": "输出单位kv路径"
 				},
 				"dota2-tools.Listen Localization": {
@@ -338,6 +346,9 @@
 				},
 				"dota2-tools.Custom Spellicons Path": {
 					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"default": {
 						"content": "/panorama/images/spellicons",
 						"game": "/resource/flash3/images/spellicons"
@@ -346,6 +357,9 @@
 				},
 				"dota2-tools.Custom Items Path": {
 					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"default": {
 						"content": "/panorama/images/items",
 						"game": "/resource/flash3/images/items"
@@ -369,6 +383,33 @@
 				"dota2-tools.API Note Path": {
 					"type": "string",
 					"description": "用于保存注释api的json文件路径，不填路径不会生成，填绝对路径，带文件名。"
+				},
+				"dota2-tools.API Note Server Configuration": {
+					"type": "object",
+					"properties": {
+						"host": {
+							"type": "string",
+							"description": "ip地址"
+						},
+						"port": {
+							"type": "string",
+							"description": "端口"
+						},
+						"user": {
+							"type": "string",
+							"description": "用户名"
+						},
+						"password": {
+							"type": "string",
+							"description": "密码"
+						},
+						"filename": {
+							"type": "string",
+							"description": "文件名"
+						}
+					},
+					"default": {},
+					"description": "api的json网络配置"
 				}
 			}
 		}
@@ -396,9 +437,11 @@
 		"url": "https://gitee.com/bigciba/dota2-tools.git"
 	},
 	"dependencies": {
+		"@types/ftp": "^0.3.31",
 		"@types/node-xlsx": "^0.15.0",
 		"@types/request": "^2.48.5",
 		"@types/watch": "^1.0.1",
+		"ftp": "^0.3.10",
 		"node-xlsx": "^0.15.0",
 		"request": "^2.88.2",
 		"watch": "^1.0.2"

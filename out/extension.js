@@ -24,6 +24,7 @@ const KVServer_1 = require("./kv_server/KVServer");
 const table_inherit_1 = require("./table_inherit");
 const drop_string_1 = require("./drop_string");
 const child_process_1 = require("child_process");
+const ftp = require("ftp");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1007,13 +1008,8 @@ function activate(context) {
         // 注释API
         let NoteAPI = vscode.commands.registerCommand('extension.NoteAPI', (uri) => __awaiter(this, void 0, void 0, function* () {
             var _a;
-            let api_note_path = vscode.workspace.getConfiguration().get('dota2-tools.API Note Path') || '';
-            if (api_note_path === undefined || api_note_path === '') {
-                util.ShowError("设置中未定义API Note Path");
-                return;
-            }
             let active_text_editor = vscode.window.activeTextEditor;
-            if (active_text_editor !== undefined && api_note_path !== undefined) {
+            if (active_text_editor !== undefined) {
                 let range_start = active_text_editor.selection.start;
                 let range_end = active_text_editor.selection.end;
                 const select_text = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.getText(new vscode.Range(range_start, range_end));
@@ -1022,7 +1018,7 @@ function activate(context) {
                 }
                 // 读取服务器API
                 const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
-                const api_note = JSON.parse(fs.readFileSync(api_note_path, 'utf-8'));
+                const api_note = JSON.parse(init_1.GetApiNote());
                 const rows = dota_script_help2.split(os.EOL);
                 let class_list = {};
                 let enum_list = {};
@@ -1096,8 +1092,27 @@ function activate(context) {
                                     api_note[message.class] = {};
                                 }
                                 api_note[message.class][select_text] = message;
-                                fs.writeFileSync(api_note_path, JSON.stringify(api_note));
-                                fs.writeFileSync(context.extensionPath + '/resource/api_note.json', JSON.stringify(api_note));
+                                // fs.writeFileSync(api_note_path, JSON.stringify(api_note));
+                                // 从服务器读取API Note， 读取配置信息
+                                let noteServerConfig = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+                                if (noteServerConfig !== undefined) {
+                                    let ftpClient = new ftp();
+                                    ftpClient.connect({
+                                        host: noteServerConfig.host,
+                                        port: noteServerConfig.port,
+                                        user: noteServerConfig.user,
+                                        password: noteServerConfig.password,
+                                    });
+                                    ftpClient.on('ready', function () {
+                                        ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err) {
+                                            if (err)
+                                                throw err;
+                                            ftpClient.end();
+                                        });
+                                    });
+                                }
+                                init_1.UpDataApiNote(JSON.stringify(api_note));
+                                // fs.writeFileSync(context.extensionPath + '/resource/api_note.json', JSON.stringify(api_note));
                                 panel.dispose();
                             }, undefined, context.subscriptions);
                         }
@@ -1125,8 +1140,27 @@ function activate(context) {
                                 let output_obj = {};
                                 output_obj[select_text] = message;
                                 api_note[select_text] = message;
-                                fs.writeFileSync(api_note_path, JSON.stringify(api_note));
-                                fs.writeFileSync(context.extensionPath + '/resource/api_note.json', JSON.stringify(api_note));
+                                // fs.writeFileSync(api_note_path, JSON.stringify(api_note));
+                                // fs.writeFileSync(context.extensionPath + '/resource/api_note.json', JSON.stringify(api_note));
+                                // 从服务器读取API Note， 读取配置信息
+                                let noteServerConfig = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+                                if (noteServerConfig !== undefined) {
+                                    let ftpClient = new ftp();
+                                    ftpClient.connect({
+                                        host: noteServerConfig.host,
+                                        port: noteServerConfig.port,
+                                        user: noteServerConfig.user,
+                                        password: noteServerConfig.password,
+                                    });
+                                    ftpClient.on('ready', function () {
+                                        ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err) {
+                                            if (err)
+                                                throw err;
+                                            ftpClient.end();
+                                        });
+                                    });
+                                }
+                                init_1.UpDataApiNote(JSON.stringify(api_note));
                                 panel.dispose();
                             }, undefined, context.subscriptions);
                         }
@@ -2122,141 +2156,6 @@ function activate(context) {
             });
             panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
         }));
-        // 解析api文件
-        let ApiTree;
-        let [class_list, enum_list] = APIParse();
-        function APIParse() {
-            let PraseFile = function (sDotaScriptHelp) {
-                const api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
-                const rows = sDotaScriptHelp.split(os.EOL);
-                let class_list = {};
-                let enum_list = {};
-                for (let i = 0; i < rows.length; i++) {
-                    // 函数
-                    let option = rows[i].match(/---\[\[.*\]\]/g);
-                    if (option !== null && option.length > 0) {
-                        let [fun_info, new_line] = util.ReadFunction(i, rows);
-                        if (api_note[fun_info.function] !== undefined) {
-                            fun_info.description = api_note[fun_info.function].description;
-                            for (const params_name in fun_info.params) {
-                                const params_info = fun_info.params[params_name];
-                                params_info.params_name = api_note[fun_info.function].params[params_name].params_name;
-                                params_info.description = api_note[fun_info.function].params[params_name].description;
-                            }
-                            fun_info.example = api_note[fun_info.function].example;
-                        }
-                        if (class_list[fun_info.class] === undefined) {
-                            class_list[fun_info.class] = [];
-                        }
-                        class_list[fun_info.class].push(fun_info);
-                        i = new_line;
-                    }
-                    // 常数
-                    if (rows[i].search('--- Enum ') !== -1) {
-                        let enum_name = rows[i].substr(9, rows[i].length);
-                        if (enum_list[enum_name] === undefined) {
-                            enum_list[enum_name] = [];
-                        }
-                        let [enum_info, new_line] = util.ReadEnum(i, rows);
-                        for (let j = 0; j < enum_info.length; j++) {
-                            const enum_arr = enum_info[j];
-                            if (api_note[enum_arr.name] !== undefined) {
-                                enum_arr.description_lite = api_note[enum_arr.name].description_lite;
-                                enum_arr.description = api_note[enum_arr.name].description;
-                                enum_arr.example = api_note[enum_arr.name].example;
-                            }
-                        }
-                        enum_list[enum_name] = enum_info;
-                        i = new_line;
-                    }
-                }
-                return [class_list, enum_list];
-            };
-            let Combine = function (class_list, class_list_cl) {
-                for (const class_name in class_list) {
-                    const fun_list = class_list[class_name];
-                    // console.log('fun_list', fun_list);
-                    for (let i = 0; i < fun_list.length; i++) {
-                        const fun_info = fun_list[i];
-                        let class_info_cl = class_list_cl[class_name];
-                        if (class_info_cl === undefined) {
-                            class_info_cl = class_list_cl[class_name.replace('C', 'C_')];
-                        }
-                        if (class_info_cl !== undefined) {
-                            for (let j = 0; j < class_info_cl.length; j++) {
-                                if (class_info_cl[j].function === fun_info.function) {
-                                    fun_info.client = true;
-                                    fun_info.class_cl = class_info_cl[j].class;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                // 补充client api6
-                for (const class_name in class_list_cl) {
-                    const fun_list = class_list_cl[class_name];
-                    for (let i = 0; i < fun_list.length; i++) {
-                        const fun_info = fun_list[i];
-                        let bHasServer = false;
-                        for (let i = 0; i < class_list[class_name.replace('C_', 'C')].length; i++) {
-                            const server_fun_info = class_list[class_name.replace('C_', 'C')][i];
-                            if (fun_info.function == server_fun_info.function) {
-                                bHasServer = true;
-                                break;
-                            }
-                        }
-                        if (bHasServer == false) {
-                            fun_info.server = false;
-                            fun_info.client = true;
-                            fun_info.class = undefined;
-                            fun_info.class_cl = class_name.replace('C_', 'C');
-                            class_list[class_name.replace('C_', 'C')].push(fun_info);
-                        }
-                    }
-                }
-                //重新排序
-                for (const class_name in class_list) {
-                    let fun_list = class_list[class_name];
-                    let sort_func_list = [];
-                    let funcName = [];
-                    for (let i = 0; i < fun_list.length; i++) {
-                        const fun_info = fun_list[i];
-                        funcName.push(fun_info.function);
-                    }
-                    funcName.sort();
-                    for (let i = 0; i < funcName.length; i++) {
-                        for (let j = 0; j < fun_list.length; j++) {
-                            if (funcName[i] == fun_list[j].function) {
-                                sort_func_list.push(fun_list[j]);
-                                break;
-                            }
-                        }
-                    }
-                    class_list[class_name] = sort_func_list;
-                }
-            };
-            let sHelp = path.join(context.extensionPath, "resource/dota_script_help2.lua");
-            let sHelpClient = path.join(context.extensionPath, "resource/dota_cl_script_help2.lua");
-            let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
-            let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
-            Combine(class_list, class_list_cl);
-            ApiTree = new api_tree_1.ApiTreeProvider(context, class_list, enum_list);
-            vscode.window.registerTreeDataProvider('dota2apiExplorer', ApiTree);
-            // modifier function 对应
-            let modifierfunctionPath = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
-            if (modifierfunctionPath !== undefined && modifierfunctionPath !== '') {
-                let modifierfunction = 'return {\n';
-                for (const property in enum_list.modifierfunction) {
-                    const element = enum_list.modifierfunction[property];
-                    modifierfunction += `	${element.name} = "${element.function || ''}",
-`;
-                }
-                modifierfunction += '}';
-                fs.writeFileSync(path.join(init_1.GameDir, modifierfunctionPath), modifierfunction);
-            }
-            return [class_list, enum_list];
-        }
         let APIBrowserView = undefined;
         vscode.commands.registerCommand("dota2tools.api_browser", (funInfo, infoType) => __awaiter(this, void 0, void 0, function* () {
             if (APIBrowserView == undefined) {
@@ -2288,6 +2187,8 @@ function activate(context) {
         }));
         vscode.commands.registerCommand("dota2tools.dota2api.filter", () => __awaiter(this, void 0, void 0, function* () {
             vscode.window.showInputBox({ prompt: "输入过滤词搜索API" }).then((msg) => {
+                let class_list = init_1.GetClassList();
+                let enum_list = init_1.GetEnumList();
                 if (msg !== undefined) {
                     let filter_class_list = {};
                     let filter_enum_list = {};
@@ -2317,31 +2218,33 @@ function activate(context) {
                             }
                         }
                     }
-                    ApiTree.class_list = filter_class_list;
-                    ApiTree.enum_list = filter_enum_list;
-                    ApiTree.refresh();
+                    init_1.ApiTree.class_list = filter_class_list;
+                    init_1.ApiTree.enum_list = filter_enum_list;
+                    init_1.ApiTree.refresh();
                     context.workspaceState.update('filtered', true);
                     vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', true));
                 }
             });
         }));
         context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.clearfilter", () => __awaiter(this, void 0, void 0, function* () {
-            ApiTree.class_list = class_list;
-            ApiTree.enum_list = enum_list;
-            ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-            ApiTree.refresh();
+            let class_list = init_1.GetClassList();
+            let enum_list = init_1.GetEnumList();
+            init_1.ApiTree.class_list = class_list;
+            init_1.ApiTree.enum_list = enum_list;
+            init_1.ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+            init_1.ApiTree.refresh();
             context.workspaceState.update('filtered', false);
             vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', false));
         })));
         context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.expand", () => __awaiter(this, void 0, void 0, function* () {
-            ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
-            ApiTree.rebuild();
+            init_1.ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+            init_1.ApiTree.rebuild();
             context.workspaceState.update('expanded', true);
             vscode.commands.executeCommand('setContext', 'dota2tools-expanded', context.workspaceState.get('expanded', true));
         })));
         context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.collapse", () => __awaiter(this, void 0, void 0, function* () {
-            ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-            ApiTree.rebuild();
+            init_1.ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+            init_1.ApiTree.rebuild();
             context.workspaceState.update('expanded', false);
             vscode.commands.executeCommand('setContext', 'dota2tools-expanded', context.workspaceState.get('expanded', false));
         })));

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
-const fs = require("fs");
 const path = require("path");
+const init_1 = require("./init");
 // 类型
 var APIType;
 (function (APIType) {
@@ -18,9 +18,12 @@ class ApiTreeProvider {
         this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
         this._onDidChangeTreeData = new vscode.EventEmitter();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
-        this.api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
+        this.api_note = JSON.parse(init_1.GetApiNote());
     }
     refresh() {
+        this.api_note = JSON.parse(init_1.GetApiNote());
+        this.class_list = init_1.GetClassList();
+        this.enum_list = init_1.GetEnumList();
         this._onDidChangeTreeData.fire();
     }
     rebuild() {

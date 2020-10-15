@@ -8,12 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 const util = require("./util");
 const util_1 = require("util");
+const os = require("os");
+const ftp = require("ftp");
+const api_tree_1 = require("./api-tree");
 let KV2LUA = {}; // kv与lua文件关联数据
 exports.KV2LUA = KV2LUA;
 let VSND = new Array;
@@ -22,6 +32,28 @@ let GameDir = ''; // game目录
 exports.GameDir = GameDir;
 let ContentDir = ''; // content目录
 exports.ContentDir = ContentDir;
+let ApiNote = ''; // api_note.json
+let ApiTree; // ApiTreeProvider
+exports.ApiTree = ApiTree;
+let class_list;
+let enum_list;
+function UpDataApiNote(note) {
+    ApiNote = note;
+    ApiTree.refresh();
+}
+exports.UpDataApiNote = UpDataApiNote;
+function GetApiNote() {
+    return ApiNote;
+}
+exports.GetApiNote = GetApiNote;
+function GetClassList() {
+    return class_list;
+}
+exports.GetClassList = GetClassList;
+function GetEnumList() {
+    return enum_list;
+}
+exports.GetEnumList = GetEnumList;
 function Init(context) {
     return __awaiter(this, void 0, void 0, function* () {
         let root_path = util.GetRootPath();
@@ -33,6 +65,182 @@ function Init(context) {
         if (path_arr !== false) {
             exports.ContentDir = ContentDir = path_arr[0], exports.GameDir = GameDir = path_arr[1];
             console.log(GameDir);
+        }
+        // 读取ApiNote
+        ApiNote = fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8');
+        // 从服务器读取API Note， 读取配置信息
+        let noteServerConfig = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+        if (noteServerConfig !== undefined) {
+            let ftpClient = new ftp();
+            ftpClient.connect({
+                host: noteServerConfig.host,
+                port: noteServerConfig.port,
+                user: noteServerConfig.user,
+                password: noteServerConfig.password,
+            });
+            ftpClient.on('ready', function () {
+                ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err, stream) {
+                    var stream_1, stream_1_1;
+                    var e_1, _a;
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (err)
+                            throw err;
+                        let result = '';
+                        try {
+                            for (stream_1 = __asyncValues(stream); stream_1_1 = yield stream_1.next(), !stream_1_1.done;) {
+                                const chunk = stream_1_1.value;
+                                result += chunk;
+                            }
+                        }
+                        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                        finally {
+                            try {
+                                if (stream_1_1 && !stream_1_1.done && (_a = stream_1.return)) yield _a.call(stream_1);
+                            }
+                            finally { if (e_1) throw e_1.error; }
+                        }
+                        ApiNote = result;
+                        // console.log(JSON.parse(ApiNote).Global);
+                        [class_list, enum_list] = APIParse();
+                        ApiTree.refresh();
+                        ftpClient.end();
+                    });
+                });
+            });
+        }
+        [class_list, enum_list] = APIParse();
+        exports.ApiTree = ApiTree = new api_tree_1.ApiTreeProvider(context, class_list, enum_list);
+        vscode.window.registerTreeDataProvider('dota2apiExplorer', ApiTree);
+        function APIParse() {
+            let api_note = JSON.parse(ApiNote);
+            let PraseFile = function (sDotaScriptHelp) {
+                const rows = sDotaScriptHelp.split(os.EOL);
+                let class_list = {};
+                let enum_list = {};
+                for (let i = 0; i < rows.length; i++) {
+                    // 函数
+                    let option = rows[i].match(/---\[\[.*\]\]/g);
+                    if (option !== null && option.length > 0) {
+                        let [fun_info, new_line] = util.ReadFunction(i, rows);
+                        if ((api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) || api_note[fun_info.function] !== undefined) {
+                            let note = api_note[fun_info.class][fun_info.function] || api_note[fun_info.function];
+                            fun_info.description = note.description;
+                            for (const params_name in fun_info.params) {
+                                const params_info = fun_info.params[params_name];
+                                params_info.params_name = note.params[params_name].params_name;
+                                params_info.description = note.params[params_name].description;
+                            }
+                            fun_info.example = note.example;
+                        }
+                        if (class_list[fun_info.class] === undefined) {
+                            class_list[fun_info.class] = [];
+                        }
+                        class_list[fun_info.class].push(fun_info);
+                        i = new_line;
+                    }
+                    // 常数
+                    if (rows[i].search('--- Enum ') !== -1) {
+                        let enum_name = rows[i].substr(9, rows[i].length);
+                        if (enum_list[enum_name] === undefined) {
+                            enum_list[enum_name] = [];
+                        }
+                        let [enum_info, new_line] = util.ReadEnum(i, rows);
+                        for (let j = 0; j < enum_info.length; j++) {
+                            const enum_arr = enum_info[j];
+                            if (api_note[enum_arr.name] !== undefined) {
+                                enum_arr.description_lite = api_note[enum_arr.name].description_lite;
+                                enum_arr.description = api_note[enum_arr.name].description;
+                                enum_arr.example = api_note[enum_arr.name].example;
+                            }
+                        }
+                        enum_list[enum_name] = enum_info;
+                        i = new_line;
+                    }
+                }
+                return [class_list, enum_list];
+            };
+            let Combine = function (class_list, class_list_cl) {
+                for (const class_name in class_list) {
+                    const fun_list = class_list[class_name];
+                    // console.log('fun_list', fun_list);
+                    for (let i = 0; i < fun_list.length; i++) {
+                        const fun_info = fun_list[i];
+                        let class_info_cl = class_list_cl[class_name];
+                        if (class_info_cl === undefined) {
+                            class_info_cl = class_list_cl[class_name.replace('C', 'C_')];
+                        }
+                        if (class_info_cl !== undefined) {
+                            for (let j = 0; j < class_info_cl.length; j++) {
+                                if (class_info_cl[j].function === fun_info.function) {
+                                    fun_info.client = true;
+                                    fun_info.class_cl = class_info_cl[j].class;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                // 补充client api
+                for (const class_name in class_list_cl) {
+                    const fun_list = class_list_cl[class_name];
+                    for (let i = 0; i < fun_list.length; i++) {
+                        const fun_info = fun_list[i];
+                        let bHasServer = false;
+                        for (let i = 0; i < class_list[class_name.replace('C_', 'C')].length; i++) {
+                            const server_fun_info = class_list[class_name.replace('C_', 'C')][i];
+                            if (fun_info.function == server_fun_info.function) {
+                                bHasServer = true;
+                                break;
+                            }
+                        }
+                        if (bHasServer == false) {
+                            fun_info.server = false;
+                            fun_info.client = true;
+                            fun_info.class = undefined;
+                            fun_info.class_cl = class_name.replace('C_', 'C');
+                            class_list[class_name.replace('C_', 'C')].push(fun_info);
+                        }
+                    }
+                }
+                //重新排序
+                for (const class_name in class_list) {
+                    let fun_list = class_list[class_name];
+                    let sort_func_list = [];
+                    let funcName = [];
+                    for (let i = 0; i < fun_list.length; i++) {
+                        const fun_info = fun_list[i];
+                        funcName.push(fun_info.function);
+                    }
+                    funcName.sort();
+                    for (let i = 0; i < funcName.length; i++) {
+                        for (let j = 0; j < fun_list.length; j++) {
+                            if (funcName[i] == fun_list[j].function) {
+                                sort_func_list.push(fun_list[j]);
+                                break;
+                            }
+                        }
+                    }
+                    class_list[class_name] = sort_func_list;
+                }
+            };
+            let sHelp = path.join(context.extensionPath, "resource/dota_script_help2.lua");
+            let sHelpClient = path.join(context.extensionPath, "resource/dota_cl_script_help2.lua");
+            let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));
+            let [class_list_cl, enum_list_cl] = PraseFile(fs.readFileSync(sHelpClient, 'utf-8'));
+            Combine(class_list, class_list_cl);
+            // modifier function 对应
+            let modifierfunctionPath = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
+            if (modifierfunctionPath !== undefined && modifierfunctionPath !== '') {
+                let modifierfunction = 'return {\n';
+                for (const property in enum_list.modifierfunction) {
+                    const element = enum_list.modifierfunction[property];
+                    modifierfunction += `	${element.name} = "${element.function || ''}",
+`;
+                }
+                modifierfunction += '}';
+                fs.writeFileSync(path.join(GameDir, modifierfunctionPath), modifierfunction);
+            }
+            return [class_list, enum_list];
         }
         function FindFile(path, file_name) {
             return __awaiter(this, void 0, void 0, function* () {

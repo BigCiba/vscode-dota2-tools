@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { print } from 'util';
+import { GetApiNote, GetClassList, GetEnumList } from './init';
 
 // 类型
 export enum APIType {
@@ -16,9 +17,12 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 	readonly onDidChangeTreeData: vscode.Event<NodeItem | undefined> = this._onDidChangeTreeData.event;
 
 	constructor(private context: vscode.ExtensionContext, public class_list: any, public enum_list: any) {
-		this.api_note = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8'));
+		this.api_note = JSON.parse(GetApiNote());
 	}
 	refresh(): void {
+		this.api_note = JSON.parse(GetApiNote());
+		this.class_list = GetClassList();
+		this.enum_list = GetEnumList();
 		this._onDidChangeTreeData.fire();
 	}
 	rebuild(): void {
