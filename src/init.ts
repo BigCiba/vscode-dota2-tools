@@ -59,7 +59,11 @@ export async function Init(context: vscode.ExtensionContext) {
 		});
 		ftpClient.on('ready', function() {
 			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename:'api_note.json', async function(err, stream) {
-				if (err) throw err;
+				if (err) {
+					vscode.window.setStatusBarMessage('API Note下载超时');
+					throw err
+				};
+				vscode.window.setStatusBarMessage('API Note下载成功');
 				let result: string = '';
 				for await (const chunk of stream) {
 					result += chunk;

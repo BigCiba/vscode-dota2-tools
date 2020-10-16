@@ -29,7 +29,7 @@
 				{
 					"id": "dota2api",
 					"title": "Dota2 API",
-					"icon": "images/dep.svg"
+					"icon": "images/book.svg"
 				}
 			]
 		},
@@ -95,10 +95,7 @@
 			{
 				"command": "dota2tools.select_ability_texture",
 				"title": "选择技能图标",
-				"icon": {
-					"light": "./images/texture_light.svg",
-					"dark": "./images/texture_dark.svg"
-				}
+				"icon": "$(preview)"
 			},
 			{
 				"command": "dota2tools.ability_export",
@@ -115,7 +112,7 @@
 			{
 				"command": "tss.kvTools.refresh",
 				"title": "refresh",
-				"icon": "$(refresh)"
+				"icon": "$(sync~spin)"
 			},
 			{
 				"command": "dota2tools.dota2api.filter",
@@ -188,18 +185,7 @@
 			{
 				"command": "dota2tools.items_browser",
 				"title": "Dota2饰品查询工具",
-				"icon": {
-					"light": "./images/hero_light.svg",
-					"dark": "./images/hero_dark.svg"
-				}
-			},
-			{
-				"command": "dota2tools.items_browser",
-				"title": "Dota2饰品查询工具",
-				"icon": {
-					"light": "./images/hero_light.svg",
-					"dark": "./images/hero_dark.svg"
-				}
+				"icon": "$(account)"
 			}
 		],
 		"menus": {
@@ -268,12 +254,12 @@
 				},
 				{
 					"command": "dota2tools.dota2api.filter",
-					"when": "view == dota2apiExplorer && dota2tools-filtered == false",
+					"when": "view == dota2apiExplorer",
 					"group": "navigation@6"
 				},
 				{
 					"command": "dota2tools.dota2api.clearfilter",
-					"when": "view == dota2apiExplorer && dota2tools-filtered == true",
+					"when": "view == dota2apiExplorer",
 					"group": "navigation@6"
 				},
 				{
@@ -395,7 +381,7 @@
 				},
 				"dota2-tools.API Note Path": {
 					"type": "string",
-					"description": "用于保存注释api的json文件路径，不填路径不会生成，填绝对路径，带文件名。"
+					"description": "（暂时无效）用于保存注释api的json文件路径，不填路径不会生成，填绝对路径，带文件名。"
 				},
 				"dota2-tools.API Note Server Configuration": {
 					"type": "object",
@@ -422,7 +408,7 @@
 						}
 					},
 					"default": {},
-					"description": "api的json网络配置"
+					"description": "API Note的网络配置，可以自行配置ftp服务器"
 				}
 			}
 		}

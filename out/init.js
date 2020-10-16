@@ -85,8 +85,12 @@ function Init(context) {
                     var stream_1, stream_1_1;
                     var e_1, _a;
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (err)
+                        if (err) {
+                            vscode.window.setStatusBarMessage('API Note下载超时');
                             throw err;
+                        }
+                        ;
+                        vscode.window.setStatusBarMessage('API Note下载成功');
                         let result = '';
                         try {
                             for (stream_1 = __asyncValues(stream); stream_1_1 = yield stream_1.next(), !stream_1_1.done;) {

@@ -1108,9 +1108,13 @@ function activate(context) {
                                     });
                                     ftpClient.on('ready', function () {
                                         ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err) {
-                                            if (err)
+                                            if (err) {
+                                                vscode.window.setStatusBarMessage('API Note上传超时');
                                                 throw err;
+                                            }
+                                            ;
                                             ftpClient.end();
+                                            vscode.window.setStatusBarMessage('API Note上传成功');
                                         });
                                     });
                                 }
