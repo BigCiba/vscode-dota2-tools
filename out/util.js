@@ -1328,9 +1328,10 @@ function UnitCSV2KV(listen_path) {
             }
         }
         if (Object.keys(AttachWearables).length > 0) {
-            values_obj.Creature = {
-                AttachWearables: AttachWearables
-            };
+            if (values_obj.Creature == undefined) {
+                values_obj.Creature = {};
+            }
+            values_obj.Creature.AttachWearables = AttachWearables;
         }
         csv_data[row[0]] = values_obj;
     }
