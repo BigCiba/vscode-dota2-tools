@@ -23,6 +23,7 @@ const util = require("./util");
 const util_1 = require("util");
 const os = require("os");
 const ftp = require("ftp");
+const sftp = require("ssh2-sftp-client");
 const api_tree_1 = require("./api-tree");
 let KV2LUA = {}; // kv与lua文件关联数据
 exports.KV2LUA = KV2LUA;
@@ -68,6 +69,22 @@ function Init(context) {
             exports.ContentDir = ContentDir = path_arr[0], exports.GameDir = GameDir = path_arr[1];
             console.log(GameDir);
         }
+        let client = new sftp();
+        client.connect({
+            host: '111.231.89.227',
+            port: 22,
+            username: 'eomftp',
+            password: '19704941'
+        }).then(() => {
+            return client.fastPut(context.extensionPath + '/resource/api_note.json', '/api_note.json');
+            console.log("sdfafasfasf");
+        }).then(() => {
+            client.end();
+            console.log(`upload success`);
+        }).catch(err => {
+            client.end();
+            console.log(`upload  fail`, err);
+        });
         // 读取ApiNote
         ApiNote = fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8');
         // 从服务器读取API Note， 读取配置信息
