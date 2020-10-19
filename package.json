@@ -117,7 +117,7 @@
 			{
 				"command": "dota2tools.dota2api.filter",
 				"title": "搜索",
-				"icon": "$(filter)"
+				"icon": "$(search)"
 			},
 			{
 				"command": "dota2tools.dota2api.clearfilter",

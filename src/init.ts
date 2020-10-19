@@ -7,6 +7,7 @@ import * as os from 'os';
 import * as ftp from 'ftp';
 import {Listener} from './listener';
 import { APIType, ApiTreeProvider } from './api-tree';
+import { Func } from 'mocha';
 let KV2LUA:any = {};	// kv与lua文件关联数据
 let VSND = new Array;
 let GameDir:string = '';	// game目录
@@ -31,6 +32,54 @@ export function GetClassList() {
 }
 export function GetEnumList() {
 	return enum_list;
+}
+export function PullAPINote(infoType: any, funInfo: any, callback: (info:any)=>void) {
+	let noteServerConfig: vscode.WorkspaceConfiguration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+	if (noteServerConfig !== undefined) {
+		let ftpClient = new ftp();
+		ftpClient.connect({
+			host: noteServerConfig.host,
+			port: noteServerConfig.port,
+			user: noteServerConfig.user,
+			password: noteServerConfig.password,
+		});
+		ftpClient.on('ready', function() {
+			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename:'api_note.json', async function(err, stream) {
+				if (err) {
+					vscode.window.setStatusBarMessage('API Note下载超时');
+					throw err
+				};
+				vscode.window.setStatusBarMessage('API Note下载成功');
+				let result: string = '';
+				for await (const chunk of stream) {
+					result += chunk;
+				}
+				ApiNote = result;
+				// console.log(JSON.parse(ApiNote).Global);
+				[class_list, enum_list] = func_api_parse();
+				
+				if (infoType == APIType.Function) {
+					for (let index = 0; index < class_list[funInfo.class].length; index++) {
+						const element = class_list[funInfo.class][index];
+						if (element.function == funInfo.function) {
+							callback(element);
+						}
+					}
+				} else if (infoType == APIType.Enum) {
+					for (const enum_name in enum_list) {
+						const enum_arr = enum_list[enum_name];
+						for (let i = 0; i < enum_arr.length; i++) {
+							const enum_info = enum_arr[i];
+							if (enum_info.name === funInfo.name) {
+								callback(enum_info);
+							}
+						}
+					}
+				}
+				ftpClient.end();
+			});
+		});
+	}
 }
 export async function Init(context: vscode.ExtensionContext) {
 	let root_path:string|undefined = util.GetRootPath();

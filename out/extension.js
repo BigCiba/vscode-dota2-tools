@@ -2191,6 +2191,14 @@ function activate(context) {
             else if (infoType == api_tree_1.APIType.Enum) {
                 vscode.env.clipboard.writeText(funInfo.name);
             }
+            init_1.PullAPINote(infoType, funInfo, (info) => {
+                if (APIBrowserView !== undefined) {
+                    APIBrowserView.webview.postMessage({
+                        type: infoType,
+                        data: info,
+                    });
+                }
+            });
         }));
         vscode.commands.registerCommand("dota2tools.dota2api.filter", () => __awaiter(this, void 0, void 0, function* () {
             vscode.window.showInputBox({ prompt: "输入过滤词搜索API" }).then((msg) => {

@@ -23,7 +23,6 @@ const util = require("./util");
 const util_1 = require("util");
 const os = require("os");
 const ftp = require("ftp");
-const sftp = require("ssh2-sftp-client");
 const api_tree_1 = require("./api-tree");
 let KV2LUA = {}; // kv与lua文件关联数据
 exports.KV2LUA = KV2LUA;
@@ -57,6 +56,70 @@ function GetEnumList() {
     return enum_list;
 }
 exports.GetEnumList = GetEnumList;
+function PullAPINote(infoType, funInfo, callback) {
+    let noteServerConfig = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+    if (noteServerConfig !== undefined) {
+        let ftpClient = new ftp();
+        ftpClient.connect({
+            host: noteServerConfig.host,
+            port: noteServerConfig.port,
+            user: noteServerConfig.user,
+            password: noteServerConfig.password,
+        });
+        ftpClient.on('ready', function () {
+            ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err, stream) {
+                var stream_1, stream_1_1;
+                var e_1, _a;
+                return __awaiter(this, void 0, void 0, function* () {
+                    if (err) {
+                        vscode.window.setStatusBarMessage('API Note下载超时');
+                        throw err;
+                    }
+                    ;
+                    vscode.window.setStatusBarMessage('API Note下载成功');
+                    let result = '';
+                    try {
+                        for (stream_1 = __asyncValues(stream); stream_1_1 = yield stream_1.next(), !stream_1_1.done;) {
+                            const chunk = stream_1_1.value;
+                            result += chunk;
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (stream_1_1 && !stream_1_1.done && (_a = stream_1.return)) yield _a.call(stream_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                    ApiNote = result;
+                    // console.log(JSON.parse(ApiNote).Global);
+                    [class_list, enum_list] = func_api_parse();
+                    if (infoType == api_tree_1.APIType.Function) {
+                        for (let index = 0; index < class_list[funInfo.class].length; index++) {
+                            const element = class_list[funInfo.class][index];
+                            if (element.function == funInfo.function) {
+                                callback(element);
+                            }
+                        }
+                    }
+                    else if (infoType == api_tree_1.APIType.Enum) {
+                        for (const enum_name in enum_list) {
+                            const enum_arr = enum_list[enum_name];
+                            for (let i = 0; i < enum_arr.length; i++) {
+                                const enum_info = enum_arr[i];
+                                if (enum_info.name === funInfo.name) {
+                                    callback(enum_info);
+                                }
+                            }
+                        }
+                    }
+                    ftpClient.end();
+                });
+            });
+        });
+    }
+}
+exports.PullAPINote = PullAPINote;
 function Init(context) {
     return __awaiter(this, void 0, void 0, function* () {
         let root_path = util.GetRootPath();
@@ -69,22 +132,6 @@ function Init(context) {
             exports.ContentDir = ContentDir = path_arr[0], exports.GameDir = GameDir = path_arr[1];
             console.log(GameDir);
         }
-        let client = new sftp();
-        client.connect({
-            host: '111.231.89.227',
-            port: 22,
-            username: 'eomftp',
-            password: '19704941'
-        }).then(() => {
-            return client.fastPut(context.extensionPath + '/resource/api_note.json', '/api_note.json');
-            console.log("sdfafasfasf");
-        }).then(() => {
-            client.end();
-            console.log(`upload success`);
-        }).catch(err => {
-            client.end();
-            console.log(`upload  fail`, err);
-        });
         // 读取ApiNote
         ApiNote = fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8');
         // 从服务器读取API Note， 读取配置信息
@@ -99,8 +146,8 @@ function Init(context) {
             });
             ftpClient.on('ready', function () {
                 ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err, stream) {
-                    var stream_1, stream_1_1;
-                    var e_1, _a;
+                    var stream_2, stream_2_1;
+                    var e_2, _a;
                     return __awaiter(this, void 0, void 0, function* () {
                         if (err) {
                             vscode.window.setStatusBarMessage('API Note下载超时');
@@ -110,17 +157,17 @@ function Init(context) {
                         vscode.window.setStatusBarMessage('API Note下载成功');
                         let result = '';
                         try {
-                            for (stream_1 = __asyncValues(stream); stream_1_1 = yield stream_1.next(), !stream_1_1.done;) {
-                                const chunk = stream_1_1.value;
+                            for (stream_2 = __asyncValues(stream); stream_2_1 = yield stream_2.next(), !stream_2_1.done;) {
+                                const chunk = stream_2_1.value;
                                 result += chunk;
                             }
                         }
-                        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                        catch (e_2_1) { e_2 = { error: e_2_1 }; }
                         finally {
                             try {
-                                if (stream_1_1 && !stream_1_1.done && (_a = stream_1.return)) yield _a.call(stream_1);
+                                if (stream_2_1 && !stream_2_1.done && (_a = stream_2.return)) yield _a.call(stream_2);
                             }
-                            finally { if (e_1) throw e_1.error; }
+                            finally { if (e_2) throw e_2.error; }
                         }
                         ApiNote = result;
                         // console.log(JSON.parse(ApiNote).Global);

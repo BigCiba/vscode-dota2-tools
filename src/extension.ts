@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
-import { Init, KV2LUA, VSND, GameDir, ContentDir, UpDataApiNote, ApiTree, GetApiNote, GetClassList, GetEnumList } from './init';
+import { Init, KV2LUA, VSND, GameDir, ContentDir, UpDataApiNote, ApiTree, GetApiNote, GetClassList, GetEnumList, PullAPINote } from './init';
 import { Listener } from './listener';
 import * as watch from 'watch';
 import { APIType, ApiTreeProvider } from './api-tree';
@@ -2154,6 +2154,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	let APIBrowserView: vscode.WebviewPanel|undefined = undefined;
 
 	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType) => {
+		
 		if (APIBrowserView == undefined) {
 			APIBrowserView = vscode.window.createWebviewPanel(
 				'APIBrowser', // viewType
@@ -2181,6 +2182,14 @@ export async function activate(context: vscode.ExtensionContext) {
 		} else if (infoType == APIType.Enum) {
 			vscode.env.clipboard.writeText(funInfo.name);
 		}
+		PullAPINote(infoType, funInfo, (info)=> {
+			if (APIBrowserView !== undefined) {
+				APIBrowserView.webview.postMessage({
+					type: infoType,
+					data: info,
+				});
+			}
+		});
 	});
 	vscode.commands.registerCommand("dota2tools.dota2api.filter", async () => {
 		vscode.window.showInputBox( { prompt: "输入过滤词搜索API" } ).then((msg) =>{
