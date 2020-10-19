@@ -2153,7 +2153,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	let APIBrowserView: vscode.WebviewPanel|undefined = undefined;
 
-	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType) => {
+	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType, name) => {
 		
 		if (APIBrowserView == undefined) {
 			APIBrowserView = vscode.window.createWebviewPanel(
@@ -2175,6 +2175,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		APIBrowserView.webview.postMessage({
 			type: infoType,
 			data: funInfo,
+			name: name
 		});
 		APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
 		if (infoType == APIType.Function) {
@@ -2182,14 +2183,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		} else if (infoType == APIType.Enum) {
 			vscode.env.clipboard.writeText(funInfo.name);
 		}
-		PullAPINote(infoType, funInfo, (info)=> {
-			if (APIBrowserView !== undefined) {
-				APIBrowserView.webview.postMessage({
-					type: infoType,
-					data: info,
-				});
-			}
-		});
+		if (infoType == APIType.Function || infoType == APIType.Enum) {
+			PullAPINote(infoType, funInfo, (info)=> {
+				if (APIBrowserView !== undefined) {
+					APIBrowserView.webview.postMessage({
+						type: infoType,
+						data: info,
+					});
+					ApiTree.refresh();
+				}
+			});
+		}
 	});
 	vscode.commands.registerCommand("dota2tools.dota2api.filter", async () => {
 		vscode.window.showInputBox( { prompt: "输入过滤词搜索API" } ).then((msg) =>{

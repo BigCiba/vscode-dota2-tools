@@ -69,6 +69,42 @@ ${enum_info.example}
 }
 	document.querySelector('.markdown-body').innerHTML = marked(enum_detail_md);
 }
+function RenderClass(class_info, class_name) {
+	let class_md = `# ${class_name}
+Function|Description|Client
+--|--|--
+`;
+	for (let i = 0; i < class_info.length; i++) {
+		const fun_info = class_info[i];
+		let params_string = '';
+		let count = 0;
+		for (let params_name in fun_info.params) {
+			let params_name_note = fun_info.params[params_name].params_name || params_name;
+			if (count === 0) {
+				count++;
+				params_string += params_name_note;
+			} else {
+				params_string += ', ' + params_name_note;
+			}
+		}
+		class_md += `<font color='#c586c0'>${fun_info.return}</font> <font color='#dcdcaa'>${fun_info.function}</font>(${params_string})|${fun_info.description}|${(fun_info.client === true ? '✔️' : '❌')}\n`;
+	}
+	document.querySelector('.markdown-body').innerHTML = marked(class_md);
+}
+function RenderEnumType(enum_list, enum_type) {
+	console.log(enum_list, enum_type);
+	let enum_list_md = `# ${enum_type}\n`;
+	enum_list_md += (enum_type == 'modifierfunction' ? 'Name|Value|Lua function|Description\n--|--|--|--\n':'Name|Value|Description\n--|--|--\n');
+	for (let i = 0; i < enum_list.length; i++) {
+		const enum_info = enum_list[i];
+		if (enum_type == 'modifierfunction') {
+			enum_list_md += `${enum_info.name}|${enum_info.value}|${enum_info.function}|${enum_info.description_lite || enum_info.description}\n`;
+		} else {
+			enum_list_md += `${enum_info.name}|${enum_info.value}|${enum_info.description_lite || enum_info.description}\n`;
+		}
+	}
+	document.querySelector('.markdown-body').innerHTML = marked(enum_list_md);
+}
 window.addEventListener('message', event => {
 	const message = event.data;
 	if (message.type == 'function') {
@@ -81,6 +117,16 @@ window.addEventListener('message', event => {
 			data: message.data,
 		});
 		RenderEnum(message.data);
+	} else if (message.type == 'class') {
+		vscode.setState({ 
+			data: message.data,
+		});
+		RenderClass(message.data, message.name);
+	} else if (message.type == 'enum_type') {
+		vscode.setState({ 
+			data: message.data,
+		});
+		RenderEnumType(message.data, message.name);
 	}
 });
 (function () {

@@ -135,6 +135,11 @@
 				"icon": "$(collapse-all)"
 			},
 			{
+				"command": "dota2tools.dota2api.overview",
+				"title": "常用",
+				"icon": "$(heart)"
+			},
+			{
 				"command": "tss.kvTools.download",
 				"title": "download",
 				"icon": {
@@ -163,6 +168,14 @@
 				}
 			},
 			{
+				"command": "dota2tools.dota2api.list",
+				"title": "列表",
+				"icon": {
+					"light": "images/light/list-selection.svg",
+					"dark": "images/dark/list-selection.svg"
+				}
+			},
+			{
 				"command": "dota2tools.CSVToPHPArray",
 				"title": "CSV 转 PHP 配置"
 			},
@@ -185,7 +198,7 @@
 			{
 				"command": "dota2tools.items_browser",
 				"title": "Dota2饰品查询工具",
-				"icon": "$(account)"
+				"icon": "$(jersey)"
 			}
 		],
 		"menus": {
@@ -253,6 +266,11 @@
 					"group": "navigation@10"
 				},
 				{
+					"command": "dota2tools.dota2api.overview",
+					"when": "view == dota2apiExplorer",
+					"group": "navigation@5"
+				},
+				{
 					"command": "dota2tools.dota2api.filter",
 					"when": "view == dota2apiExplorer",
 					"group": "navigation@6"
@@ -287,6 +305,11 @@
 				{
 					"command": "dota2tools.dota2api.edit",
 					"when": "view == dota2apiExplorer && viewItem == NodeItem",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.dota2api.list",
+					"when": "view == dota2apiExplorer && viewItem == Class",
 					"group": "inline"
 				}
 			]

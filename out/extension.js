@@ -2164,7 +2164,7 @@ function activate(context) {
             panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
         }));
         let APIBrowserView = undefined;
-        vscode.commands.registerCommand("dota2tools.api_browser", (funInfo, infoType) => __awaiter(this, void 0, void 0, function* () {
+        vscode.commands.registerCommand("dota2tools.api_browser", (funInfo, infoType, name) => __awaiter(this, void 0, void 0, function* () {
             if (APIBrowserView == undefined) {
                 APIBrowserView = vscode.window.createWebviewPanel('APIBrowser', // viewType
                 "API Browser", // 视图标题
@@ -2183,6 +2183,7 @@ function activate(context) {
             APIBrowserView.webview.postMessage({
                 type: infoType,
                 data: funInfo,
+                name: name
             });
             APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
             if (infoType == api_tree_1.APIType.Function) {
@@ -2191,14 +2192,17 @@ function activate(context) {
             else if (infoType == api_tree_1.APIType.Enum) {
                 vscode.env.clipboard.writeText(funInfo.name);
             }
-            init_1.PullAPINote(infoType, funInfo, (info) => {
-                if (APIBrowserView !== undefined) {
-                    APIBrowserView.webview.postMessage({
-                        type: infoType,
-                        data: info,
-                    });
-                }
-            });
+            if (infoType == api_tree_1.APIType.Function || infoType == api_tree_1.APIType.Enum) {
+                init_1.PullAPINote(infoType, funInfo, (info) => {
+                    if (APIBrowserView !== undefined) {
+                        APIBrowserView.webview.postMessage({
+                            type: infoType,
+                            data: info,
+                        });
+                        init_1.ApiTree.refresh();
+                    }
+                });
+            }
         }));
         vscode.commands.registerCommand("dota2tools.dota2api.filter", () => __awaiter(this, void 0, void 0, function* () {
             vscode.window.showInputBox({ prompt: "输入过滤词搜索API" }).then((msg) => {
