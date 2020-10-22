@@ -1089,6 +1089,9 @@ export function Array2CSV(arr: any[]): string {
 // 写入kv
 export function WriteKeyValue(obj: any, depth: number = 0) {
 	var str: string = '';
+	if (obj == null || obj == undefined) {
+		return str;
+	}
 	// 添加制表符
 	function AddDepthTab(depth: number, add_string: string): string {
 		var tab: string = '';
