@@ -1106,6 +1106,7 @@ export function WriteKeyValue(obj: any, depth: number = 0) {
 		}
 		return tab;
 	}
+	// 进行key值排序，纯数字按大小排序，字母不排序
 	let keys = Object.keys(obj).sort(function(a,b){return Number(a)-Number(b)});
 	for (let index = 0; index < keys.length; index++) {
 		const key = keys[index]
