@@ -1147,6 +1147,9 @@ exports.Array2CSV = Array2CSV;
 // 写入kv
 function WriteKeyValue(obj, depth = 0) {
     var str = '';
+    if (obj == null || obj == undefined) {
+        return str;
+    }
     // 添加制表符
     function AddDepthTab(depth, add_string) {
         var tab = '';
