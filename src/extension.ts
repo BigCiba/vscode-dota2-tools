@@ -1953,8 +1953,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		let sIndexJs = "";
-
 		let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
 
 		let sKvPath = (GameDir + Config).replace(/\\/g, "/");
@@ -1992,13 +1990,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			let fileData = sObjectName + "." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/" + sOutputPath + "/" + sKVName + ".js").replace(/\\/g, "/");
 			fs.writeFileSync(jsPath, fileData);
-
-			// index.js的内容
-			sIndexJs += `import './${sKVName}.js'\n`
 		}
-
-		let indexPath = (`${ContentDir}/${sOutputPath}/index.js`).replace(/\\/g, "/");
-		fs.writeFileSync(indexPath, sIndexJs);
 
 		vscode.window.showInformationMessage('JS文件生成完毕');
 	});
