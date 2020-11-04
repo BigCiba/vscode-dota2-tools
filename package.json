@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.1.61",
+	"version": "0.1.63",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -143,16 +143,16 @@
 				"command": "tss.kvTools.download",
 				"title": "download",
 				"icon": {
-					"light": "images/light/boolean.svg",
-					"dark": "images/dark/boolean.svg"
+					"light": "images/light/download.svg",
+					"dark": "images/dark/download.svg"
 				}
 			},
 			{
 				"command": "tss.kvTools.downloadall",
 				"title": "downloadall",
 				"icon": {
-					"light": "images/light/boolean.svg",
-					"dark": "images/dark/boolean.svg"
+					"light": "images/light/download.svg",
+					"dark": "images/dark/download.svg"
 				}
 			},
 			{

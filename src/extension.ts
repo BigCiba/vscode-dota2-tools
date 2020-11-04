@@ -1538,8 +1538,10 @@ export async function activate(context: vscode.ExtensionContext) {
 					const ability_value = ability_data[ability_key];
 					if (ability_key === 'AbilitySpecial') {//特殊处理AbilitySpecial
 						let special_count: number = 1;//记录第几个special值
-						for (const special_index in ability_value) {//遍历special
-							const special_info = ability_value[special_index];
+						let keys = Object.keys(ability_value).sort(function (a, b) { return Number(a) - Number(b) });
+						for (let index = 0; index < keys.length; index++) {
+						// for (const special_index in ability_value) {//遍历special
+							const special_info = ability_value[keys[index]];
 							// 遍历special里面的额外键值
 							let special_name: string = '';
 							let special_value: string = '';
