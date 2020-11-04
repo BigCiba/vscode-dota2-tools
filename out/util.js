@@ -1355,6 +1355,17 @@ function GetVscodeResourceUri(path) {
 }
 exports.GetVscodeResourceUri = GetVscodeResourceUri;
 function GetLuaScriptSnippet(filename, path) {
+    try {
+        let SnippetPath = (filename.indexOf("item_") == -1) ? ((GetRootPath() + "/eom/lua_ability_snippet.lua").replace(/\\/g, "/")) : ((GetRootPath() + "/eom/lua_item_snippet.lua").replace(/\\/g, "/"));
+        let snippet = fs.readFileSync(SnippetPath, "utf-8");
+        snippet = snippet.replace(/\[filename\]/g, filename);
+        snippet = snippet.replace(/\[path\]/g, path);
+        return snippet;
+    }
+    catch (error) {
+        // console.log(error);
+        console.log("[warning]:No snippet file");
+    }
     return `LinkLuaModifier( "modifier_${filename}", "${path}.lua", LUA_MODIFIER_MOTION_NONE )
 --Abilities
 if ${filename} == nil then
