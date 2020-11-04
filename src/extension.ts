@@ -1068,7 +1068,7 @@ export async function activate(context: vscode.ExtensionContext) {
 							api_note[message.class][select_text] = message;
 							// fs.writeFileSync(api_note_path, JSON.stringify(api_note));
 							// 从服务器读取API Note， 读取配置信息
-							let noteServerConfig: vscode.WorkspaceConfiguration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+							let noteServerConfig: vscode.WorkspaceConfiguration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
 							if (noteServerConfig !== undefined) {
 								let ftpClient = new ftp();
 								ftpClient.connect({
@@ -1077,8 +1077,8 @@ export async function activate(context: vscode.ExtensionContext) {
 									user: noteServerConfig.user,
 									password: noteServerConfig.password,
 								});
-								ftpClient.on('ready', function() {
-									ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename:'api_note.json', function(err) {
+								ftpClient.on('ready', function () {
+									ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err) {
 										if (err) {
 											vscode.window.setStatusBarMessage('API Note上传超时');
 											throw err;
@@ -1122,7 +1122,7 @@ export async function activate(context: vscode.ExtensionContext) {
 							// fs.writeFileSync(api_note_path, JSON.stringify(api_note));
 							// fs.writeFileSync(context.extensionPath + '/resource/api_note.json', JSON.stringify(api_note));
 							// 从服务器读取API Note， 读取配置信息
-							let noteServerConfig: vscode.WorkspaceConfiguration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+							let noteServerConfig: vscode.WorkspaceConfiguration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
 							if (noteServerConfig !== undefined) {
 								let ftpClient = new ftp();
 								ftpClient.connect({
@@ -1131,8 +1131,8 @@ export async function activate(context: vscode.ExtensionContext) {
 									user: noteServerConfig.user,
 									password: noteServerConfig.password,
 								});
-								ftpClient.on('ready', function() {
-									ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename:'api_note.json', function(err) {
+								ftpClient.on('ready', function () {
+									ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err) {
 										if (err) throw err;
 										ftpClient.end();
 									});
@@ -1955,6 +1955,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
+		let sIndexJs = "";
+
 		let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
 
 		let sKvPath = (GameDir + Config).replace(/\\/g, "/");
@@ -1962,6 +1964,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		let Configs = KVJSConfig.configs;
 		let KVFiles = KVJSConfig.kvfiles;
 		let sOutputPath = Configs.OutputPath || "panorama/scripts/kv";
+		let sObjectName = "GameUI";
+		if (typeof (util.StringToAny(Configs.ObjectName)) === "string") {
+			sObjectName = util.StringToAny(Configs.ObjectName);
+		}
 
 		for (const sKVName in KVFiles) {
 			let sPath = KVFiles[sKVName];
@@ -1983,15 +1989,20 @@ export async function activate(context: vscode.ExtensionContext) {
 				let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase((GameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
 				kv = util.OverrideKeyValue(util.ReplaceKeyValue(items_kv, npc_abilities_override_kv), kv);
 			}
-			let sObjectName = "GameUI";
-			if (typeof (util.StringToAny(Configs.ObjectName)) === "string") {
-				sObjectName = util.StringToAny(Configs.ObjectName);
-			}
+
 			let js = util.Obj2Str(kv);
 			let fileData = sObjectName + "." + sKVName + " = " + js + ";";
 			let jsPath = (ContentDir + "/" + sOutputPath + "/" + sKVName + ".js").replace(/\\/g, "/");
 			fs.writeFileSync(jsPath, fileData);
+
+			// index.js的内容
+			sIndexJs += `import './${sKVName}.js'\n`
 		}
+
+		let indexPath = (`${ContentDir}/${sOutputPath}/index.js`).replace(/\\/g, "/");
+		fs.writeFileSync(indexPath, sIndexJs);
+
+		vscode.window.showInformationMessage('JS文件生成完毕');
 	});
 
 	// 表继承功能
@@ -2153,10 +2164,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
 	});
 
-	let APIBrowserView: vscode.WebviewPanel|undefined = undefined;
+	let APIBrowserView: vscode.WebviewPanel | undefined = undefined;
 
 	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType, name) => {
-		
+
 		if (APIBrowserView == undefined) {
 			APIBrowserView = vscode.window.createWebviewPanel(
 				'APIBrowser', // viewType
@@ -2186,7 +2197,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			vscode.env.clipboard.writeText(funInfo.name);
 		}
 		if (infoType == APIType.Function || infoType == APIType.Enum) {
-			PullAPINote(infoType, funInfo, (info)=> {
+			PullAPINote(infoType, funInfo, (info) => {
 				if (APIBrowserView !== undefined) {
 					APIBrowserView.webview.postMessage({
 						type: infoType,
@@ -2198,16 +2209,16 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	});
 	vscode.commands.registerCommand("dota2tools.dota2api.filter", async () => {
-		vscode.window.showInputBox( { prompt: "输入过滤词搜索API" } ).then((msg) =>{
+		vscode.window.showInputBox({ prompt: "输入过滤词搜索API" }).then((msg) => {
 			let class_list = GetClassList();
 			let enum_list = GetEnumList();
 			if (msg !== undefined) {
-				let filter_class_list:any = {};
-				let filter_enum_list:any = {};
+				let filter_class_list: any = {};
+				let filter_enum_list: any = {};
 
 				for (const class_name in class_list) {
 					const fun_list = class_list[class_name];
-					const filterClassName = class_name.search(new RegExp(msg, 'i')) !== -1 ? true:false;
+					const filterClassName = class_name.search(new RegExp(msg, 'i')) !== -1 ? true : false;
 					for (let i = 0; i < fun_list.length; i++) {
 						const fun_info = fun_list[i];
 						if (fun_info.function.search(new RegExp(msg, 'i')) !== -1 || filterClassName === true) {
@@ -2220,7 +2231,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				}
 				for (const enum_name in enum_list) {
 					const enum_arr = enum_list[enum_name];
-					const filterEnumName = enum_name.search(new RegExp(msg, 'i')) !== -1 ? true:false;
+					const filterEnumName = enum_name.search(new RegExp(msg, 'i')) !== -1 ? true : false;
 					for (let i = 0; i < enum_arr.length; i++) {
 						const enum_info = enum_arr[i];
 						if (enum_info.name.search(new RegExp(msg, 'i')) !== -1 || (enum_info.function !== undefined && enum_info.function.search(new RegExp(msg, 'i')) !== -1) || filterEnumName == true) {
@@ -2235,7 +2246,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				ApiTree.enum_list = filter_enum_list;
 				ApiTree.refresh();
 				context.workspaceState.update('filtered', true);
-				vscode.commands.executeCommand( 'setContext', 'dota2tools-filtered', context.workspaceState.get( 'filtered', true ) );
+				vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', true));
 			}
 		});
 	});
@@ -2247,19 +2258,19 @@ export async function activate(context: vscode.ExtensionContext) {
 		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
 		ApiTree.refresh();
 		context.workspaceState.update('filtered', false);
-		vscode.commands.executeCommand( 'setContext', 'dota2tools-filtered', context.workspaceState.get( 'filtered', false ) );
+		vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', false));
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.expand", async () => {
 		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
 		ApiTree.rebuild();
 		context.workspaceState.update('expanded', true);
-		vscode.commands.executeCommand( 'setContext', 'dota2tools-expanded', context.workspaceState.get( 'expanded', true ) );
+		vscode.commands.executeCommand('setContext', 'dota2tools-expanded', context.workspaceState.get('expanded', true));
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.collapse", async () => {
 		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
 		ApiTree.rebuild();
 		context.workspaceState.update('expanded', false);
-		vscode.commands.executeCommand( 'setContext', 'dota2tools-expanded', context.workspaceState.get( 'expanded', false ) );
+		vscode.commands.executeCommand('setContext', 'dota2tools-expanded', context.workspaceState.get('expanded', false));
 	}));
 
 	// 注册指令

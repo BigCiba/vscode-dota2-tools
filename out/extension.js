@@ -1974,12 +1974,17 @@ function activate(context) {
             if (root_path === undefined) {
                 return;
             }
+            let sIndexJs = "";
             let Config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
             let sKvPath = (init_1.GameDir + Config).replace(/\\/g, "/");
             let KVJSConfig = util.GetKeyValueObjectByIndex(util.ReadKeyValue2(fs.readFileSync(sKvPath, 'utf-8')));
             let Configs = KVJSConfig.configs;
             let KVFiles = KVJSConfig.kvfiles;
             let sOutputPath = Configs.OutputPath || "panorama/scripts/kv";
+            let sObjectName = "GameUI";
+            if (typeof (util.StringToAny(Configs.ObjectName)) === "string") {
+                sObjectName = util.StringToAny(Configs.ObjectName);
+            }
             for (const sKVName in KVFiles) {
                 let sPath = KVFiles[sKVName];
                 let sTotalPath = init_1.GameDir + '/scripts/' + sPath;
@@ -2003,15 +2008,16 @@ function activate(context) {
                     let npc_abilities_override_kv = util.GetKeyValueObjectByIndex(yield util.ReadKeyValueWithBase((init_1.GameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
                     kv = util.OverrideKeyValue(util.ReplaceKeyValue(items_kv, npc_abilities_override_kv), kv);
                 }
-                let sObjectName = "GameUI";
-                if (typeof (util.StringToAny(Configs.ObjectName)) === "string") {
-                    sObjectName = util.StringToAny(Configs.ObjectName);
-                }
                 let js = util.Obj2Str(kv);
                 let fileData = sObjectName + "." + sKVName + " = " + js + ";";
                 let jsPath = (init_1.ContentDir + "/" + sOutputPath + "/" + sKVName + ".js").replace(/\\/g, "/");
                 fs.writeFileSync(jsPath, fileData);
+                // index.js的内容
+                sIndexJs += `import './${sKVName}.js'\n`;
             }
+            let indexPath = (`${init_1.ContentDir}/${sOutputPath}/index.js`).replace(/\\/g, "/");
+            fs.writeFileSync(indexPath, sIndexJs);
+            vscode.window.showInformationMessage('JS文件生成完毕');
         }));
         // 表继承功能
         let CmdInheritTable = vscode.commands.registerCommand("dota2tools.inherit_table", table_inherit_1.InheritTable);

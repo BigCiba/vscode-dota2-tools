@@ -1089,6 +1089,9 @@ export function Array2CSV(arr: any[]): string {
 // 写入kv
 export function WriteKeyValue(obj: any, depth: number = 0) {
 	var str: string = '';
+	if (obj == null || obj == undefined) {
+		return str;
+	}
 	// 添加制表符
 	function AddDepthTab(depth: number, add_string: string): string {
 		var tab: string = '';
@@ -1106,8 +1109,7 @@ export function WriteKeyValue(obj: any, depth: number = 0) {
 		}
 		return tab;
 	}
-	// 进行key值排序，纯数字按大小排序，字母不排序
-	let keys = Object.keys(obj).sort(function(a,b){return Number(a)-Number(b)});
+	let keys = Object.keys(obj).sort(function (a, b) { return Number(a) - Number(b) });
 	for (let index = 0; index < keys.length; index++) {
 		const key = keys[index]
 		const value = obj[key];
@@ -1252,14 +1254,14 @@ export function UnitCSV2KV(listen_path: string): any {
 					ItemDef: value
 				};
 				wearable_count++;
-			// 一些Creature特殊键值
+				// 一些Creature特殊键值
 			} else if (key === 'CanRespawn' || key === 'DisableClumpingBehavior' || key === 'UsesGestureBasedAttackAnimation' || key === 'ShouldDoFlyHeightVisual' || key === 'IsHybridFlyer') {
 				if (values_obj.Creature == undefined) {
 					values_obj.Creature = {};
 				}
 				values_obj.Creature[key] = col;
 				continue;
-			// 跳过没有key的值
+				// 跳过没有key的值
 			} else if (key === '') {
 				continue;
 			} else {
@@ -1288,6 +1290,17 @@ export function GetVscodeResourceUri(path: string) {
 	return vscode.Uri.file(path).with({ scheme: 'vscode-webview-resource' }).toString();
 }
 export function GetLuaScriptSnippet(filename: string, path: string): string {
+	try {
+		let SnippetPath = (filename.indexOf("item_") == -1) ? ((GetRootPath() + "/eom/lua_ability_snippet.lua").replace(/\\/g, "/")) : ((GetRootPath() + "/eom/lua_item_snippet.lua").replace(/\\/g, "/"));
+		let snippet = fs.readFileSync(SnippetPath, "utf-8");
+		snippet = snippet.replace(/\[filename\]/g, filename);
+		snippet = snippet.replace(/\[path\]/g, path);
+		return snippet;
+	} catch (error) {
+		// console.log(error);
+		console.log("[warning]:No snippet file");
+	}
+
 	return `LinkLuaModifier( "modifier_${filename}", "${path}.lua", LUA_MODIFIER_MOTION_NONE )
 --Abilities
 if ${filename} == nil then
