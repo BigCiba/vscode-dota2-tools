@@ -1356,11 +1356,15 @@ function GetVscodeResourceUri(path) {
 exports.GetVscodeResourceUri = GetVscodeResourceUri;
 function GetLuaScriptSnippet(filename, path) {
     try {
-        let SnippetPath = (filename.indexOf("item_") == -1) ? ((GetRootPath() + "/eom/lua_ability_snippet.lua").replace(/\\/g, "/")) : ((GetRootPath() + "/eom/lua_item_snippet.lua").replace(/\\/g, "/"));
-        let snippet = fs.readFileSync(SnippetPath, "utf-8");
-        snippet = snippet.replace(/\[filename\]/g, filename);
-        snippet = snippet.replace(/\[path\]/g, path);
-        return snippet;
+        const templateConfig = vscode.workspace.getConfiguration().get('dota2-tools.LuaTemplateFiles');
+        console.log("templateConfig", templateConfig);
+        if (templateConfig != undefined) {
+            let SnippetPath = (filename.indexOf("item_") == -1) ? ((GetRootPath() + templateConfig.ability).replace(/\\/g, "/")) : ((GetRootPath() + templateConfig.item).replace(/\\/g, "/"));
+            let snippet = fs.readFileSync(SnippetPath, "utf-8");
+            snippet = snippet.replace(/\[filename\]/g, filename);
+            snippet = snippet.replace(/\[path\]/g, path);
+            return snippet;
+        }
     }
     catch (error) {
         // console.log(error);

@@ -437,6 +437,17 @@
 					},
 					"default": {},
 					"description": "API Note的网络配置，可以自行配置ftp服务器"
+				},
+				"dota2-tools.LuaTemplateFiles": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"default": {
+						"ability": "/eom/lua_ability_snippet.lua",
+						"item": "/eom/lua_item_snippet.lua"
+					},
+					"description": "lua代码模板"
 				}
 			}
 		}
