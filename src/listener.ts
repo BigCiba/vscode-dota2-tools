@@ -24,6 +24,7 @@ export class Listener {
 			this.WatchKeyValue();//监听kv
 		}
 		this.WatchInheritCSV();
+		this.WatchMultiLineCSV(); //多行csv
 	}
 
 	async OnConfigChanged(event: vscode.ConfigurationChangeEvent) {
@@ -244,6 +245,40 @@ export class Listener {
 					console.log('removed');
 				} else {
 					generateInheritTable(sParentPath, sTransitionPath, sChildPath, config);
+				}
+			});
+		}
+	}
+
+	async WatchMultiLineCSV() {
+		const configs: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.MultiLineCSVConfig');
+		if (configs === undefined || configs.csv == undefined || configs.kv == undefined) {
+			return;
+		}
+		let sCSVPath: string = configs.csv.replace(/\\\\/g, '/');
+		let file_type: vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(sCSVPath))).type;
+		if (file_type === vscode.FileType.Directory) {
+			let files: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(sCSVPath));
+			for (let i: number = 0; i < files.length; i++) {
+				let [sFileName, isFile] = files[i];
+				if (sFileName === undefined) {
+					continue;
+				}
+				if (isFile === vscode.FileType.File) {
+					let sCSVFilePath: string = sCSVPath + '/' + sFileName;
+					WatchFile(sCSVFilePath, configs.kv + '/' + sFileName.replace(path.extname(sFileName), '.kv'));
+				}
+			}
+		}
+		function WatchFile(sCSVFilePath: string, kv_path: string) {
+			console.log("multiwatch", sCSVFilePath, kv_path)
+			fs.watchFile(sCSVFilePath, (curr, prev) => {
+				if (curr.nlink === 0) {
+					console.log('removed');
+				} else {
+					vscode.window.setStatusBarMessage(path.basename(sCSVFilePath) + ' changed');
+					console.log(sCSVFilePath + ' changed');
+					fs.writeFileSync(kv_path, util.WriteKeyValue({ KeyValue: util.MultilayerCSV2KV(sCSVFilePath) }));
 				}
 			});
 		}

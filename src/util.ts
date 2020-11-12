@@ -1130,6 +1130,117 @@ export function WriteKeyValue(obj: any, depth: number = 0) {
 export interface Configuration {
 	[key: string]: string;
 }
+
+export function MultilayerCSV2KV(listen_path: string): any {
+	try {
+		let csv = fs.readFileSync(listen_path, 'utf-8');
+		let csv_arr: any = CSVParse(csv);
+		// 处理多层key
+		let csv_key: any[] = csv_arr[1];
+		for (let index = 0; index < csv_key.length; index++) {
+			let key: string = csv_key[index];
+			let key_split = key.split("-");
+			if (key_split.length > 1) {
+				csv_key[index] = key_split;
+			}
+		}
+
+		let arr_default: string[] = csv_arr[2];
+		if (arr_default.length === 0 || arr_default[0] == undefined) {
+			return {};
+		}
+
+		let arrKeyDepth: any = {};// 用这个对象记录上一次unique_key变化后的多层结构
+
+		let csv_data: any = {}; // 函数返回值
+		for (let y = 2; y < csv_arr.length; y++) {
+			const row: any = csv_arr[y];
+			if (row.length === 0) {
+				continue;
+			}
+			let line_obj: any;
+			if (row[0] == "") {
+				line_obj = csv_data[arr_default[0]];
+			} else {
+				// 新的一个，初始化
+				line_obj = {};
+				arr_default = [row[0]];
+				arrKeyDepth = {};
+			}
+			for (let x = 1; x < row.length; x++) {
+				let col: string = row[x];
+				if (col != "") {
+					arr_default[x] = col;
+				} else {
+					col = arr_default[x];
+				}
+
+				let key: string | string[] = csv_key[x];
+				if (key instanceof Array) {
+					let temp_obj: any;
+					if (key[0] != "root") {
+						if (line_obj[key[0]] == undefined) {
+							line_obj[key[0]] = {};
+						}
+						temp_obj = line_obj[key[0]];
+					} else {
+						temp_obj = line_obj;
+					}
+
+					if (arrKeyDepth[key[0]] == undefined) {
+						arrKeyDepth[key[0]] = {};
+					}
+
+					// 去头去尾来读取arrKeyDepth,使temp_obj[这个指针]指向col应该填入的位置 NOTE:中间的只能为value 尾部可以为key或者value
+					let index = 1;
+					let depth: number = index - 1;
+					for (; index <= key.length - 2; index++) {
+						depth = index - 1;
+						let sKeyDepth = arrKeyDepth[key[0]][depth];
+						if (sKeyDepth == undefined || sKeyDepth == "") {
+							return {};
+						}
+						if (temp_obj[sKeyDepth] == undefined) {
+							return {};
+						}
+						temp_obj = temp_obj[sKeyDepth];
+					}
+
+					depth = index - 1;
+					if (key[key.length - 1] == "value") {
+						let sKeyDepth = arrKeyDepth[key[0]][depth];
+						if (sKeyDepth == undefined || sKeyDepth == "") {
+							return {};
+						}
+						temp_obj[sKeyDepth] = col;
+					} else {
+						let sKeyDepth = (col == "" || col == undefined) ? arrKeyDepth[key[0]][depth] : col;
+						if (sKeyDepth == undefined || sKeyDepth == "") {
+							return {};
+						}
+						arrKeyDepth[key[0]][depth] = sKeyDepth;
+						if (temp_obj[sKeyDepth] == undefined) {
+							temp_obj[sKeyDepth] = {};
+						}
+					}
+				} else if (key == "") {
+					continue;
+				} else {
+					if (col == undefined || col == "") {
+						continue;
+					}
+					line_obj[key] = col;
+				}
+			}
+			if (row[0] != undefined && row[0] != "") {
+				csv_data[row[0]] = line_obj;
+			}
+		}
+		return csv_data;
+	} catch (error) {
+		console.log(error);
+	}
+}
 export function AbilityCSV2KV(listen_path: string): any {
 	let csv = fs.readFileSync(listen_path, 'utf-8');
 	// 生成kv

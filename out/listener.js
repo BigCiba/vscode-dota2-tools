@@ -30,6 +30,7 @@ class Listener {
             this.WatchKeyValue(); //监听kv
         }
         this.WatchInheritCSV();
+        this.WatchMultiLineCSV(); //多行csv
     }
     OnConfigChanged(event) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -262,6 +263,42 @@ class Listener {
                     }
                     else {
                         table_inherit_1.generateInheritTable(sParentPath, sTransitionPath, sChildPath, config);
+                    }
+                });
+            }
+        });
+    }
+    WatchMultiLineCSV() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const configs = vscode.workspace.getConfiguration().get('dota2-tools.MultiLineCSVConfig');
+            if (configs === undefined || configs.csv == undefined || configs.kv == undefined) {
+                return;
+            }
+            let sCSVPath = configs.csv.replace(/\\\\/g, '/');
+            let file_type = (yield vscode.workspace.fs.stat(vscode.Uri.file(sCSVPath))).type;
+            if (file_type === vscode.FileType.Directory) {
+                let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(sCSVPath));
+                for (let i = 0; i < files.length; i++) {
+                    let [sFileName, isFile] = files[i];
+                    if (sFileName === undefined) {
+                        continue;
+                    }
+                    if (isFile === vscode.FileType.File) {
+                        let sCSVFilePath = sCSVPath + '/' + sFileName;
+                        WatchFile(sCSVFilePath, configs.kv + '/' + sFileName.replace(path.extname(sFileName), '.kv'));
+                    }
+                }
+            }
+            function WatchFile(sCSVFilePath, kv_path) {
+                console.log("multiwatch", sCSVFilePath, kv_path);
+                fs.watchFile(sCSVFilePath, (curr, prev) => {
+                    if (curr.nlink === 0) {
+                        console.log('removed');
+                    }
+                    else {
+                        vscode.window.setStatusBarMessage(path.basename(sCSVFilePath) + ' changed');
+                        console.log(sCSVFilePath + ' changed');
+                        fs.writeFileSync(kv_path, util.WriteKeyValue({ KeyValue: util.MultilayerCSV2KV(sCSVFilePath) }));
                     }
                 });
             }

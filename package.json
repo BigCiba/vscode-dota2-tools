@@ -448,6 +448,17 @@
 						"item": "/eom/lua_item_snippet.lua"
 					},
 					"description": "lua代码模板"
+				},
+				"dota2-tools.MultiLineCSVConfig": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"default": {
+						"csv": "D:/Github/Project6/design/配置表/multiLine/csv",
+						"kv": "D:/Github/Project6/game/project6/scripts/npc/kv"
+					},
+					"description": "多行csv配置"
 				}
 			}
 		}
