@@ -1171,7 +1171,9 @@ function WriteKeyValue(obj, depth = 0) {
     for (let index = 0; index < keys.length; index++) {
         const key = keys[index];
         const value = obj[key];
-        if (typeof (value) === 'string') {
+        if (value == undefined || value == null || (typeof (value) == "object" && Object.keys(value).length === 0)) {
+        }
+        else if (typeof (value) === 'string') {
             str += AddDepthTab(depth, '"' + key + '"');
             str += AddIntervalTab(depth, key);
             str += '"' + value + '"' + os.EOL;
