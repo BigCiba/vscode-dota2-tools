@@ -666,6 +666,12 @@ function GetPhysAngularVelocity( handle_1 ) end
 -- @param handle_1 handle
 function GetPhysVelocity( handle_1 ) end
 
+---[[ GetPotentialNeutralItemDrop  Given the item tier and the team, roll for the name of a valid neutral item drop, considering previous drops and consumables. ]]
+-- @return string
+-- @param int_1 int
+-- @param int_2 int
+function GetPotentialNeutralItemDrop( int_1, int_2 ) end
+
 ---[[ GetSystemDate  Get the current real world date ]]
 -- @return string
 function GetSystemDate(  ) end
@@ -759,6 +765,11 @@ function IsInToolsMode(  ) end
 -- @param int_1 int
 -- @param Vector_2 Vector
 function IsLocationVisible( int_1, Vector_2 ) end
+
+---[[ IsMangoTree  Is this entity a mango tree? (hEntity). ]]
+-- @return bool
+-- @param handle_1 handle
+function IsMangoTree( handle_1 ) end
 
 ---[[ IsMarkedForDeletion  Returns true if the entity is valid and marked for deletion. ]]
 -- @return bool
@@ -1582,96 +1593,102 @@ DOTA_STASH_SLOT_5 = 13
 DOTA_STASH_SLOT_6 = 14
 
 --- Enum DOTASlotType_t
-DOTA_LOADOUT_PERSONA_1_END = 55
-DOTA_LOADOUT_PERSONA_1_START = 28
-DOTA_LOADOUT_TYPE_ABILITY1 = 22
-DOTA_LOADOUT_TYPE_ABILITY1_PERSONA_1 = 50
-DOTA_LOADOUT_TYPE_ABILITY2 = 23
-DOTA_LOADOUT_TYPE_ABILITY2_PERSONA_1 = 51
-DOTA_LOADOUT_TYPE_ABILITY3 = 24
-DOTA_LOADOUT_TYPE_ABILITY3_PERSONA_1 = 52
-DOTA_LOADOUT_TYPE_ABILITY4 = 25
-DOTA_LOADOUT_TYPE_ABILITY4_PERSONA_1 = 53
-DOTA_LOADOUT_TYPE_ABILITY_ATTACK = 21
-DOTA_LOADOUT_TYPE_ABILITY_ATTACK_PERSONA_1 = 49
-DOTA_LOADOUT_TYPE_ABILITY_ULTIMATE = 26
-DOTA_LOADOUT_TYPE_ABILITY_ULTIMATE_PERSONA_1 = 54
-DOTA_LOADOUT_TYPE_AMBIENT_EFFECTS = 20
-DOTA_LOADOUT_TYPE_AMBIENT_EFFECTS_PERSONA_1 = 48
-DOTA_LOADOUT_TYPE_ANNOUNCER = 58
+DOTA_LOADOUT_PERSONA_1_END = 56
+DOTA_LOADOUT_PERSONA_1_START = 29
+DOTA_LOADOUT_TYPE_ABILITY1 = 23
+DOTA_LOADOUT_TYPE_ABILITY1_PERSONA_1 = 51
+DOTA_LOADOUT_TYPE_ABILITY2 = 24
+DOTA_LOADOUT_TYPE_ABILITY2_PERSONA_1 = 52
+DOTA_LOADOUT_TYPE_ABILITY3 = 25
+DOTA_LOADOUT_TYPE_ABILITY3_PERSONA_1 = 53
+DOTA_LOADOUT_TYPE_ABILITY4 = 26
+DOTA_LOADOUT_TYPE_ABILITY4_PERSONA_1 = 54
+DOTA_LOADOUT_TYPE_ABILITY_ATTACK = 22
+DOTA_LOADOUT_TYPE_ABILITY_ATTACK_PERSONA_1 = 50
+DOTA_LOADOUT_TYPE_ABILITY_ULTIMATE = 27
+DOTA_LOADOUT_TYPE_ABILITY_ULTIMATE_PERSONA_1 = 55
+DOTA_LOADOUT_TYPE_AMBIENT_EFFECTS = 21
+DOTA_LOADOUT_TYPE_AMBIENT_EFFECTS_PERSONA_1 = 49
+DOTA_LOADOUT_TYPE_ANNOUNCER = 59
 DOTA_LOADOUT_TYPE_ARMOR = 7
-DOTA_LOADOUT_TYPE_ARMOR_PERSONA_1 = 35
+DOTA_LOADOUT_TYPE_ARMOR_PERSONA_1 = 36
 DOTA_LOADOUT_TYPE_ARMS = 6
-DOTA_LOADOUT_TYPE_ARMS_PERSONA_1 = 34
+DOTA_LOADOUT_TYPE_ARMS_PERSONA_1 = 35
 DOTA_LOADOUT_TYPE_BACK = 10
-DOTA_LOADOUT_TYPE_BACK_PERSONA_1 = 38
+DOTA_LOADOUT_TYPE_BACK_PERSONA_1 = 39
 DOTA_LOADOUT_TYPE_BELT = 8
-DOTA_LOADOUT_TYPE_BELT_PERSONA_1 = 36
-DOTA_LOADOUT_TYPE_BLINK_EFFECT = 69
-DOTA_LOADOUT_TYPE_BODY_HEAD = 15
-DOTA_LOADOUT_TYPE_BODY_HEAD_PERSONA_1 = 43
-DOTA_LOADOUT_TYPE_COUNT = 79
-DOTA_LOADOUT_TYPE_COURIER = 57
-DOTA_LOADOUT_TYPE_CURSOR_PACK = 67
-DOTA_LOADOUT_TYPE_DIRE_CREEPS = 73
-DOTA_LOADOUT_TYPE_DIRE_TOWER = 75
-DOTA_LOADOUT_TYPE_EMBLEM = 70
+DOTA_LOADOUT_TYPE_BELT_PERSONA_1 = 37
+DOTA_LOADOUT_TYPE_BLINK_EFFECT = 70
+DOTA_LOADOUT_TYPE_BODY_HEAD = 16
+DOTA_LOADOUT_TYPE_BODY_HEAD_PERSONA_1 = 44
+DOTA_LOADOUT_TYPE_COSTUME = 15
+DOTA_LOADOUT_TYPE_COUNT = 85
+DOTA_LOADOUT_TYPE_COURIER = 58
+DOTA_LOADOUT_TYPE_COURIER_EFFECT = 83
+DOTA_LOADOUT_TYPE_CURSOR_PACK = 68
+DOTA_LOADOUT_TYPE_DEATH_EFFECT = 80
+DOTA_LOADOUT_TYPE_DIRE_CREEPS = 74
+DOTA_LOADOUT_TYPE_DIRE_TOWER = 76
+DOTA_LOADOUT_TYPE_EMBLEM = 71
 DOTA_LOADOUT_TYPE_GLOVES = 12
-DOTA_LOADOUT_TYPE_GLOVES_PERSONA_1 = 40
+DOTA_LOADOUT_TYPE_GLOVES_PERSONA_1 = 41
 DOTA_LOADOUT_TYPE_HEAD = 4
-DOTA_LOADOUT_TYPE_HEAD_PERSONA_1 = 32
-DOTA_LOADOUT_TYPE_HEROIC_STATUE = 65
-DOTA_LOADOUT_TYPE_HUD_SKIN = 62
+DOTA_LOADOUT_TYPE_HEAD_EFFECT = 81
+DOTA_LOADOUT_TYPE_HEAD_PERSONA_1 = 33
+DOTA_LOADOUT_TYPE_HEROIC_STATUE = 66
+DOTA_LOADOUT_TYPE_HUD_SKIN = 63
 DOTA_LOADOUT_TYPE_INVALID = -1
+DOTA_LOADOUT_TYPE_KILL_EFFECT = 79
 DOTA_LOADOUT_TYPE_LEGS = 11
-DOTA_LOADOUT_TYPE_LEGS_PERSONA_1 = 39
-DOTA_LOADOUT_TYPE_LOADING_SCREEN = 63
-DOTA_LOADOUT_TYPE_MEGA_KILLS = 59
+DOTA_LOADOUT_TYPE_LEGS_PERSONA_1 = 40
+DOTA_LOADOUT_TYPE_LOADING_SCREEN = 64
+DOTA_LOADOUT_TYPE_MAP_EFFECT = 82
+DOTA_LOADOUT_TYPE_MEGA_KILLS = 60
 DOTA_LOADOUT_TYPE_MISC = 14
-DOTA_LOADOUT_TYPE_MISC_PERSONA_1 = 42
-DOTA_LOADOUT_TYPE_MOUNT = 16
-DOTA_LOADOUT_TYPE_MOUNT_PERSONA_1 = 44
-DOTA_LOADOUT_TYPE_MULTIKILL_BANNER = 66
-DOTA_LOADOUT_TYPE_MUSIC = 60
+DOTA_LOADOUT_TYPE_MISC_PERSONA_1 = 43
+DOTA_LOADOUT_TYPE_MOUNT = 17
+DOTA_LOADOUT_TYPE_MOUNT_PERSONA_1 = 45
+DOTA_LOADOUT_TYPE_MULTIKILL_BANNER = 67
+DOTA_LOADOUT_TYPE_MUSIC = 61
 DOTA_LOADOUT_TYPE_NECK = 9
-DOTA_LOADOUT_TYPE_NECK_PERSONA_1 = 37
-DOTA_LOADOUT_TYPE_NONE = 78
+DOTA_LOADOUT_TYPE_NECK_PERSONA_1 = 38
+DOTA_LOADOUT_TYPE_NONE = 84
 DOTA_LOADOUT_TYPE_OFFHAND_WEAPON = 1
 DOTA_LOADOUT_TYPE_OFFHAND_WEAPON2 = 3
-DOTA_LOADOUT_TYPE_OFFHAND_WEAPON2_PERSONA_1 = 31
-DOTA_LOADOUT_TYPE_OFFHAND_WEAPON_PERSONA_1 = 29
-DOTA_LOADOUT_TYPE_PERSONA_SELECTOR = 56
-DOTA_LOADOUT_TYPE_RADIANT_CREEPS = 72
-DOTA_LOADOUT_TYPE_RADIANT_TOWER = 74
-DOTA_LOADOUT_TYPE_SHAPESHIFT = 18
-DOTA_LOADOUT_TYPE_SHAPESHIFT_PERSONA_1 = 46
+DOTA_LOADOUT_TYPE_OFFHAND_WEAPON2_PERSONA_1 = 32
+DOTA_LOADOUT_TYPE_OFFHAND_WEAPON_PERSONA_1 = 30
+DOTA_LOADOUT_TYPE_PERSONA_SELECTOR = 57
+DOTA_LOADOUT_TYPE_RADIANT_CREEPS = 73
+DOTA_LOADOUT_TYPE_RADIANT_TOWER = 75
+DOTA_LOADOUT_TYPE_SHAPESHIFT = 19
+DOTA_LOADOUT_TYPE_SHAPESHIFT_PERSONA_1 = 47
 DOTA_LOADOUT_TYPE_SHOULDER = 5
-DOTA_LOADOUT_TYPE_SHOULDER_PERSONA_1 = 33
-DOTA_LOADOUT_TYPE_STREAK_EFFECT = 77
-DOTA_LOADOUT_TYPE_SUMMON = 17
-DOTA_LOADOUT_TYPE_SUMMON_PERSONA_1 = 45
+DOTA_LOADOUT_TYPE_SHOULDER_PERSONA_1 = 34
+DOTA_LOADOUT_TYPE_STREAK_EFFECT = 78
+DOTA_LOADOUT_TYPE_SUMMON = 18
+DOTA_LOADOUT_TYPE_SUMMON_PERSONA_1 = 46
 DOTA_LOADOUT_TYPE_TAIL = 13
-DOTA_LOADOUT_TYPE_TAIL_PERSONA_1 = 41
-DOTA_LOADOUT_TYPE_TAUNT = 19
-DOTA_LOADOUT_TYPE_TAUNT_PERSONA_1 = 47
-DOTA_LOADOUT_TYPE_TELEPORT_EFFECT = 68
-DOTA_LOADOUT_TYPE_TERRAIN = 71
-DOTA_LOADOUT_TYPE_VERSUS_SCREEN = 76
-DOTA_LOADOUT_TYPE_VOICE = 27
-DOTA_LOADOUT_TYPE_VOICE_PERSONA_1 = 55
-DOTA_LOADOUT_TYPE_WARD = 61
+DOTA_LOADOUT_TYPE_TAIL_PERSONA_1 = 42
+DOTA_LOADOUT_TYPE_TAUNT = 20
+DOTA_LOADOUT_TYPE_TAUNT_PERSONA_1 = 48
+DOTA_LOADOUT_TYPE_TELEPORT_EFFECT = 69
+DOTA_LOADOUT_TYPE_TERRAIN = 72
+DOTA_LOADOUT_TYPE_VERSUS_SCREEN = 77
+DOTA_LOADOUT_TYPE_VOICE = 28
+DOTA_LOADOUT_TYPE_VOICE_PERSONA_1 = 56
+DOTA_LOADOUT_TYPE_WARD = 62
 DOTA_LOADOUT_TYPE_WEAPON = 0
 DOTA_LOADOUT_TYPE_WEAPON2 = 2
-DOTA_LOADOUT_TYPE_WEAPON2_PERSONA_1 = 30
-DOTA_LOADOUT_TYPE_WEAPON_PERSONA_1 = 28
-DOTA_LOADOUT_TYPE_WEATHER = 64
-DOTA_PLAYER_LOADOUT_END = 77
-DOTA_PLAYER_LOADOUT_START = 57
+DOTA_LOADOUT_TYPE_WEAPON2_PERSONA_1 = 31
+DOTA_LOADOUT_TYPE_WEAPON_PERSONA_1 = 29
+DOTA_LOADOUT_TYPE_WEATHER = 65
+DOTA_PLAYER_LOADOUT_END = 83
+DOTA_PLAYER_LOADOUT_START = 58
 
 --- Enum DOTASpeechType_t
 DOTA_SPEECH_BAD_TEAM = 7
 DOTA_SPEECH_GOOD_TEAM = 6
-DOTA_SPEECH_RECIPIENT_TYPE_MAX = 9
+DOTA_SPEECH_RECIPIENT_TYPE_MAX = 10
 DOTA_SPEECH_SPECTATOR = 8
 DOTA_SPEECH_USER_ALL = 5
 DOTA_SPEECH_USER_INVALID = 0
@@ -1679,6 +1696,7 @@ DOTA_SPEECH_USER_NEARBY = 4
 DOTA_SPEECH_USER_SINGLE = 1
 DOTA_SPEECH_USER_TEAM = 2
 DOTA_SPEECH_USER_TEAM_NEARBY = 3
+DOTA_SPEECH_USER_TEAM_NOSPECTATOR = 9
 
 --- Enum DOTATeam_t
 DOTA_TEAM_BADGUYS = 3
@@ -1729,6 +1747,7 @@ DOTA_ABILITY_BEHAVIOR_HIDDEN = 1
 DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING = 134217728
 DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL = 4194304
 DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE = 2097152
+DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE = 0
 DOTA_ABILITY_BEHAVIOR_IMMEDIATE = 2048
 DOTA_ABILITY_BEHAVIOR_ITEM = 256
 DOTA_ABILITY_BEHAVIOR_LAST_RESORT_POINT = -2147483648
@@ -2609,21 +2628,6 @@ SUBQUEST_TEXT_REPLACE_VALUE_TARGET_VALUE = 1
 -- @return float
 function CBaseAnimating:ActiveSequenceDuration(  ) end
 
----[[ CBaseAnimating:GetAttachmentAngles  Get the attachment id's angles as a p,y,r vector. ]]
--- @return Vector
--- @param iAttachment int
-function CBaseAnimating:GetAttachmentAngles( iAttachment ) end
-
----[[ CBaseAnimating:GetAttachmentForward  Get the attachment id's forward vector. ]]
--- @return Vector
--- @param iAttachment int
-function CBaseAnimating:GetAttachmentForward( iAttachment ) end
-
----[[ CBaseAnimating:GetAttachmentOrigin  Get the attachment id's origin vector. ]]
--- @return Vector
--- @param iAttachment int
-function CBaseAnimating:GetAttachmentOrigin( iAttachment ) end
-
 ---[[ CBaseAnimating:GetCycle  Get the cycle of the animation. ]]
 -- @return float
 function CBaseAnimating:GetCycle(  ) end
@@ -2632,10 +2636,6 @@ function CBaseAnimating:GetCycle(  ) end
 -- @return table
 -- @param pszParam string
 function CBaseAnimating:GetGraphParameter( pszParam ) end
-
----[[ CBaseAnimating:GetModelScale  Get scale of entity's model. ]]
--- @return float
-function CBaseAnimating:GetModelScale(  ) end
 
 ---[[ CBaseAnimating:GetSequence  Returns the name of the active sequence. ]]
 -- @return string
@@ -2649,11 +2649,6 @@ function CBaseAnimating:IsSequenceFinished(  ) end
 -- @return void
 -- @param pSequenceName string
 function CBaseAnimating:ResetSequence( pSequenceName ) end
-
----[[ CBaseAnimating:ScriptLookupAttachment  Get the named attachment id. ]]
--- @return int
--- @param pAttachmentName string
-function CBaseAnimating:ScriptLookupAttachment( pAttachmentName ) end
 
 ---[[ CBaseAnimating:SequenceDuration  Returns the duration in seconds of the given sequence name. ]]
 -- @return float
@@ -2706,11 +2701,6 @@ function CBaseAnimating:SetGraphParameterInt( szName, nValue ) end
 -- @param vValue Vector
 function CBaseAnimating:SetGraphParameterVector( szName, vValue ) end
 
----[[ CBaseAnimating:SetModelScale  Set scale of entity's model. ]]
--- @return void
--- @param flScale float
-function CBaseAnimating:SetModelScale( flScale ) end
-
 ---[[ CBaseAnimating:SetPoseParameter  Set the specified pose parameter to the specified value. ]]
 -- @return float
 -- @param szName string
@@ -2730,19 +2720,9 @@ function CBaseAnimating:StopAnimation(  ) end
 -- @return table
 function CBaseCombatCharacter:GetEquippedWeapons(  ) end
 
----[[ CBaseCombatCharacter:GetFaction  Get the combat character faction. ]]
--- @return int
-function CBaseCombatCharacter:GetFaction(  ) end
-
 ---[[ CBaseCombatCharacter:GetWeaponCount  GetWeaponCount() : Gets the number of weapons currently equipped ]]
 -- @return int
 function CBaseCombatCharacter:GetWeaponCount(  ) end
-
----[[ CBaseCombatCharacter:ShootPosition  Returns the shoot position eyes (or hand in VR). ]]
--- @return Vector
--- @param nHand int
--- @param nMuzzle int
-function CBaseCombatCharacter:ShootPosition( nHand, nMuzzle ) end
 
 ---[[ CBaseEntity:AddEffects  AddEffects( int ): Adds the render effect flag. ]]
 -- @return void
@@ -3182,6 +3162,21 @@ function CBaseFlex:GetSceneByIndex( index ) end
 -- @param flDelay float
 function CBaseFlex:ScriptPlayScene( pszScene, flDelay ) end
 
+---[[ CBaseModelEntity:GetAttachmentAngles  Get the attachment id's angles as a p,y,r vector. ]]
+-- @return Vector
+-- @param iAttachment int
+function CBaseModelEntity:GetAttachmentAngles( iAttachment ) end
+
+---[[ CBaseModelEntity:GetAttachmentForward  Get the attachment id's forward vector. ]]
+-- @return Vector
+-- @param iAttachment int
+function CBaseModelEntity:GetAttachmentForward( iAttachment ) end
+
+---[[ CBaseModelEntity:GetAttachmentOrigin  Get the attachment id's origin vector. ]]
+-- @return Vector
+-- @param iAttachment int
+function CBaseModelEntity:GetAttachmentOrigin( iAttachment ) end
+
 ---[[ CBaseModelEntity:GetMaterialGroupHash  GetMaterialGroupHash(): Get the material group hash of this entity. ]]
 -- @return unsigned
 function CBaseModelEntity:GetMaterialGroupHash(  ) end
@@ -3190,6 +3185,10 @@ function CBaseModelEntity:GetMaterialGroupHash(  ) end
 -- @return uint64
 function CBaseModelEntity:GetMaterialGroupMask(  ) end
 
+---[[ CBaseModelEntity:GetModelScale  Get scale of entity's model. ]]
+-- @return float
+function CBaseModelEntity:GetModelScale(  ) end
+
 ---[[ CBaseModelEntity:GetRenderAlpha  GetRenderAlpha(): Get the alpha modulation of this entity. ]]
 -- @return int
 function CBaseModelEntity:GetRenderAlpha(  ) end
@@ -3197,6 +3196,11 @@ function CBaseModelEntity:GetRenderAlpha(  ) end
 ---[[ CBaseModelEntity:GetRenderColor  GetRenderColor(): Get the render color of the entity. ]]
 -- @return Vector
 function CBaseModelEntity:GetRenderColor(  ) end
+
+---[[ CBaseModelEntity:ScriptLookupAttachment  Get the named attachment id. ]]
+-- @return int
+-- @param pAttachmentName string
+function CBaseModelEntity:ScriptLookupAttachment( pAttachmentName ) end
 
 ---[[ CBaseModelEntity:SetBodygroup  Sets a bodygroup. ]]
 -- @return void
@@ -3234,6 +3238,11 @@ function CBaseModelEntity:SetMaterialGroupMask( nMeshGroupMask ) end
 -- @return void
 -- @param pModelName string
 function CBaseModelEntity:SetModel( pModelName ) end
+
+---[[ CBaseModelEntity:SetModelScale  Set scale of entity's model. ]]
+-- @return void
+-- @param flScale float
+function CBaseModelEntity:SetModelScale( flScale ) end
 
 ---[[ CBaseModelEntity:SetRenderAlpha  SetRenderAlpha( int ): Set the alpha modulation of this entity. ]]
 -- @return void
@@ -3483,6 +3492,10 @@ function CDOTABaseAbility:GetBackswingTime(  ) end
 -- @return int
 function CDOTABaseAbility:GetBehavior(  ) end
 
+---[[ CDOTABaseAbility:GetBehaviorInt  Get ability behavior flags as an int for compatability. ]]
+-- @return int
+function CDOTABaseAbility:GetBehaviorInt(  ) end
+
 ---[[ CDOTABaseAbility:GetCastPoint   ]]
 -- @return float
 function CDOTABaseAbility:GetCastPoint(  ) end
@@ -3530,6 +3543,10 @@ function CDOTABaseAbility:GetCooldownTime(  ) end
 ---[[ CDOTABaseAbility:GetCooldownTimeRemaining   ]]
 -- @return float
 function CDOTABaseAbility:GetCooldownTimeRemaining(  ) end
+
+---[[ CDOTABaseAbility:GetCurrentAbilityCharges   ]]
+-- @return int
+function CDOTABaseAbility:GetCurrentAbilityCharges(  ) end
 
 ---[[ CDOTABaseAbility:GetCursorPosition   ]]
 -- @return Vector
@@ -3811,6 +3828,10 @@ function CDOTABaseAbility:RefCountsModifiers(  ) end
 -- @return void
 function CDOTABaseAbility:RefreshCharges(  ) end
 
+---[[ CDOTABaseAbility:RefreshIntrinsicModifier   ]]
+-- @return <unknown>
+function CDOTABaseAbility:RefreshIntrinsicModifier(  ) end
+
 ---[[ CDOTABaseAbility:RefundManaCost   ]]
 -- @return void
 function CDOTABaseAbility:RefundManaCost(  ) end
@@ -3833,6 +3854,11 @@ function CDOTABaseAbility:SetActivated( bActivated ) end
 -- @return void
 -- @param bChanneling bool
 function CDOTABaseAbility:SetChanneling( bChanneling ) end
+
+---[[ CDOTABaseAbility:SetCurrentAbilityCharges   ]]
+-- @return void
+-- @param nCharges int
+function CDOTABaseAbility:SetCurrentAbilityCharges( nCharges ) end
 
 ---[[ CDOTABaseAbility:SetFrozenCooldown   ]]
 -- @return void
@@ -4032,6 +4058,10 @@ function CDOTABaseGameMode:GetCustomBuybackCooldownEnabled(  ) end
 -- @return bool
 function CDOTABaseGameMode:GetCustomBuybackCostEnabled(  ) end
 
+---[[ CDOTABaseGameMode:GetCustomDireScore  Get the topbar score display value for dire. ]]
+-- @return int
+function CDOTABaseGameMode:GetCustomDireScore(  ) end
+
 ---[[ CDOTABaseGameMode:GetCustomGlyphCooldown  Get the current custom glyph cooldown. ]]
 -- @return float
 function CDOTABaseGameMode:GetCustomGlyphCooldown(  ) end
@@ -4039,6 +4069,10 @@ function CDOTABaseGameMode:GetCustomGlyphCooldown(  ) end
 ---[[ CDOTABaseGameMode:GetCustomHeroMaxLevel  Allows definition of the max level heroes can achieve (default is 25). ]]
 -- @return int
 function CDOTABaseGameMode:GetCustomHeroMaxLevel(  ) end
+
+---[[ CDOTABaseGameMode:GetCustomRadiantScore  Get the topbar score display value for radiant. ]]
+-- @return int
+function CDOTABaseGameMode:GetCustomRadiantScore(  ) end
 
 ---[[ CDOTABaseGameMode:GetCustomScanCooldown  Get the current custom scan cooldown. ]]
 -- @return float
@@ -4250,6 +4284,11 @@ function CDOTABaseGameMode:SetCustomBuybackCooldownEnabled( bEnabled ) end
 -- @param bEnabled bool
 function CDOTABaseGameMode:SetCustomBuybackCostEnabled( bEnabled ) end
 
+---[[ CDOTABaseGameMode:SetCustomDireScore  Sets the topbar score display value for dire. ]]
+-- @return void
+-- @param nScore int
+function CDOTABaseGameMode:SetCustomDireScore( nScore ) end
+
 ---[[ CDOTABaseGameMode:SetCustomGameForceHero  Force all players to use the specified hero and disable the normal hero selection process. Must be used before hero selection. ]]
 -- @return void
 -- @param pHeroName string
@@ -4264,6 +4303,11 @@ function CDOTABaseGameMode:SetCustomGlyphCooldown( flCooldown ) end
 -- @return void
 -- @param int_1 int
 function CDOTABaseGameMode:SetCustomHeroMaxLevel( int_1 ) end
+
+---[[ CDOTABaseGameMode:SetCustomRadiantScore  Sets the topbar score display value for radiant. ]]
+-- @return void
+-- @param nScore int
+function CDOTABaseGameMode:SetCustomRadiantScore( nScore ) end
 
 ---[[ CDOTABaseGameMode:SetCustomScanCooldown  Set a custom cooldown for team Scan ability. ]]
 -- @return void
@@ -4676,6 +4720,15 @@ function CDOTAGamerules:DidMatchSignoutTimeOut(  ) end
 -- @param bool_1 bool
 function CDOTAGamerules:EnableCustomGameSetupAutoLaunch( bool_1 ) end
 
+---[[ CDOTAGamerules:ExecuteTeamPing  Sends a minimap ping to all players on the team ]]
+-- @return void
+-- @param int_1 int
+-- @param float_2 float
+-- @param float_3 float
+-- @param handle_4 handle
+-- @param int_5 int
+function CDOTAGamerules:ExecuteTeamPing( int_1, float_2, float_3, handle_4, int_5 ) end
+
 ---[[ CDOTAGamerules:FinishCustomGameSetup  Indicate that the custom game setup phase is complete, and advance to the game. ]]
 -- @return void
 function CDOTAGamerules:FinishCustomGameSetup(  ) end
@@ -4692,6 +4745,10 @@ function CDOTAGamerules:ForceGameStart(  ) end
 -- @return handle
 -- @param int_1 int
 function CDOTAGamerules:GetAnnouncer( int_1 ) end
+
+---[[ CDOTAGamerules:GetBannedHeroes  Returns the hero unit names banned in this game, if any ]]
+-- @return table
+function CDOTAGamerules:GetBannedHeroes(  ) end
 
 ---[[ CDOTAGamerules:GetCustomGameDifficulty  Returns the difficulty level of the custom game mode ]]
 -- @return int
@@ -4735,6 +4792,27 @@ function CDOTAGamerules:GetGameSessionConfigValue( string_1, string_2 ) end
 -- @return float
 function CDOTAGamerules:GetGameTime(  ) end
 
+---[[ CDOTAGamerules:GetItemStockCount  Get the stock count of the item ]]
+-- @return int
+-- @param int_1 int
+-- @param string_2 string
+-- @param int_3 int
+function CDOTAGamerules:GetItemStockCount( int_1, string_2, int_3 ) end
+
+---[[ CDOTAGamerules:GetItemStockDuration  Get the time it takes to add a new item to stock ]]
+-- @return float
+-- @param int_1 int
+-- @param string_2 string
+-- @param int_3 int
+function CDOTAGamerules:GetItemStockDuration( int_1, string_2, int_3 ) end
+
+---[[ CDOTAGamerules:GetItemStockTime  Get the time an item will be added to stock ]]
+-- @return float
+-- @param int_1 int
+-- @param string_2 string
+-- @param int_3 int
+function CDOTAGamerules:GetItemStockTime( int_1, string_2, int_3 ) end
+
 ---[[ CDOTAGamerules:GetMatchID  Get the MatchID for this game. ]]
 -- @return uint64
 function CDOTAGamerules:GetMatchID(  ) end
@@ -4742,6 +4820,14 @@ function CDOTAGamerules:GetMatchID(  ) end
 ---[[ CDOTAGamerules:GetMatchSignoutComplete  Have we received the post match signout message that includes reward information ]]
 -- @return bool
 function CDOTAGamerules:GetMatchSignoutComplete(  ) end
+
+---[[ CDOTAGamerules:GetNextBountyRuneSpawnTime  Gets next bounty rune spawn time ]]
+-- @return float
+function CDOTAGamerules:GetNextBountyRuneSpawnTime(  ) end
+
+---[[ CDOTAGamerules:GetNextRuneSpawnTime  Gets next rune spawn time ]]
+-- @return float
+function CDOTAGamerules:GetNextRuneSpawnTime(  ) end
 
 ---[[ CDOTAGamerules:GetNianTotalDamageTaken  For New Bloom, get total damage taken by the Nian / Year Beast ]]
 -- @return int
@@ -4814,6 +4900,14 @@ function CDOTAGamerules:LockCustomGameSetupTeamAssignment( bool_1 ) end
 -- @return void
 -- @param int_1 int
 function CDOTAGamerules:MakeTeamLose( int_1 ) end
+
+---[[ CDOTAGamerules:ModifyGoldFiltered  Like ModifyGold, but will use the gold filter if SetFilterMoreGold has been set true ]]
+-- @return int
+-- @param int_1 int
+-- @param int_2 int
+-- @param bool_3 bool
+-- @param int_4 int
+function CDOTAGamerules:ModifyGoldFiltered( int_1, int_2, bool_3, int_4 ) end
 
 ---[[ CDOTAGamerules:NumDroppedItems  Returns the number of items currently dropped on the ground ]]
 -- @return int
@@ -4905,6 +4999,16 @@ function CDOTAGamerules:SetCustomGameAllowHeroPickMusic( bool_1 ) end
 -- @param bool_1 bool
 function CDOTAGamerules:SetCustomGameAllowMusicAtGameStart( bool_1 ) end
 
+---[[ CDOTAGamerules:SetCustomGameAllowSecondaryAbilitiesOnOtherUnits  Sets a flag to enable/disable the casting secondary abilities from units other than the player's own hero. ]]
+-- @return void
+-- @param bool_1 bool
+function CDOTAGamerules:SetCustomGameAllowSecondaryAbilitiesOnOtherUnits( bool_1 ) end
+
+---[[ CDOTAGamerules:SetCustomGameBansPerTeam  Set number of hero bans each team gets ]]
+-- @return void
+-- @param int_1 int
+function CDOTAGamerules:SetCustomGameBansPerTeam( int_1 ) end
+
 ---[[ CDOTAGamerules:SetCustomGameDifficulty  Set the difficulty level of the custom game mode ]]
 -- @return void
 -- @param int_1 int
@@ -4956,6 +5060,11 @@ function CDOTAGamerules:SetEventMetadataCustomTable( handle_1 ) end
 -- @param handle_1 handle
 function CDOTAGamerules:SetEventSignoutCustomTable( handle_1 ) end
 
+---[[ CDOTAGamerules:SetFilterMoreGold  Sets whether to filter more gold events than normal ]]
+-- @return void
+-- @param bool_1 bool
+function CDOTAGamerules:SetFilterMoreGold( bool_1 ) end
+
 ---[[ CDOTAGamerules:SetFirstBloodActive  Sets whether First Blood has been triggered. ]]
 -- @return void
 -- @param bool_1 bool
@@ -4970,6 +5079,12 @@ function CDOTAGamerules:SetGameTimeFrozen( bool_1 ) end
 -- @return void
 -- @param int_1 int
 function CDOTAGamerules:SetGameWinner( int_1 ) end
+
+---[[ CDOTAGamerules:SetGlyphCooldown  Set Glyph cooldown for team ]]
+-- @return void
+-- @param int_1 int
+-- @param float_2 float
+function CDOTAGamerules:SetGlyphCooldown( int_1, float_2 ) end
 
 ---[[ CDOTAGamerules:SetGoldPerTick  Set the auto gold increase per timed interval. ]]
 -- @return void
@@ -5005,6 +5120,29 @@ function CDOTAGamerules:SetHeroSelectionTime( float_1 ) end
 -- @return void
 -- @param bool_1 bool
 function CDOTAGamerules:SetHideKillMessageHeaders( bool_1 ) end
+
+---[[ CDOTAGamerules:SetIgnoreLobbyTeamsInCustomGame  Set whether custom and event games should ignore Lobby teams when assigning players to teams. Defaults to true. ]]
+-- @return void
+-- @param bool_1 bool
+function CDOTAGamerules:SetIgnoreLobbyTeamsInCustomGame( bool_1 ) end
+
+---[[ CDOTAGamerules:SetItemStockCount  Set the stock count of the item ]]
+-- @return void
+-- @param int_1 int
+-- @param int_2 int
+-- @param string_3 string
+-- @param int_4 int
+function CDOTAGamerules:SetItemStockCount( int_1, int_2, string_3, int_4 ) end
+
+---[[ CDOTAGamerules:SetNextBountyRuneSpawnTime  Sets next bounty rune spawn time ]]
+-- @return void
+-- @param float_1 float
+function CDOTAGamerules:SetNextBountyRuneSpawnTime( float_1 ) end
+
+---[[ CDOTAGamerules:SetNextRuneSpawnTime  Sets next rune spawn time ]]
+-- @return void
+-- @param float_1 float
+function CDOTAGamerules:SetNextRuneSpawnTime( float_1 ) end
 
 ---[[ CDOTAGamerules:SetOverlayHealthBarUnit  Show this unit's health on the overlay health bar ]]
 -- @return void
@@ -5046,6 +5184,11 @@ function CDOTAGamerules:SetSameHeroSelectionEnabled( bool_1 ) end
 -- @return void
 -- @param float_1 float
 function CDOTAGamerules:SetShowcaseTime( float_1 ) end
+
+---[[ CDOTAGamerules:SetSpeechUseSpawnInsteadOfRespawnConcept  Set whether to speak a Spawn concept instead of a Respawn concept on respawn. ]]
+-- @return void
+-- @param bool_1 bool
+function CDOTAGamerules:SetSpeechUseSpawnInsteadOfRespawnConcept( bool_1 ) end
 
 ---[[ CDOTAGamerules:SetStartingGold  Set the starting gold amount. ]]
 -- @return void
@@ -5340,7 +5483,7 @@ function CDOTA_Ability_Lua:GetAssociatedPrimaryAbilities(  ) end
 function CDOTA_Ability_Lua:GetAssociatedSecondaryAbilities(  ) end
 
 ---[[ CDOTA_Ability_Lua:GetBehavior  Return cast behavior type of this ability. ]]
--- @return int
+-- @return uint64
 function CDOTA_Ability_Lua:GetBehavior(  ) end
 
 ---[[ CDOTA_Ability_Lua:GetCastAnimation  Return casting animation of this ability. ]]
@@ -5898,6 +6041,14 @@ function CDOTA_BaseNPC:GetCursorPosition(  ) end
 -- @return bool
 function CDOTA_BaseNPC:GetCursorTargetingNothing(  ) end
 
+---[[ CDOTA_BaseNPC:GetDamageMax  Get the maximum attack damage of this unit. ]]
+-- @return int
+function CDOTA_BaseNPC:GetDamageMax(  ) end
+
+---[[ CDOTA_BaseNPC:GetDamageMin  Get the minimum attack damage of this unit. ]]
+-- @return int
+function CDOTA_BaseNPC:GetDamageMin(  ) end
+
 ---[[ CDOTA_BaseNPC:GetDayTimeVisionRange  Returns the vision range after modifiers. ]]
 -- @return int
 function CDOTA_BaseNPC:GetDayTimeVisionRange(  ) end
@@ -6267,6 +6418,10 @@ function CDOTA_BaseNPC:IsCreature(  ) end
 -- @return bool
 function CDOTA_BaseNPC:IsCreep(  ) end
 
+---[[ CDOTA_BaseNPC:IsCreepHero  Is this unit a creep hero? ]]
+-- @return bool
+function CDOTA_BaseNPC:IsCreepHero(  ) end
+
 ---[[ CDOTA_BaseNPC:IsCurrentlyHorizontalMotionControlled   ]]
 -- @return bool
 function CDOTA_BaseNPC:IsCurrentlyHorizontalMotionControlled(  ) end
@@ -6577,7 +6732,7 @@ function CDOTA_BaseNPC:PlayVCD( pVCD ) end
 -- @return bool
 function CDOTA_BaseNPC:ProvidesVision(  ) end
 
----[[ CDOTA_BaseNPC:Purge  (bool RemovePositiveBuffs, bool RemoveDebuffs, bool BuffsCreatedThisFrameOnly, bool RemoveStuns, bool RemoveExceptions ]]
+---[[ CDOTA_BaseNPC:Purge  (bool RemovePositiveBuffs, bool RemoveDebuffs, bool BuffsCreatedThisFrameOnly, bool RemoveStuns, bool RemoveExceptions) ]]
 -- @return void
 -- @param bRemovePositiveBuffs bool
 -- @param bRemoveDebuffs bool
@@ -6594,6 +6749,24 @@ function CDOTA_BaseNPC:Purge( bRemovePositiveBuffs, bRemoveDebuffs, bFrameOnly, 
 -- @param hContext handle
 -- @param hCallbackInfo handle
 function CDOTA_BaseNPC:QueueConcept( flDelay, hCriteriaTable, hCompletionCallbackFn, hContext, hCallbackInfo ) end
+
+---[[ CDOTA_BaseNPC:QueueTeamConcept  Queue a response system concept with the TLK_DOTA_CUSTOM concept, after a delay, for the same team this speaker is on. ]]
+-- @return void
+-- @param flDelay float
+-- @param hCriteriaTable handle
+-- @param hCompletionCallbackFn handle
+-- @param hContext handle
+-- @param hCallbackInfo handle
+function CDOTA_BaseNPC:QueueTeamConcept( flDelay, hCriteriaTable, hCompletionCallbackFn, hContext, hCallbackInfo ) end
+
+---[[ CDOTA_BaseNPC:QueueTeamConceptNoSpectators  Queue a response system concept with the TLK_DOTA_CUSTOM concept, after a delay, for the same team this speaker is on. Is not played for spectators. ]]
+-- @return void
+-- @param flDelay float
+-- @param hCriteriaTable handle
+-- @param hCompletionCallbackFn handle
+-- @param hContext handle
+-- @param hCallbackInfo handle
+function CDOTA_BaseNPC:QueueTeamConceptNoSpectators( flDelay, hCriteriaTable, hCompletionCallbackFn, hContext, hCallbackInfo ) end
 
 ---[[ CDOTA_BaseNPC:ReduceMana  Remove mana from this unit, this can be used for involuntary mana loss, not for mana that is spent. ]]
 -- @return void
@@ -6614,6 +6787,14 @@ function CDOTA_BaseNPC:RemoveAbilityByHandle( hAbility ) end
 -- @return void
 -- @param pszAbilityName string
 function CDOTA_BaseNPC:RemoveAbilityFromIndexByName( pszAbilityName ) end
+
+---[[ CDOTA_BaseNPC:RemoveAllModifiers  (int targets [0=all, 1=enemy, 2=ally], bool bNow, bool bPermanent, bool bDeath) ]]
+-- @return void
+-- @param targets int
+-- @param bNow bool
+-- @param bPermanent bool
+-- @param bDeath bool
+function CDOTA_BaseNPC:RemoveAllModifiers( targets, bNow, bPermanent, bDeath ) end
 
 ---[[ CDOTA_BaseNPC:RemoveGesture  Remove the given gesture activity. ]]
 -- @return void
@@ -7002,6 +7183,10 @@ function CDOTA_BaseNPC:UnHideAbilityToSlot( pszAbilityName, pszReplacedAbilityNa
 -- @return bool
 function CDOTA_BaseNPC:UnitCanRespawn(  ) end
 
+---[[ CDOTA_BaseNPC:WasKilledPassively   ]]
+-- @return bool
+function CDOTA_BaseNPC:WasKilledPassively(  ) end
+
 ---[[ CDOTA_BaseNPC_Building:GetInvulnCount  Get the invulnerability count for a building. ]]
 -- @return int
 function CDOTA_BaseNPC_Building:GetInvulnCount(  ) end
@@ -7243,6 +7428,10 @@ function CDOTA_BaseNPC_Hero:GetGold(  ) end
 -- @return int
 function CDOTA_BaseNPC_Hero:GetGoldBounty(  ) end
 
+---[[ CDOTA_BaseNPC_Hero:GetHeroID   ]]
+-- @return int
+function CDOTA_BaseNPC_Hero:GetHeroID(  ) end
+
 ---[[ CDOTA_BaseNPC_Hero:GetIncreasedAttackSpeed  Hero attack speed is also affected by agility. ]]
 -- @return float
 function CDOTA_BaseNPC_Hero:GetIncreasedAttackSpeed(  ) end
@@ -7298,6 +7487,10 @@ function CDOTA_BaseNPC_Hero:GetPrimaryAttribute(  ) end
 ---[[ CDOTA_BaseNPC_Hero:GetPrimaryStatValue   ]]
 -- @return float
 function CDOTA_BaseNPC_Hero:GetPrimaryStatValue(  ) end
+
+---[[ CDOTA_BaseNPC_Hero:GetReplicatingOtherHero   ]]
+-- @return handle
+function CDOTA_BaseNPC_Hero:GetReplicatingOtherHero(  ) end
 
 ---[[ CDOTA_BaseNPC_Hero:GetRespawnTime   ]]
 -- @return float
@@ -7420,6 +7613,13 @@ function CDOTA_BaseNPC_Hero:ModifyAgility( flNewAgility ) end
 -- @param bReliable bool
 -- @param iReason int
 function CDOTA_BaseNPC_Hero:ModifyGold( iGoldChange, bReliable, iReason ) end
+
+---[[ CDOTA_BaseNPC_Hero:ModifyGoldFiltered  Gives this hero some gold, using the gold filter if extra filtering is on.  Args: int nGoldChange, bool bReliable, int reason ]]
+-- @return int
+-- @param iGoldChange int
+-- @param bReliabe bool
+-- @param iReason int
+function CDOTA_BaseNPC_Hero:ModifyGoldFiltered( iGoldChange, bReliabe, iReason ) end
 
 ---[[ CDOTA_BaseNPC_Hero:ModifyIntellect  Adds passed value to base attribute value, then calls CalculateStatBonus. ]]
 -- @return void
@@ -7580,6 +7780,10 @@ function CDOTA_Buff:DecrementStackCount(  ) end
 ---[[ CDOTA_Buff:Destroy  Run all associated destroy functions, then remove the modifier. ]]
 -- @return void
 function CDOTA_Buff:Destroy(  ) end
+
+---[[ CDOTA_Buff:DestroyOnExpire   ]]
+-- @return bool
+function CDOTA_Buff:DestroyOnExpire(  ) end
 
 ---[[ CDOTA_Buff:ForceRefresh  Run all associated refresh functions on this modifier as if it was re-applied. ]]
 -- @return void
@@ -7889,6 +8093,11 @@ function CDOTA_Item:SetDroppable( bDroppable ) end
 -- @param iState int
 function CDOTA_Item:SetItemState( iState ) end
 
+---[[ CDOTA_Item:SetOnlyPlayerHeroPickup   ]]
+-- @return void
+-- @param bOnlyPlayerHero bool
+function CDOTA_Item:SetOnlyPlayerHeroPickup( bOnlyPlayerHero ) end
+
 ---[[ CDOTA_Item:SetPurchaseTime  Set the purchase time of this item ]]
 -- @return void
 -- @param flTime float
@@ -8080,6 +8289,10 @@ function CDOTA_Item_Lua:OnChannelFinish( bInterrupted ) end
 -- @return void
 -- @param flInterval float
 function CDOTA_Item_Lua:OnChannelThink( flInterval ) end
+
+---[[ CDOTA_Item_Lua:OnChargeCountChanged  Runs when item's charge count changes. ]]
+-- @return void
+function CDOTA_Item_Lua:OnChargeCountChanged(  ) end
 
 ---[[ CDOTA_Item_Lua:OnHeroCalculateStatBonus  Caster (hero only) gained a level, skilled an ability, or received a new stat bonus. ]]
 -- @return void
@@ -8421,6 +8634,12 @@ function CDOTA_Modifier_Lua_Vertical_Motion:UpdateVerticalMotion( me, dt ) end
 -- @return void
 -- @param iPlayerID int
 function CDOTA_PlayerResource:AddAegisPickup( iPlayerID ) end
+
+---[[ CDOTA_PlayerResource:AddCandyEvent   ]]
+-- @return void
+-- @param iPlayerID int
+-- @param nReason int
+function CDOTA_PlayerResource:AddCandyEvent( iPlayerID, nReason ) end
 
 ---[[ CDOTA_PlayerResource:AddClaimedFarm   ]]
 -- @return void
@@ -9185,6 +9404,29 @@ function CDOTA_SimpleObstruction:SetEnabled( bEnabled, bForce ) end
 -- @return void
 -- @param bIsServerAuthoritative bool
 function CDOTA_Unit_CustomGameAnnouncer:SetServerAuthoritative( bIsServerAuthoritative ) end
+
+---[[ CDOTA_Unit_Diretide_Portal:GetPartnerPortal   ]]
+-- @return handle
+function CDOTA_Unit_Diretide_Portal:GetPartnerPortal(  ) end
+
+---[[ CDOTA_Unit_Diretide_Portal:ResetPortal   ]]
+-- @return void
+function CDOTA_Unit_Diretide_Portal:ResetPortal(  ) end
+
+---[[ CDOTA_Unit_Diretide_Portal:SetInvasionRuneType   ]]
+-- @return void
+-- @param nRuneType int
+function CDOTA_Unit_Diretide_Portal:SetInvasionRuneType( nRuneType ) end
+
+---[[ CDOTA_Unit_Diretide_Portal:SetPartnerPortal   ]]
+-- @return void
+-- @param hPortal handle
+function CDOTA_Unit_Diretide_Portal:SetPartnerPortal( hPortal ) end
+
+---[[ CDOTA_Unit_Diretide_Portal:SetPortalActive   ]]
+-- @return void
+-- @param bActive bool
+function CDOTA_Unit_Diretide_Portal:SetPortalActive( bActive ) end
 
 ---[[ CDOTA_Unit_Nian:GetHorn  Is the Nian horn? ]]
 -- @return handle
@@ -10461,6 +10703,11 @@ function ProjectileManager:GetLinearProjectileVelocity( int_1 ) end
 -- @return Vector
 -- @param int_1 int
 function ProjectileManager:GetTrackingProjectileLocation( int_1 ) end
+
+---[[ ProjectileManager:IsValidProjectile  Is this a valid projectile? ]]
+-- @return bool
+-- @param int_1 int
+function ProjectileManager:IsValidProjectile( int_1 ) end
 
 ---[[ ProjectileManager:ProjectileDodge  Makes the specified unit dodge projectiles ]]
 -- @return void

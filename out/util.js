@@ -1250,11 +1250,9 @@ function MultilayerCSV2KV(listen_path) {
                         depth = index - 1;
                         let sKeyDepth = arrKeyDepth[key[0]][depth];
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            console.log("return", 1);
                             return {};
                         }
                         if (temp_obj[sKeyDepth] == undefined) {
-                            console.log("return", 2);
                             return {};
                         }
                         temp_obj = temp_obj[sKeyDepth];
@@ -1263,7 +1261,6 @@ function MultilayerCSV2KV(listen_path) {
                     if (key[key.length - 1] == "value") {
                         let sKeyDepth = arrKeyDepth[key[0]][depth];
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            console.log("return", 3);
                             return {};
                         }
                         temp_obj[sKeyDepth] = col;
@@ -1271,7 +1268,6 @@ function MultilayerCSV2KV(listen_path) {
                     else {
                         let sKeyDepth = (col == "" || col == undefined) ? arrKeyDepth[key[0]][depth] : col;
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            console.log("return", 4);
                             return {};
                         }
                         arrKeyDepth[key[0]][depth] = sKeyDepth;

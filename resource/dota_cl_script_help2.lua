@@ -779,7 +779,7 @@ MODIFIER_ATTRIBUTE_PERMANENT = 1
 --- Enum DOTASpeechType_t
 DOTA_SPEECH_BAD_TEAM = 7
 DOTA_SPEECH_GOOD_TEAM = 6
-DOTA_SPEECH_RECIPIENT_TYPE_MAX = 9
+DOTA_SPEECH_RECIPIENT_TYPE_MAX = 10
 DOTA_SPEECH_SPECTATOR = 8
 DOTA_SPEECH_USER_ALL = 5
 DOTA_SPEECH_USER_INVALID = 0
@@ -787,6 +787,7 @@ DOTA_SPEECH_USER_NEARBY = 4
 DOTA_SPEECH_USER_SINGLE = 1
 DOTA_SPEECH_USER_TEAM = 2
 DOTA_SPEECH_USER_TEAM_NEARBY = 3
+DOTA_SPEECH_USER_TEAM_NOSPECTATOR = 9
 
 --- Enum DOTATeam_t
 DOTA_TEAM_BADGUYS = 3
@@ -825,6 +826,7 @@ DOTA_ABILITY_BEHAVIOR_HIDDEN = 1
 DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING = 134217728
 DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL = 4194304
 DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE = 2097152
+DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE = 0
 DOTA_ABILITY_BEHAVIOR_IMMEDIATE = 2048
 DOTA_ABILITY_BEHAVIOR_ITEM = 256
 DOTA_ABILITY_BEHAVIOR_LAST_RESORT_POINT = -2147483648
@@ -1422,6 +1424,10 @@ function CDOTAGameManager:GetHeroNameForUnitName( string_1 ) end
 -- @param int_1 int
 function CDOTAGameManager:GetHeroUnitNameByID( int_1 ) end
 
+---[[ CDOTAGamerules:GetBannedHeroes  Returns the hero unit names banned in this game, if any ]]
+-- @return table
+function CDOTAGamerules:GetBannedHeroes(  ) end
+
 ---[[ CDOTAGamerules:GetCustomGameDifficulty  Returns the difficulty level of the custom game mode ]]
 -- @return int
 function CDOTAGamerules:GetCustomGameDifficulty(  ) end
@@ -1443,6 +1449,27 @@ function CDOTAGamerules:GetGameFrameTime(  ) end
 ---[[ CDOTAGamerules:GetGameTime  Returns the number of seconds elapsed since map start. This time doesn't count up when the game is paused ]]
 -- @return float
 function CDOTAGamerules:GetGameTime(  ) end
+
+---[[ CDOTAGamerules:GetItemStockCount  Get the stock count of the item ]]
+-- @return int
+-- @param int_1 int
+-- @param string_2 string
+-- @param int_3 int
+function CDOTAGamerules:GetItemStockCount( int_1, string_2, int_3 ) end
+
+---[[ CDOTAGamerules:GetItemStockDuration  Get the time it takes to add a new item to stock ]]
+-- @return float
+-- @param int_1 int
+-- @param string_2 string
+-- @param int_3 int
+function CDOTAGamerules:GetItemStockDuration( int_1, string_2, int_3 ) end
+
+---[[ CDOTAGamerules:GetItemStockTime  Get the time an item will be added to stock ]]
+-- @return float
+-- @param int_1 int
+-- @param string_2 string
+-- @param int_3 int
+function CDOTAGamerules:GetItemStockTime( int_1, string_2, int_3 ) end
 
 ---[[ CDOTAGamerules:GetWeatherWindDirection  Get Weather Wind Direction Vector ]]
 -- @return Vector
@@ -1473,6 +1500,10 @@ function CDOTA_Buff:DecrementStackCount(  ) end
 ---[[ CDOTA_Buff:Destroy  Run all associated destroy functions, then remove the modifier. ]]
 -- @return void
 function CDOTA_Buff:Destroy(  ) end
+
+---[[ CDOTA_Buff:DestroyOnExpire   ]]
+-- @return bool
+function CDOTA_Buff:DestroyOnExpire(  ) end
 
 ---[[ CDOTA_Buff:ForceRefresh  Run all associated refresh functions on this modifier as if it was re-applied. ]]
 -- @return void
@@ -2244,6 +2275,10 @@ function CScriptPrecacheContext:GetValue( string_1 ) end
 -- @return Vector
 function C_BaseEntity:GetAbsOrigin(  ) end
 
+---[[ C_BaseEntity:GetMaxHealth   ]]
+-- @return int
+function C_BaseEntity:GetMaxHealth(  ) end
+
 ---[[ C_BaseEntity:GetTeamNumber   ]]
 -- @return int
 function C_BaseEntity:GetTeamNumber(  ) end
@@ -2263,13 +2298,17 @@ function C_BaseModelEntity:GetRenderAlpha(  ) end
 -- @return string
 function C_DOTABaseAbility:GetAbilityName(  ) end
 
----[[ C_DOTABaseAbility:GetBehavior   ]]
+---[[ C_DOTABaseAbility:GetBehaviorInt  Get ability behavior flags as an int for compatability. ]]
 -- @return int
-function C_DOTABaseAbility:GetBehavior(  ) end
+function C_DOTABaseAbility:GetBehaviorInt(  ) end
 
 ---[[ C_DOTABaseAbility:GetCaster   ]]
 -- @return handle
 function C_DOTABaseAbility:GetCaster(  ) end
+
+---[[ C_DOTABaseAbility:GetCurrentAbilityCharges   ]]
+-- @return int
+function C_DOTABaseAbility:GetCurrentAbilityCharges(  ) end
 
 ---[[ C_DOTABaseAbility:GetLevel  Return the level of the ability ]]
 -- @return int
@@ -2323,7 +2362,7 @@ function C_DOTA_Ability_Lua:GetAOERadius(  ) end
 function C_DOTA_Ability_Lua:GetAbilityTextureName(  ) end
 
 ---[[ C_DOTA_Ability_Lua:GetBehavior  Return cast behavior type of this ability. ]]
--- @return int
+-- @return uint64
 function C_DOTA_Ability_Lua:GetBehavior(  ) end
 
 ---[[ C_DOTA_Ability_Lua:GetCastPoint  Return cast point of this ability. ]]
@@ -2413,6 +2452,14 @@ function C_DOTA_BaseNPC:GetCooldownReduction(  ) end
 ---[[ C_DOTA_BaseNPC:GetCurrentVisionRange  Gets the current vision range. ]]
 -- @return int
 function C_DOTA_BaseNPC:GetCurrentVisionRange(  ) end
+
+---[[ C_DOTA_BaseNPC:GetDamageMax   ]]
+-- @return int
+function C_DOTA_BaseNPC:GetDamageMax(  ) end
+
+---[[ C_DOTA_BaseNPC:GetDamageMin   ]]
+-- @return int
+function C_DOTA_BaseNPC:GetDamageMin(  ) end
 
 ---[[ C_DOTA_BaseNPC:GetDayTimeVisionRange  Returns the vision range after modifiers. ]]
 -- @return int
@@ -2780,6 +2827,10 @@ function C_DOTA_BaseNPC_Hero:GetIntellect(  ) end
 ---[[ C_DOTA_BaseNPC_Hero:GetStrength   ]]
 -- @return float
 function C_DOTA_BaseNPC_Hero:GetStrength(  ) end
+
+---[[ C_DOTA_Item:CanOnlyPlayerHeroPickup   ]]
+-- @return bool
+function C_DOTA_Item:CanOnlyPlayerHeroPickup(  ) end
 
 ---[[ C_DOTA_Item:GetCurrentCharges   ]]
 -- @return int

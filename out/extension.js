@@ -1335,10 +1335,10 @@ function activate(context) {
             // let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/music/dsadowski_01/soundevents_stingers.vsndevts', 'utf-8'));
             // console.log(kv);
             // return;
-            const sound_path = 'C:/Users/wan/Desktop/作图工具/soundevents';
+            const sound_path = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
             let json_obj = {};
             yield ReadFolder(sound_path);
-            fs.writeFileSync('C:/Users/wan/Desktop/作图工具/soundevents.json', JSON.stringify(json_obj));
+            fs.writeFileSync(path.join(context.extensionPath, "resource", "soundevents.json"), JSON.stringify(json_obj));
             function ReadFolder(folder_name) {
                 return __awaiter(this, void 0, void 0, function* () {
                     let folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
@@ -2138,7 +2138,7 @@ function activate(context) {
             });
         }));
         // 将items_game.txt的套装信息解析出来
-        // ItemsGameParse();
+        ItemsGameParse();
         function ItemsGameParse() {
             let sFilePath = path.join(context.extensionPath, "resource/items_game.txt");
             let tItemsData = util.ReadKeyValue2(fs.readFileSync(sFilePath, 'utf-8')).items_game.items;
