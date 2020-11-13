@@ -1171,7 +1171,9 @@ function WriteKeyValue(obj, depth = 0) {
     for (let index = 0; index < keys.length; index++) {
         const key = keys[index];
         const value = obj[key];
-        if (typeof (value) === 'string') {
+        if (value == undefined || value == null || (typeof (value) == "object" && Object.keys(value).length === 0)) {
+        }
+        else if (typeof (value) === 'string') {
             str += AddDepthTab(depth, '"' + key + '"');
             str += AddIntervalTab(depth, key);
             str += '"' + value + '"' + os.EOL;
@@ -1250,12 +1252,10 @@ function MultilayerCSV2KV(listen_path) {
                         depth = index - 1;
                         let sKeyDepth = arrKeyDepth[key[0]][depth];
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            console.log("return", 1);
-                            return {};
+                            continue;
                         }
                         if (temp_obj[sKeyDepth] == undefined) {
-                            console.log("return", 2);
-                            return {};
+                            continue;
                         }
                         temp_obj = temp_obj[sKeyDepth];
                     }
@@ -1263,16 +1263,14 @@ function MultilayerCSV2KV(listen_path) {
                     if (key[key.length - 1] == "value") {
                         let sKeyDepth = arrKeyDepth[key[0]][depth];
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            console.log("return", 3);
-                            return {};
+                            continue;
                         }
                         temp_obj[sKeyDepth] = col;
                     }
                     else {
                         let sKeyDepth = (col == "" || col == undefined) ? arrKeyDepth[key[0]][depth] : col;
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            console.log("return", 4);
-                            return {};
+                            continue;
                         }
                         arrKeyDepth[key[0]][depth] = sKeyDepth;
                         if (temp_obj[sKeyDepth] == undefined) {
