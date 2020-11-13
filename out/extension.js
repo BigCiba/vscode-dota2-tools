@@ -2138,7 +2138,7 @@ function activate(context) {
             });
         }));
         // 将items_game.txt的套装信息解析出来
-        ItemsGameParse();
+        // ItemsGameParse();
         function ItemsGameParse() {
             let sFilePath = path.join(context.extensionPath, "resource/items_game.txt");
             let tItemsData = util.ReadKeyValue2(fs.readFileSync(sFilePath, 'utf-8')).items_game.items;

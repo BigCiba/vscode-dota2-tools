@@ -28,7 +28,7 @@
 				},
 				{
 					"id": "dota2api",
-					"title": "Dota2 API",
+					"title": "Dota2 Document",
 					"icon": "images/book.svg"
 				}
 			]
@@ -44,6 +44,10 @@
 				{
 					"id": "dota2apiExplorer",
 					"name": "Dota2 API"
+				},
+				{
+					"id": "dota2JSApiExplorer",
+					"name": "Dota2 JS API"
 				}
 			]
 		},
