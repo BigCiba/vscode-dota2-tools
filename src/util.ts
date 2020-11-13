@@ -632,7 +632,7 @@ export function ReadKeyValue2(kvdata: string, bRemoveComment: boolean = true): a
 				continue;
 			}
 			// 插入kv3
-			if (substr === '<' && kvdata.substr(i, i + 7) === '<!-- kv3' && state === 'READ') {
+			if (substr === '<' && kvdata.substr(i, 8) === '<!-- kv3' && state === 'READ') {
 				let [block, new_index] = GetKv3Block(i);
 				kv = ReadKeyValue3(block);
 				i = new_index;

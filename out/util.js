@@ -672,7 +672,7 @@ function ReadKeyValue2(kvdata, bRemoveComment = true) {
                 continue;
             }
             // 插入kv3
-            if (substr === '<' && kvdata.substr(i, i + 7) === '<!-- kv3' && state === 'READ') {
+            if (substr === '<' && kvdata.substr(i, 8) === '<!-- kv3' && state === 'READ') {
                 let [block, new_index] = GetKv3Block(i);
                 kv = ReadKeyValue3(block);
                 i = new_index;
@@ -1252,10 +1252,10 @@ function MultilayerCSV2KV(listen_path) {
                         depth = index - 1;
                         let sKeyDepth = arrKeyDepth[key[0]][depth];
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            return {};
+                            continue;
                         }
                         if (temp_obj[sKeyDepth] == undefined) {
-                            return {};
+                            continue;
                         }
                         temp_obj = temp_obj[sKeyDepth];
                     }
@@ -1263,14 +1263,14 @@ function MultilayerCSV2KV(listen_path) {
                     if (key[key.length - 1] == "value") {
                         let sKeyDepth = arrKeyDepth[key[0]][depth];
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            return {};
+                            continue;
                         }
                         temp_obj[sKeyDepth] = col;
                     }
                     else {
                         let sKeyDepth = (col == "" || col == undefined) ? arrKeyDepth[key[0]][depth] : col;
                         if (sKeyDepth == undefined || sKeyDepth == "") {
-                            return {};
+                            continue;
                         }
                         arrKeyDepth[key[0]][depth] = sKeyDepth;
                         if (temp_obj[sKeyDepth] == undefined) {
