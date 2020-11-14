@@ -20,6 +20,7 @@ const OverviewList = {
         'CDOTA_BaseNPC_Hero',
         'CDOTA_Item',
         'CDOTA_Item_Lua',
+        'CDOTA_Buff',
         'CDOTA_Modifier_Lua',
         'CScriptParticleManager',
     ],

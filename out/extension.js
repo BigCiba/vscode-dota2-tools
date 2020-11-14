@@ -25,11 +25,14 @@ const table_inherit_1 = require("./table_inherit");
 const drop_string_1 = require("./drop_string");
 const child_process_1 = require("child_process");
 const ftp = require("ftp");
+const tools_1 = require("./tools");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
     return __awaiter(this, void 0, void 0, function* () {
         KVServer_1.KVServer.Install(context);
+        // ParsePanoramaAPI(context);
+        tools_1.ParseCssDocument(context);
         // Use the console to output diagnostic information (console.log) and errors (console.error)
         // This line of code will only be executed once when your extension is activated
         // passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
@@ -1890,7 +1893,7 @@ function activate(context) {
                 if (message.event == "click") {
                     let texture = message.id.replace(/_png\.png/, '');
                     vscode.env.clipboard.writeText(texture);
-                    util.ShowInfo('已将图标路径复制到剪切板');
+                    vscode.window.setStatusBarMessage('已将图标路径复制到剪切板：' + texture);
                 }
                 else if (message.event == "contextmenu") {
                     let fullpath = path.join(context.extensionPath, 'images', message.type, message.id);
@@ -2166,6 +2169,7 @@ function activate(context) {
             });
             panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
         }));
+        // Lua API 相关
         let APIBrowserView = undefined;
         vscode.commands.registerCommand("dota2tools.api_browser", (funInfo, infoType, name) => __awaiter(this, void 0, void 0, function* () {
             if (APIBrowserView == undefined) {
@@ -2191,9 +2195,11 @@ function activate(context) {
             APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
             if (infoType == api_tree_1.APIType.Function) {
                 vscode.env.clipboard.writeText(funInfo.function);
+                vscode.window.setStatusBarMessage('复制到剪切板：' + funInfo.function);
             }
             else if (infoType == api_tree_1.APIType.Enum) {
                 vscode.env.clipboard.writeText(funInfo.name);
+                vscode.window.setStatusBarMessage('复制到剪切板：' + funInfo.function);
             }
             if (infoType == api_tree_1.APIType.Function || infoType == api_tree_1.APIType.Enum) {
                 init_1.PullAPINote(infoType, funInfo, (info) => {
@@ -2243,8 +2249,8 @@ function activate(context) {
                     init_1.ApiTree.class_list = filter_class_list;
                     init_1.ApiTree.enum_list = filter_enum_list;
                     init_1.ApiTree.refresh();
-                    context.workspaceState.update('filtered', true);
-                    vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', true));
+                    // context.workspaceState.update('filtered', true);
+                    // vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', true));
                 }
             });
         }));
@@ -2255,8 +2261,8 @@ function activate(context) {
             init_1.ApiTree.enum_list = enum_list;
             init_1.ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
             init_1.ApiTree.refresh();
-            context.workspaceState.update('filtered', false);
-            vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', false));
+            // context.workspaceState.update('filtered', false);
+            // vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', false));
         })));
         context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.expand", () => __awaiter(this, void 0, void 0, function* () {
             init_1.ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;

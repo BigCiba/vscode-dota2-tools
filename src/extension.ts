@@ -14,11 +14,14 @@ import { InheritTable } from "./table_inherit";
 import { DropHeroString } from "./drop_string";
 import { exec } from 'child_process';
 import * as ftp from 'ftp';
+import { ParseCssDocument, ParsePanoramaAPI } from './tools';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
 	KVServer.Install(context);
+	// ParsePanoramaAPI(context);
+	ParseCssDocument(context);
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	// passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
@@ -1868,7 +1871,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			if (message.event == "click") {
 				let texture: string = message.id.replace(/_png\.png/, '');
 				vscode.env.clipboard.writeText(texture);
-				util.ShowInfo('已将图标路径复制到剪切板');
+				vscode.window.setStatusBarMessage('已将图标路径复制到剪切板：' + texture);
 			} else if (message.event == "contextmenu") {
 				let fullpath = path.join(context.extensionPath, 'images', message.type, message.id);
 				exec(`explorer.exe /select,"${fullpath}_png.png"`)
@@ -2128,6 +2131,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	function ItemsGameParse() {
 		let sFilePath: string = path.join(context.extensionPath, "resource/items_game.txt");
 		let tItemsData = util.ReadKeyValue2(fs.readFileSync(sFilePath, 'utf-8')).items_game.items;
+		
 		for (const index in tItemsData) {
 			const element = tItemsData[index];
 			delete element.portraits
@@ -2156,8 +2160,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
 	});
 
+	// Lua API 相关
 	let APIBrowserView: vscode.WebviewPanel | undefined = undefined;
-
 	vscode.commands.registerCommand("dota2tools.api_browser", async (funInfo, infoType: APIType, name) => {
 
 		if (APIBrowserView == undefined) {
@@ -2185,8 +2189,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		APIBrowserView.webview.html = util.GetWebViewContent(context, 'webview/APIBrowser/APIBrowser.html');
 		if (infoType == APIType.Function) {
 			vscode.env.clipboard.writeText(funInfo.function);
+			vscode.window.setStatusBarMessage('复制到剪切板：' + funInfo.function);
 		} else if (infoType == APIType.Enum) {
 			vscode.env.clipboard.writeText(funInfo.name);
+			vscode.window.setStatusBarMessage('复制到剪切板：' + funInfo.function);
 		}
 		if (infoType == APIType.Function || infoType == APIType.Enum) {
 			PullAPINote(infoType, funInfo, (info) => {
@@ -2237,8 +2243,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				ApiTree.class_list = filter_class_list;
 				ApiTree.enum_list = filter_enum_list;
 				ApiTree.refresh();
-				context.workspaceState.update('filtered', true);
-				vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', true));
+				// context.workspaceState.update('filtered', true);
+				// vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', true));
 			}
 		});
 	});
@@ -2249,8 +2255,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		ApiTree.enum_list = enum_list;
 		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
 		ApiTree.refresh();
-		context.workspaceState.update('filtered', false);
-		vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', false));
+		// context.workspaceState.update('filtered', false);
+		// vscode.commands.executeCommand('setContext', 'dota2tools-filtered', context.workspaceState.get('filtered', false));
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.dota2api.expand", async () => {
 		ApiTree.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
@@ -2264,7 +2270,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		context.workspaceState.update('expanded', false);
 		vscode.commands.executeCommand('setContext', 'dota2tools-expanded', context.workspaceState.get('expanded', false));
 	}));
-
+	
 	// 注册指令
 	context.subscriptions.push(Localization);
 	context.subscriptions.push(AddHero);

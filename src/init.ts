@@ -5,20 +5,24 @@ import * as util from './util';
 import { isObject, log, print } from 'util';
 import * as os from 'os';
 import * as ftp from 'ftp';
-import {Listener} from './listener';
+import { Listener } from './listener';
 import { APIType, ApiTreeProvider } from './api-tree';
 import { Func } from 'mocha';
-let KV2LUA:any = {};	// kv与lua文件关联数据
+import { JsApiTreeProvider } from './js-api-tree';
+import { CssApiTreeProvider } from './css-api-tree';
+let KV2LUA: any = {};	// kv与lua文件关联数据
 let VSND = new Array;
-let GameDir:string = '';	// game目录
-let ContentDir:string = '';	// content目录
-let ApiNote:string = '';	// api_note.json
+let GameDir: string = '';	// game目录
+let ContentDir: string = '';	// content目录
+let ApiNote: string = '';	// api_note.json
 let ApiTree: ApiTreeProvider;	// ApiTreeProvider
+let JsApiTree: JsApiTreeProvider;	// ApiTreeProvider
+let CssApiTree: CssApiTreeProvider;	// ApiTreeProvider
 let class_list: any;
 let enum_list: any;
-let func_api_parse:any;
+let func_api_parse: any;
 // tslint:disable-next-line: no-unused-expression
-export {KV2LUA, VSND, GameDir, ContentDir, ApiTree};
+export { KV2LUA, VSND, GameDir, ContentDir, ApiTree };
 export function UpDataApiNote(note: string) {
 	ApiNote = note;
 	[class_list, enum_list] = func_api_parse();
@@ -33,8 +37,8 @@ export function GetClassList() {
 export function GetEnumList() {
 	return enum_list;
 }
-export function PullAPINote(infoType: any, funInfo: any, callback: (info:any)=>void) {
-	let noteServerConfig: vscode.WorkspaceConfiguration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+export function PullAPINote(infoType: any, funInfo: any, callback: (info: any) => void) {
+	let noteServerConfig: vscode.WorkspaceConfiguration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
 	if (noteServerConfig !== undefined) {
 		let ftpClient = new ftp();
 		ftpClient.connect({
@@ -43,8 +47,8 @@ export function PullAPINote(infoType: any, funInfo: any, callback: (info:any)=>v
 			user: noteServerConfig.user,
 			password: noteServerConfig.password,
 		});
-		ftpClient.on('ready', function() {
-			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename:'api_note.json', async function(err, stream) {
+		ftpClient.on('ready', function () {
+			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', async function (err, stream) {
 				if (err) {
 					vscode.window.setStatusBarMessage('API Note下载超时');
 					throw err
@@ -57,7 +61,7 @@ export function PullAPINote(infoType: any, funInfo: any, callback: (info:any)=>v
 				ApiNote = result;
 				// console.log(JSON.parse(ApiNote).Global);
 				[class_list, enum_list] = func_api_parse();
-				
+
 				if (infoType == APIType.Function) {
 					for (let index = 0; index < class_list[funInfo.class].length; index++) {
 						const element = class_list[funInfo.class][index];
@@ -82,22 +86,22 @@ export function PullAPINote(infoType: any, funInfo: any, callback: (info:any)=>v
 	}
 }
 export async function Init(context: vscode.ExtensionContext) {
-	let root_path:string|undefined = util.GetRootPath();
+	let root_path: string | undefined = util.GetRootPath();
 	if (root_path === undefined) {
 		return;
 	}
-	
+
 	// 读取目录
-	let path_arr: string[]|false = await FindFile(root_path, 'maps');
+	let path_arr: string[] | false = await FindFile(root_path, 'maps');
 	if (path_arr !== false) {
 		[ContentDir, GameDir] = path_arr;
 		console.log(GameDir);
-		
+
 	}
 	// 读取ApiNote
 	ApiNote = fs.readFileSync(context.extensionPath + '/resource/api_note.json', 'utf-8');
 	// 从服务器读取API Note， 读取配置信息
-	let noteServerConfig: vscode.WorkspaceConfiguration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
+	let noteServerConfig: vscode.WorkspaceConfiguration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.API Note Server Configuration');
 	if (noteServerConfig !== undefined) {
 		let ftpClient = new ftp();
 		ftpClient.connect({
@@ -106,8 +110,8 @@ export async function Init(context: vscode.ExtensionContext) {
 			user: noteServerConfig.user,
 			password: noteServerConfig.password,
 		});
-		ftpClient.on('ready', function() {
-			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename:'api_note.json', async function(err, stream) {
+		ftpClient.on('ready', function () {
+			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', async function (err, stream) {
 				if (err) {
 					vscode.window.setStatusBarMessage('API Note下载超时');
 					throw err
@@ -128,9 +132,15 @@ export async function Init(context: vscode.ExtensionContext) {
 	[class_list, enum_list] = APIParse();
 	ApiTree = new ApiTreeProvider(context, class_list, enum_list);
 	vscode.window.registerTreeDataProvider('dota2apiExplorer', ApiTree);
+	// JS API
+	JsApiTree = new JsApiTreeProvider(context);
+	vscode.window.registerTreeDataProvider('dota2JSApiExplorer', JsApiTree);
+	// CSS doc
+	CssApiTree = new CssApiTreeProvider(context);
+	vscode.window.registerTreeDataProvider('dota2CssApiExplorer', CssApiTree);
 	function APIParse() {
 		let api_note = JSON.parse(ApiNote);
-		let PraseFile = function (sDotaScriptHelp:string): any[] {
+		let PraseFile = function (sDotaScriptHelp: string): any[] {
 			const rows = sDotaScriptHelp.split(os.EOL);
 			let class_list: { [k: string]: any } = {};
 			let enum_list: { [k: string]: any } = {};
@@ -141,7 +151,7 @@ export async function Init(context: vscode.ExtensionContext) {
 					let [fun_info, new_line] = util.ReadFunction(i, rows);
 					if ((api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) || api_note[fun_info.function] !== undefined) {
 						let note = (api_note[fun_info.class] !== undefined && api_note[fun_info.class][fun_info.function] !== undefined) ? api_note[fun_info.class][fun_info.function] : api_note[fun_info.function];
-						
+
 						fun_info.description = note.description;
 						for (const params_name in fun_info.params) {
 							const params_info = fun_info.params[params_name];
@@ -223,7 +233,7 @@ export async function Init(context: vscode.ExtensionContext) {
 			//重新排序
 			for (const class_name in class_list) {
 				let fun_list = class_list[class_name];
-				let sort_func_list:any[] = [];
+				let sort_func_list: any[] = [];
 				let funcName = [];
 				for (let i = 0; i < fun_list.length; i++) {
 					const fun_info = fun_list[i];
@@ -248,25 +258,25 @@ export async function Init(context: vscode.ExtensionContext) {
 		Combine(class_list, class_list_cl);
 
 		// modifier function 对应
-		let modifierfunctionPath:string|undefined = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
+		let modifierfunctionPath: string | undefined = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
 		if (modifierfunctionPath !== undefined && modifierfunctionPath !== '') {
 			let modifierfunction = 'return {\n';
 			for (const property in enum_list.modifierfunction) {
 				const element = enum_list.modifierfunction[property];
-				modifierfunction += `	${element.name} = "${element.function||''}",
+				modifierfunction += `	${element.name} = "${element.function || ''}",
 `;
 			}
 			modifierfunction += '}';
-			
-			fs.writeFileSync(path.join(GameDir , modifierfunctionPath), modifierfunction);
+
+			fs.writeFileSync(path.join(GameDir, modifierfunctionPath), modifierfunction);
 		}
 		return [class_list, enum_list];
 	}
 	func_api_parse = APIParse;
 
-	async function FindFile(path:string, file_name:string):Promise<string[]|false> {
+	async function FindFile(path: string, file_name: string): Promise<string[] | false> {
 		let path_arr: string[] = [];
-		var lang_folders:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
+		var lang_folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
 		for (let i: number = 0; i < lang_folders.length; i++) {
 			const [folder_name, is_directory] = lang_folders[i];
 			if (folder_name === '.git') {
@@ -275,8 +285,8 @@ export async function Init(context: vscode.ExtensionContext) {
 			if (folder_name === file_name) {
 				path_arr.push(path);
 			}
-			if (Number(is_directory) === vscode.FileType.Directory || Number(is_directory) === vscode.FileType.SymbolicLink + vscode.FileType.Directory){
-				let bFind: string[]|false = await FindFile(path + '\\' + folder_name, file_name);
+			if (Number(is_directory) === vscode.FileType.Directory || Number(is_directory) === vscode.FileType.SymbolicLink + vscode.FileType.Directory) {
+				let bFind: string[] | false = await FindFile(path + '\\' + folder_name, file_name);
 				if (bFind !== false) {
 					path_arr = path_arr.concat(bFind);
 				}
@@ -289,15 +299,15 @@ export async function Init(context: vscode.ExtensionContext) {
 		}
 	}
 	// vsnd
-	let obj_data:any = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
+	let obj_data: any = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
 	// 添加选项
 	for (const key in obj_data) {
 		const element = obj_data[key];
 		for (let i = 0; i < element.length; i++) {
 			const sound = element[i];
 			VSND.push({
-				label:sound,
-				description:key,
+				label: sound,
+				description: key,
 			});
 		}
 	}
@@ -315,98 +325,98 @@ export async function Init(context: vscode.ExtensionContext) {
 	}
 
 	function provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
-		const fileName	= document.fileName;
-		const workDir	 = path.dirname(fileName);
-		const word		= document.getText(document.getWordRangeAtPosition(position));
-		const line:vscode.TextLine = document.lineAt(position);
-	
+		const fileName = document.fileName;
+		const workDir = path.dirname(fileName);
+		const word = document.getText(document.getWordRangeAtPosition(position));
+		const line: vscode.TextLine = document.lineAt(position);
+
 		// console.log('====== 进入 provideDefinition 方法 ======');
 		// console.log('fileName: ' + fileName); // 当前文件完整路径
 		// console.log('workDir: ' + workDir); // 当前文件所在目录
 		// console.log('word: ' + word); // 当前光标所在单词
 		// console.log('line: ' + line.text); // 当前光标所在行
 		// console.log();
-		
+
 		// 只处理package.json文件
 		if (/.*\.kv/.test(fileName) || /.*\.txt/.test(fileName)) {
 			const json = document.getText();
 			// console.log(new RegExp(`"ScriptFile".*"${word}"`).test(json));
 			// console.log(new RegExp(`"ScriptFile"`).test(line.text));
-			
+
 			if (new RegExp(`"ScriptFile"`).test(line.text)) {
 				let lua_path = line.text.split('"')[3];
 				let destPath = `${GameDir}/scripts/vscripts/${lua_path}.lua`;
 				// console.log(destPath);
-				
+
 				if (fs.existsSync(destPath)) {
 					return new vscode.Location(vscode.Uri.file(destPath), new vscode.Position(0, 0));
 				} else {
 					util.DirExists(path.dirname(destPath));
-					fs.writeFileSync(destPath, util.GetLuaScriptSnippet(path.basename(lua_path).replace('.lua',''), lua_path));
+					fs.writeFileSync(destPath, util.GetLuaScriptSnippet(path.basename(lua_path).replace('.lua', ''), lua_path));
 				}
 			}
 		}
 	}
-	let def_jump = vscode.languages.registerDefinitionProvider([{pattern: '**/*.txt'},{pattern: '**/*.kv'}], {provideDefinition});
+	let def_jump = vscode.languages.registerDefinitionProvider([{ pattern: '**/*.txt' }, { pattern: '**/*.kv' }], { provideDefinition });
 	context.subscriptions.push(def_jump);
 
 	// 强行运行一遍csv转kv
-	const ability_excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
-	const ability_kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
+	const ability_excel_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
+	const ability_kv_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
 	if (ability_excel_object === undefined || ability_kv_object === undefined) {
 		return;
 	}
 	for (const index in ability_excel_object) {
-		let listen_path = ability_excel_object[index].replace(/\\\\/g,'/');
-		let file_type:vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
+		let listen_path = ability_excel_object[index].replace(/\\\\/g, '/');
+		let file_type: vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
 		if (file_type === vscode.FileType.Directory) {
-			let files:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
+			let files: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
 			for (let i: number = 0; i < files.length; i++) {
 				let [file_name, is_file] = files[i];
 				if (file_name === undefined || file_name.search(/~\$/) !== -1) {
 					continue;
 				}
-				if (is_file === vscode.FileType.File){
+				if (is_file === vscode.FileType.File) {
 					let file_path: string = listen_path + '/' + file_name;
 					let csv_path: string = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
 					if (fs.existsSync(csv_path)) {
-						fs.writeFileSync(ability_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({KeyValue:util.AbilityCSV2KV(csv_path)}));
+						fs.writeFileSync(ability_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(csv_path) }));
 					}
 				}
 			}
 		} else if (file_type === vscode.FileType.File) {
 			listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
 			if (fs.existsSync(listen_path)) {
-				fs.writeFileSync(ability_kv_object[index], util.WriteKeyValue({KeyValue:util.AbilityCSV2KV(listen_path)}));
+				fs.writeFileSync(ability_kv_object[index], util.WriteKeyValue({ KeyValue: util.AbilityCSV2KV(listen_path) }));
 			}
 		}
 	}
-	const unit_excel_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
-	const unit_kv_object: util.Configuration|undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
+	const unit_excel_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path');
+	const unit_kv_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.units_kv_path');
 	if (unit_excel_object === undefined || unit_kv_object === undefined) {
 		return;
 	}
 	for (const index in unit_excel_object) {
-		let listen_path = unit_excel_object[index].replace(/\\\\/g,'/');
-		let file_type:vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
+		let listen_path = unit_excel_object[index].replace(/\\\\/g, '/');
+		let file_type: vscode.FileType = (await vscode.workspace.fs.stat(vscode.Uri.file(listen_path))).type;
 		if (file_type === vscode.FileType.Directory) {
-			let files:[string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
+			let files: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(listen_path));
 			for (let i: number = 0; i < files.length; i++) {
 				let [file_name, is_file] = files[i];
 				if (file_name === undefined || file_name.search(/~\$/) !== -1) {
 					continue;
 				}
-				if (is_file === vscode.FileType.File){
+				if (is_file === vscode.FileType.File) {
 					let file_path: string = listen_path + '/' + file_name;
 					let csv_path: string = path.join(path.dirname(file_path), 'csv', path.basename(file_path).replace(path.extname(file_path), '.csv'));
-					fs.writeFileSync(unit_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({KeyValue:util.UnitCSV2KV(csv_path)}));
+					fs.writeFileSync(unit_kv_object[index] + '/' + file_name.replace(path.extname(file_name), '') + '.kv', util.WriteKeyValue({ KeyValue: util.UnitCSV2KV(csv_path) }));
 				}
 			}
 		} else if (file_type === vscode.FileType.File) {
-			
+
 			listen_path = path.join(path.dirname(listen_path), 'csv', path.basename(listen_path).replace(path.extname(listen_path), '.csv'));
 			console.log(listen_path);
-			fs.writeFileSync(unit_kv_object[index], util.WriteKeyValue({KeyValue:util.UnitCSV2KV(listen_path)}));
+			fs.writeFileSync(unit_kv_object[index], util.WriteKeyValue({ KeyValue: util.UnitCSV2KV(listen_path) }));
 		}
 	}
 }

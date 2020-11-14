@@ -48,6 +48,10 @@
 				{
 					"id": "dota2JSApiExplorer",
 					"name": "Dota2 JS API"
+				},
+				{
+					"id": "dota2CssApiExplorer",
+					"name": "Dota2 CSS Document"
 				}
 			]
 		},
@@ -139,6 +143,36 @@
 				"icon": "$(collapse-all)"
 			},
 			{
+				"command": "dota2tools.dota2cssapi.filter",
+				"title": "搜索",
+				"icon": "$(search)"
+			},
+			{
+				"command": "dota2tools.dota2cssapi.clearfilter",
+				"title": "清除搜索",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.filter",
+				"title": "搜索",
+				"icon": "$(search)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.clearfilter",
+				"title": "清除搜索",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.expand",
+				"title": "全部展开",
+				"icon": "$(expand-all)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.collapse",
+				"title": "全部缩起",
+				"icon": "$(collapse-all)"
+			},
+			{
 				"command": "dota2tools.dota2api.overview",
 				"title": "常用",
 				"icon": "$(heart)"
@@ -173,6 +207,14 @@
 			},
 			{
 				"command": "dota2tools.dota2api.list",
+				"title": "列表",
+				"icon": {
+					"light": "images/light/list-selection.svg",
+					"dark": "images/dark/list-selection.svg"
+				}
+			},
+			{
+				"command": "dota2tools.dota2jsapi.list",
 				"title": "列表",
 				"icon": {
 					"light": "images/light/list-selection.svg",
@@ -293,6 +335,36 @@
 					"command": "dota2tools.dota2api.collapse",
 					"when": "view == dota2apiExplorer && dota2tools-expanded == true",
 					"group": "navigation@7"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.filter",
+					"when": "view == dota2JSApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.clearfilter",
+					"when": "view == dota2JSApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2cssapi.filter",
+					"when": "view == dota2CssApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2cssapi.clearfilter",
+					"when": "view == dota2CssApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.expand",
+					"when": "view == dota2JSApiExplorer && dota2tools-js-expanded == false",
+					"group": "navigation@7"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.collapse",
+					"when": "view == dota2JSApiExplorer && dota2tools-js-expanded == true",
+					"group": "navigation@7"
 				}
 			],
 			"view/item/context": [
@@ -314,6 +386,11 @@
 				{
 					"command": "dota2tools.dota2api.list",
 					"when": "view == dota2apiExplorer && viewItem == Class",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.list",
+					"when": "view == dota2JSApiExplorer && viewItem == Class",
 					"group": "inline"
 				}
 			]

@@ -1690,4 +1690,17 @@ function locale() {
     return config['locale'] || 'en';
 }
 exports.locale = locale;
+function EachLine(data, callback, start = 0) {
+    const rows = Array.isArray(data) ? data : data.split(os.EOL);
+    for (let i = 0; i < rows.length; i++) {
+        let result = callback(i, rows[i]);
+        if (result === true) {
+            break;
+        }
+        else if (typeof (result) == "number") {
+            i = result;
+        }
+    }
+}
+exports.EachLine = EachLine;
 //# sourceMappingURL=util.js.map

@@ -24,6 +24,8 @@ const util_1 = require("util");
 const os = require("os");
 const ftp = require("ftp");
 const api_tree_1 = require("./api-tree");
+const js_api_tree_1 = require("./js-api-tree");
+const css_api_tree_1 = require("./css-api-tree");
 let KV2LUA = {}; // kv与lua文件关联数据
 exports.KV2LUA = KV2LUA;
 let VSND = new Array;
@@ -35,6 +37,8 @@ exports.ContentDir = ContentDir;
 let ApiNote = ''; // api_note.json
 let ApiTree; // ApiTreeProvider
 exports.ApiTree = ApiTree;
+let JsApiTree; // ApiTreeProvider
+let CssApiTree; // ApiTreeProvider
 let class_list;
 let enum_list;
 let func_api_parse;
@@ -181,6 +185,12 @@ function Init(context) {
         [class_list, enum_list] = APIParse();
         exports.ApiTree = ApiTree = new api_tree_1.ApiTreeProvider(context, class_list, enum_list);
         vscode.window.registerTreeDataProvider('dota2apiExplorer', ApiTree);
+        // JS API
+        JsApiTree = new js_api_tree_1.JsApiTreeProvider(context);
+        vscode.window.registerTreeDataProvider('dota2JSApiExplorer', JsApiTree);
+        // CSS doc
+        CssApiTree = new css_api_tree_1.CssApiTreeProvider(context);
+        vscode.window.registerTreeDataProvider('dota2CssApiExplorer', CssApiTree);
         function APIParse() {
             let api_note = JSON.parse(ApiNote);
             let PraseFile = function (sDotaScriptHelp) {
