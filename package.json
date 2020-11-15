@@ -6,7 +6,7 @@
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
-		"vscode": "^1.44.0"
+		"vscode": "^1.50.0"
 	},
 	"categories": [
 		"Other"
