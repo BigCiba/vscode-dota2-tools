@@ -14,6 +14,7 @@ const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const util_1 = require("./util");
 // 类型
 var APIType;
 (function (APIType) {
@@ -40,37 +41,34 @@ class PanelTreeProvider {
         }));
         // 打开webView
         vscode.commands.registerCommand("dota2tools.panel_browser", (funcName) => __awaiter(this, void 0, void 0, function* () {
-            vscode.commands.executeCommand('markdown.showPreview', fs.readFileSync(path.join(context.extensionPath, 'resource', 'PanelList.md'), 'utf-8'));
-            // if (this.BrowserView == undefined) {
-            // 	this.BrowserView = vscode.window.createWebviewPanel(
-            // 		'PanelBrowser', // viewType
-            // 		"Panel Browser", // 视图标题
-            // 		vscode.ViewColumn.One, // 显示在编辑器的哪个部位
-            // 		{
-            // 			enableScripts: true, // 启用JS，默认禁用
-            // 			retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
-            // 		}
-            // 	);
-            // 	this.BrowserView.onDidDispose(() => {
-            // 		this.BrowserView = undefined;
-            // 	});
-            // }
-            // if (this.BrowserView.active === false) {
-            // 	this.BrowserView.reveal(vscode.ViewColumn.One)
-            // }
-            // // 把相关的数据都展示出来
-            // let webViewData: string = '';
-            // for (let index = this.tree_data[funcName].start; index < this.tree_data[funcName].end; index++) {
-            // 	const element = this.raw_data[index];
-            // 	webViewData += element + os.EOL;
-            // }
-            // this.BrowserView.webview.postMessage({
-            // 	data: webViewData,
-            // });
-            // this.BrowserView.webview.html = GetWebViewContent(context, 'webview/PanelBrowser/APIBrowser.html');
-            // // 复制
-            // vscode.env.clipboard.writeText(funcName);
-            // vscode.window.setStatusBarMessage('复制到剪切板：' + funcName);
+            if (this.BrowserView == undefined) {
+                this.BrowserView = vscode.window.createWebviewPanel('PanelBrowser', // viewType
+                "Panel Browser", // 视图标题
+                vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+                {
+                    enableScripts: true,
+                    retainContextWhenHidden: true,
+                });
+                this.BrowserView.onDidDispose(() => {
+                    this.BrowserView = undefined;
+                });
+            }
+            if (this.BrowserView.active === false) {
+                this.BrowserView.reveal(vscode.ViewColumn.One);
+            }
+            // 把相关的数据都展示出来
+            let webViewData = '';
+            for (let index = this.tree_data[funcName].start; index < this.tree_data[funcName].end; index++) {
+                const element = this.raw_data[index];
+                webViewData += element + os.EOL;
+            }
+            this.BrowserView.webview.postMessage({
+                data: webViewData,
+            });
+            this.BrowserView.webview.html = util_1.GetWebViewContent(context, 'webview/PanelBrowser/APIBrowser.html');
+            // 复制
+            vscode.env.clipboard.writeText(funcName);
+            vscode.window.setStatusBarMessage('复制到剪切板：' + funcName);
         }));
     }
     refresh() {
