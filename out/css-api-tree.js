@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NodeItem = exports.CssApiTreeProvider = exports.APIType = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
@@ -65,14 +66,14 @@ class CssApiTreeProvider {
                             this.filtered_api_tree_data[className] = funcList;
                         }
                     }
-                    this._onDidChangeTreeData.fire();
+                    this._onDidChangeTreeData.fire(undefined);
                 }
             });
         }));
         // 清除搜索
         vscode.commands.registerCommand("dota2tools.dota2cssapi.clearfilter", () => __awaiter(this, void 0, void 0, function* () {
             this.filtered_api_tree_data = undefined;
-            this._onDidChangeTreeData.fire();
+            this._onDidChangeTreeData.fire(undefined);
         }));
         // 打开webView
         vscode.commands.registerCommand("dota2tools.css_api_browser", (funcName) => __awaiter(this, void 0, void 0, function* () {
@@ -114,15 +115,15 @@ class CssApiTreeProvider {
         }));
     }
     refresh() {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
     rebuild() {
         let temp = this.filtered_api_tree_data ? this.filtered_api_tree_data : this.api_tree_data;
         this.filtered_api_tree_data = {};
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
         setTimeout(() => {
             this.filtered_api_tree_data = temp;
-            this._onDidChangeTreeData.fire();
+            this._onDidChangeTreeData.fire(undefined);
         }, 10);
     }
     getTreeItem(element) {

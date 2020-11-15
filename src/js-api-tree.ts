@@ -65,14 +65,14 @@ export class JsApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 							}
 						}
 					}
-					this._onDidChangeTreeData.fire();
+					this._onDidChangeTreeData.fire(undefined);
 				}
 			});
 		});
 		// 清除搜索
 		vscode.commands.registerCommand("dota2tools.dota2jsapi.clearfilter", async () => {
 			this.filtered_api_tree_data = undefined;
-			this._onDidChangeTreeData.fire();
+			this._onDidChangeTreeData.fire(undefined);
 		});
 		// 展开
 		vscode.commands.registerCommand("dota2tools.dota2jsapi.expand", async () => {
@@ -127,15 +127,15 @@ export class JsApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 
 	}
 	refresh(): void {
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 	}
 	rebuild(): void {
 		let temp = this.filtered_api_tree_data ? this.filtered_api_tree_data : this.api_tree_data;
 		this.filtered_api_tree_data = {}
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 		setTimeout(() => {
 			this.filtered_api_tree_data = temp;
-			this._onDidChangeTreeData.fire();
+			this._onDidChangeTreeData.fire(undefined);
 		}, 10);
 	}
 

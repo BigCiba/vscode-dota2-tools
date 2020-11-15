@@ -16,6 +16,7 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Init = exports.PullAPINote = exports.GetEnumList = exports.GetClassList = exports.GetApiNote = exports.UpDataApiNote = exports.ApiTree = exports.ContentDir = exports.GameDir = exports.VSND = exports.KV2LUA = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
@@ -26,6 +27,7 @@ const ftp = require("ftp");
 const api_tree_1 = require("./api-tree");
 const js_api_tree_1 = require("./js-api-tree");
 const css_api_tree_1 = require("./css-api-tree");
+const panel_tree_1 = require("./panel-tree");
 let KV2LUA = {}; // kv与lua文件关联数据
 exports.KV2LUA = KV2LUA;
 let VSND = new Array;
@@ -39,6 +41,7 @@ let ApiTree; // ApiTreeProvider
 exports.ApiTree = ApiTree;
 let JsApiTree; // ApiTreeProvider
 let CssApiTree; // ApiTreeProvider
+let PanelTree; // ApiTreeProvider
 let class_list;
 let enum_list;
 let func_api_parse;
@@ -191,6 +194,9 @@ function Init(context) {
         // CSS doc
         CssApiTree = new css_api_tree_1.CssApiTreeProvider(context);
         vscode.window.registerTreeDataProvider('dota2CssApiExplorer', CssApiTree);
+        // CSS doc
+        PanelTree = new panel_tree_1.PanelTreeProvider(context);
+        vscode.window.registerTreeDataProvider('dota2PanelExplorer', PanelTree);
         function APIParse() {
             let api_note = JSON.parse(ApiNote);
             let PraseFile = function (sDotaScriptHelp) {

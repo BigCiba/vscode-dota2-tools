@@ -16,6 +16,7 @@
      limitations under the License.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.lua_parser = void 0;
 var lua_print = function () {
     try {
         console.log.apply(console, arguments);

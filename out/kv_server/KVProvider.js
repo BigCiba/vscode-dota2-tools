@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.KvProvider = void 0;
 const vscode = require("vscode");
 const request = require("request");
 const KVServer_1 = require("./KVServer");

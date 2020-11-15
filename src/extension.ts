@@ -14,14 +14,14 @@ import { InheritTable } from "./table_inherit";
 import { DropHeroString } from "./drop_string";
 import { exec } from 'child_process';
 import * as ftp from 'ftp';
-import { ParseCssDocument, ParsePanoramaAPI } from './tools';
+import { ParseCssDocument, ParseEventDocument, ParsePanelList, ParsePanoramaAPI } from './tools';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
 	KVServer.Install(context);
-	// ParsePanoramaAPI(context);
-	ParseCssDocument(context);
+	ParsePanelList(context);
+	// ParseEventDocument(context);
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	// passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
@@ -2131,7 +2131,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	function ItemsGameParse() {
 		let sFilePath: string = path.join(context.extensionPath, "resource/items_game.txt");
 		let tItemsData = util.ReadKeyValue2(fs.readFileSync(sFilePath, 'utf-8')).items_game.items;
-		
+
 		for (const index in tItemsData) {
 			const element = tItemsData[index];
 			delete element.portraits
@@ -2270,7 +2270,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		context.workspaceState.update('expanded', false);
 		vscode.commands.executeCommand('setContext', 'dota2tools-expanded', context.workspaceState.get('expanded', false));
 	}));
-	
+
 	// 注册指令
 	context.subscriptions.push(Localization);
 	context.subscriptions.push(AddHero);

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateInheritTable = exports.InheritTable = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const util = require("./util");

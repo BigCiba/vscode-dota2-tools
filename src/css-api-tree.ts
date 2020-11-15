@@ -55,14 +55,14 @@ export class CssApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 							this.filtered_api_tree_data[className] = funcList;
 						}
 					}
-					this._onDidChangeTreeData.fire();
+					this._onDidChangeTreeData.fire(undefined);
 				}
 			});
 		});
 		// 清除搜索
 		vscode.commands.registerCommand("dota2tools.dota2cssapi.clearfilter", async () => {
 			this.filtered_api_tree_data = undefined;
-			this._onDidChangeTreeData.fire();
+			this._onDidChangeTreeData.fire(undefined);
 		});
 		// 打开webView
 		vscode.commands.registerCommand("dota2tools.css_api_browser", async (funcName) => {
@@ -107,15 +107,15 @@ export class CssApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 		});
 	}
 	refresh(): void {
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 	}
 	rebuild(): void {
 		let temp = this.filtered_api_tree_data ? this.filtered_api_tree_data : this.api_tree_data;
 		this.filtered_api_tree_data = {}
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 		setTimeout(() => {
 			this.filtered_api_tree_data = temp;
-			this._onDidChangeTreeData.fire();
+			this._onDidChangeTreeData.fire(undefined);
 		}, 10);
 	}
 

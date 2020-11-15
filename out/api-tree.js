@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NodeItem = exports.ApiTreeProvider = exports.APIType = void 0;
 const vscode = require("vscode");
 const path = require("path");
 const init_1 = require("./init");
@@ -81,22 +82,22 @@ class ApiTreeProvider {
         this.api_note = JSON.parse(init_1.GetApiNote());
         this.class_list = init_1.GetClassList();
         this.enum_list = init_1.GetEnumList();
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
     refresh() {
         this.api_note = JSON.parse(init_1.GetApiNote());
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
     rebuild() {
         let class_list = this.class_list;
         let enum_list = this.enum_list;
         this.class_list = {};
         this.enum_list = {};
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
         setTimeout(() => {
             this.class_list = class_list;
             this.enum_list = enum_list;
-            this._onDidChangeTreeData.fire();
+            this._onDidChangeTreeData.fire(undefined);
         }, 10);
     }
     getTreeItem(element) {

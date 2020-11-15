@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ActiveListEditorProvider = void 0;
 const path = require("path");
 const vscode = require("vscode");
 const util_1 = require("./util");

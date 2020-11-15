@@ -79,22 +79,22 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 		this.api_note = JSON.parse(GetApiNote());
 		this.class_list = GetClassList();
 		this.enum_list = GetEnumList();
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 	}
 	refresh(): void {
 		this.api_note = JSON.parse(GetApiNote());
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 	}
 	rebuild(): void {
 		let class_list = this.class_list;
 		let enum_list = this.enum_list;
 		this.class_list = {};
 		this.enum_list = {};
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 		setTimeout(() => {
 			this.class_list = class_list;
 			this.enum_list = enum_list;
-			this._onDidChangeTreeData.fire();
+			this._onDidChangeTreeData.fire(undefined);
 		}, 10);
 	}
 

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ParsePanelList = exports.ParseEventDocument = exports.ParseCssDocument = exports.ParsePanoramaAPI = void 0;
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -101,4 +102,39 @@ function ParseCssDocument(context) {
     fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_css_properties.json'), JSON.stringify(CSS));
 }
 exports.ParseCssDocument = ParseCssDocument;
+// 将官方打印的event文档处理成md
+function ParseEventDocument(context) {
+    let dump_panorama_events = fs.readFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_events.txt'), 'utf-8');
+    // 处理成md格式
+    dump_panorama_events = dump_panorama_events.replace(/\{\| class="wikitable"\r\n! (.*)\r\n! (.*)\r\n! (.*)/g, (m, $1, $2, $3) => { return `${$1}|${$2}|${$2}${os.EOL}--|--|--`; });
+    dump_panorama_events = dump_panorama_events.replace(/\|-.*\r\n\| (.*)\r\n\| (.*)\r\n\| (.*)/g, (m, $1, $2, $3) => {
+        return `${$1}|${$2}|${$3}`;
+    });
+    dump_panorama_events = dump_panorama_events.replace(/\|\}/g, '');
+    fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_events.md'), dump_panorama_events);
+}
+exports.ParseEventDocument = ParseEventDocument;
+// 读取PanelList
+function ParsePanelList(context) {
+    let PanelList = fs.readFileSync(path.join(context.extensionPath, 'resource', 'PanelList.md'), 'utf-8');
+    let Panel = {};
+    let row = PanelList.split(os.EOL);
+    util_1.EachLine(row, (line, lineText) => {
+        if (lineText.search(/^# .*/) !== -1) {
+            Panel[lineText.split('# ')[1]] = {
+                start: line,
+                end: row.length
+            };
+            for (let index = line + 1; index < row.length; index++) {
+                const element = row[index];
+                if (element.search(/^# .*/) !== -1) {
+                    Panel[lineText.split('# ')[1]].end = index - 1;
+                    break;
+                }
+            }
+        }
+    });
+    fs.writeFileSync(path.join(context.extensionPath, 'resource', 'PanelList.json'), JSON.stringify(Panel));
+}
+exports.ParsePanelList = ParsePanelList;
 //# sourceMappingURL=tools.js.map

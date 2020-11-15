@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DropHeroString = void 0;
 class DropHeroString {
     constructor(sHeroName) {
         this.sHeroName = sHeroName;

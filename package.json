@@ -52,6 +52,10 @@
 				{
 					"id": "dota2CssApiExplorer",
 					"name": "Dota2 CSS Document"
+				},
+				{
+					"id": "dota2PanelExplorer",
+					"name": "Dota2 Panel Document"
 				}
 			]
 		},
@@ -141,6 +145,11 @@
 				"command": "dota2tools.dota2api.collapse",
 				"title": "全部缩起",
 				"icon": "$(collapse-all)"
+			},
+			{
+				"command": "dota2tools.dota2panel.event",
+				"title": "事件列表",
+				"icon": "$(book)"
 			},
 			{
 				"command": "dota2tools.dota2cssapi.filter",
@@ -365,6 +374,11 @@
 					"command": "dota2tools.dota2jsapi.collapse",
 					"when": "view == dota2JSApiExplorer && dota2tools-js-expanded == true",
 					"group": "navigation@7"
+				},
+				{
+					"command": "dota2tools.dota2panel.event",
+					"when": "view == dota2PanelExplorer",
+					"group": "navigation@7"
 				}
 			],
 			"view/item/context": [
@@ -555,11 +569,11 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.44.0",
+		"@types/vscode": "^1.50.0",
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
 		"tslint": "^5.20.1",
-		"typescript": "^3.3.1",
+		"typescript": "^4.0.2",
 		"vscode-test": "^1.2.0"
 	},
 	"repository": {

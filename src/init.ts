@@ -10,6 +10,7 @@ import { APIType, ApiTreeProvider } from './api-tree';
 import { Func } from 'mocha';
 import { JsApiTreeProvider } from './js-api-tree';
 import { CssApiTreeProvider } from './css-api-tree';
+import { PanelTreeProvider } from './panel-tree';
 let KV2LUA: any = {};	// kv与lua文件关联数据
 let VSND = new Array;
 let GameDir: string = '';	// game目录
@@ -18,6 +19,7 @@ let ApiNote: string = '';	// api_note.json
 let ApiTree: ApiTreeProvider;	// ApiTreeProvider
 let JsApiTree: JsApiTreeProvider;	// ApiTreeProvider
 let CssApiTree: CssApiTreeProvider;	// ApiTreeProvider
+let PanelTree: PanelTreeProvider;	// ApiTreeProvider
 let class_list: any;
 let enum_list: any;
 let func_api_parse: any;
@@ -138,6 +140,9 @@ export async function Init(context: vscode.ExtensionContext) {
 	// CSS doc
 	CssApiTree = new CssApiTreeProvider(context);
 	vscode.window.registerTreeDataProvider('dota2CssApiExplorer', CssApiTree);
+	// CSS doc
+	PanelTree = new PanelTreeProvider(context);
+	vscode.window.registerTreeDataProvider('dota2PanelExplorer', PanelTree);
 	function APIParse() {
 		let api_note = JSON.parse(ApiNote);
 		let PraseFile = function (sDotaScriptHelp: string): any[] {
