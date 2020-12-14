@@ -51,9 +51,9 @@ class CssApiTreeProvider {
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
         this.api_tree_data = JSON.parse(fs.readFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_css_properties.json'), 'utf-8'));
         // 复制
-        vscode.commands.registerCommand("dota2tools.css_api_browser.copy", (funcName) => __awaiter(this, void 0, void 0, function* () {
-            vscode.env.clipboard.writeText(funcName);
-            vscode.window.setStatusBarMessage('复制到剪切板：' + funcName);
+        vscode.commands.registerCommand("dota2tools.css_api_browser.copy", (data) => __awaiter(this, void 0, void 0, function* () {
+            vscode.env.clipboard.writeText(data.label);
+            vscode.window.setStatusBarMessage('复制到剪切板：' + data.label);
         }));
         // 搜索
         vscode.commands.registerCommand("dota2tools.dota2cssapi.filter", () => __awaiter(this, void 0, void 0, function* () {

@@ -40,9 +40,9 @@ export class CssApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 	constructor(private context: vscode.ExtensionContext) {
 		this.api_tree_data = JSON.parse(fs.readFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_css_properties.json'), 'utf-8'));
 		// 复制
-		vscode.commands.registerCommand("dota2tools.css_api_browser.copy", async (funcName) => {
-			vscode.env.clipboard.writeText(funcName);
-			vscode.window.setStatusBarMessage('复制到剪切板：' + funcName);
+		vscode.commands.registerCommand("dota2tools.css_api_browser.copy", async (data) => {
+			vscode.env.clipboard.writeText(data.label);
+			vscode.window.setStatusBarMessage('复制到剪切板：' + data.label);
 		});
 		// 搜索
 		vscode.commands.registerCommand("dota2tools.dota2cssapi.filter", async () => {
@@ -81,13 +81,13 @@ export class CssApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 				});
 			}
 			if (this.CssAPIBrowserView.active === false) {
-				this.CssAPIBrowserView.reveal(vscode.ViewColumn.One)
+				this.CssAPIBrowserView.reveal(vscode.ViewColumn.One);
 			}
 			// 把相关的数据都展示出来
 			let webViewData: any = {};
 			let keywords: string[] = funcName.split('-');
 			console.log(keywords);
-			
+
 			for (let index = 0; index < keywords.length; index++) {
 				const keyword = keywords[index];
 				for (const className in this.api_tree_data) {
@@ -111,7 +111,7 @@ export class CssApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 	}
 	rebuild(): void {
 		let temp = this.filtered_api_tree_data ? this.filtered_api_tree_data : this.api_tree_data;
-		this.filtered_api_tree_data = {}
+		this.filtered_api_tree_data = {};
 		this._onDidChangeTreeData.fire(undefined);
 		setTimeout(() => {
 			this.filtered_api_tree_data = temp;

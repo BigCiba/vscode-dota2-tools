@@ -231,6 +231,14 @@
 				}
 			},
 			{
+				"command": "dota2tools.css_api_browser.copy",
+				"title": "复制",
+				"icon": {
+					"light": "images/light/copy.svg",
+					"dark": "images/dark/copy.svg"
+				}
+			},
+			{
 				"command": "dota2tools.CSVToPHPArray",
 				"title": "CSV 转 PHP 配置"
 			},
@@ -406,6 +414,11 @@
 					"command": "dota2tools.dota2jsapi.list",
 					"when": "view == dota2JSApiExplorer && viewItem == Class",
 					"group": "inline"
+				},
+				{
+					"command": "dota2tools.css_api_browser.copy",
+					"when": "view == dota2CssApiExplorer && viewItem == Class",
+					"group": "inline"
 				}
 			]
 		},
@@ -548,10 +561,6 @@
 					"type": "object",
 					"additionalProperties": {
 						"type": "string"
-					},
-					"default": {
-						"csv": "D:/Github/Project6/design/配置表/multiLine/csv",
-						"kv": "D:/Github/Project6/game/project6/scripts/npc/kv"
 					},
 					"description": "多行csv配置"
 				}
