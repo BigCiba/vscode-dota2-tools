@@ -6,7 +6,6 @@ const os = require("os");
 const path = require("path");
 const util_1 = require("./util");
 // 主要用来写一些预处理功能
-// www.tianfengyouxi.com次元天风
 // 将官方打印的api替换成md格式和obj
 function ParsePanoramaAPI(context) {
     let cl_panorama_script_help_2 = fs.readFileSync(path.join(context.extensionPath, 'resource', 'cl_panorama_script_help_2.txt'), 'utf-8');

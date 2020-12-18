@@ -4,7 +4,6 @@ import * as os from 'os';
 import * as path from 'path';
 import { EachLine } from './util';
 // 主要用来写一些预处理功能
-// www.tianfengyouxi.com次元天风
 // 将官方打印的api替换成md格式和obj
 export function ParsePanoramaAPI(context: vscode.ExtensionContext) {
 	let cl_panorama_script_help_2: string = fs.readFileSync(path.join(context.extensionPath, 'resource', 'cl_panorama_script_help_2.txt'), 'utf-8');

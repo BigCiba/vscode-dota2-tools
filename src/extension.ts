@@ -20,6 +20,8 @@ import { ParseCssDocument, ParseEventDocument, ParsePanelList, ParsePanoramaAPI 
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
 	KVServer.Install(context);
+	ParsePanoramaAPI(context);
+	ParseCssDocument(context);
 	// ParsePanelList(context);
 	// ParseEventDocument(context);
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
