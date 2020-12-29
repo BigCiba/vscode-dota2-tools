@@ -40,7 +40,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// 读取kv文件（弃用）
 	async function ReadKeyValue(uri: vscode.Uri) {
 		function NewTable(start_line: number, document: vscode.TextDocument): any {
-			var obj: { [k: string]: any } = {};
+			var obj: { [k: string]: any; } = {};
 			var left_brackets: number = 0;	// 记录{数量
 			var right_brackets: number = 0;	// 记录}数量
 			for (let line = start_line; line < document.lineCount; line++) {
@@ -79,7 +79,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		}
 		let document: vscode.TextDocument = await vscode.workspace.openTextDocument(uri);
-		var obj: { [k: string]: any } = {};
+		var obj: { [k: string]: any; } = {};
 		for (let line = 0; line < document.lineCount; line++) {
 			var lineText = document.lineAt(line).text;
 			var arr = lineText.match(/"/g);
@@ -194,7 +194,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			AddValue(char: string) { this.value += char; },
 			Clear() { this.key = ''; this.value = ''; },
 		};
-		var obj: { [k: string]: any } = {};
+		var obj: { [k: string]: any; } = {};
 		var text_data = document.getText();
 		var Next = (index: number) => text_data[index + 1];
 		var NewTable = (index: number): any => {
@@ -207,7 +207,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				AddValue(char: string) { this.value += char; },
 				Clear() { this.key = ''; this.value = ''; },
 			};
-			let obj: { [k: string]: any } = {};
+			let obj: { [k: string]: any; } = {};
 			for (let i = index; i < text_data.length; i++) {
 				const char = text_data[i];
 				if (state === 'NOTE') {
@@ -394,9 +394,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		// 获取版本变更信息
 		const version_data = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', 'utf-8'));
 		if (version_data[version] === undefined) {
-			let lua: { [k: string]: any } = {};
-			let kv: { [k: string]: any } = {};
-			let txt: { [k: string]: any } = {};
+			let lua: { [k: string]: any; } = {};
+			let kv: { [k: string]: any; } = {};
+			let txt: { [k: string]: any; } = {};
 			let info: object = {
 				lua: lua,
 				kv: kv,
@@ -414,7 +414,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				if (typeof f === "string") {
 					let info: any = util.GetFileInfo(root_path, f);
 					if (version_data[version][info.ext][info.full_name] === undefined) {
-						let file_info: { [k: string]: any } = {};
+						let file_info: { [k: string]: any; } = {};
 						version_data[version][info.ext][info.full_name] = file_info;
 					}
 					version_data[version][info.ext][info.full_name].created = true;
@@ -426,7 +426,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				if (typeof f === "string") {
 					let info: any = util.GetFileInfo(root_path, f);
 					if (version_data[version][info.ext][info.full_name] === undefined) {
-						let file_info: { [k: string]: any } = {};
+						let file_info: { [k: string]: any; } = {};
 						version_data[version][info.ext][info.full_name] = file_info;
 					}
 					version_data[version][info.ext][info.full_name].removed = true;
@@ -442,7 +442,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						console.log(version_data[version]);
 						console.log(version_data[version][info.ext]);
 						if (version_data[version][info.ext][info.full_name] === undefined) {
-							let file_info: { [k: string]: any } = {};
+							let file_info: { [k: string]: any; } = {};
 							version_data[version][info.ext][info.full_name] = file_info;
 						}
 						version_data[version][info.ext][info.full_name].change = true;
@@ -488,8 +488,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		// 读取英雄资料
 		const npc_heroes_uri: vscode.Uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_heroes.txt');
 		const npc_abilities_uri: vscode.Uri = vscode.Uri.file(vscode.workspace.getConfiguration().get('dota2-tools.addon_path') + '/game/dota/scripts/npc/npc_abilities.txt');
-		let heroes_data: { [k: string]: any } = await LoadKeyValue(npc_heroes_uri);
-		let abilities_data: { [k: string]: any } = await LoadKeyValue(npc_abilities_uri);
+		let heroes_data: { [k: string]: any; } = await LoadKeyValue(npc_heroes_uri);
+		let abilities_data: { [k: string]: any; } = await LoadKeyValue(npc_abilities_uri);
 		// 选择英雄
 		const quick_pick: vscode.QuickPick<vscode.QuickPickItem> = vscode.window.createQuickPick();
 		quick_pick.canSelectMany = false;
@@ -590,7 +590,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			await vscode.workspace.fs.writeFile(ability_kv_uri, new Uint8Array);
 			text_editor = await vscode.window.showTextDocument(ability_kv_uri);
 			text_editor.edit(function (edit_builder) {
-				var ability_data: { [k: string]: any } = {};
+				var ability_data: { [k: string]: any; } = {};
 				var ability: object = {
 					[hero_name_lite]: ability_data,
 				};
@@ -775,8 +775,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		const rows = dota_script_help2.split(os.EOL);
 		let script = '# **Dota2 API**\n';
 		// 读取服务器API
-		let class_list: { [k: string]: any } = {};
-		let enum_list: { [k: string]: any } = {};
+		let class_list: { [k: string]: any; } = {};
+		let enum_list: { [k: string]: any; } = {};
 		for (let i = 0; i < rows.length; i++) {
 			// 函数
 			let option = rows[i].match(/---\[\[.*\]\]/g);
@@ -819,8 +819,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		// 读取客户端API
 		const dota_cl_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_cl_script_help2.lua', 'utf-8');
 		const rows_cl = dota_cl_script_help2.split(os.EOL);
-		let class_list_cl: { [k: string]: any } = {};
-		let enum_list_cl: { [k: string]: any } = {};
+		let class_list_cl: { [k: string]: any; } = {};
+		let enum_list_cl: { [k: string]: any; } = {};
 		for (let i = 0; i < rows_cl.length; i++) {
 			// 函数
 			let option = rows_cl[i].match(/---\[\[.*\]\]/g);
@@ -997,8 +997,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
 			const api_note = JSON.parse(GetApiNote());
 			const rows = dota_script_help2.split(os.EOL);
-			let class_list: { [k: string]: any } = {};
-			let enum_list: { [k: string]: any } = {};
+			let class_list: { [k: string]: any; } = {};
+			let enum_list: { [k: string]: any; } = {};
 			for (let i = 0; i < rows.length; i++) {
 				// 函数
 				let option = rows[i].match(/---\[\[.*\]\]/g);
@@ -1045,7 +1045,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				for (let i = 0; i < fun_list.length; i++) {
 					const fun_info = fun_list[i];
 					if (fun_info.function === select_text) {
-						let params: { [k: string]: any } = {};
+						let params: { [k: string]: any; } = {};
 						let note = {
 							description: '',
 							// params: Object.assign(fun_info.params),
@@ -1065,7 +1065,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						panel.webview.html = util.GetNoteAPIContent(fun_info, context);
 						panel.webview.onDidReceiveMessage(message => {
 							console.log(message);
-							let output_obj: { [k: string]: any } = {};
+							let output_obj: { [k: string]: any; } = {};
 							output_obj[select_text] = message;
 							if (api_note[message.class] == undefined) {
 								api_note[message.class] = {};
@@ -1121,7 +1121,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						);
 						panel.webview.html = util.GetConstantNoteContent(enum_info, context);
 						panel.webview.onDidReceiveMessage(message => {
-							let output_obj: { [k: string]: any } = {};
+							let output_obj: { [k: string]: any; } = {};
 							output_obj[select_text] = message;
 							api_note[select_text] = message;
 							// fs.writeFileSync(api_note_path, JSON.stringify(api_note));
@@ -1543,7 +1543,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					const ability_value = ability_data[ability_key];
 					if (ability_key === 'AbilitySpecial') {//特殊处理AbilitySpecial
 						let special_count: number = 1;//记录第几个special值
-						let keys = Object.keys(ability_value).sort(function (a, b) { return Number(a) - Number(b) });
+						let keys = Object.keys(ability_value).sort(function (a, b) { return Number(a) - Number(b); });
 						for (let index = 0; index < keys.length; index++) {
 							// for (const special_index in ability_value) {//遍历special
 							const special_info = ability_value[keys[index]];
@@ -1764,7 +1764,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		interface IconsData {
 			[key: string]: {
 				path: string | string[] | undefined | vscode.Uri,
-				data: {} | []
+				data: {} | [];
 			} | IconsData[];
 		}
 		let custom_spellicons: any = [{}];
@@ -1876,7 +1876,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				vscode.window.setStatusBarMessage('已将图标路径复制到剪切板：' + texture);
 			} else if (message.event == "contextmenu") {
 				let fullpath = path.join(context.extensionPath, 'images', message.type, message.id);
-				exec(`explorer.exe /select,"${fullpath}_png.png"`)
+				exec(`explorer.exe /select,"${fullpath}_png.png"`);
 			}
 			// panel.dispose();
 		}, undefined, context.subscriptions);
@@ -2028,7 +2028,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					return 1;
 				}
 				return (a < b) ? -1 : a > b ? 1 : 0;
-			})
+			});
 			fFiles.forEach(fileName => {
 				if (fileName.indexOf("addon_") != -1) {
 					let sLanguage = fileName.substr(6, fileName.length - 4 - 6);
@@ -2136,7 +2136,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		for (const index in tItemsData) {
 			const element = tItemsData[index];
-			delete element.portraits
+			delete element.portraits;
 		}
 		fs.writeFileSync(path.join(context.extensionPath, "resource/items_game.json"), JSON.stringify(tItemsData));
 	}
@@ -2181,7 +2181,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			});
 		}
 		if (APIBrowserView.active === false) {
-			APIBrowserView.reveal(vscode.ViewColumn.One)
+			APIBrowserView.reveal(vscode.ViewColumn.One);
 		}
 		APIBrowserView.webview.postMessage({
 			type: infoType,
