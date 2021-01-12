@@ -6,11 +6,12 @@ import { isObject, log, print } from 'util';
 import * as os from 'os';
 import * as ftp from 'ftp';
 import { Listener } from './listener';
-import { APIType, ApiTreeProvider } from './api-tree';
+import { APIType, ApiTreeProvider } from './TreeDataProvider/luaAPITree';
 import { Func } from 'mocha';
-import { JsApiTreeProvider } from './js-api-tree';
-import { CssApiTreeProvider } from './css-api-tree';
-import { PanelTreeProvider } from './panel-tree';
+import { JsApiTreeProvider } from './TreeDataProvider/jsAPITree';
+import { CssApiTreeProvider } from './TreeDataProvider/cssAPITree';
+import { PanelTreeProvider } from './TreeDataProvider/panelTree';
+import { Tools } from './tools';
 let KV2LUA: any = {};	// kv与lua文件关联数据
 let VSND = new Array;
 let GameDir: string = '';	// game目录
@@ -24,7 +25,7 @@ let class_list: any;
 let enum_list: any;
 let func_api_parse: any;
 // tslint:disable-next-line: no-unused-expression
-export { KV2LUA, VSND, GameDir, ContentDir, ApiTree };
+export { KV2LUA, VSND, GameDir, ContentDir, ApiTree, func_api_parse };
 export function UpDataApiNote(note: string) {
 	ApiNote = note;
 	[class_list, enum_list] = func_api_parse();
@@ -53,7 +54,7 @@ export function PullAPINote(infoType: any, funInfo: any, callback: (info: any) =
 			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', async function (err, stream) {
 				if (err) {
 					vscode.window.setStatusBarMessage('API Note下载超时');
-					throw err
+					throw err;
 				};
 				vscode.window.setStatusBarMessage('API Note下载成功');
 				let result: string = '';
@@ -116,7 +117,7 @@ export async function Init(context: vscode.ExtensionContext) {
 			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', async function (err, stream) {
 				if (err) {
 					vscode.window.setStatusBarMessage('API Note下载超时');
-					throw err
+					throw err;
 				};
 				vscode.window.setStatusBarMessage('API Note下载成功');
 				let result: string = '';
@@ -132,7 +133,7 @@ export async function Init(context: vscode.ExtensionContext) {
 		});
 	}
 	[class_list, enum_list] = APIParse();
-	ApiTree = new ApiTreeProvider(context, class_list, enum_list);
+	ApiTree = new ApiTreeProvider(class_list, enum_list);
 	vscode.window.registerTreeDataProvider('dota2apiExplorer', ApiTree);
 	// JS API
 	JsApiTree = new JsApiTreeProvider(context);
@@ -147,8 +148,8 @@ export async function Init(context: vscode.ExtensionContext) {
 		let api_note = JSON.parse(ApiNote);
 		let PraseFile = function (sDotaScriptHelp: string): any[] {
 			const rows = sDotaScriptHelp.split(os.EOL);
-			let class_list: { [k: string]: any } = {};
-			let enum_list: { [k: string]: any } = {};
+			let class_list: { [k: string]: any; } = {};
+			let enum_list: { [k: string]: any; } = {};
 			for (let i = 0; i < rows.length; i++) {
 				// 函数
 				let option = rows[i].match(/---\[\[.*\]\]/g);
@@ -191,7 +192,7 @@ export async function Init(context: vscode.ExtensionContext) {
 				}
 			}
 			return [class_list, enum_list];
-		}
+		};
 		let Combine = function (class_list: any, class_list_cl: any) {
 			for (const class_name in class_list) {
 				const fun_list = class_list[class_name];
@@ -255,7 +256,7 @@ export async function Init(context: vscode.ExtensionContext) {
 				}
 				class_list[class_name] = sort_func_list;
 			}
-		}
+		};
 		let sHelp: string = path.join(context.extensionPath, "resource/dota_script_help2.lua");
 		let sHelpClient: string = path.join(context.extensionPath, "resource/dota_cl_script_help2.lua");
 		let [class_list, enum_list] = PraseFile(fs.readFileSync(sHelp, 'utf-8'));

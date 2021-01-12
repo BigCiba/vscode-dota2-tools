@@ -16,7 +16,7 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Init = exports.PullAPINote = exports.GetEnumList = exports.GetClassList = exports.GetApiNote = exports.UpDataApiNote = exports.ApiTree = exports.ContentDir = exports.GameDir = exports.VSND = exports.KV2LUA = void 0;
+exports.Init = exports.PullAPINote = exports.GetEnumList = exports.GetClassList = exports.GetApiNote = exports.UpDataApiNote = exports.func_api_parse = exports.ApiTree = exports.ContentDir = exports.GameDir = exports.VSND = exports.KV2LUA = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
@@ -24,10 +24,10 @@ const util = require("./util");
 const util_1 = require("util");
 const os = require("os");
 const ftp = require("ftp");
-const api_tree_1 = require("./api-tree");
-const js_api_tree_1 = require("./js-api-tree");
-const css_api_tree_1 = require("./css-api-tree");
-const panel_tree_1 = require("./panel-tree");
+const luaAPITree_1 = require("./TreeDataProvider/luaAPITree");
+const jsAPITree_1 = require("./TreeDataProvider/jsAPITree");
+const cssAPITree_1 = require("./TreeDataProvider/cssAPITree");
+const panelTree_1 = require("./TreeDataProvider/panelTree");
 let KV2LUA = {}; // kv与lua文件关联数据
 exports.KV2LUA = KV2LUA;
 let VSND = new Array;
@@ -45,6 +45,7 @@ let PanelTree; // ApiTreeProvider
 let class_list;
 let enum_list;
 let func_api_parse;
+exports.func_api_parse = func_api_parse;
 function UpDataApiNote(note) {
     ApiNote = note;
     [class_list, enum_list] = func_api_parse();
@@ -101,7 +102,7 @@ function PullAPINote(infoType, funInfo, callback) {
                     ApiNote = result;
                     // console.log(JSON.parse(ApiNote).Global);
                     [class_list, enum_list] = func_api_parse();
-                    if (infoType == api_tree_1.APIType.Function) {
+                    if (infoType == luaAPITree_1.APIType.Function) {
                         for (let index = 0; index < class_list[funInfo.class].length; index++) {
                             const element = class_list[funInfo.class][index];
                             if (element.function == funInfo.function) {
@@ -109,7 +110,7 @@ function PullAPINote(infoType, funInfo, callback) {
                             }
                         }
                     }
-                    else if (infoType == api_tree_1.APIType.Enum) {
+                    else if (infoType == luaAPITree_1.APIType.Enum) {
                         for (const enum_name in enum_list) {
                             const enum_arr = enum_list[enum_name];
                             for (let i = 0; i < enum_arr.length; i++) {
@@ -186,16 +187,16 @@ function Init(context) {
             });
         }
         [class_list, enum_list] = APIParse();
-        exports.ApiTree = ApiTree = new api_tree_1.ApiTreeProvider(context, class_list, enum_list);
+        exports.ApiTree = ApiTree = new luaAPITree_1.ApiTreeProvider(class_list, enum_list);
         vscode.window.registerTreeDataProvider('dota2apiExplorer', ApiTree);
         // JS API
-        JsApiTree = new js_api_tree_1.JsApiTreeProvider(context);
+        JsApiTree = new jsAPITree_1.JsApiTreeProvider(context);
         vscode.window.registerTreeDataProvider('dota2JSApiExplorer', JsApiTree);
         // CSS doc
-        CssApiTree = new css_api_tree_1.CssApiTreeProvider(context);
+        CssApiTree = new cssAPITree_1.CssApiTreeProvider(context);
         vscode.window.registerTreeDataProvider('dota2CssApiExplorer', CssApiTree);
         // CSS doc
-        PanelTree = new panel_tree_1.PanelTreeProvider(context);
+        PanelTree = new panelTree_1.PanelTreeProvider(context);
         vscode.window.registerTreeDataProvider('dota2PanelExplorer', PanelTree);
         function APIParse() {
             let api_note = JSON.parse(ApiNote);
@@ -328,7 +329,7 @@ function Init(context) {
             }
             return [class_list, enum_list];
         }
-        func_api_parse = APIParse;
+        exports.func_api_parse = func_api_parse = APIParse;
         function FindFile(path, file_name) {
             return __awaiter(this, void 0, void 0, function* () {
                 let path_arr = [];

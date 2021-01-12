@@ -5,25 +5,30 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from './util';
-import { Init, KV2LUA, VSND, GameDir, ContentDir, UpDataApiNote, ApiTree, GetApiNote, GetClassList, GetEnumList, PullAPINote } from './init';
+import { Init, KV2LUA, GameDir, ContentDir, UpDataApiNote, ApiTree, GetApiNote, GetClassList, GetEnumList, PullAPINote } from './init';
 import { Listener } from './listener';
-import * as watch from 'watch';
-import { APIType, ApiTreeProvider } from './api-tree';
+import { APIType } from './TreeDataProvider/luaAPITree';
 import { KVServer } from './kv_server/KVServer';
 import { InheritTable } from "./table_inherit";
 import { DropHeroString } from "./drop_string";
-import { exec } from 'child_process';
 import * as ftp from 'ftp';
-import { ParseCssDocument, ParseEventDocument, ParsePanelList, ParsePanoramaAPI } from './tools';
+import { LuaCompletionItemProvider } from './Completions/luaCompletionItemProvider';
+import { VsndPicker } from './Command/vsndPicker';
+import { CombineLocalization } from './Command/combineLocalization';
+import { AbilityTextureBrowser } from './Command/abilityTextureBrowser';
+import { ItemGamesBrowser } from './Command/itemGamesBrowser';
+import { Tools } from './tools';
+import { CssCompletionItemProvider } from './Completions/cssCompletionItemProvider';
+import { JsCompletionItemProvider } from './Completions/jsCompletionItemProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
 	KVServer.Install(context);
-	ParsePanoramaAPI(context);
-	ParseCssDocument(context);
-	// ParsePanelList(context);
-	// ParseEventDocument(context);
+	// 重新解析数据时打开
+	let tools = new Tools(context);
+	// tools.ParseLuaAPI();
+
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	// passport: zut3ehvut7muv26u5axcbmnv6wlgkdxcsabxvjl4i6rbvwkgpmrq
@@ -38,97 +43,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	}
 	// 读取kv文件（弃用）
-	async function ReadKeyValue(uri: vscode.Uri) {
-		function NewTable(start_line: number, document: vscode.TextDocument): any {
-			var obj: { [k: string]: any; } = {};
-			var left_brackets: number = 0;	// 记录{数量
-			var right_brackets: number = 0;	// 记录}数量
-			for (let line = start_line; line < document.lineCount; line++) {
-				var text_line: vscode.TextLine = document.lineAt(line);
-				var lineText = text_line.text;
-				// var lineText = document.getText(new vscode.Range(new vscode.Position(line,0),new vscode.Position(line,100)));
-				var left_brackets_arr = lineText.match('{');
-				if (left_brackets_arr !== null) {
-					left_brackets += left_brackets_arr.length;
-				}
-				var right_brackets_arr = lineText.match('}');
-				if (right_brackets_arr !== null) {
-					right_brackets += right_brackets_arr.length;
-				}
-				if (left_brackets !== 0 && left_brackets === right_brackets) {
-					return [obj, line];
-				}
-				if (lineText.search('//') !== -1) {
-					if (text_line.firstNonWhitespaceCharacterIndex === lineText.indexOf('//')) {
-						continue;
-
-					}
-				}
-				var arr = lineText.match(/"/g);
-				if (arr !== null) {
-					if (arr.length === 2) {
-						var [new_obj, next_line] = NewTable(line + 1, document);
-						obj[lineText.split('"')[1]] = new_obj;
-						line = next_line;
-					}
-					if (arr.length === 4) {
-						obj[lineText.split('"')[1]] = lineText.split('"')[3];
-						continue;
-					}
-				}
-			}
-		}
-		let document: vscode.TextDocument = await vscode.workspace.openTextDocument(uri);
-		var obj: { [k: string]: any; } = {};
-		for (let line = 0; line < document.lineCount; line++) {
-			var lineText = document.lineAt(line).text;
-			var arr = lineText.match(/"/g);
-			if (arr !== null) {
-				if (arr.length === 2) {
-					var [new_obj, next_line] = NewTable(line + 1, document);
-					obj[lineText.split('"')[1]] = new_obj;
-					line = next_line;
-					continue;
-				}
-			}
-		}
-		return obj;
-	}
 	//（弃用）
-	function WriteKeyValue(obj: any, depth: number) {
-		var str: string = '';
-		// 添加制表符
-		function AddDepthTab(depth: number, add_string: string): string {
-			var tab: string = '';
-			for (let d = 0; d < depth; d++) {
-				tab += '\t';
-			}
-			tab += add_string;
-			return tab;
-		}
-		// 添加key与value之间制表符
-		function AddIntervalTab(depth: number, key: string): string {
-			var tab: string = '';
-			for (let d = 0; d < 12 - Math.floor((depth * 4 + key.length + 2) / 4); d++) {
-				tab += '\t';
-			}
-			return tab;
-		}
-		for (const key in obj) {
-			const value = obj[key];
-			if (typeof (value) === 'string') {
-				str += AddDepthTab(depth, '"' + key + '"');
-				str += AddIntervalTab(depth, key);
-				str += '"' + value + '"\n';
-			} else {
-				str += AddDepthTab(depth, '"' + key + '"\n');
-				str += AddDepthTab(depth, '{\n');
-				str += WriteKeyValue(value, depth + 1);
-				str += AddDepthTab(depth, '}\n');
-			}
-		}
-		return str;
-	}
 	// 解析技能kv
 	function WriteAbilitiesKV(obj: any, depth: number, hero_name: string) {
 		var str: string = '';
@@ -318,141 +233,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 	// 合并文本
-	let Localization = vscode.commands.registerCommand('dota2tools.Localization', async () => {
-		let root_path: string | undefined = GetRootPath();
-		if (root_path === undefined) {
-			return;
-		}
-		const localization_path: string = GameDir + '/localization';
-		var lang_folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(localization_path));
-		for (let i: number = 0; i < lang_folders.length; i++) {
-			const [folder_name, is_directory] = lang_folders[i];
-			if (Number(is_directory) === vscode.FileType.Directory) {
-				const language_path: string = localization_path + '/' + folder_name;
-				var language: string =
-					`"lang"
-{
-	"Language"		"` + folder_name.charAt(0).toUpperCase() + folder_name.slice(1) + `"
-	"Tokens"
-	{
-`;
-				var promise: string = await ReadLanguage(language_path);
-				language += promise;
-				language +=
-					`
-	}
-}`;
-				fs.writeFileSync(GameDir + '/resource/addon_' + folder_name + '.txt', language);
-				// var text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
-				// text_editor.edit(function (edit_builder) {
-				// 	edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
-				// 	edit_builder.insert(new vscode.Position(0,0),language);
-				// });
-			}
-		}
-		async function ReadLanguage(path: string): Promise<string> {
-			var lang: string = '';
-			var files: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
-			for (let i = 0; i < files.length; i++) {
-				const [file_name, file_type] = files[i];
-				if (Number(file_type) === vscode.FileType.File) {
-					var document: vscode.TextDocument = await vscode.workspace.openTextDocument(path + '/' + file_name);
-					for (let line: number = 0; line < document.lineCount; line++) {
-						const text_line: vscode.TextLine = document.lineAt(line);
-						const char_start: number = text_line.firstNonWhitespaceCharacterIndex;
-						let lineText: string = document.lineAt(line).text;
-						lineText = lineText.substr(char_start, lineText.length);
-
-						lang += '\t\t' + lineText + os.EOL;
-					}
-					lang += os.EOL;
-				} else if (Number(file_type) === vscode.FileType.Directory) {
-					var promise: string = await ReadLanguage(path + '/' + file_name);
-					lang += promise;
-				}
-			}
-			return Promise.resolve(lang);
-		}
-	});
-
-	// 版本控制
-	function WatchVersion() {
-		let root_path: string | undefined = GetRootPath();
-		if (root_path === undefined) {
-			return;
-		}
-		// 获取版本
-		const setting: string = fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/settings.lua', 'utf-8');
-		const rows: string[] = setting.split(os.EOL);
-		let version: string = 'v0.01';
-		for (let i = 0; i < rows.length; i++) {
-			const line_text: string = rows[i];
-			if (line_text.search('sGameVersion') !== -1) {
-				version = line_text.split('\'')[1];
-			}
-		}
-		// 获取版本变更信息
-		const version_data = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', 'utf-8'));
-		if (version_data[version] === undefined) {
-			let lua: { [k: string]: any; } = {};
-			let kv: { [k: string]: any; } = {};
-			let txt: { [k: string]: any; } = {};
-			let info: object = {
-				lua: lua,
-				kv: kv,
-				txt: txt
-			};
-			version_data[version] = info;
-		}
-
-		watch.watchTree(root_path + '/game/dota_addons/dota_imba', function (f, curr, prev) {
-			if (typeof f === "object" && prev === null && curr === null) {
-				// Finished walking the tree
-			} else if (prev === null) {
-				// f is a new file
-				// console.log('f is a new file');
-				if (typeof f === "string") {
-					let info: any = util.GetFileInfo(root_path, f);
-					if (version_data[version][info.ext][info.full_name] === undefined) {
-						let file_info: { [k: string]: any; } = {};
-						version_data[version][info.ext][info.full_name] = file_info;
-					}
-					version_data[version][info.ext][info.full_name].created = true;
-					fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', version_data);
-				}
-			} else if (curr.nlink === 0) {
-				// f was removed
-				// console.log('f was removed');
-				if (typeof f === "string") {
-					let info: any = util.GetFileInfo(root_path, f);
-					if (version_data[version][info.ext][info.full_name] === undefined) {
-						let file_info: { [k: string]: any; } = {};
-						version_data[version][info.ext][info.full_name] = file_info;
-					}
-					version_data[version][info.ext][info.full_name].removed = true;
-					fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', version_data);
-				}
-			} else {
-				// f was changed
-				// console.log('f was changed');
-				if (typeof f === 'string') {
-					let info: any = util.GetFileInfo(root_path, f);
-					if (info.name !== 'version' && info.full_name.search('.git') === -1) {
-						console.log(version_data);
-						console.log(version_data[version]);
-						console.log(version_data[version][info.ext]);
-						if (version_data[version][info.ext][info.full_name] === undefined) {
-							let file_info: { [k: string]: any; } = {};
-							version_data[version][info.ext][info.full_name] = file_info;
-						}
-						version_data[version][info.ext][info.full_name].change = true;
-						fs.writeFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/version.json', JSON.stringify(version_data));
-					}
-				}
-			}
-		});
-	}
-	// WatchVersion();
+	let Localization = vscode.commands.registerCommand('dota2tools.Localization', CombineLocalization);
 
 	await Init(context);
 	// 监听
@@ -656,7 +437,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
-	// 转到文本
+	// 转到文本（IMBA功能）
 	let OpenLang = vscode.commands.registerCommand('extension.OpenLang', async (uri) => {
 		let root_path: string | undefined = GetRootPath();
 		if (root_path === undefined) {
@@ -674,7 +455,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 转到kv
-	let OpenKV = vscode.commands.registerCommand('dota2tools.OpenKV', async (uri) => {
+	let OpenKV = vscode.commands.registerCommand('dota2tools.OpenKV', async () => {
 		const text_editor = vscode.window.activeTextEditor;
 		if (text_editor !== undefined) {
 			let document = text_editor.document;
@@ -759,13 +540,13 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 打开API
-	let OpenAPI = vscode.commands.registerCommand('extension.OpenAPI', async (uri) => {
+	let OpenAPI = vscode.commands.registerCommand('extension.OpenAPI', async () => {
 		vscode.window.showTextDocument(vscode.Uri.file(path.join(context.extensionPath, "resource/dota_script_help2.lua")));
 
 	});
 
 	// 生成API
-	let GenerateAPI = vscode.commands.registerCommand('extension.GenerateAPI', async (uri) => {
+	let GenerateAPI = vscode.commands.registerCommand('extension.GenerateAPI', async () => {
 		let root_path: string | undefined = GetRootPath();
 		if (root_path === undefined) {
 			return;
@@ -773,7 +554,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		const dota_script_help2 = fs.readFileSync(context.extensionPath + '/resource/dota_script_help2.lua', 'utf-8');
 		const api_note = JSON.parse(fs.readFileSync(root_path + '/game/dota_addons/dota_imba/scripts/vscripts/libraries/api_note.json', 'utf-8'));
 		const rows = dota_script_help2.split(os.EOL);
-		let script = '# **Dota2 API**\n';
 		// 读取服务器API
 		let class_list: { [k: string]: any; } = {};
 		let enum_list: { [k: string]: any; } = {};
@@ -984,7 +764,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	let NoteAPI = vscode.commands.registerCommand('extension.NoteAPI', async (uri, funcName) => {
 		console.log(uri, funcName);
 		let select_text = funcName;
-		if (select_text == undefined) {
+		if (select_text = undefined) {
 			let active_text_editor = vscode.window.activeTextEditor;
 			if (active_text_editor !== undefined) {
 				let range_start = active_text_editor.selection.start;
@@ -1046,12 +826,6 @@ export async function activate(context: vscode.ExtensionContext) {
 					const fun_info = fun_list[i];
 					if (fun_info.function === select_text) {
 						let params: { [k: string]: any; } = {};
-						let note = {
-							description: '',
-							// params: Object.assign(fun_info.params),
-							params: params,
-							example: ''
-						};
 						// 创建webview
 						const panel = vscode.window.createWebviewPanel(
 							'dota2api', // viewType
@@ -1067,7 +841,7 @@ export async function activate(context: vscode.ExtensionContext) {
 							console.log(message);
 							let output_obj: { [k: string]: any; } = {};
 							output_obj[select_text] = message;
-							if (api_note[message.class] == undefined) {
+							if (api_note[message.class] === undefined) {
 								api_note[message.class] = {};
 							}
 							api_note[message.class][select_text] = message;
@@ -1087,7 +861,7 @@ export async function activate(context: vscode.ExtensionContext) {
 										if (err) {
 											vscode.window.setStatusBarMessage('API Note上传超时');
 											throw err;
-										};
+										}
 										ftpClient.end();
 										vscode.window.setStatusBarMessage('API Note上传成功');
 									});
@@ -1106,9 +880,6 @@ export async function activate(context: vscode.ExtensionContext) {
 				for (let i = 0; i < enum_arr.length; i++) {
 					const enum_info = enum_arr[i];
 					if (enum_info.name === select_text) {
-						let note = {
-							description: ''
-						};
 						// 创建webview
 						const panel = vscode.window.createWebviewPanel(
 							'dota2api', // viewType
@@ -1138,7 +909,7 @@ export async function activate(context: vscode.ExtensionContext) {
 								});
 								ftpClient.on('ready', function () {
 									ftpClient.put(JSON.stringify(api_note), noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err) {
-										if (err) throw err;
+										if (err) { throw err; }
 										ftpClient.end();
 									});
 								});
@@ -1153,7 +924,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 生成API文档
-	let GenerateDocument = vscode.commands.registerCommand('extension.GenerateDocument', async (uri) => {
+	let GenerateDocument = vscode.commands.registerCommand('extension.GenerateDocument', async () => {
 		let root_path: string | undefined = GetRootPath();
 		if (root_path === undefined) {
 			return;
@@ -1164,43 +935,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		let [class_list, enum_list] = util.ReadAPI(dota_script_help2, dota_cl_script_help2);
 
 		// 侧边栏与一些配置
-		let config =
-			`module.exports = {\n` +
-			`\ttitle: 'Dota2 文档',\n` +
-			`\tdescription: 'Dota2 API文档',\n` +
-			`\tthemeConfig: {\n` +
-			`\t\tnextLinks: false,\n` +
-			`\t\tprevLinks: false,\n` +
-			`\t\tnav: [\n` +
-			`\t\t\t{\n` +
-			`\t\t\t\ttext: 'Overview',\n` +
-			`\t\t\t\tariaLabel: '常用',\n` +
-			`\t\t\t\titems: [\n` +
-			`\t\t\t\t{ text: 'BaseAbility', link: '/dota2-lua-api/CDOTABaseAbility/' },\n` +
-			`\t\t\t\t{ text: 'Ability_Lua', link: '/dota2-lua-api/CDOTA_Ability_Lua/' },\n` +
-			`\t\t\t\t{ text: 'BaseNPC', link: '/dota2-lua-api/CDOTA_BaseNPC/' },\n` +
-			`\t\t\t\t{ text: 'BaseNPC_Hero', link: '/dota2-lua-api/CDOTA_BaseNPC_Hero/' },\n` +
-			`\t\t\t\t{ text: 'Buff', link: '/dota2-lua-api/CDOTA_Buff/' },\n` +
-			`\t\t\t\t{ text: 'Item', link: '/dota2-lua-api/CDOTA_Item/' },\n` +
-			`\t\t\t\t{ text: 'Item_Lua', link: '/dota2-lua-api/CDOTA_Item_Lua/' },\n` +
-			`\t\t\t\t{ text: 'Modifier_Lua', link: '/dota2-lua-api/CDOTA_Modifier_Lua/' },\n` +
-			`\t\t\t\t{ text: 'ParticleManager', link: '/dota2-lua-api/CScriptParticleManager/' },\n` +
-			`\t\t\t\t{ text: 'modifierfunction', link: '/dota2-lua-api/Constants/modifierfunction/modifierfunction' },\n` +
-			`\t\t\t\t{ text: 'modifierstate', link: '/dota2-lua-api/Constants/modifierstate/modifierstate' },\n` +
-			`\t\t\t\t]\n` +
-			`\t\t\t},\n` +
-			`\t\t],\n` +
-			`\t\tsearchMaxSuggestions: 20,\n` +
-			`\t\tsidebarDepth: 1,\n` +
-			`\t\tsidebar: [\n` +
-			`\t\t\t{\n` +
-			`\t\t\t\ttitle: 'Dota2 Lua API',\n` +
-			`\t\t\t\tcollapsable: false,\n` +
-			`\t\t\t\tchildren: [\n`;
 		for (const class_name in class_list) {
 			// 添加每个类的描述
 			const fun_list = class_list[class_name];
-			config += `\t\t\t\t\t['/dota2-lua-api/` + class_name + `/','` + class_name + `'],\n`;
 			let readme = '# ' + class_name + '\n';
 			readme += (api_note[class_name] === undefined ? '> No Description Set' : api_note[class_name]) + '\n\n' +
 				'Function|Description|Client\n' +
@@ -1246,17 +983,11 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/' + class_name + '/README.md', readme);
 		}
-		config += `\t\t\t\t\t{\n` +
-			`\t\t\t\t\t\ttitle: 'Constants',\n` +
-			`\t\t\t\t\t\tcollapsable: true,\n` +
-			`\t\t\t\t\t\tchildren: [\n`;
 		for (const enum_name in enum_list) {
 			const enum_arr = enum_list[enum_name];
 			let enum_md = '# ' + enum_name + '\n';
 			enum_md += (api_note[enum_name] === undefined ? '> No Description Set' : api_note[enum_name]) + '\n\n';
 			enum_md += 'Name|Value|' + (enum_name === 'modifierfunction' ? 'Lua Function|Description' : 'Description') + '|Client\n--|:--:|--' + (enum_name === 'modifierfunction' ? '|--' : '') + '|:--:\n';
-			// 添加每个类的描述
-			config += `\t\t\t\t\t\t\t['/dota2-lua-api/Constants/` + enum_name + `/` + enum_name + `','` + enum_name + `'],\n`;
 			for (let i = 0; i < enum_arr.length; i++) {
 				const enum_info = enum_arr[i];
 
@@ -1281,112 +1012,15 @@ export async function activate(context: vscode.ExtensionContext) {
 			// 生成常数列表页面
 			fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/dota2-lua-api/Constants/' + enum_name + '/' + enum_name + '.md', enum_md);
 		}
-		config += '\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t]\n\t\t\t},\n\t\t]\n\t}\n}';
 
 		// fs.writeFileSync('C:/Users/bigciba/Documents/docsify/dota2-api-vuepress/docs/.vuepress/config.js', config);
 	});
 
 	// 选择音效
-	let VsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', async (uri) => {
-		let obj_data: any = JSON.parse(fs.readFileSync(context.extensionPath + '/resource/soundevents.json', 'utf-8'));
-		const quick_pick = vscode.window.createQuickPick();
-		quick_pick.canSelectMany = false;
-		quick_pick.ignoreFocusOut = true;
-		quick_pick.placeholder = '*.vsnd';
-		quick_pick.items = VSND;
+	let cmdVsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', VsndPicker);
 
-		quick_pick.show();
-		quick_pick.onDidChangeSelection((t) => {
-			quick_pick.value = t[0].label;
-			vscode.window.activeTextEditor?.edit(editBuilder => {
-				if (vscode.window.activeTextEditor?.selection.start !== undefined && t[0].description !== undefined) {
-					if (vscode.window.activeTextEditor.selection.start.character === vscode.window.activeTextEditor.selection.end.character) {
-						editBuilder.insert(vscode.window.activeTextEditor?.selection.start, t[0].description);
-					} else {
-						editBuilder.replace(new vscode.Range(vscode.window.activeTextEditor?.selection.start, vscode.window.activeTextEditor?.selection.end), t[0].description);
-					}
-					quick_pick.dispose();
-				}
-			});
-		});
-	});
-	// 生成音效json
-	let VsndGenerator = vscode.commands.registerCommand('dota2tools.vsnd_generator', async (uri) => {
-		// let kv = util.ReadKeyValue2(fs.readFileSync('C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents/music/dsadowski_01/soundevents_stingers.vsndevts', 'utf-8'));
-		// console.log(kv);
-		// return;
-		const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
-
-		let json_obj: any = {};
-		await ReadFolder(sound_path);
-		fs.writeFileSync(path.join(context.extensionPath, "resource", "soundevents.json"), JSON.stringify(json_obj));
-
-		async function ReadFolder(folder_name: string) {
-			let folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folder_name));
-			for (let i: number = 0; i < folders.length; i++) {
-				const [name, is_directory] = folders[i];
-				if (name === undefined) {
-					continue;
-				}
-				if (Number(is_directory) === vscode.FileType.Directory) {
-					await ReadFolder(folder_name + '/' + name);
-				} else if (Number(is_directory) === vscode.FileType.File) {
-					console.log(folder_name + '/' + name);
-					let kvdata = fs.readFileSync(folder_name + '/' + name, 'utf-8');
-					if (kvdata[0] === '"') {
-						let kv = util.ReadKeyValue2(kvdata);
-						for (const key in kv) {
-							const value = kv[key];
-							if (value['0'] === undefined) {
-								if (util.ObjectHasKey(value, 'vsnd_files') === true) {
-									let sound = value.operator_stacks.update_stack.reference_operator.operator_variables.vsnd_files.value;
-									if (sound !== undefined) {
-										if (typeof (sound) === 'string') {
-											json_obj[key] = [sound.replace(/\\\\/g, '/').replace(/\\/g, '/')];
-										} else {
-											let sound_arr = [];
-											for (const k in sound) {
-												sound_arr.push(sound[k].replace(/\\\\/g, '/').replace(/\\/g, '/'));
-											}
-											json_obj[key] = sound_arr;
-										}
-									}
-								}
-							} else {
-								if (value['0'].vsnd_files !== undefined) {
-									if (typeof (value['0'].vsnd_files) === 'string') {
-										json_obj[key] = [value['0'].vsnd_files.replace(/\\\\/g, '/').replace(/\\/g, '/')];
-									} else {
-										json_obj[key] = value['0'].vsnd_files;
-										for (const k in json_obj[key]) {
-											json_obj[key][k] = json_obj[key][k].replace(/\\\\/g, '/').replace(/\\/g, '/');
-										}
-									}
-								}
-							}
-						}
-					} else if (kvdata[0] === '{') {
-						let kv = util.ReadKeyValue3(kvdata);
-						for (const key in kv[0]) {
-							const value = kv[0][key];
-							if (value.vsnd_files !== undefined) {
-								if (typeof (value.vsnd_files) === 'string') {
-									json_obj[key] = [value.vsnd_files.replace(/\\\\/g, '/').replace(/\\/g, '/')];
-								} else {
-									json_obj[key] = value.vsnd_files;
-									for (const k in json_obj[key]) {
-										json_obj[key][k] = json_obj[key][k].replace(/\\\\/g, '/').replace(/\\/g, '/');
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	});
 	// kv2csv
-	let KV2CSV = vscode.commands.registerCommand('dota2tools.kv_to_csv', async (uri) => {
+	let KV2CSV = vscode.commands.registerCommand('dota2tools.kv_to_csv', async () => {
 		const excel_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path');
 		const kv_object: util.Configuration | undefined = vscode.workspace.getConfiguration().get('dota2-tools.abilities_kv_path');
 		if (excel_object === undefined || kv_object === undefined) {
@@ -1738,149 +1372,9 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 			fs.writeFileSync(csv_path, util.Array2CSV(final_csv));
 		}
-		function ReadBlock() {
-
-		}
 	});
 	// 选择图标
-	let SelectAbilityTexture = vscode.commands.registerCommand('dota2tools.select_ability_texture', async (uri) => {
-		const panel = vscode.window.createWebviewPanel(
-			'SelectAbilityTexture', // viewType
-			"Select Ability Texture", // 视图标题
-			vscode.ViewColumn.One, // 显示在编辑器的哪个部位
-			{
-				enableScripts: true, // 启用JS，默认禁用
-				retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
-			}
-		);
-		// 读取技能图标数据
-		const path_list: any = {
-			spellicons: context.extensionPath + '/images/spellicons',
-			items: context.extensionPath + '/images/items',
-			heroes: context.extensionPath + '/images/heroes_icon',
-			custom_spellicons: vscode.workspace.getConfiguration().get('dota2-tools.Custom Spellicons Path'),
-			custom_items: vscode.workspace.getConfiguration().get('dota2-tools.Custom Items Path'),
-		};
-		interface IconsData {
-			[key: string]: {
-				path: string | string[] | undefined | vscode.Uri,
-				data: {} | [];
-			} | IconsData[];
-		}
-		let custom_spellicons: any = [{}];
-		let custom_items: any = [];
-		for (const key in path_list.custom_spellicons) {
-			const icon_path: string = (key === 'content' ? ContentDir : GameDir) + path_list.custom_spellicons[key];
-			if (await util.GetStat(icon_path) !== false) {
-				custom_spellicons.push({
-					path: util.GetVscodeResourceUri(icon_path),
-					data: await ReadIconFolder(icon_path, icon_path)
-				});
-			}
-			// util.DirExists(icon_path);
-			// custom_spellicons.push({
-			// 	path: util.GetVscodeResourceUri(icon_path),
-			// 	data: await ReadIconFolder(icon_path, icon_path)
-			// });
-		}
-		for (const key in path_list.custom_items) {
-			const icon_path: string = (key === 'content' ? ContentDir : GameDir) + path_list.custom_items[key];
-			if (await util.GetStat(icon_path) !== false) {
-				// util.DirExists(icon_path);
-				custom_items.push({
-					path: util.GetVscodeResourceUri(icon_path),
-					data: await ReadIconFolder(icon_path, icon_path)
-				});
-			}
-		}
-		let icons_data: IconsData = {
-			spellicons: {
-				// path: util.GetVscodeResourceUri(path_list.spellicons),
-				path: panel.webview.asWebviewUri(path_list.spellicons).toString(),
-				data: await ReadIconFolder(path_list.spellicons, path_list.spellicons)
-			},
-			items: {
-				path: util.GetVscodeResourceUri(path_list.items),
-				data: await ReadIconFolder(path_list.items, path_list.items)
-			},
-			heroes: {
-				path: util.GetVscodeResourceUri(path_list.heroes),
-				data: await ReadHeroesIcon(path_list.heroes)
-			},
-			custom_spellicons: custom_spellicons,
-			custom_items: custom_items,
-		};
-		// 读取英雄头像数据
-		async function ReadHeroesIcon(heroes_path: string) {
-			let heroes_data: any = {};
-			let folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(heroes_path));
-			for (let i: number = 0; i < folders.length; i++) {
-				const [name, is_directory] = folders[i];
-				if (name === undefined) {
-					continue;
-				}
-				if (Number(is_directory) === vscode.FileType.File) {
-					let wb = panel.webview.asWebviewUri(vscode.Uri.file(heroes_path + '/' + name));
-					heroes_data[name.replace('_png.png', '').replace('npc_dota_hero_', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority: wb.authority }).toString();
-				}
-			}
-			return heroes_data;
-		}
-		async function ReadIconFolder(path: string | [], root_path: string | []) {
-			let icons_data: any = {};
-			async function ReadFolder(path: string, root_path: string) {
-				let icons_data: any = {};
-				let folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
-				for (let i: number = 0; i < folders.length; i++) {
-					const [name, is_directory] = folders[i];
-					if (name === undefined) {
-						continue;
-					}
-					if (Number(is_directory) === vscode.FileType.Directory) {
-						let data = await ReadFolder(path + '/' + name, root_path);
-						icons_data = Object.assign(icons_data, data);
-					} else if (Number(is_directory) === vscode.FileType.File) {
-						// icons_data[name.replace('_png.png','')] = name;
-						let texture_name = (path + '/' + name).split(root_path)[1];
-						texture_name = texture_name.replace('/', '');
-						let wb = panel.webview.asWebviewUri(vscode.Uri.file(path + '/' + name));
-						icons_data[texture_name.replace('_png.png', '').replace('.png', '')] = vscode.Uri.file(wb.path).with({ scheme: wb.scheme, authority: wb.authority }).toString();
-					}
-				}
-				return icons_data;
-			}
-			if (typeof (path) === 'string' && typeof (root_path) === 'string') {
-				let data = await ReadFolder(path, root_path);
-				icons_data = Object.assign(icons_data, data);
-			} else {
-				for (let i = 0; i < path.length; i++) {
-					const _path = path[i];
-					let data = await ReadFolder(_path, root_path[i]);
-					icons_data = Object.assign(icons_data, data);
-				}
-			}
-			return icons_data;
-		}
-
-		panel.webview.html = util.GetWebViewContent(context, 'webview/TextureBrowser/TextureBrowser.html');
-
-		panel.webview.postMessage({
-			type: "update",
-			icons_data: icons_data,
-		});
-		panel.webview.onDidReceiveMessage(message => {
-			// console.log(message);
-			if (message.event == "click") {
-				let texture: string = message.id.replace(/_png\.png/, '');
-				vscode.env.clipboard.writeText(texture);
-				vscode.window.setStatusBarMessage('已将图标路径复制到剪切板：' + texture);
-			} else if (message.event == "contextmenu") {
-				let fullpath = path.join(context.extensionPath, 'images', message.type, message.id);
-				exec(`explorer.exe /select,"${fullpath}_png.png"`);
-			}
-			// panel.dispose();
-		}, undefined, context.subscriptions);
-	});
+	let SelectAbilityTexture = vscode.commands.registerCommand('dota2tools.select_ability_texture', () => AbilityTextureBrowser(context));
 
 	// 暂时没啥用
 	let CSV2PHPArray = vscode.commands.registerCommand("dota2tools.CSVToPHPArray", async () => {
@@ -1899,7 +1393,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		let sPHPStr = "<?PHP\n";
 		let fFiles = fs.readdirSync(sTotalCSVPath);
 		fFiles.forEach(fileName => {
-			if (fileName.indexOf(".csv") != -1) {
+			if (fileName.indexOf(".csv") !== -1) {
 				let filePath = sTotalCSVPath + fileName;
 				let sfNameSimple = fileName.substr(0, fileName.length - 4);
 				let sCSV = fs.readFileSync(filePath, "utf-8");
@@ -1907,7 +1401,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					return;
 				}
 				// 跳过不编译的
-				if (ServiceConfig.NoCompile[sfNameSimple] == 1) {
+				if (ServiceConfig.NoCompile[sfNameSimple] === 1) {
 					return;
 				}
 				let arrCSV: any[][] = util.CSVParse(sCSV);
@@ -2128,39 +1622,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
-	// 将items_game.txt的套装信息解析出来
-	// ItemsGameParse();
-	function ItemsGameParse() {
-		let sFilePath: string = path.join(context.extensionPath, "resource/items_game.txt");
-		let tItemsData = util.ReadKeyValue2(fs.readFileSync(sFilePath, 'utf-8')).items_game.items;
-
-		for (const index in tItemsData) {
-			const element = tItemsData[index];
-			delete element.portraits;
-		}
-		fs.writeFileSync(path.join(context.extensionPath, "resource/items_game.json"), JSON.stringify(tItemsData));
-	}
-
-	let ItemsBrowser = vscode.commands.registerCommand("dota2tools.items_browser", async () => {
-		const panel = vscode.window.createWebviewPanel(
-			'ItemsBrowser', // viewType
-			"Items Browser", // 视图标题
-			vscode.ViewColumn.One, // 显示在编辑器的哪个部位
-			{
-				enableScripts: true, // 启用JS，默认禁用
-				retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
-			}
-		);
-		panel.webview.postMessage({
-			type: "init",
-			data: JSON.parse(fs.readFileSync(path.join(context.extensionPath, "resource/items_game.json"), 'utf-8')),
-			localize_data: {
-				"zh-cn": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_schinese.txt"), 'utf-8'), false).lang.Tokens,
-				"en": util.ReadKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/items_english.txt"), 'utf-8'), false).lang.Tokens,
-			}
-		});
-		panel.webview.html = util.GetWebViewContent(context, 'webview/ItemsBrowser/ItemsBrowser.html');
-	});
+	// items_game饰品查询
+	let ItemsBrowser = vscode.commands.registerCommand("dota2tools.items_browser", () => ItemGamesBrowser(context));
 
 	// Lua API 相关
 	let APIBrowserView: vscode.WebviewPanel | undefined = undefined;
@@ -2282,8 +1745,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(GenerateAPI);
 	context.subscriptions.push(NoteAPI);
 	context.subscriptions.push(GenerateDocument);
-	context.subscriptions.push(VsndGenerator);
-	context.subscriptions.push(VsndSelector);
+	context.subscriptions.push(cmdVsndSelector);
 	context.subscriptions.push(KV2CSV);
 	context.subscriptions.push(AbilityExport);
 	context.subscriptions.push(UnitExport);
@@ -2293,6 +1755,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(CmdInheritTable);
 	context.subscriptions.push(CmdLocalizationCSV);
 	context.subscriptions.push(CmdLocalizationCSV2Text);
+	context.subscriptions.push(cmdDropVPCf);
+	context.subscriptions.push(ItemsBrowser);
+	let luaCompletionItemProvider = new LuaCompletionItemProvider(context);
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(luaCompletionItemProvider.selector, luaCompletionItemProvider));
+	let cssCompletionItemProvider = new CssCompletionItemProvider(context);
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(cssCompletionItemProvider.selector, cssCompletionItemProvider));
+	// let jsCompletionItemProvider = new JsCompletionItemProvider(context);
+	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider(jsCompletionItemProvider.selector, jsCompletionItemProvider));
 	// context.subscriptions.push(ActiveListEditorProvider.register(context));
 }
 

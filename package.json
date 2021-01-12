@@ -24,7 +24,7 @@
 				{
 					"id": "kvdownload",
 					"title": "kvdownload",
-					"icon": "res/kv_dark.png"
+					"icon": "images/kv_icon.png"
 				},
 				{
 					"id": "dota2api",
@@ -189,18 +189,12 @@
 			{
 				"command": "tss.kvTools.download",
 				"title": "download",
-				"icon": {
-					"light": "images/light/download.svg",
-					"dark": "images/dark/download.svg"
-				}
+				"icon": "$(cloud-download)"
 			},
 			{
 				"command": "tss.kvTools.downloadall",
 				"title": "downloadall",
-				"icon": {
-					"light": "images/light/download.svg",
-					"dark": "images/dark/download.svg"
-				}
+				"icon": "$(cloud-download)"
 			},
 			{
 				"command": "tss.kvTools.openFile",
