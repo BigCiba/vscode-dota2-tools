@@ -31,7 +31,6 @@ const abilityTextureBrowser_1 = require("./Command/abilityTextureBrowser");
 const itemGamesBrowser_1 = require("./Command/itemGamesBrowser");
 const tools_1 = require("./tools");
 const cssCompletionItemProvider_1 = require("./Completions/cssCompletionItemProvider");
-const jsCompletionItemProvider_1 = require("./Completions/jsCompletionItemProvider");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -1760,8 +1759,8 @@ function activate(context) {
         context.subscriptions.push(vscode.languages.registerCompletionItemProvider(luaCompletionItemProvider.selector, luaCompletionItemProvider));
         let cssCompletionItemProvider = new cssCompletionItemProvider_1.CssCompletionItemProvider(context);
         context.subscriptions.push(vscode.languages.registerCompletionItemProvider(cssCompletionItemProvider.selector, cssCompletionItemProvider));
-        let jsCompletionItemProvider = new jsCompletionItemProvider_1.JsCompletionItemProvider(context);
-        context.subscriptions.push(vscode.languages.registerCompletionItemProvider(jsCompletionItemProvider.selector, jsCompletionItemProvider));
+        // let jsCompletionItemProvider = new JsCompletionItemProvider(context);
+        // context.subscriptions.push(vscode.languages.registerCompletionItemProvider(jsCompletionItemProvider.selector, jsCompletionItemProvider));
         // context.subscriptions.push(ActiveListEditorProvider.register(context));
     });
 }
