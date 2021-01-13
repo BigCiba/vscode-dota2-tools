@@ -18,6 +18,15 @@ class LuaCompletionItemProvider {
                 this.snippets.push(item);
             }
         }
+        for (const enumType in this.document.enum_list) {
+            for (const enumInfo of this.document.enum_list[enumType]) {
+                let item = new vscode.CompletionItem(enumInfo.name, vscode.CompletionItemKind.Enum);
+                item.detail = (enumInfo.function ? (enumInfo.function) : 'Value: ' + enumInfo.value);
+                item.documentation = new vscode.MarkdownString(enumInfo.description || enumInfo.description_lite);
+                item.insertText = enumInfo.name + (enumInfo.function ? ('\n-- ' + enumInfo.function) : '');
+                this.snippets.push(item);
+            }
+        }
     }
     getDocumentation(funInfo) {
         let detail = '```lua\n' + funInfo.return + ' ' + funInfo.function + '(';
@@ -32,9 +41,23 @@ class LuaCompletionItemProvider {
             }
             count++;
         }
-        detail += ')\n```';
+        detail += ')\n```\n';
+        detail += (funInfo.server === true ? '✔️' : '❌') + ' `Server: ' + funInfo.class + '`  \n';
+        detail += (funInfo.client === true ? '✔️' : '❌') + ' `Client: ' + funInfo.class_cl + '`  \n\n';
+        detail += 'Type|Name|Description\n:-|:-|:-\n';
+        for (let params_name in funInfo.params) {
+            const params_info = funInfo.params[params_name];
+            let params_name_note = params_info.params_name || params_name;
+            detail += params_info.type + '|' + params_name_note + '|' + params_info.description + '\n';
+        }
         return new vscode.MarkdownString(detail);
     }
+    /**
+     * 获取补全
+     * @param {LuaFunction} funInfo
+     * @return {*}
+     * @memberof LuaCompletionItemProvider
+     */
     getInsertText(funInfo) {
         let insertText = funInfo.function + '(';
         let count = 1;

@@ -764,7 +764,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	let NoteAPI = vscode.commands.registerCommand('extension.NoteAPI', async (uri, funcName) => {
 		console.log(uri, funcName);
 		let select_text = funcName;
-		if (select_text = undefined) {
+		if (select_text == undefined) {
 			let active_text_editor = vscode.window.activeTextEditor;
 			if (active_text_editor !== undefined) {
 				let range_start = active_text_editor.selection.start;
@@ -824,6 +824,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				const fun_list = class_list[class_name];
 				for (let i = 0; i < fun_list.length; i++) {
 					const fun_info = fun_list[i];
+
 					if (fun_info.function === select_text) {
 						let params: { [k: string]: any; } = {};
 						// 创建webview
@@ -893,6 +894,8 @@ export async function activate(context: vscode.ExtensionContext) {
 						panel.webview.html = util.GetConstantNoteContent(enum_info, context);
 						panel.webview.onDidReceiveMessage(message => {
 							let output_obj: { [k: string]: any; } = {};
+							console.log(message);
+
 							output_obj[select_text] = message;
 							api_note[select_text] = message;
 							// fs.writeFileSync(api_note_path, JSON.stringify(api_note));
@@ -1637,6 +1640,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				{
 					enableScripts: true, // 启用JS，默认禁用
 					retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+					enableFindWidget: true
 				}
 			);
 			APIBrowserView.onDidDispose(() => {

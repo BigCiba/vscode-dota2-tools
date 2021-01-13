@@ -49,24 +49,24 @@ function RenderFunction(fun_info) {
 }
 function RenderEnum(enum_info) {
 	let funcName = enum_info.function;
-	let enum_detail_md = `# ${enum_info.name}`
+	let enum_detail_md = `# ${enum_info.name}`;
 	if (funcName != undefined) {
 		enum_detail_md += `
 # Function
-${funcName}`
+${funcName}`;
 	}
 	enum_detail_md += `
 # Description
-${enum_info.description||enum_info.description_lite}
+${enum_info.description || enum_info.description_lite}
 `;
-if (enum_info.example !== undefined) {
-	enum_detail_md += `
+	if (enum_info.example !== undefined) {
+		enum_detail_md += `
 # Example
 \`\`\`
 ${enum_info.example}
 \`\`\`
 `;
-}
+	}
 	document.querySelector('.markdown-body').innerHTML = marked(enum_detail_md);
 }
 function RenderClass(class_info, class_name) {
@@ -93,8 +93,9 @@ Function|Description|Client
 }
 function RenderEnumType(enum_list, enum_type) {
 	console.log(enum_list, enum_type);
+	enum_list.sort((a, b) => a.value - b.value);
 	let enum_list_md = `# ${enum_type}\n`;
-	enum_list_md += (enum_type == 'modifierfunction' ? 'Name|Value|Lua function|Description\n--|--|--|--\n':'Name|Value|Description\n--|--|--\n');
+	enum_list_md += (enum_type == 'modifierfunction' ? 'Name|Value|Lua function|Description\n--|--|--|--\n' : 'Name|Value|Description\n--|--|--\n');
 	for (let i = 0; i < enum_list.length; i++) {
 		const enum_info = enum_list[i];
 		if (enum_type == 'modifierfunction') {
@@ -108,22 +109,22 @@ function RenderEnumType(enum_list, enum_type) {
 window.addEventListener('message', event => {
 	const message = event.data;
 	if (message.type == 'function') {
-		vscode.setState({ 
+		vscode.setState({
 			data: message.data,
 		});
 		RenderFunction(message.data);
 	} else if (message.type == 'enum') {
-		vscode.setState({ 
+		vscode.setState({
 			data: message.data,
 		});
 		RenderEnum(message.data);
 	} else if (message.type == 'class') {
-		vscode.setState({ 
+		vscode.setState({
 			data: message.data,
 		});
 		RenderClass(message.data, message.name);
 	} else if (message.type == 'enum_type') {
-		vscode.setState({ 
+		vscode.setState({
 			data: message.data,
 		});
 		RenderEnumType(message.data, message.name);

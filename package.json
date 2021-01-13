@@ -19,6 +19,26 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"languages": [
+			{
+				"id": "plaintext",
+				"aliases": [
+					"Dota KV"
+				],
+				"extensions": [
+					".kv",
+					".txt"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "plaintext",
+				"scopeName": "source.txt",
+				"path": "./syntaxes/dotaKV.tmLanguage"
+			}
+		],
 		"viewsContainers": {
 			"activitybar": [
 				{

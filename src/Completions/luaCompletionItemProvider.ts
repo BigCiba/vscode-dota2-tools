@@ -5,12 +5,22 @@ import * as path from 'path';
 interface LuaFunction {
 	function: string;
 	class: string;
+	class_cl: string;
 	return: string;
 	description: string;
 	params: { [key: string]: LuaParam; };
 	server: boolean;
 	client: boolean;
 	example: string;
+}
+interface LuaEnum {
+	name: string;
+	value: string;
+	function?: string;
+	description_lite?: string;
+	description?: string;
+	example?: string;
+	client?: string;
 }
 interface LuaParam {
 	type: string,
@@ -21,7 +31,7 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 	selector: vscode.DocumentSelector;
 	document: {
 		class_list: { [key: string]: LuaFunction[]; },
-		enum_list: { [key: string]: LuaFunction[]; };
+		enum_list: { [key: string]: LuaEnum[]; };
 	};
 	snippets: vscode.CompletionItem[];
 	constructor(context: vscode.ExtensionContext) {
@@ -34,6 +44,15 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 				item.detail = funInfo.description;
 				item.documentation = this.getDocumentation(funInfo);
 				item.insertText = this.getInsertText(funInfo);
+				this.snippets.push(item);
+			}
+		}
+		for (const enumType in this.document.enum_list) {
+			for (const enumInfo of this.document.enum_list[enumType]) {
+				let item = new vscode.CompletionItem(enumInfo.name, vscode.CompletionItemKind.Enum);
+				item.detail = (enumInfo.function ? (enumInfo.function) : 'Value: ' + enumInfo.value);
+				item.documentation = new vscode.MarkdownString(enumInfo.description || enumInfo.description_lite);
+				item.insertText = enumInfo.name + (enumInfo.function ? ('\n-- ' + enumInfo.function) : '');
 				this.snippets.push(item);
 			}
 		}
@@ -50,9 +69,25 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 			}
 			count++;
 		}
-		detail += ')\n```';
+		detail += ')\n```\n';
+
+		detail += (funInfo.server === true ? '✔️' : '❌') + ' `Server: ' + funInfo.class + '`  \n';
+		detail += (funInfo.client === true ? '✔️' : '❌') + ' `Client: ' + funInfo.class_cl + '`  \n\n';
+
+		detail += 'Type|Name|Description\n:-|:-|:-\n';
+		for (let params_name in funInfo.params) {
+			const params_info = funInfo.params[params_name];
+			let params_name_note = params_info.params_name || params_name;
+			detail += params_info.type + '|' + params_name_note + '|' + params_info.description + '\n';
+		}
 		return new vscode.MarkdownString(detail);
 	}
+	/**
+	 * 获取补全
+	 * @param {LuaFunction} funInfo
+	 * @return {*} 
+	 * @memberof LuaCompletionItemProvider
+	 */
 	getInsertText(funInfo: LuaFunction) {
 		let insertText = funInfo.function + '(';
 		let count = 1;

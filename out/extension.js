@@ -790,7 +790,7 @@ function activate(context) {
             var _a;
             console.log(uri, funcName);
             let select_text = funcName;
-            if (select_text = undefined) {
+            if (select_text == undefined) {
                 let active_text_editor = vscode.window.activeTextEditor;
                 if (active_text_editor !== undefined) {
                     let range_start = active_text_editor.selection.start;
@@ -915,6 +915,7 @@ function activate(context) {
                             panel.webview.html = util.GetConstantNoteContent(enum_info, context);
                             panel.webview.onDidReceiveMessage(message => {
                                 let output_obj = {};
+                                console.log(message);
                                 output_obj[select_text] = message;
                                 api_note[select_text] = message;
                                 // fs.writeFileSync(api_note_path, JSON.stringify(api_note));
@@ -1637,6 +1638,7 @@ function activate(context) {
                 {
                     enableScripts: true,
                     retainContextWhenHidden: true,
+                    enableFindWidget: true
                 });
                 APIBrowserView.onDidDispose(() => {
                     APIBrowserView = undefined;

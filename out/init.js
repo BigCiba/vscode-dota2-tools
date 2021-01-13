@@ -164,6 +164,7 @@ function Init(context) {
                         ;
                         vscode.window.setStatusBarMessage('API Note下载成功');
                         let result = '';
+                        stream.setEncoding('utf8');
                         try {
                             for (stream_2 = __asyncValues(stream); stream_2_1 = yield stream_2.next(), !stream_2_1.done;) {
                                 const chunk = stream_2_1.value;
@@ -178,6 +179,7 @@ function Init(context) {
                             finally { if (e_2) throw e_2.error; }
                         }
                         ApiNote = result;
+                        fs.writeFileSync(path.join(context.extensionPath, "resource/api_note_download.json"), ApiNote);
                         // console.log(JSON.parse(ApiNote).Global);
                         [class_list, enum_list] = APIParse();
                         ApiTree.reopen();
