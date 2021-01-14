@@ -7859,7 +7859,7 @@
 				"client": false
 			},
 			{
-				"description": "从该技能的当前等级的特殊值名字获取值。",
+				"description": "从该技能的当前等级的特殊值获取值。",
 				"return": "table",
 				"function": "GetSpecialValueFor",
 				"class": "CDOTABaseAbility",
@@ -28097,7 +28097,7 @@
 				"class_cl": "CScriptParticleManager"
 			},
 			{
-				"description": "获得该粒子特效在该单位身上特效替换版本",
+				"description": "获得该粒子特效在该单位身上的替换版本",
 				"return": "string",
 				"function": "GetParticleReplacement",
 				"class": "CScriptParticleManager",
@@ -28999,7 +28999,7 @@
 				},
 				"server": true,
 				"client": false,
-				"example": "-- 创建一个月神箭\nfunction mirana_arrow:OnSpellStart()\n\tlocal hCaster = self:GetCaster()\n\tlocal vPosition = self:GetCursorPosition()\n\tlocal iSpeed = 1800\n\tlocal tInfo = \n\t{\n\t\tAbility = self, -- 技能\n        \tEffectName = \"particles/units/heroes/hero_mirana/mirana_spell_arrow.vpcf\", --投射物特效\n        \tvSpawnOrigin = hCaster:GetAttachmentOrigin(hCaster:ScriptLookupAttachment(\"attach_attack1\")), -- 投射物起点\n        \tfDistance = 2000, -- 最大距离\n        \tfStartRadius = 64, -- 起始半径\n        \tfEndRadius = 64, -- 终点半径\n        \tSource = hCaster, -- 来源单位\n        \tbHasFrontalCone = false, -- 是否有前椎体\n        \tbReplaceExisting = false, -- 替换已经存在的投射物\n        \tiUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY, -- 目标队伍\n        \tiUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE, -- 目标标记\n        \tiUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, -- 目标类型\n        \tfExpireTime = GameRules:GetGameTime() + 10.0, -- 销毁时间\n\t\tbDeleteOnHit = true, -- 击中后是否销毁\n\t\tvVelocity = (vPosition - hCaster:GetAbsOrigin()):Normalized() * iSpeed, -- 速度\n\t\tbProvidesVision = true, -- 是否提供视野\n\t\tiVisionRadius = 1000, -- 视野半径\n\t\tiVisionTeamNumber = hCaster:GetTeamNumber(), -- 视野队伍\n\t\tExtraData = \n\t\t{\n\t\t\tflDamage = 360,\n\t\t},\n\t}\n\tprojectile = ProjectileManager:CreateLinearProjectile(tInfo)\nend"
+				"example": "-- 创建一个月神箭\nfunction mirana_arrow:OnSpellStart()\n\tlocal hCaster = self:GetCaster()\n\tlocal vPosition = self:GetCursorPosition()\n\tlocal iSpeed = 1800\n\tlocal tInfo = \n\t{\n\t\tAbility = self, -- 技能\n        \tEffectName = \"particles/units/heroes/hero_mirana/mirana_spell_arrow.vpcf\", -- 投射物特效\n        \tvSpawnOrigin = hCaster:GetAttachmentOrigin(hCaster:ScriptLookupAttachment(\"attach_attack1\")), -- 投射物起点\n        \tfDistance = 2000, -- 最大距离\n        \tfStartRadius = 64, -- 起始半径\n        \tfEndRadius = 64, -- 终点半径\n        \tSource = hCaster, -- 来源单位\n        \tbHasFrontalCone = false, -- 是否有前椎体\n        \tbReplaceExisting = false, -- 替换已经存在的投射物\n        \tiUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY, -- 目标队伍\n        \tiUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE, -- 目标标记\n        \tiUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, -- 目标类型\n        \tfExpireTime = GameRules:GetGameTime() + 10.0, -- 销毁时间\n\t\tbDeleteOnHit = true, -- 击中后是否销毁\n\t\tvVelocity = (vPosition - hCaster:GetAbsOrigin()):Normalized() * iSpeed, -- 速度\n\t\tbProvidesVision = true, -- 是否提供视野\n\t\tiVisionRadius = 1000, -- 视野半径\n\t\tiVisionTeamNumber = hCaster:GetTeamNumber(), -- 视野队伍\n\t\tExtraData = \n\t\t{\n\t\t\tflDamage = 360,\n\t\t},\n\t}\n\tprojectile = ProjectileManager:CreateLinearProjectile(tInfo)\nend"
 			},
 			{
 				"description": "Creates a tracking projectile",
@@ -29176,11 +29176,252 @@
 		"Vector": [
 			{
 				"class": "Vector",
+				"function": "Cross",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Cross product of two vectors.",
+				"example": "Vector Cross(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "Dot",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "Dot product of two vectors.",
+				"example": "float Dot(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "Length",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "Length of the Vector.",
+				"example": "float Length()",
+				"params": {},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "Length2D",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "Length of the Vector in the XY plane.",
+				"example": "float Length2D()",
+				"params": {},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "Lerp",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Linear interpolation between the vector and the passed in target over t = [0,1].",
+				"example": "Vector Lerp(Vector target, float t)",
+				"params": {
+					"target": {
+						"type": "Vector",
+						"params_name": "target",
+						"description": "target"
+					},
+					"t": {
+						"type": "float",
+						"params_name": "t",
+						"description": "t"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "Normalized",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Returns the vector normalized.",
+				"example": "Vector Normalized()",
+				"params": {},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__add",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Overloaded +. Adds vectors together.",
+				"example": "Vector __add(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__div",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Overloaded /. Divides vectors.",
+				"example": "Vector __div(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__eq",
+				"return": "bool",
+				"server": true,
+				"client": true,
+				"description": "Overloaded ==. Tests for Equality.",
+				"example": "bool __eq(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__len",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "Overloaded # returns the length of the vector.",
+				"example": "float __len()",
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__mul",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Overloaded * returns the vectors multiplied together. can also be used to multiply with scalars.",
+				"example": "Vector __mul(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__sub",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Overloaded -. Subtracts vectors",
+				"example": "Vector __sub(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__tostring",
+				"return": "string",
+				"server": true,
+				"client": true,
+				"description": "Overloaded .. Converts vectors to strings",
+				"example": "string __tostring()",
+				"params": {},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
+				"function": "__unm",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Overloaded unary - operator. Reverses the vector.",
+				"example": "Vector __unm()",
+				"params": {},
+				"class_cl": "Vector"
+			},
+			{
+				"class": "Vector",
 				"function": "constructor",
 				"return": "Vector",
 				"server": true,
-				"client": false,
-				"description": "创建一个新的Vector，使用笛卡尔坐标系。",
+				"client": true,
+				"description": "创建一个新的Vector，使用笛卡尔坐标系。成员变量x,y,z。",
 				"example": "Vector(float x, float y, float z)",
 				"params": {
 					"x": {
@@ -29198,234 +29439,836 @@
 						"params_name": "z",
 						"description": "z"
 					}
-				}
+				},
+				"class_cl": "Vector"
+			}
+		],
+		"QAngle": [
+			{
+				"class": "QAngle",
+				"function": "Forward",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Returns the forward vector.",
+				"example": "Vector Forward()",
+				"params": {},
+				"class_cl": "QAngle"
 			},
 			{
-				"class": "Vector",
+				"class": "QAngle",
+				"function": "Left",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Returns the Left vector.",
+				"example": "Vector Left()",
+				"params": {},
+				"class_cl": "QAngle"
+			},
+			{
+				"class": "QAngle",
+				"function": "Up",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "Returns the Up vector.",
+				"example": "Vector Up()",
+				"params": {},
+				"class_cl": "QAngle"
+			},
+			{
+				"class": "QAngle",
 				"function": "__add",
-				"return": "Vector",
+				"return": "QAngle",
 				"server": true,
-				"client": false,
-				"description": "Overloaded +. Adds vectors together.",
-				"example": "Vector __add(Vector a, Vector b)",
+				"client": true,
+				"description": "Overloaded +. Adds angles together.\nNote: Use RotateOrientation() instead to properly rotate angles.",
+				"example": "QAngle __add(QAngle a, QAngle b)",
 				"params": {
 					"a": {
-						"type": "Vector",
+						"type": "QAngle",
 						"params_name": "a",
-						"description": "a"
+						"description": "QAngle a"
 					},
 					"b": {
-						"type": "Vector",
+						"type": "QAngle",
 						"params_name": "b",
-						"description": "b"
+						"description": "QAngle b"
 					}
-				}
+				},
+				"class_cl": "QAngle"
 			},
 			{
-				"class": "Vector",
-				"function": "__div",
-				"return": "Vector",
-				"server": true,
-				"client": false,
-				"description": "Overloaded /. Divides vectors.",
-				"example": "Vector __div(Vector a, Vector b)",
-				"params": {
-					"a": {
-						"type": "Vector",
-						"params_name": "a",
-						"description": "a"
-					},
-					"b": {
-						"type": "Vector",
-						"params_name": "b",
-						"description": "b"
-					}
-				}
-			},
-			{
-				"class": "Vector",
+				"class": "QAngle",
 				"function": "__eq",
-				"return": "bool",
+				"return": "QAngle",
 				"server": true,
-				"client": false,
-				"description": "Overloaded ==. Tests for Equality.",
-				"example": "bool __eq(Vector a, Vector b)",
+				"client": true,
+				"description": "Overloaded ==. Tests for Equality",
+				"example": "bool __eq(QAngle a, QAngle b)",
 				"params": {
 					"a": {
-						"type": "Vector",
+						"type": "QAngle",
 						"params_name": "a",
-						"description": "a"
+						"description": "QAngle a"
 					},
 					"b": {
-						"type": "Vector",
+						"type": "QAngle",
 						"params_name": "b",
-						"description": "b"
+						"description": "QAngle b"
 					}
-				}
+				},
+				"class_cl": "QAngle"
 			},
 			{
-				"class": "Vector",
-				"function": "__len",
-				"return": "float",
-				"server": true,
-				"client": false,
-				"description": "Overloaded # returns the length of the vector.",
-				"example": "float __len()"
-			},
-			{
-				"class": "Vector",
-				"function": "__mul",
-				"return": "Vector",
-				"server": true,
-				"client": false,
-				"description": "Overloaded * returns the vectors multiplied together. can also be used to multiply with scalars.",
-				"example": "Vector __mul(Vector a, Vector b)",
-				"params": {
-					"a": {
-						"type": "Vector",
-						"params_name": "a",
-						"description": "a"
-					},
-					"b": {
-						"type": "Vector",
-						"params_name": "b",
-						"description": "b"
-					}
-				}
-			},
-			{
-				"class": "Vector",
-				"function": "__sub",
-				"return": "Vector",
-				"server": true,
-				"client": false,
-				"description": "Overloaded -. Subtracts vectors",
-				"example": "Vector __sub(Vector a, Vector b)",
-				"params": {
-					"a": {
-						"type": "Vector",
-						"params_name": "a",
-						"description": "a"
-					},
-					"b": {
-						"type": "Vector",
-						"params_name": "b",
-						"description": "b"
-					}
-				}
-			},
-			{
-				"class": "Vector",
+				"class": "QAngle",
 				"function": "__tostring",
 				"return": "string",
 				"server": true,
-				"client": false,
-				"description": "Overloaded .. Converts vectors to strings",
+				"client": true,
+				"description": "Overloaded .. Converts the QAngle to a human readable string.",
 				"example": "string __tostring()",
-				"params": {}
+				"params": {},
+				"class_cl": "QAngle"
 			},
 			{
-				"class": "Vector",
-				"function": "__unm",
-				"return": "Vector",
+				"class": "QAngle",
+				"function": "constructor",
+				"return": "QAngle",
 				"server": true,
-				"client": false,
-				"description": "Overloaded unary - operator. Reverses the vector.",
-				"example": "Vector __unm()",
-				"params": {}
-			},
-			{
-				"class": "Vector",
-				"function": "Cross",
-				"return": "Vector",
-				"server": true,
-				"client": false,
-				"description": "Cross product of two vectors.",
-				"example": "Vector Cross(Vector a, Vector b)",
+				"client": true,
+				"description": "创建一个新的QAngle。成员变量x,y,z。",
+				"example": "QAngle(float pitch, float yaw, float roll)",
 				"params": {
-					"a": {
-						"type": "Vector",
-						"params_name": "a",
-						"description": "a"
-					},
-					"b": {
-						"type": "Vector",
-						"params_name": "b",
-						"description": "b"
-					}
-				}
-			},
-			{
-				"class": "Vector",
-				"function": "Dot",
-				"return": "float",
-				"server": true,
-				"client": false,
-				"description": "Dot product of two vectors.",
-				"example": "float Dot(Vector a, Vector b)",
-				"params": {
-					"a": {
-						"type": "Vector",
-						"params_name": "a",
-						"description": "a"
-					},
-					"b": {
-						"type": "Vector",
-						"params_name": "b",
-						"description": "b"
-					}
-				}
-			},
-			{
-				"class": "Vector",
-				"function": "Length",
-				"return": "float",
-				"server": true,
-				"client": false,
-				"description": "Length of the Vector.",
-				"example": "float Length()",
-				"params": {}
-			},
-			{
-				"class": "Vector",
-				"function": "Length2D",
-				"return": "float",
-				"server": true,
-				"client": false,
-				"description": "Length of the Vector in the XY plane.",
-				"example": "float Length2D()",
-				"params": {}
-			},
-			{
-				"class": "Vector",
-				"function": "Lerp",
-				"return": "Vector",
-				"server": true,
-				"client": false,
-				"description": "Linear interpolation between the vector and the passed in target over t = [0,1].",
-				"example": "Vector Lerp(Vector target, float t)",
-				"params": {
-					"target": {
-						"type": "Vector",
-						"params_name": "target",
-						"description": "target"
-					},
-					"t": {
+					"pitch": {
 						"type": "float",
+						"params_name": "pitch",
+						"description": "pitch"
+					},
+					"yaw": {
+						"type": "float",
+						"params_name": "yaw",
+						"description": "yaw"
+					},
+					"roll": {
+						"type": "float",
+						"params_name": "roll",
+						"description": "roll"
+					}
+				},
+				"class_cl": "QAngle"
+			}
+		],
+		"utilsinit.lua": [
+			{
+				"class": "Global",
+				"function": "Clamp",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "将传入值限制在最大值与最小值之间。",
+				"example": "local a = Clamp(2, 4, 5) -- a = 4",
+				"params": {
+					"val": {
+						"type": "float",
+						"params_name": "val",
+						"description": "val"
+					},
+					"min": {
+						"type": "float",
+						"params_name": "min",
+						"description": "min"
+					},
+					"max": {
+						"type": "float",
+						"params_name": "max",
+						"description": "max"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "Deg2Rad",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "将角度转换为弧度。",
+				"example": "local rad = Deg2Rad(60)",
+				"params": {
+					"deg": {
+						"type": "float",
+						"params_name": "deg",
+						"description": "角度"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "Lerp",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "线性插值。传入[0, 1]的值，返回[min, max]中的线性插值。",
+				"example": "local val = Lerp(0.5, 0, 10) -- val = 5",
+				"params": {
+					"val": {
+						"type": "float",
+						"params_name": "val",
+						"description": "val"
+					},
+					"min": {
+						"type": "float",
+						"params_name": "min",
+						"description": "最小值"
+					},
+					"max": {
+						"type": "float",
+						"params_name": "max",
+						"description": "最大值"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "Merge",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "将两个表合并为第三个表，覆盖所有匹配键（t1覆盖t2）。",
+				"example": "local t3 = Merge(t1, t2)",
+				"params": {
+					"t1": {
+						"type": "table",
+						"params_name": "t1",
+						"description": "t1"
+					},
+					"t2": {
+						"type": "table",
+						"params_name": "t2",
+						"description": "t2"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "Rad2Deg",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "将弧度转换为角度。",
+				"example": "local deg = Rad2Deg(3.14)",
+				"params": {
+					"rad": {
+						"type": "float",
+						"params_name": "rad",
+						"description": "角度"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "RemapVal",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "将传入值从范围[a, b]映射到范围[c, d]。返回值有可能超过范围[c, d]。",
+				"example": "local val = RemapVal(0.5, 0, 1, 10, 20) -- val = 15",
+				"params": {
+					"input": {
+						"type": "float",
+						"params_name": "input",
+						"description": "input"
+					},
+					"a": {
+						"type": "float",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "float",
+						"params_name": "b",
+						"description": "b"
+					},
+					"c": {
+						"type": "float",
+						"params_name": "c",
+						"description": "c"
+					},
+					"d": {
+						"type": "float",
+						"params_name": "d",
+						"description": "d"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "RemapValClamped",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "将传入值从范围[a, b]映射到范围[c, d]。并且将返回值限制在范围[c, d]。",
+				"example": "local val = RemapValClamped(0.5, 0, 1, 10, 20) -- val = 15",
+				"params": {
+					"input": {
+						"type": "float",
+						"params_name": "input",
+						"description": "input"
+					},
+					"a": {
+						"type": "float",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "float",
+						"params_name": "b",
+						"description": "b"
+					},
+					"c": {
+						"type": "float",
+						"params_name": "c",
+						"description": "c"
+					},
+					"d": {
+						"type": "float",
+						"params_name": "d",
+						"description": "d"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "VectorDistance",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "两个矢量之间的距离\nreturn math.sqrt(VectorDistanceSq(v1, v2))",
+				"example": "local val = VectorDistance(v1, v2)",
+				"params": {
+					"v1": {
+						"type": "Vector",
+						"params_name": "v1",
+						"description": "v1"
+					},
+					"v2": {
+						"type": "Vector",
+						"params_name": "v2",
+						"description": "v2"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "VectorDistanceSq",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "两个矢量之间的距离平方(比计算平面距离快)\nreturn (v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z)",
+				"example": "local val = VectorDistanceSq(v1, v2)",
+				"params": {
+					"v1": {
+						"type": "Vector",
+						"params_name": "v1",
+						"description": "v1"
+					},
+					"v2": {
+						"type": "Vector",
+						"params_name": "v2",
+						"description": "v2"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "VectorIsZero",
+				"return": "bool",
+				"server": true,
+				"client": true,
+				"description": "检查向量是否为零向量。\nreturn (v.x == 0.0) and (v.y == 0.0) and (v.z == 0.0)",
+				"example": "local val = VectorIsZero(v)",
+				"params": {
+					"v": {
+						"type": "Vector",
+						"params_name": "v",
+						"description": "v"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "VectorLerp",
+				"return": "Vector",
+				"server": true,
+				"client": true,
+				"description": "向量值在[0，1]上的线性插值。跟另一个全局函数LerpVectors功能一样。\nreturn Vector(Lerp(t, a.x, b.x), Lerp(t, a.y, b.y), Lerp(t, a.z, b.z))",
+				"example": "local val = VectorLerp(v1, v2)",
+				"params": {
+					"v1": {
+						"type": "Vector",
+						"params_name": "v1",
+						"description": "v1"
+					},
+					"v2": {
+						"type": "Vector",
+						"params_name": "v2",
+						"description": "v2"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "abs",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "取绝对值",
+				"example": "local a = abs(-1)",
+				"params": {
+					"val": {
+						"type": "float",
+						"params_name": "val",
+						"description": "val"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "max",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "返回其中的较大值。",
+				"example": "local max = max(1, 2) -- max = 2",
+				"params": {
+					"a": {
+						"type": "float",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "float",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "min",
+				"return": "float",
+				"server": true,
+				"client": true,
+				"description": "返回其中的较小值。",
+				"example": "local min = min(1, 2) -- min = 1",
+				"params": {
+					"a": {
+						"type": "float",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "float",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Global"
+			}
+		],
+		"VLua": [
+			{
+				"class": "Global",
+				"function": "vlua.clear",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel clear table method.",
+				"example": "table vlua.clear(table t)",
+				"params": {
+					"t": {
+						"type": "table",
 						"params_name": "t",
 						"description": "t"
 					}
-				}
+				},
+				"class_cl": "Global"
 			},
 			{
-				"class": "Vector",
-				"function": "Normalized",
-				"return": "Vector",
+				"class": "Global",
+				"function": "vlua.clone",
+				"return": "table",
 				"server": true,
-				"client": false,
-				"description": "Returns the vector normalized.",
-				"example": "Vector Normalized()",
-				"params": {}
+				"client": true,
+				"description": "Implements Squirrel clone operator.",
+				"example": "table vlua.clone(table t)",
+				"params": {
+					"t": {
+						"type": "table",
+						"params_name": "t",
+						"description": "t"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.compare",
+				"return": "int",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel three way compare operator ( <=> ).",
+				"example": "int vlua.compare(float a, float b)",
+				"params": {
+					"a": {
+						"type": "float",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "float",
+						"params_name": "b",
+						"description": "b"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.contains",
+				"return": "bool",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel in operator.",
+				"example": "bool vlua.contains(table t, variable key)",
+				"params": {
+					"t": {
+						"type": "table",
+						"params_name": "t",
+						"description": "t"
+					},
+					"key": {
+						"type": "variable",
+						"params_name": "key",
+						"description": "key"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.delete",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel slot delete operator.",
+				"example": "table vlua.delete(table t, variable key)",
+				"params": {
+					"t": {
+						"type": "table",
+						"params_name": "t",
+						"description": "t"
+					},
+					"key": {
+						"type": "variable",
+						"params_name": "key",
+						"description": "key"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.extend",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel extend method for tables.",
+				"example": "table vlua.extend(table o, array array)",
+				"params": {
+					"o": {
+						"type": "table",
+						"params_name": "o",
+						"description": "o"
+					},
+					"array": {
+						"type": "array",
+						"params_name": "array",
+						"description": "array"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.find",
+				"return": "variable",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel find method for tables and strings. (o, substr, [startidx]) for strings, (o, value) for tables",
+				"example": "variable vlua.find([table/string] o, variable value, [int startIndex])",
+				"params": {
+					"o": {
+						"type": "[table/string]",
+						"params_name": "o",
+						"description": "o"
+					},
+					"value": {
+						"type": "variable",
+						"params_name": "value",
+						"description": "value"
+					},
+					"startIndex": {
+						"type": "int",
+						"params_name": "startIndex",
+						"description": "startIndex"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.map",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel map method for tables.",
+				"example": "table vlua.map(table o, function mapFunc)",
+				"params": {
+					"o": {
+						"type": "table",
+						"params_name": "o",
+						"description": "o"
+					},
+					"mapFunc": {
+						"type": "function",
+						"params_name": "mapFunc",
+						"description": "mapFunc"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.rawdelete",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel rawdelete library function.",
+				"example": "table vlua.rawdelete(table t, variable key)",
+				"params": {
+					"t": {
+						"type": "table",
+						"params_name": "t",
+						"description": "t"
+					},
+					"key": {
+						"type": "variable",
+						"params_name": "key",
+						"description": "key"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.rawin",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel rawin library function.",
+				"example": "table vlua.rawin(table t, variable key)",
+				"params": {
+					"t": {
+						"type": "table",
+						"params_name": "t",
+						"description": "t"
+					},
+					"key": {
+						"type": "variable",
+						"params_name": "key",
+						"description": "key"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.reduce",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel reduce method for tables.",
+				"example": "table vlua.reduce(table o, function reduceFunc)",
+				"params": {
+					"o": {
+						"type": "table",
+						"params_name": "o",
+						"description": "o"
+					},
+					"reduceFunc": {
+						"type": "function",
+						"params_name": "reduceFunc",
+						"description": "reduceFunc"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.resize",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel resize method for tables.",
+				"example": "table vlua.resize(string o, int size, [variable fill])",
+				"params": {
+					"o": {
+						"type": "string",
+						"params_name": "o",
+						"description": "o"
+					},
+					"size": {
+						"type": "int",
+						"params_name": "size",
+						"description": "size"
+					},
+					"fill": {
+						"type": "variable",
+						"params_name": "fill",
+						"description": "fill"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.reverse",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel reverse method for tables.",
+				"example": "table vlua.reverse(table o)",
+				"params": {
+					"o": {
+						"type": "table",
+						"params_name": "o",
+						"description": "o"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.select",
+				"return": "variable",
+				"server": true,
+				"client": true,
+				"description": "Safe Ternary operator. The Lua version will return the wrong value if the value if true is nil.",
+				"example": "variable vlua.select(bool conditional, variable valueIfTrue, variable valueIfFalse)",
+				"params": {
+					"conditional": {
+						"type": "bool",
+						"params_name": "conditional",
+						"description": "conditional"
+					},
+					"valueIfTrue": {
+						"type": "variable",
+						"params_name": "valueIfTrue",
+						"description": "valueIfTrue"
+					},
+					"valueIfFalse": {
+						"type": "variable",
+						"params_name": "valueIfFalse",
+						"description": "valueIfFalse"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.slice",
+				"return": "variable",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel slice method for tables and strings.",
+				"example": "variable vlua.slice([table/string] o, int startIndex, [int endIndex])",
+				"params": {
+					"o": {
+						"type": "[table/string]",
+						"params_name": "o",
+						"description": "o"
+					},
+					"startIndex": {
+						"type": "int",
+						"params_name": "startIndex",
+						"description": "startIndex"
+					},
+					"endIndex": {
+						"type": "int",
+						"params_name": "endIndex",
+						"description": "endIndex"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.split",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements Squirrel split function for strings.",
+				"example": "table vlua.split(string input, string separator)",
+				"params": {
+					"input": {
+						"type": "string",
+						"params_name": "input",
+						"description": "input"
+					},
+					"separator": {
+						"type": "string",
+						"params_name": "separator",
+						"description": "separator"
+					}
+				},
+				"class_cl": "Global"
+			},
+			{
+				"class": "Global",
+				"function": "vlua.tableadd",
+				"return": "table",
+				"server": true,
+				"client": true,
+				"description": "Implements tableadd function to support += paradigm used in Squirrel.",
+				"example": "table vlua.tableadd (table t1, table t2)",
+				"params": {
+					"t1": {
+						"type": "table",
+						"params_name": "t1",
+						"description": "t1"
+					},
+					"t2": {
+						"type": "table",
+						"params_name": "t2",
+						"description": "t2"
+					}
+				},
+				"class_cl": "Global"
 			}
 		]
 	},
@@ -29642,7 +30485,7 @@
 			{
 				"name": "DAMAGE_TYPE_PHYSICAL",
 				"value": "1",
-				"description_lite": "物理伤害，受到护甲与伤害格挡影响，跟魔法抗性无关，不能影响虚无单位。",
+				"description_lite": "物理伤害，受到护甲与伤害格挡影响，跟魔法抗性无关且不能影响虚无单位。",
 				"client": "❌"
 			},
 			{
@@ -35883,7 +36726,7 @@
 				"value": "173",
 				"function": "OnAbilityStart",
 				"description_lite": "当技能开始时",
-				"description": "当技能开始抬手时就会触发，不会触发切换技能。",
+				"description": "当技能开始抬手时就会触发，不会触发切换技能类型",
 				"example": "No Example Set",
 				"client": "❌"
 			},

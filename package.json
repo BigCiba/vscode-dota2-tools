@@ -577,6 +577,16 @@
 						"type": "string"
 					},
 					"description": "多行csv配置"
+				},
+				"dota2-tools.SnippetEnable Lua": {
+					"type": "boolean",
+					"default": true,
+					"description": "是否开启lua的代码补全"
+				},
+				"dota2-tools.SnippetEnable Css": {
+					"type": "boolean",
+					"default": true,
+					"description": "是否开启css的代码补全"
 				}
 			}
 		}

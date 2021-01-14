@@ -1757,10 +1757,14 @@ function activate(context) {
         context.subscriptions.push(CmdLocalizationCSV2Text);
         context.subscriptions.push(cmdDropVPCf);
         context.subscriptions.push(ItemsBrowser);
-        let luaCompletionItemProvider = new luaCompletionItemProvider_1.LuaCompletionItemProvider(context);
-        context.subscriptions.push(vscode.languages.registerCompletionItemProvider(luaCompletionItemProvider.selector, luaCompletionItemProvider));
-        let cssCompletionItemProvider = new cssCompletionItemProvider_1.CssCompletionItemProvider(context);
-        context.subscriptions.push(vscode.languages.registerCompletionItemProvider(cssCompletionItemProvider.selector, cssCompletionItemProvider));
+        if (vscode.workspace.getConfiguration().get("dota2-tools.SnippetEnable Lua") == true) {
+            let luaCompletionItemProvider = new luaCompletionItemProvider_1.LuaCompletionItemProvider(context);
+            context.subscriptions.push(vscode.languages.registerCompletionItemProvider(luaCompletionItemProvider.selector, luaCompletionItemProvider));
+        }
+        if (vscode.workspace.getConfiguration().get("dota2-tools.SnippetEnable Css") == true) {
+            let cssCompletionItemProvider = new cssCompletionItemProvider_1.CssCompletionItemProvider(context);
+            context.subscriptions.push(vscode.languages.registerCompletionItemProvider(cssCompletionItemProvider.selector, cssCompletionItemProvider));
+        }
         // let jsCompletionItemProvider = new JsCompletionItemProvider(context);
         // context.subscriptions.push(vscode.languages.registerCompletionItemProvider(jsCompletionItemProvider.selector, jsCompletionItemProvider));
         // context.subscriptions.push(ActiveListEditorProvider.register(context));

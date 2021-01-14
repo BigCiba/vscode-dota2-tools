@@ -135,11 +135,11 @@ export async function Init(context: vscode.ExtensionContext) {
 				// console.log(JSON.parse(ApiNote).Global);
 				[class_list, enum_list] = APIParse();
 
-				let helpJson = {
-					class_list: class_list,
-					enum_list: enum_list,
-				};
-				fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dota_script_help2.json'), JSON.stringify(helpJson));
+				// let helpJson = {
+				// 	class_list: class_list,
+				// 	enum_list: enum_list,
+				// };
+				// fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dota_script_help2.json'), JSON.stringify(helpJson));
 
 				ApiTree.reopen();
 				ftpClient.end();
