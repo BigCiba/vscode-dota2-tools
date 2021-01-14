@@ -12,6 +12,7 @@ import { JsApiTreeProvider } from './TreeDataProvider/jsAPITree';
 import { CssApiTreeProvider } from './TreeDataProvider/cssAPITree';
 import { PanelTreeProvider } from './TreeDataProvider/panelTree';
 import { Tools } from './tools';
+import { LuaEnum, LuaFunction } from './Completions/luaCompletionItemProvider';
 let KV2LUA: any = {};	// kv与lua文件关联数据
 let VSND = new Array;
 let GameDir: string = '';	// game目录
@@ -114,6 +115,10 @@ export async function Init(context: vscode.ExtensionContext) {
 			password: noteServerConfig.password,
 		});
 		ftpClient.on('ready', function () {
+			ftpClient.list(function (err, list) {
+				if (err) throw err;
+				console.dir(list);
+			});
 			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', async function (err, stream) {
 				if (err) {
 					vscode.window.setStatusBarMessage('API Note下载超时');
@@ -126,9 +131,16 @@ export async function Init(context: vscode.ExtensionContext) {
 					result += chunk;
 				}
 				ApiNote = result;
-				fs.writeFileSync(path.join(context.extensionPath, "resource/api_note_download.json"), ApiNote);
+				// fs.writeFileSync(path.join(context.extensionPath, "resource/api_note_download.json"), ApiNote);
 				// console.log(JSON.parse(ApiNote).Global);
 				[class_list, enum_list] = APIParse();
+
+				let helpJson = {
+					class_list: class_list,
+					enum_list: enum_list,
+				};
+				fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dota_script_help2.json'), JSON.stringify(helpJson));
+
 				ApiTree.reopen();
 				ftpClient.end();
 			});
@@ -150,8 +162,8 @@ export async function Init(context: vscode.ExtensionContext) {
 		let api_note = JSON.parse(ApiNote);
 		let PraseFile = function (sDotaScriptHelp: string): any[] {
 			const rows = sDotaScriptHelp.split(os.EOL);
-			let class_list: { [k: string]: any; } = {};
-			let enum_list: { [k: string]: any; } = {};
+			let class_list: { [key: string]: LuaFunction[]; } = {};
+			let enum_list: { [key: string]: LuaEnum[]; } = {};
 			for (let i = 0; i < rows.length; i++) {
 				// 函数
 				let option = rows[i].match(/---\[\[.*\]\]/g);
@@ -191,6 +203,18 @@ export async function Init(context: vscode.ExtensionContext) {
 					}
 					enum_list[enum_name] = enum_info;
 					i = new_line;
+				}
+			}
+			// 将api_note中的自定义函数加入
+			for (const className in api_note) {
+				if (class_list[className] == undefined && typeof (api_note[className]) == 'object' && api_note[className].type == 'custom_note') {
+					class_list[className] = [];
+					for (const funcName in api_note[className]) {
+						const funcInfo = api_note[className][funcName];
+						if (typeof (funcInfo) == 'object' && funcInfo.function) {
+							class_list[className].push(funcInfo);
+						}
+					}
 				}
 			}
 			return [class_list, enum_list];

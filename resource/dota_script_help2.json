@@ -29172,6 +29172,261 @@
 				"server": true,
 				"client": false
 			}
+		],
+		"Vector": [
+			{
+				"class": "Vector",
+				"function": "constructor",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "创建一个新的Vector，使用笛卡尔坐标系。",
+				"example": "Vector(float x, float y, float z)",
+				"params": {
+					"x": {
+						"type": "float",
+						"params_name": "x",
+						"description": "x"
+					},
+					"y": {
+						"type": "float",
+						"params_name": "y",
+						"description": "y"
+					},
+					"z": {
+						"type": "float",
+						"params_name": "z",
+						"description": "z"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "__add",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Overloaded +. Adds vectors together.",
+				"example": "Vector __add(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "__div",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Overloaded /. Divides vectors.",
+				"example": "Vector __div(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "__eq",
+				"return": "bool",
+				"server": true,
+				"client": false,
+				"description": "Overloaded ==. Tests for Equality.",
+				"example": "bool __eq(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "__len",
+				"return": "float",
+				"server": true,
+				"client": false,
+				"description": "Overloaded # returns the length of the vector.",
+				"example": "float __len()"
+			},
+			{
+				"class": "Vector",
+				"function": "__mul",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Overloaded * returns the vectors multiplied together. can also be used to multiply with scalars.",
+				"example": "Vector __mul(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "__sub",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Overloaded -. Subtracts vectors",
+				"example": "Vector __sub(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "__tostring",
+				"return": "string",
+				"server": true,
+				"client": false,
+				"description": "Overloaded .. Converts vectors to strings",
+				"example": "string __tostring()",
+				"params": {}
+			},
+			{
+				"class": "Vector",
+				"function": "__unm",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Overloaded unary - operator. Reverses the vector.",
+				"example": "Vector __unm()",
+				"params": {}
+			},
+			{
+				"class": "Vector",
+				"function": "Cross",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Cross product of two vectors.",
+				"example": "Vector Cross(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "Dot",
+				"return": "float",
+				"server": true,
+				"client": false,
+				"description": "Dot product of two vectors.",
+				"example": "float Dot(Vector a, Vector b)",
+				"params": {
+					"a": {
+						"type": "Vector",
+						"params_name": "a",
+						"description": "a"
+					},
+					"b": {
+						"type": "Vector",
+						"params_name": "b",
+						"description": "b"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "Length",
+				"return": "float",
+				"server": true,
+				"client": false,
+				"description": "Length of the Vector.",
+				"example": "float Length()",
+				"params": {}
+			},
+			{
+				"class": "Vector",
+				"function": "Length2D",
+				"return": "float",
+				"server": true,
+				"client": false,
+				"description": "Length of the Vector in the XY plane.",
+				"example": "float Length2D()",
+				"params": {}
+			},
+			{
+				"class": "Vector",
+				"function": "Lerp",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Linear interpolation between the vector and the passed in target over t = [0,1].",
+				"example": "Vector Lerp(Vector target, float t)",
+				"params": {
+					"target": {
+						"type": "Vector",
+						"params_name": "target",
+						"description": "target"
+					},
+					"t": {
+						"type": "float",
+						"params_name": "t",
+						"description": "t"
+					}
+				}
+			},
+			{
+				"class": "Vector",
+				"function": "Normalized",
+				"return": "Vector",
+				"server": true,
+				"client": false,
+				"description": "Returns the vector normalized.",
+				"example": "Vector Normalized()",
+				"params": {}
+			}
 		]
 	},
 	"enum_list": {

@@ -81,6 +81,44 @@
 					"description": "向量"
 				}
 			}
+		},
+		"AddFOWViewer": {
+			"class": "Global",
+			"description": "为某个队伍添加临时视野",
+			"example": "-- 每帧提供一帧空中视野模拟飞行视野\nfunction modifier_night_stalker_darkness:OnIntervalThink()\n\tlocal hCaster = self:GetCaster()\n\tlocal iTeamNumber = hCaster:GetTeamNumber()\n\tlocal vPosition = hCaster:GetAbsOrigin()\n\tlocal iRadius = self:GetAbility():GetSpecialValueFor(\"radius\")\n\tAddFOWViewer(iTeamNumber, vPosition, iRadius, FrameTime(), false)\nend",
+			"params": {
+				"int_1": {
+					"params_name": "nTeamID",
+					"description": "队伍ID"
+				},
+				"Vector_2": {
+					"params_name": "vLocation",
+					"description": "位置"
+				},
+				"float_3": {
+					"params_name": "flRadius",
+					"description": "半径"
+				},
+				"float_4": {
+					"params_name": "flDuration",
+					"description": "持续时间"
+				},
+				"bool_5": {
+					"params_name": "bObstructedVision",
+					"description": "是否有视野阻挡"
+				}
+			}
+		},
+		"ApplyDamage": {
+			"class": "Global",
+			"description": "对一个单位造成伤害，输入tDamageTable: victim, attacker, damage, damage_type, damage_flags, ability",
+			"example": "-- 对玩家1的英雄对自己造成500纯粹伤害\n\nlocal hPlayerHero = PlayerResource:GetPlayer(1):GetAssignedHero()\nlocal damageTable = {\n\tvictim = hPlayerHero,\n\tattacker = hPlayerHero,\n\tdamage = 500,\n\tdamage_type = DAMAGE_TYPE_PURE,\n\tdamage_flags = DOTA_DAMAGE_FLAG_NONE, --Optional.\n\tability = playerHero:GetAbilityByIndex(0), --Optional.\n}\nApplyDamage(damageTable)",
+			"params": {
+				"handle_1": {
+					"params_name": "tDamageTable",
+					"description": "包含受害者、攻击者、伤害、伤害类型、伤害标记和技能来源的表格"
+				}
+			}
 		}
 	},
 	"CBaseAnimating": {
@@ -90,7 +128,12 @@
 		"description": "extends CBaseFlex"
 	},
 	"CBaseEntity": {
-		"description": "extends CEntityInstance"
+		"description": "extends CEntityInstance",
+		"GetAbsOrigin": {
+			"class": "CBaseEntity",
+			"description": "获取单位绝对位置坐标",
+			"example": "undefined"
+		}
 	},
 	"CBaseFlex": {
 		"description": "extends CBaseAnimating"
@@ -136,13 +179,78 @@
 		}
 	},
 	"CDOTABaseGameMode": {
-		"description": "extends CBaseEntity"
+		"description": "extends CBaseEntity",
+		"AllocateFowBlockerRegion": {
+			"class": "CDOTABaseGameMode",
+			"description": "一个锁定战争迷雾的实体。返回类为CFoWBlockerRegion",
+			"example": "-- 创建迷雾\nfowregion = GameRules:GetGameModeEntity():AllocateFowBlockerRegion( -16384, -16384, 16384, 16384, 128 )\n-- 添加新区域\nfowregion:AddRectangularBlocker( 16384, 16384+200, true )\n-- 去掉迷雾范围\nfowregion:AddRectangularOutlineBlocker( -200, 200, false )",
+			"params": {
+				"flMinX": {
+					"params_name": "flMinX",
+					"description": "迷雾x最小值"
+				},
+				"flMinY": {
+					"params_name": "flMinY",
+					"description": "迷雾y最小值"
+				},
+				"flMaxX": {
+					"params_name": "flMaxX",
+					"description": "迷雾x最大值"
+				},
+				"flMaxY": {
+					"params_name": "flMaxY",
+					"description": "迷雾y最大值"
+				},
+				"flGridSize": {
+					"params_name": "flGridSize",
+					"description": "z轴高度"
+				}
+			}
+		}
 	},
 	"CDOTAGameManager": {
 		"description": "No Description Set"
 	},
 	"CDOTAGamerules": {
-		"description": "Gamerules"
+		"description": "Gamerules",
+		"AddBotPlayerWithEntityScript": {
+			"class": "CDOTAGamerules",
+			"description": "Spawn a bot player of the passed hero name, player name, and team.",
+			"example": "",
+			"params": {
+				"string_1": {
+					"params_name": "sHeroName",
+					"description": "英雄名字"
+				},
+				"string_2": {
+					"params_name": "sBotName",
+					"description": "电脑AI名字"
+				},
+				"int_3": {
+					"params_name": "iTeamNumber",
+					"description": "队伍ID"
+				},
+				"string_4": {
+					"params_name": "sScriptPath",
+					"description": "代码文件路径"
+				},
+				"bool_5": {
+					"params_name": "bool_5",
+					"description": "No Description Set"
+				}
+			}
+		},
+		"SetTimeOfDay": {
+			"class": "CDOTAGamerules",
+			"description": "设置一天的时间(0到1)，当值小于0.25和大于0.75时为晚上，反之为白天。",
+			"example": "undefined",
+			"params": {
+				"float_1": {
+					"params_name": "float_1",
+					"description": "No Description Set"
+				}
+			}
+		}
 	},
 	"CDOTAPlayer": {
 		"description": "extends CBaseAnimating"
@@ -207,6 +315,55 @@
 				"pAbilityName": {
 					"params_name": "sAbilityName",
 					"description": "技能名"
+				}
+			}
+		},
+		"SetControllableByPlayer": {
+			"class": "CDOTA_BaseNPC",
+			"description": "设置玩家可以控制该单位，由于同队伍的碰撞检测较近，bSkipAdjustingPosition为true时，单位可能会被卡住。",
+			"example": "undefined",
+			"params": {
+				"iIndex": {
+					"params_name": "iPlayerID",
+					"description": "玩家ID"
+				},
+				"bSkipAdjustingPosition": {
+					"params_name": "bSkipAdjustingPosition",
+					"description": "是否跳过调整位置"
+				}
+			}
+		},
+		"SetCustomHealthLabel": {
+			"class": "CDOTA_BaseNPC",
+			"description": "在单位血条上显示指定的文字（支持本地化），可设置文字颜色。",
+			"example": "",
+			"params": {
+				"pLabel": {
+					"params_name": "pLabel",
+					"description": "No Description Set"
+				},
+				"r": {
+					"params_name": "r",
+					"description": "No Description Set"
+				},
+				"g": {
+					"params_name": "g",
+					"description": "No Description Set"
+				},
+				"b": {
+					"params_name": "b",
+					"description": "No Description Set"
+				}
+			}
+		},
+		"SetAttackCapability": {
+			"class": "CDOTA_BaseNPC",
+			"description": "设置攻击类型0无攻击1近战2远程",
+			"example": "undefined",
+			"params": {
+				"iAttackCapabilities": {
+					"params_name": "iAttackCapabilities",
+					"description": "No Description Set"
 				}
 			}
 		}
@@ -281,6 +438,17 @@
 			"class": "CDOTA_Item_Lua",
 			"description": "返回此技能被动给予的修饰器的名称",
 			"example": "function phantom_assassin_blur_imba:GetIntrinsicModifierName()\n\treturn \"modifier_phantom_assassin_blur_imba\"\nend"
+		},
+		"CanUnitPickUp": {
+			"class": "CDOTA_Item_Lua",
+			"description": "Returns true if this item can be picked up by the target unit.",
+			"example": "function item_crystal:CanUnitPickUp(hUnit)\n\tlocal iPlayerIDCan = GetPlayerID(self)\n\tif - 1 ~= iPlayerIDCan then\n\t\treturn GetPlayerID(hUnit) == iPlayerIDCan\n\tend\n\treturn true\nend",
+			"params": {
+				"hUnit": {
+					"params_name": "hUnit",
+					"description": "拾取单位"
+				}
+			}
 		}
 	},
 	"CDOTA_Item_Physical": {
@@ -290,7 +458,23 @@
 		"description": "extends CBaseEntity"
 	},
 	"CDOTA_Modifier_Lua": {
-		"description": "extends CDOTA_Buff"
+		"description": "extends CDOTA_Buff",
+		"SetHasCustomTransmitterData": {
+			"class": "CDOTA_Modifier_Lua",
+			"description": "需要配合AddCustomTransmitterData、HandleCustomTransmitterData这两个函数一起使用。AddCustomTransmitterData在Server端返回需要传递的数据。HandleCustomTransmitterData在Client端接受传递过来的数据（会被像nettable一样处理）",
+			"example": "function public:AddCustomTransmitterData()\n\treturn {\n\t\ta = 1,\n\t}\nend\nfunction public:HandleCustomTransmitterData(tData)\n\tlocal value = tData.a\nend\n\nfunction public:OnCreated(params)\n\tself:SetHasCustomTransmitterData(true)\nend",
+			"params": {
+				"bHasCustomData": {
+					"params_name": "bHasCustomData",
+					"description": "No Description Set"
+				}
+			}
+		},
+		"IsPurgable": {
+			"class": "CDOTA_Modifier_Lua",
+			"description": "True/false ，该修饰器可以/不可以被弱驱散净化。默认false。",
+			"example": "undefined"
+		}
 	},
 	"CDOTA_Modifier_Lua_Horizontal_Motion": {
 		"description": "extends CDOTA_Modifier_Lua"
@@ -302,7 +486,30 @@
 		"description": "extends CDOTA_Modifier_Lua"
 	},
 	"CDOTA_PlayerResource": {
-		"description": "extends CBaseEntity"
+		"description": "extends CBaseEntity",
+		"SetUnitShareMaskForPlayer": {
+			"class": "CDOTA_PlayerResource",
+			"description": "nFlag:\n1 - 共享英雄\n2 - 共享单位\n4 - 队友帮助",
+			"example": "",
+			"params": {
+				"nPlayerID": {
+					"params_name": "nPlayerID",
+					"description": "No Description Set"
+				},
+				"nOtherPlayerID": {
+					"params_name": "nOtherPlayerID",
+					"description": "No Description Set"
+				},
+				"nFlag": {
+					"params_name": "nFlag",
+					"description": "No Description Set"
+				},
+				"bState": {
+					"params_name": "bState",
+					"description": "No Description Set"
+				}
+			}
+		}
 	},
 	"CDOTA_ShopTrigger": {
 		"description": "extends CBaseTrigger"
@@ -446,12 +653,12 @@
 		}
 	},
 	"PassivesDisabled": {
-		"description": "判断该单位是否被禁用被动",
+		"description": "判断单位是否被禁用被动",
 		"params": {},
 		"example": "self:GetCaster():PassivesDisabled()"
 	},
 	"AddNewModifier": {
-		"description": "给一个单位添加modifier，hModifierTable可以传入持续时间和其他自定义参数，自定义参数可以在modifier中获得。",
+		"description": "给某个单位添加modifier，hModifierTable可以传入持续时间和其他自定义参数，自定义参数可以在modifier中获得。",
 		"params": {
 			"hCaster": {
 				"params_name": "hCaster",
@@ -494,10 +701,11 @@
 		"description_lite": "力量属性"
 	},
 	"DAMAGE_TYPE_PURE": {
-		"description_lite": "纯粹伤害，不计算护甲与魔抗，无视伤害格挡。"
+		"description_lite": "纯粹伤害，不计算护甲与魔抗，无视伤害格挡。",
+		"description": "神圣伤害，纯粹伤害，"
 	},
 	"DAMAGE_TYPE_PHYSICAL": {
-		"description_lite": "物理伤害，受到护甲与伤害格挡影响，跟魔法抗性无关，不能影响虚无单位。"
+		"description_lite": "物理伤害，受到护甲与伤害格挡影响，跟魔法抗性无关且不能影响虚无单位。"
 	},
 	"DAMAGE_TYPE_MAGICAL": {
 		"description_lite": "魔法伤害，受到魔法抗性的影响。"
@@ -848,10 +1056,10 @@
 		"description_lite": "提供视野"
 	},
 	"MODIFIER_STATE_ROOTED": {
-		"description_lite": "缠绕，头上有缠绕进度条"
+		"description_lite": "缠绕，无法移动，头上有缠绕进度条"
 	},
 	"MODIFIER_STATE_SILENCED": {
-		"description_lite": "沉默，头上有沉默进度条"
+		"description_lite": "沉默，无法施法，头上有沉默进度条"
 	},
 	"MODIFIER_STATE_SPECIALLY_DENIABLE": {
 		"description_lite": "可被反补"
@@ -913,7 +1121,7 @@
 			},
 			"bool_7": {
 				"params_name": "bFindClearSpace",
-				"description": "是否寻找空位"
+				"description": "是否寻找空地"
 			}
 		},
 		"example": "-- 创建2个玩家1的英雄幻象\n\nlocal hPlayerHero = PlayerResource:GetPlayer(1):GetAssignedHero()\nlocal illusions = CreateIllusions(hPlayerHero, hPlayerHero, {\n\toutgoing_damage = 50,\t-- 造成50%的伤害\n\tincoming_damage = 300,\t-- 受到300%的伤害\n\tbounty_base = 15,\t-- 击杀获得15金钱\n\toutgoing_damage_structure = 10,\t-- 对建筑造成10%伤害\n\toutgoing_damage_roshan = 60\t-- 对肉山造成60%伤害\n}, nNumIllusions, nPadding, bScramblePosition, bFindClearSpace)"
@@ -1032,7 +1240,7 @@
 		"example": "function test_ability:OnSpellStart()\n\tlocal bHasScepter = self:GetCaster():HasScepter()\nend"
 	},
 	"GetSpecialValueFor": {
-		"description": "从该技能的当前等级的特殊值中获取值。",
+		"description": "从该技能的当前等级的特殊值获取值。",
 		"example": "function phantom_assassin_blur_imba:OnSpellStart()\n\tlocal hCaster = self:GetCaster()\n\tlocal duration = self:GetSpecialValueFor(\"duration\")\nend",
 		"params": {
 			"szName": {
@@ -1068,7 +1276,7 @@
 		}
 	},
 	"MODIFIER_PROPERTY_OVERRIDE_ATTACK_DAMAGE": {
-		"description": "重写攻击伤害，该效果无视格挡效果。",
+		"description": "重写攻击伤害，伤害效果无视格挡效果。",
 		"description_lite": "重写攻击伤害",
 		"example": "function modifier_razor_eye_of_the_storm_attack_effect_imba:DeclareFunctions()\n\treturn {\n\t\tMODIFIER_PROPERTY_OVERRIDE_ATTACK_DAMAGE,\n\t}\nend\nfunction modifier_razor_eye_of_the_storm_attack_effect_imba:GetModifierOverrideAttackDamage(params)\n\treturn self:GetAbilitySpecialValueFor(\"damage\")\nend"
 	},
@@ -1097,7 +1305,7 @@
 		"example": "No Example Set"
 	},
 	"MODIFIER_EVENT_ON_ABILITY_START": {
-		"description": "当技能开始抬手时就会触发，不会触发切换技能。",
+		"description": "当技能开始抬手时就会触发，不会触发切换技能类型",
 		"description_lite": "当技能开始时",
 		"example": "No Example Set"
 	},
@@ -1112,7 +1320,7 @@
 		"example": "No Example Set"
 	},
 	"CreateParticle": {
-		"description": "创建一个新的粒子特效，返回特效ID",
+		"description": "创建一个粒子特效，返回特效ID",
 		"example": "undefined",
 		"params": {
 			"handle_3": {
@@ -1144,7 +1352,7 @@
 		}
 	},
 	"GetParticleReplacement": {
-		"description": "获取该粒子特效在该单位身上的替换版本",
+		"description": "获得该粒子特效在该单位身上的替换版本",
 		"example": "ParticleManager:GetParticleReplacement(\"particles/units/heroes/hero_night_stalker/nightstalker_ulti.vpcf\", hCaster)",
 		"params": {
 			"handle_2": {
@@ -1282,6 +1490,81 @@
 	},
 	"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL": {
 		"description_lite": "免疫魔法伤害",
+		"description": "No Description Set",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_FAIL_TARGET_EVADED": {
+		"description_lite": "目标闪避",
+		"description": "目标闪避",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_FAIL_TARGET_OUT_OF_RANGE": {
+		"description_lite": "超出缓冲距离",
+		"description": "超出缓冲距离",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_FAIL_TERRAIN_MISS": {
+		"description_lite": "地形丢失",
+		"description": "地形丢失",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_FAIL_NO": {
+		"description_lite": "没有丢失",
+		"description": "没有丢失",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_CANNOT_FAIL": {
+		"description_lite": "必中",
+		"description": "必中",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_FAIL_TARGET_INVULNERABLE": {
+		"description_lite": "目标无敌？",
+		"description": "目标无敌？",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_FAIL_SOURCE_MISS": {
+		"description_lite": "自身丢失",
+		"description": "自身丢失",
+		"example": "No Example Set"
+	},
+	"MODIFIER_EVENT_ON_ATTACK": {
+		"description_lite": "当攻击时",
+		"description": "整个攻击行为事件",
+		"example": "No Example Set"
+	},
+	"MODIFIER_EVENT_ON_ATTACKED": {
+		"description_lite": "被攻击",
+		"description": "当受到攻击时",
+		"example": "No Example Set"
+	},
+	"MODIFIER_EVENT_ON_ATTACK_FAIL": {
+		"description_lite": "攻击丢失时",
+		"description": "当攻击失败时，失败的具体记录查看 常量attackfail",
+		"example": "No Example Set"
+	},
+	"DOTA_ATTACK_RECORD_FAIL_BLOCKED_BY_OBSTRUCTION": {
+		"description_lite": "被障碍物阻挡",
+		"description": "被障碍物阻挡",
+		"example": "No Example Set"
+	},
+	"DOTA_HUD_VISIBILITY_ACTION_MINIMAP": {
+		"description_lite": "小地图",
+		"description": "小地图",
+		"example": "No Example Set"
+	},
+	"DAMAGE_TYPE_ALL": {
+		"description_lite": "全部类型",
+		"description": "在伤害判断的时候，全部类型伤害均通过",
+		"example": "No Example Set"
+	},
+	"DAMAGE_TYPE_HP_REMOVAL": {
+		"description_lite": "生命转移",
+		"description": "生命转移类伤害，效果与sethealth类似。不会遭受反伤。例如盛宴，骨法的虹吸",
+		"example": "No Example Set"
+	},
+	"DAMAGE_TYPE_NONE": {
+		"description_lite": "无类型",
 		"description": "No Description Set",
 		"example": "No Example Set"
 	}

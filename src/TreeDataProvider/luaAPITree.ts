@@ -11,7 +11,7 @@ export enum APIType {
 }
 // 常用函数
 const OverviewList: { class: string[]; enum: string[]; } = {
-	'class' : [
+	'class': [
 		'CDOTABaseAbility',
 		'CDOTA_Ability_Lua',
 		'CDOTA_BaseNPC',
@@ -22,7 +22,7 @@ const OverviewList: { class: string[]; enum: string[]; } = {
 		'CDOTA_Modifier_Lua',
 		'CScriptParticleManager',
 	],
-	'enum' : [
+	'enum': [
 		'modifierfunction',
 		'modifierstate',
 	]
@@ -36,20 +36,20 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 
 	constructor(public class_list: any, public enum_list: any) {
 		this.api_note = JSON.parse(GetApiNote());
-		vscode.commands.registerCommand('dota2tools.dota2api.edit', (nodeItem:NodeItem) => {
+		vscode.commands.registerCommand('dota2tools.dota2api.edit', (nodeItem: NodeItem) => {
 			console.log(nodeItem);
-			vscode.commands.executeCommand( 'extension.NoteAPI', nodeItem.itemType, nodeItem.label );
-		})
-		vscode.commands.registerCommand('dota2tools.dota2api.list', (nodeItem:NodeItem) => {
+			vscode.commands.executeCommand('extension.NoteAPI', nodeItem.itemType, nodeItem.label);
+		});
+		vscode.commands.registerCommand('dota2tools.dota2api.list', (nodeItem: NodeItem) => {
 			if (nodeItem.itemType == ItemType.Class) {
-				vscode.commands.executeCommand( 'dota2tools.api_browser', this.class_list[nodeItem.label], APIType.Class, nodeItem.label );
+				vscode.commands.executeCommand('dota2tools.api_browser', this.class_list[nodeItem.label], APIType.Class, nodeItem.label);
 			} else {
-				vscode.commands.executeCommand( 'dota2tools.api_browser', this.enum_list[nodeItem.label], APIType.EnumType, nodeItem.label );
+				vscode.commands.executeCommand('dota2tools.api_browser', this.enum_list[nodeItem.label], APIType.EnumType, nodeItem.label);
 			}
-		})
+		});
 		vscode.commands.registerCommand('dota2tools.dota2api.overview', () => {
-			let overview_class_list:{ [k: string]: any } = {};
-			let overview_enum_list:{ [k: string]: any } = {};
+			let overview_class_list: { [k: string]: any; } = {};
+			let overview_enum_list: { [k: string]: any; } = {};
 			for (const class_name in this.class_list) {
 				const fun_list = this.class_list[class_name];
 				for (let i = 0; i < OverviewList.class.length; i++) {
@@ -71,7 +71,7 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 			this.class_list = overview_class_list;
 			this.enum_list = overview_enum_list;
 			this.refresh();
-		})
+		});
 	}
 	reopen(): void {
 		this.api_note = JSON.parse(GetApiNote());
@@ -106,6 +106,8 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 				let funcItems = [];
 				for (const funcName in this.class_list[element.label]) {
 					let funcData = this.class_list[element.label][funcName];
+					console.log(element.label, funcName);
+
 					funcItems.push(new NodeItem(funcData.function, vscode.TreeItemCollapsibleState.None, ItemType.Function, undefined, funcData.description, {
 						command: 'dota2tools.api_browser',
 						title: '',
@@ -137,7 +139,7 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 		} else {
 			let classItems = [];
 			for (const class_name in this.class_list) {
-				classItems.push(new NodeItem(class_name, this.collapsibleState, ItemType.Class, this.api_note[class_name] === undefined ? undefined:this.api_note[class_name].description));
+				classItems.push(new NodeItem(class_name, this.collapsibleState, ItemType.Class, this.api_note[class_name] === undefined ? undefined : this.api_note[class_name].description));
 			}
 			if (Object.keys(this.enum_list).length > 0) {
 				classItems.push(new NodeItem('Constants', this.collapsibleState, ItemType.Constants));
@@ -165,18 +167,18 @@ export class NodeItem extends vscode.TreeItem {
 	) {
 		super(label, collapsibleState);
 		if (this.itemType === ItemType.Function) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'function.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'function.svg');
 			this.contextValue = 'NodeItem';
 		} else if (this.itemType === ItemType.Class) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'class.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'class.svg');
 			this.contextValue = 'Class';
 		} else if (this.itemType === ItemType.EnumType) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum_type.svg');
 			this.contextValue = 'Class';
 		} else if (this.itemType === ItemType.Constants) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum_type.svg');
 		} else if (this.itemType === ItemType.Enum) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum.svg');
 			this.contextValue = 'NodeItem';
 		}
 	}

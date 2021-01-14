@@ -153,6 +153,11 @@ function Init(context) {
                 password: noteServerConfig.password,
             });
             ftpClient.on('ready', function () {
+                ftpClient.list(function (err, list) {
+                    if (err)
+                        throw err;
+                    console.dir(list);
+                });
                 ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err, stream) {
                     var stream_2, stream_2_1;
                     var e_2, _a;
@@ -179,7 +184,7 @@ function Init(context) {
                             finally { if (e_2) throw e_2.error; }
                         }
                         ApiNote = result;
-                        fs.writeFileSync(path.join(context.extensionPath, "resource/api_note_download.json"), ApiNote);
+                        // fs.writeFileSync(path.join(context.extensionPath, "resource/api_note_download.json"), ApiNote);
                         // console.log(JSON.parse(ApiNote).Global);
                         [class_list, enum_list] = APIParse();
                         ApiTree.reopen();
@@ -244,6 +249,18 @@ function Init(context) {
                         }
                         enum_list[enum_name] = enum_info;
                         i = new_line;
+                    }
+                }
+                // 将api_note中的自定义函数加入
+                for (const className in api_note) {
+                    if (class_list[className] == undefined && typeof (api_note[className]) == 'object' && api_note[className].type == 'custom_note') {
+                        class_list[className] = [];
+                        for (const funcName in api_note[className]) {
+                            const funcInfo = api_note[className][funcName];
+                            if (typeof (funcInfo) == 'object' && funcInfo.function) {
+                                class_list[className].push(funcInfo);
+                            }
+                        }
                     }
                 }
                 return [class_list, enum_list];

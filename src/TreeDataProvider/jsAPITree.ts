@@ -58,7 +58,7 @@ export class JsApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 								const funcInfo = funcList[funcName];
 								if (funcName.search(new RegExp(msg, 'i')) !== -1) {
 									if (this.filtered_api_tree_data[className] == undefined) {
-										this.filtered_api_tree_data[className] = {}
+										this.filtered_api_tree_data[className] = {};
 									}
 									this.filtered_api_tree_data[className][funcName] = funcInfo;
 								}
@@ -110,7 +110,7 @@ export class JsApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 				});
 			}
 			if (this.JSAPIBrowserView.active === false) {
-				this.JSAPIBrowserView.reveal(vscode.ViewColumn.One)
+				this.JSAPIBrowserView.reveal(vscode.ViewColumn.One);
 			}
 			this.JSAPIBrowserView.webview.postMessage({
 				type: infoType,
@@ -131,7 +131,7 @@ export class JsApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 	}
 	rebuild(): void {
 		let temp = this.filtered_api_tree_data ? this.filtered_api_tree_data : this.api_tree_data;
-		this.filtered_api_tree_data = {}
+		this.filtered_api_tree_data = {};
 		this._onDidChangeTreeData.fire(undefined);
 		setTimeout(() => {
 			this.filtered_api_tree_data = temp;
@@ -187,18 +187,18 @@ export class NodeItem extends vscode.TreeItem {
 	) {
 		super(label, collapsibleState);
 		if (this.itemType === ItemType.Function) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'function.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'function.svg');
 			this.contextValue = 'NodeItem';
 		} else if (this.itemType === ItemType.Class) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'class.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'class.svg');
 			this.contextValue = 'Class';
 		} else if (this.itemType === ItemType.EnumType) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum_type.svg');
 			this.contextValue = 'Class';
 		} else if (this.itemType === ItemType.Constants) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum_type.svg');
 		} else if (this.itemType === ItemType.Enum) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum.svg');
 			this.contextValue = 'NodeItem';
 		}
 	}

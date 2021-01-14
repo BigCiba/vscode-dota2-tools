@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
-interface LuaFunction {
+export interface LuaFunction {
 	function: string;
 	class: string;
 	class_cl: string;
@@ -13,7 +13,7 @@ interface LuaFunction {
 	client: boolean;
 	example: string;
 }
-interface LuaEnum {
+export interface LuaEnum {
 	name: string;
 	value: string;
 	function?: string;

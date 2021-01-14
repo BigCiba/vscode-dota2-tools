@@ -159,18 +159,18 @@ export class NodeItem extends vscode.TreeItem {
 	) {
 		super(label, collapsibleState);
 		if (this.itemType === ItemType.Function) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'function.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'function.svg');
 			this.contextValue = 'NodeItem';
 		} else if (this.itemType === ItemType.Class) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'class.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'class.svg');
 			this.contextValue = 'Class';
 		} else if (this.itemType === ItemType.EnumType) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum_type.svg');
 			this.contextValue = 'Class';
 		} else if (this.itemType === ItemType.Constants) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum_type.svg');
 		} else if (this.itemType === ItemType.Enum) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum.svg');
+			this.iconPath = path.join(__filename, '..', '..', '..', 'images', 'enum.svg');
 			this.contextValue = 'NodeItem';
 		}
 	}
