@@ -106,7 +106,6 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 				let funcItems = [];
 				for (const funcName in this.class_list[element.label]) {
 					let funcData = this.class_list[element.label][funcName];
-					console.log(element.label, funcName);
 
 					funcItems.push(new NodeItem(funcData.function, vscode.TreeItemCollapsibleState.None, ItemType.Function, undefined, funcData.description, {
 						command: 'dota2tools.api_browser',

@@ -195,7 +195,11 @@ export async function Init(context: vscode.ExtensionContext) {
 					let [enum_info, new_line] = util.ReadEnum(i, rows);
 					for (let j = 0; j < enum_info.length; j++) {
 						const enum_arr = enum_info[j];
-						if (api_note[enum_arr.name] !== undefined) {
+						if (api_note[enum_name] !== undefined && api_note[enum_name][enum_arr.name] !== undefined) {
+							enum_arr.description_lite = api_note[enum_name][enum_arr.name].description_lite;
+							enum_arr.description = api_note[enum_name][enum_arr.name].description;
+							enum_arr.example = api_note[enum_name][enum_arr.name].example;
+						} else if (api_note[enum_arr.name] !== undefined) {
 							enum_arr.description_lite = api_note[enum_arr.name].description_lite;
 							enum_arr.description = api_note[enum_arr.name].description;
 							enum_arr.example = api_note[enum_arr.name].example;
@@ -207,12 +211,34 @@ export async function Init(context: vscode.ExtensionContext) {
 			}
 			// 将api_note中的自定义函数加入
 			for (const className in api_note) {
-				if (class_list[className] == undefined && typeof (api_note[className]) == 'object' && api_note[className].type == 'custom_note') {
-					class_list[className] = [];
-					for (const funcName in api_note[className]) {
-						const funcInfo = api_note[className][funcName];
-						if (typeof (funcInfo) == 'object' && funcInfo.function) {
-							class_list[className].push(funcInfo);
+				if (class_list[className] == undefined) {
+					if (typeof (api_note[className]) == 'object' && api_note[className].type == 'custom_note') {
+						class_list[className] = [];
+						for (const funcName in api_note[className]) {
+							const funcInfo = api_note[className][funcName];
+							if (typeof (funcInfo) == 'object' && funcInfo.function) {
+								class_list[className].push(funcInfo);
+							}
+						}
+					}
+				} else {
+					for (const funName in api_note[className]) {
+						if (typeof (api_note[className][funName]) == 'object' && api_note[className][funName].type == 'custom_note') {
+							class_list[className].push(api_note[className][funName]);
+						}
+					}
+				}
+			}
+			// 将api_note中的自定义常数加入
+			for (const enumType in api_note) {
+				if (enum_list[enumType] == undefined) {
+					if (typeof (api_note[enumType]) == 'object' && api_note[enumType].type == 'custom_note_enum') {
+						enum_list[enumType] = [];
+						for (const enumName in api_note[enumType]) {
+							const enumInfo = api_note[enumType][enumName];
+							if (typeof (enumInfo) == 'object') {
+								enum_list[enumType].push(enumInfo);
+							}
 						}
 					}
 				}

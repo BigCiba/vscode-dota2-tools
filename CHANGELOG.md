@@ -1,4 +1,6 @@
 # Change Log
+## v0.1.81
+- 新增缺失的补全：modifierfunction,findtype,
 ## v0.1.77
 - 新增API窗口搜索功能
 - luaAPI常量排序

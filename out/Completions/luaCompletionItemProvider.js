@@ -23,8 +23,17 @@ class LuaCompletionItemProvider {
                 let item = new vscode.CompletionItem(enumInfo.name, vscode.CompletionItemKind.Enum);
                 item.detail = (enumInfo.function ? (enumInfo.function) : 'Value: ' + enumInfo.value);
                 item.documentation = new vscode.MarkdownString(enumInfo.description || enumInfo.description_lite);
-                item.insertText = enumInfo.name + (enumInfo.function ? ('\n-- ' + enumInfo.function) : '');
+                // item.insertText = enumInfo.name + (enumInfo.function ? ('\n-- ' + enumInfo.function) : '');
+                item.insertText = enumInfo.name;
                 this.snippets.push(item);
+                // 将modifierfunction的function也加入
+                if (enumInfo.function) {
+                    let item = new vscode.CompletionItem(enumInfo.function, vscode.CompletionItemKind.Function);
+                    item.detail = enumInfo.function;
+                    item.documentation = new vscode.MarkdownString(enumInfo.description || enumInfo.description_lite);
+                    item.insertText = enumInfo.function;
+                    this.snippets.push(item);
+                }
             }
         }
     }
