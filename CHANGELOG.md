@@ -1,4 +1,6 @@
 # Change Log
+## v0.1.82
+- 更新lua api
 ## v0.1.81
 - 新增缺失的补全：modifierfunction,findtype等
 ## v0.1.77

@@ -258,6 +258,11 @@ function FireGameEventLocal( string_1, handle_2 ) end
 -- @return float
 function FrameTime(  ) end
 
+---[[ GetAbilityKeyValuesByName  Get ability data by ability name. ]]
+-- @return table
+-- @param string_1 string
+function GetAbilityKeyValuesByName( string_1 ) end
+
 ---[[ GetAbilityTextureNameForAbility  Gets the ability texture name for an ability ]]
 -- @return string
 -- @param string_1 string

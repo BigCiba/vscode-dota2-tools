@@ -581,6 +581,11 @@ function FireGameEventLocal( string_1, handle_2 ) end
 -- @return float
 function FrameTime(  ) end
 
+---[[ GetAbilityKeyValuesByName  Get ability data by ability name. ]]
+-- @return table
+-- @param string_1 string
+function GetAbilityKeyValuesByName( string_1 ) end
+
 ---[[ GetAbilityTextureNameForAbility  Gets the ability texture name for an ability ]]
 -- @return string
 -- @param string_1 string
@@ -4823,10 +4828,6 @@ function CDOTAGamerules:GetItemStockDuration( int_1, string_2, int_3 ) end
 -- @param int_3 int
 function CDOTAGamerules:GetItemStockTime( int_1, string_2, int_3 ) end
 
----[[ CDOTAGamerules:GetMatchID  Get the MatchID for this game. ]]
--- @return uint64
-function CDOTAGamerules:GetMatchID(  ) end
-
 ---[[ CDOTAGamerules:GetMatchSignoutComplete  Have we received the post match signout message that includes reward information ]]
 -- @return bool
 function CDOTAGamerules:GetMatchSignoutComplete(  ) end
@@ -4962,6 +4963,10 @@ function CDOTAGamerules:ResetToCustomGameSetup(  ) end
 ---[[ CDOTAGamerules:ResetToHeroSelection  Restart the game at hero selection ]]
 -- @return void
 function CDOTAGamerules:ResetToHeroSelection(  ) end
+
+---[[ CDOTAGamerules:Script_GetMatchID  Get the MatchID for this game. ]]
+-- @return uint64
+function CDOTAGamerules:Script_GetMatchID(  ) end
 
 ---[[ CDOTAGamerules:SendCustomMessage  Sends a message on behalf of a player. ]]
 -- @return void
@@ -7783,6 +7788,15 @@ function CDOTA_BaseNPC_Trap_Ward:GetTrapTarget(  ) end
 -- @return void
 -- @param pAnimation string
 function CDOTA_BaseNPC_Trap_Ward:SetAnimation( pAnimation ) end
+
+---[[ CDOTA_BaseNPC_Watch_Tower:GetInteractAbilityName  The name of the ability used when triggering interaction on the outpost. ]]
+-- @return string
+function CDOTA_BaseNPC_Watch_Tower:GetInteractAbilityName(  ) end
+
+---[[ CDOTA_BaseNPC_Watch_Tower:SetInteractAbilityName  The name of the ability used when triggering interaction on the outpost. ]]
+-- @return void
+-- @param pszInteractAbilityName string
+function CDOTA_BaseNPC_Watch_Tower:SetInteractAbilityName( pszInteractAbilityName ) end
 
 ---[[ CDOTA_Buff:AddParticle  (index, bDestroyImmediately, bStatusEffect, priority, bHeroEffect, bOverheadEffect ]]
 -- @return void
