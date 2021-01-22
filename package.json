@@ -286,15 +286,6 @@
 					"group": "navigation"
 				},
 				{
-					"when": "resource =~ /abilities/ && resourceExtname == '.lua' || resourceExtname == '.kv'",
-					"command": "extension.OpenLang",
-					"group": "navigation"
-				},
-				{
-					"command": "extension.OpenAPI",
-					"group": "navigation"
-				},
-				{
 					"when": "editorHasSelection",
 					"command": "extension.NoteAPI",
 					"group": "navigation"

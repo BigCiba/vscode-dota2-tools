@@ -117,7 +117,7 @@ export async function Init(context: vscode.ExtensionContext) {
 		ftpClient.on('ready', function () {
 			ftpClient.list(function (err, list) {
 				if (err) throw err;
-				console.dir(list);
+				// console.dir(list);
 			});
 			ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', async function (err, stream) {
 				if (err) {
