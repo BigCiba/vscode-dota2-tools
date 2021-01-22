@@ -156,7 +156,7 @@ function Init(context) {
                 ftpClient.list(function (err, list) {
                     if (err)
                         throw err;
-                    console.dir(list);
+                    // console.dir(list);
                 });
                 ftpClient.get(noteServerConfig !== undefined ? noteServerConfig.filename : 'api_note.json', function (err, stream) {
                     var stream_2, stream_2_1;

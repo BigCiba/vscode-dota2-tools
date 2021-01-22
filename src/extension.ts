@@ -20,6 +20,7 @@ import { ItemGamesBrowser } from './Command/itemGamesBrowser';
 import { Tools } from './tools';
 import { CssCompletionItemProvider } from './Completions/cssCompletionItemProvider';
 import { JsCompletionItemProvider } from './Completions/jsCompletionItemProvider';
+import { LocalizationViewProvider } from './WebviewViewProvider/LocalizationViewProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -1769,6 +1770,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		let cssCompletionItemProvider = new CssCompletionItemProvider(context);
 		context.subscriptions.push(vscode.languages.registerCompletionItemProvider(cssCompletionItemProvider.selector, cssCompletionItemProvider));
 	}
+	const localizationViewProvider = new LocalizationViewProvider(context);
+	vscode.window.registerWebviewViewProvider(LocalizationViewProvider.viewType, localizationViewProvider);
 	// let jsCompletionItemProvider = new JsCompletionItemProvider(context);
 	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider(jsCompletionItemProvider.selector, jsCompletionItemProvider));
 	// context.subscriptions.push(ActiveListEditorProvider.register(context));

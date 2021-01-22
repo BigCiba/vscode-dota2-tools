@@ -1,0 +1,40 @@
+body {
+	background-color: transparent;
+}
+.localization-list {
+	list-style: none;
+	padding: 0;
+	width: 100%;
+}
+.title {
+	width: 100%;
+	height: 2em;
+}
+input {
+	background-color: #2a2b26; 
+}
+textarea {
+	resize: none;
+}
+table {
+	width: 100%;
+}
+
+tr:nth-child(odd) {
+	background-color: #2a2b26;
+}
+tr:nth-child(odd) textarea {
+	background-color: #2a2b26;
+}
+b {
+	vertical-align: middle;
+}
+tr
+{
+	width: 100%;
+	height: 2em;
+}
+tr:hover
+{
+	background-color: #3e3d32;
+}

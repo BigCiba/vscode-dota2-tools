@@ -54,6 +54,13 @@
 			]
 		},
 		"views": {
+			"explorer": [
+				{
+					"type": "webview",
+					"id": "LocalizationViewProvider",
+					"name": "本地化"
+				}
+			],
 			"kvdownload": [
 				{
 					"id": "kvdownloadExplorer",
