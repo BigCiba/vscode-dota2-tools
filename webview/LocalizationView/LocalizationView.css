@@ -6,69 +6,6 @@ body {
 	padding: 0;
 	width: 100%;
 }
-/* .TreeItem {
-	width: 100%;
-	border-top: 1px solid #00000000;
-	border-bottom: 1px solid #00000000;
-	padding-top: 14px;
-	padding-left: 5px;
-	padding-right: 14px;
-	padding-bottom: 22px;
-}
-.TreeItem:hover {
-	border-top: 1px solid #2c2d26;
-	border-bottom: 1px solid #2c2d26;
-	background-color: #2c2d26;
-}
-.TreeItem .Active,
-.TreeItem:active {
-	border-top: 1px solid #494a44;
-	border-bottom: 1px solid #494a44;
-	background-color: #30312a;
-}
-.VerticalLine {
-	display: inline;
-	width: 2px;
-	height: 100px;
-	background-color: #0c7d9d;
-}
-.Content {
-	display: inline;
-	margin-left: 6px;
-	height: 100%;
-}
-.title {
-	width: 100%;
-	height: 2em;
-}
-input {
-	background-color: #2a2b26; 
-}
-textarea {
-	resize: none;
-}
-table {
-	width: 100%;
-} */
-
-tr:nth-child(odd) {
-	background-color: #2a2b26;
-}
-tr:nth-child(odd) textarea {
-	background-color: #2a2b26;
-}
-b {
-	vertical-align: middle;
-}
-tr
-{
-	width: 100%;
-	height: 2em;
-}
-/* tr:hover
-{
-	background-color: #3e3d32;
-} */
 
 .item-contents {
 	--sash-size: 4px;
@@ -97,6 +34,11 @@ tr
 	background-color: #2c2d26;
 }
 .item-contents:active {
+	border-top: 1px solid #494a44;
+	border-bottom: 1px solid #494a44;
+	background-color: #30312a;
+}
+.item-contents.selected {
 	border-top: 1px solid #494a44;
 	border-bottom: 1px solid #494a44;
 	background-color: #30312a;
@@ -253,6 +195,17 @@ tr
 .list-row:active {
 	background-color: #75715e;
 }
+.list-row.selected {
+	background-color: #75715e;
+}
+.editing .list-row.selected {
+	display: none;
+}
+.list-row input:not([type='checkbox']).list-object-key,
+.list-row textarea.list-object-key {
+	width: 30%;
+	vertical-align: top;
+}
 .list-object-key {
 	--sash-size: 4px;
 	--monaco-monospace-font: Consolas,"Courier New",monospace;
@@ -269,7 +222,7 @@ tr
 	overflow: hidden;
 	/* text-overflow: ellipsis; */
 	margin-left: 4px;
-	min-width: 40%;
+	min-width: 30%;
 	display: inline-block;
 	line-height: 24px;
 }
@@ -290,6 +243,53 @@ tr
 	width: 100%;
 	display: inline-block;
 	line-height: 24px;
+}
+.list-object-edit {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	font-size: 13px;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	line-height: 1.4em!important;
+	white-space: normal;
+	box-sizing: border-box;
+	/* display: flex; */
+	text-align: center;
+	cursor: pointer;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	width: auto;
+	padding: 2px 14px;
+	margin: 0 4px;
+	color: rgb(255, 255, 255);
+	background-color: rgb(117, 113, 94);
+}
+.list-object-delete {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	font-size: 13px;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	line-height: 1.4em!important;
+	white-space: normal;
+	box-sizing: border-box;
+	/* display: flex; */
+	text-align: center;
+	cursor: pointer;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	width: auto;
+	padding: 2px 14px;
+	color: rgb(255, 255, 255);
+	background-color: rgb(117, 113, 94);
 }
 .list-new-row {
 	--sash-size: 4px;
@@ -333,4 +333,22 @@ tr
 .monaco-text-button:hover {
 	color: rgb(255, 255, 255);
 	background-color: #8d8871;
+}
+.editing .new-btn,
+.edit .new-btn {
+	display: none;
+}
+.new-edit-btn {
+	display: none;
+}
+.editing .new-edit-btn,
+.edit .new-edit-btn {
+	display: inline-block;
+}
+.control-btn {
+	display: none;
+	float: right;
+}
+.control .control-btn {
+	display: inline-block;
 }
