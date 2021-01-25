@@ -22,9 +22,16 @@ let testData = {
 		Description: "召唤一个镜像守卫一片区域，镜像会自动攻击周围的单位并且会模仿虚无之灵施法，守卫无法移动。",
 	}
 };
+let localization = {}
 window.addEventListener('message', event => {
 	const message = event.data;
-	ShowLocalization(message);
+	console.log(message);
+	if (message.type == 'LuaText') {
+		ShowLocalization(message.data);
+	} else if(message.type == 'Localization') {
+		localization = message.data;
+		ShowLocalization(message.data);
+	}
 });
 HTMLElement.prototype.createChild = function (tagName, option) {
 	let element = document.createElement(tagName);
@@ -200,12 +207,18 @@ function ShowLocalization(message) {
 		// 取消编辑状态
 		if (nodeData[name].editNode) {
 			nodeData[name].editNode.remove();
-			// 编辑中
-			if (nodeData[name].rootNode.classList.contains('editing') == true) {
-				nodeData[name].rootNode.classList.remove('editing');
-			} else {
-				nodeData[name].rootNode.classList.remove('edit');
-			}
+		}
+		if (nodeData[name].selectRow) {
+			nodeData[name].selectRow.classList.remove('selected');
+		}
+		// 编辑中
+		if (nodeData[name].rootNode.classList.contains('editing') == true) {
+			nodeData[name].rootNode.classList.remove('editing');
+		} else if (nodeData[name].rootNode.classList.contains('control') == true) {
+			nodeData[name].rootNode.classList.remove('control');
+		}
+		else {
+			nodeData[name].rootNode.classList.remove('edit');
 		}
 	}
 }
