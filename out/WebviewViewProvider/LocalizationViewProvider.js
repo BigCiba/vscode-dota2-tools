@@ -13,6 +13,7 @@ exports.LocalizationViewProvider = void 0;
 const vscode = require("vscode");
 const os = require("os");
 const fs = require("fs");
+const path = require("path");
 const init_1 = require("../init");
 const util_1 = require("../util");
 class LocalizationViewProvider {
@@ -20,18 +21,6 @@ class LocalizationViewProvider {
         this.context = context;
         this.localization = {};
         this.luaText = '';
-        // this.parseText().then((result) => {
-        // 	this.localization = result;
-        // 	if (this._view) {
-        // 		this._view.webview.postMessage({
-        // 			type: "LuaText",
-        // 			data: this.parseLua()
-        // 		});
-        // 	}
-        // });
-        // if (vscode.window.activeTextEditor != undefined) {
-        // 	this.luaText = vscode.window.activeTextEditor.document.getText();
-        // }
         vscode.window.onDidChangeActiveTextEditor(data => {
             var _a;
             if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua" && this._view) {
@@ -53,6 +42,7 @@ class LocalizationViewProvider {
             webviewView.webview.html = util_1.GetWebViewContent(this.context, 'webview/LocalizationView/LocalizationView.html');
             webviewView.webview.onDidReceiveMessage(data => {
             });
+            // 解析文本
             this.localization = yield this.parseText();
             if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua") {
                 webviewView.webview.postMessage({
@@ -60,6 +50,18 @@ class LocalizationViewProvider {
                     data: this.parseLua()
                 });
             }
+            // 解析kv与lua关联
+            let ability_kv = yield util_1.ReadKeyValueWithBaseIncludePath(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt');
+            for (const kvPath in ability_kv) {
+                console.log(kvPath);
+                const DOTAAbilities = ability_kv[kvPath];
+            }
+            // for (const key in ability_kv.DOTAAbilities) {
+            // 	const value = ability_kv.DOTAAbilities[key];
+            // 	if (typeof (value) === 'object') {
+            // 		KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
+            // 	}
+            // }
             webviewView.webview.onDidReceiveMessage((data) => __awaiter(this, void 0, void 0, function* () {
                 switch (data.type) {
                     case 'new':
@@ -164,21 +166,25 @@ class LocalizationViewProvider {
      */
     parseLua() {
         if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua") {
-            let luaText = vscode.window.activeTextEditor.document.getText();
-            let result = {};
-            util_1.EachLine(luaText, (_lineNumber, lineText) => {
-                if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
-                    let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
-                    let textData = this.searchLocalization('DOTA_Tooltip_' + key);
-                    result[key] = textData;
+            for (const key in init_1.KV2LUA) {
+                if (path.normalize(vscode.window.activeTextEditor.document.uri.fsPath) == path.normalize(init_1.KV2LUA[key])) {
+                    let result = {};
+                    let luaText = vscode.window.activeTextEditor.document.getText();
+                    util_1.EachLine(luaText, (_lineNumber, lineText) => {
+                        if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
+                            let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
+                            let textData = this.searchLocalization('DOTA_Tooltip_' + key);
+                            result[key] = textData;
+                        }
+                        else if (lineText.search(/\s*([^ \f\n\r\v]*).*=.*class\(.*/) != -1) {
+                            let key = lineText.replace(/\s*([^ \f\n\r\v]*).*=.*class\(.*/, '$1');
+                            let textData = this.searchLocalization('DOTA_Tooltip_ability_' + key);
+                            result[key] = textData;
+                        }
+                    });
+                    return result;
                 }
-                else if (lineText.search(/\s*([^ \f\n\r\v]*).*=.*class\(.*/) != -1) {
-                    let key = lineText.replace(/\s*([^ \f\n\r\v]*).*=.*class\(.*/, '$1');
-                    let textData = this.searchLocalization('DOTA_Tooltip_ability_' + key);
-                    result[key] = textData;
-                }
-            });
-            return result;
+            }
         }
     }
     // 解析本地化数据

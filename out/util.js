@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EachLine = exports.locale = exports.isEmptyCSVValue = exports.Obj2CSV = exports.CSV2Obj = exports.StringToAny = exports.Obj2Str = exports.FormatPath = exports.GetLuaScriptSnippet = exports.GetVscodeResourceUri = exports.getNonce = exports.UnitCSV2KV = exports.AbilityCSV2KV = exports.MultilayerCSV2KV = exports.WriteKeyValue = exports.Array2CSV = exports.CSV2Array = exports.CSVParse = exports.RemoveComment = exports.ReplaceKeyValue = exports.OverrideKeyValue = exports.GetKeyValueObjectByIndex = exports.ReadKeyValueWithBase = exports.ReadKeyValue3 = exports.ReadKeyValue2 = exports.ReadKV3 = exports.IsNumber = exports.ObjectHasKey = exports.DirExists = exports.MakeDir = exports.GetStat = exports.GetFileInfo = exports.ReadAPI = exports.GetAbilityTextureContent = exports.GetConstantNoteContent = exports.GetNoteAPIContent = exports.ReadEnum = exports.ReadFunction = exports.GetParenthesesStr = exports.GetBracketStr = exports.GetWebViewContent = exports.OpenUrlInBrowser = exports.OpenFileInVscode = exports.OpenInFinder = exports.GetExtensionFileAbsolutePath = exports.GetStrRangeInFile = exports.FindStrInFile = exports.ShowInfo = exports.ShowError = exports.GetRootPath = void 0;
+exports.EachLine = exports.locale = exports.isEmptyCSVValue = exports.Obj2CSV = exports.CSV2Obj = exports.StringToAny = exports.Obj2Str = exports.FormatPath = exports.GetLuaScriptSnippet = exports.GetVscodeResourceUri = exports.getNonce = exports.UnitCSV2KV = exports.AbilityCSV2KV = exports.MultilayerCSV2KV = exports.WriteKeyValue = exports.Array2CSV = exports.CSV2Array = exports.CSVParse = exports.RemoveComment = exports.ReplaceKeyValue = exports.OverrideKeyValue = exports.GetKeyValueObjectByIndex = exports.ReadKeyValueWithBaseIncludePath = exports.ReadKeyValueWithBase = exports.ReadKeyValue3 = exports.ReadKeyValue2 = exports.ReadKV3 = exports.IsNumber = exports.ObjectHasKey = exports.DirExists = exports.MakeDir = exports.GetStat = exports.GetFileInfo = exports.ReadAPI = exports.GetAbilityTextureContent = exports.GetConstantNoteContent = exports.GetNoteAPIContent = exports.ReadEnum = exports.ReadFunction = exports.GetParenthesesStr = exports.GetBracketStr = exports.GetWebViewContent = exports.OpenUrlInBrowser = exports.OpenFileInVscode = exports.OpenInFinder = exports.GetExtensionFileAbsolutePath = exports.GetStrRangeInFile = exports.FindStrInFile = exports.ShowInfo = exports.ShowError = exports.GetRootPath = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
@@ -959,6 +959,46 @@ function ReadKeyValueWithBase(full_path) {
     });
 }
 exports.ReadKeyValueWithBase = ReadKeyValueWithBase;
+// 读取kv2格式为object（#base）包含路径信息
+function ReadKeyValueWithBaseIncludePath(full_path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let result = {};
+        // 获取名字
+        let file_name = full_path.split('/').pop() || '';
+        let path = full_path.split(file_name)[0];
+        let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
+        // 用路径索引
+        result[full_path] = kvdata;
+        // let kvtable = kvdata[Object.keys(kvdata)[0]];
+        let kv_string = fs.readFileSync(full_path, 'utf-8');
+        kv_string = RemoveComment(kv_string);
+        const rows = kv_string.split(os.EOL);
+        for (let i = 0; i < rows.length; i++) {
+            const line_text = rows[i];
+            if (line_text.search(/#base ".*"/) !== -1) {
+                let base_path = line_text.split('"')[1];
+                // 找不到文件则跳过
+                if ((yield GetStat(path + base_path)) === false) {
+                    ShowError("文件缺失：" + path + base_path);
+                    continue;
+                }
+                let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
+                // 用路径索引
+                result[path + base_path] = kv;
+                let table = kv[Object.keys(kv)[0]];
+                for (const key in table) {
+                    const value = table[key];
+                    // kvtable[key] = value;
+                }
+            }
+            else {
+                continue;
+            }
+        }
+        return result;
+    });
+}
+exports.ReadKeyValueWithBaseIncludePath = ReadKeyValueWithBaseIncludePath;
 // 获取从ReadKeyValue2、ReadKeyValue3、ReadKeyValueWithBase得到的对象里的第index个对象，用于去掉外层，使其与DOTA2读取的KV结构一致
 function GetKeyValueObjectByIndex(Obj, index = 0) {
     if (typeof (Obj) !== "object") {

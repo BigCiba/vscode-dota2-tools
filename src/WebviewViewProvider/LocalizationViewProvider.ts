@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as fs from 'fs';
-import { GameDir } from '../init';
-import { EachLine, GetWebViewContent } from '../util';
+import * as path from 'path';
+import { GameDir, KV2LUA } from '../init';
+import { EachLine, GetWebViewContent, ReadKeyValueWithBaseIncludePath } from '../util';
 
 interface LocalizationModifier {
 	Title?: string;
@@ -26,18 +27,6 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 	constructor(
 		private readonly context: vscode.ExtensionContext,
 	) {
-		// this.parseText().then((result) => {
-		// 	this.localization = result;
-		// 	if (this._view) {
-		// 		this._view.webview.postMessage({
-		// 			type: "LuaText",
-		// 			data: this.parseLua()
-		// 		});
-		// 	}
-		// });
-		// if (vscode.window.activeTextEditor != undefined) {
-		// 	this.luaText = vscode.window.activeTextEditor.document.getText();
-		// }
 		vscode.window.onDidChangeActiveTextEditor(data => {
 			if (vscode.window.activeTextEditor?.document.languageId == "lua" && this._view) {
 				this.luaText = vscode.window.activeTextEditor.document.getText();
@@ -63,7 +52,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 		webviewView.webview.html = GetWebViewContent(this.context, 'webview/LocalizationView/LocalizationView.html');
 		webviewView.webview.onDidReceiveMessage(data => {
 		});
-
+		// 解析文本
 		this.localization = await this.parseText();
 		if (vscode.window.activeTextEditor?.document.languageId == "lua") {
 			webviewView.webview.postMessage({
@@ -71,6 +60,18 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 				data: this.parseLua()
 			});
 		}
+		// 解析kv与lua关联
+		// let ability_kv: any = await ReadKeyValueWithBaseIncludePath(GameDir + '/scripts/npc/npc_abilities_custom.txt');
+		// for (const kvPath in ability_kv) {
+		// 	const DOTAAbilities = ability_kv[kvPath];
+
+		// }
+		// for (const key in ability_kv.DOTAAbilities) {
+		// 	const value = ability_kv.DOTAAbilities[key];
+		// 	if (typeof (value) === 'object') {
+		// 		KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
+		// 	}
+		// }
 
 		webviewView.webview.onDidReceiveMessage(async data => {
 			switch (data.type) {
@@ -172,20 +173,24 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 	 */
 	parseLua() {
 		if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua") {
-			let luaText = vscode.window.activeTextEditor.document.getText();
-			let result: { [key: string]: LocalizationAbility | LocalizationModifier; } = {};
-			EachLine(luaText, (_lineNumber, lineText) => {
-				if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
-					let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
-					let textData = this.searchLocalization('DOTA_Tooltip_' + key);
-					result[key] = textData;
-				} else if (lineText.search(/\s*([^ \f\n\r\v]*).*=.*class\(.*/) != -1) {
-					let key = lineText.replace(/\s*([^ \f\n\r\v]*).*=.*class\(.*/, '$1');
-					let textData = this.searchLocalization('DOTA_Tooltip_ability_' + key);
-					result[key] = textData;
+			for (const key in KV2LUA) {
+				if (path.normalize(vscode.window.activeTextEditor.document.uri.fsPath) == path.normalize(KV2LUA[key])) {
+					let result: { [key: string]: LocalizationAbility | LocalizationModifier; } = {};
+					let luaText = vscode.window.activeTextEditor.document.getText();
+					EachLine(luaText, (_lineNumber, lineText) => {
+						if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
+							let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
+							let textData = this.searchLocalization('DOTA_Tooltip_' + key);
+							result[key] = textData;
+						} else if (lineText.search(/\s*([^ \f\n\r\v]*).*=.*class\(.*/) != -1) {
+							let key = lineText.replace(/\s*([^ \f\n\r\v]*).*=.*class\(.*/, '$1');
+							let textData = this.searchLocalization('DOTA_Tooltip_ability_' + key);
+							result[key] = textData;
+						}
+					});
+					return result;
 				}
-			});
-			return result;
+			}
 		}
 	}
 	// 解析本地化数据

@@ -902,6 +902,43 @@ export async function ReadKeyValueWithBase(full_path: string) {
 	}
 	return kvdata;
 }
+// 读取kv2格式为object（#base）包含路径信息
+export async function ReadKeyValueWithBaseIncludePath(full_path: string) {
+	let result:any = {};
+	// 获取名字
+	let file_name: string = full_path.split('/').pop() || '';
+	let path = full_path.split(file_name)[0];
+
+	let kvdata = ReadKeyValue2(fs.readFileSync(full_path, 'utf-8'));
+	// 用路径索引
+	result[full_path] = kvdata;
+	// let kvtable = kvdata[Object.keys(kvdata)[0]];
+	let kv_string = fs.readFileSync(full_path, 'utf-8');
+	kv_string = RemoveComment(kv_string);
+	const rows: string[] = kv_string.split(os.EOL);
+	for (let i = 0; i < rows.length; i++) {
+		const line_text: string = rows[i];
+		if (line_text.search(/#base ".*"/) !== -1) {
+			let base_path = line_text.split('"')[1];
+			// 找不到文件则跳过
+			if (await GetStat(path + base_path) === false) {
+				ShowError("文件缺失：" + path + base_path);
+				continue;
+			}
+			let kv = ReadKeyValue2(fs.readFileSync(path + base_path, 'utf-8'));
+			// 用路径索引
+			result[path + base_path] = kv;
+			let table = kv[Object.keys(kv)[0]];
+			for (const key in table) {
+				const value = table[key];
+				// kvtable[key] = value;
+			}
+		} else {
+			continue;
+		}
+	}
+	return result;
+}
 
 // 获取从ReadKeyValue2、ReadKeyValue3、ReadKeyValueWithBase得到的对象里的第index个对象，用于去掉外层，使其与DOTA2读取的KV结构一致
 export function GetKeyValueObjectByIndex(Obj: any, index: number = 0) {

@@ -508,7 +508,40 @@ function activate(context) {
                 if (init_1.KV2LUA[word] !== undefined) {
                     let kv_string = fs.readFileSync(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt', 'utf-8');
                     kv_string = util.RemoveComment(kv_string);
-                    const rows = kv_string.split(os.EOL);
+                    let rows = kv_string.split(os.EOL);
+                    for (let i = 0; i < rows.length; i++) {
+                        const line_text = rows[i];
+                        if (line_text.search(/#base ".*"/) !== -1) {
+                            let base_path = line_text.split('"')[1];
+                            let bFind = GetKVInfo(init_1.GameDir + '/scripts/npc/' + base_path, word);
+                            if (bFind !== false && typeof (bFind) === 'number') {
+                                let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(init_1.GameDir + '/scripts/npc/' + base_path));
+                                const options = {
+                                    selection: new vscode.Range(new vscode.Position(bFind, 0), new vscode.Position(bFind, 0)),
+                                    preview: false,
+                                    viewColumn: vscode.ViewColumn.Two
+                                };
+                                vscode.window.showTextDocument(document, options);
+                                break;
+                            }
+                            continue;
+                        }
+                        else {
+                            if (line_text.search(word) !== -1) {
+                                let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt'));
+                                const options = {
+                                    selection: new vscode.Range(new vscode.Position(i, 0), new vscode.Position(i, 0)),
+                                    preview: false,
+                                    viewColumn: vscode.ViewColumn.Two
+                                };
+                                vscode.window.showTextDocument(document, options);
+                                break;
+                            }
+                        }
+                    }
+                    kv_string = fs.readFileSync(init_1.GameDir + '/scripts/npc/npc_items_custom.txt', 'utf-8');
+                    kv_string = util.RemoveComment(kv_string);
+                    rows = kv_string.split(os.EOL);
                     for (let i = 0; i < rows.length; i++) {
                         const line_text = rows[i];
                         if (line_text.search(/#base ".*"/) !== -1) {

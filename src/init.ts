@@ -382,6 +382,14 @@ export async function Init(context: vscode.ExtensionContext) {
 		}
 	}
 
+	let item_kv: any = await util.ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_items_custom.txt');
+	for (const key in item_kv.DOTAAbilities) {
+		const value = item_kv.DOTAAbilities[key];
+		if (typeof (value) === 'object') {
+			KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
+		}
+	}
+
 	function provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
 		const fileName = document.fileName;
 		const workDir = path.dirname(fileName);
