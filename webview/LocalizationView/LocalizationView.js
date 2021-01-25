@@ -1,34 +1,14 @@
 const vscode = acquireVsCodeApi();
 let rootElement = document.getElementById('localization-root');
-// 测试数据
-let testData = {
-	"void_spirit_1": {
-		Title: "太虚守卫",
-		Description: "召唤一个镜像守卫一片区域，镜像会自动攻击周围的单位并且会模仿虚无之灵施法，守卫无法移动。",
-		Lore: "无玄的存在远超时间和空间中的一个点。",
-		scepter_description_2: "所有太虚守卫都会模仿虚无之灵施放太虚之径。",
-		duration: "持续时间："
-	},
-	"modifier_void_spirit_1": {
-		Title: "太虚守卫",
-		Description: "召唤一个镜像守卫一片区域，镜像会自动攻击周围的单位并且会模仿虚无之灵施法，守卫无法移动。",
-	},
-	"modifier_void_spirit_1_debuff": {
-		Title: "太虚守卫",
-		Description: "召唤一个镜像守卫一片区域，镜像会自动攻击周围的单位并且会模仿虚无之灵施法，守卫无法移动。",
-	},
-	"modifier_void_spirit_1_shield": {
-		Title: "太虚守卫",
-		Description: "召唤一个镜像守卫一片区域，镜像会自动攻击周围的单位并且会模仿虚无之灵施法，守卫无法移动。",
-	}
-};
-let localization = {}
+let localization = {};
+let language = 'schinese';
 window.addEventListener('message', event => {
 	const message = event.data;
 	console.log(message);
 	if (message.type == 'LuaText') {
+		console.log(message.data);
 		ShowLocalization(message.data);
-	} else if(message.type == 'Localization') {
+	} else if (message.type == 'Localization') {
 		localization = message.data;
 		ShowLocalization(message.data);
 	}
@@ -53,10 +33,24 @@ HTMLElement.prototype.createChild = function (tagName, option) {
 	}
 	return element;
 };
-function ShowLocalization(message) {
+// let result = {
+// 	english: {
+// 		"asfa/asdfas.txt": {
+// 			"DOTA_Tooltip_ability_art_death_seal": "412412",
+// 			"DOTA_Tooltip_ability_art_death_seal_Description": "死亡圣印",
+// 			"DOTA_Tooltip_ability_art_death_seal_Lore": "死亡圣印"
+// 		}
+// 	}
+// };
+function ShowLocalization(textData) {
+	// 清空面板
 	rootElement.innerHTML = "";
 	let nodeData = {};
-	for (const name in message) {
+	for (const name in textData) {
+		// 取出特定语言数据
+		let langData = textData[name][language];
+		let path = Object.keys(langData)[0];
+
 		nodeData[name] = {
 			// selectRow: undefined,	// 选中的行
 			// rootNode: undefined,		// 根节点
@@ -82,8 +76,8 @@ function ShowLocalization(message) {
 		let headerElement = listElement.createChild('div', { class: 'list-row-header' });
 		headerElement.createChild('div', { class: 'list-object-key', text: '项' });
 		headerElement.createChild('div', { class: 'list-object-value', text: '值' });
-		for (const key in message[name]) {
-			newRow(name, key, message[name][key]);
+		for (const key in langData[path]) {
+			newRow(name, key, langData[path][key]);
 			// rowElement.createChild('div', { class: 'list-object-edit', text: 'ok' });
 			// rowElement.createChild('div', { class: 'list-object-delete', text: 'cancle' });
 		}
@@ -116,13 +110,34 @@ function ShowLocalization(message) {
 				nodeData[name].editNode.remove();
 				// 编辑中
 				if (contentElement.classList.contains('editing') == true) {
-					console.log(key, value);
+					// 修改已有键值
 					nodeData[name].selectRow.children[0].innerText = key;
 					nodeData[name].selectRow.children[1].innerText = value;
 					contentElement.classList.toggle('editing');
+					vscode.postMessage({
+						type: 'edit',
+						data: {
+							language: language,
+							path: path,
+							name: name,
+							key: key,
+							value: value
+						},
+					});
 				} else {
+					// 新键值
 					if (key != '') {
 						newRow(name, key, value);
+						vscode.postMessage({
+							type: 'new',
+							data: {
+								language: language,
+								path: path,
+								name: name,
+								key: key,
+								value: value
+							},
+						});
 					}
 					contentElement.classList.toggle('edit');
 				}
@@ -155,13 +170,17 @@ function ShowLocalization(message) {
 		});
 		// 编辑
 		let btnEditElement = btnRowElement.createChild('a', { class: 'monaco-text-button control-btn', text: '编辑' });
-		btnEditElement.addEventListener('click', () => {
+		btnEditElement.addEventListener('click', EditFunc(contentElement, name, listElement));
+	}
+
+	function EditFunc(contentElement, name, listElement) {
+		return () => {
 			// 进入编辑模式
 			contentElement.classList.remove('control');
 			contentElement.classList.add('editing');
 
 			if (nodeData[name].selectRow) {
-				let insert_index = 0
+				let insert_index = 0;
 				for (let index = 0; index < listElement.children.length; index++) {
 					if (nodeData[name].selectRow == listElement.children[index]) {
 						insert_index = index;
@@ -180,11 +199,18 @@ function ShowLocalization(message) {
 				// 记录编辑的行
 				nodeData[name].editNode = rowElement;
 			}
-		});
+		};
 	}
 
 	// 添加新的键对
 	function newRow(name, key, value) {
+		if (key.replace(RegExp('dota_tooltip_ability_' + name, 'gi'), '') == '') {
+			key = 'title';
+		} else if (key.replace(RegExp('dota_tooltip_' + name, 'gi'), '') == '') {
+			key = 'title';
+		} else {
+			key = key.replace(RegExp('dota_tooltip_ability_' + name + '_', 'gi'), '').replace(RegExp('dota_tooltip_' + name + '_', 'gi'), '');
+		}
 		let rowElement = nodeData[name].listNode.createChild('div', { class: 'list-row' });
 		rowElement.createChild('div', { class: 'list-object-key', text: key });
 		rowElement.createChild('div', { class: 'list-object-value', text: value });
@@ -202,6 +228,7 @@ function ShowLocalization(message) {
 			nodeData[name].rootNode.classList.add('control');
 			nodeData[name].selectRow = rowElement;
 		});
+		rowElement.addEventListener('dblclick', EditFunc(nodeData[name].rootNode, name, nodeData[name].listNode));
 	}
 	function ClearRowSelect(name) {
 		// 取消编辑状态

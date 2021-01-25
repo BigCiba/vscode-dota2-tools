@@ -1468,47 +1468,54 @@ function GetVscodeResourceUri(path) {
     return vscode.Uri.file(path).with({ scheme: 'vscode-webview-resource' }).toString();
 }
 exports.GetVscodeResourceUri = GetVscodeResourceUri;
-function GetLuaScriptSnippet(filename, path) {
+function GetLuaScriptSnippet(filename, luaPath, context) {
     try {
         const templateConfig = vscode.workspace.getConfiguration().get('dota2-tools.LuaTemplateFiles');
         let SnippetPath = (filename.indexOf("item_") == -1) ? ((GetRootPath() + templateConfig.ability).replace(/\\/g, "/")) : ((GetRootPath() + templateConfig.item).replace(/\\/g, "/"));
         let snippet = fs.readFileSync(SnippetPath, "utf-8");
         snippet = snippet.replace(/\[filename\]/g, filename);
-        snippet = snippet.replace(/\[path\]/g, path);
+        snippet = snippet.replace(/\[path\]/g, luaPath);
         return snippet;
     }
     catch (error) {
         console.log("[warning]:No snippet file");
     }
-    return `LinkLuaModifier( "modifier_${filename}", "${path}.lua", LUA_MODIFIER_MOTION_NONE )
---Abilities
-if ${filename} == nil then
-	${filename} = class({})
-end
-function ${filename}:GetIntrinsicModifierName()
-	return "modifier_${filename}"
-end
----------------------------------------------------------------------
---Modifiers
-if modifier_${filename} == nil then
-	modifier_${filename} = class({})
-end
-function modifier_${filename}:OnCreated(params)
-	if IsServer() then
-	end
-end
-function modifier_${filename}:OnRefresh(params)
-	if IsServer() then
-	end
-end
-function modifier_${filename}:OnDestroy()
-	if IsServer() then
-	end
-end
-function modifier_${filename}:DeclareFunctions()
-	return {
-	}
-end`;
+    if (context) {
+        let snippet = fs.readFileSync(path.join(context.extensionPath, 'resource', 'lua_template.lua'), "utf-8");
+        snippet = snippet.replace(/filename/g, filename);
+        snippet = snippet.replace(/path/g, luaPath);
+        return snippet;
+    }
+    return '';
+    // 	return `LinkLuaModifier( "modifier_${filename}", "${luaPath}.lua", LUA_MODIFIER_MOTION_NONE )
+    // --Abilities
+    // if ${filename} == nil then
+    // 	${filename} = class({})
+    // end
+    // function ${filename}:GetIntrinsicModifierName()
+    // 	return "modifier_${filename}"
+    // end
+    // ---------------------------------------------------------------------
+    // --Modifiers
+    // if modifier_${filename} == nil then
+    // 	modifier_${filename} = class({})
+    // end
+    // function modifier_${filename}:OnCreated(params)
+    // 	if IsServer() then
+    // 	end
+    // end
+    // function modifier_${filename}:OnRefresh(params)
+    // 	if IsServer() then
+    // 	end
+    // end
+    // function modifier_${filename}:OnDestroy()
+    // 	if IsServer() then
+    // 	end
+    // end
+    // function modifier_${filename}:DeclareFunctions()
+    // 	return {
+    // 	}
+    // end`;
 }
 exports.GetLuaScriptSnippet = GetLuaScriptSnippet;
 function FormatPath(path) {

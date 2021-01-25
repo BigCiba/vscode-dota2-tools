@@ -21,7 +21,6 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 const util = require("./util");
-const util_1 = require("util");
 const os = require("os");
 const ftp = require("ftp");
 const luaAPITree_1 = require("./TreeDataProvider/luaAPITree");
@@ -429,7 +428,7 @@ function Init(context) {
         let ability_kv = yield util.ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
         for (const key in ability_kv.DOTAAbilities) {
             const value = ability_kv.DOTAAbilities[key];
-            if (util_1.isObject(value) === true) {
+            if (typeof (value) === 'object') {
                 KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
             }
         }
@@ -458,7 +457,7 @@ function Init(context) {
                     }
                     else {
                         util.DirExists(path.dirname(destPath));
-                        fs.writeFileSync(destPath, util.GetLuaScriptSnippet(path.basename(lua_path).replace('.lua', ''), lua_path));
+                        fs.writeFileSync(destPath, util.GetLuaScriptSnippet(path.basename(lua_path).replace('.lua', ''), lua_path, context));
                     }
                 }
             }

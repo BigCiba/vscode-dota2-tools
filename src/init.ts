@@ -377,7 +377,7 @@ export async function Init(context: vscode.ExtensionContext) {
 	let ability_kv: any = await util.ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
 	for (const key in ability_kv.DOTAAbilities) {
 		const value = ability_kv.DOTAAbilities[key];
-		if (isObject(value) === true) {
+		if (typeof (value) === 'object') {
 			KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
 		}
 	}
@@ -410,7 +410,7 @@ export async function Init(context: vscode.ExtensionContext) {
 					return new vscode.Location(vscode.Uri.file(destPath), new vscode.Position(0, 0));
 				} else {
 					util.DirExists(path.dirname(destPath));
-					fs.writeFileSync(destPath, util.GetLuaScriptSnippet(path.basename(lua_path).replace('.lua', ''), lua_path));
+					fs.writeFileSync(destPath, util.GetLuaScriptSnippet(path.basename(lua_path).replace('.lua', ''), lua_path, context));
 				}
 			}
 		}
