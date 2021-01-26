@@ -20,11 +20,13 @@ class LocalizationViewProvider {
     constructor(context) {
         this.context = context;
         this.localization = {};
-        this.luaText = '';
+        // private luaText: string = '';
+        this.kvToLua = {}; // 关联kv与lua脚本
+        this.luaToKv = {}; // 关联lua脚本与kv
         vscode.window.onDidChangeActiveTextEditor(data => {
             var _a;
             if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua" && this._view) {
-                this.luaText = vscode.window.activeTextEditor.document.getText();
+                // this.luaText = vscode.window.activeTextEditor.document.getText();
                 this._view.webview.postMessage({
                     type: "LuaText",
                     data: this.parseLua()
@@ -51,17 +53,28 @@ class LocalizationViewProvider {
                 });
             }
             // 解析kv与lua关联
-            let ability_kv = yield util_1.ReadKeyValueWithBaseIncludePath(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt');
-            for (const kvPath in ability_kv) {
-                console.log(kvPath);
-                const DOTAAbilities = ability_kv[kvPath];
+            let npc_abilities_custom_base = yield util_1.ReadKeyValueWithBase(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt');
+            let npc_items_custom_base = yield util_1.ReadKeyValueWithBase(init_1.GameDir + '/scripts/npc/npc_items_custom.txt');
+            let npc_abilities_custom_base_kv = npc_abilities_custom_base[Object.keys(npc_abilities_custom_base)[0]];
+            let npc_items_custom_base_kv = npc_items_custom_base[Object.keys(npc_items_custom_base)[0]];
+            for (const key in npc_abilities_custom_base_kv) {
+                let value = npc_abilities_custom_base_kv[key];
+                let ScriptFile = path.normalize(`${init_1.GameDir}/scripts/vscripts/${value.ScriptFile}.lua`);
+                this.kvToLua[key] = ScriptFile;
+                if (this.luaToKv[ScriptFile] == undefined) {
+                    this.luaToKv[ScriptFile] = [];
+                }
+                this.luaToKv[ScriptFile].push(key);
             }
-            // for (const key in ability_kv.DOTAAbilities) {
-            // 	const value = ability_kv.DOTAAbilities[key];
-            // 	if (typeof (value) === 'object') {
-            // 		KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
-            // 	}
-            // }
+            for (const key in npc_items_custom_base_kv) {
+                let value = npc_items_custom_base_kv[key];
+                let ScriptFile = path.normalize(`${init_1.GameDir}/scripts/vscripts/${value.ScriptFile}.lua`);
+                this.kvToLua[key] = ScriptFile;
+                if (this.luaToKv[ScriptFile] == undefined) {
+                    this.luaToKv[ScriptFile] = [];
+                }
+                this.luaToKv[ScriptFile].push(key);
+            }
             webviewView.webview.onDidReceiveMessage((data) => __awaiter(this, void 0, void 0, function* () {
                 switch (data.type) {
                     case 'new':
@@ -144,7 +157,6 @@ class LocalizationViewProvider {
                                         }
                                     }
                                 }
-                                console.log(document.lineCount, document.lineAt(line).lineNumber);
                                 result += lineText + (document.lineCount == (document.lineAt(line).lineNumber + 1) ? '' : os.EOL);
                             }
                             fs.writeFileSync(data.data.path, result);
@@ -165,26 +177,24 @@ class LocalizationViewProvider {
      * @memberof LocalizationViewProvider
      */
     parseLua() {
-        if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua") {
-            for (const key in init_1.KV2LUA) {
-                if (path.normalize(vscode.window.activeTextEditor.document.uri.fsPath) == path.normalize(init_1.KV2LUA[key])) {
-                    let result = {};
-                    let luaText = vscode.window.activeTextEditor.document.getText();
-                    util_1.EachLine(luaText, (_lineNumber, lineText) => {
-                        if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
-                            let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
-                            let textData = this.searchLocalization('DOTA_Tooltip_' + key);
-                            result[key] = textData;
-                        }
-                        else if (lineText.search(/\s*([^ \f\n\r\v]*).*=.*class\(.*/) != -1) {
-                            let key = lineText.replace(/\s*([^ \f\n\r\v]*).*=.*class\(.*/, '$1');
-                            let textData = this.searchLocalization('DOTA_Tooltip_ability_' + key);
-                            result[key] = textData;
-                        }
-                    });
-                    return result;
-                }
+        if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua" && this.luaToKv[path.normalize(vscode.window.activeTextEditor.document.uri.fsPath)]) {
+            let result = {};
+            // 先添加技能名
+            let abilityNames = this.luaToKv[path.normalize(vscode.window.activeTextEditor.document.uri.fsPath)];
+            for (const abilityName of abilityNames) {
+                result[abilityName] = this.searchLocalization('DOTA_Tooltip_ability_' + abilityName);
+                ;
             }
+            // 添加解析的modifier
+            let luaText = vscode.window.activeTextEditor.document.getText();
+            util_1.EachLine(luaText, (_lineNumber, lineText) => {
+                if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
+                    let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
+                    let textData = this.searchLocalization('DOTA_Tooltip_' + key);
+                    result[key] = textData;
+                }
+            });
+            return result;
         }
     }
     // 解析本地化数据

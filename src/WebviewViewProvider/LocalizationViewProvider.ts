@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
-import { GameDir, KV2LUA } from '../init';
-import { EachLine, GetWebViewContent, ReadKeyValueWithBaseIncludePath } from '../util';
+import { GameDir } from '../init';
+import { EachLine, GetWebViewContent, ReadKeyValueWithBase, ReadKeyValueWithBaseIncludePath } from '../util';
 
 interface LocalizationModifier {
 	Title?: string;
@@ -17,19 +17,27 @@ interface LocalizationAbility extends LocalizationModifier {
 	scepter_description?: string;
 	[key: string]: any;
 }
+interface AbilityNameToScriptFile {
+	[abilityName: string]: string;
+}
+interface ScriptFileToAbilityName {
+	[scriptFile: string]: string[];
+}
 export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 	public static readonly viewType = 'LocalizationViewProvider';
 	private _view?: vscode.WebviewView;
 
 	private localization: any = {};
-	private luaText: string = '';
+	// private luaText: string = '';
+	private kvToLua: AbilityNameToScriptFile = {};	// 关联kv与lua脚本
+	private luaToKv: ScriptFileToAbilityName = {};	// 关联lua脚本与kv
 
 	constructor(
 		private readonly context: vscode.ExtensionContext,
 	) {
 		vscode.window.onDidChangeActiveTextEditor(data => {
 			if (vscode.window.activeTextEditor?.document.languageId == "lua" && this._view) {
-				this.luaText = vscode.window.activeTextEditor.document.getText();
+				// this.luaText = vscode.window.activeTextEditor.document.getText();
 				this._view.webview.postMessage({
 					type: "LuaText",
 					data: this.parseLua()
@@ -61,17 +69,28 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 			});
 		}
 		// 解析kv与lua关联
-		// let ability_kv: any = await ReadKeyValueWithBaseIncludePath(GameDir + '/scripts/npc/npc_abilities_custom.txt');
-		// for (const kvPath in ability_kv) {
-		// 	const DOTAAbilities = ability_kv[kvPath];
-
-		// }
-		// for (const key in ability_kv.DOTAAbilities) {
-		// 	const value = ability_kv.DOTAAbilities[key];
-		// 	if (typeof (value) === 'object') {
-		// 		KV2LUA[key] = GameDir + '/scripts/vscripts/' + value.ScriptFile + '.lua';
-		// 	}
-		// }
+		let npc_abilities_custom_base: any = await ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
+		let npc_items_custom_base: any = await ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_items_custom.txt');
+		let npc_abilities_custom_base_kv = npc_abilities_custom_base[Object.keys(npc_abilities_custom_base)[0]];
+		let npc_items_custom_base_kv = npc_items_custom_base[Object.keys(npc_items_custom_base)[0]];
+		for (const key in npc_abilities_custom_base_kv) {
+			let value = npc_abilities_custom_base_kv[key];
+			let ScriptFile = path.normalize(`${GameDir}/scripts/vscripts/${value.ScriptFile}.lua`);
+			this.kvToLua[key] = ScriptFile;
+			if (this.luaToKv[ScriptFile] == undefined) {
+				this.luaToKv[ScriptFile] = [];
+			}
+			this.luaToKv[ScriptFile].push(key);
+		}
+		for (const key in npc_items_custom_base_kv) {
+			let value = npc_items_custom_base_kv[key];
+			let ScriptFile = path.normalize(`${GameDir}/scripts/vscripts/${value.ScriptFile}.lua`);
+			this.kvToLua[key] = ScriptFile;
+			if (this.luaToKv[ScriptFile] == undefined) {
+				this.luaToKv[ScriptFile] = [];
+			}
+			this.luaToKv[ScriptFile].push(key);
+		}
 
 		webviewView.webview.onDidReceiveMessage(async data => {
 			switch (data.type) {
@@ -98,7 +117,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 						let document: vscode.TextDocument = await vscode.workspace.openTextDocument(data.data.path);
 						for (let line: number = 0; line < document.lineCount; line++) {
 							let lineText: string = document.lineAt(line).text;
-							result += lineText+ os.EOL;
+							result += lineText + os.EOL;
 							if (lineText) {
 								let lineSplit = lineText.split('"');
 								if (lineSplit.length >= 4) {
@@ -108,8 +127,8 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 								}
 							}
 						}
-						
-						fs.writeFileSync(data.data.path, result)
+
+						fs.writeFileSync(data.data.path, result);
 						// 更新localization
 						this.localization[data.data.language][data.data.path][key] = data.data.value;
 						webviewView.webview.postMessage({
@@ -150,12 +169,11 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 									}
 								}
 							}
-							console.log(document.lineCount, document.lineAt(line).lineNumber);
-							
-							result += lineText + (document.lineCount == (document.lineAt(line).lineNumber + 1) ? '':os.EOL);
+
+							result += lineText + (document.lineCount == (document.lineAt(line).lineNumber + 1) ? '' : os.EOL);
 						}
-						
-						fs.writeFileSync(data.data.path, result)
+
+						fs.writeFileSync(data.data.path, result);
 						// 更新localization
 						this.localization[data.data.language][data.data.path][key] = data.data.value;
 						webviewView.webview.postMessage({
@@ -172,25 +190,23 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 	 * @memberof LocalizationViewProvider
 	 */
 	parseLua() {
-		if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua") {
-			for (const key in KV2LUA) {
-				if (path.normalize(vscode.window.activeTextEditor.document.uri.fsPath) == path.normalize(KV2LUA[key])) {
-					let result: { [key: string]: LocalizationAbility | LocalizationModifier; } = {};
-					let luaText = vscode.window.activeTextEditor.document.getText();
-					EachLine(luaText, (_lineNumber, lineText) => {
-						if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
-							let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
-							let textData = this.searchLocalization('DOTA_Tooltip_' + key);
-							result[key] = textData;
-						} else if (lineText.search(/\s*([^ \f\n\r\v]*).*=.*class\(.*/) != -1) {
-							let key = lineText.replace(/\s*([^ \f\n\r\v]*).*=.*class\(.*/, '$1');
-							let textData = this.searchLocalization('DOTA_Tooltip_ability_' + key);
-							result[key] = textData;
-						}
-					});
-					return result;
-				}
+		if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua" && this.luaToKv[path.normalize(vscode.window.activeTextEditor.document.uri.fsPath)]) {
+			let result: { [key: string]: LocalizationAbility | LocalizationModifier; } = {};
+			// 先添加技能名
+			let abilityNames: string[] = this.luaToKv[path.normalize(vscode.window.activeTextEditor.document.uri.fsPath)];
+			for (const abilityName of abilityNames) {
+				result[abilityName] = this.searchLocalization('DOTA_Tooltip_ability_' + abilityName);;
 			}
+			// 添加解析的modifier
+			let luaText = vscode.window.activeTextEditor.document.getText();
+			EachLine(luaText, (_lineNumber, lineText) => {
+				if (lineText.search(/\s*(modifier\S*).*=.*class\(.*/) != -1) {
+					let key = lineText.replace(/\s*(modifier\S*).*=.*class\(.*/, '$1');
+					let textData = this.searchLocalization('DOTA_Tooltip_' + key);
+					result[key] = textData;
+				}
+			});
+			return result;
 		}
 	}
 	// 解析本地化数据
@@ -264,7 +280,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 						if (result[language][textPath] == undefined) {
 							result[language][textPath] = {};
 						}
-						result[language][textPath][_key] = element[_key]
+						result[language][textPath][_key] = element[_key];
 					}
 				}
 			}
