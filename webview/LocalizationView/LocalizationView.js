@@ -68,9 +68,19 @@ function ShowLocalization(textData) {
 		let titleElement = contentElement.createChild('div', { class: 'item-title' });
 		titleElement.createChild('span', { class: 'item-label', text: name });	//名字
 		// 路径
-		let showPath = path ? path.split('localization/' + language)[1] : '';
-		let pathElement = contentElement.createChild('textarea', { class: 'list-object-value', text: showPath, placeholder: '文本路径', type: 'text', rows: '1' });
-		pathElement.style.height = pathElement.scrollTop + pathElement.scrollHeight + "px";
+		let showPath = path ? path.split('localization\\' + language)[1] : '';
+		let selectElement = contentElement.createChild('div', { class: 'select-content' });
+		let pathElement = selectElement.createChild('select', { title: showPath, value: showPath });
+		pathElement.createChild('option', { value: showPath, text: showPath });
+		pathElement.createChild('option', { value: showPath, text: showPath });
+		pathElement.createChild('option', { value: showPath, text: showPath });
+		// pathElement.style.height = pathElement.scrollTop + pathElement.scrollHeight + "px";
+		// 下拉
+		// <div class="dropdown-content">
+		// 	<a href="#">菜鸟教程 1</a>
+		// 	<a href="#">菜鸟教程 2</a>
+		// 	<a href="#">菜鸟教程 3</a>
+		// </div>
 
 		contentElement.createChild('div', { class: 'item-modified-indicator' });	// 蓝条
 		let valueElement = contentElement.createChild('div', { class: 'item-value' });

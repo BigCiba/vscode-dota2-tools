@@ -207,41 +207,42 @@ class LocalizationViewProvider {
             // 	}
             // }
             };
-            const localization_path = init_1.GameDir + '/localization';
-            let lang_folders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(localization_path));
-            for (let i = 0; i < lang_folders.length; i++) {
-                const [folder_name, is_directory] = lang_folders[i];
-                if (Number(is_directory) === vscode.FileType.Directory) {
-                    const language_path = localization_path + '/' + folder_name;
+            const localizationPath = init_1.GameDir + '/localization';
+            let langFolders = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(localizationPath));
+            for (let i = 0; i < langFolders.length; i++) {
+                const [folderName, folderType] = langFolders[i];
+                if (Number(folderType) === vscode.FileType.Directory) {
+                    const language_path = localizationPath + '/' + folderName;
                     let promise = yield ReadLanguage(language_path);
-                    result[folder_name] = promise;
+                    result[folderName] = promise;
                 }
             }
             return result;
-            function ReadLanguage(path) {
+            function ReadLanguage(folderPath) {
                 return __awaiter(this, void 0, void 0, function* () {
                     let lang = {};
-                    let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
+                    let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folderPath));
                     for (let i = 0; i < files.length; i++) {
-                        const [file_name, file_type] = files[i];
-                        if (Number(file_type) === vscode.FileType.File) {
-                            let document = yield vscode.workspace.openTextDocument(path + '/' + file_name);
+                        const [fileName, fileType] = files[i];
+                        let fullPath = path.normalize(folderPath + '/' + fileName);
+                        if (Number(fileType) === vscode.FileType.File) {
+                            let document = yield vscode.workspace.openTextDocument(fullPath);
                             for (let line = 0; line < document.lineCount; line++) {
                                 let lineText = document.lineAt(line).text;
                                 if (lineText) {
                                     let lineSplit = lineText.split('"');
                                     if (lineSplit.length >= 4) {
                                         // 用拆分的文本路径索引
-                                        if (lang[path + '/' + file_name] == undefined) {
-                                            lang[path + '/' + file_name] = {};
+                                        if (lang[fullPath] == undefined) {
+                                            lang[fullPath] = {};
                                         }
-                                        lang[path + '/' + file_name][lineSplit[1]] = lineSplit[3];
+                                        lang[fullPath][lineSplit[1]] = lineSplit[3];
                                     }
                                 }
                             }
                         }
-                        else if (Number(file_type) === vscode.FileType.Directory) {
-                            let promise = yield ReadLanguage(path + '/' + file_name);
+                        else if (Number(fileType) === vscode.FileType.Directory) {
+                            let promise = yield ReadLanguage(fullPath);
                             lang = Object.assign(lang, promise);
                         }
                     }

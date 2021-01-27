@@ -352,3 +352,65 @@ body {
 .control .control-btn {
 	display: inline-block;
 }
+select {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	--dropdown-padding-top: 1px;
+	--dropdown-padding-bottom: 1px;
+	-webkit-appearance: none;
+	border: 1px solid;
+	font: inherit;
+	height: 26px;
+	padding: 2px 8px;
+	width: 320px;
+	background-color: rgb(65, 67, 57);
+	color: rgb(240, 240, 240);
+	border-color: rgb(65, 67, 57);
+}
+option {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	--dropdown-padding-top: 1px;
+	--dropdown-padding-bottom: 1px;
+	font: inherit;
+	color: rgb(240, 240, 240);
+}
+.select-content {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	color: #cccccc;
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	font-size: 13px;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	line-height: 1.4em!important;
+	cursor: default;
+	white-space: normal;
+	position: relative;
+	min-width: 0;
+}
+
+.select-content:after {
+	content: "\eab4";
+	font-family: codicon;
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 6px;
+	margin: auto;
+	pointer-events: none;
+}
