@@ -366,7 +366,7 @@ select {
 	font: inherit;
 	height: 26px;
 	padding: 2px 8px;
-	width: 320px;
+	width: 100%;
 	background-color: rgb(65, 67, 57);
 	color: rgb(240, 240, 240);
 	border-color: rgb(65, 67, 57);
@@ -382,6 +382,15 @@ option {
 	--dropdown-padding-bottom: 1px;
 	font: inherit;
 	color: rgb(240, 240, 240);
+	border: none;
+	border-color: rgb(65, 67, 57);
+	background-color: #30312a;
+	cursor: pointer;
+	appearance: none;
+}
+option:active {
+	border: none;
+	background-color: #414339;
 }
 .select-content {
 	--sash-size: 4px;
@@ -397,7 +406,7 @@ option {
 	cursor: default;
 	white-space: normal;
 	position: relative;
-	min-width: 0;
+	width: 100%;
 }
 
 .select-content:after {

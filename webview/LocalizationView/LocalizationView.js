@@ -70,10 +70,10 @@ function ShowLocalization(textData) {
 		// 路径
 		let showPath = path ? path.split('localization\\' + language)[1] : '';
 		let selectElement = contentElement.createChild('div', { class: 'select-content' });
-		let pathElement = selectElement.createChild('select', { title: showPath, value: showPath });
+		let pathElement = selectElement.createChild('select', { title: showPath });
 		pathElement.createChild('option', { value: showPath, text: showPath });
-		pathElement.createChild('option', { value: showPath, text: showPath });
-		pathElement.createChild('option', { value: showPath, text: showPath });
+		pathElement.createChild('option', { value: showPath, text: "22" });
+		pathElement.createChild('option', { value: showPath, text: "33" });
 		// pathElement.style.height = pathElement.scrollTop + pathElement.scrollHeight + "px";
 		// 下拉
 		// <div class="dropdown-content">
