@@ -67,6 +67,11 @@ function ShowLocalization(textData) {
 		});
 		let titleElement = contentElement.createChild('div', { class: 'item-title' });
 		titleElement.createChild('span', { class: 'item-label', text: name });	//名字
+		// 路径
+		let showPath = path ? path.split('localization/' + language)[1] : '';
+		let pathElement = contentElement.createChild('textarea', { class: 'list-object-value', text: showPath, placeholder: '文本路径', type: 'text', rows: '1' });
+		pathElement.style.height = pathElement.scrollTop + pathElement.scrollHeight + "px";
+
 		contentElement.createChild('div', { class: 'item-modified-indicator' });	// 蓝条
 		let valueElement = contentElement.createChild('div', { class: 'item-value' });
 		let controlElement = valueElement.createChild('div', { class: 'item-control' });
