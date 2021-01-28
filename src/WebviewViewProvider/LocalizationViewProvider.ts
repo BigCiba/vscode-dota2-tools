@@ -57,7 +57,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 			enableScripts: true,
 		};
 
-		webviewView.webview.html = GetWebViewContent(this.context, 'webview/LocalizationView/LocalizationView.html');
+		webviewView.webview.html = GetWebViewContent(this.context, 'src/webview/LocalizationView/LocalizationView.html');
 		webviewView.webview.onDidReceiveMessage(data => {
 		});
 		// 解析文本

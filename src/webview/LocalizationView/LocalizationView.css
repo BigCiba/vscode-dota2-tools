@@ -352,25 +352,7 @@ body {
 .control .control-btn {
 	display: inline-block;
 }
-select {
-	--sash-size: 4px;
-	--monaco-monospace-font: Consolas,"Courier New",monospace;
-	--separator-border: #34352f;
-	border-spacing: 0;
-	border-collapse: separate;
-	-webkit-user-select: none;
-	--dropdown-padding-top: 1px;
-	--dropdown-padding-bottom: 1px;
-	-webkit-appearance: none;
-	border: 1px solid;
-	font: inherit;
-	height: 26px;
-	padding: 2px 8px;
-	width: 100%;
-	background-color: rgb(65, 67, 57);
-	color: rgb(240, 240, 240);
-	border-color: rgb(65, 67, 57);
-}
+
 option {
 	--sash-size: 4px;
 	--monaco-monospace-font: Consolas,"Courier New",monospace;
@@ -407,6 +389,28 @@ option:active {
 	white-space: normal;
 	position: relative;
 	width: 100%;
+	z-index: 100;
+}
+.select-content input {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	--dropdown-padding-top: 1px;
+	--dropdown-padding-bottom: 1px;
+	-webkit-appearance: none;
+	border: 1px solid;
+	font: inherit;
+	height: 26px;
+	padding: 2px 8px;
+	margin-left: 1px;
+	margin-right: 1px;
+	width: 100%;
+	background-color: rgb(65, 67, 57);
+	color: rgb(240, 240, 240);
+	border-color: rgb(65, 67, 57);
 }
 
 .select-content:after {
@@ -422,4 +426,45 @@ option:active {
 	right: 6px;
 	margin: auto;
 	pointer-events: none;
+}
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	border-spacing: 0;
+	border-collapse: separate;
+	left: 1px;
+	/* padding: 2px 8px; */
+	/* margin-left: 1px;
+	margin-right: 1px; */
+	width: 100%;
+	background-color: #1e1f1c;
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+	outline-color: var(--vscode-focusBorder) !important;
+	/* color: rgb(240, 240, 240); */
+	/* border-color: rgb(65, 67, 57);
+	border: 1px solid; */
+	/* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+}
+
+.dropdown-content a {
+	color: rgb(240, 240, 240);
+	padding: 2px 8px;
+	/* border: 1px solid #75715e;
+	margin-left: 1px;
+	margin-right: 1px; */
+	text-decoration: none;
+	display: block;
+	height: 26px;
+
+	line-height: 26px;
+}
+
+.dropdown-content a:hover {
+	background-color: #414339;
+}
+
+.select-content:hover .dropdown-content {
+	display: block;
 }

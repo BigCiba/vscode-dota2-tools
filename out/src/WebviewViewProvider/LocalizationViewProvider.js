@@ -41,7 +41,7 @@ class LocalizationViewProvider {
             webviewView.webview.options = {
                 enableScripts: true,
             };
-            webviewView.webview.html = util_1.GetWebViewContent(this.context, 'src/webview/LocalizationView/LocalizationView.html');
+            webviewView.webview.html = util_1.GetWebViewContent(this.context, 'webview/LocalizationView/LocalizationView.html');
             webviewView.webview.onDidReceiveMessage(data => {
             });
             // 解析文本

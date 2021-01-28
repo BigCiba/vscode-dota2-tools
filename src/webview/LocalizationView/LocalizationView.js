@@ -13,26 +13,7 @@ window.addEventListener('message', event => {
 		ShowLocalization(message.data);
 	}
 });
-HTMLElement.prototype.createChild = function (tagName, option) {
-	let element = document.createElement(tagName);
-	if (option) {
-		for (const key in option) {
-			if (key == 'class') {
-				element.className = option.class;
-			} else if (key == 'text') {
-				element.appendChild(document.createTextNode(option.text));
-			} else {
-				element[key] = option[key];
-			}
-		}
-	}
-	if (option.insert_index) {
-		this.insertBefore(element, this.childNodes[option.insert_index]);
-	} else {
-		this.appendChild(element);
-	}
-	return element;
-};
+
 // let result = {
 // 	english: {
 // 		"asfa/asdfas.txt": {
@@ -56,7 +37,7 @@ function ShowLocalization(textData) {
 			// rootNode: undefined,		// 根节点
 			// listNode: undefined,		// 表节点
 		};
-		let contentElement = rootElement.createChild('div', { class: 'item-contents' });
+		let contentElement = rootElement.createChild('div', { className: 'item-contents' });
 		nodeData[name].rootNode = contentElement;
 		contentElement.addEventListener('click', () => {
 			let children = rootElement.children;
@@ -65,15 +46,20 @@ function ShowLocalization(textData) {
 			}
 			contentElement.classList.add('selected');
 		});
-		let titleElement = contentElement.createChild('div', { class: 'item-title' });
-		titleElement.createChild('span', { class: 'item-label', text: name });	//名字
+		let titleElement = contentElement.createChild('div', { className: 'item-title' });
+		titleElement.createChild('span', { className: 'item-label', text: name });	//名字
 		// 路径
 		let showPath = path ? path.split('localization\\' + language)[1] : '';
-		let selectElement = contentElement.createChild('div', { class: 'select-content' });
-		let pathElement = selectElement.createChild('select', { title: showPath });
-		pathElement.createChild('option', { value: showPath, text: showPath });
-		pathElement.createChild('option', { value: showPath, text: "22" });
-		pathElement.createChild('option', { value: showPath, text: "33" });
+		let selectElement = contentElement.createChild('div', { className: 'select-content' });
+		selectElement.createInputSelectList(showPath, ['dropdown-content', 'dropdown-content', 'dropdown-content']);
+		// let pathElement = selectElement.createChild('input', { title: showPath, value: showPath, placeholder: '本地化路径' });
+		// let dropdownElement = selectElement.createChild('div', { className: 'dropdown-content' });
+		// dropdownElement.createChild('a', { text: 'dropdown-content' });
+		// dropdownElement.createChild('a', { text: 'dropdown-content' });
+		// dropdownElement.createChild('a', { text: 'dropdown-content' });
+		// pathElement.createChild('option', { value: showPath, text: showPath });
+		// pathElement.createChild('option', { value: showPath, text: "22" });
+		// pathElement.createChild('option', { value: showPath, text: "33" });
 		// pathElement.style.height = pathElement.scrollTop + pathElement.scrollHeight + "px";
 		// 下拉
 		// <div class="dropdown-content">
@@ -82,29 +68,29 @@ function ShowLocalization(textData) {
 		// 	<a href="#">菜鸟教程 3</a>
 		// </div>
 
-		contentElement.createChild('div', { class: 'item-modified-indicator' });	// 蓝条
-		let valueElement = contentElement.createChild('div', { class: 'item-value' });
-		let controlElement = valueElement.createChild('div', { class: 'item-control' });
-		let listElement = controlElement.createChild('div', { class: 'list-object-widget' });
+		contentElement.createChild('div', { className: 'item-modified-indicator' });	// 蓝条
+		let valueElement = contentElement.createChild('div', { className: 'item-value' });
+		let controlElement = valueElement.createChild('div', { className: 'item-control' });
+		let listElement = controlElement.createChild('div', { className: 'list-object-widget' });
 		nodeData[name].listNode = listElement;
 		// 表头
-		let headerElement = listElement.createChild('div', { class: 'list-row-header' });
-		headerElement.createChild('div', { class: 'list-object-key', text: '项' });
-		headerElement.createChild('div', { class: 'list-object-value', text: '值' });
+		let headerElement = listElement.createChild('div', { className: 'list-row-header' });
+		headerElement.createChild('div', { className: 'list-object-key', text: '项' });
+		headerElement.createChild('div', { className: 'list-object-value', text: '值' });
 		for (const key in langData[path]) {
 			newRow(name, key, langData[path][key]);
-			// rowElement.createChild('div', { class: 'list-object-edit', text: 'ok' });
-			// rowElement.createChild('div', { class: 'list-object-delete', text: 'cancle' });
+			// rowElement.createChild('div', { className: 'list-object-edit', text: 'ok' });
+			// rowElement.createChild('div', { className: 'list-object-delete', text: 'cancle' });
 		}
 		// 添加项按钮
-		let btnRowElement = controlElement.createChild('div', { class: 'list-new-row' });
-		let btnAddElement = btnRowElement.createChild('a', { class: 'monaco-text-button new-btn', text: '添加项' });
+		let btnRowElement = controlElement.createChild('div', { className: 'list-new-row' });
+		let btnAddElement = btnRowElement.createChild('a', { className: 'monaco-text-button new-btn', text: '添加项' });
 		btnAddElement.addEventListener('click', () => {
 			// 取消编辑状态
 			ClearRowSelect(name);
-			let rowElement = listElement.createChild('div', { class: 'list-row' });
-			rowElement.createChild('textarea', { class: 'list-object-key', placeholder: '键', type: 'text', rows: '1' });
-			let textareaElement = rowElement.createChild('textarea', { class: 'list-object-value', placeholder: '值', type: 'text', rows: '1' });
+			let rowElement = listElement.createChild('div', { className: 'list-row' });
+			rowElement.createChild('textarea', { className: 'list-object-key', placeholder: '键', type: 'text', rows: '1' });
+			let textareaElement = rowElement.createChild('textarea', { className: 'list-object-value', placeholder: '值', type: 'text', rows: '1' });
 			// textarea自适应高度
 			textareaElement.addEventListener('input', (event) => {
 				event.target.style.height = event.target.scrollTop + event.target.scrollHeight + "px";
@@ -113,7 +99,7 @@ function ShowLocalization(textData) {
 			// 记录编辑的行
 			nodeData[name].editNode = rowElement;
 		});
-		let btnConfirmElement = btnRowElement.createChild('a', { class: 'monaco-text-button new-edit-btn', text: '确认' });
+		let btnConfirmElement = btnRowElement.createChild('a', { className: 'monaco-text-button new-edit-btn', text: '确认' });
 		// 确认
 		btnConfirmElement.addEventListener('click', () => {
 			if (nodeData[name].selectRow) {
@@ -158,7 +144,7 @@ function ShowLocalization(textData) {
 				}
 			}
 		});
-		let btnCancelElement = btnRowElement.createChild('a', { class: 'monaco-text-button new-edit-btn', text: '取消' });
+		let btnCancelElement = btnRowElement.createChild('a', { className: 'monaco-text-button new-edit-btn', text: '取消' });
 		// 取消
 		btnCancelElement.addEventListener('click', () => {
 			if (nodeData[name].selectRow) {
@@ -175,7 +161,7 @@ function ShowLocalization(textData) {
 			}
 		});
 		// 删除
-		let btnDeleteElement = btnRowElement.createChild('a', { class: 'monaco-text-button control-btn', text: '删除' });
+		let btnDeleteElement = btnRowElement.createChild('a', { className: 'monaco-text-button control-btn', text: '删除' });
 		btnDeleteElement.addEventListener('click', () => {
 			let child = listElement.children;
 			if (nodeData[name].selectRow) {
@@ -184,7 +170,7 @@ function ShowLocalization(textData) {
 			}
 		});
 		// 编辑
-		let btnEditElement = btnRowElement.createChild('a', { class: 'monaco-text-button control-btn', text: '编辑' });
+		let btnEditElement = btnRowElement.createChild('a', { className: 'monaco-text-button control-btn', text: '编辑' });
 		btnEditElement.addEventListener('click', EditFunc(contentElement, name, listElement));
 	}
 
@@ -202,10 +188,10 @@ function ShowLocalization(textData) {
 						break;
 					}
 				}
-				let rowElement = listElement.createChild('div', { class: 'list-row', insert_index: insert_index });
+				let rowElement = listElement.createChild('div', { className: 'list-row', insert_index: insert_index });
 				// rowElement.classList.remove('selected');
-				rowElement.createChild('textarea', { class: 'list-object-key', placeholder: '键', type: 'text', rows: '1', text: nodeData[name].selectRow.children[0].innerText });
-				let textareaElement = rowElement.createChild('textarea', { class: 'list-object-value', placeholder: '值', type: 'text', rows: '1', text: nodeData[name].selectRow.children[1].innerText });
+				rowElement.createChild('textarea', { className: 'list-object-key', placeholder: '键', type: 'text', rows: '1', text: nodeData[name].selectRow.children[0].innerText });
+				let textareaElement = rowElement.createChild('textarea', { className: 'list-object-value', placeholder: '值', type: 'text', rows: '1', text: nodeData[name].selectRow.children[1].innerText });
 				textareaElement.style.height = textareaElement.scrollTop + textareaElement.scrollHeight + "px";
 				// textarea自适应高度
 				textareaElement.addEventListener('input', (event) => {
@@ -226,9 +212,9 @@ function ShowLocalization(textData) {
 		} else {
 			key = key.replace(RegExp('dota_tooltip_ability_' + name + '_', 'gi'), '').replace(RegExp('dota_tooltip_' + name + '_', 'gi'), '');
 		}
-		let rowElement = nodeData[name].listNode.createChild('div', { class: 'list-row' });
-		rowElement.createChild('div', { class: 'list-object-key', text: key });
-		rowElement.createChild('div', { class: 'list-object-value', text: value });
+		let rowElement = nodeData[name].listNode.createChild('div', { className: 'list-row' });
+		rowElement.createChild('div', { className: 'list-object-key', text: key });
+		rowElement.createChild('div', { className: 'list-object-value', text: value });
 		rowElement.addEventListener('click', () => {
 			let children = nodeData[name].listNode.children;
 			// for (let index = 0; index < children.length; index++) {
