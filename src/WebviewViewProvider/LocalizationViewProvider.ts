@@ -31,6 +31,21 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 	// private luaText: string = '';
 	private kvToLua: AbilityNameToScriptFile = {};	// 关联kv与lua脚本
 	private luaToKv: ScriptFileToAbilityName = {};	// 关联lua脚本与kv
+	private pathForder: any = {
+		// schinese: [
+		// 	{
+		// 		"abilities": [
+		// 			"boss.txt",
+		// 		]
+		// 	},
+		// 	"modifiers",
+		// 	"panorama",
+		// 	"artifact.txt",
+		// 	"common.txt",
+		// 	"items.txt",
+		// 	"spell.txt",
+		// ]
+	} 
 
 	constructor(
 		private readonly context: vscode.ExtensionContext,
@@ -62,6 +77,10 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 		});
 		// 解析文本
 		this.localization = await this.parseText();
+		webviewView.webview.postMessage({
+			type: "pathFolder",
+			data: this.pathForder
+		});
 		if (vscode.window.activeTextEditor?.document.languageId == "lua") {
 			webviewView.webview.postMessage({
 				type: "LuaText",
@@ -223,20 +242,25 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 		for (let i: number = 0; i < langFolders.length; i++) {
 			const [folderName, folderType] = langFolders[i];
 			if (Number(folderType) === vscode.FileType.Directory) {
+				// 记录
+				
 				const language_path: string = localizationPath + '/' + folderName;
-				let promise: { [key: string]: string; } = await ReadLanguage(language_path);
-				result[folderName] = promise;
+				let promise: any = await ReadLanguage(language_path);
+				result[folderName] = promise[0];
+				this.pathForder[folderName] = promise[1];
 			}
 		}
 		return result;
 
-		async function ReadLanguage(folderPath: string): Promise<{ [key: string]: string; }> {
+		async function ReadLanguage(folderPath: string): Promise<any> {
 			let lang: { [key: string]: any; } = {};
+			let pathData: any = {};
 			let files: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(folderPath));
 			for (let i = 0; i < files.length; i++) {
 				const [fileName, fileType] = files[i];
 				let fullPath: string = path.normalize(folderPath + '/' + fileName);
 				if (Number(fileType) === vscode.FileType.File) {
+					pathData[fileName] = vscode.FileType.File;
 					let document: vscode.TextDocument = await vscode.workspace.openTextDocument(fullPath);
 					for (let line: number = 0; line < document.lineCount; line++) {
 						let lineText: string = document.lineAt(line).text;
@@ -252,11 +276,12 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 						}
 					}
 				} else if (Number(fileType) === vscode.FileType.Directory) {
-					let promise: { [key: string]: string; } = await ReadLanguage(fullPath);
-					lang = Object.assign(lang, promise);
+					let promise: any = await ReadLanguage(fullPath);
+					pathData[fileName] = promise[1]
+					lang = Object.assign(lang, promise[0]);
 				}
 			}
-			return Promise.resolve(lang);
+			return Promise.resolve([lang, pathData]);
 		}
 	}
 	// 搜寻本地化

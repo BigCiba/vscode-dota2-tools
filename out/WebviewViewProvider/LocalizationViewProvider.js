@@ -23,6 +23,21 @@ class LocalizationViewProvider {
         // private luaText: string = '';
         this.kvToLua = {}; // 关联kv与lua脚本
         this.luaToKv = {}; // 关联lua脚本与kv
+        this.pathForder = {
+        // schinese: [
+        // 	{
+        // 		"abilities": [
+        // 			"boss.txt",
+        // 		]
+        // 	},
+        // 	"modifiers",
+        // 	"panorama",
+        // 	"artifact.txt",
+        // 	"common.txt",
+        // 	"items.txt",
+        // 	"spell.txt",
+        // ]
+        };
         vscode.window.onDidChangeActiveTextEditor(data => {
             var _a;
             if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua" && this._view) {
@@ -46,6 +61,10 @@ class LocalizationViewProvider {
             });
             // 解析文本
             this.localization = yield this.parseText();
+            webviewView.webview.postMessage({
+                type: "pathFolder",
+                data: this.pathForder
+            });
             if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua") {
                 webviewView.webview.postMessage({
                     type: "LuaText",
@@ -212,20 +231,24 @@ class LocalizationViewProvider {
             for (let i = 0; i < langFolders.length; i++) {
                 const [folderName, folderType] = langFolders[i];
                 if (Number(folderType) === vscode.FileType.Directory) {
+                    // 记录
                     const language_path = localizationPath + '/' + folderName;
                     let promise = yield ReadLanguage(language_path);
-                    result[folderName] = promise;
+                    result[folderName] = promise[0];
+                    this.pathForder[folderName] = promise[1];
                 }
             }
             return result;
             function ReadLanguage(folderPath) {
                 return __awaiter(this, void 0, void 0, function* () {
                     let lang = {};
+                    let pathData = {};
                     let files = yield vscode.workspace.fs.readDirectory(vscode.Uri.file(folderPath));
                     for (let i = 0; i < files.length; i++) {
                         const [fileName, fileType] = files[i];
                         let fullPath = path.normalize(folderPath + '/' + fileName);
                         if (Number(fileType) === vscode.FileType.File) {
+                            pathData[fileName] = vscode.FileType.File;
                             let document = yield vscode.workspace.openTextDocument(fullPath);
                             for (let line = 0; line < document.lineCount; line++) {
                                 let lineText = document.lineAt(line).text;
@@ -243,10 +266,11 @@ class LocalizationViewProvider {
                         }
                         else if (Number(fileType) === vscode.FileType.Directory) {
                             let promise = yield ReadLanguage(fullPath);
-                            lang = Object.assign(lang, promise);
+                            pathData[fileName] = promise[1];
+                            lang = Object.assign(lang, promise[0]);
                         }
                     }
-                    return Promise.resolve(lang);
+                    return Promise.resolve([lang, pathData]);
                 });
             }
         });

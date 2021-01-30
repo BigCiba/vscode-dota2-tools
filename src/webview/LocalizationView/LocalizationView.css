@@ -192,9 +192,9 @@ body {
 .list-row:hover {
 	background-color: #3e3d32;
 }
-.list-row:active {
+/* .list-row:active {
 	background-color: #75715e;
-}
+} */
 .list-row.selected {
 	background-color: #75715e;
 }
@@ -457,14 +457,17 @@ option:active {
 	text-decoration: none;
 	display: block;
 	height: 26px;
-
+	cursor: pointer;
 	line-height: 26px;
 }
 
 .dropdown-content a:hover {
 	background-color: #414339;
 }
+.dropdown-content > .selected {
+	background-color: #414339;
+}
 
-.select-content:hover .dropdown-content {
+.selected > .dropdown-content {
 	display: block;
 }

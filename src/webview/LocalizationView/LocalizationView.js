@@ -2,15 +2,29 @@ const vscode = acquireVsCodeApi();
 let rootElement = document.getElementById('localization-root');
 let localization = {};
 let language = 'schinese';
+let pathFolder = {};
+let textData = {}
+function GetPathList(path) {
+	let result = pathFolder[language];
+	let pathInfo = path.split('\\');
+	for (let index = 1; index < pathInfo.length; index++) {
+		const element = pathInfo[index];
+		if (result[element] != undefined) {
+			result = result[element];
+		}
+	}
+	console.log(result);
+	return result
+}
 window.addEventListener('message', event => {
 	const message = event.data;
-	console.log(message);
 	if (message.type == 'LuaText') {
-		console.log(message.data);
-		ShowLocalization(message.data);
-	} else if (message.type == 'Localization') {
-		localization = message.data;
-		ShowLocalization(message.data);
+		// console.log(message.data);
+		textData = message.data;
+		Render(message.data);
+	} else if (message.type == 'pathFolder') {
+		pathFolder = message.data;
+		// console.log(pathFolder);
 	}
 });
 
@@ -23,7 +37,7 @@ window.addEventListener('message', event => {
 // 		}
 // 	}
 // };
-function ShowLocalization(textData) {
+function Render() {
 	// 清空面板
 	rootElement.innerHTML = "";
 	let nodeData = {};
@@ -51,22 +65,9 @@ function ShowLocalization(textData) {
 		// 路径
 		let showPath = path ? path.split('localization\\' + language)[1] : '';
 		let selectElement = contentElement.createChild('div', { className: 'select-content' });
-		selectElement.createInputSelectList(showPath, ['dropdown-content', 'dropdown-content', 'dropdown-content']);
-		// let pathElement = selectElement.createChild('input', { title: showPath, value: showPath, placeholder: '本地化路径' });
-		// let dropdownElement = selectElement.createChild('div', { className: 'dropdown-content' });
-		// dropdownElement.createChild('a', { text: 'dropdown-content' });
-		// dropdownElement.createChild('a', { text: 'dropdown-content' });
-		// dropdownElement.createChild('a', { text: 'dropdown-content' });
-		// pathElement.createChild('option', { value: showPath, text: showPath });
-		// pathElement.createChild('option', { value: showPath, text: "22" });
-		// pathElement.createChild('option', { value: showPath, text: "33" });
-		// pathElement.style.height = pathElement.scrollTop + pathElement.scrollHeight + "px";
-		// 下拉
-		// <div class="dropdown-content">
-		// 	<a href="#">菜鸟教程 1</a>
-		// 	<a href="#">菜鸟教程 2</a>
-		// 	<a href="#">菜鸟教程 3</a>
-		// </div>
+		GetPathList(showPath)
+		selectElement.createInputSelectList([showPath, 'dropdown-content', 'dropdown-content'], {selectIndex: 0, placeholder: '本地化路径'});
+
 
 		contentElement.createChild('div', { className: 'item-modified-indicator' });	// 蓝条
 		let valueElement = contentElement.createChild('div', { className: 'item-value' });
