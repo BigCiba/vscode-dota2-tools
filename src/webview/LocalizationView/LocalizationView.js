@@ -7,7 +7,7 @@ let textData = {}
 function GetPathList(path) {
 	let result = pathFolder[language];
 	let pathInfo = path.split('\\');
-	for (let index = 1; index < pathInfo.length; index++) {
+	for (let index = 0; index < pathInfo.length; index++) {
 		const element = pathInfo[index];
 		if (result[element] != undefined) {
 			result = result[element];
@@ -63,9 +63,9 @@ function Render() {
 		let titleElement = contentElement.createChild('div', { className: 'item-title' });
 		titleElement.createChild('span', { className: 'item-label', text: name });	//名字
 		// 路径
-		let showPath = path ? path.split('localization\\' + language)[1] : '';
+		let showPath = path ? path.split('localization\\' + language)[1] + '\\': '';
 		let selectElement = contentElement.createChild('div', { className: 'select-content' });
-		GetPathList(showPath)
+		// GetPathList(showPath)
 		selectElement.createInputSelectList([showPath, 'dropdown-content', 'dropdown-content'], {selectIndex: 0, placeholder: '本地化路径'});
 
 
