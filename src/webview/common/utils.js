@@ -1,5 +1,5 @@
 
-const KeyCode = { Escape: 'Escape', Backquote: 'Backquote', Digit1: 'Digit1', Digit2: 'Digit2', Digit3: 'Digit3', Digit4: 'Digit4', Digit5: 'Digit5', Digit6: 'Digit6', Digit7: 'Digit7', Digit8: 'Digit8', Digit9: 'Digit9', Digit0: 'Digit0', Minus: 'Minus', Equal: 'Equal', Backspace: 'Backspace', KeyQ: 'KeyQ', KeyW: 'KeyW', KeyE: 'KeyE', KeyR: 'KeyR', KeyT: 'KeyT', KeyY: 'KeyY', KeyU: 'KeyU', KeyI: 'KeyI', KeyO: 'KeyO', KeyP: 'KeyP', KeyA: 'KeyA', KeyS: 'KeyS', KeyD: 'KeyD', KeyF: 'KeyF', KeyG: 'KeyG', KeyH: 'KeyH', KeyJ: 'KeyJ', KeyK: 'KeyK', KeyL: 'KeyL', KeyZ: 'KeyZ', KeyX: 'KeyX', KeyC: 'KeyC', KeyV: 'KeyV', KeyB: 'KeyB', KeyN: 'KeyN', KeyM: 'KeyM', BracketLeft: 'BracketLeft', BracketRight: 'BracketRight', Backslash: 'Backslash', Semicolon: 'Semicolon', Quote: 'Quote', Comma: 'Comma', Period: 'Period', Slash: 'Slash', Tab: 'Tab', CapsLock: 'CapsLock', ShiftLeft: 'ShiftLeft', ControlLeft: 'ControlLeft', AltLeft: 'AltLeft', AltRight: 'AltRight', ContextMenu: 'ContextMenu', ControlRight: 'ControlRight', ShiftRight: 'ShiftRight', Enter: 'Enter', ScrollLock: 'ScrollLock', Pause: 'Pause', Insert: 'Insert', Home: 'Home', PageUp: 'PageUp', Delete: 'Delete', End: 'End', PageDown: 'PageDown', ArrowUp: 'ArrowUp', ArrowDown: 'ArrowDown', ArrowLeft: 'ArrowLeft', ArrowRight: 'ArrowRight', NumLock: 'NumLock', NumpadDivide: 'NumpadDivide', NumpadMultiply: 'NumpadMultiply', NumpadSubtract: 'NumpadSubtract', NumpadAdd: 'NumpadAdd', NumpadEnter: 'NumpadEnter', NumpadDecimal: 'NumpadDecimal', Numpad0: 'Numpad0', Numpad1: 'Numpad1', Numpad2: 'Numpad2', Numpad3: 'Numpad3', Numpad4: 'Numpad4', Numpad5: 'Numpad5', Numpad6: 'Numpad6', Numpad7: 'Numpad7', Numpad8: 'Numpad8', Numpad9: 'Numpad9' }
+const KeyCode = { Escape: 'Escape', Backquote: 'Backquote', Digit1: 'Digit1', Digit2: 'Digit2', Digit3: 'Digit3', Digit4: 'Digit4', Digit5: 'Digit5', Digit6: 'Digit6', Digit7: 'Digit7', Digit8: 'Digit8', Digit9: 'Digit9', Digit0: 'Digit0', Minus: 'Minus', Equal: 'Equal', Backspace: 'Backspace', KeyQ: 'KeyQ', KeyW: 'KeyW', KeyE: 'KeyE', KeyR: 'KeyR', KeyT: 'KeyT', KeyY: 'KeyY', KeyU: 'KeyU', KeyI: 'KeyI', KeyO: 'KeyO', KeyP: 'KeyP', KeyA: 'KeyA', KeyS: 'KeyS', KeyD: 'KeyD', KeyF: 'KeyF', KeyG: 'KeyG', KeyH: 'KeyH', KeyJ: 'KeyJ', KeyK: 'KeyK', KeyL: 'KeyL', KeyZ: 'KeyZ', KeyX: 'KeyX', KeyC: 'KeyC', KeyV: 'KeyV', KeyB: 'KeyB', KeyN: 'KeyN', KeyM: 'KeyM', BracketLeft: 'BracketLeft', BracketRight: 'BracketRight', Backslash: 'Backslash', Semicolon: 'Semicolon', Quote: 'Quote', Comma: 'Comma', Period: 'Period', Slash: 'Slash', Tab: 'Tab', CapsLock: 'CapsLock', ShiftLeft: 'ShiftLeft', ControlLeft: 'ControlLeft', AltLeft: 'AltLeft', AltRight: 'AltRight', ContextMenu: 'ContextMenu', ControlRight: 'ControlRight', ShiftRight: 'ShiftRight', Enter: 'Enter', ScrollLock: 'ScrollLock', Pause: 'Pause', Insert: 'Insert', Home: 'Home', PageUp: 'PageUp', Delete: 'Delete', End: 'End', PageDown: 'PageDown', ArrowUp: 'ArrowUp', ArrowDown: 'ArrowDown', ArrowLeft: 'ArrowLeft', ArrowRight: 'ArrowRight', NumLock: 'NumLock', NumpadDivide: 'NumpadDivide', NumpadMultiply: 'NumpadMultiply', NumpadSubtract: 'NumpadSubtract', NumpadAdd: 'NumpadAdd', NumpadEnter: 'NumpadEnter', NumpadDecimal: 'NumpadDecimal', Numpad0: 'Numpad0', Numpad1: 'Numpad1', Numpad2: 'Numpad2', Numpad3: 'Numpad3', Numpad4: 'Numpad4', Numpad5: 'Numpad5', Numpad6: 'Numpad6', Numpad7: 'Numpad7', Numpad8: 'Numpad8', Numpad9: 'Numpad9' };
 
 HTMLElement.prototype.createChild = function (tagName, option) {
 	let element = document.createElement(tagName);
@@ -53,7 +53,7 @@ HTMLElement.prototype.selectOption = function (selectIndex) {
 		}
 	}
 	return _index;
-}
+};
 
 HTMLElement.prototype.createInputSelectList = function (list, option) {
 	let selectIndex = option.selectIndex;
@@ -83,34 +83,44 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 
 	// focus的时候激活
 	inputElement.addEventListener('mousedown', () => {
-		this.classList.add('selected')
-		// 绑定上下键
-		KeyEvent.Bind(inputElement, KeyCode.ArrowUp, () => {
-			if (selectIndex > 0) {
-				selectIndex = dropdownElement.selectOption(selectIndex - 1);
-			}
-		});
-		KeyEvent.Bind(inputElement, KeyCode.ArrowDown, () => {
-			if (selectIndex < list.length - 1) {
-				selectIndex = dropdownElement.selectOption(selectIndex + 1);
-			}
-		});
-		KeyEvent.Bind(inputElement, KeyCode.Enter, () => {
-			inputElement.value = dropdownElement.children[selectIndex].innerText;
-			this.classList.remove('selected');
-		});
-		// 绑定鼠标点击区域外事件
-		setTimeout(() => {
-			ClickEvent.Bind(inputElement, (element) => {
-				if (element.classList.contains('dropdown-option') == false && element != inputElement) {
-					this.classList.remove('selected');
-					KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
-					KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
-					ClickEvent.UnBind(inputElement);
+		if (this.classList.contains('selected') == false) {
+			this.classList.add('selected');
+			// 绑定上下键
+			KeyEvent.Bind(inputElement, KeyCode.ArrowUp, () => {
+				if (selectIndex > 0) {
+					selectIndex = dropdownElement.selectOption(selectIndex - 1);
 				}
-			})
-		}, 100);
+			});
+			KeyEvent.Bind(inputElement, KeyCode.ArrowDown, () => {
+				if (selectIndex < list.length - 1) {
+					selectIndex = dropdownElement.selectOption(selectIndex + 1);
+				}
+			});
+			KeyEvent.Bind(inputElement, KeyCode.Enter, () => {
+				inputElement.value = dropdownElement.children[selectIndex].innerText;
+				this.classList.remove('selected');
+			});
+			KeyEvent.Bind(inputElement, KeyCode.Escape, () => {
+				this.classList.remove('selected');
+				KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
+				KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
+				ClickEvent.UnBind(inputElement);
+			});
+			// 绑定鼠标点击区域外事件
+			setTimeout(() => {
+				ClickEvent.Bind(inputElement, (element) => {
+					if (element.classList.contains('dropdown-option') == false) {
+						console.log(2222);
+						this.classList.remove('selected');
+						KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
+						KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
+						ClickEvent.UnBind(inputElement);
+					}
+				});
+			}, 100);
+		}
 	});
+	return inputElement;
 };
 
 // 点击其他位置关闭
@@ -119,13 +129,13 @@ document.onmousedown = function (event) {
 		let callback = ClickEvent.eventList[element];
 		callback(event.target);
 	}
-}
+};
 
 document.onkeydown = function (event) {
 	code = event.code;
 	if (KeyEvent.eventList[code] != undefined) {
 		for (const element in KeyEvent.eventList[code]) {
-			let callback = KeyEvent.eventList[code][element]
+			let callback = KeyEvent.eventList[code][element];
 			callback();
 		}
 	}

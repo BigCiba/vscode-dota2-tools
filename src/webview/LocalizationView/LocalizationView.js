@@ -3,27 +3,56 @@ let rootElement = document.getElementById('localization-root');
 let localization = {};
 let language = 'schinese';
 let pathFolder = {};
-let textData = {}
+let rootPathFolder = '';
+let textData = {};
 function GetPathList(path) {
-	let result = pathFolder[language];
+	let prefix = '\\';
+	let pathListObj = pathFolder[language];
 	let pathInfo = path.split('\\');
-	for (let index = 0; index < pathInfo.length; index++) {
-		const element = pathInfo[index];
-		if (result[element] != undefined) {
-			result = result[element];
+	if (pathInfo.length > 1) {
+		for (let index = 0; index < pathInfo.length - 1; index++) {
+			const element = pathInfo[index];
+			if (pathListObj[element] != undefined) {
+				pathListObj = pathListObj[element];
+				prefix += element + '\\';
+			}
 		}
 	}
-	console.log(result);
-	return result
+	// console.log(prefix);
+	let pathList = Object.keys(pathListObj).map((iterator) => {
+		return prefix + iterator;
+	});
+	pathList.map((item, index) => {
+		if (item == path) {
+			pathList.unshift(pathList.splice(index, 1)[0]);
+		}
+	});
+	// console.log(pathList);
+	return pathList;
 }
 window.addEventListener('message', event => {
 	const message = event.data;
 	if (message.type == 'LuaText') {
 		// console.log(message.data);
+		let state = vscode.getState() || {};
+		state.textData = message.data;
+		vscode.setState(state);
+
 		textData = message.data;
-		Render(message.data);
+		Render();
 	} else if (message.type == 'pathFolder') {
+		let state = vscode.getState() || {};
+		state.pathFolder = message.data;
+		vscode.setState(state);
+
 		pathFolder = message.data;
+		// console.log(pathFolder);
+	} else if (message.type == 'rootPathFolder') {
+		let state = vscode.getState() || {};
+		state.rootPathFolder = message.data;
+		vscode.setState(state);
+
+		rootPathFolder = message.data;
 		// console.log(pathFolder);
 	}
 });
@@ -63,10 +92,10 @@ function Render() {
 		let titleElement = contentElement.createChild('div', { className: 'item-title' });
 		titleElement.createChild('span', { className: 'item-label', text: name });	//名字
 		// 路径
-		let showPath = path ? path.split('localization\\' + language)[1] + '\\': '';
+		let showPath = path ? path.split('localization\\' + language)[1] : '';
 		let selectElement = contentElement.createChild('div', { className: 'select-content' });
-		// GetPathList(showPath)
-		selectElement.createInputSelectList([showPath, 'dropdown-content', 'dropdown-content'], {selectIndex: 0, placeholder: '本地化路径'});
+
+		let inputElement = selectElement.createInputSelectList(GetPathList(showPath), { selectIndex: 0, placeholder: '本地化路径' });
 
 
 		contentElement.createChild('div', { className: 'item-modified-indicator' });	// 蓝条
@@ -120,7 +149,7 @@ function Render() {
 						type: 'edit',
 						data: {
 							language: language,
-							path: path,
+							path: rootPathFolder + '\\' + language + inputElement.value,
 							name: name,
 							key: key,
 							value: value
@@ -134,7 +163,7 @@ function Render() {
 							type: 'new',
 							data: {
 								language: language,
-								path: path,
+								path: rootPathFolder + '\\' + language + inputElement.value,
 								name: name,
 								key: key,
 								value: value
@@ -254,5 +283,9 @@ function Render() {
 (function () {
 	const state = vscode.getState();
 	if (state) {
+		pathFolder = state.pathFolder;
+		rootPathFolder = state.rootPathFolder;
+		textData = state.textData;
+		Render();
 	}
 }());

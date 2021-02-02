@@ -39,8 +39,7 @@ class LocalizationViewProvider {
         // ]
         };
         vscode.window.onDidChangeActiveTextEditor(data => {
-            var _a;
-            if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua" && this._view) {
+            if (this._view) {
                 // this.luaText = vscode.window.activeTextEditor.document.getText();
                 this._view.webview.postMessage({
                     type: "LuaText",
@@ -65,12 +64,10 @@ class LocalizationViewProvider {
                 type: "pathFolder",
                 data: this.pathForder
             });
-            if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua") {
-                webviewView.webview.postMessage({
-                    type: "LuaText",
-                    data: this.parseLua()
-                });
-            }
+            webviewView.webview.postMessage({
+                type: "rootPathFolder",
+                data: init_1.GameDir + '/localization'
+            });
             // 解析kv与lua关联
             let npc_abilities_custom_base = yield util_1.ReadKeyValueWithBase(init_1.GameDir + '/scripts/npc/npc_abilities_custom.txt');
             let npc_items_custom_base = yield util_1.ReadKeyValueWithBase(init_1.GameDir + '/scripts/npc/npc_items_custom.txt');
@@ -93,6 +90,12 @@ class LocalizationViewProvider {
                     this.luaToKv[ScriptFile] = [];
                 }
                 this.luaToKv[ScriptFile].push(key);
+            }
+            if (((_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.languageId) == "lua") {
+                webviewView.webview.postMessage({
+                    type: "LuaText",
+                    data: this.parseLua()
+                });
             }
             webviewView.webview.onDidReceiveMessage((data) => __awaiter(this, void 0, void 0, function* () {
                 switch (data.type) {
@@ -118,23 +121,30 @@ class LocalizationViewProvider {
                                     key = 'DOTA_Tooltip_ability_' + data.data.name + '_' + data.data.key;
                                 }
                             }
+                            // 搜索已有的词条并修改
                             let result = '';
+                            let bSearch = false;
                             let document = yield vscode.workspace.openTextDocument(data.data.path);
                             for (let line = 0; line < document.lineCount; line++) {
                                 let lineText = document.lineAt(line).text;
-                                result += lineText + os.EOL;
+                                result += lineText + (line == document.lineCount - 1 ? '' : os.EOL);
                                 if (lineText) {
                                     let lineSplit = lineText.split('"');
                                     if (lineSplit.length >= 4) {
                                         if (('DOTA_Tooltip_ability_' + data.data.name).toLowerCase() == lineSplit[1].toLowerCase() || ('DOTA_Tooltip_' + data.data.name).toLowerCase() == lineSplit[1].toLowerCase()) {
                                             result += `"${key}"			"${data.data.value}"` + os.EOL;
+                                            bSearch = true;
                                         }
                                     }
                                 }
                             }
+                            // 新增词条
+                            if (bSearch == false) {
+                                result += `"${key}"			"${data.data.value}"`;
+                            }
                             fs.writeFileSync(data.data.path, result);
                             // 更新localization
-                            this.localization[data.data.language][data.data.path][key] = data.data.value;
+                            this.localization[data.data.language][path.normalize(data.data.path)][key] = data.data.value;
                             webviewView.webview.postMessage({
                                 type: "LuaText",
                                 data: this.parseLua()
@@ -180,7 +190,7 @@ class LocalizationViewProvider {
                             }
                             fs.writeFileSync(data.data.path, result);
                             // 更新localization
-                            this.localization[data.data.language][data.data.path][key] = data.data.value;
+                            this.localization[data.data.language][path.normalize(data.data.path)][key] = data.data.value;
                             webviewView.webview.postMessage({
                                 type: "LuaText",
                                 data: this.parseLua()
@@ -215,6 +225,7 @@ class LocalizationViewProvider {
             });
             return result;
         }
+        return {};
     }
     // 解析本地化数据
     parseText() {

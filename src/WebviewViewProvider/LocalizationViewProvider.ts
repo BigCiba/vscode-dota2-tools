@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { GameDir } from '../init';
 import { EachLine, GetWebViewContent, ReadKeyValueWithBase, ReadKeyValueWithBaseIncludePath } from '../util';
+import { print } from 'util';
 
 interface LocalizationModifier {
 	Title?: string;
@@ -45,13 +46,13 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 		// 	"items.txt",
 		// 	"spell.txt",
 		// ]
-	} 
+	};
 
 	constructor(
 		private readonly context: vscode.ExtensionContext,
 	) {
 		vscode.window.onDidChangeActiveTextEditor(data => {
-			if (vscode.window.activeTextEditor?.document.languageId == "lua" && this._view) {
+			if (this._view) {
 				// this.luaText = vscode.window.activeTextEditor.document.getText();
 				this._view.webview.postMessage({
 					type: "LuaText",
@@ -81,12 +82,10 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 			type: "pathFolder",
 			data: this.pathForder
 		});
-		if (vscode.window.activeTextEditor?.document.languageId == "lua") {
-			webviewView.webview.postMessage({
-				type: "LuaText",
-				data: this.parseLua()
-			});
-		}
+		webviewView.webview.postMessage({
+			type: "rootPathFolder",
+			data: GameDir + '/localization'
+		});
 		// 解析kv与lua关联
 		let npc_abilities_custom_base: any = await ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_abilities_custom.txt');
 		let npc_items_custom_base: any = await ReadKeyValueWithBase(GameDir + '/scripts/npc/npc_items_custom.txt');
@@ -111,6 +110,13 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 			this.luaToKv[ScriptFile].push(key);
 		}
 
+		if (vscode.window.activeTextEditor?.document.languageId == "lua") {
+			webviewView.webview.postMessage({
+				type: "LuaText",
+				data: this.parseLua()
+			});
+		}
+
 		webviewView.webview.onDidReceiveMessage(async data => {
 			switch (data.type) {
 				case 'new':
@@ -132,24 +138,30 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 								key = 'DOTA_Tooltip_ability_' + data.data.name + '_' + data.data.key;
 							}
 						}
+						// 搜索已有的词条并修改
 						let result = '';
+						let bSearch = false;
 						let document: vscode.TextDocument = await vscode.workspace.openTextDocument(data.data.path);
 						for (let line: number = 0; line < document.lineCount; line++) {
 							let lineText: string = document.lineAt(line).text;
-							result += lineText + os.EOL;
+							result += lineText + (line == document.lineCount - 1 ? '' : os.EOL);
 							if (lineText) {
 								let lineSplit = lineText.split('"');
 								if (lineSplit.length >= 4) {
 									if (('DOTA_Tooltip_ability_' + data.data.name).toLowerCase() == lineSplit[1].toLowerCase() || ('DOTA_Tooltip_' + data.data.name).toLowerCase() == lineSplit[1].toLowerCase()) {
 										result += `"${key}"			"${data.data.value}"` + os.EOL;
+										bSearch = true;
 									}
 								}
 							}
 						}
-
+						// 新增词条
+						if (bSearch == false) {
+							result += `"${key}"			"${data.data.value}"`;
+						}
 						fs.writeFileSync(data.data.path, result);
 						// 更新localization
-						this.localization[data.data.language][data.data.path][key] = data.data.value;
+						this.localization[data.data.language][path.normalize(data.data.path)][key] = data.data.value;
 						webviewView.webview.postMessage({
 							type: "LuaText",
 							data: this.parseLua()
@@ -176,6 +188,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 							}
 						}
 						let result = '';
+
 						let document: vscode.TextDocument = await vscode.workspace.openTextDocument(data.data.path);
 						for (let line: number = 0; line < document.lineCount; line++) {
 							let lineText: string = document.lineAt(line).text;
@@ -194,7 +207,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 
 						fs.writeFileSync(data.data.path, result);
 						// 更新localization
-						this.localization[data.data.language][data.data.path][key] = data.data.value;
+						this.localization[data.data.language][path.normalize(data.data.path)][key] = data.data.value;
 						webviewView.webview.postMessage({
 							type: "LuaText",
 							data: this.parseLua()
@@ -227,6 +240,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 			});
 			return result;
 		}
+		return {};
 	}
 	// 解析本地化数据
 	async parseText() {
@@ -243,7 +257,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 			const [folderName, folderType] = langFolders[i];
 			if (Number(folderType) === vscode.FileType.Directory) {
 				// 记录
-				
+
 				const language_path: string = localizationPath + '/' + folderName;
 				let promise: any = await ReadLanguage(language_path);
 				result[folderName] = promise[0];
@@ -277,7 +291,7 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 					}
 				} else if (Number(fileType) === vscode.FileType.Directory) {
 					let promise: any = await ReadLanguage(fullPath);
-					pathData[fileName] = promise[1]
+					pathData[fileName] = promise[1];
 					lang = Object.assign(lang, promise[0]);
 				}
 			}
