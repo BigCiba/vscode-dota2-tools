@@ -145,6 +145,10 @@
 				"title": "kv转js(根据npc目录的kv_js_config.txt配置)"
 			},
 			{
+				"command": "dota2tools.default_item_remove_list",
+				"title": "复制官方默认物品列表到剪切板"
+			},
+			{
 				"command": "dota2tools.unit_export",
 				"title": "导出单位csv"
 			},

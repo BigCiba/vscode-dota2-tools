@@ -1532,6 +1532,23 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		vscode.window.showInformationMessage('JS文件生成完毕');
 	});
+	// 列出
+	let DefaultItemRemoveList = vscode.commands.registerCommand('dota2tools.default_item_remove_list', async () => {
+		let root_path: string | undefined = GetRootPath();
+		if (root_path === undefined) {
+			return;
+		}
+
+		let kv = util.GetKeyValueObjectByIndex(await util.ReadKeyValueWithBase(context.extensionPath + '\\resource\\npc\\items.txt'));
+		let str = "";
+		for (const name in kv) {
+			if (typeof (kv[name]) != "object") continue;
+			str += `\t"${name}"\t"REMOVE"\n`;
+		}
+
+		vscode.env.clipboard.writeText(str);
+		vscode.window.showInformationMessage('官方物品删除列表生成完毕，已复制到剪切板');
+	});
 
 	// 表继承功能
 	let CmdInheritTable = vscode.commands.registerCommand("dota2tools.inherit_table", InheritTable);
@@ -1789,6 +1806,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(UnitExport);
 	context.subscriptions.push(SelectAbilityTexture);
 	context.subscriptions.push(KVToJs);
+	context.subscriptions.push(DefaultItemRemoveList);
 	context.subscriptions.push(CSV2PHPArray);
 	context.subscriptions.push(CmdInheritTable);
 	context.subscriptions.push(CmdLocalizationCSV);
