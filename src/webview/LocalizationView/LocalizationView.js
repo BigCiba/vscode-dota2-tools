@@ -18,7 +18,6 @@ function GetPathList(path) {
 			}
 		}
 	}
-	// console.log(prefix);
 	let pathList = Object.keys(pathListObj).map((iterator) => {
 		return prefix + iterator;
 	});
@@ -27,7 +26,6 @@ function GetPathList(path) {
 			pathList.unshift(pathList.splice(index, 1)[0]);
 		}
 	});
-	// console.log(pathList);
 	return pathList;
 }
 window.addEventListener('message', event => {
