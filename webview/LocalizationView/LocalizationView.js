@@ -93,7 +93,7 @@ function Render() {
 		let showPath = path ? path.split('localization\\' + language)[1] : '';
 		let selectElement = contentElement.createChild('div', { className: 'select-content' });
 
-		let inputElement = selectElement.createInputSelectList(GetPathList(showPath), { selectIndex: 0, placeholder: '本地化路径' });
+		let inputElement = selectElement.createInputSelectList(GetPathList(showPath), { selectIndex: 0, placeholder: '本地化路径', callback: input => { return GetPathList(input); } });
 
 
 		contentElement.createChild('div', { className: 'item-modified-indicator' });	// 蓝条

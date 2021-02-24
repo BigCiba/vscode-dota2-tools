@@ -56,31 +56,50 @@ HTMLElement.prototype.selectOption = function (selectIndex) {
 };
 
 HTMLElement.prototype.createInputSelectList = function (list, option) {
+	// 渲染选项
+	function updataOption(self, dropdownElement, list) {
+		dropdownElement.innerHTML = "";
+		for (let index = 0; index < list.length; index++) {
+			const value = list[index];
+			let optionElement = dropdownElement.createChild('a', { className: 'dropdown-option', text: value });
+			// 选择默认选项
+			if (index == selectIndex) {
+				optionElement.classList.add('selected');
+			}
+			// 点击更新当前选择
+			optionElement.addEventListener('click', () => {
+				selectIndex = dropdownElement.selectOption(index);
+				inputElement.value = optionElement.innerText;
+
+				KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
+				KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
+				KeyEvent.UnBind(inputElement, KeyCode.Enter);
+				KeyEvent.UnBind(inputElement, KeyCode.Escape);
+				ClickEvent.UnBind(inputElement);
+				self.classList.remove('selected');
+			});
+			// 鼠标更新选项
+			optionElement.addEventListener('mouseover', () => {
+				selectIndex = dropdownElement.selectOption(index);
+			});
+		}
+	}
+	this.list = list;
 	let selectIndex = option.selectIndex;
-	let defaultValue = list[option.selectIndex] || list[0];
+	let defaultValue = this.list[option.selectIndex] || this.list[0];
 	let placeholder = option.placeholder || '';
+	let callback = option.callback;
 	let inputElement = this.createChild('input', { title: defaultValue, value: defaultValue, placeholder: placeholder });
 	// 创建选项
 	let dropdownElement = this.createChild('div', { className: 'dropdown-content' });
-	for (let index = 0; index < list.length; index++) {
-		const value = list[index];
-		let optionElement = dropdownElement.createChild('a', { className: 'dropdown-option', text: value });
-		// 选择默认选项
-		if (index == selectIndex) {
-			optionElement.classList.add('selected');
-		}
-		// 点击更新当前选择
-		optionElement.addEventListener('click', () => {
-			selectIndex = dropdownElement.selectOption(index);
-			inputElement.value = optionElement.innerText;
-			this.classList.remove('selected');
-		});
-		// 鼠标更新选项
-		optionElement.addEventListener('mouseover', () => {
-			selectIndex = dropdownElement.selectOption(index);
-		});
-	}
+	updataOption(this, dropdownElement, this.list);
 
+	inputElement.addEventListener('input', event => {
+		if (callback) {
+			this.list = callback(inputElement.value);
+			updataOption(this, dropdownElement, this.list);
+		}
+	});
 	// focus的时候激活
 	inputElement.addEventListener('mousedown', () => {
 		if (this.classList.contains('selected') == false) {
@@ -89,31 +108,41 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 			KeyEvent.Bind(inputElement, KeyCode.ArrowUp, () => {
 				if (selectIndex > 0) {
 					selectIndex = dropdownElement.selectOption(selectIndex - 1);
+					inputElement.value = dropdownElement.children[selectIndex].innerText;
 				}
 			});
 			KeyEvent.Bind(inputElement, KeyCode.ArrowDown, () => {
-				if (selectIndex < list.length - 1) {
+				if (selectIndex < this.list.length - 1) {
 					selectIndex = dropdownElement.selectOption(selectIndex + 1);
+					inputElement.value = dropdownElement.children[selectIndex].innerText;
 				}
 			});
 			KeyEvent.Bind(inputElement, KeyCode.Enter, () => {
 				inputElement.value = dropdownElement.children[selectIndex].innerText;
+				KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
+				KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
+				KeyEvent.UnBind(inputElement, KeyCode.Enter);
+				KeyEvent.UnBind(inputElement, KeyCode.Escape);
+				ClickEvent.UnBind(inputElement);
 				this.classList.remove('selected');
 			});
 			KeyEvent.Bind(inputElement, KeyCode.Escape, () => {
 				this.classList.remove('selected');
 				KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
 				KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
+				KeyEvent.UnBind(inputElement, KeyCode.Enter);
+				KeyEvent.UnBind(inputElement, KeyCode.Escape);
 				ClickEvent.UnBind(inputElement);
 			});
 			// 绑定鼠标点击区域外事件
 			setTimeout(() => {
 				ClickEvent.Bind(inputElement, (element) => {
 					if (element.classList.contains('dropdown-option') == false) {
-						console.log(2222);
 						this.classList.remove('selected');
 						KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
 						KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
+						KeyEvent.UnBind(inputElement, KeyCode.Enter);
+						KeyEvent.UnBind(inputElement, KeyCode.Escape);
 						ClickEvent.UnBind(inputElement);
 					}
 				});
