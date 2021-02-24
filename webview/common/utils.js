@@ -57,7 +57,7 @@ HTMLElement.prototype.selectOption = function (selectIndex) {
 
 HTMLElement.prototype.createInputSelectList = function (list, option) {
 	// 渲染选项
-	function updataOption(self, dropdownElement, list) {
+	function updataOption(self, dropdownElement, list, callback) {
 		dropdownElement.innerHTML = "";
 		for (let index = 0; index < list.length; index++) {
 			const value = list[index];
@@ -70,6 +70,10 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 			optionElement.addEventListener('click', () => {
 				selectIndex = dropdownElement.selectOption(index);
 				inputElement.value = optionElement.innerText;
+
+				if (callback) {
+					callback(inputElement.value);
+				}
 
 				KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
 				KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
@@ -89,15 +93,18 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 	let defaultValue = this.list[option.selectIndex] || this.list[0];
 	let placeholder = option.placeholder || '';
 	let callback = option.callback;
-	let inputElement = this.createChild('input', { title: defaultValue, value: defaultValue, placeholder: placeholder });
+	let className = option.className;
+	let inputElement = this.createChild('input', { title: defaultValue, value: defaultValue, placeholder: placeholder, className: className });
 	// 创建选项
 	let dropdownElement = this.createChild('div', { className: 'dropdown-content' });
-	updataOption(this, dropdownElement, this.list);
+	updataOption(this, dropdownElement, this.list, callback);
 
 	inputElement.addEventListener('input', event => {
 		if (callback) {
 			this.list = callback(inputElement.value);
-			updataOption(this, dropdownElement, this.list);
+			if (this.list) {
+				updataOption(this, dropdownElement, this.list, callback);
+			}
 		}
 	});
 	// focus的时候激活
@@ -119,6 +126,10 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 			});
 			KeyEvent.Bind(inputElement, KeyCode.Enter, () => {
 				inputElement.value = dropdownElement.children[selectIndex].innerText;
+
+				if (callback) {
+					callback(inputElement.value);
+				}
 				KeyEvent.UnBind(inputElement, KeyCode.ArrowUp);
 				KeyEvent.UnBind(inputElement, KeyCode.ArrowDown);
 				KeyEvent.UnBind(inputElement, KeyCode.Enter);

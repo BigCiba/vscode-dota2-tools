@@ -67,6 +67,19 @@ window.addEventListener('message', event => {
 function Render() {
 	// 清空面板
 	rootElement.innerHTML = "";
+	let titleElement = rootElement.createChild('div', { className: 'title' });
+	titleElement.createChild('div', { className: 'title-text', text: "语言：" });
+	let selectElement = titleElement.createChild('div', { className: 'select-content title-select' });
+	selectElement.createInputSelectList(Object.keys(pathFolder), {
+		selectIndex: Object.keys(pathFolder).indexOf(language),
+		placeholder: '选择语言',
+		callback: input => {
+			if (pathFolder[input] && language != input) {
+				language = input;
+				Render();
+			}
+		}
+	});
 	let nodeData = {};
 	for (const name in textData) {
 		// 取出特定语言数据

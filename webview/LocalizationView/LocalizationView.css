@@ -1,6 +1,42 @@
 body {
 	background-color: transparent;
 }
+.title {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	line-height: 1.4em!important;
+	cursor: default;
+	display: inline-block;
+	margin: 0;
+	font-weight: 600;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 10px 10px 10px 15px;
+	width: 80%;
+	position: relative;
+	font-size: 24px;
+	color: #e7e7e7;
+	/* background-color: rgba(65, 67, 57, 0.35); */
+}
+.title-text {
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	color: #e7e7e7;
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 1.4em!important;
+	display: inline-block;
+	width: 20%;
+}
+.title-select {
+	width: 80%;
+	display: inline-block;
+}
 .localization-list {
 	list-style: none;
 	padding: 0;
