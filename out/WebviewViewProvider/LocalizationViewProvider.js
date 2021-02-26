@@ -140,7 +140,7 @@ class LocalizationViewProvider {
                             }
                             // 新增词条
                             if (bSearch == false) {
-                                result += `\n"${key}"			"${data.data.value}"`;
+                                result += `${os.EOL}"${key}"			"${data.data.value}"`;
                             }
                             fs.writeFileSync(data.data.path, result);
                             // 更新localization
