@@ -222,6 +222,11 @@ class LocalizationViewProvider {
                     let textData = this.searchLocalization('DOTA_Tooltip_' + key);
                     result[key] = textData;
                 }
+                else if (lineText.search(/\s*(modifier\S*).*=.*eom_modifier\(.*/) != -1) {
+                    let key = lineText.replace(/\s*(modifier\S*).*=.*eom_modifier\(.*/, '$1');
+                    let textData = this.searchLocalization('DOTA_Tooltip_' + key);
+                    result[key] = textData;
+                }
             });
             return result;
         }
