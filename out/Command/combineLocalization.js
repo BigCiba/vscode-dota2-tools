@@ -54,7 +54,7 @@ function CombineLocalization() {
                     const [file_name, file_type] = files[i];
                     if (Number(file_type) === vscode.FileType.File) {
                         var document = yield vscode.workspace.openTextDocument(path + '/' + file_name);
-                        lang += "\t\t// txt_split(\"" + path.split("localization/")[1] + '/' + file_name + "\")" + os.EOL;
+                        lang += "\t\t//" + path.split("localization/")[1] + '/' + file_name + os.EOL;
                         for (let line = 0; line < document.lineCount; line++) {
                             const text_line = document.lineAt(line);
                             const char_start = text_line.firstNonWhitespaceCharacterIndex;
