@@ -10,6 +10,13 @@ class LuaCompletionItemProvider {
         this.document = JSON.parse(fs.readFileSync(path.join(context.extensionPath, 'resource', 'dota_script_help2.json'), 'utf-8'));
         this.snippets = [];
         for (const className in this.document.class_list) {
+            // 补全class
+            let item = new vscode.CompletionItem(className, vscode.CompletionItemKind.Class);
+            item.detail = className;
+            item.documentation = className;
+            item.insertText = className;
+            this.snippets.push(item);
+            // 补全函数
             for (const funInfo of this.document.class_list[className]) {
                 let item = new vscode.CompletionItem(funInfo.function, vscode.CompletionItemKind.Function);
                 item.detail = funInfo.description;
@@ -18,6 +25,7 @@ class LuaCompletionItemProvider {
                 this.snippets.push(item);
             }
         }
+        // 补全常数
         for (const enumType in this.document.enum_list) {
             for (const enumInfo of this.document.enum_list[enumType]) {
                 let item = new vscode.CompletionItem(enumInfo.name, vscode.CompletionItemKind.Enum);

@@ -27,7 +27,7 @@ import { LocalizationViewProvider } from './WebviewViewProvider/LocalizationView
 export async function activate(context: vscode.ExtensionContext) {
 	KVServer.Install(context);
 	// 重新解析数据时打开
-	let tools = new Tools(context);
+	// let tools = new Tools(context);
 	// tools.ParseLuaAPI();
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
@@ -1722,6 +1722,9 @@ export async function activate(context: vscode.ExtensionContext) {
 						data: info,
 					});
 					ApiTree.refresh();
+
+					let tools = new Tools(context);
+					tools.ParseLuaAPI();
 				}
 			});
 		}

@@ -1,4 +1,6 @@
 # Change Log
+## v0.1.92
+- 新增lua api补全（Dynamic_Wrap、DeepPrintTable、class等）
 ## v0.1.88
 - 本地化查看窗口修复与优化，可选择路径与语言，更新一些资源文件
 ## v0.1.85

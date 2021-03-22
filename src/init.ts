@@ -224,6 +224,8 @@ export async function Init(context: vscode.ExtensionContext) {
 				} else {
 					for (const funName in api_note[className]) {
 						if (typeof (api_note[className][funName]) == 'object' && api_note[className][funName].type == 'custom_note') {
+							console.log(api_note[className][funName]);
+
 							class_list[className].push(api_note[className][funName]);
 						}
 					}

@@ -38,7 +38,7 @@ function activate(context) {
     return __awaiter(this, void 0, void 0, function* () {
         KVServer_1.KVServer.Install(context);
         // 重新解析数据时打开
-        let tools = new tools_1.Tools(context);
+        // let tools = new Tools(context);
         // tools.ParseLuaAPI();
         // Use the console to output diagnostic information (console.log) and errors (console.error)
         // This line of code will only be executed once when your extension is activated
@@ -1719,6 +1719,8 @@ function activate(context) {
                             data: info,
                         });
                         init_1.ApiTree.refresh();
+                        let tools = new tools_1.Tools(context);
+                        tools.ParseLuaAPI();
                     }
                 });
             }
