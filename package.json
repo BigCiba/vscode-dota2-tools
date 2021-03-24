@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.1.93",
+	"version": "0.1.94",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
