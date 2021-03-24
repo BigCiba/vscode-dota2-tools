@@ -2,6 +2,11 @@
 ## 简介
 
 提供一些在制作dota2地图时的便利功能。
+## 常见问题
+
+- 如果插件没有生效，检查是否是设置里的excel生成kv配置有问题
+- 插件通过检索maps文件夹搜寻game目录与content目录，所以其他文件夹不要命名成maps
+
 ## 功能
 
 ### DOTA2 文档
@@ -56,6 +61,11 @@
 - 可在设置中关闭自动合并功能  
 
 ![localization](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/localization.png)
+
+### 划词翻译
+
+- 选取字符右键选择【翻译选择的词条】会调用google翻译接口进行翻译替换。
+- 如果不能翻译可能需要科学上网
 
 ### KV转JS
 

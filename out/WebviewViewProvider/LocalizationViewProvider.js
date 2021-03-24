@@ -40,11 +40,13 @@ class LocalizationViewProvider {
         };
         vscode.window.onDidChangeActiveTextEditor(data => {
             if (this._view) {
-                // this.luaText = vscode.window.activeTextEditor.document.getText();
-                this._view.webview.postMessage({
-                    type: "LuaText",
-                    data: this.parseLua()
-                });
+                if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua" && this.luaToKv[path.normalize(vscode.window.activeTextEditor.document.uri.fsPath)]) {
+                    // this.luaText = vscode.window.activeTextEditor.document.getText();
+                    this._view.webview.postMessage({
+                        type: "LuaText",
+                        data: this.parseLua()
+                    });
+                }
             }
         });
     }
@@ -196,6 +198,15 @@ class LocalizationViewProvider {
                                 data: this.parseLua()
                             });
                             break;
+                        }
+                    case 'open':
+                        {
+                            let document = yield vscode.workspace.openTextDocument(vscode.Uri.file(data.data.path));
+                            const options = {
+                                preview: false,
+                                viewColumn: vscode.ViewColumn.Two
+                            };
+                            vscode.window.showTextDocument(document, options);
                         }
                 }
             }));

@@ -14,6 +14,7 @@ import { DropHeroString } from "./drop_string";
 import * as ftp from 'ftp';
 import { LuaCompletionItemProvider } from './Completions/luaCompletionItemProvider';
 import { VsndPicker } from './Command/vsndPicker';
+import { TranslateSelection } from './Command/translateSelection';
 import { CombineLocalization } from './Command/combineLocalization';
 import { AbilityTextureBrowser } from './Command/abilityTextureBrowser';
 import { ItemGamesBrowser } from './Command/itemGamesBrowser';
@@ -21,10 +22,16 @@ import { Tools } from './tools';
 import { CssCompletionItemProvider } from './Completions/cssCompletionItemProvider';
 import { JsCompletionItemProvider } from './Completions/jsCompletionItemProvider';
 import { LocalizationViewProvider } from './WebviewViewProvider/LocalizationViewProvider';
+// import translate = require('google-translate-api');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
+	// translate('今天吃什么', { to: 'en' }).then(res => {
+	// 	console.log(res.text);
+	// }).catch(err => {
+	// 	console.error(err);
+	// });
 	KVServer.Install(context);
 	// 重新解析数据时打开
 	// let tools = new Tools(context);
@@ -1054,7 +1061,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 选择音效
-	let cmdVsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', VsndPicker);
+	let CmdVsndSelector = vscode.commands.registerCommand('dota2tools.vsnd_selector', VsndPicker);
 
 	// kv2csv
 	let KV2CSV = vscode.commands.registerCommand('dota2tools.kv_to_csv', async () => {
@@ -1653,7 +1660,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 轮回谷生成英雄掉落卡片的vtex和vpcf
-	let cmdDropVPCf = vscode.commands.registerCommand("samsara.hero_drop", async () => {
+	let CmdDropVPCf = vscode.commands.registerCommand("samsara.hero_drop", async () => {
 		let sTgaPath = (ContentDir + "/materials/items/").replace(/\\/g, "/");
 		let sVTEXPath = (ContentDir + "/materials/").replace(/\\/g, "/");
 		let sVPCFPath = (ContentDir + "/particles/generic_gameplay/").replace(/\\/g, "/");
@@ -1678,6 +1685,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// items_game饰品查询
 	let ItemsBrowser = vscode.commands.registerCommand("dota2tools.items_browser", () => ItemGamesBrowser(context));
+
+	let CmdTranslateSelection = vscode.commands.registerCommand("dota2tools.translate_selection", TranslateSelection);
 
 	// Lua API 相关
 	let APIBrowserView: vscode.WebviewPanel | undefined = undefined;
@@ -1803,7 +1812,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(GenerateAPI);
 	context.subscriptions.push(NoteAPI);
 	context.subscriptions.push(GenerateDocument);
-	context.subscriptions.push(cmdVsndSelector);
 	context.subscriptions.push(KV2CSV);
 	context.subscriptions.push(AbilityExport);
 	context.subscriptions.push(UnitExport);
@@ -1811,10 +1819,12 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(KVToJs);
 	context.subscriptions.push(DefaultItemRemoveList);
 	context.subscriptions.push(CSV2PHPArray);
+	context.subscriptions.push(CmdVsndSelector);
 	context.subscriptions.push(CmdInheritTable);
 	context.subscriptions.push(CmdLocalizationCSV);
 	context.subscriptions.push(CmdLocalizationCSV2Text);
-	context.subscriptions.push(cmdDropVPCf);
+	context.subscriptions.push(CmdDropVPCf);
+	context.subscriptions.push(CmdTranslateSelection);
 	context.subscriptions.push(ItemsBrowser);
 	if (vscode.workspace.getConfiguration().get("dota2-tools.SnippetEnable Lua") == true) {
 		let luaCompletionItemProvider = new LuaCompletionItemProvider(context);

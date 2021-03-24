@@ -1,4 +1,6 @@
 # Change Log
+## v0.1.94
+- 新增右键翻译选取的字符功能
 ## v0.1.92
 - 新增lua api补全（Dynamic_Wrap、DeepPrintTable、class等）
 ## v0.1.88

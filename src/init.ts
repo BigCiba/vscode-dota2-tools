@@ -339,7 +339,7 @@ export async function Init(context: vscode.ExtensionContext) {
 		var lang_folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(path));
 		for (let i: number = 0; i < lang_folders.length; i++) {
 			const [folder_name, is_directory] = lang_folders[i];
-			if (folder_name === '.git') {
+			if (folder_name === '.git' || folder_name === 'node_modules') {
 				continue;
 			}
 			if (folder_name === file_name) {

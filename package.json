@@ -287,6 +287,10 @@
 				"command": "dota2tools.items_browser",
 				"title": "Dota2饰品查询工具",
 				"icon": "$(jersey)"
+			},
+			{
+				"command": "dota2tools.translate_selection",
+				"title": "翻译选择的词条"
 			}
 		],
 		"menus": {
@@ -299,6 +303,11 @@
 				{
 					"when": "editorHasSelection",
 					"command": "extension.NoteAPI",
+					"group": "navigation"
+				},
+				{
+					"when": "editorHasSelection",
+					"command": "dota2tools.translate_selection",
 					"group": "navigation"
 				}
 			],
@@ -617,11 +626,13 @@
 	},
 	"dependencies": {
 		"@types/ftp": "^0.3.31",
+		"@types/google-translate-api": "^2.3.1",
 		"@types/node-xlsx": "^0.15.0",
 		"@types/request": "^2.48.5",
 		"@types/ssh2-sftp-client": "^5.3.0",
 		"@types/watch": "^1.0.1",
 		"ftp": "^0.3.10",
+		"google-translate-api": "^2.3.0",
 		"node-xlsx": "^0.15.0",
 		"request": "^2.88.2",
 		"ssh2-sftp-client": "^5.3.1",

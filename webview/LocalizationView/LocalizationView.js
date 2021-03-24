@@ -102,6 +102,18 @@ function Render() {
 		});
 		let titleElement = contentElement.createChild('div', { className: 'item-title' });
 		titleElement.createChild('span', { className: 'item-label', text: name });	//名字
+		let btnOpenFile = titleElement.createChild('a', { className: 'monaco-text-button btn-openfile', text: '打开文本' });	// 打开文本
+		btnOpenFile.addEventListener('click', () => {
+			if (path) {
+				vscode.postMessage({
+					type: 'open',
+					data: {
+						path: path,
+					},
+				});
+			}
+		});
+
 		// 路径
 		let showPath = path ? path.split('localization\\' + language)[1] : '';
 		let selectElement = contentElement.createChild('div', { className: 'select-content' });

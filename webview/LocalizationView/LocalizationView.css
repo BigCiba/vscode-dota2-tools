@@ -112,6 +112,10 @@ body {
 	font-weight: 600;
 	-webkit-user-select: text;
 }
+.btn-openfile {
+	position: absolute;
+	right: 9px;
+}
 .item-modified-indicator {
 	--sash-size: 4px;
 	--monaco-monospace-font: Consolas,"Courier New",monospace;

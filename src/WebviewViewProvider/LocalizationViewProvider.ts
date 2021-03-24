@@ -3,8 +3,9 @@ import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
 import { GameDir } from '../init';
-import { EachLine, GetWebViewContent, ReadKeyValueWithBase, ReadKeyValueWithBaseIncludePath } from '../util';
+import { EachLine, GetWebViewContent, ReadKeyValueWithBase, ReadKeyValueWithBaseIncludePath, GetStat } from '../util';
 import { print } from 'util';
+import { utils } from 'mocha';
 
 interface LocalizationModifier {
 	Title?: string;
@@ -53,11 +54,13 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 	) {
 		vscode.window.onDidChangeActiveTextEditor(data => {
 			if (this._view) {
-				// this.luaText = vscode.window.activeTextEditor.document.getText();
-				this._view.webview.postMessage({
-					type: "LuaText",
-					data: this.parseLua()
-				});
+				if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == "lua" && this.luaToKv[path.normalize(vscode.window.activeTextEditor.document.uri.fsPath)]) {
+					// this.luaText = vscode.window.activeTextEditor.document.getText();
+					this._view.webview.postMessage({
+						type: "LuaText",
+						data: this.parseLua()
+					});
+				}
 			}
 		});
 	}
@@ -213,6 +216,15 @@ export class LocalizationViewProvider implements vscode.WebviewViewProvider {
 							data: this.parseLua()
 						});
 						break;
+					}
+				case 'open':
+					{
+						let document: vscode.TextDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(data.data.path));
+						const options = {
+							preview: false,
+							viewColumn: vscode.ViewColumn.Two
+						};
+						vscode.window.showTextDocument(document, options);
 					}
 			}
 		});
