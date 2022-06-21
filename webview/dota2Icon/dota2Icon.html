@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<script src="dota2Icon.js"></script>
+	<link href="dota2Icon.css" rel="stylesheet" />
+	<title>Dota2图标</title>
+</head>
+
+<body>
+	<div class="search">
+		<div class="texture-type-content">
+			<input class="texture-type selected" type="button" name="texture-type" value="技能"
+				onclick="toggleType(this)">
+			<input class="texture-type" type="button" name="texture-type" value="物品" onclick="toggleType(this)">
+		</div>
+		<div class="search-content">
+			<div class="dropdown">
+				<img id="hero-filter" src="../../images/heroes_icon/npc_dota_hero_default_png.png">
+				<div class="dropdown-content">
+					<div id="DOTA_ATTRIBUTE_STRENGTH" class="dropdown-content-attribute">
+						<div>__replace__</div>
+					</div>
+					<HR color=#454545>
+					<div id="DOTA_ATTRIBUTE_AGILITY" class="dropdown-content-attribute">
+						<div>__replace__</div>
+					</div>
+					<HR color=#454545>
+					<div id="DOTA_ATTRIBUTE_INTELLECT" class="dropdown-content-attribute">
+						<div>__replace__</div>
+					</div>
+				</div>
+				<div class="dropdown-blur">
+				</div>
+			</div>
+			<input id="filter" type="text" placeholder="Search" oninput="onInput()">
+		</div>
+		<!-- <i class="fa fa-cog" style="font-size:36px"></i> -->
+	</div>
+	<div id="texture-content">
+		<!-- 用于代码替换的内容 -->
+		<div>__replace__</div>
+	</div>
+	<div id="item-texture-content">
+		<!-- 用于代码替换的内容 -->
+		<div>__replace__</div>
+	</div>
+</body>
+
+</html>

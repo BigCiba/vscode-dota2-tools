@@ -1,0 +1,691 @@
+{
+	"name": "dota2-tools",
+	"displayName": "dota2-作图工具",
+	"description": "dota2 作图工具",
+	"version": "0.2.80",
+	"icon": "images/logo.png",
+	"publisher": "bigciba",
+	"engines": {
+		"vscode": "^1.66.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"customEditors": [
+			{
+				"viewType": "dota2tools.vmdl",
+				"displayName": "VMDL viewer",
+				"selector": [
+					{
+						"filenamePattern": "*.vmdl"
+					}
+				]
+			}
+		],
+		"languages": [
+			{
+				"id": "plaintext",
+				"aliases": [
+					"Dota KV"
+				],
+				"extensions": [
+					".kv",
+					".txt"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "plaintext",
+				"scopeName": "source.txt",
+				"path": "./syntaxes/dotaKV.tmLanguage"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "dota2api",
+					"title": "Dota2 Document",
+					"icon": "$(book)"
+				}
+			]
+		},
+		"views": {
+			"dota2api": [
+				{
+					"id": "dota2apiExplorer",
+					"when": "config.dota2-tools.A1.module_list.lua_api_tree",
+					"name": "Dota2 API"
+				},
+				{
+					"id": "dota2JSApiExplorer",
+					"when": "config.dota2-tools.A1.module_list.js_api_tree",
+					"name": "Dota2 JS API"
+				},
+				{
+					"id": "dota2CssApiExplorer",
+					"when": "config.dota2-tools.A1.module_list.css_api_tree",
+					"name": "Dota2 CSS Document"
+				},
+				{
+					"id": "dota2PanelExplorer",
+					"when": "config.dota2-tools.A1.module_list.panel_tree",
+					"name": "Dota2 Panel Document"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "dota2tools.showOutput",
+				"title": "%dota2tools.showOutput%"
+			},
+			{
+				"command": "dota2tools.preProcessing",
+				"title": "%dota2tools.preProcessing%"
+			},
+			{
+				"command": "dota2tools.welcomePage",
+				"title": "%dota2tools.welcomePage%"
+			},
+			{
+				"command": "dota2tools.Localization",
+				"title": "%dota2tools.Localization%"
+			},
+			{
+				"command": "dota2tools.ability_icon",
+				"title": "%dota2tools.ability_icon%",
+				"icon": "$(file-media)"
+			},
+			{
+				"command": "dota2tools.items_game",
+				"title": "%dota2tools.items_game%",
+				"icon": "$(jersey)"
+			},
+			{
+				"command": "dota2tools.vsnd_picker",
+				"title": "%dota2tools.vsnd_picker%",
+				"icon": {
+					"light": "./images/vsnd_light.svg",
+					"dark": "./images/vsnd_dark.svg"
+				}
+			},
+			{
+				"command": "dota2tools.translate_selection",
+				"title": "%dota2tools.translate_selection%"
+			},
+			{
+				"command": "dota2tools.kv_to_js_config",
+				"title": "%dota2tools.kv_to_js_config%"
+			},
+			{
+				"command": "dota2tools.default_item_remove_list",
+				"title": "%dota2tools.default_item_remove_list%"
+			},
+			{
+				"command": "dota2tools.inherit_table",
+				"title": "%dota2tools.inherit_table%"
+			},
+			{
+				"command": "dota2tools.localization_csv",
+				"title": "%dota2tools.localization_csv%"
+			},
+			{
+				"command": "dota2tools.localization_text",
+				"title": "%dota2tools.localization_text%"
+			},
+			{
+				"command": "dota2tools.samsara_hero_drop",
+				"title": "%dota2tools.samsara_hero_drop%"
+			},
+			{
+				"command": "dota2tools.generate_lua_api_document",
+				"title": "%dota2tools.generate_lua_api_document%"
+			},
+			{
+				"command": "dota2tools.copy_hero_wearable_bundle_info",
+				"title": "%dota2tools.copy_hero_wearable_bundle_info%"
+			},
+			{
+				"command": "dota2tools.create_wearable_items",
+				"title": "%dota2tools.create_wearable_items%"
+			},
+			{
+				"command": "dota2tools.format kv",
+				"title": "%dota2tools.format kv%"
+			},
+			{
+				"command": "dota2tools.parse entities",
+				"title": "%dota2tools.parse entities%"
+			},
+			{
+				"command": "dota2tools.excel2kv",
+				"title": "%dota2tools.excel2kv%"
+			},
+			{
+				"command": "dota2tools.inheritCSV",
+				"title": "%dota2tools.inheritCSV%"
+			},
+			{
+				"command": "dota2tools.ability_export",
+				"title": "%dota2tools.ability_export%"
+			},
+			{
+				"command": "dota2tools.unit_export",
+				"title": "%dota2tools.unit_export%"
+			},
+			{
+				"command": "dota2tools.lua_api_changelog",
+				"title": "%dota2tools.lua_api_changelog%",
+				"icon": "$(notebook)"
+			},
+			{
+				"command": "dota2tools.dota2api.filter",
+				"title": "%dota2tools.dota2api.filter%",
+				"icon": "$(search)"
+			},
+			{
+				"command": "dota2tools.dota2api.clearfilter",
+				"title": "%dota2tools.dota2api.clearfilter%",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "dota2tools.dota2api.expand",
+				"title": "%dota2tools.dota2api.expand%",
+				"icon": "$(expand-all)"
+			},
+			{
+				"command": "dota2tools.dota2api.collapse",
+				"title": "%dota2tools.dota2api.collapse%",
+				"icon": "$(collapse-all)"
+			},
+			{
+				"command": "dota2tools.dota2api.overview",
+				"title": "%dota2tools.dota2api.overview%",
+				"icon": "$(heart)"
+			},
+			{
+				"command": "dota2tools.dota2api.edit",
+				"title": "%dota2tools.dota2api.edit%",
+				"icon": "$(edit)"
+			},
+			{
+				"command": "dota2tools.dota2api.copy",
+				"title": "%dota2tools.dota2api.copy%",
+				"icon": "$(copy)"
+			},
+			{
+				"command": "dota2tools.dota2api.list",
+				"title": "%dota2tools.dota2api.list%",
+				"icon": "$(list-selection)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.copy",
+				"title": "%dota2tools.dota2jsapi.copy%",
+				"icon": "$(copy)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.list",
+				"title": "%dota2tools.dota2jsapi.list%",
+				"icon": "$(list-selection)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.filter",
+				"title": "%dota2tools.dota2jsapi.filter%",
+				"icon": "$(search)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.clearfilter",
+				"title": "%dota2tools.dota2jsapi.clearfilter%",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "dota2tools.dota2jsapi.collapse",
+				"title": "%dota2tools.dota2jsapi.collapse%",
+				"icon": "$(collapse-all)"
+			},
+			{
+				"command": "dota2tools.css_api_browser.copy",
+				"title": "%dota2tools.css_api_browser.copy%",
+				"icon": "$(copy)"
+			},
+			{
+				"command": "dota2tools.css_property.edit",
+				"title": "%dota2tools.css_property.edit%",
+				"icon": "$(edit)"
+			},
+			{
+				"command": "dota2tools.dota2cssapi.filter",
+				"title": "%dota2tools.dota2cssapi.filter%",
+				"icon": "$(search)"
+			},
+			{
+				"command": "dota2tools.dota2cssapi.clearfilter",
+				"title": "%dota2tools.dota2cssapi.clearfilter%",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "dota2tools.dota2panel.event",
+				"title": "%dota2tools.dota2panel.event%",
+				"icon": "$(book)"
+			},
+			{
+				"command": "dota2tools.OpenKV",
+				"title": "%dota2tools.OpenKV%"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "resource =~ /abilities/ && resourceExtname == '.lua' && config.dota2-tools.A1.module_list.kv_lua_associated",
+					"command": "dota2tools.OpenKV",
+					"group": "navigation"
+				},
+				{
+					"when": "editorHasSelection",
+					"command": "dota2tools.translate_selection",
+					"group": "navigation"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "dota2tools.ability_icon",
+					"when": "config.dota2-tools.A2.display.ability_icon",
+					"group": "navigation"
+				},
+				{
+					"command": "dota2tools.vsnd_picker",
+					"when": "config.dota2-tools.A2.display.vsnd_picker",
+					"group": "navigation"
+				},
+				{
+					"command": "dota2tools.items_game",
+					"when": "config.dota2-tools.A2.display.items_game",
+					"group": "navigation"
+				}
+			],
+			"editor/title/context": [
+				{
+					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
+					"command": "dota2tools.ability_export",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
+					"command": "dota2tools.unit_export",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
+					"command": "dota2tools.localization_csv",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
+					"command": "dota2tools.localization_text",
+					"group": "navigation"
+				}
+			],
+			"view/title": [
+				{
+					"command": "dota2tools.lua_api_changelog",
+					"when": "view == dota2apiExplorer",
+					"group": "navigation@4"
+				},
+				{
+					"command": "dota2tools.dota2api.overview",
+					"when": "view == dota2apiExplorer",
+					"group": "navigation@5"
+				},
+				{
+					"command": "dota2tools.dota2api.filter",
+					"when": "view == dota2apiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2api.clearfilter",
+					"when": "view == dota2apiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2api.collapse",
+					"when": "view == dota2apiExplorer",
+					"group": "navigation@7"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.filter",
+					"when": "view == dota2JSApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.clearfilter",
+					"when": "view == dota2JSApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.collapse",
+					"when": "view == dota2JSApiExplorer",
+					"group": "navigation@7"
+				},
+				{
+					"command": "dota2tools.dota2cssapi.filter",
+					"when": "view == dota2CssApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2cssapi.clearfilter",
+					"when": "view == dota2CssApiExplorer",
+					"group": "navigation@6"
+				},
+				{
+					"command": "dota2tools.dota2panel.event",
+					"when": "view == dota2PanelExplorer",
+					"group": "navigation@7"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "dota2tools.dota2api.edit",
+					"when": "view == dota2apiExplorer && viewItem == NodeItem",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.dota2api.copy",
+					"when": "view == dota2apiExplorer && viewItem == NodeItem",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.dota2api.list",
+					"when": "view == dota2apiExplorer && viewItem == Class",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.list",
+					"when": "view == dota2JSApiExplorer && viewItem == Class",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.dota2jsapi.copy",
+					"when": "view == dota2JSApiExplorer && viewItem == NodeItem",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.css_api_browser.copy",
+					"when": "view == dota2CssApiExplorer && viewItem == Class",
+					"group": "inline"
+				},
+				{
+					"command": "dota2tools.css_property.edit",
+					"when": "view == dota2CssApiExplorer && viewItem == Class",
+					"group": "inline"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "%pluginName%",
+			"properties": {
+				"dota2-tools.A1.module_list": {
+					"scope": "resource",
+					"type": "object",
+					"default": {
+						"ability_icon": true,
+						"items_game": true,
+						"vsnd_picker": true,
+						"addon_info": true,
+						"lua_api_tree": true,
+						"js_api_tree": true,
+						"css_api_tree": true,
+						"panel_tree": true,
+						"lua_completion": true,
+						"js_completion": true,
+						"css_completion": true,
+						"kv_lua_associated": true
+					},
+					"properties": {
+						"ability_icon": {
+							"type": "boolean",
+							"default": true,
+							"description": "%dota2IconPanelInit%"
+						},
+						"items_game": {
+							"type": "boolean",
+							"default": true,
+							"description": "%dota2ItemsGameInit%"
+						},
+						"vsnd_picker": {
+							"type": "boolean",
+							"default": true,
+							"description": "%vsndPickerInit%"
+						},
+						"addon_info": {
+							"type": "boolean",
+							"default": true,
+							"description": "%addonInfoInit%"
+						},
+						"lua_api_tree": {
+							"type": "boolean",
+							"default": true,
+							"description": "树状图lua api文档"
+						},
+						"js_api_tree": {
+							"type": "boolean",
+							"default": true,
+							"description": "树状图js api文档"
+						},
+						"css_api_tree": {
+							"type": "boolean",
+							"default": true,
+							"description": "树状图css api文档"
+						},
+						"panel_tree": {
+							"type": "boolean",
+							"default": true,
+							"description": "树状图panel文档"
+						},
+						"lua_completion": {
+							"type": "boolean",
+							"default": true,
+							"description": "lua代码补全"
+						},
+						"js_completion": {
+							"type": "boolean",
+							"default": true,
+							"description": "js代码补全"
+						},
+						"css_completion": {
+							"type": "boolean",
+							"default": true,
+							"description": "css代码补全"
+						},
+						"kv_lua_associated": {
+							"type": "boolean",
+							"default": true,
+							"description": "技能物品kv与lua脚本互相跳转"
+						}
+					},
+					"additionalProperties": false,
+					"markdownDescription": "%dota2-tools.module_list.description%"
+				},
+				"dota2-tools.A2.display": {
+					"scope": "resource",
+					"type": "object",
+					"default": {
+						"ability_icon": true,
+						"items_game": true,
+						"vsnd_picker": true
+					},
+					"properties": {
+						"ability_icon": {
+							"type": "boolean",
+							"default": true,
+							"description": "是否显示Dota2图标按钮"
+						},
+						"items_game": {
+							"type": "boolean",
+							"default": true,
+							"description": "是否显示Dota2饰品查询工具按钮"
+						},
+						"vsnd_picker": {
+							"type": "boolean",
+							"default": true,
+							"description": "是否显示Dota2 vsnd音效查询按钮"
+						}
+					},
+					"additionalProperties": false,
+					"markdownDescription": "显示相关设置，隐藏不需要的图标。如需禁用相关功能请在模块列表中取消。"
+				},
+				"dota2-tools.A3.listener": {
+					"scope": "resource",
+					"type": "object",
+					"default": {
+						"localization": false,
+						"kv2js": false,
+						"ability_excel": false,
+						"unit_excel": false
+					},
+					"properties": {
+						"localization": {
+							"type": "boolean",
+							"default": false,
+							"description": "监听文本变更自动合并文本"
+						},
+						"kv2js": {
+							"type": "boolean",
+							"default": false,
+							"description": "监听kv文件变更自动生成js"
+						},
+						"ability_excel": {
+							"type": "boolean",
+							"default": false,
+							"description": "监听双行技能excel变更自动生成kv"
+						},
+						"unit_excel": {
+							"type": "boolean",
+							"default": false,
+							"description": "监听单行单位excel变更自动生成kv"
+						}
+					},
+					"additionalProperties": false,
+					"markdownDescription": "监听文件变更相关设置。"
+				},
+				"dota2-tools.A4.AbilityExcel": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"markdownDescription": "双行技能excel表路径配置\n- kv路径对应excel路径\n- 可填写具体文件名也可以填写文件夹\n- 可以使用相对当前工作区的相对路径\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
+				},
+				"dota2-tools.A4.UnitExcel": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"markdownDescription": "单行excel表路径配置\n- kv路径对应excel路径\n- 可填写具体文件名也可以填写文件夹\n- 可以使用相对当前工作区的相对路径\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
+				},
+				"dota2-tools.A5.localization_path": {
+					"type": "string",
+					"default": "${game}/localization",
+					"description": "合并文本的目录，${game}或者${content}可以指代当前game或者content目录"
+				},
+				"dota2-tools.addon_path": {
+					"scope": "resource",
+					"type": "object",
+					"properties": {
+						"game": {
+							"type": "string",
+							"description": "%dota2-tools.addon_path.game%"
+						},
+						"content": {
+							"type": "string",
+							"description": "%dota2-tools.addon_path.content%"
+						}
+					},
+					"additionalProperties": false,
+					"markdownDescription": "%dota2-tools.addon_path.description%"
+				},
+				"dota2-tools.KV to Js Config": {
+					"type": "string",
+					"default": "/scripts/npc/kv_js_config.txt",
+					"description": "KV导出JS配置文件"
+				},
+				"dota2-tools.lua api document path": {
+					"type": "string",
+					"default": "${game}/scripts/vscripts/libraries",
+					"description": "lua api文档生成相对路径，用于Emmylua插件补全相关功能，${game}或者${content}可以指代当前game或者content目录"
+				},
+				"dota2-tools.LuaTemplateFiles": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"default": {
+						"ability": "/eom/lua_ability_snippet.lua",
+						"item": "/eom/lua_item_snippet.lua"
+					},
+					"description": "lua代码模板"
+				},
+				"dota2-tools.ability class constructor": {
+					"type": "array",
+					"default": [
+						"eom_ability"
+					],
+					"description": "如果你自己封装了class，比如death_pulse = eom_ability({})，可以在此处添加关键字eom_ability，否则lua跳转kv功能不会生效。",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "npm run compile-tests && npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/fs-extra": "^9.0.13",
+		"@types/glob": "^7.2.0",
+		"@types/md5": "^2.3.2",
+		"@types/mkdirp": "^1.0.2",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "14.x",
+		"@types/vscode": "^1.66.0",
+		"@typescript-eslint/eslint-plugin": "^5.23.0",
+		"@typescript-eslint/parser": "^5.23.0",
+		"@vscode/test-electron": "^2.1.3",
+		"eslint": "^8.15.0",
+		"glob": "^8.0.1",
+		"mocha": "^9.2.2",
+		"ts-loader": "^9.2.8",
+		"typescript": "^4.6.4",
+		"webpack": "^5.70.0",
+		"webpack-cli": "^4.9.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/BigCiba/vscode-dota2-tools.git"
+	},
+	"dependencies": {
+		"@vscode/codicons": "^0.0.29",
+		"@vscode/webview-ui-toolkit": "^1.0.0",
+		"cardinal": "^2.1.1",
+		"exceljs": "^4.3.0",
+		"fs-extra": "^10.0.1",
+		"md5": "^2.3.0",
+		"mysql2": "^2.3.3",
+		"node-watch": "^0.7.3",
+		"react": "^18.1.0"
+	}
+}

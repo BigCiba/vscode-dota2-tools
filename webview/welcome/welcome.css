@@ -1,0 +1,34 @@
+/* html {
+	width: 100%;
+	height: 100%;
+}
+body {
+	width: 100%;
+	height: 100%;
+	max-width: 1200px;
+	margin: auto;
+	display: table;
+}
+#router {
+	width: 200px;
+	display:table-cell;
+}
+#content{
+	display:table-cell;
+}
+#divider {
+	display:table-cell;
+	width: 1px;
+	background-color: #444c56;
+} */
+img {
+	border-radius: 8px;
+	box-shadow: 0 0 1px 0 rgb(0 0 0 / 80%), 0 0 12px 1px rgb(0 0 0 / 50%);
+	object-fit: cover;
+}
+h1 {
+	margin-bottom: 0px;
+}
+p {
+	font-size: 14px;
+}

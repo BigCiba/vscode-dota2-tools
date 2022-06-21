@@ -1,0 +1,91 @@
+body {
+	justify-content: center;
+	align-items: center;
+	margin: 1em 2em;
+	/* background-image: url(./sand.jpg); */
+	background-repeat: repeat;
+}
+
+body.vscode-dark {
+	justify-content: center;
+	align-items: center;
+	/* background-image: url(./sand-dark.jpg); */
+}
+
+
+.active-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 64px);
+	grid-template-rows: repeat(auto-fill, 36px);
+	grid-gap: 2em;
+	justify-content: center;
+}
+.hero-icon:hover {
+	box-shadow: 0px 0px 10px #6e96e0;
+}
+.hero-icon {
+	width: 64px;
+	height: 36px;
+	border-radius: 5px;
+	/* margin-left: 5px;
+	margin-right: 50px; */
+	position: relative;
+}
+.disable {
+	filter: grayscale(100%);
+}
+.checkbox {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+}
+
+.note {
+	display: flex;
+	flex-direction: column;
+	border-radius: 5px;
+	background-color: var(--vscode-editor-background);
+	text-align: center;
+	padding: 0.6em;
+	position: relative;
+	overflow: hidden;
+}
+
+.note .text {
+	flex: 1;
+	font-size: 3em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.note .created {
+	font-style: italic;
+	font-size: 0.75em;
+}
+
+.add-button {
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.add-button button {
+	background-color: var(--vscode-button-foreground);
+}
+
+.delete-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: none;
+}
+
+.delete-button:before {
+	content: 'delete';
+}
+
+.note:hover .delete-button {
+	display: block;
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Texture Selector</title>
+	<link href="dota2ItemsGame.css" rel="stylesheet" />
+	<script src="dota2ItemsGame.js"></script>
+</head>
+
+<body>
+	<div class="search">
+		<vscode-text-field id="filter" type="text" placeholder="输入饰品编号或者模型路径或英雄名" oninput="onInput(event)">
+			<span slot="end" class="codicon codicon-clear-all" role="button" title="清除搜索结果"
+				onclick="onClear(event)"></span>
+		</vscode-text-field>
+	</div>
+	<article id="markdown-body">
+	</article>
+</body>
+
+</html>

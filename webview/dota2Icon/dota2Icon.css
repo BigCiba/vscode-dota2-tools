@@ -1,0 +1,215 @@
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* align-items: center; */
+	margin: 1em 2em;
+	background-repeat: repeat;
+}
+
+body.vscode-dark {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* align-items: center; */
+}
+#texture-content {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 64px);
+	grid-template-rows: repeat(auto-fill, 64px);
+	grid-gap: 1em;
+	justify-content: center;
+	/* filter: blur(5px); */
+}
+.texture-icon {
+	width: 64px;
+	height: 64px;
+	border-radius: 4px;
+	box-shadow: 4px 4px 10px #06070a;
+	outline-style: none;
+	position: relative;
+}
+.texture-icon:focus {
+	outline: 0;
+}
+.texture-icon:hover {
+	box-shadow: 0px 0px 10px #8496cc;
+}
+.texture-icon:active{
+	top: 2px;
+}
+#hero-filter {
+	width: 64px;
+	height: 36px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	/* position: relative;
+	display: inline-block; */
+}
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background: #252526;
+	min-width: 666px;
+	left: -190px;
+	min-height: 400px;
+	box-shadow: 4px 4px 10px #06070a;
+	border-radius: 4px;
+	padding: 10px;
+	transition: .3s linear;
+}
+/* .dropdown-content .hero-icon {
+	width: 64px;
+	height: 36px;
+	border-radius: 4px;
+	outline-style: none;
+	position: relative;
+}
+.dropdown-content .hero-icon:focus {
+	outline: 0;
+}
+.dropdown-content .hero-icon:hover {
+	box-shadow: 0px 0px 10px #8496cc;
+}
+.dropdown-content .hero-icon:active {
+	top: 2px;
+} */
+.dropdown:hover .dropdown-content {
+	display: block;
+	/* grid-template-columns: repeat(auto-fill, 64px);
+	grid-template-rows: repeat(auto-fill, 36px);
+	grid-gap: 2px; */
+	/* justify-content: center; */
+}
+
+.dropdown-content-attribute {
+	display: none;
+	/* position: absolute; */
+	background: #252526;
+	min-width: 666px;
+	left: -190px;
+	/* min-height: 400px; */
+	/* box-shadow: 4px 4px 10px #06070a; */
+	/* border-radius: 4px; */
+	/* padding: 6px; */
+	transition: .3s linear;
+}
+.dropdown-content-attribute .hero-icon {
+	width: 64px;
+	height: 36px;
+	border-radius: 2px;
+	outline-style: none;
+	position: relative;
+}
+.dropdown-content-attribute .hero-icon:focus {
+	outline: 0;
+}
+.dropdown-content-attribute .hero-icon:hover {
+	box-shadow: 0px 0px 10px #8496cc;
+}
+.dropdown-content-attribute .hero-icon:active {
+	top: 2px;
+}
+.dropdown:hover .dropdown-content-attribute {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 64px);
+	grid-template-rows: repeat(auto-fill, 36px);
+	grid-gap: 8px;
+	/* justify-content: center; */
+}
+.texture-type-content {
+	height: 36px;
+	width: 150px;
+}
+.texture-type {
+	height: 36px;
+	width: 72px;
+	-webkit-appearance:none;
+	/* background: pink; */
+	border-radius: 4px; 	
+	/* border: 4px solid skyblue; */
+	box-shadow: 4px 4px 10px #06070a;
+	background: #252526;
+	color: white;
+	outline-style: none;
+	border: 0px;
+	/* transition: .3s linear; */
+}
+.texture-type:focus {
+	outline: 0;
+}
+.selected {
+	background: #233158;;
+}
+.search {
+	padding: 30px 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	/* position:fixed;top:0;left:0; */
+}
+.search button {
+	height: 36px;
+}
+.search-content {
+	height: 36px;
+	min-width: 250px;
+	box-shadow: 4px 4px 10px #06070a;
+	display: flex;
+	flex-direction: row;
+	border-radius: 4px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0); 
+	z-index: 100;
+}
+.search #filter {
+	/* width: 100%; */
+	height: 36px;
+	padding: 0 0 0 13px;
+	width: 250px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	/* border: 2px solid #324B4E; */
+	/* box-shadow: 4px 4px 10px #06070a; */
+	background: #252526;
+	transition: .3s linear;
+	float: right;
+	outline-style: none;
+	color: white;
+	border: 0px;
+}
+.search #filter:focus {
+	width: 300px;
+	/* border: 1px solid #33C3F0; */
+	outline: 0;
+}
+#item-texture-content {
+	display: none;
+	grid-template-columns: repeat(auto-fill, 88px);
+	grid-template-rows: repeat(auto-fill, 64px);
+	grid-gap: 1em;
+	justify-content: center;
+}
+.item-texture-icon {
+	width: 88px;
+	height: 64px;
+	border-radius: 4px;
+	box-shadow: 4px 4px 10px #06070a;
+	outline-style: none;
+	position: relative;
+}
+.item-texture-icon:focus {
+	outline: 0;
+}
+.item-texture-icon:hover {
+	box-shadow: 0px 0px 10px #8496cc;
+}
+.item-texture-icon:active{
+	top: 2px;
+}

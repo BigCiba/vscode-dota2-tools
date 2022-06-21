@@ -1,0 +1,106 @@
+.hllua-keyword {
+	color: dodgerblue;
+}
+.list-object-key {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	color: #cccccc;
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	font-size: 13px;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	cursor: default;
+	margin-right: 3px;
+	/* white-space: pre; */
+	overflow: hidden;
+	/* text-overflow: ellipsis; */
+	margin-left: 4px;
+	min-width: 30%;
+	display: inline-block;
+	line-height: 24px;
+}
+.list-object-value {
+	list-style: none;
+	box-sizing: inherit;
+	border: none;
+	background-color: #00000000;
+	padding-left: 0px;
+	resize: none;
+	outline-color: #75715e !important;
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	color: #cccccc;
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	font-size: 13px;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	cursor: default;
+	overflow: hidden;
+	width: 100%;
+	/* outline: 1px solid -webkit-focus-ring-color; */
+	/* outline-offset: -1px; */
+	/* height: 76px; */
+	/* transition: all 0.2s linear; */
+
+	font-family: var(--vscode-editor-font-family, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace);
+	font-size: 1em;
+	line-height: 24px;
+	color: #f8f8f2;
+	tab-size: 4;
+}
+.list-object-value:focus {
+	outline: none;
+}
+input:not([type='checkbox']),
+textarea {
+	display: block;
+	width: 100%;
+	border: none;
+	/* padding: var(--input-padding-vertical) var(--input-padding-horizontal); */
+	background-color: #00000000;
+	padding: 0;
+	resize: none;
+}
+.td-edit {
+	font-size: 14px;
+	outline: none;
+	color: white;
+	/* width: fit-content; */
+}
+.td-edit:focus {
+	font-size: 14px;
+	outline: none;
+}
+.monaco-text-button {
+	--sash-size: 4px;
+	--monaco-monospace-font: Consolas,"Courier New",monospace;
+	font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
+	font-size: 13px;
+	--separator-border: #34352f;
+	border-spacing: 0;
+	border-collapse: separate;
+	-webkit-user-select: none;
+	line-height: 1.4em!important;
+	white-space: normal;
+	box-sizing: border-box;
+	text-align: center;
+	cursor: pointer;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	width: auto;
+	padding: 2px 14px;
+	display: inline-block;
+	margin-top: 4px;
+	margin-right: 4px;
+	color: rgb(255, 255, 255);
+	background-color: rgb(117, 113, 94);
+}
+.monaco-text-button:hover {
+	color: rgb(255, 255, 255);
+	background-color: #8d8871;
+	text-decoration: none;
+}
