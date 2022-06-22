@@ -40,10 +40,9 @@ async function startWatch(context: vscode.ExtensionContext) {
 	if (fileWatcher === undefined) {
 		if (isValidFolder()) {
 			console.log("[监听目录]: 合并文本");
-			const gameDir = getGameDir();
 			let setting = getPathConfiguration("dota2-tools.A5.localization_path");
 			if (setting && await getPathInfo(setting) !== false) {
-				fileWatcher = watch(gameDir + '/localization', { recursive: true, filter: /\.txt$/ }, function (evt, name) {
+				fileWatcher = watch(setting, { recursive: true, filter: /\.txt$/ }, function (evt, name) {
 					if (setting) {
 						let language = path.dirname(name).replace(setting, "").split("\\")[1];
 						combineLocalization(language);
