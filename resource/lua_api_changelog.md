@@ -1,5 +1,15 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2022.07.01
+## Lua Server
+- 🖊️ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>CanAbilityBeUpgraded</font>(): <font color='#c586c0'>Quaternion</font> ~~<font color='#dcdcaa'>CanAbilityBeUpgraded</font>(): <font color='#c586c0'>unknown</font>~~
+- ✨ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>GetEffectiveManaCost</font>(<font color='#569cd6'>iLevel</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>int</font> 
+- 🖊️ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>SpeakTrigger</font>(): <font color='#c586c0'>Quaternion</font> ~~<font color='#dcdcaa'>SpeakTrigger</font>(): <font color='#c586c0'>unknown</font>~~
+- ✨ API: <font color='#00D6AA'>CDOTAGamerules</font> <font color='#dcdcaa'>SetPostGameTeamScores</font>(<font color='#569cd6'>handle_1</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>bool</font> Set score value for each team. First element is for DOTA_TEAM_GOODGUYS.
+- ✨ API: <font color='#00D6AA'>CDOTA_Ability_Lua</font> <font color='#dcdcaa'>IsAttributeBonus</font>(): <font color='#c586c0'>bool</font> Is this ability an Attribute Bonus.
+## Lua Client
+- ✨ API: <font color='#00D6AA'>C_DOTA_Ability_Lua</font> <font color='#dcdcaa'>IsAttributeBonus</font>(): <font color='#c586c0'>bool</font> Is this ability an Attribute Bonus.
+
 # 2022.06.09
 ## Lua Server
 - ✨ API: <font color='#00D6AA'>CBaseEntity</font> <font color='#dcdcaa'>GetLeftVector</font>(): <font color='#c586c0'>Vector</font> Get the left vector of the entity.
