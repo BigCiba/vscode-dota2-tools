@@ -25,6 +25,18 @@
 						"filenamePattern": "*.vmdl"
 					}
 				]
+			},
+			{
+				"viewType": "dota2tools.excelLazyboy",
+				"displayName": "ExcelLazyboy",
+				"selector": [
+					{
+						"filenamePattern": "*.xlsm"
+					},
+					{
+						"filenamePattern": "*.xlsx"
+					}
+				]
 			}
 		],
 		"languages": [
