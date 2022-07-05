@@ -12,8 +12,7 @@ export class lazayboyProvider implements CustomReadonlyEditorProvider {
 	}
 	async resolveCustomEditor(document: NoUseDocument, webviewPanel: WebviewPanel) {
 		// 直接关闭面板
-		exec(document.uri.fsPath, (error, stdout, stderr) => {
-			console.log(error, stdout, stderr);
+		exec(`"${document.uri.fsPath}"`, (error, stdout, stderr) => {
 			webviewPanel.dispose();
 		});
 		webviewPanel.webview.html = `
