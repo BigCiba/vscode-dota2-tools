@@ -27,14 +27,12 @@
 				]
 			},
 			{
-				"viewType": "dota2tools.excelLazyboy",
-				"displayName": "ExcelLazyboy",
+				"viewType": "dota2tools.Lazyboy",
+				"displayName": "Lazyboy",
+				"priority": "option",
 				"selector": [
 					{
-						"filenamePattern": "*.xlsm"
-					},
-					{
-						"filenamePattern": "*.xlsx"
+						"filenamePattern": "*"
 					}
 				]
 			}

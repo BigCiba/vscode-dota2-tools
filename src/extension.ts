@@ -25,7 +25,7 @@ import { statusBarItemInit } from './module/statusBar';
 import { preProcessing } from './command/cmdPreProcessing';
 import { quickStart } from './command/cmdQuickStart';
 import { vmdlEditorProvider } from './CustomTextEditorProvider/vmdlEditorProvider';
-import { excelEditorProvider } from './CustomTextEditorProvider/ExcelEditorProvider';
+import { lazayboyProvider } from './CustomTextEditorProvider/lazayboyProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -68,7 +68,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.preProcessing', () => preProcessing(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.welcomePage', (tag) => quickStart(context, tag)));
 	context.subscriptions.push(vmdlEditorProvider.register(context));
-	context.subscriptions.push(vscode.window.registerCustomEditorProvider("dota2tools.excelLazyboy", new excelEditorProvider()));
+	context.subscriptions.push(lazayboyProvider.register());
 }
 
 export function deactivate() { }
