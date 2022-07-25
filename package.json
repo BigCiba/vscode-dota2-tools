@@ -287,6 +287,10 @@
 			{
 				"command": "dota2tools.OpenKV",
 				"title": "%dota2tools.OpenKV%"
+			},
+			{
+				"command": "dota2tools.generate_vpdi",
+				"title": "%dota2tools.generate_vpdi%"
 			}
 		],
 		"menus": {
@@ -618,6 +622,23 @@
 					},
 					"additionalProperties": false,
 					"markdownDescription": "%dota2-tools.addon_path.description%"
+				},
+				"dota2-tools.VPDI": {
+					"type": "object",
+					"default": {
+						"VPDIPath": "panorama/dynamic_images_auto_generate.vpdi",
+						"ImagePath": "images/custom_game"
+					},
+					"properties": {
+						"VPDIPath": {
+							"type": "string",
+							"description": "%dota2-tools.vpdi.path%"
+						},
+						"ImagePath": {
+							"type": "string",
+							"description": "%dota2-tools.vpdi.image_path%"
+						}
+					}
 				},
 				"dota2-tools.KV to Js Config": {
 					"type": "string",

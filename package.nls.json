@@ -76,6 +76,7 @@
 	"dota2tools.dota2cssapi.clearfilter": "clear search",
 	"dota2tools.dota2panel.event": "event list",
 	"dota2tools.OpenKV": "open kv",
+	"dota2tools.generate_vpdi": "Generate VPDI",
 
 	"item_name": "Item Name",
 	"item_description": "Item Description",
