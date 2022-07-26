@@ -625,6 +625,9 @@
 				},
 				"dota2-tools.VPDI": {
 					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"default": {
 						"VPDIPath": "panorama/dynamic_images_auto_generate.vpdi",
 						"ImagePath": "panorama/images/custom_game"
