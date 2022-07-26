@@ -627,7 +627,7 @@
 					"type": "object",
 					"default": {
 						"VPDIPath": "panorama/dynamic_images_auto_generate.vpdi",
-						"ImagePath": "images/custom_game"
+						"ImagePath": "panorama/images/custom_game"
 					},
 					"properties": {
 						"VPDIPath": {

@@ -20,7 +20,8 @@ export async function generateVPDI(context: ExtensionContext) {
 	if (await getPathInfo(sImageFolder) === false) {
 		return;
 	}
-	const aVPDI: string[] = [];
+	const sDotaImageFolder = path.join(contentDir, "panorama", "images");
+	const Explicit_Files: Record<string, string> = {};
 
 	function ReadImagePath(sPath: string) {
 		const files = fs.readdirSync(sPath);
@@ -28,7 +29,7 @@ export async function generateVPDI(context: ExtensionContext) {
 			const sFilePath = path.join(sPath, sFileName);
 			const stat = fs.statSync(sFilePath);
 			if (stat.isFile()) {
-				aVPDI.push(sFilePath.replace(path.join(contentDir, "panorama", "images"), "{images}"));
+				Explicit_Files[sFilePath.replace(sDotaImageFolder, "{images}")] = "";
 			} else if (stat.isDirectory()) {
 				ReadImagePath(sFilePath);
 			}
@@ -37,10 +38,6 @@ export async function generateVPDI(context: ExtensionContext) {
 	ReadImagePath(sImageFolder);
 
 	const sVPDIPath = path.join(contentDir, VPDIConfig.VPDIPath);
-	const Explicit_Files: Record<string, string> = {};
-	aVPDI.forEach((sImageVPDI) => {
-		Explicit_Files[sImageVPDI] = "";
-	});
 	fs.writeFileSync(sVPDIPath, writeKeyValue({
 		DynamicImages: {
 			"Explicit Files": Explicit_Files

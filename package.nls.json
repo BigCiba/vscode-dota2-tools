@@ -77,6 +77,8 @@
 	"dota2tools.dota2panel.event": "event list",
 	"dota2tools.OpenKV": "open kv",
 	"dota2tools.generate_vpdi": "Generate VPDI",
+	"dota2-tools.vpdi.path": "VPDI file path",
+	"dota2-tools.vpdi.image_path": "image folder to generate VPDI",
 
 	"item_name": "Item Name",
 	"item_description": "Item Description",
