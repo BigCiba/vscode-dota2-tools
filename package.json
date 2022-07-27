@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.2.84",
+	"version": "0.2.85",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -625,6 +625,9 @@
 				},
 				"dota2-tools.VPDI": {
 					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
 					"default": {
 						"VPDIPath": "panorama/dynamic_images_auto_generate.vpdi",
 						"ImagePath": "panorama/images/custom_game"
