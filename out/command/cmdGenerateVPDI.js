@@ -7,6 +7,8 @@ const pathUtils_1 = require("../utils/pathUtils");
 const fs = require("fs");
 const path = require("path");
 const kvUtils_1 = require("../utils/kvUtils");
+const statusBar_1 = require("../module/statusBar");
+const localize_1 = require("../utils/localize");
 async function generateVPDI(context) {
     const contentDir = (0, addonInfo_1.getContentDir)();
     const VPDIConfig = vscode_1.workspace.getConfiguration().get("dota2-tools.VPDI");
@@ -15,8 +17,10 @@ async function generateVPDI(context) {
     }
     const sImageFolder = path.join(contentDir, "panorama", VPDIConfig.ImagePath);
     if (await (0, pathUtils_1.getPathInfo)(sImageFolder) === false) {
+        (0, statusBar_1.showStatusBarMessage)(`[${(0, localize_1.localize)("generateVPDI")}]：` + (0, localize_1.localize)("path_no_found") + sImageFolder);
         return;
     }
+    (0, statusBar_1.changeStatusBarState)(statusBar_1.StatusBarState.LOADING);
     const sDotaImageFolder = path.join(contentDir, "panorama", "images");
     const Explicit_Files = {};
     function ReadImagePath(sPath) {
@@ -39,6 +43,8 @@ async function generateVPDI(context) {
             "Explicit Files": Explicit_Files
         }
     }));
+    (0, statusBar_1.showStatusBarMessage)(`[${(0, localize_1.localize)("generateVPDI")}]：` + (0, localize_1.localize)("generateFinish"));
+    (0, statusBar_1.changeStatusBarState)(statusBar_1.StatusBarState.ALL_DONE);
 }
 exports.generateVPDI = generateVPDI;
 //# sourceMappingURL=cmdGenerateVPDI.js.map

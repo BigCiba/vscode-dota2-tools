@@ -109,7 +109,7 @@ async function excel2kv(kvDir, excelDir, method) {
         return;
     }
     (0, statusBar_1.changeStatusBarState)(statusBar_1.StatusBarState.LOADING);
-    let messageIndex = (0, statusBar_1.showStatusBarMessage)("[excel导出kv]：" + excelDir);
+    let messageIndex = (0, statusBar_1.showStatusBarMessage)(`[${(0, localize_1.localize)("cmdExcel2KV")}]：` + excelDir);
     let fileType = (await vscode.workspace.fs.stat(vscode.Uri.file(excelDir))).type;
     if (fileType === vscode.FileType.Directory) {
         let files = await vscode.workspace.fs.readDirectory(vscode.Uri.file(excelDir));
@@ -128,7 +128,7 @@ async function excel2kv(kvDir, excelDir, method) {
                 }
                 await (0, pathUtils_1.dirExists)(path.join(kvDir, path.dirname(fileName.replace(path.extname(fileName), '.kv'))));
                 fs.writeFileSync(path.join(kvDir, fileName.replace(path.extname(fileName), '.kv')), (0, kvUtils_1.writeKeyValue)({ KeyValue: method(csvPath) }));
-                (0, statusBar_1.refreshStatusBarMessage)(messageIndex, "[excel导出kv]：" + fileName);
+                (0, statusBar_1.refreshStatusBarMessage)(messageIndex, `[${(0, localize_1.localize)("cmdExcel2KV")}]：` + fileName);
             }
         }
     }
@@ -140,7 +140,7 @@ async function excel2kv(kvDir, excelDir, method) {
         }
         await (0, pathUtils_1.dirExists)(kvDir);
         fs.writeFileSync(kvDir, (0, kvUtils_1.writeKeyValue)({ KeyValue: method(csvPath) }));
-        (0, statusBar_1.refreshStatusBarMessage)(messageIndex, "[excel导出kv]：" + path.basename(excelDir));
+        (0, statusBar_1.refreshStatusBarMessage)(messageIndex, `[${(0, localize_1.localize)("cmdExcel2KV")}]：` + path.basename(excelDir));
     }
     (0, statusBar_1.changeStatusBarState)(statusBar_1.StatusBarState.ALL_DONE);
 }

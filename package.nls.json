@@ -20,6 +20,8 @@
 	"listenerAbilityExcelInit": "Listen ability excel change",
 	"listenerUnitExcelInit": "Listen unit excel change",
 	"cmdExcel2KV": "excel export kv",
+	"generateVPDI": "generate VPDI",
+	"generateFinish": "Done!",
 	"allLoaded": "All done!",
 	"dota2-tools.module_list.description": "A list of modules that are automatically loaded at startup and can be disabled if not needed. (1 means enabled, 0 means not loaded at startup, -1 means not loaded and not displayed button)",
 	"dota2-tools.addon_path.description": "In principle, no setting is required, and the plugin will traverse the addonInfo. TXT file in the folder under the workspace to determine the game directory. Specify the absolute path to the game and Content directories here if the plugin cannot detect it for any reason (you happen to have another file with the same name called addonInfo.txt, or the content directory is not included in the workspace, etc.). Without a valid Game and Content directory, some functionality is lost.",

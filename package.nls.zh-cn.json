@@ -21,6 +21,8 @@
 	"listenerAbilityExcelInit": "监听技能excel变更",
 	"listenerUnitExcelInit": "监听单位excel变更",
 	"cmdExcel2KV": "excel导出kv",
+	"generateVPDI": "生成vpdi",
+	"generateFinish": "生成完毕！",
 	"allLoaded": "加载完毕！",
 	"dota2-tools.module_list.description": "启动时自动加载的模块列表，如果不需要可以禁用。部分功能依然能用过命令调用，但是首次使用会比较慢。[详细指导](command:dota2tools.welcomePage?1)",
 	"dota2-tools.addon_path.description": "插件会遍历工作区下的文件夹中的addoninfo.txt文件确定game目录。当因为各种原因（比如你刚好有另一个叫addoninfo.txt的同名文件又或者content目录没有加入工作区等等）导致插件检测不到时，在这指定game和content目录的绝对路径（建议在工作区设置中配置，手动设置也会加快载入速度）。没有有效的game和content目录会失去部分功能。[详细指导](command:dota2tools.welcomePage?5)",
