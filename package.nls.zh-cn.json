@@ -39,7 +39,7 @@
 	"time_consuming": "耗时",
 	"skip_disabled_modules": "跳过禁用的模块",
 	"message_notification": "消息通知",
-
+	"sure create folder": "是否创建文件夹？",
 	"dota2tools.showOutput": "显示输出",
 	"dota2tools.preProcessing": "插件数据预处理",
 	"dota2tools.welcomePage": "快速开始",
@@ -86,7 +86,6 @@
 	"dota2tools.generate_vpdi": "生成VPDI",
 	"dota2-tools.vpdi.path": "目标VPDI文件名",
 	"dota2-tools.vpdi.image_path": "图片文件夹路径",
-
 	"item_name": "物品名",
 	"item_description": "物品描述",
 	"used_by_heroes": "使用英雄",
@@ -135,7 +134,6 @@
 	"diretowers": "夜魇防御塔",
 	"radianttowers": "天辉防御塔",
 	"versus_screen": "对阵画面",
-
 	"npc_dota_hero_none": "--",
 	"npc_dota_hero_queenofpain": "痛苦女王",
 	"npc_dota_hero_antimage": "敌法师",
@@ -257,7 +255,6 @@
 	"npc_dota_hero_grimstroke": "天涯墨客",
 	"npc_dota_hero_mars": "玛尔斯",
 	"npc_dota_hero_marci": "玛西",
-
 	"Rarity_Common": "普通",
 	"Rarity_Uncommon": "罕见",
 	"Rarity_Rare": "稀有",

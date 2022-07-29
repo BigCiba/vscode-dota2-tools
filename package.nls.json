@@ -32,7 +32,7 @@
 	"confirm": "confirm",
 	"cancel": "cancel",
 	"path_no_found": "Path does not exist",
-
+	"sure create folder": "Create folder?",
 	"dota2tools.showOutput": "Show output channel",
 	"dota2tools.preProcessing": "Plugin data Pre-processing",
 	"dota2tools.welcomePage": "Quick start",
@@ -79,7 +79,6 @@
 	"dota2tools.generate_vpdi": "Generate VPDI",
 	"dota2-tools.vpdi.path": "VPDI file path",
 	"dota2-tools.vpdi.image_path": "image folder to generate VPDI",
-
 	"item_name": "Item Name",
 	"item_description": "Item Description",
 	"used_by_heroes": "Used By Heroes",
@@ -128,7 +127,6 @@
 	"diretowers": "Dire Towers",
 	"radianttowers": "Radiant Towers",
 	"versus_screen": "Versus Screen",
-
 	"npc_dota_hero_none": "--",
 	"npc_dota_hero_queenofpain": "Queen of Pain",
 	"npc_dota_hero_antimage": "Anti-Mage",
@@ -251,7 +249,6 @@
 	"npc_dota_hero_grimstroke": "Grimstroke",
 	"npc_dota_hero_mars": "Mars",
 	"npc_dota_hero_marci": "Marci",
-
 	"Rarity_Common": "Common",
 	"Rarity_Uncommon": "Uncommon",
 	"Rarity_Rare": "Rare",

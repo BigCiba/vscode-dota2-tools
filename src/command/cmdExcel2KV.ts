@@ -92,6 +92,11 @@ export async function eachExcelConfig(config: Table, callback: (kvDir: string, e
 export async function excel2kv(kvDir: string, excelDir: string, method: typeof abilityCSV2KV | typeof unitCSV2KV) {
 	if (await getPathInfo(kvDir) === false) {
 		showStatusBarMessage(`[${localize("cmdExcel2KV")}]：` + localize("path_no_found") + kvDir);
+		vscode.window.showErrorMessage(`[${localize("cmdExcel2KV")}]：` + localize("path_no_found") + `(${kvDir})` + localize("sure create folder"), localize("confirm"), localize("cancel")).then((value) => {
+			if (value == localize("confirm")) {
+				dirExists(kvDir);
+			}
+		});
 		return;
 	}
 	if (await getPathInfo(excelDir) === false) {
@@ -116,7 +121,7 @@ export async function excel2kv(kvDir: string, excelDir: string, method: typeof a
 					showStatusBarMessage(`[${localize("cmdExcel2KV")}]：` + localize("path_no_found") + csvPath);
 					return;
 				}
-				await dirExists(path.join(kvDir, fileName.replace(path.extname(fileName), '.kv')));
+				await dirExists(path.join(kvDir, path.dirname(fileName.replace(path.extname(fileName), '.kv'))));
 				fs.writeFileSync(path.join(kvDir, fileName.replace(path.extname(fileName), '.kv')), writeKeyValue({ KeyValue: method(csvPath) }));
 				refreshStatusBarMessage(messageIndex, "[excel导出kv]：" + fileName);
 			}
