@@ -15,7 +15,7 @@ async function generateVPDI(context) {
     if (VPDIConfig == undefined) {
         return;
     }
-    const sImageFolder = path.join(contentDir, "panorama", VPDIConfig.ImagePath);
+    const sImageFolder = path.join(contentDir, VPDIConfig.ImagePath);
     if (await (0, pathUtils_1.getPathInfo)(sImageFolder) === false) {
         (0, statusBar_1.showStatusBarMessage)(`[${(0, localize_1.localize)("generateVPDI")}]：` + (0, localize_1.localize)("path_no_found") + sImageFolder);
         return;
