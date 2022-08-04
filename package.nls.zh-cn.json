@@ -21,6 +21,8 @@
 	"listenerAbilityExcelInit": "监听技能excel变更",
 	"listenerUnitExcelInit": "监听单位excel变更",
 	"cmdExcel2KV": "excel导出kv",
+	"generateVPDI": "生成vpdi",
+	"generateFinish": "生成完毕！",
 	"allLoaded": "加载完毕！",
 	"dota2-tools.module_list.description": "启动时自动加载的模块列表，如果不需要可以禁用。部分功能依然能用过命令调用，但是首次使用会比较慢。[详细指导](command:dota2tools.welcomePage?1)",
 	"dota2-tools.addon_path.description": "插件会遍历工作区下的文件夹中的addoninfo.txt文件确定game目录。当因为各种原因（比如你刚好有另一个叫addoninfo.txt的同名文件又或者content目录没有加入工作区等等）导致插件检测不到时，在这指定game和content目录的绝对路径（建议在工作区设置中配置，手动设置也会加快载入速度）。没有有效的game和content目录会失去部分功能。[详细指导](command:dota2tools.welcomePage?5)",
@@ -39,7 +41,7 @@
 	"time_consuming": "耗时",
 	"skip_disabled_modules": "跳过禁用的模块",
 	"message_notification": "消息通知",
-
+	"sure create folder": "是否创建文件夹？",
 	"dota2tools.showOutput": "显示输出",
 	"dota2tools.preProcessing": "插件数据预处理",
 	"dota2tools.welcomePage": "快速开始",
@@ -86,7 +88,6 @@
 	"dota2tools.generate_vpdi": "生成VPDI",
 	"dota2-tools.vpdi.path": "目标VPDI文件名",
 	"dota2-tools.vpdi.image_path": "图片文件夹路径",
-
 	"item_name": "物品名",
 	"item_description": "物品描述",
 	"used_by_heroes": "使用英雄",
@@ -135,7 +136,6 @@
 	"diretowers": "夜魇防御塔",
 	"radianttowers": "天辉防御塔",
 	"versus_screen": "对阵画面",
-
 	"npc_dota_hero_none": "--",
 	"npc_dota_hero_queenofpain": "痛苦女王",
 	"npc_dota_hero_antimage": "敌法师",
@@ -257,7 +257,6 @@
 	"npc_dota_hero_grimstroke": "天涯墨客",
 	"npc_dota_hero_mars": "玛尔斯",
 	"npc_dota_hero_marci": "玛西",
-
 	"Rarity_Common": "普通",
 	"Rarity_Uncommon": "罕见",
 	"Rarity_Rare": "稀有",

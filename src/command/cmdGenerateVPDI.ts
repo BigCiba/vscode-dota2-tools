@@ -4,6 +4,8 @@ import { getPathInfo } from "../utils/pathUtils";
 import * as fs from "fs";
 import path = require("path");
 import { writeKeyValue } from "../utils/kvUtils";
+import { changeStatusBarState, showStatusBarMessage, StatusBarState } from "../module/statusBar";
+import { localize } from "../utils/localize";
 
 interface VPDIConfig {
 	ImagePath: string;
@@ -18,8 +20,11 @@ export async function generateVPDI(context: ExtensionContext) {
 	}
 	const sImageFolder = path.join(contentDir, VPDIConfig.ImagePath);
 	if (await getPathInfo(sImageFolder) === false) {
+		showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("path_no_found") + sImageFolder);
 		return;
 	}
+
+	changeStatusBarState(StatusBarState.LOADING);
 	const sDotaImageFolder = path.join(contentDir, "panorama", "images");
 	const Explicit_Files: Record<string, string> = {};
 
@@ -46,4 +51,6 @@ export async function generateVPDI(context: ExtensionContext) {
 			"Explicit Files": Explicit_Files
 		}
 	}));
+	showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("generateFinish"));
+	changeStatusBarState(StatusBarState.ALL_DONE);
 }
