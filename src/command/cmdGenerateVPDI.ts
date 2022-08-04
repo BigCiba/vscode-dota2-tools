@@ -29,7 +29,10 @@ export async function generateVPDI(context: ExtensionContext) {
 			const sFilePath = path.join(sPath, sFileName);
 			const stat = fs.statSync(sFilePath);
 			if (stat.isFile()) {
-				Explicit_Files[sFilePath.replace(sDotaImageFolder, "{images}")] = "";
+				const sFullPath = sFilePath.replace(sDotaImageFolder, "{images}");
+				if (sFullPath.search(/[^\x00-\xff]/g) == -1) {
+					Explicit_Files[sFullPath] = "";
+				}
 			} else if (stat.isDirectory()) {
 				ReadImagePath(sFilePath);
 			}
