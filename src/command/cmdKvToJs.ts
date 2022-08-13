@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as os from 'os';
 import { getContentDir, getGameDir } from '../module/addonInfo';
 import { getKeyValueObjectByIndex, overrideKeyValue, readKeyValue2, readKeyValueWithBase, replaceKeyValue } from '../utils/kvUtils';
 import { isNumber } from '../utils/isNumber';
@@ -129,7 +130,7 @@ function obj2Str(obj: any, depth = 1, bracketLeft: string = "{", bracketRight: s
 				ret += '"' + key + '"' + sSeparator + '"' + element + "\",";
 			}
 		}
-		ret += "\n";
+		ret += os.EOL;
 	}
 	if (ret[ret.length - 1] === ",") {
 		ret = ret.slice(0, -1);// 去掉最后一个逗号
