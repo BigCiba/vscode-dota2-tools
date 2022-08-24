@@ -1,5 +1,25 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2022.08.24
+## Lua Server
+- ✨ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>EnableAbilityChargesOnTalentUpgrade</font>(<font color='#569cd6'>hAbility</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>pszTalentName</font>: <font color='#c586c0'>string</font>): <font color='#c586c0'>void</font> 
+- ✨ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>GetAbilityChargeRestoreTime</font>(<font color='#569cd6'>iLevel</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>float</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_Ability_Lua</font> <font color='#dcdcaa'>GetAbilityChargeRestoreTime</font>(<font color='#569cd6'>iLevel</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>float</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_Ability_Lua</font> <font color='#dcdcaa'>OnAbilityUpgrade</font>(<font color='#569cd6'>hUpgradeAbility</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>void</font> 
+- ✨ Enum: <font color='#00D6AA'>DOTAHUDVisibility_t</font> <font color='#9cdcfe'>DOTA_HUD_VISIBILITY_HERO_SELECTION_HEADER</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaDefaultUIElement_t</font> <font color='#9cdcfe'>DOTA_DEFAULT_UI_HERO_SELECTION_HEADER</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_MK_STRIKE_END</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_VIPER_DIVE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_VIPER_DIVE_END</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_RAT_PACK</font> <font color='#dcdcaa'>GetModifierIsRatPack</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET</font> <font color='#dcdcaa'>GetModifierSpellRedirectTarget</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TURN_RATE_CONSTANT</font> <font color='#dcdcaa'>GetModifierTurnRateConstant</font>
+## Lua Client
+- ✨ API: <font color='#00D6AA'>C_DOTA_Ability_Lua</font> <font color='#dcdcaa'>GetAbilityChargeRestoreTime</font>(<font color='#569cd6'>iLevel</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>float</font> 
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_RAT_PACK</font> <font color='#dcdcaa'>GetModifierIsRatPack</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET</font> <font color='#dcdcaa'>GetModifierSpellRedirectTarget</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TURN_RATE_CONSTANT</font> <font color='#dcdcaa'>GetModifierTurnRateConstant</font>
+
 # 2022.07.01
 ## Lua Server
 - 🖊️ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>CanAbilityBeUpgraded</font>(): <font color='#c586c0'>Quaternion</font> ~~<font color='#dcdcaa'>CanAbilityBeUpgraded</font>(): <font color='#c586c0'>unknown</font>~~
