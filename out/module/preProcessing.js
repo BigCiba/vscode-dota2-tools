@@ -164,7 +164,7 @@ function parsePanelList(context) {
 exports.parsePanelList = parsePanelList;
 /** 生成音效json */
 async function vsndGenerator(context) {
-    const sound_path = 'C:/Users/wan/Documents/Dota Addons/dota2 tracking/soundevents';
+    const sound_path = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
     let json_obj = {};
     await readFolder(sound_path);
     fs.writeFileSync(path.join(context.extensionPath, "resource", "soundevents.json"), JSON.stringify(json_obj));
