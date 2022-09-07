@@ -86,6 +86,7 @@
 	"dota2tools.dota2panel.event": "事件列表",
 	"dota2tools.OpenKV": "转到技能kv",
 	"dota2tools.generate_vpdi": "生成VPDI",
+	"dota2tools.mklink": "自动移动game和content文件夹并且mklink",
 	"dota2-tools.vpdi.path": "目标VPDI文件名",
 	"dota2-tools.vpdi.image_path": "图片文件夹路径",
 	"item_name": "物品名",

@@ -291,6 +291,10 @@
 			{
 				"command": "dota2tools.generate_vpdi",
 				"title": "%dota2tools.generate_vpdi%"
+			},
+			{
+				"command": "dota2tools.mklink",
+				"title": "%dota2tools.mklink%"
 			}
 		],
 		"menus": {
