@@ -1,9 +1,6 @@
 # Change Log
 
-All notable changes to the "dota2-tools-ts" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+## [2.9.3] - 2022-10-09
+- 饰品查询功能增加兽，并且支持中文英雄名查找
+## [2.9.2] - 2022-10-09
+- 导出功能支持AbilityValues
