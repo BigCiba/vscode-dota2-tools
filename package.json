@@ -162,6 +162,10 @@
 				"title": "%dota2tools.copy_hero_wearable_bundle_info%"
 			},
 			{
+				"command": "dota2tools.export_wearable",
+				"title": "%dota2tools.export_wearable%"
+			},
+			{
 				"command": "dota2tools.create_wearable_items",
 				"title": "%dota2tools.create_wearable_items%"
 			},

@@ -17,8 +17,8 @@ async function localizeInit(context) {
         [LangEnum.english]: JSON.parse(await (0, readFile_1.readFile)(vscode.Uri.joinPath(context.extensionUri, "package.nls.json")))
     };
     reverseLangData = {
-        [LangEnum.schinese]: langData[LangEnum.schinese],
-        [LangEnum.english]: langData[LangEnum.english]
+        [LangEnum.schinese]: { ...langData[LangEnum.schinese] },
+        [LangEnum.english]: { ...langData[LangEnum.english] }
     };
     for (const key in reverseLangData[LangEnum.schinese]) {
         let value = reverseLangData[LangEnum.schinese][key];
