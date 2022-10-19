@@ -560,12 +560,14 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 export function rogueItemsGameParse(context: vscode.ExtensionContext) {
 	let sFilePath: string = path.join(context.extensionPath, "resource/items_game.txt");
 	// items
-	let tItemsData = readKeyValue2(fs.readFileSync(sFilePath, 'utf-8'), true, false).items_game.items;
+	let items_game = fs.readFileSync(sFilePath, 'utf-8');
+	let prase_items_game = readKeyValue2(items_game, true, false);
+	let tItemsData = prase_items_game.items_game.items;
 	// attribute_controlled_attached_particles
-	let attribute_controlled_attached_particles = readKeyValue2(fs.readFileSync(sFilePath, 'utf-8'), true, false).items_game.attribute_controlled_attached_particles;
+	let attribute_controlled_attached_particles = prase_items_game.items_game.attribute_controlled_attached_particles;
 	// fs.writeFileSync(path.join(this.context.extensionPath, "resource/attribute_controlled_attached_particles.json"), JSON.stringify(attribute_controlled_attached_particles));
 	// asset_modifiers
-	let asset_modifiers = readKeyValue2(fs.readFileSync(sFilePath, 'utf-8'), true, false).items_game.asset_modifiers;
+	let asset_modifiers = prase_items_game.items_game.asset_modifiers;
 	// fs.writeFileSync(path.join(this.context.extensionPath, "resource/asset_modifiers.json"), JSON.stringify(asset_modifiers));
 
 	for (const index in tItemsData) {
