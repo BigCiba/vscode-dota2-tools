@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.2.90",
+	"version": "0.2.95",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -160,6 +160,10 @@
 			{
 				"command": "dota2tools.copy_hero_wearable_bundle_info",
 				"title": "%dota2tools.copy_hero_wearable_bundle_info%"
+			},
+			{
+				"command": "dota2tools.export_wearable",
+				"title": "%dota2tools.export_wearable%"
 			},
 			{
 				"command": "dota2tools.create_wearable_items",
