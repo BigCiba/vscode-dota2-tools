@@ -540,8 +540,11 @@ export async function getBaseInfo(fullPath: string) {
 	const rows: string[] = kvString.split(os.EOL);
 	for (let i = 0; i < rows.length; i++) {
 		const lineText: string = rows[i];
-		if (lineText.search(/#base ".*"/) !== -1) {
-			result.push(lineText.replace(/#base "(.*)"/, "$1"));
+		if (lineText.search(/#base ".*"\s/) !== -1) {
+			lineText.replace(/#base "(.*)"/, (a: string, b) => {
+				result.push(b);
+				return a;
+			});
 		} else {
 			continue;
 		}
