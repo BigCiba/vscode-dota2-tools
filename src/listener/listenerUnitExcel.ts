@@ -61,7 +61,7 @@ function startWatch(context: vscode.ExtensionContext) {
 	}
 }
 /** 停止监听 */
-function stopWatch() {
+export function stopWatch() {
 	if (fileWatcher) {
 		showStatusBarMessage("[停止监听目录]：单位excel");
 		fileWatcher.close();

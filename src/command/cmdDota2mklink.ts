@@ -1,7 +1,9 @@
+import { exec } from "child_process";
 import { chmodSync, symlinkSync } from "fs";
 import { moveSync } from "fs-extra";
 import path = require("path");
 import { ExtensionContext } from "vscode";
+import { StopAllListener, TryStartWatch } from "../listener/common";
 import { getContentDir, getGameDir } from "../module/addonInfo";
 import { GetSteamAPPIntallDirByID } from "../utils/steamUtils";
 
@@ -17,12 +19,19 @@ export async function mklinkForDota2Addon(context: ExtensionContext) {
 		const sDotaContentDir = path.join(sDotaContentAddon, sGameName);
 		const sDotaGameDir = path.join(sDotaGameAddon, sGameName);
 
-		chmodSync(sDotaContentAddon, "0755");
-		moveSync(contentDir, sDotaContentDir);
-		symlinkSync(sDotaContentDir, contentDir, "junction");
+		StopAllListener();
 
 		chmodSync(sDotaGameAddon, "0755");
 		moveSync(gameDir, sDotaGameDir);
 		symlinkSync(sDotaGameDir, gameDir, "junction");
+
+		chmodSync(sDotaContentAddon, "0755");
+		moveSync(contentDir, sDotaContentDir);
+		symlinkSync(sDotaContentDir, contentDir, "junction");
+
+		exec(`explorer.exe /select,"${sDotaContentDir}"`);
+		exec(`explorer.exe /select,"${sDotaGameDir}"`);
+
+		TryStartWatch();
 	}
 }

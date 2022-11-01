@@ -64,7 +64,7 @@ async function startWatch(context: vscode.ExtensionContext) {
 	}
 }
 /** 停止监听 */
-function stopWatch() {
+export function stopWatch() {
 	if (fileWatcher) {
 		console.log("[停止监听目录]: 合并文本");
 		fileWatcher.close();
