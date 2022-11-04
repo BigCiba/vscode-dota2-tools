@@ -3,11 +3,8 @@ import * as fs from "fs";
 import * as path from "path";
 import watch from "node-watch";
 import { EventManager, EventType } from "../class/event";
-import { combineLocalization } from "../command/cmdCombineLocalization";
-import { getGameDir, isValidFolder } from "../module/addonInfo";
-import { localize } from "../utils/localize";
 import { getRootPath } from "../utils/getRootPath";
-import { eachExcelConfig, excel2kv } from "../command/cmdExcel2KV";
+import { eachExcelConfig } from "../command/cmdExcel2KV";
 import { abilityCSV2KV } from "../utils/csvUtils";
 import { showStatusBarMessage } from "../module/statusBar";
 import { writeKeyValue } from "../utils/kvUtils";
@@ -64,7 +61,7 @@ function startWatch(context: vscode.ExtensionContext) {
 	}
 }
 /** 停止监听 */
-function stopWatch() {
+export function stopWatch() {
 	if (fileWatcher) {
 		showStatusBarMessage("[停止监听目录]：技能excel");
 		fileWatcher.close();
