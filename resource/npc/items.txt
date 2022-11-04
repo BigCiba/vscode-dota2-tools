@@ -4014,7 +4014,7 @@
 			"bonus_strength"		"5 10"
 			"bonus_agility"			"2 4"
 			"bonus_intellect"		"2 4"
-			"bonus_damage"			"3 6"
+			"bonus_damage"			"2 4"
 			"bonus_health_regen"	"0.75 1.5"
 			"clock_time"			"25"
 		}
@@ -4078,7 +4078,7 @@
 				"bonus_agility"			"5 10"
 				"bonus_strength"		"2 4"
 				"bonus_intellect"		"2 4"
-				"bonus_attack_speed"	"5 10"
+				"bonus_attack_speed"	"6 12"
 				"bonus_armor"			"2 4"
 				"clock_time"			"25"
 		}
@@ -4743,7 +4743,7 @@
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"950"
+		"AbilityCastRange"				"750"
 		"AbilityCastPoint"				"0.0"
 
 		// Stats		
@@ -5119,7 +5119,7 @@
 				"bonus_attack_speed"		"60"
 				"bonus_damage"				"50"
 				"bonus_mana_regen"			"5"
-				"bonus_magic_resist"		"20"	
+				"bonus_magic_resist"		"25"	
 
 				"silence_duration"			"5"
 				"silence_damage_percent"	"30"
@@ -7247,7 +7247,7 @@
 				"spell_lifesteal"		"30"
 				"buff_duration"			"6"
 				"lifesteal_multiplier"	"2.5"
-				"hp_cost"				"10"
+				"hp_cost"				"0"
 		}
 	}
 
@@ -7758,8 +7758,9 @@
 		
 		// Stats	
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"200.0"
+		"AbilityCooldown"				"180.0"
 		"AbilityManaCost"				"200"
+
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
 		"ItemCost"						"1000"
@@ -7815,7 +7816,7 @@
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"950"
+		"AbilityCastRange"				"750"
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
@@ -9227,7 +9228,7 @@
 			"unholy_bonus_strength"	"25"
 			"unholy_bonus_armor"	"4"
 			"unholy_health_drain_per_second"	"45"
-			"toggle_cooldown"		"0.036f"
+			"toggle_cooldown"		"0.036"
 		}
 	}
 
@@ -9283,38 +9284,14 @@
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
+		"AbilityValues"
 		{
-			"01"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_damage"			"20"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_attack_speed"	"35"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"windwalk_duration"		"14.0"
-			}
-			"04"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"windwalk_movement_speed"	"20"
-			}
-			"05"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"windwalk_fade_time"	"0.3"
-			}
-			"06"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"windwalk_bonus_damage"	"175"
-			}
+			"bonus_damage" "20"
+			"bonus_attack_speed"	"35"
+			"windwalk_duration"		"14.0"
+			"windwalk_movement_speed"	"20"
+			"windwalk_fade_time"	"0.3"
+			"windwalk_bonus_damage"	"175"
 		}
 	}
 
@@ -9371,73 +9348,21 @@
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
+		"AbilityValues"
 		{
-			"01"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_damage"			"52"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_attack_speed"	"35"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_strength"		"0"
-			}
-			"04"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_intellect"			"0"
-			}
-			"05"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"bonus_mana_regen"		"0"
-			}
-			"06"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"windwalk_duration"		"14.0"
-			}
-			"07"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"windwalk_movement_speed"	"25"
-			}
-			"08"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"windwalk_fade_time"	"0.3"
-			}
-			"09"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"windwalk_bonus_damage"	"175"
-			}
-			"10"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"backstab_duration"		"4"
-			}
-			"11"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"crit_chance"			"30"
-			}
-			"12"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"crit_multiplier"		"160"
-			}
-			"13"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"tooltip_crit_damage"	"60"
-			}
+			"bonus_damage" "52"
+			"bonus_attack_speed"	"35"
+			"bonus_strength"		"0"
+			"bonus_intellect"			"0"
+			"bonus_mana_regen"		"0"
+			"windwalk_duration"		"14.0"
+			"windwalk_movement_speed"	"25"
+			"windwalk_fade_time"	"0.3"
+			"windwalk_bonus_damage"	"175"
+			"backstab_duration"		"4"
+			"crit_chance"			"30"
+			"crit_multiplier"		"160"
+			"tooltip_crit_damage"	"60"
 		}
 	}
 
@@ -10679,7 +10604,7 @@
 		
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
-		"ItemCost"						"245"	
+		"ItemCost"						"400"	
 		"ItemShopTags"					""
 		
 		// Recipe
@@ -10709,7 +10634,7 @@
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityManaCost"				"0"
-		"ItemCost"						"700"
+		"ItemCost"						"855"
 		"ItemShopTags"					"regen_health;boost_mana"
 		"ItemQuality"					"common"
 		"ItemAliases"					"soul ring"
@@ -10772,7 +10697,6 @@
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"55.0"
-		"AbilityCastRange"				"1200"
 
 
 		// Item Info
@@ -11206,7 +11130,6 @@
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"30.0"
-		"AbilityCastRange"				"1200"
 		//"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 
 		// Item Info
@@ -11309,7 +11232,6 @@
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"30.0"
-		"AbilityCastRange"				"1200"
 		//"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 
 		// Item Info
@@ -11598,6 +11520,7 @@
 		"ID"							"257"														// unique ID number for this item.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
 		"FightRecapLevel"				"1"
+		"Model"							"models/gameplay/attrib_tome_xp.vmdl"
 																																																																												 
 													
 
@@ -11840,7 +11763,6 @@
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"40"
-		"AbilityCastRange" 				"1200"
 
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
@@ -14675,6 +14597,8 @@
 		"AbilityValues"
 		{
 			"bonus_health"			"75"
+			"chance_bounty_rune"	"16"
+			"chance_other_item"		"28"
 		}
 	}
 	
@@ -17482,7 +17406,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"bonus_all_stats"			"5"
+			"bonus_all_stats"			"3"
 			"mana_regen"				"0.5"
 			"stack_limit"				"5"
 			"stack_duration"			"10"
@@ -17543,7 +17467,7 @@
 		"AbilityValues"
 		{
 
-			"bonus_strength"			"12"
+			"bonus_strength"			"10"
 
 			"leap_distance"				"400"
 			"leap_speed"				"800.0"
@@ -17777,7 +17701,7 @@
 		"AbilityValues"
 		{
 			"cast_range_bonus"					"125"
-			"mana_reduction_pct"						"20"
+			"mana_reduction_pct"						"15"
 		}
 	}
 	"item_manacles_of_power"
@@ -17916,7 +17840,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"all_stats"						"8"
+			"all_stats"						"5"
 			"bonus_damage"					"10"
 			"count"							"2"
 		}
@@ -17947,7 +17871,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"aspd"							"10"
+			"aspd"							"15"
 			"bonus_damage"					"40"
 			"duration"						"8"
 			"health_sacrifice"				"100"
