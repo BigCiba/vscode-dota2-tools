@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listenerLocalizationInit = void 0;
+exports.stopWatch = exports.listenerLocalizationInit = void 0;
 const vscode = require("vscode");
 const path = require("path");
 const node_watch_1 = require("node-watch");
@@ -72,6 +72,7 @@ function stopWatch() {
         fileWatcher = undefined;
     }
 }
+exports.stopWatch = stopWatch;
 /** 是否开启监听 */
 function getConfiguration() {
     let listenerConfig = vscode.workspace.getConfiguration().get(configName);

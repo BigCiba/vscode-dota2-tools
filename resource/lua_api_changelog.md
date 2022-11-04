@@ -1,5 +1,71 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2022.11.04
+## Lua Server
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>GetClearSpaceForUnit</font>(<font color='#569cd6'>handle_1</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>Vector_2</font>: <font color='#c586c0'>Vector</font>): <font color='#c586c0'>Vector</font> Returns a location for the unit that is not already occupied.
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>GetDedicatedServerKeyV3</font>(<font color='#569cd6'>string_1</font>: <font color='#c586c0'>string</font>): <font color='#c586c0'>string</font> ( version )
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>RecordNeutralItemEarned</font>(<font color='#569cd6'>handle_1</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>handle_2</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>int_3</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> Record in player resources that a new neutral item has been created, if it hasn't already been, and show a toast.
+- ✨ API: <font color='#00D6AA'>CDOTAGamerules</font> <font color='#dcdcaa'>GetNeutralInitialSpawnOffset</font>(): <font color='#c586c0'>float</font> Gets the extra offset to initial neutral creep spawn delay
+- ✨ API: <font color='#00D6AA'>CDOTAGamerules</font> <font color='#dcdcaa'>SetNeutralInitialSpawnOffset</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>void</font> Sets the extra offset to initial neutral creep spawn delay
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>GetRemainingPathLength</font>(): <font color='#c586c0'>float</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>IsFeared</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>IsHeroWard</font>(): <font color='#c586c0'>bool</font> Is this a Hero Ward?
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>IsStrongIllusion</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>IsTaunted</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>IsWard</font>(): <font color='#c586c0'>bool</font> Is this a Ward?
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>OnCommandMoveToDirection</font>(<font color='#569cd6'>pos</font>: <font color='#c586c0'>Vector</font>): <font color='#c586c0'>void</font> Tells the underlying AI to move in the given direction, skipping Dota orders
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>SetShouldComputeRemainingPathLength</font>(<font color='#569cd6'>bCompute</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>StartGestureWithFadeAndPlaybackRate</font>(<font color='#569cd6'>nActivity</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>fFadeIn</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>fFadeOut</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>flRate</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>void</font> Add the given gesture activity faded according to to the parameters and with a playback rate override.
+- 🖊️ API: <font color='#00D6AA'>CDOTA_PlayerResource</font> <font color='#dcdcaa'>GetConnectionState</font>(<font color='#569cd6'>iPlayerID</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>Quaternion</font> ~~<font color='#dcdcaa'>GetConnectionState</font>(<font color='#569cd6'>iPlayerID</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>unknown</font>~~
+- 🖊️ API: <font color='#00D6AA'>CDOTA_PlayerResource</font> <font color='#dcdcaa'>GetEventRanks</font>(<font color='#569cd6'>nPlayerID</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>Quaternion</font> ~~<font color='#dcdcaa'>GetEventRanks</font>(<font color='#569cd6'>nPlayerID</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>unknown</font>~~
+- 🖊️ API: <font color='#00D6AA'>CDOTA_PlayerResource</font> <font color='#dcdcaa'>GetNetworkedEventActionClaimCount</font>(<font color='#569cd6'>nPlayerID</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>nEventID</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>unActionID</font>: <font color='#c586c0'>unsigned</font>): <font color='#c586c0'>int</font> ~~<font color='#dcdcaa'>GetNetworkedEventActionClaimCount</font>(<font color='#569cd6'>nPlayerID</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>unActionID</font>: <font color='#c586c0'>unsigned</font>): <font color='#c586c0'>int</font>~~
+- 🖊️ API: <font color='#00D6AA'>CDOTA_PlayerResource</font> <font color='#dcdcaa'>GetNetworkedEventActionClaimCountByName</font>(<font color='#569cd6'>nPlayerID</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>nEventID</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>pActionName</font>: <font color='#c586c0'>string</font>): <font color='#c586c0'>int</font> ~~<font color='#dcdcaa'>GetNetworkedEventActionClaimCountByName</font>(<font color='#569cd6'>nPlayerID</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>pActionName</font>: <font color='#c586c0'>string</font>): <font color='#c586c0'>int</font>~~
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_ATTACK</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_CAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_DRAG</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_DROP_ITEM</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_DROP_SHOP_ITEM</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_LAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_LEARN_ABILITY</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_MOVE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_NONE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_PATROL</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_RADAR</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_UNUSED</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_VECTOR_CAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTASlotType_t</font> <font color='#9cdcfe'>DOTA_LOADOUT_TYPE_ROSHAN</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_UNIT_TARGET_TYPE</font> <font color='#9cdcfe'>DOTA_UNIT_TARGET_SELF</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_ALLOW_PATHING_THROUGH_OBSTRUCTIONS</font> <font color='#dcdcaa'></font>
+## Lua Client
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>IsDotaAltPressed</font>(): <font color='#c586c0'>Quaternion</font> Returns true if whatever alt is remapped to is pressed
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>IsDotaCtrlPressed</font>(): <font color='#c586c0'>Quaternion</font> Returns true if whatever ctrl is remapped to is pressed
+- ✨ API: <font color='#00D6AA'>CDOTAGamerules</font> <font color='#dcdcaa'>GetNeutralInitialSpawnOffset</font>(): <font color='#c586c0'>float</font> Gets the extra offset to initial neutral creep spawn delay
+- ✨ API: <font color='#00D6AA'>CEntities</font> <font color='#dcdcaa'>GetLocalPlayer</font>(): <font color='#c586c0'>handle</font> Get the local player controller (backcompat).
+- ✨ API: <font color='#00D6AA'>CEntities</font> <font color='#dcdcaa'>GetLocalPlayerController</font>(): <font color='#c586c0'>handle</font> Get the local player controller.
+- ✨ API: <font color='#00D6AA'>CEntities</font> <font color='#dcdcaa'>GetLocalPlayerPawn</font>(): <font color='#c586c0'>handle</font> Get the local player pawn.
+- ✨ API: <font color='#00D6AA'>C_DOTAPlayerController</font> <font color='#dcdcaa'>GetActiveAbility</font>(): <font color='#c586c0'>handle</font> 
+- ✨ API: <font color='#00D6AA'>C_DOTAPlayerController</font> <font color='#dcdcaa'>GetClickBehaviors</font>(): <font color='#c586c0'>Quaternion</font> 
+- ✨ API: <font color='#00D6AA'>C_DOTAPlayerController</font> <font color='#dcdcaa'>GetQueryUnit</font>(): <font color='#c586c0'>handle</font> 
+- ✨ API: <font color='#00D6AA'>C_DOTAPlayerController</font> <font color='#dcdcaa'>ShouldDisplayInWorldUIElements</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC</font> <font color='#dcdcaa'>IsFeared</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC</font> <font color='#dcdcaa'>IsStrongIllusion</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC</font> <font color='#dcdcaa'>IsTaunted</font>(): <font color='#c586c0'>bool</font> 
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_ATTACK</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_CAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_DRAG</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_DROP_ITEM</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_DROP_SHOP_ITEM</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_LAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_LEARN_ABILITY</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_MOVE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_NONE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_PATROL</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_RADAR</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_UNUSED</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>CLICK_BEHAVIORS</font> <font color='#9cdcfe'>DOTA_CLICK_BEHAVIOR_VECTOR_CAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_UNIT_TARGET_TYPE</font> <font color='#9cdcfe'>DOTA_UNIT_TARGET_SELF</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_ALLOW_PATHING_THROUGH_OBSTRUCTIONS</font> <font color='#dcdcaa'></font>
+
 # 2022.09.02
 ## Lua Server
 - ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>DropNeutralItemAtPositionForHeroWithOffset</font>(<font color='#569cd6'>string_1</font>: <font color='#c586c0'>string</font>, <font color='#569cd6'>Vector_2</font>: <font color='#c586c0'>Vector</font>, <font color='#569cd6'>handle_3</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>int_4</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>bool_5</font>: <font color='#c586c0'>bool</font>, <font color='#569cd6'>Vector_6</font>: <font color='#c586c0'>Vector</font>): <font color='#c586c0'>handle</font> Drop a neutral item for the team of the hero at the given tier.
