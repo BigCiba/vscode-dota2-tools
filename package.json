@@ -299,6 +299,10 @@
 			{
 				"command": "dota2tools.mklink",
 				"title": "%dota2tools.mklink%"
+			},
+			{
+				"command": "dota2tools.export_modifier_function",
+				"title": "%dota2tools.export_modifier_function%"
 			}
 		],
 		"menus": {

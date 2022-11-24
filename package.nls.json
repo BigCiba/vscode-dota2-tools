@@ -83,6 +83,7 @@
 	"dota2-tools.vpdi.path": "VPDI file path",
 	"dota2-tools.vpdi.image_path": "image folder to generate VPDI",
 	"dota2tools.mklink": "move game and content folder and then mklink",
+	"dota2tools.export_modifier_function": "export modifierfunction",
 	"item_name": "Item Name",
 	"item_description": "Item Description",
 	"used_by_heroes": "Used By Heroes",

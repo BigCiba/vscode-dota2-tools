@@ -29,6 +29,7 @@ import { lazayboyProvider } from './CustomTextEditorProvider/lazayboyProvider';
 import { generateVPDI } from './command/cmdGenerateVPDI';
 import { mklinkForDota2Addon } from './command/cmdDota2mklink';
 import { exportWearable } from './command/cmdExportWearable';
+import { exportModifierFunction } from './command/cmdExportModifierFunction';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -73,6 +74,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.welcomePage', (tag) => quickStart(context, tag)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_vpdi', () => generateVPDI(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => mklinkForDota2Addon(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_modifier_function', () => exportModifierFunction(context)));
 	context.subscriptions.push(vmdlEditorProvider.register(context));
 	context.subscriptions.push(lazayboyProvider.register());
 }
