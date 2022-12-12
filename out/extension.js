@@ -33,6 +33,7 @@ const cmdGenerateVPDI_1 = require("./command/cmdGenerateVPDI");
 const cmdDota2mklink_1 = require("./command/cmdDota2mklink");
 const cmdExportWearable_1 = require("./command/cmdExportWearable");
 const cmdExportModifierFunction_1 = require("./command/cmdExportModifierFunction");
+const cmdExportWearableWithHero_1 = require("./command/cmdExportWearableWithHero");
 async function activate(context) {
     // 基础模块单独载入
     await (0, localize_1.localizeInit)(context);
@@ -62,6 +63,7 @@ async function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.format kv', () => (0, cmdFormatKv_1.formatKv)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.copy_hero_wearable_bundle_info', () => (0, cmdCopyWearable_1.copyWearable)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable', () => (0, cmdExportWearable_1.exportWearable)(context)));
+    context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable_with_hero', () => (0, cmdExportWearableWithHero_1.exportWearableWithHero)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.parse entities', () => (0, cmdParseMapEntities_1.parseMapEntities)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.OpenKV', () => (0, cmdOpenKV_1.openKV)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.Localization', () => (0, cmdCombineLocalization_1.combineLocalization)()));

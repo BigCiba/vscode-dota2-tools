@@ -8,6 +8,7 @@ import { objectHasKey } from '../utils/objectHasKey';
 import { getDotaApiNoteClass } from './apiNote';
 import { readFunction } from '../utils/readFunction';
 import { readEnum } from '../utils/readEnum';
+import { getLiteItemsGame } from '../utils/getLiteItemsGame';
 
 /**
  * 更新步骤：
@@ -558,65 +559,5 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 
 /** 将items_game.txt的套装信息解析出来 */
 export function rogueItemsGameParse(context: vscode.ExtensionContext) {
-	let sFilePath: string = path.join(context.extensionPath, "resource/items_game.txt");
-	// items
-	let items_game = fs.readFileSync(sFilePath, 'utf-8');
-	let prase_items_game = readKeyValue2(items_game, true, false);
-	let tItemsData = prase_items_game.items_game.items;
-	// attribute_controlled_attached_particles
-	let attribute_controlled_attached_particles = prase_items_game.items_game.attribute_controlled_attached_particles;
-	// fs.writeFileSync(path.join(this.context.extensionPath, "resource/attribute_controlled_attached_particles.json"), JSON.stringify(attribute_controlled_attached_particles));
-	// asset_modifiers
-	let asset_modifiers = prase_items_game.items_game.asset_modifiers;
-	// fs.writeFileSync(path.join(this.context.extensionPath, "resource/asset_modifiers.json"), JSON.stringify(asset_modifiers));
-
-	for (const index in tItemsData) {
-		let socketIndex = 0;
-		const element = tItemsData[index];
-		delete element.portraits;
-		// 遍历控制点信息
-		if (element.visuals) {
-			for (const asset_modifier in element.visuals) {
-				let assetData = element.visuals[asset_modifier];
-				if (typeof assetData == "object") {
-					let attachInfo = FindAttachInfo(assetData.modifier);
-					if (attachInfo) {
-						attachInfo = Object.assign(assetData, attachInfo);
-					}
-				}
-			}
-		}
-		if (element.static_attributes) {
-			for (const attribute in element.static_attributes) {
-				let attributeData: { attribute_class: string, value: string; } = element.static_attributes[attribute];
-				if (typeof attributeData == "object" && attributeData.attribute_class == "socket") {
-					if (attributeData.value.indexOf("asset_modifier") != -1) {
-						let asset_modifier_index = attributeData.value.split("asset_modifier: ")[1];
-						let asset_modifier = asset_modifiers[String(asset_modifier_index)];
-						for (const key in asset_modifier) {
-							const socket = asset_modifier[key];
-							if (key.indexOf("asset_modifier") != -1 && typeof socket == "object") {
-								if (element.visuals == undefined) {
-									element.visuals = {};
-								}
-								element.visuals["asset_modifier_socket" + socketIndex] = socket;
-								socketIndex++;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	fs.writeFileSync(path.join(context.extensionPath, "resource/rogue_wearable.json"), JSON.stringify(tItemsData));
-
-	function FindAttachInfo(asset: string) {
-		for (const index in attribute_controlled_attached_particles) {
-			const element = attribute_controlled_attached_particles[index];
-			if (element.system == asset) {
-				return element;
-			}
-		}
-	}
+	fs.writeFileSync(path.join(context.extensionPath, "resource/rogue_wearable.json"), JSON.stringify(getLiteItemsGame(context)));
 }

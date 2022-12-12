@@ -52,6 +52,7 @@
 	"dota2tools.generate_lua_api_document": "Generate documents with Emmylua plugin",
 	"dota2tools.copy_hero_wearable_bundle_info": "Copy all jewelry bundle information of a hero to the clipboard",
 	"dota2tools.export_wearable": "export items_game.txt",
+	"dota2tools.export_wearable_with_hero": "export items_game.txt to folder, split by hero",
 	"dota2tools.create_wearable_items": "根据饰品文件创建对应的dota2物品kv",
 	"dota2tools.format kv": "Format kV file (temporary, clear comments)",
 	"dota2tools.parse entities": "导出实体信息（自用）",

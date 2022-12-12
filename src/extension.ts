@@ -30,6 +30,7 @@ import { generateVPDI } from './command/cmdGenerateVPDI';
 import { mklinkForDota2Addon } from './command/cmdDota2mklink';
 import { exportWearable } from './command/cmdExportWearable';
 import { exportModifierFunction } from './command/cmdExportModifierFunction';
+import { exportWearableWithHero } from './command/cmdExportWearableWithHero';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -63,6 +64,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.format kv', () => formatKv(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.copy_hero_wearable_bundle_info', () => copyWearable(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable', () => exportWearable(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable_with_hero', () => exportWearableWithHero(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.parse entities', () => parseMapEntities(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.OpenKV', () => openKV(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.Localization', () => combineLocalization()));

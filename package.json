@@ -166,6 +166,10 @@
 				"title": "%dota2tools.export_wearable%"
 			},
 			{
+				"command": "dota2tools.export_wearable_with_hero",
+				"title": "%dota2tools.export_wearable_with_hero%"
+			},
+			{
 				"command": "dota2tools.create_wearable_items",
 				"title": "%dota2tools.create_wearable_items%"
 			},
@@ -729,9 +733,12 @@
 		"cardinal": "^2.1.1",
 		"exceljs": "^4.3.0",
 		"fs-extra": "^10.0.1",
+		"i": "^0.3.7",
+		"json2lua": "^0.3.3",
 		"md5": "^2.3.0",
 		"mysql2": "^2.3.3",
 		"node-watch": "^0.7.3",
+		"npm": "^9.2.0",
 		"react": "^18.1.0"
 	}
 }
