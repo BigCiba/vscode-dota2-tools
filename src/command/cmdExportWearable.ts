@@ -2,11 +2,8 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { readKeyValue2, writeKeyValue } from '../utils/kvUtils';
+import { writeKeyValue } from '../utils/kvUtils';
 import { getGameDir } from '../module/addonInfo';
-import { dirExists, getPathInfo } from '../utils/pathUtils';
-import { showStatusBarMessage } from '../module/statusBar';
-import { localize } from '../utils/localize';
 
 /**
  * 导出所有饰品的信息到指定文件夹

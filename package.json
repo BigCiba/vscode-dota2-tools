@@ -170,6 +170,10 @@
 				"title": "%dota2tools.export_wearable_with_hero%"
 			},
 			{
+				"command": "dota2tools.export_wearable_portraits",
+				"title": "%dota2tools.export_wearable_portraits%"
+			},
+			{
 				"command": "dota2tools.create_wearable_items",
 				"title": "%dota2tools.create_wearable_items%"
 			},

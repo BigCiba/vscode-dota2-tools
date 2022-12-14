@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getGameDir } from '../module/addonInfo';
 import { getDotaApiNoteClass } from '../module/apiNote';
-import { readFile } from '../utils/readFile';
 
 /**
  * 音效选择

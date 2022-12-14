@@ -19,7 +19,28 @@ function getLiteItemsGame(context) {
     for (const index in tItemsData) {
         let socketIndex = 0;
         const element = tItemsData[index];
-        delete element.portraits;
+        if (element.portraits != undefined) {
+            let newPortraits = {};
+            let keys = Object.keys(element.portraits);
+            keys.map((key) => {
+                if (key.indexOf(".vmdl") != -1 || key == "game") {
+                    if (key == "game") {
+                        if (element.visuals) {
+                            for (const visualName in element.visuals) {
+                                if (element.visuals[visualName].type == "entity_model") {
+                                    let modifier = element.visuals[visualName].modifier;
+                                    newPortraits[modifier] = element.portraits[key];
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        newPortraits[key] = element.portraits[key];
+                    }
+                }
+            });
+            element.portraits = newPortraits;
+        }
         // 遍历控制点信息
         if (element.visuals) {
             for (const asset_modifier in element.visuals) {

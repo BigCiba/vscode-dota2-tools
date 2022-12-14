@@ -1,0 +1,38 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.exportWearablePortraits = void 0;
+/* eslint-disable @typescript-eslint/naming-convention */
+const vscode = require("vscode");
+const fs = require("fs");
+const path = require("path");
+const kvUtils_1 = require("../utils/kvUtils");
+const addonInfo_1 = require("../module/addonInfo");
+/**
+ * 导出所有饰品的肖像配置信息
+ * @export
+ */
+function exportWearablePortraits(context) {
+    let gameDir = (0, addonInfo_1.getGameDir)();
+    let itemsGame = JSON.parse(fs.readFileSync(path.join(context.extensionPath, "resource/rogue_wearable.json"), 'utf-8'));
+    let portraits = {};
+    for (const index in itemsGame) {
+        const itemData = itemsGame[index];
+        if (itemData.portraits != undefined) {
+            for (const model in itemData.portraits) {
+                portraits[model] = itemData.portraits[model];
+            }
+        }
+    }
+    const inputBox = vscode.window.createInputBox();
+    inputBox.placeholder = '请输入输出文件路径';
+    if (gameDir) {
+        inputBox.value = path.join(gameDir, "\\scripts\\npc\\portraits_custom.txt");
+    }
+    inputBox.show();
+    inputBox.onDidAccept(async (t) => {
+        fs.writeFileSync(inputBox.value, (0, kvUtils_1.writeKeyValue)({ Portraits: portraits }));
+        inputBox.dispose();
+    });
+}
+exports.exportWearablePortraits = exportWearablePortraits;
+//# sourceMappingURL=cmdExportWearablePortraits.js.map
