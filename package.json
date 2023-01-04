@@ -602,6 +602,10 @@
 					},
 					"markdownDescription": "单行excel表路径配置\n- kv路径对应excel路径\n- 可填写具体文件名也可以填写文件夹\n- 可以使用相对当前工作区的相对路径\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
 				},
+				"dota2-tools.A4.extnameList": {
+					"type": "string",
+					"markdownDescription": "excel导出kv功能中导出的后缀为.kv，需要修改为.txt的文件名写在该配置里面，逗号分隔"
+				},
 				"dota2-tools.A5.localization_path": {
 					"type": "string",
 					"default": "${game}/localization",
