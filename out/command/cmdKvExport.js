@@ -91,6 +91,52 @@ async function abilityExport(context, uri) {
                         specialCount++;
                     }
                 }
+                else if (abilityKey === "AbilityValues") { //特殊处理AbilityValues
+                    let specialCount = 1; //记录第几个special值
+                    let keys = Object.keys(abilityValue).sort(function (a, b) { return Number(a) - Number(b); });
+                    for (let index = 0; index < keys.length; index++) {
+                        const specialInfo = abilityValue[keys[index]];
+                        let specialName = '';
+                        let specialValue = '';
+                        if (typeof specialInfo == "string") {
+                            specialName = keys[index];
+                            specialValue = specialInfo;
+                        }
+                        else if (typeof specialInfo == "object") {
+                            specialName = keys[index];
+                            specialValue = specialInfo;
+                            specialValue = specialInfo.value ?? specialInfo.value2 ?? "0"; // v社经常写value2适配一下
+                            for (const _specialName in specialInfo) {
+                                const _specialValue = specialInfo[_specialName];
+                                if (_specialName != "value" && _specialName != "value2") {
+                                    specialName += '\n' + _specialName;
+                                    specialValue += '\n' + _specialValue;
+                                }
+                            }
+                            specialName = '"' + specialName + '"';
+                            specialValue = '"' + specialValue + '"';
+                        }
+                        let counter = 0;
+                        let hasFind = false;
+                        for (let i = 0; i < csvKey.length; i++) { // 寻找csv里的AbilitySpecial
+                            const keyName = csvKey[i];
+                            if (keyName === 'AbilityValues') {
+                                counter++;
+                                if (counter === specialCount) {
+                                    normalData[i] = specialName;
+                                    specialData[i] = specialValue;
+                                    hasFind = true;
+                                }
+                            }
+                        }
+                        if (hasFind === false) { //如果csv中的AbilitySpecial值不够则往后加
+                            csvKey.push('AbilityValues');
+                            normalData[csvKey.length - 1] = specialName;
+                            specialData[csvKey.length - 1] = specialValue;
+                        }
+                        specialCount++;
+                    }
+                }
                 else {
                     let hasFind = false;
                     for (let i = 0; i < csvKey.length; i++) { //csv中是否有此key

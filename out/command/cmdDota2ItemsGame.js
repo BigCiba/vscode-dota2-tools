@@ -85,8 +85,18 @@ function validInput(text) {
             return index;
         }
     }
-    else if ((/npc_dota_hero_/.test(text) && (0, localize_1.hasLocalize)(text)) || (0, localize_1.hasLocalize)("npc_dota_hero_" + text)) {
+    else if ((/npc_dota_hero_/.test(text) && ((0, localize_1.hasLocalize)(text)) || (0, localize_1.hasLocalize)("npc_dota_hero_" + text))) {
         let items = findItemsByHeroName(text);
+        let languageInfo = language[vscode.env.language === "zh-cn" ? "zh-cn" : "en"];
+        let result = [[(0, localize_1.localize)("index"), (0, localize_1.localize)("item_name"), (0, localize_1.localize)("prefab"), (0, localize_1.localize)("model_player")]];
+        for (const index in items) {
+            const itemData = items[index];
+            result.push([index, languageInfo[itemData.item_name?.replace("#", "")], (0, localize_1.localize)(itemData.prefab), itemData.model_player]);
+        }
+        return result;
+    }
+    else if ((0, localize_1.hasReverseLocalize)(text)) {
+        let items = findItemsByHeroName((0, localize_1.reverseLocalize)(text));
         let languageInfo = language[vscode.env.language === "zh-cn" ? "zh-cn" : "en"];
         let result = [[(0, localize_1.localize)("index"), (0, localize_1.localize)("item_name"), (0, localize_1.localize)("prefab"), (0, localize_1.localize)("model_player")]];
         for (const index in items) {

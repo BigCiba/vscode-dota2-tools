@@ -1,9 +1,24 @@
 # Change Log
 
-All notable changes to the "dota2-tools-ts" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+## [3.1.3] - 2022-12-20
+- 新增导出只有英雄饰品的items_game到单文件
+## [3.1.2] - 2022-12-14
+- 新增导出items_game里的portrait信息
+## [3.1.1] - 2022-12-12
+- 新增分英雄导出饰品
+## [2.9.9] - 2022-11-24
+- 更新雷泽资源
+- 增加导出modifierfunction指令
+## [2.9.8] - 2022-11-04
+- 更新Ti11新增的API
+## [2.9.7] - 2022-11-04
+- 更新Ti11第二部分的相关资源
+## [2.9.6] - 2022-10-26
+- 修复了#base带注释的bug
+## [2.9.5] - 2022-10-19
+- 修复翻译bug
+- 增加导出items_game.txt的功能
+## [2.9.3] - 2022-10-09
+- 饰品查询功能增加兽，并且支持中文英雄名查找
+## [2.9.2] - 2022-10-09
+- 导出功能支持AbilityValues

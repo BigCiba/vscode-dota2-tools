@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "0.2.87",
+	"version": "0.3.13",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -162,6 +162,18 @@
 				"title": "%dota2tools.copy_hero_wearable_bundle_info%"
 			},
 			{
+				"command": "dota2tools.export_wearable",
+				"title": "%dota2tools.export_wearable%"
+			},
+			{
+				"command": "dota2tools.export_wearable_with_hero",
+				"title": "%dota2tools.export_wearable_with_hero%"
+			},
+			{
+				"command": "dota2tools.export_wearable_portraits",
+				"title": "%dota2tools.export_wearable_portraits%"
+			},
+			{
 				"command": "dota2tools.create_wearable_items",
 				"title": "%dota2tools.create_wearable_items%"
 			},
@@ -291,6 +303,14 @@
 			{
 				"command": "dota2tools.generate_vpdi",
 				"title": "%dota2tools.generate_vpdi%"
+			},
+			{
+				"command": "dota2tools.mklink",
+				"title": "%dota2tools.mklink%"
+			},
+			{
+				"command": "dota2tools.export_modifier_function",
+				"title": "%dota2tools.export_modifier_function%"
 			}
 		],
 		"menus": {
@@ -721,9 +741,12 @@
 		"cardinal": "^2.1.1",
 		"exceljs": "^4.3.0",
 		"fs-extra": "^10.0.1",
+		"i": "^0.3.7",
+		"json2lua": "^0.3.3",
 		"md5": "^2.3.0",
 		"mysql2": "^2.3.3",
 		"node-watch": "^0.7.3",
+		"npm": "^9.2.0",
 		"react": "^18.1.0"
 	}
 }

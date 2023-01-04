@@ -4,6 +4,7 @@ exports.generateJS = exports.kvToJs = void 0;
 const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 const addonInfo_1 = require("../module/addonInfo");
 const kvUtils_1 = require("../utils/kvUtils");
 const isNumber_1 = require("../utils/isNumber");
@@ -132,7 +133,7 @@ function obj2Str(obj, depth = 1, bracketLeft = "{", bracketRight = "}", sSeparat
                 ret += '"' + key + '"' + sSeparator + '"' + element + "\",";
             }
         }
-        ret += "\n";
+        ret += os.EOL;
     }
     if (ret[ret.length - 1] === ",") {
         ret = ret.slice(0, -1); // 去掉最后一个逗号

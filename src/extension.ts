@@ -27,6 +27,11 @@ import { quickStart } from './command/cmdQuickStart';
 import { vmdlEditorProvider } from './CustomTextEditorProvider/vmdlEditorProvider';
 import { lazayboyProvider } from './CustomTextEditorProvider/lazayboyProvider';
 import { generateVPDI } from './command/cmdGenerateVPDI';
+import { mklinkForDota2Addon } from './command/cmdDota2mklink';
+import { exportWearable } from './command/cmdExportWearable';
+import { exportModifierFunction } from './command/cmdExportModifierFunction';
+import { exportWearableWithHero } from './command/cmdExportWearableWithHero';
+import { exportWearablePortraits } from './command/cmdExportWearablePortraits';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -59,6 +64,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.create_wearable_items', () => createWearableItems(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.format kv', () => formatKv(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.copy_hero_wearable_bundle_info', () => copyWearable(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable', () => exportWearable(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable_with_hero', () => exportWearableWithHero(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable_portraits', () => exportWearablePortraits(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.parse entities', () => parseMapEntities(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.OpenKV', () => openKV(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.Localization', () => combineLocalization()));
@@ -69,6 +77,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.preProcessing', () => preProcessing(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.welcomePage', (tag) => quickStart(context, tag)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_vpdi', () => generateVPDI(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => mklinkForDota2Addon(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_modifier_function', () => exportModifierFunction(context)));
 	context.subscriptions.push(vmdlEditorProvider.register(context));
 	context.subscriptions.push(lazayboyProvider.register());
 }

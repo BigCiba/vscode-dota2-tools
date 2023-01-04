@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listenerAbilityExcelInit = void 0;
+exports.stopWatch = exports.listenerAbilityExcelInit = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
@@ -72,6 +72,7 @@ function stopWatch() {
         fileWatcher = undefined;
     }
 }
+exports.stopWatch = stopWatch;
 /** 是否开启监听 */
 function getConfiguration() {
     let listenerConfig = vscode.workspace.getConfiguration().get(configName);

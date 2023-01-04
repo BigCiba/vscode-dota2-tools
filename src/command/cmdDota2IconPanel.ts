@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
-import { Uri, Webview } from "vscode";
+import { Uri } from "vscode";
 import * as path from 'path';
-import * as fs from 'fs';
 import { exec } from 'child_process';
 import { getUri } from '../utils/getUri';
 import { getWebviewContent } from '../utils/getWebViewContent';

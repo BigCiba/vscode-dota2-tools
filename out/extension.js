@@ -30,6 +30,11 @@ const cmdQuickStart_1 = require("./command/cmdQuickStart");
 const vmdlEditorProvider_1 = require("./CustomTextEditorProvider/vmdlEditorProvider");
 const lazayboyProvider_1 = require("./CustomTextEditorProvider/lazayboyProvider");
 const cmdGenerateVPDI_1 = require("./command/cmdGenerateVPDI");
+const cmdDota2mklink_1 = require("./command/cmdDota2mklink");
+const cmdExportWearable_1 = require("./command/cmdExportWearable");
+const cmdExportModifierFunction_1 = require("./command/cmdExportModifierFunction");
+const cmdExportWearableWithHero_1 = require("./command/cmdExportWearableWithHero");
+const cmdExportWearablePortraits_1 = require("./command/cmdExportWearablePortraits");
 async function activate(context) {
     // 基础模块单独载入
     await (0, localize_1.localizeInit)(context);
@@ -58,6 +63,9 @@ async function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.create_wearable_items', () => (0, cmdCreateWearableItems_1.createWearableItems)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.format kv', () => (0, cmdFormatKv_1.formatKv)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.copy_hero_wearable_bundle_info', () => (0, cmdCopyWearable_1.copyWearable)(context)));
+    context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable', () => (0, cmdExportWearable_1.exportWearable)(context)));
+    context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable_with_hero', () => (0, cmdExportWearableWithHero_1.exportWearableWithHero)(context)));
+    context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_wearable_portraits', () => (0, cmdExportWearablePortraits_1.exportWearablePortraits)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.parse entities', () => (0, cmdParseMapEntities_1.parseMapEntities)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.OpenKV', () => (0, cmdOpenKV_1.openKV)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.Localization', () => (0, cmdCombineLocalization_1.combineLocalization)()));
@@ -68,6 +76,8 @@ async function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.preProcessing', () => (0, cmdPreProcessing_1.preProcessing)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.welcomePage', (tag) => (0, cmdQuickStart_1.quickStart)(context, tag)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_vpdi', () => (0, cmdGenerateVPDI_1.generateVPDI)(context)));
+    context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => (0, cmdDota2mklink_1.mklinkForDota2Addon)(context)));
+    context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_modifier_function', () => (0, cmdExportModifierFunction_1.exportModifierFunction)(context)));
     context.subscriptions.push(vmdlEditorProvider_1.vmdlEditorProvider.register(context));
     context.subscriptions.push(lazayboyProvider_1.lazayboyProvider.register());
 }

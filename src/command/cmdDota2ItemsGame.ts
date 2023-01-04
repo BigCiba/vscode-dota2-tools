@@ -1,10 +1,8 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
 import { getWebviewContent } from '../utils/getWebViewContent';
 import { readFile } from '../utils/readFile';
 import { readKeyValue2 } from '../utils/kvUtils';
-import { hasLocalize, localize } from '../utils/localize';
+import { hasLocalize, hasReverseLocalize, localize, reverseLocalize } from '../utils/localize';
 import { isNumber } from '../utils/isNumber';
 
 let itemsGame: Table;
@@ -84,8 +82,17 @@ function validInput(text: string) {
 		if (index) {
 			return index;
 		}
-	} else if ((/npc_dota_hero_/.test(text) && hasLocalize(text)) || hasLocalize("npc_dota_hero_" + text)) {
+	} else if ((/npc_dota_hero_/.test(text) && (hasLocalize(text)) || hasLocalize("npc_dota_hero_" + text))) {
 		let items = findItemsByHeroName(text);
+		let languageInfo = language[vscode.env.language === "zh-cn" ? "zh-cn" : "en"];
+		let result = [[localize("index"), localize("item_name"), localize("prefab"), localize("model_player")]];
+		for (const index in items) {
+			const itemData = items[index];
+			result.push([index, languageInfo[itemData.item_name?.replace("#", "")], localize(itemData.prefab), itemData.model_player]);
+		}
+		return result;
+	} else if (hasReverseLocalize(text)) {
+		let items = findItemsByHeroName(reverseLocalize(text));
 		let languageInfo = language[vscode.env.language === "zh-cn" ? "zh-cn" : "en"];
 		let result = [[localize("index"), localize("item_name"), localize("prefab"), localize("model_player")]];
 		for (const index in items) {

@@ -359,6 +359,7 @@ function abilityCSV2KV(listenPath) {
         let specialCount = 1;
         let precacheCount = 1;
         let abilitySpecial = {};
+        let abilityValues = {}; /** 新版kv键值 */
         let precacheResource = {};
         let precache = {};
         let valuesObj = {};
@@ -387,6 +388,31 @@ function abilityCSV2KV(listenPath) {
                         abilitySpecial[key][_key] = valueArr[i];
                     }
                     specialCount++;
+                }
+            }
+            else if (key === 'AbilityValues') {
+                if (csvArr[i + 1] !== undefined && csvArr[i + 1] !== "") {
+                    let value = csvArr[i + 1][j];
+                    // 拆分key
+                    let keyArr = col.split("\n");
+                    // 拆分value
+                    let valueArr = value.split("\n");
+                    if (keyArr.length <= 1) {
+                        abilityValues[keyArr[0]] = valueArr[0];
+                    }
+                    else {
+                        abilityValues[keyArr[0]] = {};
+                        for (let i = 0; i < keyArr.length; i++) {
+                            const _key = keyArr[i];
+                            const _value = valueArr[i];
+                            if (i == 0) {
+                                abilityValues[keyArr[0]]["value"] = _value;
+                            }
+                            else {
+                                abilityValues[keyArr[0]][_key] = _value;
+                            }
+                        }
+                    }
                 }
             }
             else if (key === '') {
@@ -419,6 +445,9 @@ function abilityCSV2KV(listenPath) {
         }
         if (Object.keys(abilitySpecial).length > 0) {
             valuesObj.AbilitySpecial = abilitySpecial;
+        }
+        if (Object.keys(abilityValues).length > 0) {
+            valuesObj.AbilityValues = abilityValues;
         }
         if (Object.keys(precache).length > 0) {
             valuesObj.precache = precache;
