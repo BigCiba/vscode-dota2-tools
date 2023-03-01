@@ -1577,6 +1577,49 @@
 			}
 		}
 	}
+	"models/items/razor/razor_arcana/razor_arcana.vmdl"
+	{
+		"PortraitLightPosition"		"-48.209999 -7.660000 261.470001"
+		"PortraitLightAngles"		"132.119995 191.710007 0.000000"
+		"PortraitLightFOV"		"90.000000"
+		"PortraitLightDistance"		"95.000000"
+		"PortraitLightColor"		"165 223 254"
+		"PortraitShadowColor"		"25 25 25"
+		"PortraitShadowScale"		"5.000000"
+		"PortraitAmbientColor"		"69 100 108"
+		"PortraitAmbientScale"		"5.000000"
+		"PortraitSpecularColor"		"251 74 84"
+		"PortraitBackgroundTexture"		"materials/vgui/hud/heroportraits/portraitbackground_desert.vmat"
+		"PortraitBackgroundColor1"		"0.700000 0.500000 1.000000"
+		"PortraitBackgroundColor2"		"0.300000 0.500000 1.000000"
+		"PortraitBackgroundColor3"		"0.100000 0.200000 1.000000"
+		"PortraitBackgroundColor4"		"0.300000 0.500000 1.000000"
+		"PortraitLightScale"		"5.000000"
+		"PortraitGroundShadowScale"		"1.500000"
+		"PortraitAmbientDirection"		"8.460 65.500 10.300"
+		"PortraitAnimationActivity"		"ACT_DOTA_CAPTURE"
+		"cameras"
+		{
+			"default"
+			{
+				"PortraitPosition"		"291.924469 -114.993385 178.908737"
+				"PortraitAngles"		"349.059998 159.149872 -20.000000"
+				"PortraitFOV"		"12.000000"
+				"PortraitFar"		"1000.000000"
+			}
+		}
+		"PortraitSpecularDirection"		"0.000000 0.000000 -1.000000"
+		"PortraitSpecularPower"		"16.000000"
+		"PortraitAnimationCycle"		"0.000000"
+		"PortraitAnimationRate"		"1.000000"
+		"PortraitPlayIdleExpression"		"0"
+		"PortraitHideHero"		"0"
+		"PortraitHideParticles"		"0"
+		"PortraitHideDropShadow"		"0"
+		"PortraitDesaturateParticles"		"0"
+		"PortraitDesaturateHero"		"1"
+		"PortraitVignetteItem"		"0"
+	}
 	"models/heroes/sand_king/sand_king.vmdl"
 	{
 		"PortraitLightPosition"		"-37.81 26.97 180.80"
@@ -31952,5 +31995,129 @@
 		"PortraitDesaturateParticles"		"0"
 		"PortraitDesaturateHero"		"1"
 		"PortraitVignetteItem"		"0"
+	}
+	"models/items/tiny/tiny_astral_order_shoulder/tiny_astral_order_shoulder.vmdl"
+	{
+		"PortraitLightPosition"		"105.74 -48.50 116.54"
+		"PortraitLightAngles"		"142.45 335.58 0.00"
+		"PortraitLightFOV"		"51"
+		"PortraitLightDistance"		"332"
+		"PortraitLightColor"		"254 254 223"
+		"PortraitShadowColor"		"89 84 84"
+		"PortraitShadowScale"		"0.550000"
+		"PortraitAmbientColor"		"144 151 242"
+		"PortraitAmbientScale"		"2.300000"
+		"PortraitSpecularColor"		"251 74 84"
+		"PortraitBackgroundTexture"		"materials/vgui/hud/heroportraits/portraitbackground_windrunner.vmat"
+		"PortraitBackgroundColor1"		"1 1 1"
+		"PortraitBackgroundColor2"		"1 1 1"
+		"PortraitBackgroundColor3"		"1 1 1"
+		"PortraitBackgroundColor4"		"1 1 1"
+		"PortraitLightScale"		"1.150000"
+		"PortraitGroundShadowScale"		"1.500000"
+		"PortraitAmbientDirection"		"-0.080 352.230 213.060"
+		"PortraitAnimationActivity"		"ACT_DOTA_IDLE"
+		"cameras"
+		{
+			"default"
+			{
+				"PortraitPosition"		"243.41 -10.03 64.80"
+				"PortraitAngles"		"1.61 175.12 0.00"
+				"PortraitFOV"		"15"
+			}
+		}
+	}
+	"models/items/tiny/tiny_astral_order_belt/tiny_astral_order_belt.vmdl"
+	{
+		"PortraitLightPosition"		"89.10 -24.78 141.22"
+		"PortraitLightAngles"		"142.45 335.58 0.00"
+		"PortraitLightFOV"		"53"
+		"PortraitLightDistance"		"188"
+		"PortraitLightColor"		"254 254 223"
+		"PortraitShadowColor"		"89 84 84"
+		"PortraitShadowScale"		"0.550000"
+		"PortraitAmbientColor"		"144 151 216"
+		"PortraitAmbientScale"		"2.300000"
+		"PortraitSpecularColor"		"251 74 84"
+		"PortraitBackgroundTexture"		"materials/vgui/hud/heroportraits/portraitbackground_windrunner.vmat"
+		"PortraitBackgroundColor1"		"1 1 1"
+		"PortraitBackgroundColor2"		"1 1 1"
+		"PortraitBackgroundColor3"		"1 1 1"
+		"PortraitBackgroundColor4"		"1 1 1"
+		"PortraitLightScale"		"1.150000"
+		"PortraitGroundShadowScale"		"1.500000"
+		"PortraitAmbientDirection"		"-0.080 352.230 213.060"
+		"PortraitAnimationActivity"		"ACT_DOTA_IDLE"
+		"cameras"
+		{
+			"default"
+			{
+				"PortraitPosition"		"205.65 -23.53 72.54"
+				"PortraitAngles"		"352.71 168.63 0.00"
+				"PortraitFOV"		"20"
+			}
+		}
+	}
+	"models/items/tiny/tiny_astral_order_neck/tiny_astral_order_neck.vmdl"
+	{
+		"PortraitLightPosition"		"102.13 -32.67 192.23"
+		"PortraitLightAngles"		"142.45 335.58 0.00"
+		"PortraitLightFOV"		"51"
+		"PortraitLightDistance"		"332"
+		"PortraitLightColor"		"254 254 223"
+		"PortraitShadowColor"		"89 84 84"
+		"PortraitShadowScale"		"0.550000"
+		"PortraitAmbientColor"		"144 151 216"
+		"PortraitAmbientScale"		"2.300000"
+		"PortraitSpecularColor"		"251 74 84"
+		"PortraitBackgroundTexture"		"materials/vgui/hud/heroportraits/portraitbackground_windrunner.vmat"
+		"PortraitBackgroundColor1"		"1 1 1"
+		"PortraitBackgroundColor2"		"1 1 1"
+		"PortraitBackgroundColor3"		"1 1 1"
+		"PortraitBackgroundColor4"		"1 1 1"
+		"PortraitLightScale"		"1.150000"
+		"PortraitGroundShadowScale"		"1.500000"
+		"PortraitAmbientDirection"		"-0.080 352.230 213.060"
+		"PortraitAnimationActivity"		"ACT_DOTA_IDLE"
+		"cameras"
+		{
+			"default"
+			{
+				"PortraitPosition"		"283.25 147.20 10.37"
+				"PortraitAngles"		"337.99 203.42 0.00"
+				"PortraitFOV"		"15"
+			}
+		}
+	}
+	"models/items/tiny/tiny_astral_order_back/tiny_astral_order_back.vmdl"
+	{
+		"PortraitLightPosition"		"58.89 85.88 217.49"
+		"PortraitLightAngles"		"120.75 112.42 0.00"
+		"PortraitLightFOV"		"81"
+		"PortraitLightDistance"		"332"
+		"PortraitLightColor"		"254 254 222"
+		"PortraitShadowColor"		"89 84 84"
+		"PortraitShadowScale"		"0.550000"
+		"PortraitAmbientColor"		"159 165 242"
+		"PortraitAmbientScale"		"2.300000"
+		"PortraitSpecularColor"		"251 74 84"
+		"PortraitBackgroundTexture"		"materials/vgui/hud/heroportraits/portraitbackground_windrunner.vmat"
+		"PortraitBackgroundColor1"		"1 1 1"
+		"PortraitBackgroundColor2"		"1 1 1"
+		"PortraitBackgroundColor3"		"1 1 1"
+		"PortraitBackgroundColor4"		"1 1 1"
+		"PortraitLightScale"		"4.100000"
+		"PortraitGroundShadowScale"		"1.500000"
+		"PortraitAmbientDirection"		"87.840 11.020 -37.550"
+		"PortraitAnimationActivity"		"ACT_DOTA_IDLE"
+		"cameras"
+		{
+			"default"
+			{
+				"PortraitPosition"		"233.51 -14.00 97.72"
+				"PortraitAngles"		"345.82 158.26 0.00"
+				"PortraitFOV"		"22"
+			}
+		}
 	}
 }

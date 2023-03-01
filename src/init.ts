@@ -15,6 +15,7 @@ import { getStatusBarItem, refreshStatusBarMessage, showStatusBarMessage, status
 import { cssApiInit, jsApiInit, luaApiInit, panelDocumentInit } from './module/treeApi';
 import { localize, localizeInit } from './utils/localize';
 import { EventManager, EventType } from "./class/event";
+import { localizationViewrInit } from './module/localizationViewr';
 
 /** 模块列表 */
 const moduleList: Table = {
@@ -37,6 +38,7 @@ const moduleList: Table = {
 	"listenerKV2JSInit": listenerKV2JSInit,
 	"listenerAbilityExcelInit": listenerAbilityExcelInit,
 	"listenerUnitExcelInit": listenerUnitExcelInit,
+	// "localizationViewrInit": localizationViewrInit,
 };
 
 /** 跳过的模块对应的用户设置 */

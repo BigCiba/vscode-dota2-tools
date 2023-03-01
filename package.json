@@ -695,6 +695,16 @@
 					}
 				}
 			}
+		},
+		"html": {
+			"customData": [
+				"./html.html-data.json"
+			]
+		},
+		"css": {
+			"customData": [
+				"./css.css-data.json"
+			]
 		}
 	},
 	"scripts": {

@@ -39,6 +39,7 @@ const moduleList = {
     "listenerKV2JSInit": listenerKV2JS_1.listenerKV2JSInit,
     "listenerAbilityExcelInit": listenerAbilityExcel_1.listenerAbilityExcelInit,
     "listenerUnitExcelInit": listenerUnitExcel_1.listenerUnitExcelInit,
+    // "localizationViewrInit": localizationViewrInit,
 };
 /** 跳过的模块对应的用户设置 */
 const skipModuleList = {

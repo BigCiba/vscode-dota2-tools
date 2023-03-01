@@ -173,7 +173,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"5669"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityCastAnimation"			"ACT_DOTA_GENERIC_CHANNEL_1"
 		"MaxLevel"						"1"
@@ -389,7 +389,6 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"		
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_Antimage.ManaVoid"
-		"HasScepterUpgrade"			"1"
 		"AbilityDraftUltScepterAbility"		"antimage_mana_overload"
 
 		// Casting
@@ -609,7 +608,7 @@
 				"speed_bonus"
 				{
 					"value"			"0"
-					"special_bonus_unique_axe_8"	"+10"
+					"special_bonus_unique_axe_8"	"+12"
 				}
 		}		
 	}
@@ -831,7 +830,7 @@
 	}
 	
 	//=================================================================================================================
-	// Ability: Bane Friends Grip
+	// Ability: Bane Fiend's Grip
 	//=================================================================================================================
 	"bane_fiends_grip"
 	{
@@ -876,7 +875,11 @@
 				"value"					"5.0 5.5 6.0"
 				"special_bonus_unique_bane_3"		"+5"
 			}
-			"fiend_grip_damage"				"70 110 150"
+			"fiend_grip_damage"
+			{
+				"value"			"70 110 150"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"AbilityCooldown"				
 			{
 				"value"	"120 110 100"
@@ -935,7 +938,11 @@
 			"nightmare_invuln_time"		"1.0"
 			"duration"					"4.0 5.0 6.0 7.0"
 			"animation_rate"			"0.2 0.2 0.2 0.2"
-			"nightmare_tick_damage"		"5 15 25 35"
+			"nightmare_tick_damage"
+			{
+				"value"			"5 15 25 35"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"AbilityCooldown"
 			{
 				"value"	"24 21 18 15"
@@ -974,7 +981,7 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"FightRecapLevel"				"1"
 		"AbilitySound"					"hero_bloodseeker.bloodRage"
@@ -1185,7 +1192,6 @@
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"hero_bloodseeker.rupture"
 		
-		"HasScepterUpgrade"				"1"
 		"AbilityDraftUltScepterAbility"		"bloodseeker_blood_mist"
 
 
@@ -1335,7 +1341,9 @@
 			"02"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"damage"	"6 12 18 24"
+				"damage"						"6 12 18 24"
+				"LinkedSpecialBonus"			"special_bonus_unique_drow_ranger_2"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"03"
 			{
@@ -1366,6 +1374,7 @@
 				"var_type"								"FIELD_INTEGER"
 				"shard_burst_damage_per_stack"					"60"
 				"RequiresShard"							"1"
+				"DamageTypeTooltip"						"DAMAGE_TYPE_MAGICAL"
 			}
 			"07"
 			{
@@ -1397,11 +1406,11 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"343"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_DIRECTIONAL"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_DIRECTIONAL | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"FightRecapLevel"				"1"
 	
 		// Casting
@@ -1536,7 +1545,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"16 15 14 13"
+		"AbilityCooldown"				"19 17 15 13"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -2079,6 +2088,11 @@
 					"value"	"0"
 					"special_bonus_unique_juggernaut_2"	"+2"
 				}
+				"healing_ward_hits_to_kill_tooltip"
+				{
+					"value" "1"
+					"special_bonus_unique_juggernaut_2" "+2"
+				}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 	}
@@ -2553,8 +2567,8 @@
 		{
 			"tooltip_delay"				"3.1"
 			"ghostship_distance"		"2000"
-			"ghostship_width"			"425 425 425"
-			"movespeed_bonus"			"12"
+			"ghostship_width"			"450"
+			"movespeed_bonus"			"15"
 			"buff_duration"				"10"
 			"stun_duration"				"1.4 1.4 1.4"
 			"ghostship_speed"			"650"
@@ -2848,7 +2862,7 @@
 
 			"damage"			
 			{
-				"value"			"80 140 200 260"
+				"value"			"95 150 205 260"
 				"special_bonus_unique_lion_3"	"+65"
 			}
 			"width"				"125"
@@ -2897,7 +2911,7 @@
 			"AbilityCooldown"				
 			{
 				"value"				"24 20 16 12"
-				"special_bonus_unique_lion_5"	"-2"
+				"special_bonus_unique_lion_5"	"-3"
 			}
 			"duration"					"2.5 3 3.5 4"
 			"movespeed"					"120"
@@ -3211,7 +3225,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"5050"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"AbilitySound"					"Ability.Leap"
 
@@ -3259,6 +3272,7 @@
 			{
 				"value"				"150"
 				"RequiresShard"		"1"
+				"DamageTypeTooltip"	"DAMAGE_TYPE_MAGICAL"
 			}
 			"shard_slow_pct"					
 			{
@@ -3347,7 +3361,6 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"20 17 14 11"
 
 		// Damage.
 		//-------------------------------------------------------------------------------------------------------------
@@ -3361,18 +3374,23 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"speed"					"1250"
-				"width"					"200"
-				"AbilityCharges"		
-				{
-					"value"	"0"
-					"special_bonus_unique_morphling_6"	"+2"
-				}
-				"AbilityCastRange"
-				{
-					"value"				"700 800 900 1000"
-					"special_bonus_unique_morphling_1"	"+250"
-				}			
+			"speed"					"1250"
+			"width"					"200"
+			"AbilityCharges"		
+			{
+				"value"	"0"
+				"special_bonus_unique_morphling_6"	"+2"
+			}
+			"AbilityCastRange"
+			{
+				"value"				"700 800 900 1000"
+				"special_bonus_unique_morphling_1"	"+250"
+			}			
+			"AbilityCooldown"
+			{
+				"value"														"21 18 15 12"
+				"special_bonus_unique_morphling_waveform_cooldown"			"-40%"
+			}
 		}
 	}
 	
@@ -3416,7 +3434,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"damage_base"					"55 65 75 85"
+				"damage_base"								
+				{
+					"value"					"55 65 75 85"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"damage_min"					
 				{
 					"value"					"0.5"
@@ -3540,7 +3562,11 @@
 				"special_bonus_shard"					"+6"
 			}
 			"morph_rate_tooltip"	"5 10 15 20"
-			"mana_cost"				"5 10 15 20"
+			"mana_cost"				
+			{
+				"value"						"5 10 15 20"
+				"special_bonus_unique_morphling_morph_no_manacost"		"-100%"
+			}
 			"castable_while_stunned"
 			{
 				"value"	"0"
@@ -3578,7 +3604,11 @@
 				"special_bonus_shard"					"+6"
 			}
 			"morph_rate_tooltip"	"5 10 15 20"
-			"mana_cost"				"5 10 15 20"
+			"mana_cost"				
+			{
+				"value"						"5 10 15 20"
+				"special_bonus_unique_morphling_morph_no_manacost"		"-100%"
+			}
 			"castable_while_stunned"
 			{
 				"value"	"0"
@@ -3650,7 +3680,7 @@
 			}
 			"scepter_cooldown_reduction"	
 			{
-				"value"			"20"
+				"value"			"0"
 				"RequiresScepter"			"1"
 			}
 		}		
@@ -3990,7 +4020,6 @@
 				"necromastery_damage_per_soul"	"1 2 3 4"
 				"CalculateSpellDamageTooltip"	"0"
 				"LinkedSpecialBonus"			"special_bonus_unique_nevermore_1"
-				"DamageTypeTooltip"				"DAMAGE_TYPE_NONE"
 			}
 			"02"
 			{
@@ -4050,7 +4079,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"900"
+		"AbilityCastRange"			"1200"
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_5"
 		"AbilityCooldown"			"10"
 		// Special
@@ -4420,7 +4449,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.1 0.1 0.1 0.1"
-		"AbilityCastRange"				"3000"
+		"AbilityCastRange"				"1950"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -4628,7 +4657,7 @@
 				"stun_duration"				"0.5"
 				"coil_initial_damage"
 				{	
-					"value"					"125 200 275"
+					"value"					"150 230 310"
 					"special_bonus_unique_puck_coil_damage"			"+150"
 				}
 				"coil_stun_duration"		
@@ -4659,7 +4688,7 @@
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"20 18 16 14"
+		"AbilityCooldown"				"20 19 18 17"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -4865,7 +4894,8 @@
 			"dismember_damage"		
 			{
 				"value"					"80 100 120"
-				"special_bonus_unique_pudge_3"	"x1.8"
+				"special_bonus_unique_pudge_3"	"x1.8"	
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"strength_damage"		
 			{
@@ -4946,7 +4976,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"100 120 140 160"
+		"AbilityManaCost"				"100 115 130 145"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -5161,28 +5191,34 @@
 			}
 			"03"
 			{
+				"var_type"					"FIELD_INTEGER"
+				"attack_range_tooltip"		"650"
+				"LinkedSpecialBonus"		"special_bonus_unique_shadow_shaman_8"
+			}
+			"04"
+			{
 				"var_type"				"FIELD_FLOAT"
 				"duration"				"45.0 45.0 45.0"
 			}
-			"04"
+			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"scepter_range"			"225"
 				"RequiresScepter"			"1"
 			}
-			"05"
+			"06"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"spawn_radius"			"150"
 			}
-			"06"
+			"07"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"hits_to_destroy_tooltip"			"2"
 				"LinkedSpecialBonus"		"special_bonus_unique_shadow_shaman_1"
 				"LinkedSpecialBonusField"		"value2"
 			}
-			"07"
+			"08"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"hits_to_destroy_tooltip_creeps"		"4"
@@ -5392,9 +5428,10 @@
 			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"shard_damage"			"150"
+				"shard_damage"			"175"
 				"RequiresShard"			"1"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_MAGICAL"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"05"
 			{
@@ -5531,7 +5568,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"blast_speed"			"1000"
+				"blast_speed"			"1200"
 			}			
 			"02"
 			{
@@ -5542,7 +5579,7 @@
 			}			
 			"03"
 			{
-				"var_type"				"FIELD_FLOAT"
+				"var_type"				"FIELD_FLOAT"	
 				"blast_dot_duration"	"2.0"
 				"LinkedSpecialBonus"	"special_bonus_unique_wraith_king_7"
 			}			
@@ -5556,7 +5593,19 @@
 				"var_type"				"FIELD_INTEGER"
 				"blast_dot_damage"		"20 40 60 80"
 				"LinkedSpecialBonus"	"special_bonus_unique_wraith_king_3"
-			}			
+			}		
+			"06"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_move_speed"			"25"
+			}	
+			"07"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_attack_speed"			"25"
+			}	
+			
+	
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
 	}
@@ -5570,6 +5619,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"5087"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 			
 		// Casting
@@ -5608,6 +5658,12 @@
 			"reincarnate_time"			"3"
 			"gold_bounty"						"5"
 			"xp_bounty"						"5"
+			"skeleton_damage_tooltip"
+			{
+				"value"							"34"
+				"LinkedSpecialBonus"			"special_bonus_unique_wraith_king_6"
+				"CalculateSpellDamageTooltip"	"0"
+			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 	}
@@ -5731,7 +5787,7 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"shard_skeleton_count"	"3"
-				"RequiresScepter"			"1"
+				"RequiresShard"			"1"
 			}
 		}
 	}
@@ -5763,7 +5819,7 @@
 
 		// Damage.
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"75 150 225 300"
+		"AbilityDamage"					"85 160 235 310"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -6220,7 +6276,7 @@
 			"06"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"shard_passive_armor"	"7"
+				"shard_passive_armor"	"6"
 				"RequiresShard"			"1"
 			}
 			"07"
@@ -6755,7 +6811,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"caustic_finale_duration"	"5"
+				"caustic_finale_duration"	"6"
 			}
 			"05"
 			{
@@ -6811,7 +6867,11 @@
 				"value"		"6 8 10"
 				"LinkedSpecialBonus"	"special_bonus_unique_sand_king"
 			}
-			"epicenter_damage"	"110 120 130"
+			"epicenter_damage"	
+			{
+				"value"					"110 120 130"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"epicenter_radius_base"
 			{
 				"value"		"500"
@@ -6881,7 +6941,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"radius"					"325 350 375 400"
+				"radius"					"325 340 355 370"
 				"tick_interval"				"0.3"
 				"total_duration"			"1.4"
 				"tick_count"			"5"
@@ -6937,7 +6997,11 @@
 				"grab_radius"			"300"
 				"radius"				"275"
 				"bonus_damage_pct"		"0"
-				"toss_damage"				"75 150 225 300"
+				"toss_damage"	
+				{
+					"value"					"75 150 225 300"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"AbilityCharges"		
 				{
 					"value"				""
@@ -7012,7 +7076,6 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"AbilitySound"					"Hero_Tiny.CraggyExterior.Stun"
 		"LinkedAbility"					"tiny_toss_tree"
-		"HasScepterUpgrade"				"1"
         "HasShardUpgrade"               "1"
         "AbilityDraftScepterAbility"    "tiny_tree_channel"
 		
@@ -7054,6 +7117,7 @@
 				"var_type"					"FIELD_INTEGER"
 				"bonus_damage_buildings"		"40 55 70 85"
 				"CalculateSpellDamageTooltip"	"0"
+				"DamageTypeTooltip"				"DAMAGE_TYPE_NONE"
 			}
 			"04"
 			{
@@ -7155,7 +7219,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"15"
+		"AbilityCooldown"				"17"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -7210,6 +7274,7 @@
 		"ID"					"5109"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilitySound"					"Tiny.Grow"
 		"AbilityCastAnimation"		"ACT_INVALID"
 
@@ -7227,6 +7292,8 @@
 				{
 					"value"				"20 30 40"
 					"special_bonus_unique_tiny_7"	"+40"
+					"DamageTypeTooltip"				"DAMAGE_TYPE_NONE"
+					"CalculateSpellDamageTooltip"	"0"
 				}
 				"attack_speed_reduction"	"-30"
 				"toss_bonus_damage"
@@ -7267,7 +7334,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"damage"					"25 50 75 100"
+			"damage"					
+			{
+				"value"					"25 50 75 100"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"hop_distance"				"500"
 			"hop_duration"		"0.5"
 			"hop_height"		"250"
@@ -7425,6 +7496,12 @@
 				"var_type"				"FIELD_INTEGER"
 				"spread_aoe"	"325"
 			}
+			"06"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"ministun_duration"		"0.3"
+				"LinkedSpecialBonus"	"special_bonus_unique_zeus_3"
+			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 	}
@@ -7544,7 +7621,6 @@
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_Zuus.GodsWrath"
 
-		"HasScepterUpgrade"				"1"
 		"AbilityDraftUltScepterAbility"		"zuus_cloud"
 	
 		// Casting
@@ -8032,6 +8108,7 @@
 			{
 				"value"										"40 85 130 175"
 				"special_bonus_unique_tidehunter_9"			"+50"
+				"CalculateSpellDamageTooltip"				"0"
 			}
 			"damage_reduction"		
 			{
@@ -8489,7 +8566,11 @@
 			"AbilityCastPoint"				"0.3 0.3 0.3 0.3"
 			"AbilityCooldown"				"9 8 7 6"
 			"AbilityManaCost"				"125 135 145 155"
-			"damage_per_second"				"100"
+			"damage_per_second"
+			{
+				"value"			"100"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"creep_damage_per_second"		"100"
 			"duration"
 			{
@@ -8523,11 +8604,21 @@
 		{
 			"base_mana_regen"					
 			{
-				"value"					"0.6 0.9 1.2 1.5"
+				"value"										"0.4 0.6 0.8 1.0"
 				"special_bonus_unique_crystal_maiden_4" 	"+0.5"
 			}
-			"self_factor"					"4"
-			"proximity_bonus_factor"		"2"
+			"proximity_mana_regen_tooltip"					
+			{
+				"value"										"1.2 1.8 2.4 3.0"
+				"special_bonus_unique_crystal_maiden_4" 	"+1.5"
+			}
+			"self_mana_regen_tooltip"					
+			{
+				"value"										"2.4 3.6 4.8 6.0"
+				"special_bonus_unique_crystal_maiden_4" 	"+3.0"
+			}
+			"self_factor"					"6"
+			"proximity_bonus_factor"		"3"
 			"proximity_bonus_radius"		"1200"
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
@@ -8812,7 +8903,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"powershot_damage"		"150 250 350 450"
+				"powershot_damage"			
+				{
+					"value"					"150 250 350 450"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"damage_reduction"		
 				{
 					"value"				"20"
@@ -8874,7 +8969,7 @@
 			"radius"					
 			{	
 				"value"			"325"
-				"special_bonus_unique_windranger"	"+200"
+				"special_bonus_unique_windranger"	"+225"
 			}
 			"scepter_movespeed_bonus_pct"			
 			{
@@ -9223,7 +9318,11 @@
 			}
 			"movement_slow"			"20 25 30 35"
 			"slow_duration"			"0.5"
-			"damage"				"20 30 40 50"
+			"damage"
+			{
+				"value"			"20 30 40 50"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"interval"				"1"
 			"radius"				"600"
 			"duration"
@@ -9288,7 +9387,11 @@
 				"value"		"250 400 550"
 				"special_bonus_unique_lich_7" "+100"
 			}
-			"bonus_jump_damage"		"15 20 25"
+			"bonus_jump_damage"		
+			{
+				"value"			"15 20 25"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"jumps"					"10 10 10"
 			"jump_range"			"600"
 			"slow_movement_speed"	"-65"
@@ -9391,7 +9494,11 @@
 		{
 				"hero_duration"			"1.0 1.0 1.0 1.0"
 				"creep_duration"		"1"
-				"base_damage"			"40"
+				"base_damage"				
+				{
+					"value"					"40"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"bounce_range"			"575 575 575 575"
 				"bounces"				
 				{ 
@@ -9400,7 +9507,11 @@
 				}
 				"speed"					"1200"
 				"bounce_delay"			"0.3"
-				"bounce_bonus_damage"			"10 15 20 25"
+				"bounce_bonus_damage"
+				{
+					"value"					"10 15 20 25"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"creep_damage_pct"		"200"
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -9548,7 +9659,6 @@
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_WitchDoctor.Death_WardBuild"
 
-		"HasShardUpgrade"			"1"
 		"HasScepterUpgrade"			"1"
 
 		"AbilityDraftUltShardAbility"		"witch_doctor_voodoo_switcheroo"
@@ -9690,7 +9800,11 @@
 		"AbilityValues"
 		{
 			"duration"		"3"
-			"damage"		"150"
+			"damage"
+			{
+				"value"					"150"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"movement_slow"		"30"
 			"debuff_duration"		"4"
 			"projectile_speed"		"1600"
@@ -9774,7 +9888,11 @@
 		"AbilityValues"
 		{
 			
-			"bonus_damage"				"40 55 70 85"
+			"bonus_damage"
+			{
+				"value"					"40 55 70 85"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"AbilityChargeRestoreTime"
 			{
 				"value"							"25 20 15 10"
@@ -10056,7 +10174,12 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"eidolon_magic_resist_tooltip"		"30 40 50 60"
-			}			
+			}	
+			"08"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"eidolon_attack_range_tooltip"		"425 450 475 500"
+			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 	}
@@ -10239,7 +10362,7 @@
 	}
 
 	//=================================================================================================================
-	// Tinker: Keen Teleport
+	// Tinker: Keen Teleport (Keen Conveyance)
 	//=================================================================================================================
 	"tinker_keen_teleport"
 	{
@@ -10287,8 +10410,10 @@
 			}
 			"04"
 			{
-				"var_type"				"FIELD_FLOAT"
-				"tooltip_channel_time"			"3.0"
+				"var_type"					"FIELD_FLOAT"
+				"channel_time_tooltip"		"4.5 4.0 3.5"
+				"LinkedSpecialBonus"		"special_bonus_unique_tinker_5"
+				"LinkedSpecialBonusOperation"	"SPECIAL_BONUS_SUBTRACT"
 			}
 		}
 	}
@@ -10737,7 +10862,11 @@
 		"AbilityValues"
 		{
 
-			"damage"						"25"
+			"damage"
+			{
+				"value"					"25"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"AbilityCastRange"		
 			{
 				"value"							"600"
@@ -10786,7 +10915,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"50"
+		"AbilityManaCost"				"75"
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -10805,7 +10934,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"radius"				"450"
+				"radius"				"400"
 			}
 			"03"
 			{
@@ -11140,7 +11269,7 @@
 		"ID"					"5159"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 
@@ -11155,6 +11284,7 @@
 				"value"		"0.6 1.2 1.8 2.4" 
 				"special_bonus_unique_necrophos_2"		"+0.5"
 				"DamageTypeTooltip"	"DAMAGE_TYPE_NONE"
+				"CalculateSpellDamageTooltip"	"0"
 			} 	
 			"health_regen"	"4 5 6 7"
 			"mana_regen"	"4 5 6 7"
@@ -11221,7 +11351,7 @@
 				"special_bonus_unique_necrophos_3"		"+24"
 			}			
 			"slow_aoe"		"750"
-			"bonus_damage" "-40"
+			"bonus_damage" "-25"
 			"AbilityCooldown"
 			{
 				"value"						"28 24 20 16"
@@ -11277,10 +11407,6 @@
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityManaCost"				"250 375 500"		
-		
-		// Cast Range
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"600"
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -11294,6 +11420,11 @@
 			"stun_duration"				"1.5 1.5 1.5"
 			"hp_per_kill"				"2 4 6"
 			"mana_per_kill"				"1 2 3"
+			"AbilityCastRange"
+			{
+				"value"						"600"
+				"special_bonus_unique_necrophos_6"				"+100"
+			}
 		}
 	}
 	
@@ -11483,7 +11614,7 @@
 			"max_slow"				"55 70 85 100"
 			"aspd_per_second"		"10"
 			"damage_per_second"		"10"
-			"max_damage"			"30 50 70 90"
+			"max_damage"			"35 60 85 110"
 			"damage_tick_interval"	
 			{
 				"value"					"1"
@@ -11539,7 +11670,7 @@
 			"aoe"						"600"
 			"golem_hp"					"1400 2300 3200"
 			"golem_dmg"					"100 150 200"
-			"golem_armor"				"6 9 12"
+			"golem_armor"				"8 12 14"
 			"golem_movement_speed"		"320 340 360"
 			"golem_health_regen"		"25 50 75"
 			"golem_gold_bounty"			"100 150 200"
@@ -11568,11 +11699,15 @@
 			{
 				"value"			"0"
 				"special_bonus_unique_warlock_1"		"+80"
-
 			}
 			"bonus_armor"
 			{
 				"value"			"0"
+				"special_bonus_unique_warlock_2"		"+20"
+			}
+			"tooltip_golem_armor"
+			{
+				"value"			"8 12 14"
 				"special_bonus_unique_warlock_2"		"+20"
 			}
 		}
@@ -11722,7 +11857,11 @@
 			"radius"					"175"
 			"spread"					"450"
 			"range"						"1500"
-			"axe_damage"					"40 70 100 130"
+			"axe_damage"
+			{
+				"value"					"40 70 100 130"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"duration"						"12"
 			"damage_amp"
 			{
@@ -11762,6 +11901,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"7230"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilitySound"					"Hero_Beastmaster.Call.Boar"
 
 		// Casting
@@ -11784,6 +11924,12 @@
 			"duration"							"60"
 			"boar_base_max_health"				"300 450 600 750"
 			"boar_base_damage"					"20 35 50 65"
+			"boar_total_damage_tooltip"
+			{
+				"value"										"20 35 50 65"
+				"special_bonus_unique_beastmaster_2"		"+35"
+				"CalculateSpellDamageTooltip"				"0"
+			}
 			"boar_bonus_damage"
 			{
 				"value"										"0"
@@ -11915,7 +12061,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"5171"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		
@@ -12030,12 +12175,21 @@
 		"AbilityValues"
 		{
 			"duration"					"3.0 3.5 4.0"
-			"damage"					"150 225 300"
-			"side_damage"				"150 225 300"
+			"damage"					
+			{
+				"value"			"150 225 300"
+				"CalculateSpellDamageTooltip" "1"
+			}
+			"side_damage"				
+			{
+				"value"			"150 225 300"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"damage_radius"				
 			{
 				"value"		"300"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
+				"CalculateSpellDamageTooltip"		"0"
 			}
 			"slow_movement_speed_pct"	"-60"
 			"slow_attack_speed_pct"		"-60"
@@ -12085,7 +12239,11 @@
 		"AbilityValues"
 		{
 			"radius"						"600"
-			"base_damage"					"110"
+			"base_damage"						
+			{
+				"value"			"110"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"base_heal"						"25"
 			"min_pulse_interval"			"0.2"
 			"pulse_divisor"					"6"
@@ -12176,7 +12334,7 @@
 			"aoe_radius"
 			{
 				"value"								"0"
-				"special_bonus_scepter"				"+375"
+				"special_bonus_scepter"				"+400"
 			}
 			"duration"						"15"
 		}
@@ -12322,8 +12480,8 @@
 				"knockback_duration" "1.4"
 				"AbilityCooldown"
 				{	
-					"value"											"125"
-					"special_bonus_unique_queen_of_pain_3"			"-60"
+					"value"											"110 100 90"
+					"special_bonus_unique_queen_of_pain_3"			"-40"
 				}
 
 		}
@@ -12410,8 +12568,16 @@
 		"AbilityValues"
 		{
 			"duration"				"15.0 15.0 15.0 15.0"
-			"strike_damage"			"50 75 100 125"
-			"tick_damage"			"15 45 75 105"
+			"strike_damage"			
+			{
+				"value"					"50 75 100 125"
+				"CalculateSpellDamageTooltip"	"1"
+			}
+			"tick_damage"			
+			{
+				"value"					"15 45 75 105"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"tick_interval"			"3.0 3.0 3.0 3.0"
 			"movement_slow"			"-50 -50 -50 -50"
 			"radius"				"125"
@@ -12448,7 +12614,11 @@
 		"AbilityValues"
 		{
 			"duration"				"6.0 9.0 12.0 15.0"
-			"damage"					"8 16 24 32"
+			"damage"
+			{
+				"value"					"8 16 24 32"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"movement_speed"
 			{
 				"value"			"-8 -10 -12 -14"
@@ -12516,7 +12686,7 @@
 			"04" // For special bonus at level 25
 			{
 				"var_type"				"FIELD_INTEGER"
-				"ward_hp"		"150 400 650 900"
+				"ward_hp"		"240 460 680 900"
 			}
 			"05" // For special bonus at level 25
 			{
@@ -12633,7 +12803,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"duration_damage"		"20"
+				"duration_damage"				
+				{
+					"value"					"20"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"movement_slow"			"-10"
 				"projectile_speed"		"1800"
 				"damage_interval"		"1.0"
@@ -12938,7 +13112,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"500"
+		"AbilityCastRange"				"600"
 		"AbilityCastPoint"				"0.2 0.2 0.2 0.2"
 
 		// Time		
@@ -13156,6 +13330,7 @@
 			{
 				"value"					"160 240 320"
 				"CalculateSpellDamageTooltip"	"1"
+				"DamageTypeTooltip"		"DAMAGE_TYPE_MAGICAL"
 			}
 			"tick_rate"					"0.25 0.25 0.25"
 			"drain_buffer"				"200"
@@ -13212,6 +13387,7 @@
 		"ID"							"662"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PURE"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"MaxLevel"						"1"
 		"FightRecapLevel"				"1"
@@ -13352,7 +13528,7 @@
 		
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"35 45 55 65"
+		"AbilityManaCost"				"35 40 45 50"
 		
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -13689,7 +13865,7 @@
 			"07"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"trap_max_charge_duration"			"4"
+				"trap_max_charge_duration"			"3.5"
 			}
 			"08"
 			{
@@ -14058,7 +14234,7 @@
 		
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"85"
+		"AbilityManaCost"				"70"
 		
 	
 		// Special
@@ -14129,12 +14305,12 @@
 			"bonus_magic_resistance"	
 			{
 				"value"								"10 15 20 25"
-				"special_bonus_unique_viper_6"		"+12"
+				"special_bonus_unique_viper_6"		"+15"
 			}
 			"damage"
 			{
 				"value"					"8 16 24 32"
-				"special_bonus_unique_viper_1"	"+13"
+				"special_bonus_unique_viper_1"	"+18"
 			}
 			"max_range_tooltip"					"1400"
 			"effect_multiplier_distance"
@@ -14234,7 +14410,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.1"
-		"AbilityCastRange"				"300"
+		"AbilityCastRange"				"375"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -14544,7 +14720,11 @@
 		"AbilityValues"
 		{
 			"radius"			"350"
-			"damage"			"75"
+			"damage"			
+			{
+				"value"			"75"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"duration"			"8.0"
 			"burn_interval"			"0.5"
 			"linger_duration"			"2"
@@ -14595,8 +14775,12 @@
 			"end_radius"			"250 250 250 250"
 			"range"					"750"
 			"AbilityCastRange"			"600"	
-			"speed"					"1050"
-			"damage"							"80 160 240 320"
+			"speed"					"1050"		
+			"damage"			
+			{
+				"value"			"80 160 240 320"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"reduction"
 			{
 				"value"				"-30"
@@ -14725,7 +14909,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"115 110 105 100"
+		"AbilityCooldown"				"105"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -14753,6 +14937,7 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"bonus_attack_range"		"350 350 350 350"
+				"LinkedSpecialBonus"		"special_bonus_unique_dragon_knight_7"
 			}
 			"04"
 			{
@@ -14948,7 +15133,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"110 120 130 140"
+		"AbilityManaCost"				"125 130 135 140"
 				
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -14973,7 +15158,7 @@
 				"special_bonus_unique_dazzle_1"	"-40"
 			}
 			"projectile_speed"	"1300"
-			"duration"		"4 5 6 7"
+			"duration"		"5 6 7 8"
 			"bonus_damage"			"0"
 			"bonus_slow"			"-2 -2.5 -3 -3.5"
 			"hex_duration"
@@ -15060,8 +15245,6 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilitySound"					"Hero_Dazzle.Shadow_Wave"
 
-        "HasScepterUpgrade"			"1"
-
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"800"
@@ -15090,6 +15273,7 @@
 				"var_type"			"FIELD_INTEGER"
 				"damage_radius"		"185"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"03"
 			{	
@@ -15207,7 +15391,11 @@
 			}
 			"duration"					"8 10 12"
 			"radius"					"1200"
-			"heal_damage"				"40 50 60"
+			"heal_damage"
+			{
+				"value"			"40 50 60"
+				"CalculateSpellDamageTooltip" "1"
+			}
 		}
 	}
 	//=================================================================================================================
@@ -15313,7 +15501,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"321"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES_ENEMIES_NO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"MaxLevel"						"1"
 		"FightRecapLevel"				"1"
@@ -15434,7 +15622,11 @@
 		"AbilityValues"
 		{
 			"duration"			"5.0 6.0 7.0 8.0"
-			"damage"		"50 125 200 275"
+			"damage"
+			{
+				"value"			"50 125 200 275"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"mana_burn"		
 			{
 				"value"				"50 80 110 140"
@@ -15506,7 +15698,11 @@
 			"radius"			"600"
 			"duration"			"6.0"
 			"speed"				"2250"
-			"damage"			"80 120 160 200"
+			"damage"
+			{
+				"value"			"80 120 160 200"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"AbilityCooldown"				
 			{
 				"value"				"20.0 18.0 16.0 14.0"
@@ -15531,7 +15727,6 @@
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_Rattletrap.Hookshot.Fire"
 
-		"HasScepterUpgrade"			"1"
 		"AbilityDraftUltScepterAbility"		"rattletrap_overclocking"
 		"AbilityDraftUltShardAbility"		"rattletrap_jetpack"
 
@@ -15644,7 +15839,7 @@
 			"04"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"shard_radius_increase"			"75"
+				"shard_radius_increase"			"60"
 				"RequiresShard"					"1"
 			}
 			"05"
@@ -15689,7 +15884,7 @@
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"22 22 22 22"
+		"AbilityCooldown"				"22"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -15918,7 +16113,7 @@
 			"03"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"damage"			"100 150 200"
+				"damage"			"90 140 190"
 				"LinkedSpecialBonus"	"special_bonus_unique_leshrac_3"
 			}
 		}
@@ -16034,7 +16229,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
 		"AbilityCastPoint"				"3 3 3 3"
-		"AbilityCooldown"				"65 50 35 20"
+		"AbilityCooldown"				"62 48 34 20"
 		"AbilityManaCost"				"50 50 50 50"
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 		// Special
@@ -16176,6 +16371,8 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"damage_percent_add"	"10"
+				"CalculateSpellDamageTooltip"	"0"
+				"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
 			}
 			"04"
 			{
@@ -16186,13 +16383,15 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"kill_damage"			"6"
-				"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
+				"DamageTypeTooltip"		"DAMAGE_TYPE_PHYSICAL"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"06"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"kill_damage_duration"			"50"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"06"
 			{
@@ -16249,7 +16448,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"duration"		"6"
+			"duration"		"7"
 			"damage_per_tree"		"15"
 			"slow_per_tree"			"7"
 			"radius"				"250"
@@ -16315,6 +16514,7 @@
 		"ID"							"5250"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -16330,6 +16530,7 @@
 			{
 				"var_type"				"FIELD_FLOAT"
 				"hp_damage_percent"		"0.8 1.1 1.4 1.7"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
@@ -17400,6 +17601,7 @@
 				"heal"					"90 160 230 300"
 				"LinkedSpecialBonus"	"special_bonus_unique_omniknight_1"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_PURE"
+				"CalculateSpellDamageTooltip" "1"
 			}
 			"02"
 			{
@@ -17722,7 +17924,6 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 
-		"HasScepterUpgrade"			"1"
 		"AbilityDraftUltScepterAbility"		"enchantress_bunny_hop"
 		
 		// Special	
@@ -18102,7 +18303,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"damage"				"120 180 240 300"
+			"damage"				
+			{
+				"value"			"120 180 240 300"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"radius"				"500"
 			"disarm_duration"
 			{
@@ -18323,7 +18528,8 @@
 			"07"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"slow_durtion_tooltip"		"3 4 5"
+				"slow_duration_tooltip"		"3 4 5"
+				"LinkedSpecialBonus"		"special_bonus_unique_huskar_4"
 			}
 			"08"
 			{
@@ -18501,6 +18707,7 @@
 		"ID"							"5278"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"AbilitySound"					"Hero_Nightstalker.Darkness"
 
@@ -18525,6 +18732,7 @@
 			{
 				"value"			"50 100 150"
 				"special_bonus_unique_night_stalker_3"	"+35"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 		}
 	}
@@ -18582,6 +18790,11 @@
 				}
 				"count"					"4 5 6"
 				"projectile_speed"	"1200"
+				"tooltip_spiderling_hp"
+				{
+					"value"				"320"
+					"special_bonus_unique_broodmother_7" "+130"
+				}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
 	}
@@ -18595,7 +18808,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5284"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		
@@ -18792,6 +19004,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5282"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"FightRecapLevel"				"2"
         "HasShardUpgrade"               "1"
@@ -18811,6 +19024,7 @@
 			"bonus_damage"			
 			{
 				"value"					"35 45 55 65"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"lifesteal_pct"			
 			{
@@ -18878,8 +19092,12 @@
 		"AbilityValues"
 		{
 			"formation_delay"		"2.0"
-			"root_duration"			"4.0"
-			"damage_per_second"		"100"
+			"root_duration"			"3.0"
+			"damage_per_second"	
+			{
+				"value"			"100"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"count"					"5"
 			"width"					"900"
 			
@@ -19011,7 +19229,7 @@
 	}	
 
 	//=================================================================================================================
-	// Bounty Hunter: Wind Walk
+	// Bounty Hunter: Wind Walk / Shadow Walk
 	//=================================================================================================================
 	"bounty_hunter_wind_walk"
 	{
@@ -19019,7 +19237,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5287"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES_ENEMIES_NO"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
@@ -19043,6 +19261,11 @@
 				"duration"					"20.0 25.0 30.0 35.0"
 				"fade_time"					"1.0 0.75 0.5 0.25"
 				"slow"				
+				{
+					"value"				"16 24 32 40"
+					"special_bonus_unique_bounty_hunter_5"	"+10"
+				}
+				"attack_slow"
 				{
 					"value"				"16 24 32 40"
 					"special_bonus_unique_bounty_hunter_5"	"+10"
@@ -19565,7 +19788,11 @@
 				"special_bonus_unique_jakiro"		"+0.5"
 			}			
 			"path_radius"				"150"
-			"damage"					"50"
+			"damage"		
+			{
+				"value"			"50"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"AbilityCooldown"				
 			{
 				"value"								"18 15 12 9"
@@ -19807,7 +20034,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"550"
+		"AbilityCastRange"				"600"
 		"AbilityCastPoint"				"0"
 
 		// Time		
@@ -19908,12 +20135,21 @@
 		"AbilityValues"
 		{
 
-			"damage_impact"		"30 60 90 120"
-			"damage_per_second"		"15"
+			"damage_impact"		
+			{
+				"value"			"30 60 90 120"
+				"CalculateSpellDamageTooltip" "1"
+			}
+			"damage_per_second"		
+			{
+				"value"			"15"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"damage_duration"		
 			{
 				"value"		"2 4 6 8"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
+				"CalculateSpellDamageTooltip" "0"
 			}
 			"explosion_radius"		"500"
 			"collision_radius"		"100 100 100 100"
@@ -19972,7 +20208,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"damage_per_second"		"20 35 50 65"
+			"damage_per_second"
+			{
+				"value"			"20 35 50 65"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"movement_speed"		"3 6 9 12"
 			"radius"				"200"
 			"duration"				
@@ -20028,7 +20268,11 @@
 			"duration"				"2.5 3.0 3.5"
 			"drag_distance"			"300 300 300"
 			"break_distance"		"425"
-			"damage"		"35 55 75"
+			"damage"
+			{
+				"value"			"35 55 75"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"grab_radius_scepter"
 			{
 				"value"		"600"
@@ -20183,11 +20427,6 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.2"
-
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"600"
-		
 
 
 		// Special
@@ -20610,7 +20849,6 @@
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_Spectre.Haunt"
 
-		"HasScepterUpgrade"			"1"
 		"AbilityDraftPreAbility"		"spectre_reality"
 		"AbilityDraftUltScepterAbility"		"spectre_haunt_single"
 
@@ -20849,7 +21087,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"damage_per_second"		"18 32 46 60"
+				"damage_per_second"		"20 35 50 65"
 				"LinkedSpecialBonus"	"special_bonus_unique_doom_4"				
 			}
 			"02"
@@ -21000,7 +21238,7 @@
 			"deniable_pct"			"25 25 25"
 			"AbilityCooldown"
 			{
-				"value"								"145 145 145"
+				"value"								"145"
 				"special_bonus_unique_doom_10"		"-35"
 			}
 			"does_break"
@@ -21099,6 +21337,7 @@
 			{
 				"value"		"30 50 70 90"
 				"special_bonus_unique_ancient_apparition_8"	"+40"
+				"CalculateSpellDamageTooltip" "1"
 			}
 			"break_distance"
 			{
@@ -21173,6 +21412,8 @@
 			{
 				"value"		"40"
 				"RequiresShard"			"1"
+				"DamageTypeTooltip"		"DAMAGE_TYPE_MAGICAL"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"shard_attack_speed_reduction"
 			{
@@ -21280,7 +21521,11 @@
 			"radius_max"			"1000"
 			"path_radius"			"275"
 			"frostbite_duration"	"10 11 12"
-			"dot_damage"			"12.5 20.0 32.0"
+			"dot_damage"				
+			{
+				"value"					"12.5 20.0 32.0"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"speed"					"1500 1500 1500 1500"
 			"kill_pct"
 			{	
@@ -21598,7 +21843,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"damage"				"125 200 275"
+			"damage"				
+			{
+				"value"					"125 200 275"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"fade_time"				"1.0 1.0 1.0"
 			"shard_bonus_damage"	
 			{
@@ -22074,7 +22323,7 @@
 			"max_attacks"
 			{
 				"value"					"3 4 5 6"
-				"special_bonus_unique_gyrocopter_2"			"+2"
+				"special_bonus_unique_gyrocopter_2"			"+3"
 			}
 			"projectile_speed"				"800"
 			"bonus_damage"
@@ -22256,7 +22505,7 @@
 		
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"130 140 150 160"
+		"AbilityManaCost"				"130"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -22264,7 +22513,11 @@
 		{
 			"radius"				"475 525 575 625"
 			"duration"				"16"
-			"damage"				"20 25 30 35"
+			"damage"
+			{
+				"value"			"20 25 30 35"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"armor_reduction"		
 			{
 				"value"						"4 5 6 7"
@@ -22408,11 +22661,11 @@
 			"bonus_gold"			"3"
 			"bonus_bonus_gold"		"3"
 			"bonus_gold_cap"		"15 18 21 24"
-			"bounty_multiplier"		"1.5 2.0 2.5 3.0"
+			"bounty_multiplier"		"1.8 2.2 2.6 3.0"
 			"damage"
 			{
 				"value"		"0"
-				"special_bonus_unique_alchemist_7"	"+1"
+				"special_bonus_unique_alchemist_7"	"+1.5"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
@@ -22819,7 +23072,11 @@
 				"special_bonus_unique_invoker_8"	"+1.25"
 				"levelkey"			"quaslevel"
 			}
-			"base_damage"			"70"
+			"base_damage"			
+			{
+				"value"							"70"			
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"quas_damage"
 			{
 				"value"				"0 0 0 0 0 0 0"
@@ -22894,6 +23151,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		
@@ -22921,6 +23179,7 @@
 				"value"					"10 22 34 46 58 70 82 94"
 				"levelkey"				"exortlevel"
 				"special_bonus_unique_invoker_5"	"+30"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"duration"					"9"
 		}
@@ -23819,7 +24078,7 @@
 			}
 			"application_damage"				"40 60 80 100"
 
-			"radius"			"425"
+			"radius"			"340 360 380 400"
 			"duration"			"6"
 			"penalty_duration"			"2"
 			"movespeed"			"-10 -15 -20 -25"
@@ -24341,7 +24600,12 @@
 			"wolf_index"				"1 2 3 4"
 			"wolf_duration"				"50"
 			"wolf_bat"					"1.2 1.1 1.0 0.9"
-			"wolf_damage"				"18 24 30 36"				
+			"wolf_damage"
+			{
+				"value"							"21 27 33 39"
+				"special_bonus_unique_lycan_3"	"+10"
+
+			}
 			"wolf_hp"					
 			{
 				"value"	"325 375 425 475"
@@ -24506,7 +24770,6 @@
 		"AbilitySound"					"Hero_Lycan.Shapeshift.Cast"
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
 
-		"HasScepterUpgrade"			"1"
 		"AbilityDraftUltScepterAbility"		"lycan_wolf_bite"
 
 		// Time		
@@ -24632,6 +24895,7 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"bear_hp"					"1100 1400 1700 2000"
+				"LinkedSpecialBonus"		"special_bonus_unique_lone_druid_7"
 			}
 			"02"
 			{
@@ -24664,7 +24928,8 @@
 			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"movespeed_tooltip"	"340 360 380 400"
+				"movespeed_tooltip"			"340 360 380 400"
+				"LinkedSpecialBonus"		"special_bonus_unique_lone_druid_11"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -25518,6 +25783,31 @@
 				"max_charges"		"2"
 				"RequiresScepter"			"1"
 			}
+			"05"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"tooltip_earth_brewling_hp"		"1400 2300 3200"
+				"LinkedSpecialBonus"			"special_bonus_unique_brewmaster"
+			}
+			"06"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"tooltip_storm_brewling_hp"		"1000 1500 2000"
+				"LinkedSpecialBonus"			"special_bonus_unique_brewmaster"
+			}
+			"07"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"tooltip_fire_brewling_hp"		"1300 1450 1600"
+				"LinkedSpecialBonus"			"special_bonus_unique_brewmaster"
+			}
+			"08"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"shard_tooltip_void_brewling_hp"		"1200 1500 1800"
+				"LinkedSpecialBonus"					"special_bonus_unique_brewmaster"		// LinkedSpecialBonus doesn't seem to work with shard tooltips
+				"RequiresShard"							"1"
+			}
 		}
 	}
 
@@ -26197,7 +26487,6 @@
 		"HasScepterUpgrade"			"1"
 		"AbilitySound"					"Hero_ShadowDemon.DemonicPurge.Cast"
 
-		"HasShardUpgrade"				"1"
 		"AbilityDraftUltShardAbility"	"shadow_demon_demonic_cleanse"
 
 		// Time		
@@ -26276,7 +26565,6 @@
 		"HasScepterUpgrade"			"1"
 		"IsGrantedByShard"			"1"
 		"AbilitySound"					"Hero_ShadowDemon.DemonicPurge.Cast"
-		"LinkedAbility"					"shadow_demon_demonic_purge"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -26330,7 +26618,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"1001"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -26359,7 +26647,7 @@
 				"value"						"20 25 30 35"
 				"special_bonus_unique_shadow_demon_disseminate_damage"		"+10"
 			}
-			"radius"					"600"
+			"radius"					"675"
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 	}
@@ -26531,7 +26819,7 @@
 						"value"				"33.33"
 						"LinkedSpecialBonus"		"special_bonus_unique_chaos_knight_5"
 				}
-				"crit_min"				"120"
+				"crit_min"				"125"
 				"crit_max"				"140 175 210 245"
 				"lifesteal"					
 				{
@@ -27099,8 +27387,8 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"AbilitySound"					"Hero_Treant.LeechSeed.Cast"
 
-		"AbilityCastPoint"				"0.4"
-		"AbilityCastRange"				"400"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"400 450 500 550"
 		"FightRecapLevel"				"1"
 		
 		// Time		
@@ -27123,7 +27411,7 @@
 			"02"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"leech_damage"					"16 32 48 64"
+				"leech_damage"					"20 35 50 65"
 				"LinkedSpecialBonus"			"special_bonus_unique_treant_2"
 			}		
 			"03"
@@ -27218,7 +27506,6 @@
 
 		"FightRecapLevel"				"2"
 
-		"HasScepterUpgrade"				"1"
 		"AbilityDraftUltScepterAbility"		"treant_eyes_in_the_forest"
 		
 		// Time		
@@ -27245,8 +27532,12 @@
 					"value"						"800"
 					"LinkedSpecialBonus"			"special_bonus_unique_treant_5"
 				}
-				"damage"						"75"
-				"purgable"
+				"damage"
+				{
+					"value"					"85"
+					"CalculateSpellDamageTooltip"	"1"
+				}
+				"undispellable"
 				{
 					"value"								"0"
 					"special_bonus_unique_treant_11"	"+1"
@@ -27833,6 +28124,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"5444"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"FightRecapLevel"				"1"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilitySound"					"Hero_Undying.Tombstone"
@@ -27886,6 +28178,13 @@
 			{
 				"var_type"				"FIELD_FLOAT"
 				"zombie_interval"		"4.0 3.6 3.2 2.8"
+			}
+			"07"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"zombie_damage_tooltip"			"34"
+				"LinkedSpecialBonus"			"special_bonus_unique_undying"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 		}
 	}
@@ -28587,7 +28886,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"55 70 85 100"
+		"AbilityManaCost"				"70 85 100 115"
 		
 		// Cast Range
 		//-------------------------------------------------------------------------------------------------------------
@@ -28719,6 +29018,7 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"radius"					"500"
+				"LinkedSpecialBonus"		"special_bonus_unique_disruptor_8"
 			}
 			"02"
 			{
@@ -28891,7 +29191,7 @@
 			}
 			"stun_duration"
 			{
-				"value"					"0.6 1.2 1.8 2.4"
+				"value"					"0.5 1.0 1.5 2.0"
 				"special_bonus_unique_nyx_6"	"+0.6"
 			}
 			"damage_reflect_pct"				"100"
@@ -28936,7 +29236,11 @@
 			"duration"				"40 50 60"
 			"fade_time"				"0.0"
 			"movement_speed"		"16 18 20"
-			"bonus_damage"			"300 450 600"
+			"bonus_damage"					
+			{
+				"value"					"300 450 600"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"health_regen_rate_scepter"		"3"
 			"mana_regen_rate_scepter"		"3"
 			"break_duration"		"4.0"
@@ -29929,8 +30233,6 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"FightRecapLevel"				"1"
 
-        "HasShardUpgrade"               "1"
-
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"1800"
@@ -30152,7 +30454,6 @@
 			{
 				"var_type"							"FIELD_INTEGER"
 				"max_layers"						"4"
-				"LinkedSpecialBonus"	"special_bonus_unique_visage_5"
 			}
 			"02"
 			{
@@ -30188,7 +30489,7 @@
 			"08"
 			{
 				"var_type"							"FIELD_FLOAT"
-				"shard_cooldown"				"60"
+				"shard_cooldown"				"65"
 				"RequiresShard"						"1"
 			}
 			"09"
@@ -30211,8 +30512,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5483"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"HasScepterUpgrade"			"1"
 
 		"AbilityDraftUltScepterAbility"		"visage_silent_as_the_grave"
 
@@ -30255,13 +30556,14 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"familiar_attack_damage"	"25 50 75"
+				"LinkedSpecialBonus"		"special_bonus_unique_visage_7"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"tooltip_scepter_total_familiars"	"3"
+				"tooltip_familiar_count"	"2"
 				"LinkedSpecialBonus"		"special_bonus_unique_visage_6"
-				"RequiresScepter"	"1"
 			}
 		}
 	}
@@ -30673,7 +30975,6 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"FightRecapLevel"				"1"
 		"AbilitySound"					"Hero_Wisp.Relocate"
-		"LinkedAbility"					"wisp_tether"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -31165,14 +31466,13 @@
 		"AbilitySound"					"Hero_Medusa.MysticSnake.Cast"
 		
 		"AbilityDraftShardAbility"		"medusa_cold_blooded"
-		"HasShardUpgrade"				"1"
 		"HasScepterUpgrade"				"1"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"AbilityCastRange"					"700"
+			"AbilityCastRange"					"750"
 			"AbilityCastPoint"					"0.2"
 			"AbilityCooldown"					
 			{
@@ -31187,10 +31487,15 @@
 				"special_bonus_unique_medusa_3"	"+2"
 			}
 			"jump_delay"						"0.25 0.25 0.25 0.25"
-			"snake_damage"						"80 120 160 200"
+			"snake_damage"		
+			{
+				"value"			"80 120 160 200"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"snake_damage_pct"					"0"
 			"snake_mana_steal"					"11 14 17 20"
 			"snake_scale"						"35"
+			"snake_speed_scale"					"15"
 			"initial_speed"						"800"
 			"return_speed"						"800"
 			"stone_form_scepter_base"		
@@ -31666,7 +31971,7 @@
 			"movement_speed"
 			{
 				"value"		"25 30 35"
-				"special_bonus_unique_troll_warlord_battle_trance_movespeed"		"+15"
+				"special_bonus_unique_troll_warlord_battle_trance_movespeed"		"+20"
 			}
 			"range"				"900"
 		}
@@ -31698,7 +32003,11 @@
 		"AbilityValues"
 		{
 			"radius"						"350"
-			"stomp_damage"					"120 180 240 300"
+			"stomp_damage"
+			{
+				"value"			"120 180 240 300"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"stun_duration"					
 			{
 				"value"						"2.0 2.2 2.4 2.6"
@@ -31716,7 +32025,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5515"														// unique ID number for this item.  Do not change this once established or it will invalidate collected stats.
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
@@ -31739,7 +32048,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{			
-			"edge_damage"					"120 180 240 300"
+			"edge_damage"					
+			{
+				"value"							"120 180 240 300"			
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"strength_damage"
 			{
 				"value"				"60 80 100 120"
@@ -31793,7 +32106,8 @@
 				"return_damage"				
 				{
 					"value"	"15 25 35 45"
-					"special_bonus_unique_centaur_3"	"+45"
+					"special_bonus_unique_centaur_3"	"+45"	
+					"CalculateSpellDamageTooltip"	"1"
 				}
 				"return_damage_str"			"20 26 32 38"
 				"aura_radius"				"1200"
@@ -32390,7 +32704,11 @@
 		"AbilityValues"
 		{
 			"pull_radius"					"410"
-			"polarity_damage"				"75 150 225"
+			"polarity_damage"				
+			{
+				"value"			"75 150 225"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"hero_stun_duration"
 			{
 				"value"					"2.75 3.25 3.75"
@@ -32455,7 +32773,7 @@
 			"02"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"duration"		"7"
+				"duration"		"8"
 			}
 			"03"
 			{
@@ -33040,8 +33358,6 @@
 		"AbilitySound"					"Hero_Bristleback.QuillSpray"
 		"AbilityDraftShardAbility"    "bristleback_hairball"
 
-		"HasShardUpgrade"	"1"
-
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastAnimation"			"ACT_INVALID"
@@ -33207,7 +33523,11 @@
 		"AbilityValues"
 		{
 				"shard_width"				"200"
-				"shard_damage"				"75 150 225 300"
+				"shard_damage"
+				{
+					"value"					"75 150 225 300"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"shard_count"				"7"
 				"shard_speed"				"1200.0"
 				"shard_duration"			"4 5 6 7"
@@ -33500,7 +33820,6 @@
 		"FightRecapLevel"				"1"
 		"AbilitySound"					"Hero_Tusk.WalrusPunch.Target"
 
-		"HasScepterUpgrade"			"1"
 		"AbilityDraftUltScepterAbility"		"tusk_walrus_kick"
 
 		// Casting
@@ -33594,7 +33913,11 @@
 				"push_length"				"1400"
 				"move_slow"					"40"
 				"slow_duration"				"4"
-				"damage"					"350"
+				"damage"					
+				{
+					"value"					"350"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"search_radius"					"250"
 				"creep_cooldown_reduction_pct"	"50"
 		}
@@ -34106,7 +34429,7 @@
 				"value"								"525"
 				"RequiresScepter"					"1"
 			}
-			redirect_range_scepter
+			"redirect_range_scepter"
 			{
 				"value"								"1200"
 				"RequiresScepter"					"1"
@@ -34161,6 +34484,7 @@
 				"value"				"50 100 150 200"
 				"special_bonus_unique_elder_titan_4"			"+450"
 				"DamageTypeTooltip"				"DAMAGE_TYPE_NONE"
+				"CalculateSpellDamageTooltip"				"0"
 			}
 			"AbilityCooldown"				
 			{
@@ -34257,7 +34581,11 @@
 		"AbilityValues"
 		{
 			"radius"						"275"
-			"pass_damage"					"50"
+			"pass_damage"								
+			{
+				"value"	"50"
+				"CalculateSpellDamageTooltip"				"1"
+			}
 			"spirit_duration"				"10.0"
 			"buff_duration"					"10.0"
 			"speed"							"900"
@@ -34627,6 +34955,7 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"hp_regen"				"30 40 50 60"
+				"LinkedSpecialBonus"	"special_bonus_unique_legion_commander_6"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
@@ -34710,29 +35039,29 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"duration"				"4.0 4.75 5.5"
-				"duration_scepter"		
-				{
-					"value"			"6 7 8"
-					"RequiresScepter"	"1"
-				}
-				"reward_damage"			
-				{
-					"value"			"10 20 30"
-					"LinkedSpecialBonus"	"special_bonus_unique_legion_commander"
-				}
-				"victory_range"			"600"
-				"scepter_damage_reduction_pct"			
-				{
-					"value"				"50"
-					"RequiresScepter"						"1"
-				}
-				"scepter_cooldown_reduction"			
-				{
-					"value"			"20.0"
-					"RequiresScepter"						"1"
-				}
-				"AbilityCooldown"	"50"				
+			"duration"				"4.0 4.75 5.5"
+			"duration_scepter"		
+			{
+				"value"			"6 7 8"
+				"RequiresScepter"	"1"
+			}
+			"reward_damage"			
+			{
+				"value"			"10 20 30"
+				"LinkedSpecialBonus"	"special_bonus_unique_legion_commander"
+			}
+			"victory_range"			"600"
+			"scepter_damage_reduction_pct"			
+			{
+				"value"				"50"
+				"RequiresScepter"						"1"
+			}
+			"AbilityCooldown"	
+			{
+				"value"					"50"
+				"special_bonus_scepter"			"-20"
+			}
+
 		}
 	}
 	
@@ -34963,7 +35292,11 @@
 					"value"			"38.0"
 					"special_bonus_unique_ember_spirit_5"	"-12"
 				}
-				"damage"				"100 200 300"
+				"damage"
+				{
+					"value"			"100 200 300"
+					"CalculateSpellDamageTooltip" "1"
+				}
 				"radius"				"450"
 				"duration"				"45.0"
 				"scepter_range"
@@ -35091,7 +35424,7 @@
 		"AbilityUnitTargetFlag"			"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"SpellDispellableType"			"SPELL_DISPELLABLE_YES_STRONG"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"FightRecapLevel"				"1"
 		"AbilitySound"					"Hero_EarthSpirit.BoulderSmash.Target"
 
@@ -35176,6 +35509,7 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES_STRONG"
 		"AbilitySound"					"Hero_EarthSpirit.RollingBoulder.Cast"
 
 		// Casting
@@ -35351,13 +35685,12 @@
 		"AbilityCastGestureSlot"		"DEFAULT"
 		"AbilityCastRange"				"1100"
 		"AbilityCastPoint"				"0.0"
-		"HasScepterUpgrade"			"1"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"0.0"
 
-		"AbilityChargeRestoreTime"		"20"
+		"AbilityChargeRestoreTime"		"18"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -35430,7 +35763,11 @@
 		"AbilityValues"
 		{
 				"duration"		"3"
-				"damage"	"450"
+				"damage"
+				{
+					"value"			"450"
+					"CalculateSpellDamageTooltip" "1"
+				}
 				"aoe"		"450"
 				"ally_cast_range"	"500"
 		}
@@ -35484,8 +35821,9 @@
 			"damage_duration"
 			{
 				"value"			"6.0"
-				"special_bonus_unique_earth_spirit_6"	"+2"
+				"special_bonus_unique_earth_spirit_6"	"+3"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
+				"CalculateSpellDamageTooltip" "0"
 			}
 			"rock_search_radius"			"400"
 			"rock_explosion_radius"			"600"
@@ -35539,7 +35877,11 @@
 					"special_bonus_unique_underlord_7"	"+2"
 				}
 				"wave_count"					"6"
-				"wave_damage"					"30 50 70 90"
+				"wave_damage"								
+				{
+					"value"					"30 50 70 90"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"wave_interval"					"1.0"
 				"burn_damage"					
 				{
@@ -35573,7 +35915,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5614"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"AbilitySound"					"Hero_AbyssalUnderlord.PitOfMalice"
@@ -35627,13 +35968,10 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5615"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES_ENEMIES_NO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
-
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"900"
 
 		"AbilityValues"
 		{
@@ -35642,10 +35980,25 @@
 			{
 				"value"		"5 15 25 35"
 				"special_bonus_unique_underlord_3"	"+15"
+				"CalculateSpellDamageTooltip"		"0"
+				"DamageTypeTooltip"					"DAMAGE_TYPE_NONE"
 			}
-			"bonus_damage_from_creep"		"2 4 6 8"
-			"bonus_damage_from_hero"		"30 35 40 45"
-			"bonus_damage_duration"			"30 45 60 75"
+			"bonus_damage_from_creep"
+			{
+				"value"							"2 4 6 8"
+				"CalculateSpellDamageTooltip"	"0"
+			}
+			"bonus_damage_from_hero"
+			{
+				"value"							"30 35 40 45"
+				"CalculateSpellDamageTooltip"	"0"
+			}
+			"bonus_damage_duration"
+			{
+				"value"							"30 45 60 75"
+				"CalculateSpellDamageTooltip"	"0"
+				"DamageTypeTooltip"				"DAMAGE_TYPE_NONE"
+			}
 			"bonus_shared_by_allies_pct"
 			{
 				"special_bonus_unique_underlord_9"	"+50"
@@ -35727,7 +36080,6 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING "
 		"AbilityType"						"DOTA_ABILITY_TYPE_ULTIMATE"
 		"FightRecapLevel"				"1"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"AbilitySound"					"Hero_Undying.Tombstone"
 		"MaxLevel"						"3"
@@ -35771,7 +36123,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"842"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED | DOTA_ABILITY_BEHAVIOR_NOASSIST | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED | DOTA_ABILITY_BEHAVIOR_NOASSIST | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 		"IsCastableWhileHidden"			"1"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityCastAnimation"			"ACT_DOTA_GENERIC_CHANNEL_1"
@@ -35821,7 +36173,7 @@
 		{
 				"AbilityCooldown"				
 				{
-					"value"		"28 24 20 16"
+					"value"		"25 22 19 16"
 					"special_bonus_unique_terrorblade_2" "-3"
 				}
 				"illusion_duration"			
@@ -35898,6 +36250,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5621"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"AbilitySound"					"Hero_Terrorblade.Metamorphosis"
         "HasScepterUpgrade"			"1"
@@ -35949,6 +36302,7 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"bonus_damage"			"30 40 50 60"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"07"
 			{
@@ -36063,7 +36417,11 @@
 			"berserk_bonus_movement_speed"				"50"
 			"melee_bonus"				"100"
 			"duration"		"7"
-			"health_cost_pct"				"20"
+			"health_cost_pct"
+			{
+				"value"					"20"
+				"DamageTypeTooltip"		"DAMAGE_TYPE_PURE"
+			}
 		}
 	}
 
@@ -36078,8 +36436,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_CUSTOM"
-		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO | DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_NO"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_Terrorblade.Sunder.Target"
@@ -36768,7 +37126,6 @@
 
         "HasShardUpgrade"               "1"
 
-		"HasScepterUpgrade"				"1"
 		"AbilityDraftUltScepterAbility"		"oracle_rain_of_destiny"
 
 		// Casting
@@ -36849,7 +37206,11 @@
 		{
 				"radius"				"650"
 				"duration"				"10"
-				"damage"				"60"
+				"damage"				
+				{
+					"value"					"60"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"tick_rate"				"1.0"
 				"heal_amp"				"25"
 		}
@@ -36909,7 +37270,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"28 26 24 22"
+
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -36926,8 +37287,12 @@
 			}
 			"strike_crit_mult"
 			{
-				"value"						"135 165 195 225"				
+				"value"						"135 165 195 225"	
 				"DamageTypeTooltip"			"DAMAGE_TYPE_PHYSICAL"
+			}
+			"AbilityCooldown"				
+			{
+				"value"					"28 26 24 22"	
 			}
 			"strike_radius"				"150"
 			"strike_cast_range"			"1100"
@@ -37055,7 +37420,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"give_up_distance"			"1850"
+				"give_up_distance"			"2500"
 			}
 			"04"
 			{
@@ -37214,7 +37579,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"1.2"
+		"AbilityCastPoint"				"1.0"
 		"AbilityCastRange"				"0"
 		"AbilityCastAnimation"			"ACT_INVALID"
 
@@ -37259,7 +37624,7 @@
 			"06"
 			{
 				"var_type"							"FIELD_INTEGER"
-				"bonus_armor"						"12 18 24"
+				"bonus_armor"						"14 19 24"
 				"LinkedSpecialBonus"		"special_bonus_unique_monkey_king_4"
 			}
 			"07"
@@ -37323,6 +37688,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"5723"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"FightRecapLevel"				"1"
@@ -37359,6 +37725,7 @@
 				"var_type"					"FIELD_INTEGER"
 				"bonus_damage"				"40 70 100 130"
 				"LinkedSpecialBonus"		"special_bonus_unique_monkey_king_2"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"05"
 			{
@@ -37482,7 +37849,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"damage"					"90 160 230 300"
+			"damage"
+			{
+				"value"					"90 160 230 300"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"hero_stacks"			
 			{
 				"value"					"20"
@@ -37498,7 +37869,7 @@
 			"rolling_thunder_cooldown"
 			{
 				"value"						"0"
-				"special_bonus_unique_pangolier_2"	"+2.5"
+				"special_bonus_unique_pangolier_2"	"+3.0"
 			}
 			"slow"	"20 25 30 35"
 			"slow_duration"	"3"
@@ -37889,7 +38260,7 @@
 			"06"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"damage_per_tick"		"50"
+				"damage_per_tick"		"50 55 60 65"
 			}
 			"07"
 			{
@@ -38362,8 +38733,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"	
-		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES | DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"FightRecapLevel"				"1"
 		"MaxLevel"						"1"
 		"IsGrantedByScepter"			"1"
@@ -38412,7 +38783,7 @@
 			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"images_take_damage_percent_tooltip"			"300"
+				"images_take_damage_percent_tooltip"			"350"
 			}
 			"06"
 			{
@@ -38531,7 +38902,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"movespeed_bonus_pct"	"10 12 14 16"
+				"movespeed_bonus_pct"	"12 14 16 18"
 				"LinkedSpecialBonus"		"special_bonus_unique_grimstroke_6"
 			}
 			"03"
@@ -38604,7 +38975,6 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"FightRecapLevel"				"1"
 
-		"HasScepterUpgrade"			"1"
 		"AbilityDraftUltScepterAbility"		"grimstroke_dark_portrait"
 
 		// Stats
@@ -38631,7 +39001,7 @@
 			"bonus_reflected_spell_damage"
 			{
 				"value"							"0"
-				"special_bonus_unique_grimstroke_soul_chain_reflect_damage"		"+20.0"
+				"special_bonus_unique_grimstroke_soul_chain_reflect_damage"		"+25.0"
 			}
 		}
 	}
@@ -38736,6 +39106,7 @@
 				"var_type"						"FIELD_INTEGER"
 				"shard_dps"					"35"
 				"RequiresShard"						"1"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"13"
 			{
@@ -38835,13 +39206,13 @@
 			"physical_damage_reduction"
 			{
 				"value"		"40 50 60 70"
-				"special_bonus_unique_mars_bulwark_damage_reduction"		"+10"
+				"special_bonus_unique_mars_bulwark_damage_reduction"		"+12"
 			}
 			"forward_angle"					"140"
 			"physical_damage_reduction_side"
 			{
 				"value"												"20 25 30 35"
-				"special_bonus_unique_mars_bulwark_damage_reduction"		"+5"
+				"special_bonus_unique_mars_bulwark_damage_reduction"		"+6"
 			}
 			"side_angle"					"240"
 			"redirect_chance"
@@ -38852,7 +39223,7 @@
 			"redirect_range"				"900"
 			"redirect_speed_penatly"
 			{
-				"value"				"20"
+				"value"				"18"
 				"special_bonus_unique_mars_bulwark_speed"			"-10"
 			}
 			"redirect_close_range"				"100"
@@ -39326,7 +39697,11 @@
 					"value"	"1.25"
 					"DamageTypeTooltip"		"DAMAGE_TYPE_NONE"
 				}
-				"pop_damage"			"150 250 350"
+				"pop_damage"			
+				{
+					"value"					"150 250 350"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"movement_slow_pct"		"40 60 80"
 				"ability_chance_pct"
 				{
@@ -39800,7 +40175,11 @@
 			"projectile_vision"		"500"
 			"turn_rate"				"75"
 			"burn_interval"			"0.5"
-			"burn_damage"			"60 80 100"
+			"burn_damage"					
+			{
+				"value"					"60 80 100"
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"move_slow_pct"
 			{
 				"value"			"15 20 25"
@@ -39980,7 +40359,11 @@
 				"pre_land_anim_time"	"0.14"
 				"landing_gesture_duration"	"0.6"
 				"impact_radius"			"300"
-				"impact_damage"			"70 140 210 280"
+				"impact_damage"			
+				{
+					"value"					"70 140 210 280"
+					"CalculateSpellDamageTooltip"	"1"
+				}
 				"impact_stun_duration"	"1.4 1.8 2.2 2.6"
 				"self_cast_delay"		"0.3"
 				"target_heal"			
@@ -40144,7 +40527,7 @@
 			"01"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"value"				"60"
+				"value"				"70"
 				"ad_linked_abilities"			"snapfire_scatterblast"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -40354,17 +40737,19 @@
 			{	
 				"var_type"				"FIELD_INTEGER"
 				"acorn_shot_damage"		"50 75 100 125"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"03"
 			{	
 				"var_type"				"FIELD_INTEGER"
 				"base_damage_pct"		"75"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"04"
 			{	
 				"var_type"				"FIELD_INTEGER"
 				"bounce_count"			"2 3 4 5"
-				"LinkedSpecialBonus"		"special_bonus_unique_hoodwink_sharpshooter_speed"
+				"LinkedSpecialBonus"		"special_bonus_unique_hoodwink_acorn_shot_bounces"
 			}
 			"05"
 			{	
@@ -40434,7 +40819,12 @@
 			}
 			"debuff_duration"		"1.5 1.8 2.1 2.4"
 			"projectile_speed"	"1300"
-			"total_damage"		"75 150 225 300"
+			"total_damage"
+			{
+				"value"							"75 150 225 300"
+				"CalculateSpellDamageTooltip"	"1"
+				"LinkedSpecialBonus"			"special_bonus_unique_hoodwink_bushwhack_damage"
+			}
 			"animation_rate"	"0.3"
 			"visual_height"		"50"
 		}
@@ -40978,7 +41368,6 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"hammer_damage"			"50 80 110 140"
-				"LinkedSpecialBonus"		"special_bonus_unique_dawnbreaker_celestial_blade"
 			}
 			"02"
 			{
@@ -41040,6 +41429,7 @@
 			{
 				"var_type"								"FIELD_INTEGER"
 				"range"								"700 900 1100 1300"
+				"LinkedSpecialBonus"				"special_bonus_unique_dawnbreaker_celestial_hammer_cast_range"
 			}
 		
 		}
@@ -41110,34 +41500,35 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"heal_radius"				"650"
+				"attack_count"				"3"
+				"LinkedSpecialBonus"		"special_bonus_unique_dawnbreaker_luminosity_attack_count"
+				"LinkedSpecialBonusOperation"	"SPECIAL_BONUS_SUBTRACT"				  
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"heal_pct"					"35 40 45 50"
+				"heal_radius"				"650"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_damage"				"125 150 175 200"
+				"heal_pct"					"35 40 45 50"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"attack_count"				"3"
-				"LinkedSpecialBonus"		"special_bonus_unique_dawnbreaker_luminosity_attack_count"
-				"LinkedSpecialBonusOperation"	"SPECIAL_BONUS_SUBTRACT"				  
-			}	
+				"heal_from_creeps"			"50"
+			}
 			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_damage"				"125 150 175 200"
+				"LinkedSpecialBonus"		"special_bonus_unique_dawnbreaker_luminosity_crit"
+			}	
+			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"proc_cooldown"				"0.00"
-			}
-			"06"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"heal_from_creeps"			"50"
 			}	
 			"07"
 			{
@@ -41193,14 +41584,22 @@
 				"value"	"500"
 				"LinkedSpecialBonus"	"special_bonus_unique_dawnbreaker_solar_guardian_radius"
 			}
-			"base_damage"			"30 50 70"
+			"base_damage"
+			{
+				"value"			"30 50 70"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"base_heal"				
 			{
 				"value"				"45 70 95"
 				"special_bonus_scepter"	"+15 20 25"
 			}
 			"pulse_interval"				"0.5"
-			"land_damage"			"130 160 190"
+			"land_damage"
+			{
+				"value"			"130 160 190"
+				"CalculateSpellDamageTooltip" "1"
+			}
 			"land_stun_duration"			"1.5 1.75 2"
 			"max_offset_distance"			"350"
 			"scepter_channel_time"				
@@ -41606,7 +42005,11 @@
 				"time_between_flurries"	"1.5"
 				"pulse_radius"			"800"
 				"pulse_debuff_duration"	"2.0"
-				"pulse_damage"			"50 100 150"
+				"pulse_damage"					
+				{
+					"value"			"50 100 150"
+					"CalculateSpellDamageTooltip" "1"
+				}
 				"pulse_move_slow_pct"	"30.0"
 				"pulse_attack_slow_pct"	"60.0 80.0 100.0"
 				"max_time_window_per_hit"	"1.0"
@@ -41653,7 +42056,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.1"
-		"AbilityCastRange"				"800"
+		"AbilityCastRange"				"450 550 650 750"
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
 
 		// Time
@@ -41673,11 +42076,11 @@
 					"special_bonus_unique_marci_lunge_cooldown"	"-3"
 				}
 				
-				"move_speed"			"2000"
+				"move_speed"			"1700"
 				"min_jump_distance"		"450"
 				"max_jump_distance"		
 				{
-					"value"				"800"
+					"value"				"450 550 650 750"
 					"LinkedSpecialBonus"	"special_bonus_unique_marci_lunge_range"
 				}
 				"landing_radius"		"275"
@@ -41726,6 +42129,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"							"8234"	// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES"
@@ -41760,13 +42164,14 @@
 			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"lifesteal_pct"			"35 40 45 50"
+				"lifesteal_pct"			"30 35 40 45"
 				"LinkedSpecialBonus"	"special_bonus_unique_marci_guardian_lifesteal"
 			}
 			"03"
 			{
 				"var_type"			"FIELD_INTEGER"
 				"bonus_damage"		"20 35 50 65"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"04"
 			{
@@ -44066,6 +44471,8 @@
 		{
 				"bonus_health_regen"		"3"
 				"radius"			"700"
+				"bonus_gold"			"10"
+
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 	}
@@ -47805,8 +48212,8 @@
 		"ID"							"5599"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"HasScepterUpgrade"				"1"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 
 		// Casting
@@ -47832,7 +48239,6 @@
 				"damage"					
 				{
 					"value"			"400 575 750"
-					"LinkedSpecialBonus"		"special_bonus_unique_techies_2"
 				}
 				"building_damage_pct"		"30"
 				"activation_delay"			
@@ -48028,7 +48434,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"1000"
-		"AbilityCastPoint"				"0.2"
+		"AbilityCastPoint"				"0.1"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -48068,6 +48474,7 @@
 				"speed"					"500.0"
 				"acceleration"			"2000"
 				"pre_chase_time"		"0.1"
+				"max_chase_time"		"4"
 		}
 	}
 	//=================================================================================================================
@@ -48079,7 +48486,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"ID"					"886"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -48117,6 +48523,7 @@
 			{
 				"value"					"300"
 				"RequiresScepter"		"1"
+				"DamageTypeTooltip"		"DAMAGE_TYPE_MAGICAL"
 			}	
 		}
 	}
@@ -48695,10 +49102,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"7"
 
-		// Damage.
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"100 180 260 340"
-
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityManaCost"				"105 120 135 150"
@@ -48722,7 +49125,6 @@
 				"var_type"				"FIELD_INTEGER"
 				"split_radius"			"500"
 				"LinkedSpecialBonus"	"special_bonus_unique_winter_wyvern_2"
-				
 			}
 			"04"
 			{
@@ -48743,6 +49145,12 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"secondary_projectile_speed"		"800"
+			}
+			"08"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"100 180 260 340"
+				"LinkedSpecialBonus"	"special_bonus_unique_winter_wyvern_7"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
@@ -49127,7 +49535,12 @@
 			{
 				"value"									"2.0"
 				"RequiresScepter"						"1"
-			}	
+			}
+			"scepter_duration"
+			{
+				"value"									"15"
+				"RequiresScepter"						"1"
+			}					
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
 	}
@@ -49144,7 +49557,6 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_ArcWarden.TempestDouble"
-		"HasScepterUpgrade"				"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -49173,7 +49585,7 @@
 			"tempest_double_cooldown_reduction"
 			{
 				"value"							"0"
-				"special_bonus_unique_arc_warden_7"		"+50"
+				"special_bonus_unique_arc_warden_7"		"+40"
 			}
 		}
 	}
@@ -49220,7 +49632,7 @@
 			"knockback_distance"		"200"
 			"knockback_damage"
 			{
-				"value"					"110 200 290 380"
+				"value"					"95 190 285 380"
 				"special_bonus_unique_primal_beast_onslaught_damage"	"+90"
 			}
 			"knockback_duration"		"0.2"
@@ -49290,7 +49702,11 @@
 		{
 			"effect_radius"				"230"
 			"step_distance"				"140"
-			"base_damage"				"15 30 45 60"
+			"base_damage"
+			{
+				"value"							"15 30 45 60"			
+				"CalculateSpellDamageTooltip"	"1"
+			}
 			"duration"					"5.5"
 			"attack_damage"
 			{
@@ -49378,6 +49794,7 @@
 				"value"		"100"
 				"RequiresScepter"		"1"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_MAGICAL"
+				"CalculateSpellDamageTooltip"	"1"
 			}
             "projectile_speed"           
             {
@@ -49514,7 +49931,11 @@
         //-------------------------------------------------------------------------------------------------------------
         "AbilityValues"
         {
-            "base_damage"             "325"
+            "base_damage"
+			{
+				"value"					"325"
+				"CalculateSpellDamageTooltip"	"1"
+			}
             "impact_radius"             "225"    
             "min_range"               "550"
             "min_travel_time"                 "0.45"
@@ -55758,7 +56179,23 @@
 			}
 		}
 	}
-
+	//=================================================================================================================
+	// Ability: Special Bonus
+	//=================================================================================================================
+	"special_bonus_magic_resistance_14"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"ID"					"1089"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityValues"
+		{
+			"value"				"14"
+		}
+	}
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
@@ -61131,18 +61568,7 @@
 		"ID"					"6028"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"value"				"5"
-				"ad_linked_abilities"			"razor_static_link"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-			}
-		}
+		"BaseClass"						"special_bonus_base"
 	}
 
 	//=================================================================================================================
@@ -61163,7 +61589,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"value"				"-0.1"
+				"value"				"-0.10"
 				"ad_linked_abilities"			"razor_eye_of_the_storm"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -62705,7 +63131,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"value"				"140"
+				"value"				"155"
 				"ad_linked_abilities"			"shadow_shaman_shackles"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -63638,6 +64064,18 @@
 			}
 		}
 	}
+	//=================================================================================================================
+	// Ability: Special Bonus
+	//=================================================================================================================
+	"special_bonus_unique_morphling_waveform_cooldown"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"ID"					"6383"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}	
 
 	//=================================================================================================================
 	// Ability: Special Bonus
@@ -64486,7 +64924,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"value"				"0.4"
+				"value"				"0.3"
 				"ad_linked_abilities"			"nevermore_requiem"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 			"02"
@@ -68804,7 +69242,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"value"				"0.5"
+				"value"				"0.75"
 				"ad_linked_abilities"			"chaos_knight_chaos_bolt"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -70811,7 +71249,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"value"				"22"
+				"value"				"20"
 				"ad_linked_abilities"			"undying_tombstone"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -70931,7 +71369,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"value"				"12"
+				"value"				"10"
 				"ad_linked_abilities"			"undying_soul_rip"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -70992,21 +71430,10 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"ID"					"6156"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
+		"ID"							"6156"								// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"value"				"13"
-				"ad_linked_abilities"			"viper_corrosive_skin"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-			}
-		}
+		"BaseClass"						"special_bonus_base"
 	}
 
 	//=================================================================================================================
@@ -71115,18 +71542,7 @@
 		"ID"					"717"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"value"				"2"
-				"ad_linked_abilities"			"viper_corrosive_skin"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-			}
-		}
+		"BaseClass"						"special_bonus_base"
 	}
 	//=================================================================================================================
 	// Ability: Special Bonus
@@ -75552,7 +75968,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"value"				"250"
+				"value"				"200"
 				"ad_linked_abilities"			"disruptor_static_storm"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -76222,7 +76638,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"value"				"10"
+				"value"				"12"
 				"ad_linked_abilities"			"legion_commander_moment_of_courage"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}
@@ -76310,18 +76726,7 @@
 		"ID"					"880"														// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"value"				"200"
-				"ad_linked_abilities"			"legion_commander_moment_of_courage"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-			}
-		}
+		"BaseClass"						"special_bonus_base"
 	}
 
 	//=================================================================================================================
@@ -76678,7 +77083,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"value"				"10"
+				"value"				"12"
 				"ad_linked_abilities"			"shredder_whirling_death"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 			}
 		}

@@ -1,0 +1,95 @@
+{
+	"version": 1.1,
+	"properties": [
+		{
+			"name": "horizontal-align",
+			"description": "水平对齐"
+		},
+		{
+			"name": "align",
+			"description": "对齐"
+		},
+		{
+			"name": "opacity-brush",
+			"description": "透明度刷子"
+		},
+		{
+			"name": "brightness",
+			"description": "亮度"
+		},
+		{
+			"name": "border-brush",
+			"description": "边缘刷子"
+		},
+		{
+			"name": "x",
+			"description": "x偏移"
+		},
+		{
+			"name": "y",
+			"description": "y偏移"
+		},
+		{
+			"name": "saturation",
+			"description": "饱和度"
+		},
+		{
+			"name": "flow-children",
+			"description": "子元素对齐方式"
+		},
+		{
+			"name": "pre-transform-scale2d",
+			"description": "缩放"
+		},
+		{
+			"name": "wash-color",
+			"description": "染色"
+		},
+		{
+			"name": "sound",
+			"description": "音效"
+		},
+		{
+			"name": "blur",
+			"description": "模糊。blur: gaussian( 2.5 );"
+		},
+		{
+			"name": "tooltip-position",
+			"description": "tooltip位置"
+		},
+		{
+			"name": "opacity-mask",
+			"description": "透明度遮罩"
+		},
+		{
+			"name": "opacity-mask-scroll-up-down",
+			"description": "滚动时顶部和底部的透明度遮罩"
+		},
+		{
+			"name": "opacity-mask-scroll-up",
+			"description": "滚动时顶部的透明度遮罩"
+		},
+		{
+			"name": "opacity-mask-scroll-down",
+			"description": "滚动时底部的透明度遮罩"
+		},
+		{
+			"name": "ignore-parent-flow",
+			"description": "忽略父级的子元素排列属性"
+		},
+		{
+			"name": "hue-rotation",
+			"description": "hue rotation"
+		},
+		{
+			"name": "contrast",
+			"description": "对比度"
+		}
+	],
+	"pseudoClasses": [
+		{
+			"name": ":my-link",
+			"description": ":any-link pseudo class. See details at https://preset-env.cssdb.org/features#any-link-pseudo-class"
+		}
+	]
+}
