@@ -46,9 +46,10 @@ function startWatch(context: vscode.ExtensionContext) {
 				if (abilityExcelConfig) {
 					eachExcelConfig(abilityExcelConfig, (kvDir, excelDir) => {
 						if (path.normalize(excelDir) == path.normalize(path.dirname(name)).replace("\\csv", "")) {
-							const kvName = path.join(kvDir, path.basename(name).replace(path.extname(name), '.kv'));
+							const kvName = path.join(kvDir, path.basename(name).replace(path.extname(name), getExtname(path.basename(name))));
+
 							fs.writeFileSync(kvName, writeKeyValue({ KeyValue: abilityCSV2KV(name) }));
-							showStatusBarMessage("[excel导出kv]：" + path.basename(name).replace(path.extname(name), '.kv'));
+							showStatusBarMessage("[excel导出kv]：" + path.basename(name).replace(path.extname(name), getExtname(path.basename(name))));
 							// excel2kv(kvDir, path.join(excelDir, path.basename(name).replace(path.extname(name), ".xlsm")), abilityCSV2KV);
 							return false;
 						}
@@ -74,4 +75,18 @@ function getConfiguration() {
 	if (listenerConfig) {
 		return listenerConfig.ability_excel || false;
 	}
+}
+
+/** 获取后缀 */
+function getExtname(fileName: string) {
+	let extNameConfig: string | undefined = vscode.workspace.getConfiguration().get("dota2-tools.A4.extnameList");
+	if (extNameConfig) {
+		let fileNameList = extNameConfig.split(",");
+		for (const _fileName of fileNameList) {
+			if (fileName.indexOf(_fileName) != -1) {
+				return ".txt";
+			}
+		}
+	}
+	return ".kv";
 }
