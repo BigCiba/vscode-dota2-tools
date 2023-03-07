@@ -353,34 +353,37 @@ async function parseLuaAPIChangelog(context) {
             markdown += `# ${serverKeys[index].replace(/_/g, ".")}\n## Lua Server\n`;
             const changelog_old = serverChangelogs[serverKeys[index - 1]];
             const changelog_new = serverChangelogs[serverKeys[index]];
+            const classList = Object.keys(changelog_new.class_list ?? {}).concat(Object.keys(changelog_old.class_list ?? {}));
             // 比对function
-            for (const className in changelog_new.class_list) {
+            for (const className of classList) {
                 const funcList_old = changelog_old.class_list[className];
                 const funcList_new = changelog_new.class_list[className];
-                for (let j = 0; j < funcList_new.length; j++) {
-                    const funInfo_new = funcList_new[j];
-                    let find = false;
-                    if (funcList_old) {
-                        for (const funInfo_old of funcList_old) {
-                            if (funInfo_old.function == funInfo_new.function) {
-                                find = true;
-                                // 返回值
-                                if (funInfo_old.return != funInfo_new.return) {
-                                    markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
-                                }
-                                else {
-                                    for (const paramName in funInfo_new.params) {
-                                        if (funInfo_old.params[paramName] == undefined || funInfo_old.params[paramName].params_name != funInfo_new.params[paramName].params_name) {
-                                            markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
+                if (funcList_new) {
+                    for (let j = 0; j < funcList_new.length; j++) {
+                        const funInfo_new = funcList_new[j];
+                        let find = false;
+                        if (funcList_old) {
+                            for (const funInfo_old of funcList_old) {
+                                if (funInfo_old.function == funInfo_new.function) {
+                                    find = true;
+                                    // 返回值
+                                    if (funInfo_old.return != funInfo_new.return) {
+                                        markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
+                                    }
+                                    else {
+                                        for (const paramName in funInfo_new.params) {
+                                            if (funInfo_old.params[paramName] == undefined || funInfo_old.params[paramName].params_name != funInfo_new.params[paramName].params_name) {
+                                                markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    // 新增
-                    if (find == false) {
-                        markdown += `- ✨ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ${funInfo_new.description}\n`;
+                        // 新增
+                        if (find == false) {
+                            markdown += `- ✨ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ${funInfo_new.description}\n`;
+                        }
                     }
                 }
                 if (funcList_old) {
@@ -448,34 +451,37 @@ async function parseLuaAPIChangelog(context) {
             let client_markdown = `## Lua Client\n`;
             const changelog_old = clientChangelogs[clientKeys[index - 1]];
             const changelog_new = clientChangelogs[clientKeys[index]];
+            const classList = Object.keys(changelog_new.class_list ?? {}).concat(Object.keys(changelog_old.class_list ?? {}));
             // 比对function
-            for (const className in changelog_new.class_list) {
+            for (const className of classList) {
                 const funcList_old = changelog_old.class_list[className];
                 const funcList_new = changelog_new.class_list[className];
-                for (let j = 0; j < funcList_new.length; j++) {
-                    const funInfo_new = funcList_new[j];
-                    let find = false;
-                    if (funcList_old) {
-                        for (const funInfo_old of funcList_old) {
-                            if (funInfo_old.function == funInfo_new.function) {
-                                find = true;
-                                // 返回值
-                                if (funInfo_old.return != funInfo_new.return) {
-                                    client_markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
-                                }
-                                else {
-                                    for (const paramName in funInfo_new.params) {
-                                        if (funInfo_old.params[paramName] == undefined || funInfo_old.params[paramName].params_name != funInfo_new.params[paramName].params_name) {
-                                            client_markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
+                if (funcList_new) {
+                    for (let j = 0; j < funcList_new.length; j++) {
+                        const funInfo_new = funcList_new[j];
+                        let find = false;
+                        if (funcList_old) {
+                            for (const funInfo_old of funcList_old) {
+                                if (funInfo_old.function == funInfo_new.function) {
+                                    find = true;
+                                    // 返回值
+                                    if (funInfo_old.return != funInfo_new.return) {
+                                        client_markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
+                                    }
+                                    else {
+                                        for (const paramName in funInfo_new.params) {
+                                            if (funInfo_old.params[paramName] == undefined || funInfo_old.params[paramName].params_name != funInfo_new.params[paramName].params_name) {
+                                                client_markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    // 新增
-                    if (find == false) {
-                        client_markdown += `- ✨ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ${funInfo_new.description}\n`;
+                        // 新增
+                        if (find == false) {
+                            client_markdown += `- ✨ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ${funInfo_new.description}\n`;
+                        }
                     }
                 }
                 if (funcList_old) {

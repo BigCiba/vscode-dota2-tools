@@ -3811,7 +3811,7 @@ function CCustomNetTableManager:GetTableValue( string_1, string_2 ) end
 function CCustomNetTableManager:SetTableValue( string_1, string_2, handle_3 ) end
 
 ---[[ CDOTABaseAbility:CanAbilityBeUpgraded   ]]
--- @return Quaternion
+-- @return <unknown>
 function CDOTABaseAbility:CanAbilityBeUpgraded(  ) end
 
 ---[[ CDOTABaseAbility:CastAbility   ]]
@@ -9677,7 +9677,7 @@ function CDOTA_PlayerResource:GetClaimedFarm( iPlayerID, bOnlyEarned ) end
 function CDOTA_PlayerResource:GetClaimedMisses( iPlayerID ) end
 
 ---[[ CDOTA_PlayerResource:GetConnectionState   ]]
--- @return Quaternion
+-- @return <unknown>
 -- @param iPlayerID int
 function CDOTA_PlayerResource:GetConnectionState( iPlayerID ) end
 
@@ -10339,8 +10339,8 @@ function CDOTA_PlayerResource:SetHasRandomed( iPlayerID ) end
 ---[[ CDOTA_PlayerResource:SetLastBuybackTime   ]]
 -- @return void
 -- @param iPlayerID int
--- @param iLastBuybackTime int
-function CDOTA_PlayerResource:SetLastBuybackTime( iPlayerID, iLastBuybackTime ) end
+-- @param flLastBuybackTime float
+function CDOTA_PlayerResource:SetLastBuybackTime( iPlayerID, flLastBuybackTime ) end
 
 ---[[ CDOTA_PlayerResource:SetOverrideSelectionEntity  Set the forced selection entity for a player. ]]
 -- @return void
@@ -10457,11 +10457,11 @@ function CDOTA_Unit_Nian:IsTailAlive(  ) end
 ---[[ CDebugOverlayScriptHelper:Axis  Draws an axis. Specify origin + orientation in world space. ]]
 -- @return void
 -- @param Vector_1 Vector
--- @param Quaternion_2 Quaternion
+-- @param <unknown>_2 <unknown>
 -- @param float_3 float
 -- @param bool_4 bool
 -- @param float_5 float
-function CDebugOverlayScriptHelper:Axis( Vector_1, Quaternion_2, float_3, bool_4, float_5 ) end
+function CDebugOverlayScriptHelper:Axis( Vector_1, <unknown>_2, float_3, bool_4, float_5 ) end
 
 ---[[ CDebugOverlayScriptHelper:Box  Draws a world-space axis-aligned box. Specify bounds in world space. ]]
 -- @return void
@@ -10480,19 +10480,19 @@ function CDebugOverlayScriptHelper:Box( Vector_1, Vector_2, int_3, int_4, int_5,
 -- @param Vector_1 Vector
 -- @param Vector_2 Vector
 -- @param Vector_3 Vector
--- @param Quaternion_4 Quaternion
+-- @param <unknown>_4 <unknown>
 -- @param int_5 int
 -- @param int_6 int
 -- @param int_7 int
 -- @param int_8 int
 -- @param bool_9 bool
 -- @param float_10 float
-function CDebugOverlayScriptHelper:BoxAngles( Vector_1, Vector_2, Vector_3, Quaternion_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
+function CDebugOverlayScriptHelper:BoxAngles( Vector_1, Vector_2, Vector_3, <unknown>_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
 
 ---[[ CDebugOverlayScriptHelper:Capsule  Draws a capsule. Specify base in world space. ]]
 -- @return void
 -- @param Vector_1 Vector
--- @param Quaternion_2 Quaternion
+-- @param <unknown>_2 <unknown>
 -- @param float_3 float
 -- @param float_4 float
 -- @param int_5 int
@@ -10501,12 +10501,12 @@ function CDebugOverlayScriptHelper:BoxAngles( Vector_1, Vector_2, Vector_3, Quat
 -- @param int_8 int
 -- @param bool_9 bool
 -- @param float_10 float
-function CDebugOverlayScriptHelper:Capsule( Vector_1, Quaternion_2, float_3, float_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
+function CDebugOverlayScriptHelper:Capsule( Vector_1, <unknown>_2, float_3, float_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
 
 ---[[ CDebugOverlayScriptHelper:Circle  Draws a circle. Specify center in world space. ]]
 -- @return void
 -- @param Vector_1 Vector
--- @param Quaternion_2 Quaternion
+-- @param <unknown>_2 <unknown>
 -- @param float_3 float
 -- @param int_4 int
 -- @param int_5 int
@@ -10514,7 +10514,7 @@ function CDebugOverlayScriptHelper:Capsule( Vector_1, Quaternion_2, float_3, flo
 -- @param int_7 int
 -- @param bool_8 bool
 -- @param float_9 float
-function CDebugOverlayScriptHelper:Circle( Vector_1, Quaternion_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
+function CDebugOverlayScriptHelper:Circle( Vector_1, <unknown>_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
 
 ---[[ CDebugOverlayScriptHelper:CircleScreenOriented  Draws a circle oriented to the screen. Specify center in world space. ]]
 -- @return void
@@ -10569,7 +10569,7 @@ function CDebugOverlayScriptHelper:Cross3D( Vector_1, float_2, int_3, int_4, int
 ---[[ CDebugOverlayScriptHelper:Cross3DOriented  Draws an oriented cross. Specify origin in world space. ]]
 -- @return void
 -- @param Vector_1 Vector
--- @param Quaternion_2 Quaternion
+-- @param <unknown>_2 <unknown>
 -- @param float_3 float
 -- @param int_4 int
 -- @param int_5 int
@@ -10577,7 +10577,7 @@ function CDebugOverlayScriptHelper:Cross3D( Vector_1, float_2, int_3, int_4, int
 -- @param int_7 int
 -- @param bool_8 bool
 -- @param float_9 float
-function CDebugOverlayScriptHelper:Cross3DOriented( Vector_1, Quaternion_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
+function CDebugOverlayScriptHelper:Cross3DOriented( Vector_1, <unknown>_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
 
 ---[[ CDebugOverlayScriptHelper:DrawTickMarkedLine  Draws a dashed line. Specify endpoints in world space. ]]
 -- @return void
@@ -10735,13 +10735,13 @@ function CDebugOverlayScriptHelper:Sphere( Vector_1, float_2, int_3, int_4, int_
 -- @param Vector_2 Vector
 -- @param Vector_3 Vector
 -- @param Vector_4 Vector
--- @param Quaternion_5 Quaternion
+-- @param <unknown>_5 <unknown>
 -- @param int_6 int
 -- @param int_7 int
 -- @param int_8 int
 -- @param int_9 int
 -- @param float_10 float
-function CDebugOverlayScriptHelper:SweptBox( Vector_1, Vector_2, Vector_3, Vector_4, Quaternion_5, int_6, int_7, int_8, int_9, float_10 ) end
+function CDebugOverlayScriptHelper:SweptBox( Vector_1, Vector_2, Vector_3, Vector_4, <unknown>_5, int_6, int_7, int_8, int_9, float_10 ) end
 
 ---[[ CDebugOverlayScriptHelper:Text  Draws 2D text. Specify origin in world space. ]]
 -- @return void
@@ -10786,7 +10786,7 @@ function CDebugOverlayScriptHelper:Triangle( Vector_1, Vector_2, Vector_3, int_4
 ---[[ CDebugOverlayScriptHelper:VectorText3D  Draws 3D text. Specify origin + orientation in world space. ]]
 -- @return void
 -- @param Vector_1 Vector
--- @param Quaternion_2 Quaternion
+-- @param <unknown>_2 <unknown>
 -- @param string_3 string
 -- @param int_4 int
 -- @param int_5 int
@@ -10794,7 +10794,7 @@ function CDebugOverlayScriptHelper:Triangle( Vector_1, Vector_2, Vector_3, int_4
 -- @param int_7 int
 -- @param bool_8 bool
 -- @param float_9 float
-function CDebugOverlayScriptHelper:VectorText3D( Vector_1, Quaternion_2, string_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
+function CDebugOverlayScriptHelper:VectorText3D( Vector_1, <unknown>_2, string_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
 
 ---[[ CDebugOverlayScriptHelper:VertArrow  Draws a vertical arrow. Specify endpoints in world space. ]]
 -- @return void
@@ -11353,6 +11353,39 @@ function CSceneEntity:RemoveBroadcastTeamTarget( int_1 ) end
 -- @return void
 -- @param handle_1 handle
 function CSceneEntity:Start( handle_1 ) end
+
+---[[ CScriptHTTPRequest:Send  Send a HTTP request. ]]
+-- @return bool
+-- @param handle_1 handle
+function CScriptHTTPRequest:Send( handle_1 ) end
+
+---[[ CScriptHTTPRequest:SetHTTPRequestAbsoluteTimeoutMS  Set the total timeout on the request. ]]
+-- @return bool
+-- @param unsigned_1 unsigned
+function CScriptHTTPRequest:SetHTTPRequestAbsoluteTimeoutMS( unsigned_1 ) end
+
+---[[ CScriptHTTPRequest:SetHTTPRequestGetOrPostParameter  Set a POST or GET parameter on the request. ]]
+-- @return bool
+-- @param string_1 string
+-- @param string_2 string
+function CScriptHTTPRequest:SetHTTPRequestGetOrPostParameter( string_1, string_2 ) end
+
+---[[ CScriptHTTPRequest:SetHTTPRequestHeaderValue  Set a header value on the request. ]]
+-- @return bool
+-- @param string_1 string
+-- @param string_2 string
+function CScriptHTTPRequest:SetHTTPRequestHeaderValue( string_1, string_2 ) end
+
+---[[ CScriptHTTPRequest:SetHTTPRequestNetworkActivityTimeout  Set the network timeout on the request - this timer is reset when any data is received. ]]
+-- @return bool
+-- @param unsigned_1 unsigned
+function CScriptHTTPRequest:SetHTTPRequestNetworkActivityTimeout( unsigned_1 ) end
+
+---[[ CScriptHTTPRequest:SetHTTPRequestRawPostBody  Set the literal body of a post - invalid after setting a post parameter. ]]
+-- @return bool
+-- @param string_1 string
+-- @param string_2 string
+function CScriptHTTPRequest:SetHTTPRequestRawPostBody( string_1, string_2 ) end
 
 ---[[ CScriptHeroList:GetAllHeroes  Returns all the heroes in the world ]]
 -- @return table

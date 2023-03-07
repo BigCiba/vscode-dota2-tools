@@ -15,10 +15,10 @@ async function preProcessing(context) {
     // console.log("parsePanelList");
     (0, preProcessing_1.vsndGenerator)(context);
     console.log("vsndGenerator");
-    // parseLuaAPI(context);
-    // console.log("parseLuaAPI");
-    // parseLuaAPIChangelog(context);
-    // console.log("parseLuaAPIChangelog");
+    (0, preProcessing_1.parseLuaAPI)(context);
+    console.log("parseLuaAPI");
+    (0, preProcessing_1.parseLuaAPIChangelog)(context);
+    console.log("parseLuaAPIChangelog");
     // rogueItemsGameParse(context);
     // console.log("parseLuaAPIChangelog");
 }
