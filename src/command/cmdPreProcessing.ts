@@ -4,7 +4,7 @@ import { itemsGameParse, parseCssDocument, parseEventDocument, parseLuaAPI, pars
 export async function preProcessing(context: vscode.ExtensionContext) {
 	itemsGameParse(context);
 	console.log("itemsGameParse");
-	// parsePanoramaAPI(context);
+	parsePanoramaAPI(context);
 	// console.log("parsePanoramaAPI");
 	// parseCssDocument(context);
 	// console.log("parseCssDocument");
@@ -16,8 +16,8 @@ export async function preProcessing(context: vscode.ExtensionContext) {
 	console.log("vsndGenerator");
 	parseLuaAPI(context);
 	console.log("parseLuaAPI");
-	parseLuaAPIChangelog(context);
-	console.log("parseLuaAPIChangelog");
+	// parseLuaAPIChangelog(context);
+	// console.log("parseLuaAPIChangelog");
 	// rogueItemsGameParse(context);
 	// console.log("parseLuaAPIChangelog");
 }

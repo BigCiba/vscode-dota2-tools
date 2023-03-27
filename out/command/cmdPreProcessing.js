@@ -5,7 +5,7 @@ const preProcessing_1 = require("../module/preProcessing");
 async function preProcessing(context) {
     (0, preProcessing_1.itemsGameParse)(context);
     console.log("itemsGameParse");
-    // parsePanoramaAPI(context);
+    (0, preProcessing_1.parsePanoramaAPI)(context);
     // console.log("parsePanoramaAPI");
     // parseCssDocument(context);
     // console.log("parseCssDocument");
@@ -17,8 +17,8 @@ async function preProcessing(context) {
     console.log("vsndGenerator");
     (0, preProcessing_1.parseLuaAPI)(context);
     console.log("parseLuaAPI");
-    (0, preProcessing_1.parseLuaAPIChangelog)(context);
-    console.log("parseLuaAPIChangelog");
+    // parseLuaAPIChangelog(context);
+    // console.log("parseLuaAPIChangelog");
     // rogueItemsGameParse(context);
     // console.log("parseLuaAPIChangelog");
 }
