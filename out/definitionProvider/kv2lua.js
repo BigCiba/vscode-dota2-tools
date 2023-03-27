@@ -8,11 +8,24 @@ const mkdirp = require("mkdirp");
 const addonInfo_1 = require("../module/addonInfo");
 const kvUtils_1 = require("../utils/kvUtils");
 const getRootPath_1 = require("../utils/getRootPath");
+const event_1 = require("../Class/event");
 const pathUtils_1 = require("../utils/pathUtils");
 /** 关联kv的脚本路径 */
 let scriptFiles = {};
 let defJump;
+let eventID;
+const configName = "dota2-tools.A6.Kv to lua generate script";
+let config;
 async function kv2luaInit(context) {
+    config = getConfiguration();
+    if (eventID === undefined) {
+        eventID = event_1.EventManager.listenToEvent(event_1.EventType.EVENT_ON_DID_CHANGE_CONFIGURATION, (event) => {
+            if (!event.affectsConfiguration(configName) || getConfiguration() === config) {
+                return;
+            }
+            config = getConfiguration();
+        });
+    }
     refreshScriptFiles();
     const gameDir = (0, addonInfo_1.getGameDir)();
     function provideDefinition(document, position, token) {
@@ -39,8 +52,10 @@ async function kv2luaInit(context) {
                     return new vscode.Location(vscode.Uri.file(destPath), new vscode.Position(0, 0));
                 }
                 else {
-                    mkdirp(path.dirname(destPath));
-                    fs.writeFileSync(destPath, getLuaScriptSnippet(path.basename(luaPath).replace('.lua', ''), luaPath, context));
+                    if (config) {
+                        mkdirp(path.dirname(destPath));
+                        fs.writeFileSync(destPath, getLuaScriptSnippet(path.basename(luaPath).replace('.lua', ''), luaPath, context));
+                    }
                 }
             }
         }
@@ -98,5 +113,10 @@ function getLuaScriptSnippet(filename, luaPath, context) {
         return snippet;
     }
     return '';
+}
+/** 是否开启设置 */
+function getConfiguration() {
+    let config = vscode.workspace.getConfiguration().get(configName);
+    return config;
 }
 //# sourceMappingURL=kv2lua.js.map

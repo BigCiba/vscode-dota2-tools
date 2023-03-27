@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { DotaApiNote } from '../class/DotaApiNote';
+import { DotaApiNote } from '../Class/DotaApiNote';
 import { getCssCompletion, getLuaCompletion } from './completion';
 import { getLuaApiTree } from './treeApi';
 

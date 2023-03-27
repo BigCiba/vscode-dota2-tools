@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDotaApiNoteClass = exports.apiNoteInit = void 0;
-const DotaApiNote_1 = require("../class/DotaApiNote");
+const DotaApiNote_1 = require("../Class/DotaApiNote");
 const completion_1 = require("./completion");
 const treeApi_1 = require("./treeApi");
 let dotaApiNote;

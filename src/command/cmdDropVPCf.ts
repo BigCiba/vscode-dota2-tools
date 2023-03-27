@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { getContentDir } from '../module/addonInfo';
-import { DropHeroString } from '../class/DropString';
+import { DropHeroString } from '../Class/DropString';
 
 /** 轮回谷生成英雄掉落卡片的vtex和vpcf */
 export function dropVPCf(context: vscode.ExtensionContext) {

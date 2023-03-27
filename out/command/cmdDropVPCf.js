@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.dropVPCf = void 0;
 const fs = require("fs");
 const addonInfo_1 = require("../module/addonInfo");
-const DropString_1 = require("../class/DropString");
+const DropString_1 = require("../Class/DropString");
 /** 轮回谷生成英雄掉落卡片的vtex和vpcf */
 function dropVPCf(context) {
     const contetDir = (0, addonInfo_1.getContentDir)();

@@ -14,7 +14,7 @@ import { cssCompletionInit, jsCompletionInit, luaCompletionInit } from './module
 import { getStatusBarItem, refreshStatusBarMessage, showStatusBarMessage, statusBarItemInit } from './module/statusBar';
 import { cssApiInit, jsApiInit, luaApiInit, panelDocumentInit } from './module/treeApi';
 import { localize, localizeInit } from './utils/localize';
-import { EventManager, EventType } from "./class/event";
+import { EventManager, EventType } from "./Class/event";
 import { localizationViewrInit } from './module/localizationViewr';
 
 /** 模块列表 */

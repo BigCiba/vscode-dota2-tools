@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { getDotaApiNoteClass } from '../module/apiNote';
-import { DotaApiNote } from '../class/DotaApiNote';
+import { DotaApiNote } from '../Class/DotaApiNote';
 
 export interface LuaFunction {
 	function?: string;

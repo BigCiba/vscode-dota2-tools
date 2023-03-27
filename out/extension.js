@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
-const event_1 = require("./class/event");
+const event_1 = require("./Class/event");
 const cmdKvExport_1 = require("./command/cmdKvExport");
 const cmdCombineLocalization_1 = require("./command/cmdCombineLocalization");
 const cmdCopyWearable_1 = require("./command/cmdCopyWearable");

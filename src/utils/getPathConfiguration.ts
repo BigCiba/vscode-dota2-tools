@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { getContentDir, getGameDir } from "../module/addonInfo";
 
-// 获取路径格式的设置
+/** 获取替换了game和content路径格式的设置 */
 export function getPathConfiguration(name: string) {
 	const gameDir = getGameDir();
 	const contentDir = getContentDir();

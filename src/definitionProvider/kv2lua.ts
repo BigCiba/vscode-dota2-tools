@@ -5,14 +5,28 @@ import * as mkdirp from 'mkdirp';
 import { getGameDir } from '../module/addonInfo';
 import { readKeyValueWithBase } from '../utils/kvUtils';
 import { getRootPath } from '../utils/getRootPath';
-import { EventManager, EventType } from '../class/event';
+import { EventManager, EventType } from '../Class/event';
 import { getPathInfo } from '../utils/pathUtils';
+import { getPathConfiguration } from '../utils/getPathConfiguration';
+import { log } from 'console';
 
 /** 关联kv的脚本路径 */
 let scriptFiles: Table = {};
 let defJump: vscode.Disposable;
+let eventID: number;
+const configName = "dota2-tools.A6.Kv to lua generate script";
+let config: boolean | undefined;
 
 export async function kv2luaInit(context: vscode.ExtensionContext) {
+	config = getConfiguration();
+	if (eventID === undefined) {
+		eventID = EventManager.listenToEvent<vscode.ConfigurationChangeEvent>(EventType.EVENT_ON_DID_CHANGE_CONFIGURATION, (event) => {
+			if (!event.affectsConfiguration(configName) || getConfiguration() === config) {
+				return;
+			}
+			config = getConfiguration();
+		});
+	}
 	refreshScriptFiles();
 	const gameDir = getGameDir();
 	function provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
@@ -42,8 +56,10 @@ export async function kv2luaInit(context: vscode.ExtensionContext) {
 				if (fs.existsSync(destPath)) {
 					return new vscode.Location(vscode.Uri.file(destPath), new vscode.Position(0, 0));
 				} else {
-					mkdirp(path.dirname(destPath));
-					fs.writeFileSync(destPath, getLuaScriptSnippet(path.basename(luaPath).replace('.lua', ''), luaPath, context));
+					if (config) {
+						mkdirp(path.dirname(destPath));
+						fs.writeFileSync(destPath, getLuaScriptSnippet(path.basename(luaPath).replace('.lua', ''), luaPath, context));
+					}
 				}
 			}
 		}
@@ -54,6 +70,7 @@ export async function kv2luaInit(context: vscode.ExtensionContext) {
 	defJump = vscode.languages.registerDefinitionProvider([{ pattern: '**/*.txt' }, { pattern: '**/*.kv' }], { provideDefinition });
 	context.subscriptions.push(defJump);
 }
+
 
 /** 更新关联表 */
 export async function refreshScriptFiles() {
@@ -101,4 +118,10 @@ function getLuaScriptSnippet(filename: string, luaPath: string, context?: vscode
 		return snippet;
 	}
 	return '';
+}
+
+/** 是否开启设置 */
+function getConfiguration() {
+	let config = vscode.workspace.getConfiguration().get<boolean>(configName);
+	return config;
 }

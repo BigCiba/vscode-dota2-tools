@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { DotaApiNote } from '../class/DotaApiNote';
+import { DotaApiNote } from '../Class/DotaApiNote';
 import { apiParse } from '../utils/apiParse';
 import { getWebviewContent } from '../utils/getWebViewContent';
 import { showStatusBarMessage } from '../module/statusBar';

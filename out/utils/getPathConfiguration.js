@@ -4,7 +4,7 @@ exports.getPathConfiguration = void 0;
 const vscode = require("vscode");
 const path = require("path");
 const addonInfo_1 = require("../module/addonInfo");
-// 获取路径格式的设置
+/** 获取替换了game和content路径格式的设置 */
 function getPathConfiguration(name) {
     const gameDir = (0, addonInfo_1.getGameDir)();
     const contentDir = (0, addonInfo_1.getContentDir)();

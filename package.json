@@ -631,6 +631,11 @@
 					"default": "${game}/localization",
 					"description": "合并文本的目录，${game}或者${content}可以指代当前game或者content目录"
 				},
+				"dota2-tools.A6.Kv to lua generate script": {
+					"type": "boolean",
+					"default": true,
+					"description": "%dota2-tools.A6.Kv to lua generate script%"
+				},
 				"dota2-tools.addon_path": {
 					"scope": "resource",
 					"type": "object",

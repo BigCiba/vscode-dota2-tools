@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { EventManager, EventType } from './class/event';
+import { EventManager, EventType } from './Class/event';
 import { abilityExport, unitExport } from './command/cmdKvExport';
 import { combineLocalization } from './command/cmdCombineLocalization';
 import { copyWearable } from './command/cmdCopyWearable';

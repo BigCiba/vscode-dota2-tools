@@ -4,7 +4,7 @@ exports.stopWatch = exports.listenerLocalizationInit = void 0;
 const vscode = require("vscode");
 const path = require("path");
 const node_watch_1 = require("node-watch");
-const event_1 = require("../class/event");
+const event_1 = require("../Class/event");
 const cmdCombineLocalization_1 = require("../command/cmdCombineLocalization");
 const addonInfo_1 = require("../module/addonInfo");
 const localize_1 = require("../utils/localize");

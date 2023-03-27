@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
 import watch from "node-watch";
-import { EventManager, EventType } from "../class/event";
+import { EventManager, EventType } from "../Class/event";
 import { localize } from "../utils/localize";
 import { getRootPath } from "../utils/getRootPath";
 import { eachExcelConfig, excel2kv } from "../command/cmdExcel2KV";

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { getWebviewContent } from '../utils/getWebViewContent';
-import { DotaApiNote } from '../class/DotaApiNote';
+import { DotaApiNote } from '../Class/DotaApiNote';
 import { showStatusBarMessage } from '../module/statusBar';
 
 // 类型

@@ -17,7 +17,7 @@ const completion_1 = require("./module/completion");
 const statusBar_1 = require("./module/statusBar");
 const treeApi_1 = require("./module/treeApi");
 const localize_1 = require("./utils/localize");
-const event_1 = require("./class/event");
+const event_1 = require("./Class/event");
 /** 模块列表 */
 const moduleList = {
     // "localizeInit": localizeInit,
