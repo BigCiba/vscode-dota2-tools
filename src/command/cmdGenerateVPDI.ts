@@ -1,11 +1,11 @@
+import * as fs from "fs";
 import { ExtensionContext, workspace } from "vscode";
 import { getContentDir } from "../module/addonInfo";
-import { getPathInfo } from "../utils/pathUtils";
-import * as fs from "fs";
-import path = require("path");
+import { StatusBarState, changeStatusBarState, showStatusBarMessage } from "../module/statusBar";
 import { writeKeyValue } from "../utils/kvUtils";
-import { changeStatusBarState, showStatusBarMessage, StatusBarState } from "../module/statusBar";
 import { localize } from "../utils/localize";
+import { getPathInfo } from "../utils/pathUtils";
+import path = require("path");
 
 interface VPDIConfig {
 	ImagePath: string;
@@ -36,7 +36,7 @@ export async function generateVPDI(context: ExtensionContext) {
 			if (stat.isFile()) {
 				const sFullPath = sFilePath.replace(sDotaImageFolder, "{images}");
 				if (sFullPath.search(/[^\x00-\xff]/g) == -1) {
-					Explicit_Files[sFullPath] = "";
+					Explicit_Files[sFullPath.replace(/\\/g, "/")] = "";
 				}
 			} else if (stat.isDirectory()) {
 				ReadImagePath(sFilePath);
