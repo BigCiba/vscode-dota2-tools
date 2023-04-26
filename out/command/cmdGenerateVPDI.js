@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateVPDI = void 0;
+const fs = require("fs");
 const vscode_1 = require("vscode");
 const addonInfo_1 = require("../module/addonInfo");
-const pathUtils_1 = require("../utils/pathUtils");
-const fs = require("fs");
-const path = require("path");
-const kvUtils_1 = require("../utils/kvUtils");
 const statusBar_1 = require("../module/statusBar");
+const kvUtils_1 = require("../utils/kvUtils");
 const localize_1 = require("../utils/localize");
+const pathUtils_1 = require("../utils/pathUtils");
+const path = require("path");
 async function generateVPDI(context) {
     const contentDir = (0, addonInfo_1.getContentDir)();
     const VPDIConfig = vscode_1.workspace.getConfiguration().get("dota2-tools.VPDI");
@@ -31,7 +31,7 @@ async function generateVPDI(context) {
             if (stat.isFile()) {
                 const sFullPath = sFilePath.replace(sDotaImageFolder, "{images}");
                 if (sFullPath.search(/[^\x00-\xff]/g) == -1) {
-                    Explicit_Files[sFullPath] = "";
+                    Explicit_Files[sFullPath.replace(/\\/g, "/")] = "";
                 }
             }
             else if (stat.isDirectory()) {
