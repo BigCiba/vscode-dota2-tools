@@ -311,6 +311,10 @@
 			{
 				"command": "dota2tools.export_modifier_function",
 				"title": "%dota2tools.export_modifier_function%"
+			},
+			{
+				"command": "dota2tools.CopyDotaResourcePath",
+				"title": "%dota2tools.CopyDotaResourcePath%"
 			}
 		],
 		"menus": {
@@ -324,6 +328,13 @@
 					"when": "editorHasSelection",
 					"command": "dota2tools.translate_selection",
 					"group": "navigation"
+				}
+			],
+			"explorer/context": [
+				{
+					"when": "resource =~ /panorama/ && resourceExtname =~ /(\\.png)|(\\.jpg)/",
+					"command": "dota2tools.CopyDotaResourcePath",
+					"group": "6_copypath"
 				}
 			],
 			"editor/title": [
@@ -362,6 +373,11 @@
 				{
 					"when": "resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
 					"command": "dota2tools.localization_text",
+					"group": "navigation"
+				},
+				{
+					"when": "resource =~ /panorama/ && resourceExtname =~ /(\\.png)|(\\.jpg)/",
+					"command": "dota2tools.CopyDotaResourcePath",
 					"group": "navigation"
 				}
 			],

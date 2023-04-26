@@ -88,6 +88,7 @@
 	"dota2tools.dota2cssapi.clearfilter": "清除搜索",
 	"dota2tools.dota2panel.event": "事件列表",
 	"dota2tools.OpenKV": "转到技能kv",
+	"dota2tools.CopyDotaResourcePath": "复制DOTA2资源路径",
 	"dota2tools.generate_vpdi": "生成VPDI",
 	"dota2tools.mklink": "自动移动game和content文件夹并且mklink",
 	"dota2tools.export_modifier_function": "导出modifierfunction",

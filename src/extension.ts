@@ -32,6 +32,7 @@ import { exportWearable } from './command/cmdExportWearable';
 import { exportModifierFunction } from './command/cmdExportModifierFunction';
 import { exportWearableWithHero } from './command/cmdExportWearableWithHero';
 import { exportWearablePortraits } from './command/cmdExportWearablePortraits';
+import { CopyDotaResourcePath } from "./command/cmdDotaResourcePath";
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -79,6 +80,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_vpdi', () => generateVPDI(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => mklinkForDota2Addon(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_modifier_function', () => exportModifierFunction(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.CopyDotaResourcePath', (uri) => CopyDotaResourcePath(context, uri)));
 	context.subscriptions.push(vmdlEditorProvider.register(context));
 	context.subscriptions.push(lazayboyProvider.register());
 }
