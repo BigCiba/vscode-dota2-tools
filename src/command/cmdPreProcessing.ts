@@ -2,10 +2,10 @@ import * as vscode from 'vscode';
 import { itemsGameParse, parseCssDocument, parseEventDocument, parseLuaAPI, parseLuaAPIChangelog, parsePanelList, parsePanoramaAPI, rogueItemsGameParse, vsndGenerator } from '../module/preProcessing';
 
 export async function preProcessing(context: vscode.ExtensionContext) {
-	// itemsGameParse(context);
-	// console.log("itemsGameParse");
-	// parsePanoramaAPI(context);
-	// console.log("parsePanoramaAPI");
+	itemsGameParse(context);
+	console.log("itemsGameParse");
+	parsePanoramaAPI(context);
+	console.log("parsePanoramaAPI");
 	// parseCssDocument(context);
 	// console.log("parseCssDocument");
 	// parseEventDocument(context);

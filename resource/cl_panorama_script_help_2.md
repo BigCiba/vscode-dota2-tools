@@ -51,13 +51,6 @@ GetConnectedUniverse|<code>SteamUtils.GetConnectedUniverse()</code>|Returns the 
 GetAppID|<code>SteamUtils.GetAppID()</code>|Returns the appid of the current app
 
 
-# CPanoramaScript_VRUtils
-Function|Signature|Description
---|--|--
-GetVRAppPropertyData|<code>VRUtils.GetVRAppPropertyData( unsigned nAppID )</code>|Get application properties for a VR app with the specified appID
-LaunchSteamApp|<code>VRUtils.LaunchSteamApp( unsigned nAppID, cstring pszLaunchSource )</code>|Launches a Steam application using OpenVR.
-
-
 # CScriptBindingPR_Buffs
 Function|Signature|Description
 --|--|--
@@ -219,8 +212,6 @@ ProvidesVision|<code>Entities.ProvidesVision( integer nEntityIndex )</code>|
 UsesHeroAbilityNumbers|<code>Entities.UsesHeroAbilityNumbers( integer nEntityIndex )</code>|
 IsMoving|<code>Entities.IsMoving( integer nEntityIndex )</code>|
 GetAbilityCount|<code>Entities.GetAbilityCount( integer nEntityIndex )</code>|
-GetCombatClassAttack|<code>Entities.GetCombatClassAttack( integer nEntityIndex )</code>|
-GetCombatClassDefend|<code>Entities.GetCombatClassDefend( integer nEntityIndex )</code>|
 GetCurrentVisionRange|<code>Entities.GetCurrentVisionRange( integer nEntityIndex )</code>|
 GetDamageBonus|<code>Entities.GetDamageBonus( integer nEntityIndex )</code>|
 GetDamageMax|<code>Entities.GetDamageMax( integer nEntityIndex )</code>|
@@ -455,6 +446,10 @@ NemesticeGetGameplayTipNumber|<code>Game.NemesticeGetGameplayTipNumber()</code>|
 NemesticeSetGameplayTipNumber|<code>Game.NemesticeSetGameplayTipNumber( integer nGameplayTipNumber )</code>|
 NemesticeShouldShowGameInfo|<code>Game.NemesticeShouldShowGameInfo()</code>|
 NemesticeSetShowGameInfo|<code>Game.NemesticeSetShowGameInfo( boolean bShowGameInfo )</code>|
+Winter2022ShouldShowGameInfo|<code>Game.Winter2022ShouldShowGameInfo()</code>|
+Winter2022SetShowGameInfo|<code>Game.Winter2022SetShowGameInfo( boolean bShowGameInfo )</code>|
+Winter2022GetGameplayTipNumber|<code>Game.Winter2022GetGameplayTipNumber()</code>|
+Winter2022SetGameplayTipNumber|<code>Game.Winter2022SetGameplayTipNumber( integer nGameplayTipNumber )</code>|
 ForceCustomUILoad|<code>Game.ForceCustomUILoad()</code>|
 CutToDefaultCamera|<code>Game.CutToDefaultCamera()</code>|
 PlayDataDrivenCamera|<code>Game.PlayDataDrivenCamera( cstring pszCameraName )</code>|
@@ -572,7 +567,9 @@ CreateParticle|<code>Particles.CreateParticle( cstring pParticleName, integer nA
 ReleaseParticleIndex|<code>Particles.ReleaseParticleIndex( integer iIndex )</code>|Release a particle system
 DestroyParticleEffect|<code>Particles.DestroyParticleEffect( integer iIndex, boolean bDestroyImmediately )</code>|Destroy a particle system
 SetParticleControl|<code>Particles.SetParticleControl( integer iIndex, integer iPoint, js_value vPosVal )</code>|Set a control point on a particle system
-SetParticleControlForward|<code>Particles.SetParticleControlForward( integer iIndex, integer iPoint, js_value vForwardVal )</code>|Set the orientation on a control point on a particle system
+SetParticleControlForward|<code>Particles.SetParticleControlForward( integer iIndex, integer iPoint, js_value vForwardVal )</code>|[OBSOLETE - Use SetParticleControlTransformForward] Set the orientation on a control point on a particle system
+SetParticleControlTransform|<code>Particles.SetParticleControlTransform( integer iIndex, integer iPoint, js_value vOriginVal, js_value vAnglesVal )</code>|Set the position and orientation on a control point on a particle system
+SetParticleControlTransformForward|<code>Particles.SetParticleControlTransformForward( integer iIndex, integer iPoint, js_value vOriginVal, js_value vForwardVal )</code>|Set the position and orientation (derived from a forward direction) on a control point on a particle system
 SetParticleAlwaysSimulate|<code>Particles.SetParticleAlwaysSimulate( integer iIndex )</code>|
 SetParticleControlEnt|<code>Particles.SetParticleControlEnt( integer iIndex, integer iPoint, integer iEntIndex, integer iAttachType, cstring pszAttachName, js_value vecFallbackPositionVal, boolean bIncludeWearables )</code>|Set a control point to track an entity on a particle system
 
@@ -581,8 +578,8 @@ SetParticleControlEnt|<code>Particles.SetParticleControlEnt( integer iIndex, int
 Function|Signature|Description
 --|--|--
 GetEventActionScore|<code>EventData.GetEventActionScore( integer unEventID, integer unActionID )</code>|Get the score of an EventAction
-GetPeriodicResourceUsed|<code>EventData.GetPeriodicResourceUsed( integer unPeriodicResourceID )</code>|Get a periodic resource value used
-GetPeriodicResourceMax|<code>EventData.GetPeriodicResourceMax( integer unPeriodicResourceID )</code>|Get a periodic resource value max
+GetPeriodicResourceUsed|<code>EventData.GetPeriodicResourceUsed( unsigned unPeriodicResourceID )</code>|Get a periodic resource value used
+GetPeriodicResourceMax|<code>EventData.GetPeriodicResourceMax( unsigned unPeriodicResourceID )</code>|Get a periodic resource value max
 IsFirstRunThisEvent|<code>EventData.IsFirstRunThisEvent()</code>|Is this the first time we've launched this season?
 
 
@@ -607,11 +604,12 @@ FindChildInContext|<code>FindChildInContext( js_raw_args js_raw_args_1 )</code>|
 AsyncWebRequest|<code>AsyncWebRequest( js_raw_args js_raw_args_1 )</code>|Make a web request (disabled)
 CreatePanel|<code>CreatePanel( js_raw_args js_raw_args_1 )</code>|Create a new panel
 CreatePanelWithProperties|<code>CreatePanelWithProperties( js_raw_args js_raw_args_1 )</code>|Create a new panel supplying a JS object as a fourth parameter containing properties to be applied to the panel
-Localize|<code>Localize( js_raw_args js_raw_args_1 )</code>|Localize a string
+Localize|<code>Localize( js_raw_args js_raw_args_1 )</code>|Localize a string. Optionally accepts Quantity, Precision, and Panel arguments.
 LocalizePlural|<code>LocalizePlural( js_raw_args js_raw_args_1 )</code>|Localize a plural string
 Language|<code>Language( js_raw_args js_raw_args_1 )</code>|Get the current language
 Schedule|<code>Schedule( js_raw_args js_raw_args_1 )</code>|Schedule a function to be called later
 CancelScheduled|<code>CancelScheduled( js_raw_args js_raw_args_1 )</code>|Cancels a scheduled function
+FrameTime|<code>FrameTime( js_raw_args js_raw_args_1 )</code>|Gets the time this frame started, in seconds since panorama was initialized
 GetContextPanel|<code>GetContextPanel( js_raw_args js_raw_args_1 )</code>|Get the current panel context
 RegisterKeyBind|<code>RegisterKeyBind( js_raw_args js_raw_args_1 )</code>|Register a key binding
 Each|<code>Each( js_raw_args js_raw_args_1 )</code>|Call a function on each given item
@@ -633,6 +631,7 @@ hittestchildren|<code>DOTAHeroModelOverlay.hittestchildren( boolean boolean_1 )<
 tabindex|<code>DOTAHeroModelOverlay.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTAHeroModelOverlay.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTAHeroModelOverlay.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAHeroModelOverlay.type()</code>|
 id|<code>DOTAHeroModelOverlay.id()</code>|
 layoutfile|<code>DOTAHeroModelOverlay.layoutfile()</code>|
 contentwidth|<code>DOTAHeroModelOverlay.contentwidth()</code>|
@@ -740,6 +739,7 @@ hittestchildren|<code>DOTAPlay.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>DOTAPlay.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTAPlay.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTAPlay.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAPlay.type()</code>|
 id|<code>DOTAPlay.id()</code>|
 layoutfile|<code>DOTAPlay.layoutfile()</code>|
 contentwidth|<code>DOTAPlay.contentwidth()</code>|
@@ -852,6 +852,7 @@ hittestchildren|<code>Panel.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>Panel.tabindex( float float_1 )</code>|
 selectionpos_x|<code>Panel.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>Panel.selectionpos_y( float float_1 )</code>|
+type|<code>Panel.type()</code>|
 id|<code>Panel.id()</code>|
 layoutfile|<code>Panel.layoutfile()</code>|
 contentwidth|<code>Panel.contentwidth()</code>|
@@ -959,6 +960,7 @@ hittestchildren|<code>Label.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>Label.tabindex( float float_1 )</code>|
 selectionpos_x|<code>Label.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>Label.selectionpos_y( float float_1 )</code>|
+type|<code>Label.type()</code>|
 id|<code>Label.id()</code>|
 layoutfile|<code>Label.layoutfile()</code>|
 contentwidth|<code>Label.contentwidth()</code>|
@@ -1070,6 +1072,7 @@ hittestchildren|<code>ToggleButton.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>ToggleButton.tabindex( float float_1 )</code>|
 selectionpos_x|<code>ToggleButton.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>ToggleButton.selectionpos_y( float float_1 )</code>|
+type|<code>ToggleButton.type()</code>|
 id|<code>ToggleButton.id()</code>|
 layoutfile|<code>ToggleButton.layoutfile()</code>|
 contentwidth|<code>ToggleButton.contentwidth()</code>|
@@ -1179,6 +1182,7 @@ hittestchildren|<code>TabButton.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>TabButton.tabindex( float float_1 )</code>|
 selectionpos_x|<code>TabButton.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>TabButton.selectionpos_y( float float_1 )</code>|
+type|<code>TabButton.type()</code>|
 id|<code>TabButton.id()</code>|
 layoutfile|<code>TabButton.layoutfile()</code>|
 contentwidth|<code>TabButton.contentwidth()</code>|
@@ -1273,6 +1277,557 @@ rememberchildfocus|<code>TabButton.rememberchildfocus( boolean boolean_1 )</code
 paneltype|<code>TabButton.paneltype()</code>|
 
 
+# DOTAMapUpdate2023Page
+Function|Signature|Description
+--|--|--
+visible|<code>DOTAMapUpdate2023Page.visible( boolean boolean_1 )</code>|
+enabled|<code>DOTAMapUpdate2023Page.enabled( boolean boolean_1 )</code>|
+checked|<code>DOTAMapUpdate2023Page.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>DOTAMapUpdate2023Page.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>DOTAMapUpdate2023Page.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>DOTAMapUpdate2023Page.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>DOTAMapUpdate2023Page.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>DOTAMapUpdate2023Page.tabindex( float float_1 )</code>|
+selectionpos_x|<code>DOTAMapUpdate2023Page.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>DOTAMapUpdate2023Page.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAMapUpdate2023Page.type()</code>|
+id|<code>DOTAMapUpdate2023Page.id()</code>|
+layoutfile|<code>DOTAMapUpdate2023Page.layoutfile()</code>|
+contentwidth|<code>DOTAMapUpdate2023Page.contentwidth()</code>|
+contentheight|<code>DOTAMapUpdate2023Page.contentheight()</code>|
+desiredlayoutwidth|<code>DOTAMapUpdate2023Page.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>DOTAMapUpdate2023Page.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>DOTAMapUpdate2023Page.actuallayoutwidth()</code>|
+actuallayoutheight|<code>DOTAMapUpdate2023Page.actuallayoutheight()</code>|
+actualxoffset|<code>DOTAMapUpdate2023Page.actualxoffset()</code>|
+actualyoffset|<code>DOTAMapUpdate2023Page.actualyoffset()</code>|
+scrolloffset_y|<code>DOTAMapUpdate2023Page.scrolloffset_y()</code>|
+scrolloffset_x|<code>DOTAMapUpdate2023Page.scrolloffset_x()</code>|
+actualuiscale_y|<code>DOTAMapUpdate2023Page.actualuiscale_y()</code>|
+actualuiscale_x|<code>DOTAMapUpdate2023Page.actualuiscale_x()</code>|
+style|<code>DOTAMapUpdate2023Page.style()</code>|
+AddClass|<code>DOTAMapUpdate2023Page.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>DOTAMapUpdate2023Page.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>DOTAMapUpdate2023Page.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>DOTAMapUpdate2023Page.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>DOTAMapUpdate2023Page.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>DOTAMapUpdate2023Page.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>DOTAMapUpdate2023Page.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>DOTAMapUpdate2023Page.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>DOTAMapUpdate2023Page.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>DOTAMapUpdate2023Page.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>DOTAMapUpdate2023Page.IsDraggable()</code>|
+IsSizeValid|<code>DOTAMapUpdate2023Page.IsSizeValid()</code>|
+GetChildCount|<code>DOTAMapUpdate2023Page.GetChildCount()</code>|
+GetChild|<code>DOTAMapUpdate2023Page.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>DOTAMapUpdate2023Page.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>DOTAMapUpdate2023Page.Children()</code>|
+FindChildrenWithClassTraverse|<code>DOTAMapUpdate2023Page.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>DOTAMapUpdate2023Page.GetParent()</code>|
+SetParent|<code>DOTAMapUpdate2023Page.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>DOTAMapUpdate2023Page.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>DOTAMapUpdate2023Page.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>DOTAMapUpdate2023Page.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>DOTAMapUpdate2023Page.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>DOTAMapUpdate2023Page.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>DOTAMapUpdate2023Page.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>DOTAMapUpdate2023Page.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>DOTAMapUpdate2023Page.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>DOTAMapUpdate2023Page.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>DOTAMapUpdate2023Page.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>DOTAMapUpdate2023Page.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>DOTAMapUpdate2023Page.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>DOTAMapUpdate2023Page.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>DOTAMapUpdate2023Page.BIsTransparent()</code>|
+BAcceptsInput|<code>DOTAMapUpdate2023Page.BAcceptsInput()</code>|
+BAcceptsFocus|<code>DOTAMapUpdate2023Page.BAcceptsFocus()</code>|
+SetFocus|<code>DOTAMapUpdate2023Page.SetFocus()</code>|
+UpdateFocusInContext|<code>DOTAMapUpdate2023Page.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>DOTAMapUpdate2023Page.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>DOTAMapUpdate2023Page.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>DOTAMapUpdate2023Page.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>DOTAMapUpdate2023Page.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>DOTAMapUpdate2023Page.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>DOTAMapUpdate2023Page.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>DOTAMapUpdate2023Page.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>DOTAMapUpdate2023Page.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>DOTAMapUpdate2023Page.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>DOTAMapUpdate2023Page.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>DOTAMapUpdate2023Page.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>DOTAMapUpdate2023Page.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>DOTAMapUpdate2023Page.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>DOTAMapUpdate2023Page.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>DOTAMapUpdate2023Page.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>DOTAMapUpdate2023Page.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>DOTAMapUpdate2023Page.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>DOTAMapUpdate2023Page.ScrollToTop()</code>|
+ScrollToBottom|<code>DOTAMapUpdate2023Page.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>DOTAMapUpdate2023Page.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>DOTAMapUpdate2023Page.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>DOTAMapUpdate2023Page.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>DOTAMapUpdate2023Page.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>DOTAMapUpdate2023Page.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>DOTAMapUpdate2023Page.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>DOTAMapUpdate2023Page.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>DOTAMapUpdate2023Page.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>DOTAMapUpdate2023Page.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>DOTAMapUpdate2023Page.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>DOTAMapUpdate2023Page.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>DOTAMapUpdate2023Page.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>DOTAMapUpdate2023Page.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>DOTAMapUpdate2023Page.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>DOTAMapUpdate2023Page.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>DOTAMapUpdate2023Page.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>DOTAMapUpdate2023Page.Data( js_raw_args js_raw_args_1 )</code>|
+GetMapStatValue|<code>DOTAMapUpdate2023Page.GetMapStatValue( cstring cstring_1 )</code>|
+SetPanelEvent|<code>DOTAMapUpdate2023Page.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>DOTAMapUpdate2023Page.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>DOTAMapUpdate2023Page.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>DOTAMapUpdate2023Page.paneltype()</code>|
+
+
+# DOTADashboard
+Function|Signature|Description
+--|--|--
+visible|<code>DOTADashboard.visible( boolean boolean_1 )</code>|
+enabled|<code>DOTADashboard.enabled( boolean boolean_1 )</code>|
+checked|<code>DOTADashboard.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>DOTADashboard.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>DOTADashboard.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>DOTADashboard.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>DOTADashboard.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>DOTADashboard.tabindex( float float_1 )</code>|
+selectionpos_x|<code>DOTADashboard.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>DOTADashboard.selectionpos_y( float float_1 )</code>|
+type|<code>DOTADashboard.type()</code>|
+id|<code>DOTADashboard.id()</code>|
+layoutfile|<code>DOTADashboard.layoutfile()</code>|
+contentwidth|<code>DOTADashboard.contentwidth()</code>|
+contentheight|<code>DOTADashboard.contentheight()</code>|
+desiredlayoutwidth|<code>DOTADashboard.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>DOTADashboard.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>DOTADashboard.actuallayoutwidth()</code>|
+actuallayoutheight|<code>DOTADashboard.actuallayoutheight()</code>|
+actualxoffset|<code>DOTADashboard.actualxoffset()</code>|
+actualyoffset|<code>DOTADashboard.actualyoffset()</code>|
+scrolloffset_y|<code>DOTADashboard.scrolloffset_y()</code>|
+scrolloffset_x|<code>DOTADashboard.scrolloffset_x()</code>|
+actualuiscale_y|<code>DOTADashboard.actualuiscale_y()</code>|
+actualuiscale_x|<code>DOTADashboard.actualuiscale_x()</code>|
+style|<code>DOTADashboard.style()</code>|
+AddClass|<code>DOTADashboard.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>DOTADashboard.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>DOTADashboard.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>DOTADashboard.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>DOTADashboard.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>DOTADashboard.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>DOTADashboard.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>DOTADashboard.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>DOTADashboard.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>DOTADashboard.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>DOTADashboard.IsDraggable()</code>|
+IsSizeValid|<code>DOTADashboard.IsSizeValid()</code>|
+GetChildCount|<code>DOTADashboard.GetChildCount()</code>|
+GetChild|<code>DOTADashboard.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>DOTADashboard.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>DOTADashboard.Children()</code>|
+FindChildrenWithClassTraverse|<code>DOTADashboard.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>DOTADashboard.GetParent()</code>|
+SetParent|<code>DOTADashboard.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>DOTADashboard.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>DOTADashboard.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>DOTADashboard.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>DOTADashboard.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>DOTADashboard.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>DOTADashboard.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>DOTADashboard.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>DOTADashboard.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>DOTADashboard.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>DOTADashboard.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>DOTADashboard.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>DOTADashboard.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>DOTADashboard.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>DOTADashboard.BIsTransparent()</code>|
+BAcceptsInput|<code>DOTADashboard.BAcceptsInput()</code>|
+BAcceptsFocus|<code>DOTADashboard.BAcceptsFocus()</code>|
+SetFocus|<code>DOTADashboard.SetFocus()</code>|
+UpdateFocusInContext|<code>DOTADashboard.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>DOTADashboard.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>DOTADashboard.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>DOTADashboard.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>DOTADashboard.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>DOTADashboard.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>DOTADashboard.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>DOTADashboard.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>DOTADashboard.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>DOTADashboard.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>DOTADashboard.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>DOTADashboard.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>DOTADashboard.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>DOTADashboard.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>DOTADashboard.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>DOTADashboard.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>DOTADashboard.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>DOTADashboard.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>DOTADashboard.ScrollToTop()</code>|
+ScrollToBottom|<code>DOTADashboard.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>DOTADashboard.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>DOTADashboard.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>DOTADashboard.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>DOTADashboard.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>DOTADashboard.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>DOTADashboard.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>DOTADashboard.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>DOTADashboard.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>DOTADashboard.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>DOTADashboard.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>DOTADashboard.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>DOTADashboard.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>DOTADashboard.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>DOTADashboard.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>DOTADashboard.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>DOTADashboard.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>DOTADashboard.Data( js_raw_args js_raw_args_1 )</code>|
+SetPanelEvent|<code>DOTADashboard.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>DOTADashboard.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>DOTADashboard.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>DOTADashboard.paneltype()</code>|
+
+
+# PageManager
+Function|Signature|Description
+--|--|--
+visible|<code>PageManager.visible( boolean boolean_1 )</code>|
+enabled|<code>PageManager.enabled( boolean boolean_1 )</code>|
+checked|<code>PageManager.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>PageManager.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>PageManager.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>PageManager.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>PageManager.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>PageManager.tabindex( float float_1 )</code>|
+selectionpos_x|<code>PageManager.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>PageManager.selectionpos_y( float float_1 )</code>|
+type|<code>PageManager.type()</code>|
+id|<code>PageManager.id()</code>|
+layoutfile|<code>PageManager.layoutfile()</code>|
+contentwidth|<code>PageManager.contentwidth()</code>|
+contentheight|<code>PageManager.contentheight()</code>|
+desiredlayoutwidth|<code>PageManager.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>PageManager.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>PageManager.actuallayoutwidth()</code>|
+actuallayoutheight|<code>PageManager.actuallayoutheight()</code>|
+actualxoffset|<code>PageManager.actualxoffset()</code>|
+actualyoffset|<code>PageManager.actualyoffset()</code>|
+scrolloffset_y|<code>PageManager.scrolloffset_y()</code>|
+scrolloffset_x|<code>PageManager.scrolloffset_x()</code>|
+actualuiscale_y|<code>PageManager.actualuiscale_y()</code>|
+actualuiscale_x|<code>PageManager.actualuiscale_x()</code>|
+style|<code>PageManager.style()</code>|
+AddClass|<code>PageManager.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>PageManager.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>PageManager.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>PageManager.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>PageManager.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>PageManager.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>PageManager.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>PageManager.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>PageManager.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>PageManager.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>PageManager.IsDraggable()</code>|
+IsSizeValid|<code>PageManager.IsSizeValid()</code>|
+GetChildCount|<code>PageManager.GetChildCount()</code>|
+GetChild|<code>PageManager.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>PageManager.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>PageManager.Children()</code>|
+FindChildrenWithClassTraverse|<code>PageManager.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>PageManager.GetParent()</code>|
+SetParent|<code>PageManager.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>PageManager.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>PageManager.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>PageManager.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>PageManager.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>PageManager.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>PageManager.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>PageManager.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>PageManager.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>PageManager.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>PageManager.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>PageManager.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>PageManager.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>PageManager.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>PageManager.BIsTransparent()</code>|
+BAcceptsInput|<code>PageManager.BAcceptsInput()</code>|
+BAcceptsFocus|<code>PageManager.BAcceptsFocus()</code>|
+SetFocus|<code>PageManager.SetFocus()</code>|
+UpdateFocusInContext|<code>PageManager.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>PageManager.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>PageManager.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>PageManager.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>PageManager.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>PageManager.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>PageManager.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>PageManager.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>PageManager.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>PageManager.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>PageManager.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>PageManager.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>PageManager.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>PageManager.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>PageManager.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>PageManager.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>PageManager.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>PageManager.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>PageManager.ScrollToTop()</code>|
+ScrollToBottom|<code>PageManager.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>PageManager.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>PageManager.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>PageManager.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>PageManager.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>PageManager.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>PageManager.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>PageManager.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>PageManager.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>PageManager.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>PageManager.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>PageManager.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>PageManager.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>PageManager.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>PageManager.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>PageManager.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>PageManager.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>PageManager.Data( js_raw_args js_raw_args_1 )</code>|
+SetPanelEvent|<code>PageManager.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>PageManager.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>PageManager.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>PageManager.paneltype()</code>|
+
+
+# DOTAHomePage
+Function|Signature|Description
+--|--|--
+visible|<code>DOTAHomePage.visible( boolean boolean_1 )</code>|
+enabled|<code>DOTAHomePage.enabled( boolean boolean_1 )</code>|
+checked|<code>DOTAHomePage.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>DOTAHomePage.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>DOTAHomePage.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>DOTAHomePage.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>DOTAHomePage.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>DOTAHomePage.tabindex( float float_1 )</code>|
+selectionpos_x|<code>DOTAHomePage.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>DOTAHomePage.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAHomePage.type()</code>|
+id|<code>DOTAHomePage.id()</code>|
+layoutfile|<code>DOTAHomePage.layoutfile()</code>|
+contentwidth|<code>DOTAHomePage.contentwidth()</code>|
+contentheight|<code>DOTAHomePage.contentheight()</code>|
+desiredlayoutwidth|<code>DOTAHomePage.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>DOTAHomePage.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>DOTAHomePage.actuallayoutwidth()</code>|
+actuallayoutheight|<code>DOTAHomePage.actuallayoutheight()</code>|
+actualxoffset|<code>DOTAHomePage.actualxoffset()</code>|
+actualyoffset|<code>DOTAHomePage.actualyoffset()</code>|
+scrolloffset_y|<code>DOTAHomePage.scrolloffset_y()</code>|
+scrolloffset_x|<code>DOTAHomePage.scrolloffset_x()</code>|
+actualuiscale_y|<code>DOTAHomePage.actualuiscale_y()</code>|
+actualuiscale_x|<code>DOTAHomePage.actualuiscale_x()</code>|
+style|<code>DOTAHomePage.style()</code>|
+AddClass|<code>DOTAHomePage.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>DOTAHomePage.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>DOTAHomePage.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>DOTAHomePage.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>DOTAHomePage.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>DOTAHomePage.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>DOTAHomePage.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>DOTAHomePage.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>DOTAHomePage.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>DOTAHomePage.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>DOTAHomePage.IsDraggable()</code>|
+IsSizeValid|<code>DOTAHomePage.IsSizeValid()</code>|
+GetChildCount|<code>DOTAHomePage.GetChildCount()</code>|
+GetChild|<code>DOTAHomePage.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>DOTAHomePage.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>DOTAHomePage.Children()</code>|
+FindChildrenWithClassTraverse|<code>DOTAHomePage.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>DOTAHomePage.GetParent()</code>|
+SetParent|<code>DOTAHomePage.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>DOTAHomePage.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>DOTAHomePage.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>DOTAHomePage.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>DOTAHomePage.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>DOTAHomePage.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>DOTAHomePage.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>DOTAHomePage.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>DOTAHomePage.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>DOTAHomePage.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>DOTAHomePage.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>DOTAHomePage.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>DOTAHomePage.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>DOTAHomePage.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>DOTAHomePage.BIsTransparent()</code>|
+BAcceptsInput|<code>DOTAHomePage.BAcceptsInput()</code>|
+BAcceptsFocus|<code>DOTAHomePage.BAcceptsFocus()</code>|
+SetFocus|<code>DOTAHomePage.SetFocus()</code>|
+UpdateFocusInContext|<code>DOTAHomePage.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>DOTAHomePage.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>DOTAHomePage.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>DOTAHomePage.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>DOTAHomePage.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>DOTAHomePage.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>DOTAHomePage.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>DOTAHomePage.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>DOTAHomePage.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>DOTAHomePage.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>DOTAHomePage.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>DOTAHomePage.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>DOTAHomePage.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>DOTAHomePage.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>DOTAHomePage.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>DOTAHomePage.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>DOTAHomePage.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>DOTAHomePage.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>DOTAHomePage.ScrollToTop()</code>|
+ScrollToBottom|<code>DOTAHomePage.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>DOTAHomePage.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>DOTAHomePage.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>DOTAHomePage.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>DOTAHomePage.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>DOTAHomePage.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>DOTAHomePage.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>DOTAHomePage.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>DOTAHomePage.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>DOTAHomePage.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>DOTAHomePage.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>DOTAHomePage.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>DOTAHomePage.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>DOTAHomePage.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>DOTAHomePage.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>DOTAHomePage.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>DOTAHomePage.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>DOTAHomePage.Data( js_raw_args js_raw_args_1 )</code>|
+SetPanelEvent|<code>DOTAHomePage.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>DOTAHomePage.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>DOTAHomePage.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>DOTAHomePage.paneltype()</code>|
+
+
+# Movie
+Function|Signature|Description
+--|--|--
+visible|<code>Movie.visible( boolean boolean_1 )</code>|
+enabled|<code>Movie.enabled( boolean boolean_1 )</code>|
+checked|<code>Movie.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>Movie.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>Movie.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>Movie.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>Movie.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>Movie.tabindex( float float_1 )</code>|
+selectionpos_x|<code>Movie.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>Movie.selectionpos_y( float float_1 )</code>|
+type|<code>Movie.type()</code>|
+id|<code>Movie.id()</code>|
+layoutfile|<code>Movie.layoutfile()</code>|
+contentwidth|<code>Movie.contentwidth()</code>|
+contentheight|<code>Movie.contentheight()</code>|
+desiredlayoutwidth|<code>Movie.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>Movie.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>Movie.actuallayoutwidth()</code>|
+actuallayoutheight|<code>Movie.actuallayoutheight()</code>|
+actualxoffset|<code>Movie.actualxoffset()</code>|
+actualyoffset|<code>Movie.actualyoffset()</code>|
+scrolloffset_y|<code>Movie.scrolloffset_y()</code>|
+scrolloffset_x|<code>Movie.scrolloffset_x()</code>|
+actualuiscale_y|<code>Movie.actualuiscale_y()</code>|
+actualuiscale_x|<code>Movie.actualuiscale_x()</code>|
+style|<code>Movie.style()</code>|
+AddClass|<code>Movie.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>Movie.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>Movie.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>Movie.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>Movie.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>Movie.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>Movie.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>Movie.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>Movie.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>Movie.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>Movie.IsDraggable()</code>|
+IsSizeValid|<code>Movie.IsSizeValid()</code>|
+GetChildCount|<code>Movie.GetChildCount()</code>|
+GetChild|<code>Movie.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>Movie.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>Movie.Children()</code>|
+FindChildrenWithClassTraverse|<code>Movie.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>Movie.GetParent()</code>|
+SetParent|<code>Movie.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>Movie.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>Movie.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>Movie.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>Movie.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>Movie.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>Movie.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>Movie.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>Movie.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>Movie.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>Movie.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>Movie.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>Movie.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>Movie.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>Movie.BIsTransparent()</code>|
+BAcceptsInput|<code>Movie.BAcceptsInput()</code>|
+BAcceptsFocus|<code>Movie.BAcceptsFocus()</code>|
+SetFocus|<code>Movie.SetFocus()</code>|
+UpdateFocusInContext|<code>Movie.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>Movie.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>Movie.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>Movie.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>Movie.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>Movie.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>Movie.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>Movie.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>Movie.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>Movie.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>Movie.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>Movie.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>Movie.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>Movie.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>Movie.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>Movie.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>Movie.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>Movie.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>Movie.ScrollToTop()</code>|
+ScrollToBottom|<code>Movie.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>Movie.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>Movie.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>Movie.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>Movie.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>Movie.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>Movie.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>Movie.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>Movie.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>Movie.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>Movie.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>Movie.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>Movie.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>Movie.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>Movie.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>Movie.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>Movie.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>Movie.Data( js_raw_args js_raw_args_1 )</code>|
+SetMovie|<code>Movie.SetMovie( cstring cstring_1 )</code>|
+SetCaptions|<code>Movie.SetCaptions( cstring cstring_1 )</code>|
+SetControls|<code>Movie.SetControls( cstring cstring_1 )</code>|
+SetTitle|<code>Movie.SetTitle( cstring cstring_1 )</code>|
+Play|<code>Movie.Play()</code>|
+Pause|<code>Movie.Pause()</code>|
+Stop|<code>Movie.Stop()</code>|
+SetRepeat|<code>Movie.SetRepeat( boolean boolean_1 )</code>|
+SetPlaybackVolume|<code>Movie.SetPlaybackVolume( float float_1 )</code>|
+BAdjustingVolume|<code>Movie.BAdjustingVolume()</code>|
+SetPanelEvent|<code>Movie.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>Movie.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>Movie.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>Movie.paneltype()</code>|
+
+
 # DOTALoadingScreen
 Function|Signature|Description
 --|--|--
@@ -1286,6 +1841,7 @@ hittestchildren|<code>DOTALoadingScreen.hittestchildren( boolean boolean_1 )</co
 tabindex|<code>DOTALoadingScreen.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTALoadingScreen.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTALoadingScreen.selectionpos_y( float float_1 )</code>|
+type|<code>DOTALoadingScreen.type()</code>|
 id|<code>DOTALoadingScreen.id()</code>|
 layoutfile|<code>DOTALoadingScreen.layoutfile()</code>|
 contentwidth|<code>DOTALoadingScreen.contentwidth()</code>|
@@ -1393,6 +1949,7 @@ hittestchildren|<code>Button.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>Button.tabindex( float float_1 )</code>|
 selectionpos_x|<code>Button.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>Button.selectionpos_y( float float_1 )</code>|
+type|<code>Button.type()</code>|
 id|<code>Button.id()</code>|
 layoutfile|<code>Button.layoutfile()</code>|
 contentwidth|<code>Button.contentwidth()</code>|
@@ -1500,6 +2057,7 @@ hittestchildren|<code>Image.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>Image.tabindex( float float_1 )</code>|
 selectionpos_x|<code>Image.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>Image.selectionpos_y( float float_1 )</code>|
+type|<code>Image.type()</code>|
 id|<code>Image.id()</code>|
 layoutfile|<code>Image.layoutfile()</code>|
 contentwidth|<code>Image.contentwidth()</code>|
@@ -1609,6 +2167,7 @@ hittestchildren|<code>DOTACustomUIRoot.hittestchildren( boolean boolean_1 )</cod
 tabindex|<code>DOTACustomUIRoot.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTACustomUIRoot.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTACustomUIRoot.selectionpos_y( float float_1 )</code>|
+type|<code>DOTACustomUIRoot.type()</code>|
 id|<code>DOTACustomUIRoot.id()</code>|
 layoutfile|<code>DOTACustomUIRoot.layoutfile()</code>|
 contentwidth|<code>DOTACustomUIRoot.contentwidth()</code>|
@@ -1716,6 +2275,7 @@ hittestchildren|<code>DOTAHud.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>DOTAHud.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTAHud.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTAHud.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAHud.type()</code>|
 id|<code>DOTAHud.id()</code>|
 layoutfile|<code>DOTAHud.layoutfile()</code>|
 contentwidth|<code>DOTAHud.contentwidth()</code>|
@@ -1823,6 +2383,7 @@ hittestchildren|<code>DOTAPaused.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>DOTAPaused.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTAPaused.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTAPaused.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAPaused.type()</code>|
 id|<code>DOTAPaused.id()</code>|
 layoutfile|<code>DOTAPaused.layoutfile()</code>|
 contentwidth|<code>DOTAPaused.contentwidth()</code>|
@@ -1917,6 +2478,114 @@ rememberchildfocus|<code>DOTAPaused.rememberchildfocus( boolean boolean_1 )</cod
 paneltype|<code>DOTAPaused.paneltype()</code>|
 
 
+# DOTAChat
+Function|Signature|Description
+--|--|--
+visible|<code>DOTAChat.visible( boolean boolean_1 )</code>|
+enabled|<code>DOTAChat.enabled( boolean boolean_1 )</code>|
+checked|<code>DOTAChat.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>DOTAChat.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>DOTAChat.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>DOTAChat.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>DOTAChat.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>DOTAChat.tabindex( float float_1 )</code>|
+selectionpos_x|<code>DOTAChat.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>DOTAChat.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAChat.type()</code>|
+id|<code>DOTAChat.id()</code>|
+layoutfile|<code>DOTAChat.layoutfile()</code>|
+contentwidth|<code>DOTAChat.contentwidth()</code>|
+contentheight|<code>DOTAChat.contentheight()</code>|
+desiredlayoutwidth|<code>DOTAChat.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>DOTAChat.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>DOTAChat.actuallayoutwidth()</code>|
+actuallayoutheight|<code>DOTAChat.actuallayoutheight()</code>|
+actualxoffset|<code>DOTAChat.actualxoffset()</code>|
+actualyoffset|<code>DOTAChat.actualyoffset()</code>|
+scrolloffset_y|<code>DOTAChat.scrolloffset_y()</code>|
+scrolloffset_x|<code>DOTAChat.scrolloffset_x()</code>|
+actualuiscale_y|<code>DOTAChat.actualuiscale_y()</code>|
+actualuiscale_x|<code>DOTAChat.actualuiscale_x()</code>|
+style|<code>DOTAChat.style()</code>|
+AddClass|<code>DOTAChat.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>DOTAChat.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>DOTAChat.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>DOTAChat.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>DOTAChat.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>DOTAChat.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>DOTAChat.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>DOTAChat.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>DOTAChat.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>DOTAChat.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>DOTAChat.IsDraggable()</code>|
+IsSizeValid|<code>DOTAChat.IsSizeValid()</code>|
+GetChildCount|<code>DOTAChat.GetChildCount()</code>|
+GetChild|<code>DOTAChat.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>DOTAChat.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>DOTAChat.Children()</code>|
+FindChildrenWithClassTraverse|<code>DOTAChat.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>DOTAChat.GetParent()</code>|
+SetParent|<code>DOTAChat.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>DOTAChat.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>DOTAChat.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>DOTAChat.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>DOTAChat.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>DOTAChat.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>DOTAChat.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>DOTAChat.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>DOTAChat.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>DOTAChat.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>DOTAChat.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>DOTAChat.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>DOTAChat.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>DOTAChat.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>DOTAChat.BIsTransparent()</code>|
+BAcceptsInput|<code>DOTAChat.BAcceptsInput()</code>|
+BAcceptsFocus|<code>DOTAChat.BAcceptsFocus()</code>|
+SetFocus|<code>DOTAChat.SetFocus()</code>|
+UpdateFocusInContext|<code>DOTAChat.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>DOTAChat.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>DOTAChat.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>DOTAChat.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>DOTAChat.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>DOTAChat.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>DOTAChat.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>DOTAChat.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>DOTAChat.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>DOTAChat.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>DOTAChat.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>DOTAChat.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>DOTAChat.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>DOTAChat.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>DOTAChat.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>DOTAChat.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>DOTAChat.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>DOTAChat.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>DOTAChat.ScrollToTop()</code>|
+ScrollToBottom|<code>DOTAChat.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>DOTAChat.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>DOTAChat.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>DOTAChat.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>DOTAChat.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>DOTAChat.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>DOTAChat.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>DOTAChat.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>DOTAChat.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>DOTAChat.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>DOTAChat.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>DOTAChat.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>DOTAChat.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>DOTAChat.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>DOTAChat.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>DOTAChat.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>DOTAChat.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>DOTAChat.Data( js_raw_args js_raw_args_1 )</code>|
+SetPanelEvent|<code>DOTAChat.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>DOTAChat.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>DOTAChat.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>DOTAChat.paneltype()</code>|
+
+
 # DOTAAvatarImage
 Function|Signature|Description
 --|--|--
@@ -1930,6 +2599,7 @@ hittestchildren|<code>DOTAAvatarImage.hittestchildren( boolean boolean_1 )</code
 tabindex|<code>DOTAAvatarImage.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTAAvatarImage.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTAAvatarImage.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAAvatarImage.type()</code>|
 id|<code>DOTAAvatarImage.id()</code>|
 layoutfile|<code>DOTAAvatarImage.layoutfile()</code>|
 contentwidth|<code>DOTAAvatarImage.contentwidth()</code>|
@@ -2040,6 +2710,7 @@ hittestchildren|<code>CustomUIElement.hittestchildren( boolean boolean_1 )</code
 tabindex|<code>CustomUIElement.tabindex( float float_1 )</code>|
 selectionpos_x|<code>CustomUIElement.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>CustomUIElement.selectionpos_y( float float_1 )</code>|
+type|<code>CustomUIElement.type()</code>|
 id|<code>CustomUIElement.id()</code>|
 layoutfile|<code>CustomUIElement.layoutfile()</code>|
 contentwidth|<code>CustomUIElement.contentwidth()</code>|
@@ -2147,6 +2818,7 @@ hittestchildren|<code>DOTACustomUITypeContainer.hittestchildren( boolean boolean
 tabindex|<code>DOTACustomUITypeContainer.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTACustomUITypeContainer.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTACustomUITypeContainer.selectionpos_y( float float_1 )</code>|
+type|<code>DOTACustomUITypeContainer.type()</code>|
 id|<code>DOTACustomUITypeContainer.id()</code>|
 layoutfile|<code>DOTACustomUITypeContainer.layoutfile()</code>|
 contentwidth|<code>DOTACustomUITypeContainer.contentwidth()</code>|
@@ -2254,6 +2926,7 @@ hittestchildren|<code>ToastManager.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>ToastManager.tabindex( float float_1 )</code>|
 selectionpos_x|<code>ToastManager.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>ToastManager.selectionpos_y( float float_1 )</code>|
+type|<code>ToastManager.type()</code>|
 id|<code>ToastManager.id()</code>|
 layoutfile|<code>ToastManager.layoutfile()</code>|
 contentwidth|<code>ToastManager.contentwidth()</code>|
@@ -2363,6 +3036,7 @@ hittestchildren|<code>DOTACombatEvents.hittestchildren( boolean boolean_1 )</cod
 tabindex|<code>DOTACombatEvents.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTACombatEvents.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTACombatEvents.selectionpos_y( float float_1 )</code>|
+type|<code>DOTACombatEvents.type()</code>|
 id|<code>DOTACombatEvents.id()</code>|
 layoutfile|<code>DOTACombatEvents.layoutfile()</code>|
 contentwidth|<code>DOTACombatEvents.contentwidth()</code>|
@@ -2457,113 +3131,6 @@ rememberchildfocus|<code>DOTACombatEvents.rememberchildfocus( boolean boolean_1 
 paneltype|<code>DOTACombatEvents.paneltype()</code>|
 
 
-# DOTAChat
-Function|Signature|Description
---|--|--
-visible|<code>DOTAChat.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTAChat.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTAChat.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTAChat.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTAChat.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTAChat.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTAChat.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTAChat.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTAChat.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTAChat.selectionpos_y( float float_1 )</code>|
-id|<code>DOTAChat.id()</code>|
-layoutfile|<code>DOTAChat.layoutfile()</code>|
-contentwidth|<code>DOTAChat.contentwidth()</code>|
-contentheight|<code>DOTAChat.contentheight()</code>|
-desiredlayoutwidth|<code>DOTAChat.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTAChat.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTAChat.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTAChat.actuallayoutheight()</code>|
-actualxoffset|<code>DOTAChat.actualxoffset()</code>|
-actualyoffset|<code>DOTAChat.actualyoffset()</code>|
-scrolloffset_y|<code>DOTAChat.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTAChat.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTAChat.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTAChat.actualuiscale_x()</code>|
-style|<code>DOTAChat.style()</code>|
-AddClass|<code>DOTAChat.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTAChat.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTAChat.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTAChat.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTAChat.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTAChat.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTAChat.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTAChat.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTAChat.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTAChat.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTAChat.IsDraggable()</code>|
-IsSizeValid|<code>DOTAChat.IsSizeValid()</code>|
-GetChildCount|<code>DOTAChat.GetChildCount()</code>|
-GetChild|<code>DOTAChat.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTAChat.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTAChat.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTAChat.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTAChat.GetParent()</code>|
-SetParent|<code>DOTAChat.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTAChat.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTAChat.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTAChat.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTAChat.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTAChat.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTAChat.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTAChat.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTAChat.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTAChat.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTAChat.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTAChat.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTAChat.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTAChat.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTAChat.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTAChat.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTAChat.BAcceptsFocus()</code>|
-SetFocus|<code>DOTAChat.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTAChat.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTAChat.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTAChat.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTAChat.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTAChat.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTAChat.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTAChat.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTAChat.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTAChat.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTAChat.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTAChat.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTAChat.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTAChat.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTAChat.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTAChat.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTAChat.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTAChat.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTAChat.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTAChat.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTAChat.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTAChat.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTAChat.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTAChat.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTAChat.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTAChat.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTAChat.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTAChat.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTAChat.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTAChat.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTAChat.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTAChat.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTAChat.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTAChat.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTAChat.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTAChat.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTAChat.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTAChat.Data( js_raw_args js_raw_args_1 )</code>|
-SetPanelEvent|<code>DOTAChat.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTAChat.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTAChat.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTAChat.paneltype()</code>|
-
-
 # TextButton
 Function|Signature|Description
 --|--|--
@@ -2577,6 +3144,7 @@ hittestchildren|<code>TextButton.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>TextButton.tabindex( float float_1 )</code>|
 selectionpos_x|<code>TextButton.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>TextButton.selectionpos_y( float float_1 )</code>|
+type|<code>TextButton.type()</code>|
 id|<code>TextButton.id()</code>|
 layoutfile|<code>TextButton.layoutfile()</code>|
 contentwidth|<code>TextButton.contentwidth()</code>|
@@ -2672,894 +3240,6 @@ rememberchildfocus|<code>TextButton.rememberchildfocus( boolean boolean_1 )</cod
 paneltype|<code>TextButton.paneltype()</code>|
 
 
-# DOTABuffList
-Function|Signature|Description
---|--|--
-visible|<code>DOTABuffList.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTABuffList.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTABuffList.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTABuffList.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTABuffList.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTABuffList.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTABuffList.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTABuffList.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTABuffList.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTABuffList.selectionpos_y( float float_1 )</code>|
-id|<code>DOTABuffList.id()</code>|
-layoutfile|<code>DOTABuffList.layoutfile()</code>|
-contentwidth|<code>DOTABuffList.contentwidth()</code>|
-contentheight|<code>DOTABuffList.contentheight()</code>|
-desiredlayoutwidth|<code>DOTABuffList.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTABuffList.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTABuffList.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTABuffList.actuallayoutheight()</code>|
-actualxoffset|<code>DOTABuffList.actualxoffset()</code>|
-actualyoffset|<code>DOTABuffList.actualyoffset()</code>|
-scrolloffset_y|<code>DOTABuffList.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTABuffList.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTABuffList.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTABuffList.actualuiscale_x()</code>|
-style|<code>DOTABuffList.style()</code>|
-AddClass|<code>DOTABuffList.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTABuffList.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTABuffList.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTABuffList.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTABuffList.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTABuffList.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTABuffList.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTABuffList.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTABuffList.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTABuffList.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTABuffList.IsDraggable()</code>|
-IsSizeValid|<code>DOTABuffList.IsSizeValid()</code>|
-GetChildCount|<code>DOTABuffList.GetChildCount()</code>|
-GetChild|<code>DOTABuffList.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTABuffList.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTABuffList.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTABuffList.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTABuffList.GetParent()</code>|
-SetParent|<code>DOTABuffList.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTABuffList.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTABuffList.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTABuffList.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTABuffList.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTABuffList.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTABuffList.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTABuffList.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTABuffList.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTABuffList.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTABuffList.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTABuffList.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTABuffList.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTABuffList.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTABuffList.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTABuffList.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTABuffList.BAcceptsFocus()</code>|
-SetFocus|<code>DOTABuffList.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTABuffList.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTABuffList.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTABuffList.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTABuffList.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTABuffList.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTABuffList.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTABuffList.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTABuffList.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTABuffList.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTABuffList.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTABuffList.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTABuffList.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTABuffList.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTABuffList.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTABuffList.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTABuffList.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTABuffList.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTABuffList.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTABuffList.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTABuffList.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTABuffList.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTABuffList.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTABuffList.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTABuffList.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTABuffList.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTABuffList.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTABuffList.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTABuffList.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTABuffList.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTABuffList.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTABuffList.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTABuffList.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTABuffList.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTABuffList.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTABuffList.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTABuffList.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTABuffList.Data( js_raw_args js_raw_args_1 )</code>|
-SetPanelEvent|<code>DOTABuffList.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTABuffList.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTABuffList.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTABuffList.paneltype()</code>|
-
-
-# DOTAUnitName
-Function|Signature|Description
---|--|--
-visible|<code>DOTAUnitName.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTAUnitName.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTAUnitName.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTAUnitName.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTAUnitName.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTAUnitName.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTAUnitName.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTAUnitName.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTAUnitName.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTAUnitName.selectionpos_y( float float_1 )</code>|
-id|<code>DOTAUnitName.id()</code>|
-layoutfile|<code>DOTAUnitName.layoutfile()</code>|
-contentwidth|<code>DOTAUnitName.contentwidth()</code>|
-contentheight|<code>DOTAUnitName.contentheight()</code>|
-desiredlayoutwidth|<code>DOTAUnitName.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTAUnitName.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTAUnitName.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTAUnitName.actuallayoutheight()</code>|
-actualxoffset|<code>DOTAUnitName.actualxoffset()</code>|
-actualyoffset|<code>DOTAUnitName.actualyoffset()</code>|
-scrolloffset_y|<code>DOTAUnitName.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTAUnitName.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTAUnitName.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTAUnitName.actualuiscale_x()</code>|
-style|<code>DOTAUnitName.style()</code>|
-AddClass|<code>DOTAUnitName.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTAUnitName.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTAUnitName.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTAUnitName.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTAUnitName.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTAUnitName.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTAUnitName.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTAUnitName.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTAUnitName.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTAUnitName.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTAUnitName.IsDraggable()</code>|
-IsSizeValid|<code>DOTAUnitName.IsSizeValid()</code>|
-GetChildCount|<code>DOTAUnitName.GetChildCount()</code>|
-GetChild|<code>DOTAUnitName.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTAUnitName.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTAUnitName.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTAUnitName.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTAUnitName.GetParent()</code>|
-SetParent|<code>DOTAUnitName.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTAUnitName.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTAUnitName.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTAUnitName.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTAUnitName.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTAUnitName.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTAUnitName.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTAUnitName.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTAUnitName.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTAUnitName.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTAUnitName.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTAUnitName.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTAUnitName.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTAUnitName.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTAUnitName.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTAUnitName.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTAUnitName.BAcceptsFocus()</code>|
-SetFocus|<code>DOTAUnitName.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTAUnitName.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTAUnitName.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTAUnitName.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTAUnitName.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTAUnitName.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTAUnitName.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTAUnitName.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTAUnitName.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTAUnitName.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTAUnitName.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTAUnitName.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTAUnitName.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTAUnitName.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTAUnitName.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTAUnitName.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTAUnitName.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTAUnitName.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTAUnitName.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTAUnitName.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTAUnitName.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTAUnitName.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTAUnitName.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTAUnitName.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTAUnitName.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTAUnitName.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTAUnitName.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTAUnitName.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTAUnitName.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTAUnitName.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTAUnitName.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTAUnitName.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTAUnitName.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTAUnitName.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTAUnitName.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTAUnitName.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTAUnitName.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTAUnitName.Data( js_raw_args js_raw_args_1 )</code>|
-SetPanelEvent|<code>DOTAUnitName.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTAUnitName.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTAUnitName.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTAUnitName.paneltype()</code>|
-
-
-# DOTAPortrait
-Function|Signature|Description
---|--|--
-visible|<code>DOTAPortrait.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTAPortrait.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTAPortrait.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTAPortrait.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTAPortrait.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTAPortrait.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTAPortrait.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTAPortrait.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTAPortrait.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTAPortrait.selectionpos_y( float float_1 )</code>|
-id|<code>DOTAPortrait.id()</code>|
-layoutfile|<code>DOTAPortrait.layoutfile()</code>|
-contentwidth|<code>DOTAPortrait.contentwidth()</code>|
-contentheight|<code>DOTAPortrait.contentheight()</code>|
-desiredlayoutwidth|<code>DOTAPortrait.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTAPortrait.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTAPortrait.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTAPortrait.actuallayoutheight()</code>|
-actualxoffset|<code>DOTAPortrait.actualxoffset()</code>|
-actualyoffset|<code>DOTAPortrait.actualyoffset()</code>|
-scrolloffset_y|<code>DOTAPortrait.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTAPortrait.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTAPortrait.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTAPortrait.actualuiscale_x()</code>|
-style|<code>DOTAPortrait.style()</code>|
-AddClass|<code>DOTAPortrait.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTAPortrait.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTAPortrait.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTAPortrait.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTAPortrait.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTAPortrait.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTAPortrait.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTAPortrait.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTAPortrait.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTAPortrait.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTAPortrait.IsDraggable()</code>|
-IsSizeValid|<code>DOTAPortrait.IsSizeValid()</code>|
-GetChildCount|<code>DOTAPortrait.GetChildCount()</code>|
-GetChild|<code>DOTAPortrait.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTAPortrait.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTAPortrait.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTAPortrait.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTAPortrait.GetParent()</code>|
-SetParent|<code>DOTAPortrait.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTAPortrait.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTAPortrait.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTAPortrait.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTAPortrait.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTAPortrait.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTAPortrait.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTAPortrait.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTAPortrait.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTAPortrait.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTAPortrait.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTAPortrait.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTAPortrait.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTAPortrait.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTAPortrait.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTAPortrait.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTAPortrait.BAcceptsFocus()</code>|
-SetFocus|<code>DOTAPortrait.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTAPortrait.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTAPortrait.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTAPortrait.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTAPortrait.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTAPortrait.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTAPortrait.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTAPortrait.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTAPortrait.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTAPortrait.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTAPortrait.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTAPortrait.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTAPortrait.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTAPortrait.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTAPortrait.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTAPortrait.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTAPortrait.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTAPortrait.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTAPortrait.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTAPortrait.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTAPortrait.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTAPortrait.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTAPortrait.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTAPortrait.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTAPortrait.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTAPortrait.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTAPortrait.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTAPortrait.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTAPortrait.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTAPortrait.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTAPortrait.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTAPortrait.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTAPortrait.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTAPortrait.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTAPortrait.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTAPortrait.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTAPortrait.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTAPortrait.Data( js_raw_args js_raw_args_1 )</code>|
-SetPanelEvent|<code>DOTAPortrait.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTAPortrait.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTAPortrait.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTAPortrait.paneltype()</code>|
-
-
-# DOTAXP
-Function|Signature|Description
---|--|--
-visible|<code>DOTAXP.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTAXP.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTAXP.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTAXP.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTAXP.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTAXP.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTAXP.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTAXP.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTAXP.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTAXP.selectionpos_y( float float_1 )</code>|
-id|<code>DOTAXP.id()</code>|
-layoutfile|<code>DOTAXP.layoutfile()</code>|
-contentwidth|<code>DOTAXP.contentwidth()</code>|
-contentheight|<code>DOTAXP.contentheight()</code>|
-desiredlayoutwidth|<code>DOTAXP.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTAXP.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTAXP.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTAXP.actuallayoutheight()</code>|
-actualxoffset|<code>DOTAXP.actualxoffset()</code>|
-actualyoffset|<code>DOTAXP.actualyoffset()</code>|
-scrolloffset_y|<code>DOTAXP.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTAXP.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTAXP.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTAXP.actualuiscale_x()</code>|
-style|<code>DOTAXP.style()</code>|
-AddClass|<code>DOTAXP.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTAXP.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTAXP.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTAXP.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTAXP.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTAXP.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTAXP.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTAXP.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTAXP.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTAXP.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTAXP.IsDraggable()</code>|
-IsSizeValid|<code>DOTAXP.IsSizeValid()</code>|
-GetChildCount|<code>DOTAXP.GetChildCount()</code>|
-GetChild|<code>DOTAXP.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTAXP.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTAXP.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTAXP.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTAXP.GetParent()</code>|
-SetParent|<code>DOTAXP.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTAXP.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTAXP.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTAXP.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTAXP.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTAXP.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTAXP.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTAXP.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTAXP.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTAXP.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTAXP.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTAXP.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTAXP.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTAXP.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTAXP.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTAXP.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTAXP.BAcceptsFocus()</code>|
-SetFocus|<code>DOTAXP.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTAXP.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTAXP.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTAXP.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTAXP.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTAXP.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTAXP.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTAXP.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTAXP.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTAXP.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTAXP.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTAXP.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTAXP.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTAXP.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTAXP.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTAXP.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTAXP.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTAXP.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTAXP.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTAXP.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTAXP.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTAXP.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTAXP.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTAXP.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTAXP.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTAXP.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTAXP.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTAXP.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTAXP.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTAXP.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTAXP.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTAXP.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTAXP.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTAXP.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTAXP.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTAXP.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTAXP.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTAXP.Data( js_raw_args js_raw_args_1 )</code>|
-playerid|<code>DOTAXP.playerid( unknown_variant_type unknown_variant_type_1 )</code>|
-SetPanelEvent|<code>DOTAXP.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTAXP.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTAXP.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTAXP.paneltype()</code>|
-
-
-# DOTAScenePanel
-Function|Signature|Description
---|--|--
-visible|<code>DOTAScenePanel.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTAScenePanel.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTAScenePanel.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTAScenePanel.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTAScenePanel.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTAScenePanel.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTAScenePanel.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTAScenePanel.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTAScenePanel.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTAScenePanel.selectionpos_y( float float_1 )</code>|
-id|<code>DOTAScenePanel.id()</code>|
-layoutfile|<code>DOTAScenePanel.layoutfile()</code>|
-contentwidth|<code>DOTAScenePanel.contentwidth()</code>|
-contentheight|<code>DOTAScenePanel.contentheight()</code>|
-desiredlayoutwidth|<code>DOTAScenePanel.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTAScenePanel.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTAScenePanel.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTAScenePanel.actuallayoutheight()</code>|
-actualxoffset|<code>DOTAScenePanel.actualxoffset()</code>|
-actualyoffset|<code>DOTAScenePanel.actualyoffset()</code>|
-scrolloffset_y|<code>DOTAScenePanel.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTAScenePanel.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTAScenePanel.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTAScenePanel.actualuiscale_x()</code>|
-style|<code>DOTAScenePanel.style()</code>|
-AddClass|<code>DOTAScenePanel.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTAScenePanel.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTAScenePanel.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTAScenePanel.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTAScenePanel.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTAScenePanel.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTAScenePanel.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTAScenePanel.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTAScenePanel.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTAScenePanel.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTAScenePanel.IsDraggable()</code>|
-IsSizeValid|<code>DOTAScenePanel.IsSizeValid()</code>|
-GetChildCount|<code>DOTAScenePanel.GetChildCount()</code>|
-GetChild|<code>DOTAScenePanel.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTAScenePanel.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTAScenePanel.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTAScenePanel.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTAScenePanel.GetParent()</code>|
-SetParent|<code>DOTAScenePanel.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTAScenePanel.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTAScenePanel.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTAScenePanel.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTAScenePanel.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTAScenePanel.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTAScenePanel.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTAScenePanel.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTAScenePanel.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTAScenePanel.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTAScenePanel.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTAScenePanel.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTAScenePanel.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTAScenePanel.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTAScenePanel.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTAScenePanel.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTAScenePanel.BAcceptsFocus()</code>|
-SetFocus|<code>DOTAScenePanel.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTAScenePanel.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTAScenePanel.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTAScenePanel.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTAScenePanel.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTAScenePanel.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTAScenePanel.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTAScenePanel.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTAScenePanel.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTAScenePanel.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTAScenePanel.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTAScenePanel.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTAScenePanel.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTAScenePanel.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTAScenePanel.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTAScenePanel.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTAScenePanel.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTAScenePanel.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTAScenePanel.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTAScenePanel.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTAScenePanel.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTAScenePanel.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTAScenePanel.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTAScenePanel.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTAScenePanel.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTAScenePanel.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTAScenePanel.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTAScenePanel.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTAScenePanel.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTAScenePanel.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTAScenePanel.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTAScenePanel.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTAScenePanel.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTAScenePanel.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTAScenePanel.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTAScenePanel.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTAScenePanel.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTAScenePanel.Data( js_raw_args js_raw_args_1 )</code>|
-FireEntityInput|<code>DOTAScenePanel.FireEntityInput( cstring cstring_1, cstring cstring_2, cstring cstring_3 )</code>|
-PlayEntitySoundEvent|<code>DOTAScenePanel.PlayEntitySoundEvent( cstring cstring_1, cstring cstring_2 )</code>|
-SetUnit|<code>DOTAScenePanel.SetUnit( cstring cstring_1, cstring cstring_2, boolean boolean_3 )</code>|
-SetAnimgraphParameterOnEntityInt|<code>DOTAScenePanel.SetAnimgraphParameterOnEntityInt( cstring cstring_1, cstring cstring_2, integer integer_3 )</code>|
-SetAnimgraphParameterOnEntityFloat|<code>DOTAScenePanel.SetAnimgraphParameterOnEntityFloat( cstring cstring_1, cstring cstring_2, float float_3 )</code>|
-GetPanoramaSurfacePanel|<code>DOTAScenePanel.GetPanoramaSurfacePanel()</code>|
-SetRotateParams|<code>DOTAScenePanel.SetRotateParams( float float_1, float float_2, float float_3, float float_4 )</code>|
-ReloadScene|<code>DOTAScenePanel.ReloadScene()</code>|
-ClearScene|<code>DOTAScenePanel.ClearScene( boolean boolean_1 )</code>|
-SpawnHeroInScenePanelByPlayerSlot|<code>DOTAScenePanel.SpawnHeroInScenePanelByPlayerSlot( cstring cstring_1, integer integer_2, cstring cstring_3 )</code>|
-SpawnHeroInScenePanelByHeroId|<code>DOTAScenePanel.SpawnHeroInScenePanelByHeroId( integer integer_1, cstring cstring_2, integer integer_3 )</code>|
-SetScenePanelToPlayerHero|<code>DOTAScenePanel.SetScenePanelToPlayerHero( cstring cstring_1, integer integer_2 )</code>|
-SetScenePanelToLocalHero|<code>DOTAScenePanel.SetScenePanelToLocalHero( integer integer_1 )</code>|
-ReplaceEconItemSlot|<code>DOTAScenePanel.ReplaceEconItemSlot( integer integer_1, integer integer_2, integer integer_3 )</code>|
-SetPostProcessFade|<code>DOTAScenePanel.SetPostProcessFade( float float_1 )</code>|
-SetCustomPostProcessMaterial|<code>DOTAScenePanel.SetCustomPostProcessMaterial( cstring cstring_1 )</code>|
-SpawnHeroInScenePanelByPlayerSlotWithFullBodyView|<code>DOTAScenePanel.SpawnHeroInScenePanelByPlayerSlotWithFullBodyView( cstring cstring_1, integer integer_2 )</code>|
-LerpToCameraEntity|<code>DOTAScenePanel.LerpToCameraEntity( cstring cstring_1, float float_2 )</code>|
-SetPanelEvent|<code>DOTAScenePanel.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTAScenePanel.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTAScenePanel.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTAScenePanel.paneltype()</code>|
-
-
-# DOTAAbilityImage
-Function|Signature|Description
---|--|--
-visible|<code>DOTAAbilityImage.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTAAbilityImage.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTAAbilityImage.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTAAbilityImage.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTAAbilityImage.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTAAbilityImage.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTAAbilityImage.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTAAbilityImage.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTAAbilityImage.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTAAbilityImage.selectionpos_y( float float_1 )</code>|
-id|<code>DOTAAbilityImage.id()</code>|
-layoutfile|<code>DOTAAbilityImage.layoutfile()</code>|
-contentwidth|<code>DOTAAbilityImage.contentwidth()</code>|
-contentheight|<code>DOTAAbilityImage.contentheight()</code>|
-desiredlayoutwidth|<code>DOTAAbilityImage.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTAAbilityImage.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTAAbilityImage.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTAAbilityImage.actuallayoutheight()</code>|
-actualxoffset|<code>DOTAAbilityImage.actualxoffset()</code>|
-actualyoffset|<code>DOTAAbilityImage.actualyoffset()</code>|
-scrolloffset_y|<code>DOTAAbilityImage.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTAAbilityImage.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTAAbilityImage.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTAAbilityImage.actualuiscale_x()</code>|
-style|<code>DOTAAbilityImage.style()</code>|
-AddClass|<code>DOTAAbilityImage.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTAAbilityImage.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTAAbilityImage.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTAAbilityImage.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTAAbilityImage.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTAAbilityImage.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTAAbilityImage.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTAAbilityImage.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTAAbilityImage.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTAAbilityImage.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTAAbilityImage.IsDraggable()</code>|
-IsSizeValid|<code>DOTAAbilityImage.IsSizeValid()</code>|
-GetChildCount|<code>DOTAAbilityImage.GetChildCount()</code>|
-GetChild|<code>DOTAAbilityImage.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTAAbilityImage.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTAAbilityImage.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTAAbilityImage.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTAAbilityImage.GetParent()</code>|
-SetParent|<code>DOTAAbilityImage.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTAAbilityImage.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTAAbilityImage.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTAAbilityImage.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTAAbilityImage.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTAAbilityImage.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTAAbilityImage.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTAAbilityImage.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTAAbilityImage.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTAAbilityImage.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTAAbilityImage.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTAAbilityImage.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTAAbilityImage.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTAAbilityImage.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTAAbilityImage.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTAAbilityImage.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTAAbilityImage.BAcceptsFocus()</code>|
-SetFocus|<code>DOTAAbilityImage.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTAAbilityImage.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTAAbilityImage.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTAAbilityImage.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTAAbilityImage.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTAAbilityImage.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTAAbilityImage.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTAAbilityImage.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTAAbilityImage.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTAAbilityImage.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTAAbilityImage.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTAAbilityImage.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTAAbilityImage.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTAAbilityImage.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTAAbilityImage.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTAAbilityImage.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTAAbilityImage.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTAAbilityImage.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTAAbilityImage.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTAAbilityImage.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTAAbilityImage.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTAAbilityImage.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTAAbilityImage.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTAAbilityImage.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTAAbilityImage.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTAAbilityImage.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTAAbilityImage.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTAAbilityImage.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTAAbilityImage.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTAAbilityImage.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTAAbilityImage.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTAAbilityImage.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTAAbilityImage.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTAAbilityImage.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTAAbilityImage.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTAAbilityImage.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTAAbilityImage.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTAAbilityImage.Data( js_raw_args js_raw_args_1 )</code>|
-SetImage|<code>DOTAAbilityImage.SetImage( cstring cstring_1 )</code>|
-SetScaling|<code>DOTAAbilityImage.SetScaling( cstring cstring_1 )</code>|
-abilityid|<code>DOTAAbilityImage.abilityid( integer integer_1 )</code>|
-abilityname|<code>DOTAAbilityImage.abilityname( cstring cstring_1 )</code>|
-abilitylevel|<code>DOTAAbilityImage.abilitylevel( integer integer_1 )</code>|
-contextEntityIndex|<code>DOTAAbilityImage.contextEntityIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-SetPanelEvent|<code>DOTAAbilityImage.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTAAbilityImage.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTAAbilityImage.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTAAbilityImage.paneltype()</code>|
-
-
-# DOTAItemImage
-Function|Signature|Description
---|--|--
-visible|<code>DOTAItemImage.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTAItemImage.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTAItemImage.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTAItemImage.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTAItemImage.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTAItemImage.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTAItemImage.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTAItemImage.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTAItemImage.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTAItemImage.selectionpos_y( float float_1 )</code>|
-id|<code>DOTAItemImage.id()</code>|
-layoutfile|<code>DOTAItemImage.layoutfile()</code>|
-contentwidth|<code>DOTAItemImage.contentwidth()</code>|
-contentheight|<code>DOTAItemImage.contentheight()</code>|
-desiredlayoutwidth|<code>DOTAItemImage.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTAItemImage.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTAItemImage.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTAItemImage.actuallayoutheight()</code>|
-actualxoffset|<code>DOTAItemImage.actualxoffset()</code>|
-actualyoffset|<code>DOTAItemImage.actualyoffset()</code>|
-scrolloffset_y|<code>DOTAItemImage.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTAItemImage.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTAItemImage.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTAItemImage.actualuiscale_x()</code>|
-style|<code>DOTAItemImage.style()</code>|
-AddClass|<code>DOTAItemImage.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTAItemImage.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTAItemImage.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTAItemImage.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTAItemImage.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTAItemImage.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTAItemImage.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTAItemImage.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTAItemImage.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTAItemImage.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTAItemImage.IsDraggable()</code>|
-IsSizeValid|<code>DOTAItemImage.IsSizeValid()</code>|
-GetChildCount|<code>DOTAItemImage.GetChildCount()</code>|
-GetChild|<code>DOTAItemImage.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTAItemImage.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTAItemImage.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTAItemImage.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTAItemImage.GetParent()</code>|
-SetParent|<code>DOTAItemImage.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTAItemImage.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTAItemImage.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTAItemImage.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTAItemImage.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTAItemImage.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTAItemImage.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTAItemImage.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTAItemImage.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTAItemImage.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTAItemImage.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTAItemImage.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTAItemImage.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTAItemImage.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTAItemImage.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTAItemImage.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTAItemImage.BAcceptsFocus()</code>|
-SetFocus|<code>DOTAItemImage.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTAItemImage.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTAItemImage.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTAItemImage.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTAItemImage.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTAItemImage.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTAItemImage.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTAItemImage.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTAItemImage.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTAItemImage.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTAItemImage.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTAItemImage.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTAItemImage.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTAItemImage.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTAItemImage.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTAItemImage.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTAItemImage.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTAItemImage.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTAItemImage.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTAItemImage.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTAItemImage.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTAItemImage.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTAItemImage.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTAItemImage.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTAItemImage.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTAItemImage.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTAItemImage.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTAItemImage.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTAItemImage.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTAItemImage.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTAItemImage.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTAItemImage.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTAItemImage.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTAItemImage.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTAItemImage.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTAItemImage.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTAItemImage.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTAItemImage.Data( js_raw_args js_raw_args_1 )</code>|
-SetImage|<code>DOTAItemImage.SetImage( cstring cstring_1 )</code>|
-SetScaling|<code>DOTAItemImage.SetScaling( cstring cstring_1 )</code>|
-itemname|<code>DOTAItemImage.itemname( cstring cstring_1 )</code>|
-contextEntityIndex|<code>DOTAItemImage.contextEntityIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-SetPanelEvent|<code>DOTAItemImage.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTAItemImage.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTAItemImage.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTAItemImage.paneltype()</code>|
-
-
-# CircularProgressBar
-Function|Signature|Description
---|--|--
-visible|<code>CircularProgressBar.visible( boolean boolean_1 )</code>|
-enabled|<code>CircularProgressBar.enabled( boolean boolean_1 )</code>|
-checked|<code>CircularProgressBar.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>CircularProgressBar.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>CircularProgressBar.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>CircularProgressBar.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>CircularProgressBar.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>CircularProgressBar.tabindex( float float_1 )</code>|
-selectionpos_x|<code>CircularProgressBar.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>CircularProgressBar.selectionpos_y( float float_1 )</code>|
-id|<code>CircularProgressBar.id()</code>|
-layoutfile|<code>CircularProgressBar.layoutfile()</code>|
-contentwidth|<code>CircularProgressBar.contentwidth()</code>|
-contentheight|<code>CircularProgressBar.contentheight()</code>|
-desiredlayoutwidth|<code>CircularProgressBar.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>CircularProgressBar.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>CircularProgressBar.actuallayoutwidth()</code>|
-actuallayoutheight|<code>CircularProgressBar.actuallayoutheight()</code>|
-actualxoffset|<code>CircularProgressBar.actualxoffset()</code>|
-actualyoffset|<code>CircularProgressBar.actualyoffset()</code>|
-scrolloffset_y|<code>CircularProgressBar.scrolloffset_y()</code>|
-scrolloffset_x|<code>CircularProgressBar.scrolloffset_x()</code>|
-actualuiscale_y|<code>CircularProgressBar.actualuiscale_y()</code>|
-actualuiscale_x|<code>CircularProgressBar.actualuiscale_x()</code>|
-style|<code>CircularProgressBar.style()</code>|
-AddClass|<code>CircularProgressBar.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>CircularProgressBar.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>CircularProgressBar.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>CircularProgressBar.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>CircularProgressBar.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>CircularProgressBar.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>CircularProgressBar.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>CircularProgressBar.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>CircularProgressBar.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>CircularProgressBar.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>CircularProgressBar.IsDraggable()</code>|
-IsSizeValid|<code>CircularProgressBar.IsSizeValid()</code>|
-GetChildCount|<code>CircularProgressBar.GetChildCount()</code>|
-GetChild|<code>CircularProgressBar.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>CircularProgressBar.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>CircularProgressBar.Children()</code>|
-FindChildrenWithClassTraverse|<code>CircularProgressBar.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>CircularProgressBar.GetParent()</code>|
-SetParent|<code>CircularProgressBar.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>CircularProgressBar.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>CircularProgressBar.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>CircularProgressBar.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>CircularProgressBar.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>CircularProgressBar.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>CircularProgressBar.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>CircularProgressBar.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>CircularProgressBar.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>CircularProgressBar.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>CircularProgressBar.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>CircularProgressBar.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>CircularProgressBar.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>CircularProgressBar.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>CircularProgressBar.BIsTransparent()</code>|
-BAcceptsInput|<code>CircularProgressBar.BAcceptsInput()</code>|
-BAcceptsFocus|<code>CircularProgressBar.BAcceptsFocus()</code>|
-SetFocus|<code>CircularProgressBar.SetFocus()</code>|
-UpdateFocusInContext|<code>CircularProgressBar.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>CircularProgressBar.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>CircularProgressBar.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>CircularProgressBar.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>CircularProgressBar.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>CircularProgressBar.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>CircularProgressBar.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>CircularProgressBar.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>CircularProgressBar.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>CircularProgressBar.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>CircularProgressBar.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>CircularProgressBar.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>CircularProgressBar.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>CircularProgressBar.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>CircularProgressBar.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>CircularProgressBar.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>CircularProgressBar.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>CircularProgressBar.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>CircularProgressBar.ScrollToTop()</code>|
-ScrollToBottom|<code>CircularProgressBar.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>CircularProgressBar.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>CircularProgressBar.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>CircularProgressBar.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>CircularProgressBar.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>CircularProgressBar.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>CircularProgressBar.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>CircularProgressBar.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>CircularProgressBar.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>CircularProgressBar.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>CircularProgressBar.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>CircularProgressBar.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>CircularProgressBar.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>CircularProgressBar.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>CircularProgressBar.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>CircularProgressBar.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>CircularProgressBar.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>CircularProgressBar.Data( js_raw_args js_raw_args_1 )</code>|
-value|<code>CircularProgressBar.value( float float_1 )</code>|
-min|<code>CircularProgressBar.min( float float_1 )</code>|
-max|<code>CircularProgressBar.max( float float_1 )</code>|
-SetPanelEvent|<code>CircularProgressBar.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>CircularProgressBar.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>CircularProgressBar.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>CircularProgressBar.paneltype()</code>|
-
-
 # TextEntry
 Function|Signature|Description
 --|--|--
@@ -3573,6 +3253,7 @@ hittestchildren|<code>TextEntry.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>TextEntry.tabindex( float float_1 )</code>|
 selectionpos_x|<code>TextEntry.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>TextEntry.selectionpos_y( float float_1 )</code>|
+type|<code>TextEntry.type()</code>|
 id|<code>TextEntry.id()</code>|
 layoutfile|<code>TextEntry.layoutfile()</code>|
 contentwidth|<code>TextEntry.contentwidth()</code>|
@@ -3675,6 +3356,335 @@ rememberchildfocus|<code>TextEntry.rememberchildfocus( boolean boolean_1 )</code
 paneltype|<code>TextEntry.paneltype()</code>|
 
 
+# ProgressBar
+Function|Signature|Description
+--|--|--
+visible|<code>ProgressBar.visible( boolean boolean_1 )</code>|
+enabled|<code>ProgressBar.enabled( boolean boolean_1 )</code>|
+checked|<code>ProgressBar.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>ProgressBar.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>ProgressBar.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>ProgressBar.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>ProgressBar.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>ProgressBar.tabindex( float float_1 )</code>|
+selectionpos_x|<code>ProgressBar.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>ProgressBar.selectionpos_y( float float_1 )</code>|
+type|<code>ProgressBar.type()</code>|
+id|<code>ProgressBar.id()</code>|
+layoutfile|<code>ProgressBar.layoutfile()</code>|
+contentwidth|<code>ProgressBar.contentwidth()</code>|
+contentheight|<code>ProgressBar.contentheight()</code>|
+desiredlayoutwidth|<code>ProgressBar.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>ProgressBar.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>ProgressBar.actuallayoutwidth()</code>|
+actuallayoutheight|<code>ProgressBar.actuallayoutheight()</code>|
+actualxoffset|<code>ProgressBar.actualxoffset()</code>|
+actualyoffset|<code>ProgressBar.actualyoffset()</code>|
+scrolloffset_y|<code>ProgressBar.scrolloffset_y()</code>|
+scrolloffset_x|<code>ProgressBar.scrolloffset_x()</code>|
+actualuiscale_y|<code>ProgressBar.actualuiscale_y()</code>|
+actualuiscale_x|<code>ProgressBar.actualuiscale_x()</code>|
+style|<code>ProgressBar.style()</code>|
+AddClass|<code>ProgressBar.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>ProgressBar.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>ProgressBar.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>ProgressBar.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>ProgressBar.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>ProgressBar.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>ProgressBar.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>ProgressBar.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>ProgressBar.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>ProgressBar.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>ProgressBar.IsDraggable()</code>|
+IsSizeValid|<code>ProgressBar.IsSizeValid()</code>|
+GetChildCount|<code>ProgressBar.GetChildCount()</code>|
+GetChild|<code>ProgressBar.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>ProgressBar.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>ProgressBar.Children()</code>|
+FindChildrenWithClassTraverse|<code>ProgressBar.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>ProgressBar.GetParent()</code>|
+SetParent|<code>ProgressBar.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>ProgressBar.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>ProgressBar.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>ProgressBar.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>ProgressBar.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>ProgressBar.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>ProgressBar.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>ProgressBar.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>ProgressBar.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>ProgressBar.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>ProgressBar.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>ProgressBar.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>ProgressBar.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>ProgressBar.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>ProgressBar.BIsTransparent()</code>|
+BAcceptsInput|<code>ProgressBar.BAcceptsInput()</code>|
+BAcceptsFocus|<code>ProgressBar.BAcceptsFocus()</code>|
+SetFocus|<code>ProgressBar.SetFocus()</code>|
+UpdateFocusInContext|<code>ProgressBar.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>ProgressBar.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>ProgressBar.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>ProgressBar.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>ProgressBar.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>ProgressBar.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>ProgressBar.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>ProgressBar.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>ProgressBar.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>ProgressBar.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>ProgressBar.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>ProgressBar.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>ProgressBar.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>ProgressBar.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>ProgressBar.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>ProgressBar.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>ProgressBar.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>ProgressBar.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>ProgressBar.ScrollToTop()</code>|
+ScrollToBottom|<code>ProgressBar.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>ProgressBar.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>ProgressBar.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>ProgressBar.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>ProgressBar.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>ProgressBar.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>ProgressBar.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>ProgressBar.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>ProgressBar.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>ProgressBar.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>ProgressBar.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>ProgressBar.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>ProgressBar.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>ProgressBar.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>ProgressBar.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>ProgressBar.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>ProgressBar.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>ProgressBar.Data( js_raw_args js_raw_args_1 )</code>|
+value|<code>ProgressBar.value( float float_1 )</code>|
+min|<code>ProgressBar.min( float float_1 )</code>|
+max|<code>ProgressBar.max( float float_1 )</code>|
+hasNotches|<code>ProgressBar.hasNotches( boolean boolean_1 )</code>|
+valuePerNotch|<code>ProgressBar.valuePerNotch( float float_1 )</code>|
+SetPanelEvent|<code>ProgressBar.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>ProgressBar.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>ProgressBar.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>ProgressBar.paneltype()</code>|
+
+
+# DOTABuffList
+Function|Signature|Description
+--|--|--
+visible|<code>DOTABuffList.visible( boolean boolean_1 )</code>|
+enabled|<code>DOTABuffList.enabled( boolean boolean_1 )</code>|
+checked|<code>DOTABuffList.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>DOTABuffList.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>DOTABuffList.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>DOTABuffList.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>DOTABuffList.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>DOTABuffList.tabindex( float float_1 )</code>|
+selectionpos_x|<code>DOTABuffList.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>DOTABuffList.selectionpos_y( float float_1 )</code>|
+type|<code>DOTABuffList.type()</code>|
+id|<code>DOTABuffList.id()</code>|
+layoutfile|<code>DOTABuffList.layoutfile()</code>|
+contentwidth|<code>DOTABuffList.contentwidth()</code>|
+contentheight|<code>DOTABuffList.contentheight()</code>|
+desiredlayoutwidth|<code>DOTABuffList.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>DOTABuffList.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>DOTABuffList.actuallayoutwidth()</code>|
+actuallayoutheight|<code>DOTABuffList.actuallayoutheight()</code>|
+actualxoffset|<code>DOTABuffList.actualxoffset()</code>|
+actualyoffset|<code>DOTABuffList.actualyoffset()</code>|
+scrolloffset_y|<code>DOTABuffList.scrolloffset_y()</code>|
+scrolloffset_x|<code>DOTABuffList.scrolloffset_x()</code>|
+actualuiscale_y|<code>DOTABuffList.actualuiscale_y()</code>|
+actualuiscale_x|<code>DOTABuffList.actualuiscale_x()</code>|
+style|<code>DOTABuffList.style()</code>|
+AddClass|<code>DOTABuffList.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>DOTABuffList.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>DOTABuffList.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>DOTABuffList.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>DOTABuffList.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>DOTABuffList.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>DOTABuffList.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>DOTABuffList.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>DOTABuffList.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>DOTABuffList.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>DOTABuffList.IsDraggable()</code>|
+IsSizeValid|<code>DOTABuffList.IsSizeValid()</code>|
+GetChildCount|<code>DOTABuffList.GetChildCount()</code>|
+GetChild|<code>DOTABuffList.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>DOTABuffList.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>DOTABuffList.Children()</code>|
+FindChildrenWithClassTraverse|<code>DOTABuffList.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>DOTABuffList.GetParent()</code>|
+SetParent|<code>DOTABuffList.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>DOTABuffList.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>DOTABuffList.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>DOTABuffList.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>DOTABuffList.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>DOTABuffList.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>DOTABuffList.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>DOTABuffList.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>DOTABuffList.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>DOTABuffList.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>DOTABuffList.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>DOTABuffList.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>DOTABuffList.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>DOTABuffList.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>DOTABuffList.BIsTransparent()</code>|
+BAcceptsInput|<code>DOTABuffList.BAcceptsInput()</code>|
+BAcceptsFocus|<code>DOTABuffList.BAcceptsFocus()</code>|
+SetFocus|<code>DOTABuffList.SetFocus()</code>|
+UpdateFocusInContext|<code>DOTABuffList.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>DOTABuffList.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>DOTABuffList.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>DOTABuffList.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>DOTABuffList.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>DOTABuffList.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>DOTABuffList.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>DOTABuffList.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>DOTABuffList.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>DOTABuffList.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>DOTABuffList.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>DOTABuffList.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>DOTABuffList.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>DOTABuffList.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>DOTABuffList.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>DOTABuffList.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>DOTABuffList.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>DOTABuffList.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>DOTABuffList.ScrollToTop()</code>|
+ScrollToBottom|<code>DOTABuffList.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>DOTABuffList.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>DOTABuffList.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>DOTABuffList.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>DOTABuffList.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>DOTABuffList.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>DOTABuffList.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>DOTABuffList.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>DOTABuffList.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>DOTABuffList.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>DOTABuffList.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>DOTABuffList.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>DOTABuffList.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>DOTABuffList.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>DOTABuffList.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>DOTABuffList.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>DOTABuffList.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>DOTABuffList.Data( js_raw_args js_raw_args_1 )</code>|
+SetPanelEvent|<code>DOTABuffList.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>DOTABuffList.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>DOTABuffList.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>DOTABuffList.paneltype()</code>|
+
+
+# DOTAPortrait
+Function|Signature|Description
+--|--|--
+visible|<code>DOTAPortrait.visible( boolean boolean_1 )</code>|
+enabled|<code>DOTAPortrait.enabled( boolean boolean_1 )</code>|
+checked|<code>DOTAPortrait.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>DOTAPortrait.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>DOTAPortrait.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>DOTAPortrait.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>DOTAPortrait.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>DOTAPortrait.tabindex( float float_1 )</code>|
+selectionpos_x|<code>DOTAPortrait.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>DOTAPortrait.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAPortrait.type()</code>|
+id|<code>DOTAPortrait.id()</code>|
+layoutfile|<code>DOTAPortrait.layoutfile()</code>|
+contentwidth|<code>DOTAPortrait.contentwidth()</code>|
+contentheight|<code>DOTAPortrait.contentheight()</code>|
+desiredlayoutwidth|<code>DOTAPortrait.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>DOTAPortrait.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>DOTAPortrait.actuallayoutwidth()</code>|
+actuallayoutheight|<code>DOTAPortrait.actuallayoutheight()</code>|
+actualxoffset|<code>DOTAPortrait.actualxoffset()</code>|
+actualyoffset|<code>DOTAPortrait.actualyoffset()</code>|
+scrolloffset_y|<code>DOTAPortrait.scrolloffset_y()</code>|
+scrolloffset_x|<code>DOTAPortrait.scrolloffset_x()</code>|
+actualuiscale_y|<code>DOTAPortrait.actualuiscale_y()</code>|
+actualuiscale_x|<code>DOTAPortrait.actualuiscale_x()</code>|
+style|<code>DOTAPortrait.style()</code>|
+AddClass|<code>DOTAPortrait.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>DOTAPortrait.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>DOTAPortrait.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>DOTAPortrait.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>DOTAPortrait.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>DOTAPortrait.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>DOTAPortrait.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>DOTAPortrait.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>DOTAPortrait.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>DOTAPortrait.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>DOTAPortrait.IsDraggable()</code>|
+IsSizeValid|<code>DOTAPortrait.IsSizeValid()</code>|
+GetChildCount|<code>DOTAPortrait.GetChildCount()</code>|
+GetChild|<code>DOTAPortrait.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>DOTAPortrait.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>DOTAPortrait.Children()</code>|
+FindChildrenWithClassTraverse|<code>DOTAPortrait.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>DOTAPortrait.GetParent()</code>|
+SetParent|<code>DOTAPortrait.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>DOTAPortrait.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>DOTAPortrait.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>DOTAPortrait.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>DOTAPortrait.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>DOTAPortrait.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>DOTAPortrait.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>DOTAPortrait.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>DOTAPortrait.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>DOTAPortrait.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>DOTAPortrait.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>DOTAPortrait.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>DOTAPortrait.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>DOTAPortrait.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>DOTAPortrait.BIsTransparent()</code>|
+BAcceptsInput|<code>DOTAPortrait.BAcceptsInput()</code>|
+BAcceptsFocus|<code>DOTAPortrait.BAcceptsFocus()</code>|
+SetFocus|<code>DOTAPortrait.SetFocus()</code>|
+UpdateFocusInContext|<code>DOTAPortrait.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>DOTAPortrait.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>DOTAPortrait.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>DOTAPortrait.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>DOTAPortrait.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>DOTAPortrait.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>DOTAPortrait.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>DOTAPortrait.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>DOTAPortrait.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>DOTAPortrait.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>DOTAPortrait.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>DOTAPortrait.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>DOTAPortrait.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>DOTAPortrait.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>DOTAPortrait.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>DOTAPortrait.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>DOTAPortrait.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>DOTAPortrait.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>DOTAPortrait.ScrollToTop()</code>|
+ScrollToBottom|<code>DOTAPortrait.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>DOTAPortrait.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>DOTAPortrait.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>DOTAPortrait.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>DOTAPortrait.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>DOTAPortrait.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>DOTAPortrait.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>DOTAPortrait.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>DOTAPortrait.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>DOTAPortrait.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>DOTAPortrait.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>DOTAPortrait.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>DOTAPortrait.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>DOTAPortrait.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>DOTAPortrait.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>DOTAPortrait.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>DOTAPortrait.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>DOTAPortrait.Data( js_raw_args js_raw_args_1 )</code>|
+SetPanelEvent|<code>DOTAPortrait.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>DOTAPortrait.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>DOTAPortrait.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>DOTAPortrait.paneltype()</code>|
+
+
 # DOTAHeroImage
 Function|Signature|Description
 --|--|--
@@ -3688,6 +3698,7 @@ hittestchildren|<code>DOTAHeroImage.hittestchildren( boolean boolean_1 )</code>|
 tabindex|<code>DOTAHeroImage.tabindex( float float_1 )</code>|
 selectionpos_x|<code>DOTAHeroImage.selectionpos_x( float float_1 )</code>|
 selectionpos_y|<code>DOTAHeroImage.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAHeroImage.type()</code>|
 id|<code>DOTAHeroImage.id()</code>|
 layoutfile|<code>DOTAHeroImage.layoutfile()</code>|
 contentwidth|<code>DOTAHeroImage.contentwidth()</code>|
@@ -3788,435 +3799,118 @@ rememberchildfocus|<code>DOTAHeroImage.rememberchildfocus( boolean boolean_1 )</
 paneltype|<code>DOTAHeroImage.paneltype()</code>|
 
 
-# RadioButton
+# DOTAAbilityImage
 Function|Signature|Description
 --|--|--
-visible|<code>RadioButton.visible( boolean boolean_1 )</code>|
-enabled|<code>RadioButton.enabled( boolean boolean_1 )</code>|
-checked|<code>RadioButton.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>RadioButton.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>RadioButton.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>RadioButton.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>RadioButton.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>RadioButton.tabindex( float float_1 )</code>|
-selectionpos_x|<code>RadioButton.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>RadioButton.selectionpos_y( float float_1 )</code>|
-id|<code>RadioButton.id()</code>|
-layoutfile|<code>RadioButton.layoutfile()</code>|
-contentwidth|<code>RadioButton.contentwidth()</code>|
-contentheight|<code>RadioButton.contentheight()</code>|
-desiredlayoutwidth|<code>RadioButton.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>RadioButton.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>RadioButton.actuallayoutwidth()</code>|
-actuallayoutheight|<code>RadioButton.actuallayoutheight()</code>|
-actualxoffset|<code>RadioButton.actualxoffset()</code>|
-actualyoffset|<code>RadioButton.actualyoffset()</code>|
-scrolloffset_y|<code>RadioButton.scrolloffset_y()</code>|
-scrolloffset_x|<code>RadioButton.scrolloffset_x()</code>|
-actualuiscale_y|<code>RadioButton.actualuiscale_y()</code>|
-actualuiscale_x|<code>RadioButton.actualuiscale_x()</code>|
-style|<code>RadioButton.style()</code>|
-AddClass|<code>RadioButton.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>RadioButton.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>RadioButton.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>RadioButton.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>RadioButton.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>RadioButton.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>RadioButton.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>RadioButton.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>RadioButton.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>RadioButton.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>RadioButton.IsDraggable()</code>|
-IsSizeValid|<code>RadioButton.IsSizeValid()</code>|
-GetChildCount|<code>RadioButton.GetChildCount()</code>|
-GetChild|<code>RadioButton.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>RadioButton.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>RadioButton.Children()</code>|
-FindChildrenWithClassTraverse|<code>RadioButton.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>RadioButton.GetParent()</code>|
-SetParent|<code>RadioButton.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>RadioButton.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>RadioButton.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>RadioButton.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>RadioButton.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>RadioButton.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>RadioButton.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>RadioButton.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>RadioButton.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>RadioButton.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>RadioButton.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>RadioButton.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>RadioButton.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>RadioButton.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>RadioButton.BIsTransparent()</code>|
-BAcceptsInput|<code>RadioButton.BAcceptsInput()</code>|
-BAcceptsFocus|<code>RadioButton.BAcceptsFocus()</code>|
-SetFocus|<code>RadioButton.SetFocus()</code>|
-UpdateFocusInContext|<code>RadioButton.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>RadioButton.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>RadioButton.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>RadioButton.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>RadioButton.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>RadioButton.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>RadioButton.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>RadioButton.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>RadioButton.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>RadioButton.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>RadioButton.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>RadioButton.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>RadioButton.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>RadioButton.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>RadioButton.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>RadioButton.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>RadioButton.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>RadioButton.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>RadioButton.ScrollToTop()</code>|
-ScrollToBottom|<code>RadioButton.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>RadioButton.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>RadioButton.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>RadioButton.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>RadioButton.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>RadioButton.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>RadioButton.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>RadioButton.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>RadioButton.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>RadioButton.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>RadioButton.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>RadioButton.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>RadioButton.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>RadioButton.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>RadioButton.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>RadioButton.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>RadioButton.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>RadioButton.Data( js_raw_args js_raw_args_1 )</code>|
-GetSelectedButton|<code>RadioButton.GetSelectedButton()</code>|
-SetPanelEvent|<code>RadioButton.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>RadioButton.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>RadioButton.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>RadioButton.paneltype()</code>|
-
-
-# TooltipContents
-Function|Signature|Description
---|--|--
-visible|<code>TooltipContents.visible( boolean boolean_1 )</code>|
-enabled|<code>TooltipContents.enabled( boolean boolean_1 )</code>|
-checked|<code>TooltipContents.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>TooltipContents.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>TooltipContents.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>TooltipContents.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>TooltipContents.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>TooltipContents.tabindex( float float_1 )</code>|
-selectionpos_x|<code>TooltipContents.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>TooltipContents.selectionpos_y( float float_1 )</code>|
-id|<code>TooltipContents.id()</code>|
-layoutfile|<code>TooltipContents.layoutfile()</code>|
-contentwidth|<code>TooltipContents.contentwidth()</code>|
-contentheight|<code>TooltipContents.contentheight()</code>|
-desiredlayoutwidth|<code>TooltipContents.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>TooltipContents.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>TooltipContents.actuallayoutwidth()</code>|
-actuallayoutheight|<code>TooltipContents.actuallayoutheight()</code>|
-actualxoffset|<code>TooltipContents.actualxoffset()</code>|
-actualyoffset|<code>TooltipContents.actualyoffset()</code>|
-scrolloffset_y|<code>TooltipContents.scrolloffset_y()</code>|
-scrolloffset_x|<code>TooltipContents.scrolloffset_x()</code>|
-actualuiscale_y|<code>TooltipContents.actualuiscale_y()</code>|
-actualuiscale_x|<code>TooltipContents.actualuiscale_x()</code>|
-style|<code>TooltipContents.style()</code>|
-AddClass|<code>TooltipContents.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>TooltipContents.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>TooltipContents.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>TooltipContents.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>TooltipContents.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>TooltipContents.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>TooltipContents.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>TooltipContents.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>TooltipContents.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>TooltipContents.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>TooltipContents.IsDraggable()</code>|
-IsSizeValid|<code>TooltipContents.IsSizeValid()</code>|
-GetChildCount|<code>TooltipContents.GetChildCount()</code>|
-GetChild|<code>TooltipContents.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>TooltipContents.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>TooltipContents.Children()</code>|
-FindChildrenWithClassTraverse|<code>TooltipContents.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>TooltipContents.GetParent()</code>|
-SetParent|<code>TooltipContents.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>TooltipContents.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>TooltipContents.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>TooltipContents.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>TooltipContents.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>TooltipContents.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>TooltipContents.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>TooltipContents.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>TooltipContents.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>TooltipContents.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>TooltipContents.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>TooltipContents.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>TooltipContents.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>TooltipContents.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>TooltipContents.BIsTransparent()</code>|
-BAcceptsInput|<code>TooltipContents.BAcceptsInput()</code>|
-BAcceptsFocus|<code>TooltipContents.BAcceptsFocus()</code>|
-SetFocus|<code>TooltipContents.SetFocus()</code>|
-UpdateFocusInContext|<code>TooltipContents.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>TooltipContents.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>TooltipContents.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>TooltipContents.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>TooltipContents.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>TooltipContents.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>TooltipContents.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>TooltipContents.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>TooltipContents.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>TooltipContents.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>TooltipContents.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>TooltipContents.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>TooltipContents.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>TooltipContents.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>TooltipContents.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>TooltipContents.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>TooltipContents.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>TooltipContents.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>TooltipContents.ScrollToTop()</code>|
-ScrollToBottom|<code>TooltipContents.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>TooltipContents.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>TooltipContents.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>TooltipContents.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>TooltipContents.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>TooltipContents.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>TooltipContents.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>TooltipContents.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>TooltipContents.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>TooltipContents.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>TooltipContents.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>TooltipContents.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>TooltipContents.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>TooltipContents.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>TooltipContents.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>TooltipContents.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>TooltipContents.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>TooltipContents.Data( js_raw_args js_raw_args_1 )</code>|
-GetTooltipTarget|<code>TooltipContents.GetTooltipTarget()</code>|
-SetPanelEvent|<code>TooltipContents.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>TooltipContents.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>TooltipContents.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>TooltipContents.paneltype()</code>|
-
-
-# TooltipCustomLayout
-Function|Signature|Description
---|--|--
-visible|<code>TooltipCustomLayout.visible( boolean boolean_1 )</code>|
-enabled|<code>TooltipCustomLayout.enabled( boolean boolean_1 )</code>|
-checked|<code>TooltipCustomLayout.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>TooltipCustomLayout.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>TooltipCustomLayout.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>TooltipCustomLayout.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>TooltipCustomLayout.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>TooltipCustomLayout.tabindex( float float_1 )</code>|
-selectionpos_x|<code>TooltipCustomLayout.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>TooltipCustomLayout.selectionpos_y( float float_1 )</code>|
-id|<code>TooltipCustomLayout.id()</code>|
-layoutfile|<code>TooltipCustomLayout.layoutfile()</code>|
-contentwidth|<code>TooltipCustomLayout.contentwidth()</code>|
-contentheight|<code>TooltipCustomLayout.contentheight()</code>|
-desiredlayoutwidth|<code>TooltipCustomLayout.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>TooltipCustomLayout.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>TooltipCustomLayout.actuallayoutwidth()</code>|
-actuallayoutheight|<code>TooltipCustomLayout.actuallayoutheight()</code>|
-actualxoffset|<code>TooltipCustomLayout.actualxoffset()</code>|
-actualyoffset|<code>TooltipCustomLayout.actualyoffset()</code>|
-scrolloffset_y|<code>TooltipCustomLayout.scrolloffset_y()</code>|
-scrolloffset_x|<code>TooltipCustomLayout.scrolloffset_x()</code>|
-actualuiscale_y|<code>TooltipCustomLayout.actualuiscale_y()</code>|
-actualuiscale_x|<code>TooltipCustomLayout.actualuiscale_x()</code>|
-style|<code>TooltipCustomLayout.style()</code>|
-AddClass|<code>TooltipCustomLayout.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>TooltipCustomLayout.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>TooltipCustomLayout.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>TooltipCustomLayout.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>TooltipCustomLayout.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>TooltipCustomLayout.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>TooltipCustomLayout.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>TooltipCustomLayout.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>TooltipCustomLayout.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>TooltipCustomLayout.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>TooltipCustomLayout.IsDraggable()</code>|
-IsSizeValid|<code>TooltipCustomLayout.IsSizeValid()</code>|
-GetChildCount|<code>TooltipCustomLayout.GetChildCount()</code>|
-GetChild|<code>TooltipCustomLayout.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>TooltipCustomLayout.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>TooltipCustomLayout.Children()</code>|
-FindChildrenWithClassTraverse|<code>TooltipCustomLayout.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>TooltipCustomLayout.GetParent()</code>|
-SetParent|<code>TooltipCustomLayout.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>TooltipCustomLayout.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>TooltipCustomLayout.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>TooltipCustomLayout.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>TooltipCustomLayout.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>TooltipCustomLayout.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>TooltipCustomLayout.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>TooltipCustomLayout.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>TooltipCustomLayout.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>TooltipCustomLayout.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>TooltipCustomLayout.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>TooltipCustomLayout.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>TooltipCustomLayout.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>TooltipCustomLayout.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>TooltipCustomLayout.BIsTransparent()</code>|
-BAcceptsInput|<code>TooltipCustomLayout.BAcceptsInput()</code>|
-BAcceptsFocus|<code>TooltipCustomLayout.BAcceptsFocus()</code>|
-SetFocus|<code>TooltipCustomLayout.SetFocus()</code>|
-UpdateFocusInContext|<code>TooltipCustomLayout.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>TooltipCustomLayout.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>TooltipCustomLayout.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>TooltipCustomLayout.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>TooltipCustomLayout.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>TooltipCustomLayout.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>TooltipCustomLayout.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>TooltipCustomLayout.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>TooltipCustomLayout.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>TooltipCustomLayout.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>TooltipCustomLayout.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>TooltipCustomLayout.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>TooltipCustomLayout.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>TooltipCustomLayout.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>TooltipCustomLayout.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>TooltipCustomLayout.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>TooltipCustomLayout.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>TooltipCustomLayout.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>TooltipCustomLayout.ScrollToTop()</code>|
-ScrollToBottom|<code>TooltipCustomLayout.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>TooltipCustomLayout.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>TooltipCustomLayout.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>TooltipCustomLayout.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>TooltipCustomLayout.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>TooltipCustomLayout.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>TooltipCustomLayout.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>TooltipCustomLayout.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>TooltipCustomLayout.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>TooltipCustomLayout.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>TooltipCustomLayout.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>TooltipCustomLayout.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>TooltipCustomLayout.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>TooltipCustomLayout.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>TooltipCustomLayout.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>TooltipCustomLayout.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>TooltipCustomLayout.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>TooltipCustomLayout.Data( js_raw_args js_raw_args_1 )</code>|
-GetTooltipTarget|<code>TooltipCustomLayout.GetTooltipTarget()</code>|
-SetPanelEvent|<code>TooltipCustomLayout.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>TooltipCustomLayout.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>TooltipCustomLayout.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>TooltipCustomLayout.paneltype()</code>|
-
-
-# DOTATooltipManager
-Function|Signature|Description
---|--|--
-visible|<code>DOTATooltipManager.visible( boolean boolean_1 )</code>|
-enabled|<code>DOTATooltipManager.enabled( boolean boolean_1 )</code>|
-checked|<code>DOTATooltipManager.checked( boolean boolean_1 )</code>|
-defaultfocus|<code>DOTATooltipManager.defaultfocus( cstring cstring_1 )</code>|
-inputnamespace|<code>DOTATooltipManager.inputnamespace( cstring cstring_1 )</code>|
-hittest|<code>DOTATooltipManager.hittest( boolean boolean_1 )</code>|
-hittestchildren|<code>DOTATooltipManager.hittestchildren( boolean boolean_1 )</code>|
-tabindex|<code>DOTATooltipManager.tabindex( float float_1 )</code>|
-selectionpos_x|<code>DOTATooltipManager.selectionpos_x( float float_1 )</code>|
-selectionpos_y|<code>DOTATooltipManager.selectionpos_y( float float_1 )</code>|
-id|<code>DOTATooltipManager.id()</code>|
-layoutfile|<code>DOTATooltipManager.layoutfile()</code>|
-contentwidth|<code>DOTATooltipManager.contentwidth()</code>|
-contentheight|<code>DOTATooltipManager.contentheight()</code>|
-desiredlayoutwidth|<code>DOTATooltipManager.desiredlayoutwidth()</code>|
-desiredlayoutheight|<code>DOTATooltipManager.desiredlayoutheight()</code>|
-actuallayoutwidth|<code>DOTATooltipManager.actuallayoutwidth()</code>|
-actuallayoutheight|<code>DOTATooltipManager.actuallayoutheight()</code>|
-actualxoffset|<code>DOTATooltipManager.actualxoffset()</code>|
-actualyoffset|<code>DOTATooltipManager.actualyoffset()</code>|
-scrolloffset_y|<code>DOTATooltipManager.scrolloffset_y()</code>|
-scrolloffset_x|<code>DOTATooltipManager.scrolloffset_x()</code>|
-actualuiscale_y|<code>DOTATooltipManager.actualuiscale_y()</code>|
-actualuiscale_x|<code>DOTATooltipManager.actualuiscale_x()</code>|
-style|<code>DOTATooltipManager.style()</code>|
-AddClass|<code>DOTATooltipManager.AddClass( cstring cstring_1 )</code>|
-RemoveClass|<code>DOTATooltipManager.RemoveClass( cstring cstring_1 )</code>|
-BHasClass|<code>DOTATooltipManager.BHasClass( cstring cstring_1 )</code>|
-BAscendantHasClass|<code>DOTATooltipManager.BAscendantHasClass( cstring cstring_1 )</code>|
-SetHasClass|<code>DOTATooltipManager.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
-ToggleClass|<code>DOTATooltipManager.ToggleClass( cstring cstring_1 )</code>|
-SwitchClass|<code>DOTATooltipManager.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
-TriggerClass|<code>DOTATooltipManager.TriggerClass( cstring cstring_1 )</code>|
-ClearPanelEvent|<code>DOTATooltipManager.ClearPanelEvent( cstring cstring_1 )</code>|
-SetDraggable|<code>DOTATooltipManager.SetDraggable( boolean boolean_1 )</code>|
-IsDraggable|<code>DOTATooltipManager.IsDraggable()</code>|
-IsSizeValid|<code>DOTATooltipManager.IsSizeValid()</code>|
-GetChildCount|<code>DOTATooltipManager.GetChildCount()</code>|
-GetChild|<code>DOTATooltipManager.GetChild( integer integer_1 )</code>|
-GetChildIndex|<code>DOTATooltipManager.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
-Children|<code>DOTATooltipManager.Children()</code>|
-FindChildrenWithClassTraverse|<code>DOTATooltipManager.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
-GetParent|<code>DOTATooltipManager.GetParent()</code>|
-SetParent|<code>DOTATooltipManager.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
-FindChild|<code>DOTATooltipManager.FindChild( cstring cstring_1 )</code>|
-FindChildTraverse|<code>DOTATooltipManager.FindChildTraverse( cstring cstring_1 )</code>|
-FindChildInLayoutFile|<code>DOTATooltipManager.FindChildInLayoutFile( cstring cstring_1 )</code>|
-FindPanelInLayoutFile|<code>DOTATooltipManager.FindPanelInLayoutFile( cstring cstring_1 )</code>|
-FindAncestor|<code>DOTATooltipManager.FindAncestor( cstring cstring_1 )</code>|
-RemoveAndDeleteChildren|<code>DOTATooltipManager.RemoveAndDeleteChildren()</code>|
-MoveChildBefore|<code>DOTATooltipManager.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-MoveChildAfter|<code>DOTATooltipManager.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
-GetPositionWithinWindow|<code>DOTATooltipManager.GetPositionWithinWindow()</code>|
-GetPositionWithinAncestor|<code>DOTATooltipManager.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
-ApplyStyles|<code>DOTATooltipManager.ApplyStyles( boolean boolean_1 )</code>|
-ClearPropertyFromCode|<code>DOTATooltipManager.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
-DeleteAsync|<code>DOTATooltipManager.DeleteAsync( float float_1 )</code>|
-BIsTransparent|<code>DOTATooltipManager.BIsTransparent()</code>|
-BAcceptsInput|<code>DOTATooltipManager.BAcceptsInput()</code>|
-BAcceptsFocus|<code>DOTATooltipManager.BAcceptsFocus()</code>|
-SetFocus|<code>DOTATooltipManager.SetFocus()</code>|
-UpdateFocusInContext|<code>DOTATooltipManager.UpdateFocusInContext()</code>|
-BHasHoverStyle|<code>DOTATooltipManager.BHasHoverStyle()</code>|
-SetAcceptsFocus|<code>DOTATooltipManager.SetAcceptsFocus( boolean boolean_1 )</code>|
-SetDisableFocusOnMouseDown|<code>DOTATooltipManager.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
-BHasKeyFocus|<code>DOTATooltipManager.BHasKeyFocus()</code>|
-SetScrollParentToFitWhenFocused|<code>DOTATooltipManager.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
-BScrollParentToFitWhenFocused|<code>DOTATooltipManager.BScrollParentToFitWhenFocused()</code>|
-IsSelected|<code>DOTATooltipManager.IsSelected()</code>|
-BHasDescendantKeyFocus|<code>DOTATooltipManager.BHasDescendantKeyFocus()</code>|
-BLoadLayout|<code>DOTATooltipManager.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
-BLoadLayoutSnippet|<code>DOTATooltipManager.BLoadLayoutSnippet( cstring cstring_1 )</code>|
-BHasLayoutSnippet|<code>DOTATooltipManager.BHasLayoutSnippet( cstring cstring_1 )</code>|
-SetTopOfInputContext|<code>DOTATooltipManager.SetTopOfInputContext( boolean boolean_1 )</code>|
-SetDialogVariable|<code>DOTATooltipManager.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariableInt|<code>DOTATooltipManager.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
-SetDialogVariableTime|<code>DOTATooltipManager.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
-SetDialogVariableLocString|<code>DOTATooltipManager.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
-SetDialogVariablePluralLocStringInt|<code>DOTATooltipManager.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
-ScrollToTop|<code>DOTATooltipManager.ScrollToTop()</code>|
-ScrollToBottom|<code>DOTATooltipManager.ScrollToBottom()</code>|
-ScrollToLeftEdge|<code>DOTATooltipManager.ScrollToLeftEdge()</code>|
-ScrollToRightEdge|<code>DOTATooltipManager.ScrollToRightEdge()</code>|
-ScrollParentToMakePanelFit|<code>DOTATooltipManager.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
-ScrollToFitRegion|<code>DOTATooltipManager.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
-BCanSeeInParentScroll|<code>DOTATooltipManager.BCanSeeInParentScroll()</code>|
-GetAttributeInt|<code>DOTATooltipManager.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-GetAttributeString|<code>DOTATooltipManager.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-GetAttributeUInt32|<code>DOTATooltipManager.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetAttributeInt|<code>DOTATooltipManager.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
-SetAttributeString|<code>DOTATooltipManager.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
-SetAttributeUInt32|<code>DOTATooltipManager.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
-SetInputNamespace|<code>DOTATooltipManager.SetInputNamespace( cstring cstring_1 )</code>|
-RegisterForReadyEvents|<code>DOTATooltipManager.RegisterForReadyEvents( boolean boolean_1 )</code>|
-BReadyForDisplay|<code>DOTATooltipManager.BReadyForDisplay()</code>|
-SetReadyForDisplay|<code>DOTATooltipManager.SetReadyForDisplay( boolean boolean_1 )</code>|
-SetPositionInPixels|<code>DOTATooltipManager.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
-Data|<code>DOTATooltipManager.Data( js_raw_args js_raw_args_1 )</code>|
-SetPanelEvent|<code>DOTATooltipManager.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
-RunScriptInPanelContext|<code>DOTATooltipManager.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
-rememberchildfocus|<code>DOTATooltipManager.rememberchildfocus( boolean boolean_1 )</code>|
-paneltype|<code>DOTATooltipManager.paneltype()</code>|
+visible|<code>DOTAAbilityImage.visible( boolean boolean_1 )</code>|
+enabled|<code>DOTAAbilityImage.enabled( boolean boolean_1 )</code>|
+checked|<code>DOTAAbilityImage.checked( boolean boolean_1 )</code>|
+defaultfocus|<code>DOTAAbilityImage.defaultfocus( cstring cstring_1 )</code>|
+inputnamespace|<code>DOTAAbilityImage.inputnamespace( cstring cstring_1 )</code>|
+hittest|<code>DOTAAbilityImage.hittest( boolean boolean_1 )</code>|
+hittestchildren|<code>DOTAAbilityImage.hittestchildren( boolean boolean_1 )</code>|
+tabindex|<code>DOTAAbilityImage.tabindex( float float_1 )</code>|
+selectionpos_x|<code>DOTAAbilityImage.selectionpos_x( float float_1 )</code>|
+selectionpos_y|<code>DOTAAbilityImage.selectionpos_y( float float_1 )</code>|
+type|<code>DOTAAbilityImage.type()</code>|
+id|<code>DOTAAbilityImage.id()</code>|
+layoutfile|<code>DOTAAbilityImage.layoutfile()</code>|
+contentwidth|<code>DOTAAbilityImage.contentwidth()</code>|
+contentheight|<code>DOTAAbilityImage.contentheight()</code>|
+desiredlayoutwidth|<code>DOTAAbilityImage.desiredlayoutwidth()</code>|
+desiredlayoutheight|<code>DOTAAbilityImage.desiredlayoutheight()</code>|
+actuallayoutwidth|<code>DOTAAbilityImage.actuallayoutwidth()</code>|
+actuallayoutheight|<code>DOTAAbilityImage.actuallayoutheight()</code>|
+actualxoffset|<code>DOTAAbilityImage.actualxoffset()</code>|
+actualyoffset|<code>DOTAAbilityImage.actualyoffset()</code>|
+scrolloffset_y|<code>DOTAAbilityImage.scrolloffset_y()</code>|
+scrolloffset_x|<code>DOTAAbilityImage.scrolloffset_x()</code>|
+actualuiscale_y|<code>DOTAAbilityImage.actualuiscale_y()</code>|
+actualuiscale_x|<code>DOTAAbilityImage.actualuiscale_x()</code>|
+style|<code>DOTAAbilityImage.style()</code>|
+AddClass|<code>DOTAAbilityImage.AddClass( cstring cstring_1 )</code>|
+RemoveClass|<code>DOTAAbilityImage.RemoveClass( cstring cstring_1 )</code>|
+BHasClass|<code>DOTAAbilityImage.BHasClass( cstring cstring_1 )</code>|
+BAscendantHasClass|<code>DOTAAbilityImage.BAscendantHasClass( cstring cstring_1 )</code>|
+SetHasClass|<code>DOTAAbilityImage.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>|
+ToggleClass|<code>DOTAAbilityImage.ToggleClass( cstring cstring_1 )</code>|
+SwitchClass|<code>DOTAAbilityImage.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>|
+TriggerClass|<code>DOTAAbilityImage.TriggerClass( cstring cstring_1 )</code>|
+ClearPanelEvent|<code>DOTAAbilityImage.ClearPanelEvent( cstring cstring_1 )</code>|
+SetDraggable|<code>DOTAAbilityImage.SetDraggable( boolean boolean_1 )</code>|
+IsDraggable|<code>DOTAAbilityImage.IsDraggable()</code>|
+IsSizeValid|<code>DOTAAbilityImage.IsSizeValid()</code>|
+GetChildCount|<code>DOTAAbilityImage.GetChildCount()</code>|
+GetChild|<code>DOTAAbilityImage.GetChild( integer integer_1 )</code>|
+GetChildIndex|<code>DOTAAbilityImage.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+Children|<code>DOTAAbilityImage.Children()</code>|
+FindChildrenWithClassTraverse|<code>DOTAAbilityImage.FindChildrenWithClassTraverse( cstring cstring_1 )</code>|
+GetParent|<code>DOTAAbilityImage.GetParent()</code>|
+SetParent|<code>DOTAAbilityImage.SetParent( unknown_variant_type unknown_variant_type_1 )</code>|
+FindChild|<code>DOTAAbilityImage.FindChild( cstring cstring_1 )</code>|
+FindChildTraverse|<code>DOTAAbilityImage.FindChildTraverse( cstring cstring_1 )</code>|
+FindChildInLayoutFile|<code>DOTAAbilityImage.FindChildInLayoutFile( cstring cstring_1 )</code>|
+FindPanelInLayoutFile|<code>DOTAAbilityImage.FindPanelInLayoutFile( cstring cstring_1 )</code>|
+FindAncestor|<code>DOTAAbilityImage.FindAncestor( cstring cstring_1 )</code>|
+RemoveAndDeleteChildren|<code>DOTAAbilityImage.RemoveAndDeleteChildren()</code>|
+MoveChildBefore|<code>DOTAAbilityImage.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+MoveChildAfter|<code>DOTAAbilityImage.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>|
+GetPositionWithinWindow|<code>DOTAAbilityImage.GetPositionWithinWindow()</code>|
+GetPositionWithinAncestor|<code>DOTAAbilityImage.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>|
+ApplyStyles|<code>DOTAAbilityImage.ApplyStyles( boolean boolean_1 )</code>|
+ClearPropertyFromCode|<code>DOTAAbilityImage.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>|
+DeleteAsync|<code>DOTAAbilityImage.DeleteAsync( float float_1 )</code>|
+BIsTransparent|<code>DOTAAbilityImage.BIsTransparent()</code>|
+BAcceptsInput|<code>DOTAAbilityImage.BAcceptsInput()</code>|
+BAcceptsFocus|<code>DOTAAbilityImage.BAcceptsFocus()</code>|
+SetFocus|<code>DOTAAbilityImage.SetFocus()</code>|
+UpdateFocusInContext|<code>DOTAAbilityImage.UpdateFocusInContext()</code>|
+BHasHoverStyle|<code>DOTAAbilityImage.BHasHoverStyle()</code>|
+SetAcceptsFocus|<code>DOTAAbilityImage.SetAcceptsFocus( boolean boolean_1 )</code>|
+SetDisableFocusOnMouseDown|<code>DOTAAbilityImage.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>|
+BHasKeyFocus|<code>DOTAAbilityImage.BHasKeyFocus()</code>|
+SetScrollParentToFitWhenFocused|<code>DOTAAbilityImage.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>|
+BScrollParentToFitWhenFocused|<code>DOTAAbilityImage.BScrollParentToFitWhenFocused()</code>|
+IsSelected|<code>DOTAAbilityImage.IsSelected()</code>|
+BHasDescendantKeyFocus|<code>DOTAAbilityImage.BHasDescendantKeyFocus()</code>|
+BLoadLayout|<code>DOTAAbilityImage.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>|
+BLoadLayoutSnippet|<code>DOTAAbilityImage.BLoadLayoutSnippet( cstring cstring_1 )</code>|
+BHasLayoutSnippet|<code>DOTAAbilityImage.BHasLayoutSnippet( cstring cstring_1 )</code>|
+SetTopOfInputContext|<code>DOTAAbilityImage.SetTopOfInputContext( boolean boolean_1 )</code>|
+SetDialogVariable|<code>DOTAAbilityImage.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariableInt|<code>DOTAAbilityImage.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>|
+SetDialogVariableTime|<code>DOTAAbilityImage.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>|
+SetDialogVariableLocString|<code>DOTAAbilityImage.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>|
+SetDialogVariablePluralLocStringInt|<code>DOTAAbilityImage.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>|
+ScrollToTop|<code>DOTAAbilityImage.ScrollToTop()</code>|
+ScrollToBottom|<code>DOTAAbilityImage.ScrollToBottom()</code>|
+ScrollToLeftEdge|<code>DOTAAbilityImage.ScrollToLeftEdge()</code>|
+ScrollToRightEdge|<code>DOTAAbilityImage.ScrollToRightEdge()</code>|
+ScrollParentToMakePanelFit|<code>DOTAAbilityImage.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>|
+ScrollToFitRegion|<code>DOTAAbilityImage.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>|
+BCanSeeInParentScroll|<code>DOTAAbilityImage.BCanSeeInParentScroll()</code>|
+GetAttributeInt|<code>DOTAAbilityImage.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+GetAttributeString|<code>DOTAAbilityImage.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+GetAttributeUInt32|<code>DOTAAbilityImage.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetAttributeInt|<code>DOTAAbilityImage.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>|
+SetAttributeString|<code>DOTAAbilityImage.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>|
+SetAttributeUInt32|<code>DOTAAbilityImage.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>|
+SetInputNamespace|<code>DOTAAbilityImage.SetInputNamespace( cstring cstring_1 )</code>|
+RegisterForReadyEvents|<code>DOTAAbilityImage.RegisterForReadyEvents( boolean boolean_1 )</code>|
+BReadyForDisplay|<code>DOTAAbilityImage.BReadyForDisplay()</code>|
+SetReadyForDisplay|<code>DOTAAbilityImage.SetReadyForDisplay( boolean boolean_1 )</code>|
+SetPositionInPixels|<code>DOTAAbilityImage.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>|
+Data|<code>DOTAAbilityImage.Data( js_raw_args js_raw_args_1 )</code>|
+SetImage|<code>DOTAAbilityImage.SetImage( cstring cstring_1 )</code>|
+SetScaling|<code>DOTAAbilityImage.SetScaling( cstring cstring_1 )</code>|
+abilityid|<code>DOTAAbilityImage.abilityid( unknown_variant_type unknown_variant_type_1 )</code>|
+abilityname|<code>DOTAAbilityImage.abilityname( cstring cstring_1 )</code>|
+abilitylevel|<code>DOTAAbilityImage.abilitylevel( integer integer_1 )</code>|
+contextEntityIndex|<code>DOTAAbilityImage.contextEntityIndex( unknown_variant_type unknown_variant_type_1 )</code>|
+SetPanelEvent|<code>DOTAAbilityImage.SetPanelEvent( js_raw_args js_raw_args_1 )</code>|
+RunScriptInPanelContext|<code>DOTAAbilityImage.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>|
+rememberchildfocus|<code>DOTAAbilityImage.rememberchildfocus( boolean boolean_1 )</code>|
+paneltype|<code>DOTAAbilityImage.paneltype()</code>|
 
 # SteamUGCQuery
 Enumerator|Value|Description
@@ -4273,16 +3967,17 @@ Enumerator|Value|Description
 --|--|--
 DOTA_GameState.DOTA_GAMERULES_STATE_INIT|0|
 DOTA_GameState.DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD|1|
-DOTA_GameState.DOTA_GAMERULES_STATE_HERO_SELECTION|3|
-DOTA_GameState.DOTA_GAMERULES_STATE_STRATEGY_TIME|4|
-DOTA_GameState.DOTA_GAMERULES_STATE_PRE_GAME|7|
-DOTA_GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS|9|
-DOTA_GameState.DOTA_GAMERULES_STATE_POST_GAME|10|
-DOTA_GameState.DOTA_GAMERULES_STATE_DISCONNECT|11|
-DOTA_GameState.DOTA_GAMERULES_STATE_TEAM_SHOWCASE|5|
+DOTA_GameState.DOTA_GAMERULES_STATE_HERO_SELECTION|4|
+DOTA_GameState.DOTA_GAMERULES_STATE_STRATEGY_TIME|5|
+DOTA_GameState.DOTA_GAMERULES_STATE_PRE_GAME|8|
+DOTA_GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS|10|
+DOTA_GameState.DOTA_GAMERULES_STATE_POST_GAME|11|
+DOTA_GameState.DOTA_GAMERULES_STATE_DISCONNECT|12|
+DOTA_GameState.DOTA_GAMERULES_STATE_TEAM_SHOWCASE|6|
 DOTA_GameState.DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP|2|
-DOTA_GameState.DOTA_GAMERULES_STATE_WAIT_FOR_MAP_TO_LOAD|6|
-DOTA_GameState.DOTA_GAMERULES_STATE_SCENARIO_SETUP|8|
+DOTA_GameState.DOTA_GAMERULES_STATE_WAIT_FOR_MAP_TO_LOAD|7|
+DOTA_GameState.DOTA_GAMERULES_STATE_SCENARIO_SETUP|9|
+DOTA_GameState.DOTA_GAMERULES_STATE_PLAYER_DRAFT|3|
 DOTA_GameState.DOTA_GAMERULES_STATE_LAST|0|
 
 # DOTA_GC_TEAM
@@ -4501,7 +4196,8 @@ DOTATeam_t.DOTA_TEAM_CUSTOM_5|10|
 DOTATeam_t.DOTA_TEAM_CUSTOM_6|11|
 DOTATeam_t.DOTA_TEAM_CUSTOM_7|12|
 DOTATeam_t.DOTA_TEAM_CUSTOM_8|13|
-DOTATeam_t.DOTA_TEAM_COUNT|14|
+DOTATeam_t.DOTA_TEAM_DRAFT_POOL|14|
+DOTATeam_t.DOTA_TEAM_COUNT|15|
 DOTATeam_t.DOTA_TEAM_CUSTOM_MIN|6|
 DOTATeam_t.DOTA_TEAM_CUSTOM_MAX|13|
 DOTATeam_t.DOTA_TEAM_CUSTOM_COUNT|8|
@@ -4518,7 +4214,9 @@ DOTA_RUNES.DOTA_RUNE_REGENERATION|4|
 DOTA_RUNES.DOTA_RUNE_BOUNTY|5|
 DOTA_RUNES.DOTA_RUNE_ARCANE|6|
 DOTA_RUNES.DOTA_RUNE_WATER|7|
-DOTA_RUNES.DOTA_RUNE_COUNT|8|
+DOTA_RUNES.DOTA_RUNE_XP|8|
+DOTA_RUNES.DOTA_RUNE_SHIELD|9|
+DOTA_RUNES.DOTA_RUNE_COUNT|10|
 
 # DOTA_UNIT_TARGET_TEAM
 Enumerator|Value|Description
@@ -4540,6 +4238,7 @@ DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_COURIER|16|
 DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_OTHER|32|
 DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_TREE|64|
 DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_CUSTOM|128|
+DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_SELF|256|
 DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_BASIC|18|
 DOTA_UNIT_TARGET_TYPE.DOTA_UNIT_TARGET_ALL|55|
 
@@ -4737,7 +4436,6 @@ DOTADamageFlag_t.DOTA_DAMAGE_FLAG_REFLECTION|16|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_HPLOSS|32|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_NO_DIRECTOR_EVENT|64|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_NON_LETHAL|128|
-DOTADamageFlag_t.DOTA_DAMAGE_FLAG_USE_COMBAT_PROFICIENCY|256|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_NO_DAMAGE_MULTIPLIERS|512|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION|1024|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_DONT_DISPLAY_DAMAGE_IF_SOURCE_HIDDEN|2048|
@@ -4747,6 +4445,7 @@ DOTADamageFlag_t.DOTA_DAMAGE_FLAG_IGNORES_BASE_PHYSICAL_ARMOR|16384|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_SECONDARY_PROJECTILE_ATTACK|32768|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_FORCE_SPELL_AMPLIFICATION|65536|
 DOTADamageFlag_t.DOTA_DAMAGE_FLAG_MAGIC_AUTO_ATTACK|131072|
+DOTADamageFlag_t.DOTA_DAMAGE_FLAG_ATTACK_MODIFIER|262144|
 
 # EDOTA_ModifyXP_Reason
 Enumerator|Value|Description
@@ -5147,10 +4846,11 @@ DOTASlotType_t.DOTA_LOADOUT_TYPE_MAP_EFFECT|91|
 DOTASlotType_t.DOTA_LOADOUT_TYPE_COURIER_EFFECT|92|
 DOTASlotType_t.DOTA_LOADOUT_TYPE_RADIANT_SIEGE_CREEPS|93|
 DOTASlotType_t.DOTA_LOADOUT_TYPE_DIRE_SIEGE_CREEPS|94|
+DOTASlotType_t.DOTA_LOADOUT_TYPE_ROSHAN|95|
 DOTASlotType_t.DOTA_PLAYER_LOADOUT_START|67|
-DOTASlotType_t.DOTA_PLAYER_LOADOUT_END|94|
-DOTASlotType_t.DOTA_LOADOUT_TYPE_NONE|95|
-DOTASlotType_t.DOTA_LOADOUT_TYPE_COUNT|96|
+DOTASlotType_t.DOTA_PLAYER_LOADOUT_END|95|
+DOTASlotType_t.DOTA_LOADOUT_TYPE_NONE|96|
+DOTASlotType_t.DOTA_LOADOUT_TYPE_COUNT|97|
 
 # modifierfunction
 Enumerator|Value|Description
@@ -5190,230 +4890,244 @@ modifierfunction.MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT|31|GetModifierAtta
 modifierfunction.MODIFIER_PROPERTY_IGNORE_ATTACKSPEED_LIMIT|32|GetModifierAttackSpeed_Limit
 modifierfunction.MODIFIER_PROPERTY_COOLDOWN_REDUCTION_CONSTANT|33|GetModifierCooldownReduction_Constant
 modifierfunction.MODIFIER_PROPERTY_MANACOST_REDUCTION_CONSTANT|34|GetModifierManacostReduction_Constant
-modifierfunction.MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT|35|GetModifierBaseAttackTimeConstant
-modifierfunction.MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT_ADJUST|36|GetModifierBaseAttackTimeConstant_Adjust
-modifierfunction.MODIFIER_PROPERTY_BASE_ATTACK_TIME_PERCENTAGE|37|GetModifierBaseAttackTimePercentage
-modifierfunction.MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT|38|GetModifierAttackPointConstant
-modifierfunction.MODIFIER_PROPERTY_BONUSDAMAGEOUTGOING_PERCENTAGE|39|GetModifierBonusDamageOutgoing_Percentage
-modifierfunction.MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE|40|GetModifierDamageOutgoing_Percentage
-modifierfunction.MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION|41|GetModifierDamageOutgoing_Percentage_Illusion
-modifierfunction.MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION_AMPLIFY|42|GetModifierDamageOutgoing_Percentage_Illusion_Amplify
-modifierfunction.MODIFIER_PROPERTY_TOTALDAMAGEOUTGOING_PERCENTAGE|43|GetModifierTotalDamageOutgoing_Percentage
-modifierfunction.MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_CREEP|44|GetModifierSpellAmplify_PercentageCreep
-modifierfunction.MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE|45|GetModifierSpellAmplify_Percentage
-modifierfunction.MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_UNIQUE|46|GetModifierSpellAmplify_PercentageUnique
-modifierfunction.MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE|47|GetModifierHealAmplify_PercentageSource
-modifierfunction.MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET|48|GetModifierHealAmplify_PercentageTarget
-modifierfunction.MODIFIER_PROPERTY_HP_REGEN_CAN_BE_NEGATIVE|49|GetModifierHPRegen_CanBeNegative
-modifierfunction.MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE|50|GetModifierHPRegenAmplify_Percentage
-modifierfunction.MODIFIER_PROPERTY_LIFESTEAL_AMPLIFY_PERCENTAGE|51|GetModifierLifestealRegenAmplify_Percentage
-modifierfunction.MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE|52|GetModifierSpellLifestealRegenAmplify_Percentage
-modifierfunction.MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE|53|GetModifierMPRegenAmplify_Percentage
-modifierfunction.MODIFIER_PROPERTY_MANA_DRAIN_AMPLIFY_PERCENTAGE|54|GetModifierManaDrainAmplify_Percentage
-modifierfunction.MODIFIER_PROPERTY_MP_RESTORE_AMPLIFY_PERCENTAGE|55|GetModifierMPRestoreAmplify_Percentage
-modifierfunction.MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE|56|GetModifierBaseDamageOutgoing_Percentage
-modifierfunction.MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE_UNIQUE|57|GetModifierBaseDamageOutgoing_PercentageUnique
-modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE|58|GetModifierIncomingDamage_Percentage
-modifierfunction.MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_PERCENTAGE|59|GetModifierIncomingPhysicalDamage_Percentage
-modifierfunction.MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_CONSTANT|60|GetModifierIncomingPhysicalDamageConstant
-modifierfunction.MODIFIER_PROPERTY_INCOMING_SPELL_DAMAGE_CONSTANT|61|GetModifierIncomingSpellDamageConstant
-modifierfunction.MODIFIER_PROPERTY_EVASION_CONSTANT|62|GetModifierEvasion_Constant
-modifierfunction.MODIFIER_PROPERTY_NEGATIVE_EVASION_CONSTANT|63|GetModifierNegativeEvasion_Constant
-modifierfunction.MODIFIER_PROPERTY_STATUS_RESISTANCE|64|GetModifierStatusResistance
-modifierfunction.MODIFIER_PROPERTY_STATUS_RESISTANCE_STACKING|65|GetModifierStatusResistanceStacking
-modifierfunction.MODIFIER_PROPERTY_STATUS_RESISTANCE_CASTER|66|GetModifierStatusResistanceCaster
-modifierfunction.MODIFIER_PROPERTY_AVOID_DAMAGE|67|GetModifierAvoidDamage
-modifierfunction.MODIFIER_PROPERTY_AVOID_SPELL|68|GetModifierAvoidSpell
-modifierfunction.MODIFIER_PROPERTY_MISS_PERCENTAGE|69|GetModifierMiss_Percentage
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BASE_PERCENTAGE|70|GetModifierPhysicalArmorBase_Percentage
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_TOTAL_PERCENTAGE|71|GetModifierPhysicalArmorTotal_Percentage
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS|72|GetModifierPhysicalArmorBonus
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE|73|GetModifierPhysicalArmorBonusUnique
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE_ACTIVE|74|GetModifierPhysicalArmorBonusUniqueActive
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_POST|75|GetModifierPhysicalArmorBonusPost
-modifierfunction.MODIFIER_PROPERTY_IGNORE_PHYSICAL_ARMOR|76|GetModifierIgnorePhysicalArmor
-modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BASE_REDUCTION|77|GetModifierMagicalResistanceBaseReduction
-modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DIRECT_MODIFICATION|78|GetModifierMagicalResistanceDirectModification
-modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS|79|GetModifierMagicalResistanceBonus
-modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_ILLUSIONS|80|GetModifierMagicalResistanceBonusIllusions
-modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE|81|GetModifierMagicalResistanceDecrepifyUnique
-modifierfunction.MODIFIER_PROPERTY_BASE_MANA_REGEN|82|GetModifierBaseRegen
-modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_CONSTANT|83|GetModifierConstantManaRegen
-modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_CONSTANT_UNIQUE|84|GetModifierConstantManaRegenUnique
-modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_TOTAL_PERCENTAGE|85|GetModifierTotalPercentageManaRegen
-modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT|86|GetModifierConstantHealthRegen
-modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE|87|GetModifierHealthRegenPercentage
-modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE_UNIQUE|88|GetModifierHealthRegenPercentageUnique
-modifierfunction.MODIFIER_PROPERTY_HEALTH_BONUS|89|GetModifierHealthBonus
-modifierfunction.MODIFIER_PROPERTY_MANA_BONUS|90|GetModifierManaBonus
-modifierfunction.MODIFIER_PROPERTY_EXTRA_STRENGTH_BONUS|91|GetModifierExtraStrengthBonus
-modifierfunction.MODIFIER_PROPERTY_EXTRA_HEALTH_BONUS|92|GetModifierExtraHealthBonus
-modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_BONUS|93|GetModifierExtraManaBonus
-modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_BONUS_PERCENTAGE|94|GetModifierExtraManaBonusPercentage
-modifierfunction.MODIFIER_PROPERTY_EXTRA_HEALTH_PERCENTAGE|95|GetModifierExtraHealthPercentage
-modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_PERCENTAGE|96|GetModifierExtraManaPercentage
-modifierfunction.MODIFIER_PROPERTY_STATS_STRENGTH_BONUS|97|GetModifierBonusStats_Strength
-modifierfunction.MODIFIER_PROPERTY_STATS_AGILITY_BONUS|98|GetModifierBonusStats_Agility
-modifierfunction.MODIFIER_PROPERTY_STATS_INTELLECT_BONUS|99|GetModifierBonusStats_Intellect
-modifierfunction.MODIFIER_PROPERTY_STATS_STRENGTH_BONUS_PERCENTAGE|100|GetModifierBonusStats_Strength_Percentage
-modifierfunction.MODIFIER_PROPERTY_STATS_AGILITY_BONUS_PERCENTAGE|101|GetModifierBonusStats_Agility_Percentage
-modifierfunction.MODIFIER_PROPERTY_STATS_INTELLECT_BONUS_PERCENTAGE|102|GetModifierBonusStats_Intellect_Percentage
-modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS|103|GetModifierCastRangeBonus
-modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_PERCENTAGE|104|GetModifierCastRangeBonusPercentage
-modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_TARGET|105|GetModifierCastRangeBonusTarget
-modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_STACKING|106|GetModifierCastRangeBonusStacking
-modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BASE_OVERRIDE|107|GetModifierAttackRangeOverride
-modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS|108|GetModifierAttackRangeBonus
-modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_UNIQUE|109|GetModifierAttackRangeBonusUnique
-modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_PERCENTAGE|110|GetModifierAttackRangeBonusPercentage
-modifierfunction.MODIFIER_PROPERTY_MAX_ATTACK_RANGE|111|GetModifierMaxAttackRange
-modifierfunction.MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS|112|GetModifierProjectileSpeedBonus
-modifierfunction.MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS_PERCENTAGE|113|GetModifierProjectileSpeedBonusPercentage
-modifierfunction.MODIFIER_PROPERTY_PROJECTILE_NAME|114|GetModifierProjectileName
-modifierfunction.MODIFIER_PROPERTY_REINCARNATION|115|ReincarnateTime
-modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME|116|GetModifierConstantRespawnTime
-modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME_PERCENTAGE|117|GetModifierPercentageRespawnTime
-modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME_STACKING|118|GetModifierStackingRespawnTime
-modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE|119|GetModifierPercentageCooldown
-modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_ONGOING|120|GetModifierPercentageCooldownOngoing
-modifierfunction.MODIFIER_PROPERTY_CASTTIME_PERCENTAGE|121|GetModifierPercentageCasttime
-modifierfunction.MODIFIER_PROPERTY_ATTACK_ANIM_TIME_PERCENTAGE|122|GetModifierPercentageAttackAnimTime
-modifierfunction.MODIFIER_PROPERTY_MANACOST_PERCENTAGE|123|GetModifierPercentageManacost
-modifierfunction.MODIFIER_PROPERTY_MANACOST_PERCENTAGE_STACKING|124|GetModifierPercentageManacostStacking
-modifierfunction.MODIFIER_PROPERTY_DEATHGOLDCOST|125|GetModifierConstantDeathGoldCost
-modifierfunction.MODIFIER_PROPERTY_EXP_RATE_BOOST|126|GetModifierPercentageExpRateBoost
-modifierfunction.MODIFIER_PROPERTY_GOLD_RATE_BOOST|127|GetModifierPercentageGoldRateBoost
-modifierfunction.MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE|128|GetModifierPreAttack_CriticalStrike
-modifierfunction.MODIFIER_PROPERTY_PREATTACK_TARGET_CRITICALSTRIKE|129|GetModifierPreAttack_Target_CriticalStrike
-modifierfunction.MODIFIER_PROPERTY_MAGICAL_CONSTANT_BLOCK|130|GetModifierMagical_ConstantBlock
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK|131|GetModifierPhysical_ConstantBlock
-modifierfunction.MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK_SPECIAL|132|GetModifierPhysical_ConstantBlockSpecial
-modifierfunction.MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_UNAVOIDABLE_PRE_ARMOR|133|GetModifierPhysical_ConstantBlockUnavoidablePreArmor
-modifierfunction.MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK|134|GetModifierTotal_ConstantBlock
-modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION|135|GetOverrideAnimation
-modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION_WEIGHT|136|GetOverrideAnimationWeight
-modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE|137|GetOverrideAnimationRate
-modifierfunction.MODIFIER_PROPERTY_ABSORB_SPELL|138|GetAbsorbSpell
-modifierfunction.MODIFIER_PROPERTY_REFLECT_SPELL|139|GetReflectSpell
-modifierfunction.MODIFIER_PROPERTY_DISABLE_AUTOATTACK|140|GetDisableAutoAttack
-modifierfunction.MODIFIER_PROPERTY_BONUS_DAY_VISION|141|GetBonusDayVision
-modifierfunction.MODIFIER_PROPERTY_BONUS_NIGHT_VISION|142|GetBonusNightVision
-modifierfunction.MODIFIER_PROPERTY_BONUS_NIGHT_VISION_UNIQUE|143|GetBonusNightVisionUnique
-modifierfunction.MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE|144|GetBonusVisionPercentage
-modifierfunction.MODIFIER_PROPERTY_FIXED_DAY_VISION|145|GetFixedDayVision
-modifierfunction.MODIFIER_PROPERTY_FIXED_NIGHT_VISION|146|GetFixedNightVision
-modifierfunction.MODIFIER_PROPERTY_MIN_HEALTH|147|GetMinHealth
-modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL|148|GetAbsoluteNoDamagePhysical
-modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL|149|GetAbsoluteNoDamageMagical
-modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE|150|GetAbsoluteNoDamagePure
-modifierfunction.MODIFIER_PROPERTY_IS_ILLUSION|151|GetIsIllusion
-modifierfunction.MODIFIER_PROPERTY_ILLUSION_LABEL|152|GetModifierIllusionLabel
-modifierfunction.MODIFIER_PROPERTY_STRONG_ILLUSION|153|GetModifierStrongIllusion
-modifierfunction.MODIFIER_PROPERTY_SUPER_ILLUSION|154|GetModifierSuperIllusion
-modifierfunction.MODIFIER_PROPERTY_SUPER_ILLUSION_WITH_ULTIMATE|155|GetModifierSuperIllusionWithUltimate
-modifierfunction.MODIFIER_PROPERTY_XP_DURING_DEATH|156|GetModifierXPDuringDeath
-modifierfunction.MODIFIER_PROPERTY_TURN_RATE_PERCENTAGE|157|GetModifierTurnRate_Percentage
-modifierfunction.MODIFIER_PROPERTY_TURN_RATE_OVERRIDE|158|GetModifierTurnRate_Override
-modifierfunction.MODIFIER_PROPERTY_DISABLE_HEALING|159|GetDisableHealing
-modifierfunction.MODIFIER_PROPERTY_ALWAYS_ALLOW_ATTACK|160|GetAlwaysAllowAttack
-modifierfunction.MODIFIER_PROPERTY_ALWAYS_ETHEREAL_ATTACK|161|GetAllowEtherealAttack
-modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ATTACK_MAGICAL|162|GetOverrideAttackMagical
-modifierfunction.MODIFIER_PROPERTY_UNIT_STATS_NEEDS_REFRESH|163|GetModifierUnitStatsNeedsRefresh
-modifierfunction.MODIFIER_PROPERTY_BOUNTY_CREEP_MULTIPLIER|164|Unused
-modifierfunction.MODIFIER_PROPERTY_BOUNTY_OTHER_MULTIPLIER|165|Unused
-modifierfunction.MODIFIER_PROPERTY_UNIT_DISALLOW_UPGRADING|166|GetModifierUnitDisllowUpgrading
-modifierfunction.MODIFIER_PROPERTY_DODGE_PROJECTILE|167|GetModifierDodgeProjectile
-modifierfunction.MODIFIER_PROPERTY_TRIGGER_COSMETIC_AND_END_ATTACK|168|GetTriggerCosmeticAndEndAttack
-modifierfunction.MODIFIER_PROPERTY_MAX_DEBUFF_DURATION|169|GetModifierMaxDebuffDuration
-modifierfunction.MODIFIER_PROPERTY_PRIMARY_STAT_DAMAGE_MULTIPLIER|170|GetPrimaryStatDamageMultiplier
-modifierfunction.MODIFIER_PROPERTY_PREATTACK_DEADLY_BLOW|171|GetModifierPreAttack_DeadlyBlow
-modifierfunction.MODIFIER_PROPERTY_ALWAYS_AUTOATTACK_WHILE_HOLD_POSITION|172|GetAlwaysAutoAttackWhileHoldPosition
-modifierfunction.MODIFIER_EVENT_ON_SPELL_TARGET_READY|173|OnSpellTargetReady
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_RECORD|174|OnAttackRecord
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_START|175|OnAttackStart
-modifierfunction.MODIFIER_EVENT_ON_ATTACK|176|OnAttack
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_LANDED|177|OnAttackLanded
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_FAIL|178|OnAttackFail
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_ALLIED|179|OnAttackAllied
-modifierfunction.MODIFIER_EVENT_ON_PROJECTILE_DODGE|180|OnProjectileDodge
-modifierfunction.MODIFIER_EVENT_ON_ORDER|181|OnOrder
-modifierfunction.MODIFIER_EVENT_ON_UNIT_MOVED|182|OnUnitMoved
-modifierfunction.MODIFIER_EVENT_ON_ABILITY_START|183|OnAbilityStart
-modifierfunction.MODIFIER_EVENT_ON_ABILITY_EXECUTED|184|OnAbilityExecuted
-modifierfunction.MODIFIER_EVENT_ON_ABILITY_FULLY_CAST|185|OnAbilityFullyCast
-modifierfunction.MODIFIER_EVENT_ON_BREAK_INVISIBILITY|186|OnBreakInvisibility
-modifierfunction.MODIFIER_EVENT_ON_ABILITY_END_CHANNEL|187|OnAbilityEndChannel
-modifierfunction.MODIFIER_EVENT_ON_PROCESS_UPGRADE|188|Unused
-modifierfunction.MODIFIER_EVENT_ON_REFRESH|189|Unused
-modifierfunction.MODIFIER_EVENT_ON_TAKEDAMAGE|190|OnTakeDamage
-modifierfunction.MODIFIER_EVENT_ON_DEATH_PREVENTED|191|OnDamagePrevented
-modifierfunction.MODIFIER_EVENT_ON_STATE_CHANGED|192|OnStateChanged
-modifierfunction.MODIFIER_EVENT_ON_ORB_EFFECT|193|Unused
-modifierfunction.MODIFIER_EVENT_ON_PROCESS_CLEAVE|194|OnProcessCleave
-modifierfunction.MODIFIER_EVENT_ON_DAMAGE_CALCULATED|195|OnDamageCalculated
-modifierfunction.MODIFIER_EVENT_ON_MAGIC_DAMAGE_CALCULATED|196|OnMagicDamageCalculated
-modifierfunction.MODIFIER_EVENT_ON_ATTACKED|197|OnAttacked
-modifierfunction.MODIFIER_EVENT_ON_DEATH|198|OnDeath
-modifierfunction.MODIFIER_EVENT_ON_RESPAWN|199|OnRespawn
-modifierfunction.MODIFIER_EVENT_ON_SPENT_MANA|200|OnSpentMana
-modifierfunction.MODIFIER_EVENT_ON_TELEPORTING|201|OnTeleporting
-modifierfunction.MODIFIER_EVENT_ON_TELEPORTED|202|OnTeleported
-modifierfunction.MODIFIER_EVENT_ON_SET_LOCATION|203|OnSetLocation
-modifierfunction.MODIFIER_EVENT_ON_HEALTH_GAINED|204|OnHealthGained
-modifierfunction.MODIFIER_EVENT_ON_MANA_GAINED|205|OnManaGained
-modifierfunction.MODIFIER_EVENT_ON_TAKEDAMAGE_KILLCREDIT|206|OnTakeDamageKillCredit
-modifierfunction.MODIFIER_EVENT_ON_HERO_KILLED|207|OnHeroKilled
-modifierfunction.MODIFIER_EVENT_ON_HEAL_RECEIVED|208|OnHealReceived
-modifierfunction.MODIFIER_EVENT_ON_BUILDING_KILLED|209|OnBuildingKilled
-modifierfunction.MODIFIER_EVENT_ON_MODEL_CHANGED|210|OnModelChanged
-modifierfunction.MODIFIER_EVENT_ON_MODIFIER_ADDED|211|OnModifierAdded
-modifierfunction.MODIFIER_PROPERTY_TOOLTIP|212|OnTooltip
-modifierfunction.MODIFIER_PROPERTY_MODEL_CHANGE|213|GetModifierModelChange
-modifierfunction.MODIFIER_PROPERTY_MODEL_SCALE|214|GetModifierModelScale
-modifierfunction.MODIFIER_PROPERTY_IS_SCEPTER|215|GetModifierScepter
-modifierfunction.MODIFIER_PROPERTY_IS_SHARD|216|GetModifierShard
-modifierfunction.MODIFIER_PROPERTY_RADAR_COOLDOWN_REDUCTION|217|GetModifierRadarCooldownReduction
-modifierfunction.MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS|218|GetActivityTranslationModifiers
-modifierfunction.MODIFIER_PROPERTY_TRANSLATE_ATTACK_SOUND|219|GetAttackSound
-modifierfunction.MODIFIER_PROPERTY_LIFETIME_FRACTION|220|GetUnitLifetimeFraction
-modifierfunction.MODIFIER_PROPERTY_PROVIDES_FOW_POSITION|221|GetModifierProvidesFOWVision
-modifierfunction.MODIFIER_PROPERTY_SPELLS_REQUIRE_HP|222|GetModifierSpellsRequireHP
-modifierfunction.MODIFIER_PROPERTY_FORCE_DRAW_MINIMAP|223|GetForceDrawOnMinimap
-modifierfunction.MODIFIER_PROPERTY_DISABLE_TURNING|224|GetModifierDisableTurning
-modifierfunction.MODIFIER_PROPERTY_IGNORE_CAST_ANGLE|225|GetModifierIgnoreCastAngle
-modifierfunction.MODIFIER_PROPERTY_CHANGE_ABILITY_VALUE|226|GetModifierChangeAbilityValue
-modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL|227|GetModifierOverrideAbilitySpecial
-modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL_VALUE|228|GetModifierOverrideAbilitySpecialValue
-modifierfunction.MODIFIER_PROPERTY_ABILITY_LAYOUT|229|GetModifierAbilityLayout
-modifierfunction.MODIFIER_EVENT_ON_DOMINATED|230|OnDominated
-modifierfunction.MODIFIER_EVENT_ON_KILL|231|OnKill
-modifierfunction.MODIFIER_EVENT_ON_ASSIST|232|OnAssist
-modifierfunction.MODIFIER_PROPERTY_TEMPEST_DOUBLE|233|GetModifierTempestDouble
-modifierfunction.MODIFIER_PROPERTY_PRESERVE_PARTICLES_ON_MODEL_CHANGE|234|PreserveParticlesOnModelChanged
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_FINISHED|235|OnAttackFinished
-modifierfunction.MODIFIER_PROPERTY_IGNORE_COOLDOWN|236|GetModifierIgnoreCooldown
-modifierfunction.MODIFIER_PROPERTY_CAN_ATTACK_TREES|237|GetModifierCanAttackTrees
-modifierfunction.MODIFIER_PROPERTY_VISUAL_Z_DELTA|238|GetVisualZDelta
-modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_ILLUSION|239|
-modifierfunction.MODIFIER_PROPERTY_DONT_GIVE_VISION_OF_ATTACKER|240|GetModifierNoVisionOfAttacker
-modifierfunction.MODIFIER_PROPERTY_TOOLTIP2|241|OnTooltip2
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_RECORD_DESTROY|242|OnAttackRecordDestroy
-modifierfunction.MODIFIER_EVENT_ON_PROJECTILE_OBSTRUCTION_HIT|243|OnProjectileObstructionHit
-modifierfunction.MODIFIER_PROPERTY_SUPPRESS_TELEPORT|244|GetSuppressTeleport
-modifierfunction.MODIFIER_EVENT_ON_ATTACK_CANCELLED|245|OnAttackCancelled
-modifierfunction.MODIFIER_PROPERTY_SUPPRESS_CLEAVE|246|GetSuppressCleave
-modifierfunction.MODIFIER_PROPERTY_BOT_ATTACK_SCORE_BONUS|247|BotAttackScoreBonus
-modifierfunction.MODIFIER_PROPERTY_ATTACKSPEED_REDUCTION_PERCENTAGE|248|GetModifierAttackSpeedReductionPercentage
-modifierfunction.MODIFIER_PROPERTY_MOVESPEED_REDUCTION_PERCENTAGE|249|GetModifierMoveSpeedReductionPercentage
-modifierfunction.MODIFIER_PROPERTY_ATTACK_WHILE_MOVING_TARGET|250|
-modifierfunction.MODIFIER_PROPERTY_ATTACKSPEED_PERCENTAGE|251|GetModifierAttackSpeedPercentage
-modifierfunction.MODIFIER_EVENT_ON_ATTEMPT_PROJECTILE_DODGE|252|OnAttemptProjectileDodge
-modifierfunction.MODIFIER_EVENT_ON_PREDEBUFF_APPLIED|253|OnPreDebuffApplied
-modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_STACKING|254|GetModifierPercentageCooldownStacking
-modifierfunction.MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET|255|GetModifierSpellRedirectTarget
-modifierfunction.MODIFIER_PROPERTY_TURN_RATE_CONSTANT|256|GetModifierTurnRateConstant
-modifierfunction.MODIFIER_PROPERTY_RAT_PACK|257|GetModifierIsRatPack
-modifierfunction.MODIFIER_FUNCTION_LAST|258|
+modifierfunction.MODIFIER_PROPERTY_HEALTHCOST_REDUCTION_CONSTANT|35|GetModifierHealthcostReduction_Constant
+modifierfunction.MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT|36|GetModifierBaseAttackTimeConstant
+modifierfunction.MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT_ADJUST|37|GetModifierBaseAttackTimeConstant_Adjust
+modifierfunction.MODIFIER_PROPERTY_BASE_ATTACK_TIME_PERCENTAGE|38|GetModifierBaseAttackTimePercentage
+modifierfunction.MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT|39|GetModifierAttackPointConstant
+modifierfunction.MODIFIER_PROPERTY_BONUSDAMAGEOUTGOING_PERCENTAGE|40|GetModifierBonusDamageOutgoing_Percentage
+modifierfunction.MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE|41|GetModifierDamageOutgoing_Percentage
+modifierfunction.MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION|42|GetModifierDamageOutgoing_Percentage_Illusion
+modifierfunction.MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION_AMPLIFY|43|GetModifierDamageOutgoing_Percentage_Illusion_Amplify
+modifierfunction.MODIFIER_PROPERTY_TOTALDAMAGEOUTGOING_PERCENTAGE|44|GetModifierTotalDamageOutgoing_Percentage
+modifierfunction.MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_CREEP|45|GetModifierSpellAmplify_PercentageCreep
+modifierfunction.MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE|46|GetModifierSpellAmplify_Percentage
+modifierfunction.MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_UNIQUE|47|GetModifierSpellAmplify_PercentageUnique
+modifierfunction.MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE|48|GetModifierHealAmplify_PercentageSource
+modifierfunction.MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET|49|GetModifierHealAmplify_PercentageTarget
+modifierfunction.MODIFIER_PROPERTY_HP_REGEN_CAN_BE_NEGATIVE|50|GetModifierHPRegen_CanBeNegative
+modifierfunction.MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE|51|GetModifierHPRegenAmplify_Percentage
+modifierfunction.MODIFIER_PROPERTY_LIFESTEAL_AMPLIFY_PERCENTAGE|52|GetModifierLifestealRegenAmplify_Percentage
+modifierfunction.MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE|53|GetModifierSpellLifestealRegenAmplify_Percentage
+modifierfunction.MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE|54|GetModifierMPRegenAmplify_Percentage
+modifierfunction.MODIFIER_PROPERTY_MANA_DRAIN_AMPLIFY_PERCENTAGE|55|GetModifierManaDrainAmplify_Percentage
+modifierfunction.MODIFIER_PROPERTY_MP_RESTORE_AMPLIFY_PERCENTAGE|56|GetModifierMPRestoreAmplify_Percentage
+modifierfunction.MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE|57|GetModifierBaseDamageOutgoing_Percentage
+modifierfunction.MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE_UNIQUE|58|GetModifierBaseDamageOutgoing_PercentageUnique
+modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE|59|GetModifierIncomingDamage_Percentage
+modifierfunction.MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_PERCENTAGE|60|GetModifierIncomingPhysicalDamage_Percentage
+modifierfunction.MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_CONSTANT|61|GetModifierIncomingPhysicalDamageConstant
+modifierfunction.MODIFIER_PROPERTY_INCOMING_SPELL_DAMAGE_CONSTANT|62|GetModifierIncomingSpellDamageConstant
+modifierfunction.MODIFIER_PROPERTY_EVASION_CONSTANT|63|GetModifierEvasion_Constant
+modifierfunction.MODIFIER_PROPERTY_NEGATIVE_EVASION_CONSTANT|64|GetModifierNegativeEvasion_Constant
+modifierfunction.MODIFIER_PROPERTY_STATUS_RESISTANCE|65|GetModifierStatusResistance
+modifierfunction.MODIFIER_PROPERTY_STATUS_RESISTANCE_STACKING|66|GetModifierStatusResistanceStacking
+modifierfunction.MODIFIER_PROPERTY_STATUS_RESISTANCE_CASTER|67|GetModifierStatusResistanceCaster
+modifierfunction.MODIFIER_PROPERTY_AVOID_DAMAGE|68|GetModifierAvoidDamage
+modifierfunction.MODIFIER_PROPERTY_AVOID_SPELL|69|GetModifierAvoidSpell
+modifierfunction.MODIFIER_PROPERTY_MISS_PERCENTAGE|70|GetModifierMiss_Percentage
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BASE_PERCENTAGE|71|GetModifierPhysicalArmorBase_Percentage
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_TOTAL_PERCENTAGE|72|GetModifierPhysicalArmorTotal_Percentage
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS|73|GetModifierPhysicalArmorBonus
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE|74|GetModifierPhysicalArmorBonusUnique
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE_ACTIVE|75|GetModifierPhysicalArmorBonusUniqueActive
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_POST|76|GetModifierPhysicalArmorBonusPost
+modifierfunction.MODIFIER_PROPERTY_IGNORE_PHYSICAL_ARMOR|77|GetModifierIgnorePhysicalArmor
+modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BASE_REDUCTION|78|GetModifierMagicalResistanceBaseReduction
+modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DIRECT_MODIFICATION|79|GetModifierMagicalResistanceDirectModification
+modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS|80|GetModifierMagicalResistanceBonus
+modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_ILLUSIONS|81|GetModifierMagicalResistanceBonusIllusions
+modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_UNIQUE|82|GetModifierMagicalResistanceBonusUnique
+modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE|83|GetModifierMagicalResistanceDecrepifyUnique
+modifierfunction.MODIFIER_PROPERTY_BASE_MANA_REGEN|84|GetModifierBaseRegen
+modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_CONSTANT|85|GetModifierConstantManaRegen
+modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_CONSTANT_UNIQUE|86|GetModifierConstantManaRegenUnique
+modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_TOTAL_PERCENTAGE|87|GetModifierTotalPercentageManaRegen
+modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT|88|GetModifierConstantHealthRegen
+modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE|89|GetModifierHealthRegenPercentage
+modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE_UNIQUE|90|GetModifierHealthRegenPercentageUnique
+modifierfunction.MODIFIER_PROPERTY_HEALTH_BONUS|91|GetModifierHealthBonus
+modifierfunction.MODIFIER_PROPERTY_MANA_BONUS|92|GetModifierManaBonus
+modifierfunction.MODIFIER_PROPERTY_EXTRA_STRENGTH_BONUS|93|GetModifierExtraStrengthBonus
+modifierfunction.MODIFIER_PROPERTY_EXTRA_HEALTH_BONUS|94|GetModifierExtraHealthBonus
+modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_BONUS|95|GetModifierExtraManaBonus
+modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_BONUS_PERCENTAGE|96|GetModifierExtraManaBonusPercentage
+modifierfunction.MODIFIER_PROPERTY_EXTRA_HEALTH_PERCENTAGE|97|GetModifierExtraHealthPercentage
+modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_PERCENTAGE|98|GetModifierExtraManaPercentage
+modifierfunction.MODIFIER_PROPERTY_STATS_STRENGTH_BONUS|99|GetModifierBonusStats_Strength
+modifierfunction.MODIFIER_PROPERTY_STATS_AGILITY_BONUS|100|GetModifierBonusStats_Agility
+modifierfunction.MODIFIER_PROPERTY_STATS_INTELLECT_BONUS|101|GetModifierBonusStats_Intellect
+modifierfunction.MODIFIER_PROPERTY_STATS_STRENGTH_BONUS_PERCENTAGE|102|GetModifierBonusStats_Strength_Percentage
+modifierfunction.MODIFIER_PROPERTY_STATS_AGILITY_BONUS_PERCENTAGE|103|GetModifierBonusStats_Agility_Percentage
+modifierfunction.MODIFIER_PROPERTY_STATS_INTELLECT_BONUS_PERCENTAGE|104|GetModifierBonusStats_Intellect_Percentage
+modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS|105|GetModifierCastRangeBonus
+modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_PERCENTAGE|106|GetModifierCastRangeBonusPercentage
+modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_TARGET|107|GetModifierCastRangeBonusTarget
+modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_STACKING|108|GetModifierCastRangeBonusStacking
+modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BASE_OVERRIDE|109|GetModifierAttackRangeOverride
+modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS|110|GetModifierAttackRangeBonus
+modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_UNIQUE|111|GetModifierAttackRangeBonusUnique
+modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_PERCENTAGE|112|GetModifierAttackRangeBonusPercentage
+modifierfunction.MODIFIER_PROPERTY_MAX_ATTACK_RANGE|113|GetModifierMaxAttackRange
+modifierfunction.MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS|114|GetModifierProjectileSpeedBonus
+modifierfunction.MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS_PERCENTAGE|115|GetModifierProjectileSpeedBonusPercentage
+modifierfunction.MODIFIER_PROPERTY_PROJECTILE_NAME|116|GetModifierProjectileName
+modifierfunction.MODIFIER_PROPERTY_REINCARNATION|117|ReincarnateTime
+modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME|118|GetModifierConstantRespawnTime
+modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME_PERCENTAGE|119|GetModifierPercentageRespawnTime
+modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME_STACKING|120|GetModifierStackingRespawnTime
+modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE|121|GetModifierPercentageCooldown
+modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_ONGOING|122|GetModifierPercentageCooldownOngoing
+modifierfunction.MODIFIER_PROPERTY_CASTTIME_PERCENTAGE|123|GetModifierPercentageCasttime
+modifierfunction.MODIFIER_PROPERTY_ATTACK_ANIM_TIME_PERCENTAGE|124|GetModifierPercentageAttackAnimTime
+modifierfunction.MODIFIER_PROPERTY_MANACOST_PERCENTAGE|125|GetModifierPercentageManacost
+modifierfunction.MODIFIER_PROPERTY_MANACOST_PERCENTAGE_STACKING|126|GetModifierPercentageManacostStacking
+modifierfunction.MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE|127|GetModifierPercentageHealthcost
+modifierfunction.MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE_STACKING|128|GetModifierPercentageHealthcostStacking
+modifierfunction.MODIFIER_PROPERTY_DEATHGOLDCOST|129|GetModifierConstantDeathGoldCost
+modifierfunction.MODIFIER_PROPERTY_EXP_RATE_BOOST|130|GetModifierPercentageExpRateBoost
+modifierfunction.MODIFIER_PROPERTY_GOLD_RATE_BOOST|131|GetModifierPercentageGoldRateBoost
+modifierfunction.MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE|132|GetModifierPreAttack_CriticalStrike
+modifierfunction.MODIFIER_PROPERTY_PREATTACK_TARGET_CRITICALSTRIKE|133|GetModifierPreAttack_Target_CriticalStrike
+modifierfunction.MODIFIER_PROPERTY_MAGICAL_CONSTANT_BLOCK|134|GetModifierMagical_ConstantBlock
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK|135|GetModifierPhysical_ConstantBlock
+modifierfunction.MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK_SPECIAL|136|GetModifierPhysical_ConstantBlockSpecial
+modifierfunction.MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_UNAVOIDABLE_PRE_ARMOR|137|GetModifierPhysical_ConstantBlockUnavoidablePreArmor
+modifierfunction.MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK|138|GetModifierTotal_ConstantBlock
+modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION|139|GetOverrideAnimation
+modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION_WEIGHT|140|GetOverrideAnimationWeight
+modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE|141|GetOverrideAnimationRate
+modifierfunction.MODIFIER_PROPERTY_ABSORB_SPELL|142|GetAbsorbSpell
+modifierfunction.MODIFIER_PROPERTY_REFLECT_SPELL|143|GetReflectSpell
+modifierfunction.MODIFIER_PROPERTY_DISABLE_AUTOATTACK|144|GetDisableAutoAttack
+modifierfunction.MODIFIER_PROPERTY_BONUS_DAY_VISION|145|GetBonusDayVision
+modifierfunction.MODIFIER_PROPERTY_BONUS_NIGHT_VISION|146|GetBonusNightVision
+modifierfunction.MODIFIER_PROPERTY_BONUS_NIGHT_VISION_UNIQUE|147|GetBonusNightVisionUnique
+modifierfunction.MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE|148|GetBonusVisionPercentage
+modifierfunction.MODIFIER_PROPERTY_FIXED_DAY_VISION|149|GetFixedDayVision
+modifierfunction.MODIFIER_PROPERTY_FIXED_NIGHT_VISION|150|GetFixedNightVision
+modifierfunction.MODIFIER_PROPERTY_MIN_HEALTH|151|GetMinHealth
+modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL|152|GetAbsoluteNoDamagePhysical
+modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL|153|GetAbsoluteNoDamageMagical
+modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE|154|GetAbsoluteNoDamagePure
+modifierfunction.MODIFIER_PROPERTY_IS_ILLUSION|155|GetIsIllusion
+modifierfunction.MODIFIER_PROPERTY_ILLUSION_LABEL|156|GetModifierIllusionLabel
+modifierfunction.MODIFIER_PROPERTY_STRONG_ILLUSION|157|GetModifierStrongIllusion
+modifierfunction.MODIFIER_PROPERTY_SUPER_ILLUSION|158|GetModifierSuperIllusion
+modifierfunction.MODIFIER_PROPERTY_SUPER_ILLUSION_WITH_ULTIMATE|159|GetModifierSuperIllusionWithUltimate
+modifierfunction.MODIFIER_PROPERTY_XP_DURING_DEATH|160|GetModifierXPDuringDeath
+modifierfunction.MODIFIER_PROPERTY_TURN_RATE_PERCENTAGE|161|GetModifierTurnRate_Percentage
+modifierfunction.MODIFIER_PROPERTY_TURN_RATE_OVERRIDE|162|GetModifierTurnRate_Override
+modifierfunction.MODIFIER_PROPERTY_DISABLE_HEALING|163|GetDisableHealing
+modifierfunction.MODIFIER_PROPERTY_ALWAYS_ALLOW_ATTACK|164|GetAlwaysAllowAttack
+modifierfunction.MODIFIER_PROPERTY_ALWAYS_ETHEREAL_ATTACK|165|GetAllowEtherealAttack
+modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ATTACK_MAGICAL|166|GetOverrideAttackMagical
+modifierfunction.MODIFIER_PROPERTY_UNIT_STATS_NEEDS_REFRESH|167|GetModifierUnitStatsNeedsRefresh
+modifierfunction.MODIFIER_PROPERTY_BOUNTY_CREEP_MULTIPLIER|168|Unused
+modifierfunction.MODIFIER_PROPERTY_BOUNTY_OTHER_MULTIPLIER|169|Unused
+modifierfunction.MODIFIER_PROPERTY_UNIT_DISALLOW_UPGRADING|170|GetModifierUnitDisllowUpgrading
+modifierfunction.MODIFIER_PROPERTY_DODGE_PROJECTILE|171|GetModifierDodgeProjectile
+modifierfunction.MODIFIER_PROPERTY_TRIGGER_COSMETIC_AND_END_ATTACK|172|GetTriggerCosmeticAndEndAttack
+modifierfunction.MODIFIER_PROPERTY_MAX_DEBUFF_DURATION|173|GetModifierMaxDebuffDuration
+modifierfunction.MODIFIER_PROPERTY_PRIMARY_STAT_DAMAGE_MULTIPLIER|174|GetPrimaryStatDamageMultiplier
+modifierfunction.MODIFIER_PROPERTY_PREATTACK_DEADLY_BLOW|175|GetModifierPreAttack_DeadlyBlow
+modifierfunction.MODIFIER_PROPERTY_ALWAYS_AUTOATTACK_WHILE_HOLD_POSITION|176|GetAlwaysAutoAttackWhileHoldPosition
+modifierfunction.MODIFIER_EVENT_ON_SPELL_TARGET_READY|177|OnSpellTargetReady
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_RECORD|178|OnAttackRecord
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_START|179|OnAttackStart
+modifierfunction.MODIFIER_EVENT_ON_ATTACK|180|OnAttack
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_LANDED|181|OnAttackLanded
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_FAIL|182|OnAttackFail
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_ALLIED|183|OnAttackAllied
+modifierfunction.MODIFIER_EVENT_ON_PROJECTILE_DODGE|184|OnProjectileDodge
+modifierfunction.MODIFIER_EVENT_ON_ORDER|185|OnOrder
+modifierfunction.MODIFIER_EVENT_ON_UNIT_MOVED|186|OnUnitMoved
+modifierfunction.MODIFIER_EVENT_ON_ABILITY_START|187|OnAbilityStart
+modifierfunction.MODIFIER_EVENT_ON_ABILITY_EXECUTED|188|OnAbilityExecuted
+modifierfunction.MODIFIER_EVENT_ON_ABILITY_FULLY_CAST|189|OnAbilityFullyCast
+modifierfunction.MODIFIER_EVENT_ON_BREAK_INVISIBILITY|190|OnBreakInvisibility
+modifierfunction.MODIFIER_EVENT_ON_ABILITY_END_CHANNEL|191|OnAbilityEndChannel
+modifierfunction.MODIFIER_EVENT_ON_PROCESS_UPGRADE|192|Unused
+modifierfunction.MODIFIER_EVENT_ON_REFRESH|193|Unused
+modifierfunction.MODIFIER_EVENT_ON_TAKEDAMAGE|194|OnTakeDamage
+modifierfunction.MODIFIER_EVENT_ON_DEATH_PREVENTED|195|OnDamagePrevented
+modifierfunction.MODIFIER_EVENT_ON_STATE_CHANGED|196|OnStateChanged
+modifierfunction.MODIFIER_EVENT_ON_ORB_EFFECT|197|Unused
+modifierfunction.MODIFIER_EVENT_ON_PROCESS_CLEAVE|198|OnProcessCleave
+modifierfunction.MODIFIER_EVENT_ON_DAMAGE_CALCULATED|199|OnDamageCalculated
+modifierfunction.MODIFIER_EVENT_ON_MAGIC_DAMAGE_CALCULATED|200|OnMagicDamageCalculated
+modifierfunction.MODIFIER_EVENT_ON_ATTACKED|201|OnAttacked
+modifierfunction.MODIFIER_EVENT_ON_DEATH|202|OnDeath
+modifierfunction.MODIFIER_EVENT_ON_DEATH_COMPLETED|203|OnDeathCompleted
+modifierfunction.MODIFIER_EVENT_ON_RESPAWN|204|OnRespawn
+modifierfunction.MODIFIER_EVENT_ON_SPENT_MANA|205|OnSpentMana
+modifierfunction.MODIFIER_EVENT_ON_SPENT_HEALTH|206|OnSpentHealth
+modifierfunction.MODIFIER_EVENT_ON_TELEPORTING|207|OnTeleporting
+modifierfunction.MODIFIER_EVENT_ON_TELEPORTED|208|OnTeleported
+modifierfunction.MODIFIER_EVENT_ON_SET_LOCATION|209|OnSetLocation
+modifierfunction.MODIFIER_EVENT_ON_HEALTH_GAINED|210|OnHealthGained
+modifierfunction.MODIFIER_EVENT_ON_MANA_GAINED|211|OnManaGained
+modifierfunction.MODIFIER_EVENT_ON_TAKEDAMAGE_KILLCREDIT|212|OnTakeDamageKillCredit
+modifierfunction.MODIFIER_EVENT_ON_HERO_KILLED|213|OnHeroKilled
+modifierfunction.MODIFIER_EVENT_ON_HEAL_RECEIVED|214|OnHealReceived
+modifierfunction.MODIFIER_EVENT_ON_BUILDING_KILLED|215|OnBuildingKilled
+modifierfunction.MODIFIER_EVENT_ON_MODEL_CHANGED|216|OnModelChanged
+modifierfunction.MODIFIER_EVENT_ON_MODIFIER_ADDED|217|OnModifierAdded
+modifierfunction.MODIFIER_PROPERTY_TOOLTIP|218|OnTooltip
+modifierfunction.MODIFIER_PROPERTY_MODEL_CHANGE|219|GetModifierModelChange
+modifierfunction.MODIFIER_PROPERTY_MODEL_SCALE|220|GetModifierModelScale
+modifierfunction.MODIFIER_PROPERTY_MODEL_SCALE_ANIMATE_TIME|221|GetModifierModelScaleAnimateTime
+modifierfunction.MODIFIER_PROPERTY_IS_SCEPTER|222|GetModifierScepter
+modifierfunction.MODIFIER_PROPERTY_IS_SHARD|223|GetModifierShard
+modifierfunction.MODIFIER_PROPERTY_RADAR_COOLDOWN_REDUCTION|224|GetModifierRadarCooldownReduction
+modifierfunction.MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS|225|GetActivityTranslationModifiers
+modifierfunction.MODIFIER_PROPERTY_TRANSLATE_ATTACK_SOUND|226|GetAttackSound
+modifierfunction.MODIFIER_PROPERTY_LIFETIME_FRACTION|227|GetUnitLifetimeFraction
+modifierfunction.MODIFIER_PROPERTY_PROVIDES_FOW_POSITION|228|GetModifierProvidesFOWVision
+modifierfunction.MODIFIER_PROPERTY_SPELLS_REQUIRE_HP|229|GetModifierSpellsRequireHP
+modifierfunction.MODIFIER_PROPERTY_FORCE_DRAW_MINIMAP|230|GetForceDrawOnMinimap
+modifierfunction.MODIFIER_PROPERTY_DISABLE_TURNING|231|GetModifierDisableTurning
+modifierfunction.MODIFIER_PROPERTY_IGNORE_CAST_ANGLE|232|GetModifierIgnoreCastAngle
+modifierfunction.MODIFIER_PROPERTY_CHANGE_ABILITY_VALUE|233|GetModifierChangeAbilityValue
+modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL|234|GetModifierOverrideAbilitySpecial
+modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL_VALUE|235|GetModifierOverrideAbilitySpecialValue
+modifierfunction.MODIFIER_PROPERTY_ABILITY_LAYOUT|236|GetModifierAbilityLayout
+modifierfunction.MODIFIER_EVENT_ON_DOMINATED|237|OnDominated
+modifierfunction.MODIFIER_EVENT_ON_KILL|238|OnKill
+modifierfunction.MODIFIER_EVENT_ON_ASSIST|239|OnAssist
+modifierfunction.MODIFIER_PROPERTY_TEMPEST_DOUBLE|240|GetModifierTempestDouble
+modifierfunction.MODIFIER_PROPERTY_PRESERVE_PARTICLES_ON_MODEL_CHANGE|241|PreserveParticlesOnModelChanged
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_FINISHED|242|OnAttackFinished
+modifierfunction.MODIFIER_PROPERTY_IGNORE_COOLDOWN|243|GetModifierIgnoreCooldown
+modifierfunction.MODIFIER_PROPERTY_CAN_ATTACK_TREES|244|GetModifierCanAttackTrees
+modifierfunction.MODIFIER_PROPERTY_VISUAL_Z_DELTA|245|GetVisualZDelta
+modifierfunction.MODIFIER_PROPERTY_VISUAL_Z_SPEED_BASE_OVERRIDE|246|GetVisualZSpeedBaseOverride
+modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_ILLUSION|247|
+modifierfunction.MODIFIER_PROPERTY_DONT_GIVE_VISION_OF_ATTACKER|248|GetModifierNoVisionOfAttacker
+modifierfunction.MODIFIER_PROPERTY_TOOLTIP2|249|OnTooltip2
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_RECORD_DESTROY|250|OnAttackRecordDestroy
+modifierfunction.MODIFIER_EVENT_ON_PROJECTILE_OBSTRUCTION_HIT|251|OnProjectileObstructionHit
+modifierfunction.MODIFIER_PROPERTY_SUPPRESS_TELEPORT|252|GetSuppressTeleport
+modifierfunction.MODIFIER_EVENT_ON_ATTACK_CANCELLED|253|OnAttackCancelled
+modifierfunction.MODIFIER_PROPERTY_SUPPRESS_CLEAVE|254|GetSuppressCleave
+modifierfunction.MODIFIER_PROPERTY_BOT_ATTACK_SCORE_BONUS|255|BotAttackScoreBonus
+modifierfunction.MODIFIER_PROPERTY_ATTACKSPEED_REDUCTION_PERCENTAGE|256|GetModifierAttackSpeedReductionPercentage
+modifierfunction.MODIFIER_PROPERTY_MOVESPEED_REDUCTION_PERCENTAGE|257|GetModifierMoveSpeedReductionPercentage
+modifierfunction.MODIFIER_PROPERTY_ATTACK_WHILE_MOVING_TARGET|258|
+modifierfunction.MODIFIER_PROPERTY_ATTACKSPEED_PERCENTAGE|259|GetModifierAttackSpeedPercentage
+modifierfunction.MODIFIER_EVENT_ON_ATTEMPT_PROJECTILE_DODGE|260|OnAttemptProjectileDodge
+modifierfunction.MODIFIER_EVENT_ON_PREDEBUFF_APPLIED|261|OnPreDebuffApplied
+modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_STACKING|262|GetModifierPercentageCooldownStacking
+modifierfunction.MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET|263|GetModifierSpellRedirectTarget
+modifierfunction.MODIFIER_PROPERTY_TURN_RATE_CONSTANT|264|GetModifierTurnRateConstant
+modifierfunction.MODIFIER_PROPERTY_RAT_PACK|265|GetModifierIsRatPack
+modifierfunction.MODIFIER_PROPERTY_PHYSICALDAMAGEOUTGOING_PERCENTAGE|266|GetModifierPhysicalDamageOutgoing_Percentage
+modifierfunction.MODIFIER_PROPERTY_KNOCKBACK_AMPLIFICATION_PERCENTAGE|267|GetModifierKnockbackAmplification_Percentage
+modifierfunction.MODIFIER_PROPERTY_HEALTHBAR_PIPS|268|GetModifierHealthBarPips
+modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT|269|GetModifierIncomingDamageConstant
+modifierfunction.MODIFIER_EVENT_SPELL_APPLIED_SUCCESSFULLY|270|OnSpellAppliedSuccessfully
+modifierfunction.MODIFIER_PROPERTY_AVOID_DAMAGE_AFTER_REDUCTIONS|271|GetModifierAvoidDamageAfterReductions
+modifierfunction.MODIFIER_FUNCTION_LAST|272|
 modifierfunction.MODIFIER_FUNCTION_INVALID|65535|
 
 # modifierstate
@@ -5435,41 +5149,50 @@ modifierstate.MODIFIER_STATE_BLOCK_DISABLED|12|
 modifierstate.MODIFIER_STATE_EVADE_DISABLED|13|
 modifierstate.MODIFIER_STATE_UNSELECTABLE|14|
 modifierstate.MODIFIER_STATE_CANNOT_TARGET_ENEMIES|15|
-modifierstate.MODIFIER_STATE_CANNOT_MISS|16|
-modifierstate.MODIFIER_STATE_SPECIALLY_DENIABLE|17|
-modifierstate.MODIFIER_STATE_FROZEN|18|
-modifierstate.MODIFIER_STATE_COMMAND_RESTRICTED|19|
-modifierstate.MODIFIER_STATE_NOT_ON_MINIMAP|20|
-modifierstate.MODIFIER_STATE_LOW_ATTACK_PRIORITY|21|
-modifierstate.MODIFIER_STATE_NO_HEALTH_BAR|22|
-modifierstate.MODIFIER_STATE_NO_HEALTH_BAR_FOR_ENEMIES|23|
-modifierstate.MODIFIER_STATE_FLYING|24|
-modifierstate.MODIFIER_STATE_NO_UNIT_COLLISION|25|
-modifierstate.MODIFIER_STATE_NO_TEAM_MOVE_TO|26|
-modifierstate.MODIFIER_STATE_NO_TEAM_SELECT|27|
-modifierstate.MODIFIER_STATE_PASSIVES_DISABLED|28|
-modifierstate.MODIFIER_STATE_DOMINATED|29|
-modifierstate.MODIFIER_STATE_BLIND|30|
-modifierstate.MODIFIER_STATE_OUT_OF_GAME|31|
-modifierstate.MODIFIER_STATE_FAKE_ALLY|32|
-modifierstate.MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY|33|
-modifierstate.MODIFIER_STATE_TRUESIGHT_IMMUNE|34|
-modifierstate.MODIFIER_STATE_UNTARGETABLE|35|
-modifierstate.MODIFIER_STATE_IGNORING_MOVE_AND_ATTACK_ORDERS|36|
-modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_TREES|37|
-modifierstate.MODIFIER_STATE_NOT_ON_MINIMAP_FOR_ENEMIES|38|
-modifierstate.MODIFIER_STATE_UNSLOWABLE|39|
-modifierstate.MODIFIER_STATE_TETHERED|40|
-modifierstate.MODIFIER_STATE_IGNORING_STOP_ORDERS|41|
-modifierstate.MODIFIER_STATE_FEARED|42|
-modifierstate.MODIFIER_STATE_TAUNTED|43|
-modifierstate.MODIFIER_STATE_CANNOT_BE_MOTION_CONTROLLED|44|
-modifierstate.MODIFIER_STATE_FORCED_FLYING_VISION|45|
-modifierstate.MODIFIER_STATE_ATTACK_ALLIES|46|
-modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_CLIFFS|47|
-modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_FISSURE|48|
-modifierstate.MODIFIER_STATE_SPECIALLY_UNDENIABLE|49|
-modifierstate.MODIFIER_STATE_LAST|50|
+modifierstate.MODIFIER_STATE_CANNOT_TARGET_BUILDINGS|16|
+modifierstate.MODIFIER_STATE_CANNOT_MISS|17|
+modifierstate.MODIFIER_STATE_SPECIALLY_DENIABLE|18|
+modifierstate.MODIFIER_STATE_FROZEN|19|
+modifierstate.MODIFIER_STATE_COMMAND_RESTRICTED|20|
+modifierstate.MODIFIER_STATE_NOT_ON_MINIMAP|21|
+modifierstate.MODIFIER_STATE_LOW_ATTACK_PRIORITY|22|
+modifierstate.MODIFIER_STATE_NO_HEALTH_BAR|23|
+modifierstate.MODIFIER_STATE_NO_HEALTH_BAR_FOR_ENEMIES|24|
+modifierstate.MODIFIER_STATE_NO_HEALTH_BAR_FOR_OTHER_PLAYERS|25|
+modifierstate.MODIFIER_STATE_FLYING|26|
+modifierstate.MODIFIER_STATE_NO_UNIT_COLLISION|27|
+modifierstate.MODIFIER_STATE_NO_TEAM_MOVE_TO|28|
+modifierstate.MODIFIER_STATE_NO_TEAM_SELECT|29|
+modifierstate.MODIFIER_STATE_PASSIVES_DISABLED|30|
+modifierstate.MODIFIER_STATE_DOMINATED|31|
+modifierstate.MODIFIER_STATE_BLIND|32|
+modifierstate.MODIFIER_STATE_OUT_OF_GAME|33|
+modifierstate.MODIFIER_STATE_FAKE_ALLY|34|
+modifierstate.MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY|35|
+modifierstate.MODIFIER_STATE_TRUESIGHT_IMMUNE|36|
+modifierstate.MODIFIER_STATE_UNTARGETABLE|37|
+modifierstate.MODIFIER_STATE_UNTARGETABLE_ALLIED|38|
+modifierstate.MODIFIER_STATE_UNTARGETABLE_ENEMY|39|
+modifierstate.MODIFIER_STATE_UNTARGETABLE_SELF|40|
+modifierstate.MODIFIER_STATE_IGNORING_MOVE_AND_ATTACK_ORDERS|41|
+modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_TREES|42|
+modifierstate.MODIFIER_STATE_NOT_ON_MINIMAP_FOR_ENEMIES|43|
+modifierstate.MODIFIER_STATE_UNSLOWABLE|44|
+modifierstate.MODIFIER_STATE_TETHERED|45|
+modifierstate.MODIFIER_STATE_IGNORING_STOP_ORDERS|46|
+modifierstate.MODIFIER_STATE_FEARED|47|
+modifierstate.MODIFIER_STATE_TAUNTED|48|
+modifierstate.MODIFIER_STATE_CANNOT_BE_MOTION_CONTROLLED|49|
+modifierstate.MODIFIER_STATE_FORCED_FLYING_VISION|50|
+modifierstate.MODIFIER_STATE_ATTACK_ALLIES|51|
+modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_CLIFFS|52|
+modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_FISSURE|53|
+modifierstate.MODIFIER_STATE_SPECIALLY_UNDENIABLE|54|
+modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_OBSTRUCTIONS|55|
+modifierstate.MODIFIER_STATE_DEBUFF_IMMUNE|56|
+modifierstate.MODIFIER_STATE_NO_INVISIBILITY_VISUALS|57|
+modifierstate.MODIFIER_STATE_ALLOW_PATHING_THROUGH_BASE_BLOCKER|58|
+modifierstate.MODIFIER_STATE_LAST|59|
 
 # DOTAModifierAttribute_t
 Enumerator|Value|Description
@@ -5487,7 +5210,8 @@ Enumerator|Value|Description
 Attributes.DOTA_ATTRIBUTE_STRENGTH|0|
 Attributes.DOTA_ATTRIBUTE_AGILITY|1|
 Attributes.DOTA_ATTRIBUTE_INTELLECT|2|
-Attributes.DOTA_ATTRIBUTE_MAX|3|
+Attributes.DOTA_ATTRIBUTE_ALL|3|
+Attributes.DOTA_ATTRIBUTE_MAX|4|
 Attributes.DOTA_ATTRIBUTE_INVALID|-1|
 
 # ParticleAttachment_t
@@ -5520,6 +5244,7 @@ DOTA_MOTION_CONTROLLER_PRIORITY.DOTA_MOTION_CONTROLLER_PRIORITY_LOW|1|
 DOTA_MOTION_CONTROLLER_PRIORITY.DOTA_MOTION_CONTROLLER_PRIORITY_MEDIUM|2|
 DOTA_MOTION_CONTROLLER_PRIORITY.DOTA_MOTION_CONTROLLER_PRIORITY_HIGH|3|
 DOTA_MOTION_CONTROLLER_PRIORITY.DOTA_MOTION_CONTROLLER_PRIORITY_HIGHEST|4|
+DOTA_MOTION_CONTROLLER_PRIORITY.DOTA_MOTION_CONTROLLER_PRIORITY_ULTRA|5|
 
 # DOTASpeechType_t
 Enumerator|Value|Description
@@ -5706,183 +5431,186 @@ DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3|55|
 DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1|56|
 DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2|57|
 DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE|58|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_QUICKCAST|59|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_QUICKCAST|60|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_QUICKCAST|61|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_QUICKCAST|62|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_QUICKCAST|63|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_QUICKCAST|64|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_EXPLICIT_AUTOCAST|65|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_EXPLICIT_AUTOCAST|66|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_EXPLICIT_AUTOCAST|67|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_EXPLICIT_AUTOCAST|68|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_EXPLICIT_AUTOCAST|69|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_EXPLICIT_AUTOCAST|70|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_QUICKCAST_AUTOCAST|71|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_QUICKCAST_AUTOCAST|72|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_QUICKCAST_AUTOCAST|73|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_QUICKCAST_AUTOCAST|74|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_QUICKCAST_AUTOCAST|75|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_QUICKCAST_AUTOCAST|76|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_AUTOMATIC_AUTOCAST|77|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_AUTOMATIC_AUTOCAST|78|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_AUTOMATIC_AUTOCAST|79|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_AUTOMATIC_AUTOCAST|80|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_AUTOMATIC_AUTOCAST|81|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_AUTOMATIC_AUTOCAST|82|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1|83|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2|84|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3|85|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4|86|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5|87|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6|88|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP|89|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL|90|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1_QUICKCAST|91|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2_QUICKCAST|92|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3_QUICKCAST|93|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4_QUICKCAST|94|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5_QUICKCAST|95|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6_QUICKCAST|96|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP_QUICKCAST|97|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL_QUICKCAST|98|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1_AUTOCAST|99|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2_AUTOCAST|100|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3_AUTOCAST|101|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4_AUTOCAST|102|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5_AUTOCAST|103|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6_AUTOCAST|104|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP_AUTOCAST|105|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL_AUTOCAST|106|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1_QUICKAUTOCAST|107|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2_QUICKAUTOCAST|108|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3_QUICKAUTOCAST|109|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4_QUICKAUTOCAST|110|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5_QUICKAUTOCAST|111|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6_QUICKAUTOCAST|112|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP_QUICKAUTOCAST|113|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL_QUICKAUTOCAST|114|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP1|115|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP2|116|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP3|117|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP4|118|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP5|119|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP6|120|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP7|121|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP8|122|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP9|123|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP10|124|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUPCYCLE|125|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY1|126|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY2|127|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY3|128|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY4|129|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY5|130|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_TOGGLE|131|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SCOREBOARD_TOGGLE|132|
-DOTAKeybindCommand_t.DOTA_KEYBIND_COMBATLOG_TOGGLE|133|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SCREENSHOT|134|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ESCAPE|135|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONSOLE|136|
-DOTAKeybindCommand_t.DOTA_KEYBIND_DEATH_SUMMARY|137|
-DOTAKeybindCommand_t.DOTA_KEYBIND_LEARN_ABILITIES|138|
-DOTAKeybindCommand_t.DOTA_KEYBIND_LEARN_STATS|139|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ACTIVATE_GLYPH|140|
-DOTAKeybindCommand_t.DOTA_KEYBIND_ACTIVATE_RADAR|141|
-DOTAKeybindCommand_t.DOTA_KEYBIND_PURCHASE_QUICKBUY|142|
-DOTAKeybindCommand_t.DOTA_KEYBIND_PURCHASE_STICKY|143|
-DOTAKeybindCommand_t.DOTA_KEYBIND_GRAB_STASH_ITEMS|144|
-DOTAKeybindCommand_t.DOTA_KEYBIND_TOGGLE_AUTOATTACK|145|
-DOTAKeybindCommand_t.DOTA_KEYBIND_TAUNT|146|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_CONSUMABLES|147|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ATTRIBUTES|148|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARMAMENTS|149|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARCANE|150|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_BASICS|151|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SUPPORT|152|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_CASTER|153|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_WEAPONS|154|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARMOR|155|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARTIFACTS|156|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SIDE_PAGE_1|157|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SIDE_PAGE_2|158|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SECRET|159|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SEARCHBOX|160|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_1|161|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_2|162|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_3|163|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_4|164|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_5|165|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_6|166|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_7|167|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_8|168|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_9|169|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_10|170|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_11|171|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_12|172|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_13|173|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_14|174|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_UP|175|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_DOWN|176|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_LEFT|177|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_RIGHT|178|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_GRIP|179|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_1|180|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_2|181|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_3|182|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_4|183|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_5|184|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_6|185|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_7|186|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_8|187|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_9|188|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_10|189|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_UNIT_SELECT|190|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_HERO_SELECT|191|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_PAUSE|192|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CHAT|193|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_SCOREBOARD|194|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_INCREASE_REPLAY_SPEED|195|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DECREASE_REPLAY_SPEED|196|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_HARVEST|197|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_ITEM|198|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_GOLD|199|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_XP|200|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_FANTASY|201|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_WINCHANCE|202|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEBOTH|203|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLERADIENT|204|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEDIRE|205|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_OPEN_BROADCASTER_MENU|206|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_KDA|207|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LASTHITS_DENIES|208|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LEVEL|209|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_XP_PER_MIN|210|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD|211|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_TOTALGOLD|212|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD_PER_MIN|213|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_BUYBACK|214|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_NETWORTH|215|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_FANTASY|216|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_SORT|217|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_CLOSE|218|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_1|219|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_2|220|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_3|221|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_4|222|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_5|223|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_6|224|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_7|225|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_8|226|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_9|227|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_10|228|
-DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_COACH_VIEWTOGGLE|229|
-DOTAKeybindCommand_t.DOTA_KEYBIND_INSPECTHEROINWORLD|230|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_IN|231|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_OUT|232|
-DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUPCYCLEPREV|233|
-DOTAKeybindCommand_t.DOTA_KEYBIND_DOTA_ALT|234|
-DOTAKeybindCommand_t.DOTA_KEYBIND_COUNT|235|
+DOTAKeybindCommand_t.DOTA_KEYBIND_TALENT_UPGRADE_LEFT|59|
+DOTAKeybindCommand_t.DOTA_KEYBIND_TALENT_UPGRADE_RIGHT|60|
+DOTAKeybindCommand_t.DOTA_KEYBIND_TALENT_UPGRADE_ATTRIBUTE|61|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_QUICKCAST|62|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_QUICKCAST|63|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_QUICKCAST|64|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_QUICKCAST|65|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_QUICKCAST|66|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_QUICKCAST|67|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_EXPLICIT_AUTOCAST|68|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_EXPLICIT_AUTOCAST|69|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_EXPLICIT_AUTOCAST|70|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_EXPLICIT_AUTOCAST|71|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_EXPLICIT_AUTOCAST|72|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_EXPLICIT_AUTOCAST|73|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_QUICKCAST_AUTOCAST|74|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_QUICKCAST_AUTOCAST|75|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_QUICKCAST_AUTOCAST|76|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_QUICKCAST_AUTOCAST|77|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_QUICKCAST_AUTOCAST|78|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_QUICKCAST_AUTOCAST|79|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY1_AUTOMATIC_AUTOCAST|80|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY2_AUTOMATIC_AUTOCAST|81|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_PRIMARY3_AUTOMATIC_AUTOCAST|82|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY1_AUTOMATIC_AUTOCAST|83|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_SECONDARY2_AUTOMATIC_AUTOCAST|84|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ABILITY_ULTIMATE_AUTOMATIC_AUTOCAST|85|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1|86|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2|87|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3|88|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4|89|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5|90|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6|91|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP|92|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL|93|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1_QUICKCAST|94|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2_QUICKCAST|95|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3_QUICKCAST|96|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4_QUICKCAST|97|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5_QUICKCAST|98|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6_QUICKCAST|99|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP_QUICKCAST|100|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL_QUICKCAST|101|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1_AUTOCAST|102|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2_AUTOCAST|103|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3_AUTOCAST|104|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4_AUTOCAST|105|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5_AUTOCAST|106|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6_AUTOCAST|107|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP_AUTOCAST|108|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL_AUTOCAST|109|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY1_QUICKAUTOCAST|110|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY2_QUICKAUTOCAST|111|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY3_QUICKAUTOCAST|112|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY4_QUICKAUTOCAST|113|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY5_QUICKAUTOCAST|114|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORY6_QUICKAUTOCAST|115|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYTP_QUICKAUTOCAST|116|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INVENTORYNEUTRAL_QUICKAUTOCAST|117|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP1|118|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP2|119|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP3|120|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP4|121|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP5|122|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP6|123|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP7|124|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP8|125|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP9|126|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUP10|127|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUPCYCLE|128|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY1|129|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY2|130|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY3|131|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY4|132|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SELECT_ALLY5|133|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_TOGGLE|134|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SCOREBOARD_TOGGLE|135|
+DOTAKeybindCommand_t.DOTA_KEYBIND_COMBATLOG_TOGGLE|136|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SCREENSHOT|137|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ESCAPE|138|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONSOLE|139|
+DOTAKeybindCommand_t.DOTA_KEYBIND_DEATH_SUMMARY|140|
+DOTAKeybindCommand_t.DOTA_KEYBIND_LEARN_ABILITIES|141|
+DOTAKeybindCommand_t.DOTA_KEYBIND_LEARN_STATS|142|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ACTIVATE_GLYPH|143|
+DOTAKeybindCommand_t.DOTA_KEYBIND_ACTIVATE_RADAR|144|
+DOTAKeybindCommand_t.DOTA_KEYBIND_PURCHASE_QUICKBUY|145|
+DOTAKeybindCommand_t.DOTA_KEYBIND_PURCHASE_STICKY|146|
+DOTAKeybindCommand_t.DOTA_KEYBIND_GRAB_STASH_ITEMS|147|
+DOTAKeybindCommand_t.DOTA_KEYBIND_TOGGLE_AUTOATTACK|148|
+DOTAKeybindCommand_t.DOTA_KEYBIND_TAUNT|149|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_CONSUMABLES|150|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ATTRIBUTES|151|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARMAMENTS|152|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARCANE|153|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_BASICS|154|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SUPPORT|155|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_CASTER|156|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_WEAPONS|157|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARMOR|158|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_ARTIFACTS|159|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SIDE_PAGE_1|160|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SIDE_PAGE_2|161|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SECRET|162|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SEARCHBOX|163|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_1|164|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_2|165|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_3|166|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_4|167|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_5|168|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_6|169|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_7|170|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_8|171|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_9|172|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_10|173|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_11|174|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_12|175|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_13|176|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SHOP_SLOT_14|177|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_UP|178|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_DOWN|179|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_LEFT|180|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_RIGHT|181|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_GRIP|182|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_1|183|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_2|184|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_3|185|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_4|186|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_5|187|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_6|188|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_7|189|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_8|190|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_9|191|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CAMERA_SAVED_POSITION_10|192|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_UNIT_SELECT|193|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_HERO_SELECT|194|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_PAUSE|195|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_CHAT|196|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_SCOREBOARD|197|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_INCREASE_REPLAY_SPEED|198|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DECREASE_REPLAY_SPEED|199|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_HARVEST|200|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_ITEM|201|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_GOLD|202|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_XP|203|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_FANTASY|204|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_WINCHANCE|205|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEBOTH|206|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLERADIENT|207|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEDIRE|208|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_OPEN_BROADCASTER_MENU|209|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_KDA|210|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LASTHITS_DENIES|211|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LEVEL|212|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_XP_PER_MIN|213|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD|214|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_TOTALGOLD|215|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD_PER_MIN|216|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_BUYBACK|217|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_NETWORTH|218|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_FANTASY|219|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_SORT|220|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_CLOSE|221|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_1|222|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_2|223|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_3|224|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_4|225|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_5|226|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_6|227|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_7|228|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_8|229|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_9|230|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_10|231|
+DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_COACH_VIEWTOGGLE|232|
+DOTAKeybindCommand_t.DOTA_KEYBIND_INSPECTHEROINWORLD|233|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_IN|234|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_OUT|235|
+DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUPCYCLEPREV|236|
+DOTAKeybindCommand_t.DOTA_KEYBIND_DOTA_ALT|237|
+DOTAKeybindCommand_t.DOTA_KEYBIND_COUNT|238|
 
 # DOTA_SHOP_TYPE
 Enumerator|Value|Description

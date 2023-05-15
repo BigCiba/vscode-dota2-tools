@@ -35,6 +35,7 @@ const cmdExportWearable_1 = require("./command/cmdExportWearable");
 const cmdExportModifierFunction_1 = require("./command/cmdExportModifierFunction");
 const cmdExportWearableWithHero_1 = require("./command/cmdExportWearableWithHero");
 const cmdExportWearablePortraits_1 = require("./command/cmdExportWearablePortraits");
+const cmdDotaResourcePath_1 = require("./command/cmdDotaResourcePath");
 async function activate(context) {
     // 基础模块单独载入
     await (0, localize_1.localizeInit)(context);
@@ -78,6 +79,7 @@ async function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_vpdi', () => (0, cmdGenerateVPDI_1.generateVPDI)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => (0, cmdDota2mklink_1.mklinkForDota2Addon)(context)));
     context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_modifier_function', () => (0, cmdExportModifierFunction_1.exportModifierFunction)(context)));
+    context.subscriptions.push(vscode.commands.registerCommand('dota2tools.CopyDotaResourcePath', (uri) => (0, cmdDotaResourcePath_1.CopyDotaResourcePath)(context, uri)));
     context.subscriptions.push(vmdlEditorProvider_1.vmdlEditorProvider.register(context));
     context.subscriptions.push(lazayboyProvider_1.lazayboyProvider.register());
 }
