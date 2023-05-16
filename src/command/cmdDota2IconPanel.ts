@@ -104,7 +104,8 @@ export async function dota2IconPanel(context: vscode.ExtensionContext) {
 	panel.webview.html = await getWebviewContent(panel.webview, context.extensionUri, "dota2Icon", html => {
 		let replaceText = "";
 		// 英雄图标
-		for (const attributeType in npcHeroes) {
+		const attributeList = ["DOTA_ATTRIBUTE_STRENGTH", "DOTA_ATTRIBUTE_AGILITY", "DOTA_ATTRIBUTE_INTELLECT", "DOTA_ATTRIBUTE_ALL"];
+		for (const attributeType of attributeList) {
 			replaceText = "";
 			for (const heroName in npcHeroes[attributeType]) {
 				replaceText += `\t\t\t\t\t\t<img class="hero-icon" src="../../${npcHeroes[attributeType][heroName]}" onclick="heroFilter(this,'${heroName}')">\n`;
