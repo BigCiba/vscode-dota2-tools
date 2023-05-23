@@ -11,7 +11,11 @@ async function getItemRemoveList(context) {
         if (typeof (kv[name]) !== "object") {
             continue;
         }
-        str += `\t"${name}"\t"REMOVE"\n`;
+        str += `\t"${name}"
+	{
+		"ItemPurchasable"				"0"
+	}
+`;
     }
     vscode.env.clipboard.writeText(str);
     vscode.window.showInformationMessage('官方物品删除列表生成完毕，已复制到剪切板');

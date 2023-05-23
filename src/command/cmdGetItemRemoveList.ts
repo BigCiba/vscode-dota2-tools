@@ -7,7 +7,11 @@ export async function getItemRemoveList(context: vscode.ExtensionContext) {
 	let str = "";
 	for (const name in kv) {
 		if (typeof (kv[name]) !== "object") { continue; }
-		str += `\t"${name}"\t"REMOVE"\n`;
+		str += `\t"${name}"
+	{
+		"ItemPurchasable"				"0"
+	}
+`;
 	}
 
 	vscode.env.clipboard.writeText(str);
