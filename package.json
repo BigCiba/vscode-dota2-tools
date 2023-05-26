@@ -315,6 +315,10 @@
 			{
 				"command": "dota2tools.CopyDotaResourcePath",
 				"title": "%dota2tools.CopyDotaResourcePath%"
+			},
+			{
+				"command": "dota2tools.generate_db_csv",
+				"title": "%dota2tools.generate_db_csv%"
 			}
 		],
 		"menus": {
