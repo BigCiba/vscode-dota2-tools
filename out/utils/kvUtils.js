@@ -25,7 +25,7 @@ function readKeyValue2(kvdata, bRemoveComment = true, bOverride = true) {
                 kvObj[key] = value;
             }
             else {
-                kvObj[key + overrideIndex] = value;
+                kvObj[key + "_Repeat" + overrideIndex] = value;
                 overrideIndex++;
             }
             continue;
@@ -86,7 +86,7 @@ function readKeyValue2(kvdata, bRemoveComment = true, bOverride = true) {
                     kv[key] = value;
                 }
                 else {
-                    kv[key + overrideIndex] = value;
+                    kv[key + "_Repeat" + overrideIndex] = value;
                     overrideIndex++;
                 }
                 continue;

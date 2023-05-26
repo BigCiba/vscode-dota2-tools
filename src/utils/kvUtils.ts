@@ -23,7 +23,7 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 			if (kvObj[key] === undefined || bOverride === true) {
 				kvObj[key] = value;
 			} else {
-				kvObj[key + overrideIndex] = value;
+				kvObj[key + "_Repeat" + overrideIndex] = value;
 				overrideIndex++;
 			}
 			continue;
@@ -83,7 +83,7 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 				if (kv[key] === undefined || bOverride === true) {
 					kv[key] = value;
 				} else {
-					kv[key + overrideIndex] = value;
+					kv[key + "_Repeat" + overrideIndex] = value;
 					overrideIndex++;
 				}
 				continue;
