@@ -404,7 +404,7 @@ export function abilityCSV2KV(listenPath: string): any {
 						}
 					}
 				}
-			} else if (key === '') {
+			} else if (key === '' || key[0] == "】") {
 				continue;
 			} else if (key === 'precache') {
 				if (csvArr[i + 1] !== undefined && csvArr[i + 1] !== "") {
@@ -479,7 +479,7 @@ export function unitCSV2KV(listenPath: string): any {
 					}
 					continue;
 				}
-				if (key === '') {
+				if (key === '' || key[0] == "】") {
 					continue;
 				} else {
 					block[key] = col;
@@ -518,7 +518,7 @@ export function unitCSV2KV(listenPath: string): any {
 				valuesObj.Creature[key] = col;
 				continue;
 				// 跳过没有key的值
-			} else if (key === '') {
+			} else if (key === '' || key[0] == "】") {
 				continue;
 			} else {
 				valuesObj[key] = col;
