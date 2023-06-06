@@ -1,1 +1,0 @@
-{"version":3,"file":"readFile.js","sourceRoot":"","sources":["../../src/utils/readFile.ts"],"names":[],"mappings":";;;AAAA,+BAAmC;AACnC,mCAAwC;AAExC;;GAEG;AACI,KAAK,UAAU,QAAQ,CAAC,GAAQ;IACtC,IAAI,KAAK,GAAG,MAAM,kBAAS,CAAC,EAAE,CAAC,QAAQ,CAAC,GAAG,CAAC,CAAC;IAC7C,OAAO,IAAI,kBAAW,EAAE,CAAC,MAAM,CAAC,KAAK,CAAC,CAAC;AACxC,CAAC;AAHD,4BAGC"}

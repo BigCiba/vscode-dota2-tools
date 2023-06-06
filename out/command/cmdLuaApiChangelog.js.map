@@ -1,1 +1,0 @@
-{"version":3,"file":"cmdLuaApiChangelog.js","sourceRoot":"","sources":["../../src/command/cmdLuaApiChangelog.ts"],"names":[],"mappings":";;;AAAA,iCAAiC;AAEjC;;;GAGG;AACI,KAAK,UAAU,eAAe,CAAC,OAAgC;IACrE,MAAM,CAAC,QAAQ,CAAC,cAAc,CAAC,sBAAsB,EAAE,MAAM,CAAC,GAAG,CAAC,QAAQ,CAAC,OAAO,CAAC,YAAY,EAAE,UAAU,EAAE,sBAAsB,CAAC,CAAC,CAAC;AACvI,CAAC;AAFD,0CAEC"}
