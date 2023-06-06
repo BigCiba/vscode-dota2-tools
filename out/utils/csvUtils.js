@@ -415,7 +415,7 @@ function abilityCSV2KV(listenPath) {
                     }
                 }
             }
-            else if (key === '') {
+            else if (key === '' || key[0] == "】") {
                 continue;
             }
             else if (key === 'precache') {
@@ -494,7 +494,7 @@ function unitCSV2KV(listenPath) {
                     }
                     continue;
                 }
-                if (key === '') {
+                if (key === '' || key[0] == "】") {
                     continue;
                 }
                 else {
@@ -536,7 +536,7 @@ function unitCSV2KV(listenPath) {
                 continue;
                 // 跳过没有key的值
             }
-            else if (key === '') {
+            else if (key === '' || key[0] == "】") {
                 continue;
             }
             else {
