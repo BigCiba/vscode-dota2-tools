@@ -1,13 +1,13 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
+import * as path from 'path';
+import * as vscode from 'vscode';
 import { getContentDir, getGameDir } from '../module/addonInfo';
-import { getKeyValueObjectByIndex, overrideKeyValue, readKeyValue2, readKeyValueWithBase, replaceKeyValue } from '../utils/kvUtils';
+import { StatusBarState, changeStatusBarState, showStatusBarMessage } from '../module/statusBar';
 import { isNumber } from '../utils/isNumber';
-import { changeStatusBarState, showStatusBarMessage, StatusBarState } from '../module/statusBar';
-import { getPathInfo } from '../utils/pathUtils';
+import { getKeyValueObjectByIndex, overrideKeyValue, readKeyValue2, readKeyValueWithBase, replaceKeyValue } from '../utils/kvUtils';
 import { localize } from '../utils/localize';
+import { getPathInfo } from '../utils/pathUtils';
 
 /** kv转js */
 export async function kvToJs(context: vscode.ExtensionContext) {
@@ -94,11 +94,59 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 	fs.writeFileSync(jsPath, fileData);
 	showStatusBarMessage("[生成js]：" + sKVName);
 	// 生成定义文件
-	if (configs.DeclarePath) {
-		let sPath = `${contentDir}/${configs.DeclarePath}/${sKVName}.d.ts`.replace(/\\/g, "/");
-		let sDeslareData = `interface CustomUIConfig {\n\t${sKVName}: ${obj2Str(kv, 2)}\n}`;
-		fs.writeFileSync(sPath, sDeslareData);
+	if (configs.DeclarePath && kvJsConfig.DeclareConfig) {
+		let DeclareType = kvJsConfig.DeclareConfig[sKVName];
+		if (DeclareType != undefined) {
+			let sDetail = "";
+			switch (DeclareType) {
+				case "1":
+					sDetail = GetKVDeclare(kv, 2);
+					break;
+				case "2":
+					sDetail = obj2Str(kv, 2);
+					break;
+			}
+			if (sDetail.length > 0) {
+				let sPath = `${contentDir}/${configs.DeclarePath}/${sKVName}.d.ts`.replace(/\\/g, "/");
+				let sDeclareData = `interface CustomUIConfig {\n\t${sKVName}: ${sDetail}\n}`;
+				fs.writeFileSync(sPath, sDeclareData);
+			}
+		}
 	}
+}
+
+function GetKVDeclare(kv: Table, depth = 1) {
+	let declare: Table = {};
+	for (const one of Object.values(kv)) {
+		for (const [k, v] of Object.entries(one as Table)) {
+			if (typeof v == "object") {
+				declare[k] = "any";
+			} else if (isNumber(v)) {
+				// 有一个不是number的，大概率是string
+				if (declare[k] == undefined) {
+					declare[k] = "number";
+				}
+			} else {
+				declare[k] = typeof v;
+			}
+		}
+	}
+
+	let ret = `Record<string, {\n`;
+	for (const [k, v] of Object.entries(declare)) {
+		let bPartial = Object.values(kv).some(one => {
+			return one[k] == undefined;
+		});
+		for (let index = 0; index < depth; index++) {
+			ret += "\t";
+		}
+		ret += `"${k}"${bPartial ? "?" : ""}: ${v},\n`;
+	}
+	for (let index = 0; index < depth - 1; index++) {
+		ret += "\t";
+	}
+	ret += "}>";
+	return ret;
 }
 
 function stringToAny(str: string): any {
@@ -140,4 +188,4 @@ function obj2Str(obj: any, depth = 1, bracketLeft: string = "{", bracketRight: s
 	}
 	ret += bracketRight;
 	return ret;
-}
+};
