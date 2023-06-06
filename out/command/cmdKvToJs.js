@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateJS = exports.kvToJs = void 0;
-const vscode = require("vscode");
-const path = require("path");
 const fs = require("fs");
 const os = require("os");
+const path = require("path");
+const vscode = require("vscode");
 const addonInfo_1 = require("../module/addonInfo");
-const kvUtils_1 = require("../utils/kvUtils");
-const isNumber_1 = require("../utils/isNumber");
 const statusBar_1 = require("../module/statusBar");
-const pathUtils_1 = require("../utils/pathUtils");
+const isNumber_1 = require("../utils/isNumber");
+const kvUtils_1 = require("../utils/kvUtils");
 const localize_1 = require("../utils/localize");
+const pathUtils_1 = require("../utils/pathUtils");
 /** kv转js */
 async function kvToJs(context) {
     const gameDir = (0, addonInfo_1.getGameDir)();
@@ -94,13 +94,61 @@ async function generateJS(context, kvJsConfig, sKVName) {
     fs.writeFileSync(jsPath, fileData);
     (0, statusBar_1.showStatusBarMessage)("[生成js]：" + sKVName);
     // 生成定义文件
-    if (configs.DeclarePath) {
-        let sPath = `${contentDir}/${configs.DeclarePath}/${sKVName}.d.ts`.replace(/\\/g, "/");
-        let sDeslareData = `interface CustomUIConfig {\n\t${sKVName}: ${obj2Str(kv, 2)}\n}`;
-        fs.writeFileSync(sPath, sDeslareData);
+    if (configs.DeclarePath && kvJsConfig.DeclareConfig) {
+        let DeclareType = kvJsConfig.DeclareConfig[sKVName];
+        if (DeclareType != undefined) {
+            let sDetail = "";
+            switch (DeclareType) {
+                case "1":
+                    sDetail = GetKVDeclare(kv, 2);
+                    break;
+                case "2":
+                    sDetail = obj2Str(kv, 2);
+                    break;
+            }
+            if (sDetail.length > 0) {
+                let sPath = `${contentDir}/${configs.DeclarePath}/${sKVName}.d.ts`.replace(/\\/g, "/");
+                let sDeclareData = `interface CustomUIConfig {\n\t${sKVName}: ${sDetail}\n}`;
+                fs.writeFileSync(sPath, sDeclareData);
+            }
+        }
     }
 }
 exports.generateJS = generateJS;
+function GetKVDeclare(kv, depth = 1) {
+    let declare = {};
+    for (const one of Object.values(kv)) {
+        for (const [k, v] of Object.entries(one)) {
+            if (typeof v == "object") {
+                declare[k] = "any";
+            }
+            else if ((0, isNumber_1.isNumber)(v)) {
+                // 有一个不是number的，大概率是string
+                if (declare[k] == undefined) {
+                    declare[k] = "number";
+                }
+            }
+            else {
+                declare[k] = typeof v;
+            }
+        }
+    }
+    let ret = `Record<string, {\n`;
+    for (const [k, v] of Object.entries(declare)) {
+        let bPartial = Object.values(kv).some(one => {
+            return one[k] == undefined;
+        });
+        for (let index = 0; index < depth; index++) {
+            ret += "\t";
+        }
+        ret += `"${k}"${bPartial ? "?" : ""}: ${v},\n`;
+    }
+    for (let index = 0; index < depth - 1; index++) {
+        ret += "\t";
+    }
+    ret += "}>";
+    return ret;
+}
 function stringToAny(str) {
     if (str === "true") {
         return true;
@@ -144,4 +192,5 @@ function obj2Str(obj, depth = 1, bracketLeft = "{", bracketRight = "}", sSeparat
     ret += bracketRight;
     return ret;
 }
+;
 //# sourceMappingURL=cmdKvToJs.js.map
