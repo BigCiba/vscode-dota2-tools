@@ -53,8 +53,6 @@
 	"dota2tools.kv_to_js_config": "kv转js(根据npc目录的kv_js_config.txt配置)",
 	"dota2tools.default_item_remove_list": "复制官方默认物品列表到剪切板",
 	"dota2tools.inherit_table": "继承表生成工具",
-	"dota2tools.localization_csv": "翻译文件生成翻译数据表",
-	"dota2tools.localization_text": "翻译数据表转翻译文件",
 	"dota2tools.samsara_hero_drop": "生成轮回谷英雄掉落卡片特效",
 	"dota2tools.generate_lua_api_document": "生成Emmylua插件用lua api文档",
 	"dota2tools.copy_hero_wearable_bundle_info": "复制某个英雄所有饰品捆绑包信息到剪切板",

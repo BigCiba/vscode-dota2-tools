@@ -142,14 +142,6 @@
 				"title": "%dota2tools.inherit_table%"
 			},
 			{
-				"command": "dota2tools.localization_csv",
-				"title": "%dota2tools.localization_csv%"
-			},
-			{
-				"command": "dota2tools.localization_text",
-				"title": "%dota2tools.localization_text%"
-			},
-			{
 				"command": "dota2tools.samsara_hero_drop",
 				"title": "%dota2tools.samsara_hero_drop%"
 			},
@@ -367,16 +359,6 @@
 				{
 					"when": "resourceExtname == '.txt' || resourceExtname == '.kv'",
 					"command": "dota2tools.unit_export",
-					"group": "navigation"
-				},
-				{
-					"when": "resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
-					"command": "dota2tools.localization_csv",
-					"group": "navigation"
-				},
-				{
-					"when": "resourceFilename =~ /addon_.*/ && resourceExtname == '.txt'",
-					"command": "dota2tools.localization_text",
 					"group": "navigation"
 				},
 				{

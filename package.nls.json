@@ -46,8 +46,6 @@
 	"dota2tools.kv_to_js_config": "kv export js(KV according to kv_js_config.txt configuration)",
 	"dota2tools.default_item_remove_list": "Copy the official default item list to the clipboard",
 	"dota2tools.inherit_table": "继承表生成工具",
-	"dota2tools.localization_csv": "翻译文件生成翻译数据表",
-	"dota2tools.localization_text": "翻译数据表转翻译文件",
 	"dota2tools.samsara_hero_drop": "生成轮回谷英雄掉落卡片特效",
 	"dota2tools.generate_lua_api_document": "Generate documents with Emmylua plugin",
 	"dota2tools.copy_hero_wearable_bundle_info": "Copy all jewelry bundle information of a hero to the clipboard",
