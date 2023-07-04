@@ -31,6 +31,7 @@ export async function vsndPicker(context: vscode.ExtensionContext) {
 	vsndPick.canSelectMany = false;
 	vsndPick.ignoreFocusOut = true;
 	vsndPick.placeholder = '*.vsnd';
+	vsndPick.matchOnDescription = true;
 	vsndPick.items = vsnd;
 
 	vsndPick.show();
