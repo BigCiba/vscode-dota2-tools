@@ -1,8 +1,18 @@
-import * as vscode from 'vscode';
-import { getRootPath } from '../utils/getRootPath';
 import * as fs from 'fs';
-import { getKeyValueObjectByIndex, readKeyValue2 } from '../utils/kvUtils';
+import * as vscode from 'vscode';
 import { csv2obj, isEmptyCSVValue, obj2csv } from '../utils/csvUtils';
+import { getRootPath } from '../utils/getRootPath';
+import { getKeyValueObjectByIndex, readKeyValue2 } from '../utils/kvUtils';
+import { eachExcelConfig } from "./cmdExcel2KV";
+import path = require("path");
+
+const inheritConfigKeys = [
+	"type",
+	"parent",
+	"transition",
+	"child",
+	"inherit_column",
+];
 
 /** 表继承功能 */
 export async function inheritTable(context: vscode.ExtensionContext) {
@@ -16,41 +26,40 @@ export async function inheritTable(context: vscode.ExtensionContext) {
 	if (!inheritConfig) {
 		return;
 	}
-	let abilitiesExcelPaths: Table = vscode.workspace.getConfiguration().get('dota2-tools.abilities_excel_path') || {};
-	let unitsExcelPaths: Table = vscode.workspace.getConfiguration().get('dota2-tools.units_excel_path') || {};
 
-	// 可能配置了多个路径，每个一一对应来生成继承表
-	for (let configIndex = 0; configIndex < 100; configIndex++) {
-		let abilitiesExcelPath = abilitiesExcelPaths[configIndex];
-		let unitsExcelPath = unitsExcelPaths[configIndex];
-		// 任意一个没有就不算合格的配置
-		if (!abilitiesExcelPath || !unitsExcelPath) {
-			break;
+	// 读取每一个继承表的配置
+	for (const config of Object.values(inheritConfig) as any[]) {
+		// 缺少必填项
+		if (inheritConfigKeys.some(_key => config[_key] == undefined)) return;
+		// 读取配置的三项路径
+		let ExcelKVConfigs: Table | undefined;
+		if (config.type === "ability") {
+			ExcelKVConfigs = vscode.workspace.getConfiguration().get('dota2-tools.A4.AbilityExcel');
+		} else if (config.type === "unit") {
+			ExcelKVConfigs = vscode.workspace.getConfiguration().get('dota2-tools.A4.UnitExcel');
+			// sParentPath = unitsExcelPath + "/csv/" + config.parent + ".csv";
+			// sTransitionPath = unitsExcelPath + "/csv/" + config.transition + ".csv";
+			// sChildPath = unitsExcelPath + "/csv/" + config.child + ".csv";
+		} else {
+			continue;
 		}
-		// 读取每一个继承表的配置
-		for (const key in inheritConfig) {
-			const config = inheritConfig[key];
-			// 缺少必填项
-			if (!config.type || !config.parent || !config.transition || !config.child || !config.inherit_column) {
-				continue;
-			}
-			// 读取配置的三项路径
-			let sParentPath, sTransitionPath, sChildPath = "invalid";
-			if (config.type === "ability") {
-				sParentPath = abilitiesExcelPath + "/csv/" + config.parent + ".csv";
-				sTransitionPath = abilitiesExcelPath + "/csv/" + config.transition + ".csv";
-				sChildPath = abilitiesExcelPath + "/csv/" + config.child + ".csv";
-			} else if (config.type === "unit") {
-				sParentPath = unitsExcelPath + "/csv/" + config.parent + ".csv";
-				sTransitionPath = unitsExcelPath + "/csv/" + config.transition + ".csv";
-				sChildPath = unitsExcelPath + "/csv/" + config.child + ".csv";
-			} else {
-				continue;
-			}
-
-			generateInheritTable(sParentPath, sTransitionPath, sChildPath, config);
+		if (ExcelKVConfigs) {
+			eachExcelConfig(ExcelKVConfigs, (kvDir, excelDir) => {
+				generateInheritTable(
+					path.join(excelDir, `/csv/${config.parent}.csv`),
+					path.join(excelDir, `/csv/${config.transition}.csv`),
+					path.join(excelDir, `/csv/${config.child}.csv`),
+					config
+				);
+				// console.log(
+				// 	path.join(excelDir, `/csv/${config.parent}.csv`),
+				// 	path.join(excelDir, `/csv/${config.transition}.csv`),
+				// 	path.join(excelDir, `/csv/${config.child}.csv`)
+				// );
+			});
 		}
 	}
+	// showStatusBarMessage("[表继承]：" + sChildPath);
 }
 export async function generateInheritTable(sParentPath: string, sTransitionPath: string, sChildPath: string, config: any) {
 	// 文件内容的string
