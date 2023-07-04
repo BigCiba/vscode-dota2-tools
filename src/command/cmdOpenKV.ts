@@ -18,19 +18,37 @@ export async function openKV(context: vscode.ExtensionContext) {
 		if (scriptFiles[word] === undefined) {
 			let kvString = fs.readFileSync(fileName, 'utf-8');
 			const rows: string[] = kvString.split(os.EOL);
+			let configConditions: string[] | undefined = vscode.workspace.getConfiguration().get("dota2-tools.ability class constructor");
+			let tsConfig = vscode.workspace.getConfiguration().get("dota2-tools.A6.Kv to lua generate typescript") as boolean;
 			for (let i = 0; i < rows.length; i++) {
 				const lineText: string = rows[i];
-				let configConditions: string[] | undefined = vscode.workspace.getConfiguration().get("dota2-tools.ability class constructor");
 				if (configConditions) {
 					for (const keyword of configConditions) {
-						let reg = new RegExp(".* = " + keyword);
-						if (reg.test(lineText) === true) {
-							word = lineText.split('=')[0].replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
+						if (tsConfig) {
+							let reg = new RegExp("class (.*) extends " + keyword);
+							if (reg.test(lineText) === true) {
+								word = lineText.replace(reg, (substring) => {
+									return "$1";
+								});
+							}
+						} else {
+							let reg = new RegExp(".* = " + keyword);
+							if (reg.test(lineText) === true) {
+								word = lineText.split('=')[0].replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
+							}
 						}
 					}
 				}
-				if (/.* = class/.test(lineText) === true && /modifier_.* = class/.test(lineText) === false) {
-					word = lineText.split('=')[0].replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
+				if (tsConfig) {
+					if (/class (.*) extends BaseAbility/.test(lineText) === true) {
+						word = lineText.replace(/class (.*) extends BaseAbility/, (substring) => {
+							return "$1";
+						});
+					}
+				} else {
+					if (/.* = class/.test(lineText) === true && /modifier_.* = class/.test(lineText) === false) {
+						word = lineText.split('=')[0].replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
+					}
 				}
 			}
 		}

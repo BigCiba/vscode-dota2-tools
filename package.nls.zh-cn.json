@@ -92,6 +92,7 @@
 	"dota2tools.mklink": "自动移动game和content文件夹并且mklink",
 	"dota2tools.export_modifier_function": "导出modifierfunction",
 	"dota2-tools.A6.Kv to lua generate script": "开启kv跳转lua脚本时自动生成不存在的脚本功能",
+	"dota2-tools.A6.Kv to lua generate typescript": "kv跳转lua是否生成typescript而不是lua",
 	"dota2-tools.vpdi.path": "目标VPDI文件名",
 	"dota2-tools.vpdi.image_path": "图片文件夹路径",
 	"item_name": "物品名",

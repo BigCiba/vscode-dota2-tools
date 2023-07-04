@@ -316,7 +316,7 @@
 		"menus": {
 			"editor/context": [
 				{
-					"when": "resource =~ /abilities/ && resourceExtname == '.lua' && config.dota2-tools.A1.module_list.kv_lua_associated",
+					"when": "resource =~ /abilities/ && resourceExtname =~ /(\\.lua)|(\\.ts)/ && config.dota2-tools.A1.module_list.kv_lua_associated",
 					"command": "dota2tools.OpenKV",
 					"group": "navigation"
 				},
@@ -637,6 +637,11 @@
 					"type": "boolean",
 					"default": true,
 					"description": "%dota2-tools.A6.Kv to lua generate script%"
+				},
+				"dota2-tools.A6.Kv to lua generate typescript": {
+					"type": "boolean",
+					"default": false,
+					"description": "%dota2-tools.A6.Kv to lua generate typescript%"
 				},
 				"dota2-tools.addon_path": {
 					"scope": "resource",
