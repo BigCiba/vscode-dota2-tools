@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as os from 'os';
+import { Float } from "./number";
 
 export function csv2obj(csv: any, bVertical = false): any {
 	let arrCSV: any[][] = csv;
@@ -459,13 +460,14 @@ export function KVArrayProc(obj: Record<string, any>) {
 					let result = v.match(/\^(-?\d+\.?\d*)(\+|-)(\d+\.?\d*)\*(\d+)/);
 					if (result) {
 						let [_total, first, sign, step_add, count] = result;
-						let f = Number(first);
-						let s = Number(step_add) * (sign == "-" ? -1 : 1);
+						let f = Float(first);
+						let s = Float(step_add) * (sign == "-" ? -1 : 1);
 						let arr: number[] = [];
-						for (let i = 0; i < Number(count); i++) {
+						for (let i = 0; i < Math.round(Number(count)); i++) {
 							arr.push(f);
-							f += s;
+							f = Float(f + s);
 						}
+						console.log(arr, arr.join(" "));
 						obj[k] = arr.join(" ");
 					}
 				}
