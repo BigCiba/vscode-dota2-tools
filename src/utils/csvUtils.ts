@@ -467,7 +467,6 @@ export function KVArrayProc(obj: Record<string, any>) {
 							arr.push(f);
 							f = Float(f + s);
 						}
-						console.log(arr, arr.join(" "));
 						obj[k] = arr.join(" ");
 					}
 				}
