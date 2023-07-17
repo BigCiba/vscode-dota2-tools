@@ -643,6 +643,25 @@
 					"default": false,
 					"description": "%dota2-tools.A6.Kv to lua generate typescript%"
 				},
+				"dota2-tools.A7.translate config": {
+					"type": "object",
+					"default": {
+						"appid": "",
+						"secret": ""
+					},
+					"properties": {
+						"appid": {
+							"type": "string",
+							"description": "dota2-tools.A7.appid"
+						},
+						"secret": {
+							"type": "string",
+							"description": "dota2-tools.A7.secret"
+						}
+					},
+					"additionalProperties": false,
+					"markdownDescription": "%dota2-tools.A7.translate config%"
+				},
 				"dota2-tools.addon_path": {
 					"scope": "resource",
 					"type": "object",
