@@ -1,5 +1,6 @@
-import * as os from 'os';
 import * as fs from 'fs';
+import * as os from 'os';
+import { Float } from "./number";
 
 export function csv2obj(csv: any, bVertical = false): any {
 	let arrCSV: any[][] = csv;
@@ -444,7 +445,35 @@ export function abilityCSV2KV(listenPath: string): any {
 		i++;
 		csvData[row[0]] = valuesObj;
 	}
+	KVArrayProc(csvData);
 	return csvData;
+}
+export function KVArrayProc(obj: Record<string, any>) {
+	for (const [k, v] of Object.entries(obj)) {
+		switch (typeof v) {
+			case "object":
+				KVArrayProc(v);
+				break;
+			case "string":
+				// "^-1-5*10";
+				if (v[0] == "^") {
+					let result = v.match(/\^(-?\d+\.?\d*)(\+|-)(\d+\.?\d*)\*(\d+)/);
+					if (result) {
+						let [_total, first, sign, step_add, count] = result;
+						let f = Float(first);
+						let s = Float(step_add) * (sign == "-" ? -1 : 1);
+						let arr: number[] = [];
+						for (let i = 0; i < Math.round(Number(count)); i++) {
+							arr.push(f);
+							f = Float(f + s);
+						}
+						obj[k] = arr.join(" ");
+					}
+				}
+			default:
+				break;
+		}
+	}
 }
 export function unitCSV2KV(listenPath: string): any {
 	let csv = fs.readFileSync(listenPath, 'utf-8');

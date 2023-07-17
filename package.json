@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "3.1.19",
+	"version": "3.1.22",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -642,6 +642,25 @@
 					"type": "boolean",
 					"default": false,
 					"description": "%dota2-tools.A6.Kv to lua generate typescript%"
+				},
+				"dota2-tools.A7.translate config": {
+					"type": "object",
+					"default": {
+						"appid": "",
+						"secret": ""
+					},
+					"properties": {
+						"appid": {
+							"type": "string",
+							"description": "dota2-tools.A7.appid"
+						},
+						"secret": {
+							"type": "string",
+							"description": "dota2-tools.A7.secret"
+						}
+					},
+					"additionalProperties": false,
+					"markdownDescription": "%dota2-tools.A7.translate config%"
 				},
 				"dota2-tools.addon_path": {
 					"scope": "resource",

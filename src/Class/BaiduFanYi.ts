@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import * as vscode from 'vscode';
 import * as https from "https";
 import * as queryString from "querystring";
 import md5 = require("md5");
+import { localize } from '../utils/localize';
 
 type ErrorMap = {
 	[key: string]: string;
@@ -11,12 +13,22 @@ const errorMap: ErrorMap = {
 	54001: '签名错误',
 	54004: '账户余额不足',
 };
-const appId = '20210811000913406';
-const appSecret = 'GPT0u7olcqXasoUAdaLZ';
+let appId = '20210811000913406';
+let secret = 'GPT0u7olcqXasoUAdaLZ';
+
+let config: Table | undefined = vscode.workspace.getConfiguration().get('dota2-tools.A7.translate config');
+if (config) {
+	if (config.appid) {
+		appId = config.appid;
+	}
+	if (config.secret) {
+		secret = config.secret;
+	}
+}
 
 export const translate = (word: string, callback: (str: string) => void) => {
 	const salt = Math.random();
-	const sign = md5(appId + word + salt + appSecret);
+	const sign = md5(appId + word + salt + secret);
 	let from, to;
 
 	if (/[a-zA-Z]/.test(word[0])) {
@@ -88,6 +100,7 @@ export const translate = (word: string, callback: (str: string) => void) => {
 			if (object.error_code) {
 				console.error(errorMap[object.error_code] || object.error_msg);
 				console.log('编译错误');
+				vscode.window.showErrorMessage(errorMap[object.error_code] + "，" + localize("dota2-tools.A7.translate config"));
 			} else {
 				object.trans_result.map(obj => {
 					// console.log(obj.dst);
