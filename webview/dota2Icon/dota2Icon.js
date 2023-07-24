@@ -1,3 +1,5 @@
+const { log } = require("json2lua");
+
 // Script run within the webview itself.
 const vscode = acquireVsCodeApi();
 // window.addEventListener("load", main);
@@ -9,8 +11,9 @@ function onInput() {
 	for (const element of allIcon) {
 		let filterArr = filterWord.split(" ");
 		let display = "none";
+		const zhCN = element.getAttribute("data-abilityName") ?? "";
 		for (const word of filterArr) {
-			if (word !== '' && element.id.search(word) === -1) {
+			if (word !== '' && element.id.search(word) === -1 && zhCN != undefined && zhCN.search(word) === -1) {
 				display = 'none';
 			} else {
 				display = '';

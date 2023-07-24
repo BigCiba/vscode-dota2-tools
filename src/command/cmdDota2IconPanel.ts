@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
 import { Uri } from "vscode";
 import * as path from 'path';
 import { exec } from 'child_process';
@@ -13,6 +14,7 @@ import { getPathInfo } from '../utils/pathUtils';
 let spellicons: Table;
 let items: Table;
 let npcHeroes: Table;
+let abilityCN: Table;
 interface CustomIcon {
 	game: Table,
 	content: Table,
@@ -30,6 +32,7 @@ export async function dota2IconPanelInit(context: vscode.ExtensionContext) {
 	spellicons = await getFolderIcons(context.extensionUri, "/images/spellicons");
 	items = await getFolderIcons(context.extensionUri, "/images/items");
 	npcHeroes = await readHeroesIcon(context.extensionUri, "/images/heroes_icon");
+	abilityCN = readKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/abilities_schinese.txt"), 'utf-8'), false).lang.Tokens;
 
 	// 自定义图标
 	await locdCustomSpellicons();
@@ -91,6 +94,9 @@ export async function dota2IconPanel(context: vscode.ExtensionContext) {
 	if (npcHeroes === undefined) {
 		npcHeroes = await readHeroesIcon(context.extensionUri, "/images/heroes_icon");
 	}
+	if (abilityCN === undefined) {
+		abilityCN = readKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/abilities_schinese.txt"), 'utf-8'), false).lang.Tokens;
+	}
 
 	// 自定义图标
 	if (customSpellicons === undefined) {
@@ -116,7 +122,7 @@ export async function dota2IconPanel(context: vscode.ExtensionContext) {
 		replaceText = "";
 		for (const iconName in spellicons) {
 			const iconPath = spellicons[iconName];
-			replaceText += `\t\t<img id="${iconName}" class="icon texture-icon" src="../../${iconPath}" onclick="copyIconName('${iconName}')" oncontextmenu="openFolder('spellicons/${iconName}')">\n`;
+			replaceText += `\t\t<img id="${iconName}" data-abilityName="${abilityCN["DOTA_Tooltip_ability_" + iconName]}" class="icon texture-icon" src="../../${iconPath}" onclick="copyIconName('${iconName}')" oncontextmenu="openFolder('spellicons/${iconName}')">\n`;
 		}
 		if (Object.keys(customSpellicons.game).length > 0) {
 			let gameDir = getGameDir();
@@ -140,7 +146,7 @@ export async function dota2IconPanel(context: vscode.ExtensionContext) {
 		replaceText = "";
 		for (const iconName in items) {
 			const iconPath = items[iconName];
-			replaceText += `\t\t<img id="${iconName}" class="icon item-texture-icon" src="../../${iconPath}" onclick="copyIconName('item_${iconName}')" oncontextmenu="openFolder('items/${iconName}')">\n`;
+			replaceText += `\t\t<img id="${iconName}" data-abilityName="${abilityCN["DOTA_Tooltip_Ability_item_" + iconName]}" class="icon item-texture-icon" src="../../${iconPath}" onclick="copyIconName('item_${iconName}')" oncontextmenu="openFolder('items/${iconName}')">\n`;
 		}
 		if (Object.keys(customItems.game).length > 0) {
 			let gameDir = getGameDir();
