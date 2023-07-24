@@ -1,5 +1,3 @@
-const { log } = require("json2lua");
-
 // Script run within the webview itself.
 const vscode = acquireVsCodeApi();
 // window.addEventListener("load", main);
