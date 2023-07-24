@@ -45,6 +45,32 @@ export const translate = (word: string, callback: (str: string) => void) => {
 		from, to, salt, sign
 	});
 
+	// https.request({
+	// 	hostname: 'transmart.qq.com',
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 		"Content-length": Buffer.byteLength(JSON.stringify({
+	// 			header: {
+	// 				fn: "lang_detect",
+	// 				token: "nXIJ00bfQAvilglrYnMY",
+	// 			},
+	// 			text: "content",
+	// 		}))
+	// 	},
+	// 	path: "/api/imt",
+	// 	method: 'POST'
+	// }, (response) => {
+	// 	let chunks: Buffer[] = [];
+	// 	response.on('data', (chunk) => {
+	// 		chunks.push(chunk);
+	// 	});
+	// 	response.on('end', () => {
+	// 		const string = Buffer.concat(chunks).toString();
+	// 		const object = JSON.parse(string);
+	// 		console.log('腾讯交互', object);
+	// 	});
+	// });
+
 	const options = {
 		hostname: 'api.fanyi.baidu.com',
 		port: 443,
