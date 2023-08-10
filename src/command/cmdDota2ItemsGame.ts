@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { fromByteArray } from 'base64-js';
 import { getWebviewContent } from '../utils/getWebViewContent';
 import { readFile } from '../utils/readFile';
 import { readKeyValue2 } from '../utils/kvUtils';
 import { hasLocalize, hasReverseLocalize, localize, reverseLocalize } from '../utils/localize';
 import { isNumber } from '../utils/isNumber';
 import { TextEncoder } from 'util';
+import path = require('path');
 
 let itemsGame: Table;
 let language: Table;
@@ -112,12 +112,16 @@ function getItemInfo(index: string) {
 	let itemInfo: Table = itemsGame[index];
 
 	let econPath: string | undefined = vscode.workspace.getConfiguration().get("dota2-tools.A5.econ_path");
-	if (econPath != "") {
+	if (econPath != undefined && econPath != "") {
 		// 读取图片文件
-		const image = fs.readFileSync(econPath + itemInfo.image_inventory + "_png.png");
-		// 将图片转换为Base64编码
-		const base64Image = Buffer.from(image).toString('base64');
-		result.econImg = base64Image
+		try {
+			const image = fs.readFileSync(path.join(econPath, itemInfo.image_inventory + "_png.png"));
+			// 将图片转换为Base64编码
+			const base64Image = Buffer.from(image).toString('base64');
+			result.econImg = base64Image
+		} catch (error) {
+			
+		}
 	}
 
 	let languageInfo = language[vscode.env.language === "zh-cn" ? "zh-cn" : "en"];

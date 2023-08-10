@@ -636,7 +636,7 @@
         "dota2-tools.A5.econ_path": {
           "type": "string",
           "default": "",
-          "description": "用于饰品查询工具显示饰品图片，自行解包饰品图片到本地后将目录配置到这里"
+          "description": "用于饰品查询工具显示饰品图片，自行解包饰品图片到本地后将目录配置到这里，范例:C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/panorama/images/"
         },
         "dota2-tools.A6.Kv to lua generate script": {
           "type": "boolean",
