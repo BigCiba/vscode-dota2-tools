@@ -2,6 +2,7 @@ import { Uri, Webview } from "vscode";
 import { getUri } from "./getUri";
 import * as path from 'path';
 import { readFile } from "./readFile";
+import { log } from "console";
 
 /**
  * 获取webview的html，自动将格式替换成对应

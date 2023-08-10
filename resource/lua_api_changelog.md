@@ -1,5 +1,37 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2023.08.10
+## Lua Server
+- ✨ API: <font color='#00D6AA'>CDOTABaseGameMode</font> <font color='#dcdcaa'>SetCustomScanMaxCharges</font>(<font color='#569cd6'>iMaxCharges</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> Set a custom max charges for team Scan ability.
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>IsDebuffImmune</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>CDOTABaseGameMode</font> <font color='#dcdcaa'>SetCustomScanMaxCharges</font>(<font color='#569cd6'>iMaxCharges</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> Set a custom max charges for team Scan ability.
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>IsDebuffImmune</font>(): <font color='#c586c0'>bool</font> 
+- ✨ Enum: <font color='#00D6AA'>AttributeDerivedStats</font> <font color='#9cdcfe'>DOTA_ATTRIBUTE_ALL_DAMAGE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_ALT_CASTABLE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_INVALID_ORDERS</font> <font color='#9cdcfe'>DOTA_INVALID_ORDER_ABILITY_CANT_ALT_CAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_TROLL_FERVOR_SHARD</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> ~~<font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_BATRIDER_NAPALM</font> <font color='#dcdcaa'></font>~~
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_AOE_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierAoEBonusPercentage</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_UNIVERSAL</font> <font color='#dcdcaa'>GetModifierBecomeUniversal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_MULTIPLICATIVE</font> <font color='#dcdcaa'>GetModifierDamageOutgoing_PercentageMultiplicative</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PROJECTILE_SPEED</font> <font color='#dcdcaa'>GetModifierProjectileSpeed</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE</font> <font color='#dcdcaa'>GetModifierSlowResistance</font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_IGNORING_MOVE_ORDERS</font> <font color='#dcdcaa'></font>
+## Lua Client
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC</font> <font color='#dcdcaa'>IsDebuffImmune</font>(): <font color='#c586c0'>bool</font> 
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC</font> <font color='#dcdcaa'>IsDebuffImmune</font>(): <font color='#c586c0'>bool</font> 
+- ✨ Enum: <font color='#00D6AA'>AttributeDerivedStats</font> <font color='#9cdcfe'>DOTA_ATTRIBUTE_ALL_DAMAGE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_ALT_CASTABLE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_INVALID_ORDERS</font> <font color='#9cdcfe'>DOTA_INVALID_ORDER_ABILITY_CANT_ALT_CAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_TROLL_FERVOR_SHARD</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> ~~<font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_BATRIDER_NAPALM</font> <font color='#dcdcaa'></font>~~
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_AOE_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierAoEBonusPercentage</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_UNIVERSAL</font> <font color='#dcdcaa'>GetModifierBecomeUniversal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_MULTIPLICATIVE</font> <font color='#dcdcaa'>GetModifierDamageOutgoing_PercentageMultiplicative</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PROJECTILE_SPEED</font> <font color='#dcdcaa'>GetModifierProjectileSpeed</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE</font> <font color='#dcdcaa'>GetModifierSlowResistance</font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_IGNORING_MOVE_ORDERS</font> <font color='#dcdcaa'></font>
+
 # 2023.05.14
 ## Lua Server
 - ✨ API: <font color='#00D6AA'>CDOTA_Ability_Lua</font> <font color='#dcdcaa'>GetChannelledHealthCostPerSecond</font>(<font color='#569cd6'>iLevel</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>int</font> Return health cost per second of channeling at the given level (-1 is current).

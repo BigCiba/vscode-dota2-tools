@@ -13,7 +13,7 @@ function onInput() {
 	}
 }
 function render(itemData) {
-	let content = "";
+	let content = itemData.econImg != undefined ? `<img id="preview" src="data:image/jpeg;base64,${itemData.econImg}" >` : "<vscode-button disabled>设置中配置本地图片路径可以预览图片</vscode-button>";
 	for (const key in itemData) {
 		const value = itemData[key];
 		if (key === "visuals") {
@@ -91,7 +91,7 @@ function render(itemData) {
 				content += `</vscode-data-grid-row>\n`;
 			});
 			content += `</vscode-data-grid>\n`;
-		} else {
+		} else if (key != "econImg") {
 			content += `<h1 id="${key}">${key}</h1>\n<p>${value}</p>\n`;
 		}
 	}
