@@ -11,6 +11,9 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+resource/lua_client_api_changelog
+resource/lua_server_api_changelog
+resource/items_game.txt
 
 !node_modules/@vscode/codicons
 !node_modules/@vscode/webview-ui-toolkit

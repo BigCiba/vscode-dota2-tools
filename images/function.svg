@@ -1,13 +1,1 @@
-<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
- <style type="text/css">.icon-canvas-transparent{opacity:0;fill:#F6F6F6;} .icon-vs-out{opacity:0;fill:#F6F6F6;} .icon-vs-fg{opacity:0;fill:#F0EFF1;} .icon-folder{fill:#C5C5C5;}</style>
-
- <g>
-  <title>background</title>
-  <rect fill="none" id="canvas_background" height="1211" width="2302" y="-1" x="-1"/>
- </g>
- <g>
-  <title>Layer 1</title>
-  <path id="iconFg" d="m14,3l0,1l-6.5,0l0.5,-1l6,0z" class="icon-vs-fg"/>
-  <text font-weight="bold" font-style="italic" xml:space="preserve" text-anchor="start" font-family="'Times New Roman', Times, serif" font-size="18" id="svg_5" y="12.161172" x="4.673593" stroke-opacity="null" stroke-width="0" stroke="null" fill="#519aba">f</text>
- </g>
-</svg>
+<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M-1-1h2302v1211H-1z"/><text font-weight="bold" font-style="italic" xml:space="preserve" font-family="'Times New Roman', Times, serif" font-size="18" y="12.161" x="4.674" stroke-opacity="null" stroke-width="0" stroke="null" fill="#519aba">f</text></svg>

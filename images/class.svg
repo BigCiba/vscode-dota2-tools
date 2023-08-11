@@ -1,11 +1,1 @@
-<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1">
-
- <g>
-  <title>background</title>
-  <rect fill="none" id="canvas_background" height="18" width="18" y="-1" x="-1"/>
- </g>
- <g>
-  <title>Layer 1</title>
-  <text font-weight="bold" font-style="italic" xml:space="preserve" text-anchor="start" font-family="'Trebuchet MS', Gadget, sans-serif" font-size="20" id="svg_3" y="13.114238" x="3.070329" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="null" fill="#519aba">c</text>
- </g>
-</svg>
+<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M-1-1h18v18H-1z"/><text font-weight="bold" font-style="italic" xml:space="preserve" font-family="'Trebuchet MS', Gadget, sans-serif" font-size="20" y="13.114" x="3.07" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="null" fill="#519aba">c</text></svg>

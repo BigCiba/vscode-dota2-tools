@@ -1,11 +1,1 @@
-<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1">
- <g>
-  <title>background</title>
-  <rect x="-1" y="-1" width="4.666667" height="4.666667" id="canvas_background" fill="none"/>
- </g>
-
- <g>
-  <title>Layer 1</title>
-  <text stroke="null" transform="matrix(1.1454522609710693,0,0,1,-0.35226719453930855,0) " fill="#519aba" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="2.572953" y="13.114238" id="svg_3" font-size="20" font-family="Georgia, Times, 'Times New Roman', serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="normal">e</text>
- </g>
-</svg>
+<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M-1-1h4.667v4.667H-1z"/><text stroke="null" transform="matrix(1.14545 0 0 1 -.352 0)" fill="#519aba" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="2.573" y="13.114" font-size="20" font-family="Georgia, Times, 'Times New Roman', serif" xml:space="preserve" font-style="italic">e</text></svg>
