@@ -33,6 +33,7 @@ import { vsndPicker } from './command/cmdVsndPicker';
 import { init } from './init';
 import { statusBarItemInit } from './module/statusBar';
 import { localizeInit } from './utils/localize';
+import { FeiShu } from './Class/FeiShu';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -40,6 +41,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	await statusBarItemInit(context);
 	// 进行其他初始化
 	await init(context);
+	new FeiShu();
 
 	vscode.workspace.onDidChangeWorkspaceFolders(async (event) => {
 		await init(context);
