@@ -84,6 +84,8 @@ const URL_LIST = {
 	FILES: 'https://open.feishu.cn/open-apis/drive/v1/files',
 	/** 获取工作表 */
 	SHEETS: 'https://open.feishu.cn/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query',
+	/** 获取表格数据 */
+	SHEET: 'https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/:spreadsheetToken/values/:range',
 };
 export class FeiShu {
 	appid: string;
@@ -98,69 +100,18 @@ export class FeiShu {
 	}
 	async init() {
 		await this.getTenantAccessToken();
-		console.log(this.tenant_access_token);
-		const fileNames = await this.getDocumentList("A8E3fkqOHl1AobdyOzbc0BTtngb");
-		console.log(fileNames);
-		const sheet = await this.getDocumentInfo("SV7ysTAF3haPV3tP8RfcpAZOnBf");
-		console.log(sheet);
+		// console.log(this.tenant_access_token);
+		// const fileNames = await this.getDocumentList("A8E3fkqOHl1AobdyOzbc0BTtngb");
+		// console.log(fileNames);
+		// const sheet = await this.getDocumentInfo("SV7ysTAF3haPV3tP8RfcpAZOnBf");
+		// console.log(sheet);
 
 	}
 	getConfig() {
 		let config: any = vscode.workspace.getConfiguration().get('dota2-tools.A4.FeiShu');
 		return config;
 	}
-	/** 获取access_token */
-	async getTenantAccessToken() {
-		const data = await this.request<AccessTokenResponseData>("POST", URL_LIST.TENANT_ACCESS_TOKEN, {
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8'
-			},
-			data: {
-				"app_id": this.appid,
-				"app_secret": this.secret
-			}
-		});
-		if (data) {
-			this.tenant_access_token = data.tenant_access_token;
-		}
-	}
-	/**
-	 * 从指定的文件夹中获取文档列表。
-	 *
-	 * @param {string} folderToken - 要获取文档的文件夹的令牌。
-	 * @return {Promise<string[]>} - 文件夹中的文件名数组。
-	 */
-	async getDocumentList(folderToken: string) {
-		const files = await this.request<DocumentListResponseData>("GET", URL_LIST.FILES, {
-			headers: {
-				'Authorization': 'Bearer ' + this.tenant_access_token
-			},
-			params: {
-				folder_token: folderToken,
-			}
-		});
-		if (files) {
-			const fileNames: string[] = [];
-			for (const file of files?.data.files) {
-				fileNames.push(file.name);
-			}
-			return fileNames;
-		}
-	}
-	/** 获取文档信息 */
-	async getDocumentInfo(spreadsheetToken: string) {
-		const sheet = await this.request<SheetResponseData>("GET", URL_LIST.SHEETS, {
-			headers: {
-				'Authorization': 'Bearer ' + this.tenant_access_token
-			},
-			pathParams: {
-				spreadsheet_token: spreadsheetToken
-			}
-		});
-		if (sheet) {
-			return sheet.data.sheets[0];
-		}
-	}
+
 	/** 通用请求函数 */
 	async request<T>(
 		method: "POST" | "GET",
@@ -207,5 +158,85 @@ export class FeiShu {
 		} catch (error) {
 			console.error(error);
 		}
+	}
+	/** 获取access_token */
+	async getTenantAccessToken() {
+		const data = await this.request<AccessTokenResponseData>(
+			"POST",
+			URL_LIST.TENANT_ACCESS_TOKEN,
+			{
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8'
+				},
+				data: {
+					"app_id": this.appid,
+					"app_secret": this.secret
+				}
+			}
+		);
+		if (data) {
+			this.tenant_access_token = data.tenant_access_token;
+		}
+	}
+	/**
+	 * 从指定的文件夹中获取文档列表。
+	 *
+	 * @param {string} folderToken - 要获取文档的文件夹的令牌。
+	 */
+	async getDocumentList(folderToken: string) {
+		const files = await this.request<DocumentListResponseData>(
+			"GET",
+			URL_LIST.FILES,
+			{
+				headers: {
+					'Authorization': 'Bearer ' + this.tenant_access_token
+				},
+				params: {
+					folder_token: folderToken,
+				}
+			}
+		);
+		if (files) {
+			const fileNames: string[] = [];
+			for (const file of files?.data.files) {
+				fileNames.push(file.name);
+			}
+			return fileNames;
+		}
+	}
+	/** 获取文档信息 */
+	async getDocumentInfo(spreadsheetToken: string) {
+		const sheet = await this.request<SheetResponseData>(
+			"GET",
+			URL_LIST.SHEETS,
+			{
+				headers: {
+					'Authorization': 'Bearer ' + this.tenant_access_token
+				},
+				pathParams: {
+					spreadsheet_token: spreadsheetToken
+				}
+			}
+		);
+		if (sheet) {
+			return sheet.data.sheets[0];
+		}
+	}
+	/** 读取表格数据 */
+	getSheetData(spreadsheetToken: string, range: string) {
+		return this.request<SheetResponseData>(
+			"GET",
+			URL_LIST.SHEETS,
+			{
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8',
+					'Authorization': 'Bearer ' + this.tenant_access_token,
+				},
+				pathParams: {
+					spreadsheetToken: spreadsheetToken,
+					range: range
+				}
+			}
+		);
 	}
 }

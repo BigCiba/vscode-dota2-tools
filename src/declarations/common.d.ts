@@ -58,4 +58,5 @@ interface ModuleListConfig {
 	js_completion: boolean;
 	css_completion: boolean;
 	kv_lua_associated: boolean;
+	sheet_cloud: boolean;
 }

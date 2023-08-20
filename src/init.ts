@@ -16,6 +16,7 @@ import { cssApiInit, jsApiInit, luaApiInit, panelDocumentInit } from './module/t
 import { localize, localizeInit } from './utils/localize';
 import { EventManager, EventType } from "./Class/event";
 import { localizationViewrInit } from './module/localizationViewr';
+import { sheetCloudInit } from './module/sheet_cloud';
 
 /** 模块列表 */
 const moduleList: Table = {
@@ -38,6 +39,7 @@ const moduleList: Table = {
 	"listenerKV2JSInit": listenerKV2JSInit,
 	"listenerAbilityExcelInit": listenerAbilityExcelInit,
 	"listenerUnitExcelInit": listenerUnitExcelInit,
+	"sheetCloudInit": sheetCloudInit,
 	// "localizationViewrInit": localizationViewrInit,
 };
 
@@ -55,6 +57,7 @@ const skipModuleList: { [key: string]: keyof ModuleListConfig; } = {
 	"jsCompletionInit": "js_completion",
 	"cssCompletionInit": "css_completion",
 	"kv2luaInit": "kv_lua_associated",
+	"sheetCloudInit": "sheet_cloud",
 };
 
 let eventID: number;

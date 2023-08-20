@@ -311,6 +311,14 @@
       {
         "command": "dota2tools.generate_db_csv",
         "title": "%dota2tools.generate_db_csv%"
+      },
+      {
+        "command": "dota2tools.fetch_all_sheet",
+        "title": "获取所有表格到本地"
+      },
+      {
+        "command": "dota2tools.show_fetch_sheet_list",
+        "title": "获取指定表格到本地"
       }
     ],
     "menus": {
@@ -481,7 +489,8 @@
             "lua_completion": true,
             "js_completion": true,
             "css_completion": true,
-            "kv_lua_associated": true
+            "kv_lua_associated": true,
+            "sheet_cloud": true
           },
           "properties": {
             "ability_icon": {
@@ -543,6 +552,11 @@
               "type": "boolean",
               "default": true,
               "description": "技能物品kv与lua脚本互相跳转"
+            },
+            "sheet_cloud": {
+              "type": "boolean",
+              "default": true,
+              "description": "云表格模块"
             }
           },
           "additionalProperties": false,
@@ -628,6 +642,13 @@
           },
           "additionalProperties": false,
           "markdownDescription": "%dota2-tools.A4.FeiShu%"
+        },
+        "dota2-tools.A4.FeiShuAbilityExcel": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "markdownDescription": "双行技能excel表路径配置\n- kv路径对应excel路径\n- 可填写具体文件名也可以填写文件夹\n- 可以使用相对当前工作区的相对路径\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
         },
         "dota2-tools.A4.AbilityExcel": {
           "type": "object",
