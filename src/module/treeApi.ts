@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ApiTreeProvider } from '../treeDataProvider/luaAPITree';
-import { JsApiTreeProvider } from '../treeDataProvider/jsAPITree';
-import { CssApiTreeProvider } from '../treeDataProvider/cssAPITree';
-import { PanelTreeProvider } from '../treeDataProvider/panelTree';
+import { ApiTreeProvider } from '../TreeDataProvider/luaAPITree';
+import { JsApiTreeProvider } from '../TreeDataProvider/jsAPITree';
+import { CssApiTreeProvider } from '../TreeDataProvider/cssAPITree';
+import { PanelTreeProvider } from '../TreeDataProvider/panelTree';
 import { getDotaApiNoteClass } from './apiNote';
 
 let luaApiTree: ApiTreeProvider;

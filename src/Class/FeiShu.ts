@@ -108,7 +108,7 @@ export class FeiShu {
 
 	}
 	getConfig() {
-		let config: any = vscode.workspace.getConfiguration().get('dota2-tools.A4.FeiShu');
+		let config: any = vscode.workspace.getConfiguration().get('dota2-tools.A8.FeiShu');
 		return config;
 	}
 

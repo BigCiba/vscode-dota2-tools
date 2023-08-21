@@ -130,6 +130,10 @@
         "title": "%dota2tools.translate_selection%"
       },
       {
+        "command": "dota2tools.A7.translate_advanced",
+        "title": "%dota2tools.A7.translate_advanced%"
+      },
+      {
         "command": "dota2tools.kv_to_js_config",
         "title": "%dota2tools.kv_to_js_config%"
       },
@@ -490,6 +494,7 @@
             "js_completion": true,
             "css_completion": true,
             "kv_lua_associated": true,
+            "translate": true,
             "sheet_cloud": true
           },
           "properties": {
@@ -552,6 +557,11 @@
               "type": "boolean",
               "default": true,
               "description": "技能物品kv与lua脚本互相跳转"
+            },
+            "translate": {
+              "type": "boolean",
+              "default": true,
+              "description": "翻译服务"
             },
             "sheet_cloud": {
               "type": "boolean",
@@ -624,32 +634,6 @@
           "additionalProperties": false,
           "markdownDescription": "监听文件变更相关设置。"
         },
-        "dota2-tools.A4.FeiShu": {
-          "type": "object",
-          "default": {
-            "App ID": "",
-            "App Secret": ""
-          },
-          "properties": {
-            "App ID": {
-              "type": "string",
-              "description": "dota2-tools.A4.appid"
-            },
-            "App Secret": {
-              "type": "string",
-              "description": "dota2-tools.A4.secret"
-            }
-          },
-          "additionalProperties": false,
-          "markdownDescription": "%dota2-tools.A4.FeiShu%"
-        },
-        "dota2-tools.A4.FeiShuAbilityExcel": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "markdownDescription": "双行技能excel表路径配置\n- kv路径对应excel路径\n- 可填写具体文件名也可以填写文件夹\n- 可以使用相对当前工作区的相对路径\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
-        },
         "dota2-tools.A4.AbilityExcel": {
           "type": "object",
           "additionalProperties": {
@@ -688,24 +672,67 @@
           "default": false,
           "description": "%dota2-tools.A6.Kv to lua generate typescript%"
         },
-        "dota2-tools.A7.translate config": {
+        "dota2-tools.A7.translate service": {
+          "type": "string",
+          "default": "%dota2-tools.A7.translate service.transmart%",
+          "description": "%dota2-tools.A7.translate service%",
+          "enum": [
+            "%dota2-tools.A7.translate service.transmart%",
+            "%dota2-tools.A7.translate service.caiyun%",
+            "%dota2-tools.A7.translate service.huoshan%",
+            "%dota2-tools.A7.translate service.tencentTranslate%"
+          ]
+        },
+        "dota2-tools.A7.translate preference language": {
+          "type": "string",
+          "default": "en",
+          "description": "%dota2-tools.A7.translate preference language%",
+          "enum": [
+            "en",
+            "ru",
+            "de",
+            "es",
+            "fr",
+            "it",
+            "ja",
+            "ko"
+          ],
+          "enumItemLabels": [
+            "%en%",
+            "%ru%",
+            "%de%",
+            "%es%",
+            "%fr%",
+            "%it%",
+            "%ja%",
+            "%ko%"
+          ]
+        },
+        "dota2-tools.A8.FeiShu": {
           "type": "object",
           "default": {
-            "appid": "",
-            "secret": ""
+            "App ID": "",
+            "App Secret": ""
           },
           "properties": {
-            "appid": {
+            "App ID": {
               "type": "string",
-              "description": "dota2-tools.A7.appid"
+              "description": "dota2-tools.A4.appid"
             },
-            "secret": {
+            "App Secret": {
               "type": "string",
-              "description": "dota2-tools.A7.secret"
+              "description": "dota2-tools.A4.secret"
             }
           },
           "additionalProperties": false,
-          "markdownDescription": "%dota2-tools.A7.translate config%"
+          "markdownDescription": "%dota2-tools.A4.FeiShu%"
+        },
+        "dota2-tools.A8.FeiShuAbilityExcel": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "markdownDescription": "双行技能excel表路径配置\n- kv路径对应excel路径\n- 可填写具体文件名也可以填写文件夹\n- 可以使用相对当前工作区的相对路径\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
         },
         "dota2-tools.addon_path": {
           "scope": "resource",
@@ -799,6 +826,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^7.2.0",
     "@types/md5": "^2.3.2",
@@ -826,6 +854,7 @@
     "@vscode/webview-ui-toolkit": "^1.2.2",
     "axios": "^1.4.0",
     "cardinal": "^2.1.1",
+    "crypto-js": "^4.1.1",
     "exceljs": "^4.3.0",
     "fs-extra": "^10.0.1",
     "i": "^0.3.7",

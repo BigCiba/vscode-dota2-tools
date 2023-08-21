@@ -45,7 +45,7 @@ declare interface ListenerConfig {
 	unit_excel: boolean;
 }
 
-interface ModuleListConfig {
+declare interface ModuleListConfig {
 	ability_icon: boolean;
 	items_game: boolean;
 	vsnd_picker: boolean;
@@ -58,5 +58,6 @@ interface ModuleListConfig {
 	js_completion: boolean;
 	css_completion: boolean;
 	kv_lua_associated: boolean;
+	translate: boolean;
 	sheet_cloud: boolean;
 }

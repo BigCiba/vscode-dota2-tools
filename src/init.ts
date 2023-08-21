@@ -17,9 +17,10 @@ import { localize, localizeInit } from './utils/localize';
 import { EventManager, EventType } from "./Class/event";
 import { localizationViewrInit } from './module/localizationViewr';
 import { sheetCloudInit } from './module/sheet_cloud';
+import { translateInit } from './module/translate';
 
 /** 模块列表 */
-const moduleList: Table = {
+const moduleList = {
 	// "localizeInit": localizeInit,
 	// "statusBarItemInit": statusBarItemInit,
 	"addonInfoInit": addonInfoInit,
@@ -39,6 +40,7 @@ const moduleList: Table = {
 	"listenerKV2JSInit": listenerKV2JSInit,
 	"listenerAbilityExcelInit": listenerAbilityExcelInit,
 	"listenerUnitExcelInit": listenerUnitExcelInit,
+	"translateInit": translateInit,
 	"sheetCloudInit": sheetCloudInit,
 	// "localizationViewrInit": localizationViewrInit,
 };
@@ -57,6 +59,7 @@ const skipModuleList: { [key: string]: keyof ModuleListConfig; } = {
 	"jsCompletionInit": "js_completion",
 	"cssCompletionInit": "css_completion",
 	"kv2luaInit": "kv_lua_associated",
+	"translateInit": "translate",
 	"sheetCloudInit": "sheet_cloud",
 };
 
@@ -80,7 +83,7 @@ export async function init(context: vscode.ExtensionContext) {
 			let newModuleListConfig: ModuleListConfig | undefined = vscode.workspace.getConfiguration().get(configName);
 			const keys = Object.keys(moduleList);
 			for (let i = 0; i < keys.length; i++) {
-				const moduleName = keys[i];
+				const moduleName = keys[i] as keyof typeof moduleList;
 				if (newModuleListConfig) {
 					if (isSkipModule(moduleName) && newModuleListConfig[skipModuleList[moduleName]] !== false) {
 						let messageIndex = showStatusBarMessage(`[${i + 1}/${keys.length}]${localize("loading")}：${localize(moduleName)}`, 20);
@@ -98,7 +101,7 @@ export async function init(context: vscode.ExtensionContext) {
 
 	const keys = Object.keys(moduleList);
 	for (let i = 0; i < keys.length; i++) {
-		const moduleName = keys[i];
+		const moduleName = keys[i] as keyof typeof moduleList;
 		if (moduleListConfig) {
 			if (isSkipModule(moduleName)) {
 				showStatusBarMessage(`[${i + 1}/${keys.length}]${localize("skip_disabled_modules")}：${localize(moduleName)}`);

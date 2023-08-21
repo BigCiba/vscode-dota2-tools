@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { CssCompletionItemProvider } from '../completions/cssCompletionItemProvider';
-import { JsCompletionItemProvider } from '../completions/jsCompletionItemProvider';
-import { LuaCompletionItemProvider } from '../completions/luaCompletionItemProvider';
+import { CssCompletionItemProvider } from '../Completions/cssCompletionItemProvider';
+import { JsCompletionItemProvider } from '../Completions/jsCompletionItemProvider';
+import { LuaCompletionItemProvider } from '../Completions/luaCompletionItemProvider';
 import { getDotaApiNoteClass } from './apiNote';
 /** 代码补全模块 */
 
