@@ -91,6 +91,7 @@
 	"dota2tools.generate_vpdi": "生成VPDI",
 	"dota2tools.mklink": "自动移动game和content文件夹并且mklink",
 	"dota2tools.export_modifier_function": "导出modifierfunction",
+	"dota2-tools.A4.FeiShu": "飞书云表格的配置",
 	"dota2-tools.A6.Kv to lua generate script": "开启kv跳转lua脚本时自动生成不存在的脚本功能",
 	"dota2-tools.A6.Kv to lua generate typescript": "kv跳转lua是否生成typescript而不是lua",
 	"dota2-tools.A7.translate service": "配置使用的翻译服务",

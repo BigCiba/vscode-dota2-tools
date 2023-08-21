@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import axios, { AxiosResponse } from 'axios';
+import { request } from '../utils/request';
 
 interface AccessTokenResponseData {
 	/** 错误码，非 0 取值表示失败 */
@@ -44,7 +45,7 @@ interface DocumentListResponseData {
 		}[];
 	},
 }
-interface SheetResponseData {
+interface SheetInfoResponseData {
 	/** 错误码，非 0 取值表示失败 */
 	code: number,
 	/** 错误描述 */
@@ -74,6 +75,29 @@ interface SheetResponseData {
 				column_count: number,
 			};
 		}[];
+	};
+}
+interface SheetDataResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	data: {
+		/** sheet 的版本号 */
+		revision: number,
+		/** spreadsheet 的 token */
+		spreadsheetToken: string,
+		/** 值与范围 */
+		valueRange: {
+			/** 插入维度 */
+			majorDimension: string,
+			/** 返回数据的范围，为空时表示查询范围没有数据 */
+			range: string,
+			/** sheet 的版本号 */
+			revision: number,
+			/** 查询得到的值 */
+			values: string[][];
+		};
 	};
 }
 
@@ -129,35 +153,7 @@ export class FeiShu {
 			data?: Record<string, string>,
 		} = {}
 	): Promise<T | undefined> {
-		try {
-			if (method == "GET") {
-				/** 替换路径参数 */
-				if (requestParams.pathParams) {
-					for (const key in requestParams.pathParams) {
-						url = url.replace(`:${key}`, requestParams.pathParams[key]);
-					}
-				}
-				const response = await axios.get(url, {
-					headers: requestParams.headers,
-					params: requestParams.params
-				});
-				if (response.data.code == 0) {
-					console.log(response.data);
-					return response.data;
-				}
-			} else {
-				const response = await axios.post(url, requestParams.data, {
-					headers: requestParams.headers,
-					params: requestParams.params
-				});
-				if (response.data.code == 0) {
-					console.log(response.data);
-					return response.data;
-				}
-			}
-		} catch (error) {
-			console.error(error);
-		}
+		return await request(method, url, requestParams);
 	}
 	/** 获取access_token */
 	async getTenantAccessToken() {
@@ -180,7 +176,6 @@ export class FeiShu {
 	}
 	/**
 	 * 从指定的文件夹中获取文档列表。
-	 *
 	 * @param {string} folderToken - 要获取文档的文件夹的令牌。
 	 */
 	async getDocumentList(folderToken: string) {
@@ -197,16 +192,13 @@ export class FeiShu {
 			}
 		);
 		if (files) {
-			const fileNames: string[] = [];
-			for (const file of files?.data.files) {
-				fileNames.push(file.name);
-			}
-			return fileNames;
+			return files.data.files;
 		}
+		return [];
 	}
 	/** 获取文档信息 */
 	async getDocumentInfo(spreadsheetToken: string) {
-		const sheet = await this.request<SheetResponseData>(
+		const sheet = await this.request<SheetInfoResponseData>(
 			"GET",
 			URL_LIST.SHEETS,
 			{
@@ -224,9 +216,9 @@ export class FeiShu {
 	}
 	/** 读取表格数据 */
 	getSheetData(spreadsheetToken: string, range: string) {
-		return this.request<SheetResponseData>(
+		return this.request<SheetDataResponseData>(
 			"GET",
-			URL_LIST.SHEETS,
+			URL_LIST.SHEET,
 			{
 				headers: {
 					'Content-Type': 'application/json; charset=utf-8',

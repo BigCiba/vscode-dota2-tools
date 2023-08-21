@@ -122,7 +122,8 @@ export async function excel2kv(kvDir: string, excelDir: string, method: typeof a
 					return;
 				}
 				await dirExists(path.join(kvDir, path.dirname(fileName.replace(path.extname(fileName), getExtname(fileName)))));
-				fs.writeFileSync(path.join(kvDir, fileName.replace(path.extname(fileName), getExtname(fileName))), writeKeyValue({ KeyValue: method(csvPath) }));
+				let csv = fs.readFileSync(csvPath, 'utf-8');
+				fs.writeFileSync(path.join(kvDir, fileName.replace(path.extname(fileName), getExtname(fileName))), writeKeyValue({ KeyValue: method(csv) }));
 				refreshStatusBarMessage(messageIndex, `[${localize("cmdExcel2KV")}]：` + fileName);
 			}
 		}
@@ -133,7 +134,8 @@ export async function excel2kv(kvDir: string, excelDir: string, method: typeof a
 			return;
 		}
 		await dirExists(kvDir);
-		fs.writeFileSync(kvDir, writeKeyValue({ KeyValue: method(csvPath) }));
+		let csv = fs.readFileSync(csvPath, 'utf-8');
+		fs.writeFileSync(kvDir, writeKeyValue({ KeyValue: method(csv) }));
 		refreshStatusBarMessage(messageIndex, `[${localize("cmdExcel2KV")}]：` + path.basename(excelDir));
 	}
 	changeStatusBarState(StatusBarState.ALL_DONE);

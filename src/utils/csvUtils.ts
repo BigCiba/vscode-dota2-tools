@@ -336,8 +336,7 @@ export function multilayerCSV2KV(listenPath: string): any {
 		console.log(error);
 	}
 }
-export function abilityCSV2KV(listenPath: string): any {
-	let csv = fs.readFileSync(listenPath, 'utf-8');
+export function abilityCSV2KV(csv: string): any {
 	// 生成kv
 	let csvData: any = {};
 	let csvArr: any = csvParse(csv);
