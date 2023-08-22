@@ -149,6 +149,9 @@ export class FeiShu {
 				pathParams: {
 					spreadsheetToken: spreadsheetToken,
 					range: range
+				},
+				params: {
+					valueRenderOption: "FormattedValue"
 				}
 			}
 		);
