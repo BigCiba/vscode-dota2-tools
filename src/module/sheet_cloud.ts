@@ -11,10 +11,7 @@ import { abilityCSV2KV } from '../utils/csvUtils';
 import { dirExists } from '../utils/pathUtils';
 
 let sheetCloud: FeiShu;
-let statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -2);
-statusBarItem.text = '$(sync)';
-statusBarItem.tooltip = '云配置表: 获取所有表格到本地KV';
-statusBarItem.show();
+let statusBarItem: vscode.StatusBarItem;
 let compositeFileList: { [kvDir: string]: DocumentFile[]; } = {};
 let singleFileList: { [kvDir: string]: DocumentFile[]; } = {};
 let sheetIDMap: { [spreadsheetToken: string]: string; } = {};
@@ -24,9 +21,15 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 	context.subscriptions.push(statusBarItem);
 	if (sheetCloud === undefined) {
 		sheetCloud = new FeiShu();
-		await sheetCloud.getTenantAccessToken();
-		await syncCloudFiles();
-		statusBarItem.command = "dota2tools.fetch_all_sheet";
+		const success = await sheetCloud.getTenantAccessToken();
+		if (success) {
+			await syncCloudFiles();
+			statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -2);
+			statusBarItem.text = '$(sync)';
+			statusBarItem.tooltip = '云配置表: 获取所有表格到本地KV';
+			statusBarItem.show();
+			statusBarItem.command = "dota2tools.fetch_all_sheet";
+		}
 	}
 
 	//云配置表: 更新文件列表
@@ -197,9 +200,13 @@ function getSheetID(spreadsheetToken: string) {
 }
 
 async function syncAction(action: Function) {
-	statusBarItem.text = '$(sync~spin)';
-	await action();
-	statusBarItem.text = '$(sync)';
+	if (statusBarItem) {
+		statusBarItem.text = '$(sync~spin)';
+		await action();
+		statusBarItem.text = '$(sync)';
+	} else {
+		await action();
+	}
 }
 
 function getFilesQuickPick() {

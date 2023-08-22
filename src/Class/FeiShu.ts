@@ -55,6 +55,9 @@ export class FeiShu {
 	}
 	/** 获取access_token */
 	async getTenantAccessToken() {
+		if (this.appid == "" || this.secret == "") {
+			return false;
+		}
 		const data = await request<AccessTokenResponseData>(
 			"POST",
 			URL_LIST.TENANT_ACCESS_TOKEN,
@@ -71,7 +74,9 @@ export class FeiShu {
 		if (data) {
 			this.tenant_access_token = data.tenant_access_token;
 			this.expire = Date.now() / 1000 + data.expire;
+			return true;
 		}
+		return false;
 	}
 	/** 检查租户访问凭证是否需要更新 */
 	async updateTenantAccessToken() {
