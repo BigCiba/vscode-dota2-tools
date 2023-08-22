@@ -61,3 +61,104 @@ declare interface ModuleListConfig {
 	translate: boolean;
 	sheet_cloud: boolean;
 }
+
+
+interface AccessTokenResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	/** 租户访问凭证 */
+	tenant_access_token: string,
+	/** 过期时间，单位为秒 */
+	expire: number;
+}
+interface DocumentFile {
+	/** 创建时间戳 */
+	created_time: string,
+	/** 修改时间戳 */
+	modified_time: string,
+	/** 文件名  */
+	name: string,
+	/** 所有者ID */
+	owner_id: string,
+	/** 父文件夹标识 */
+	parent_token: string,
+	shortcut_info: {
+		/** 快捷方式指向的原文件token */
+		target_token: string,
+		/** 快捷方式指向的原文件类型 */
+		target_type: string;
+	},
+	/** 文件标识 */
+	token: string,
+	/** 文件类型 */
+	type: "sheet",
+	/** 在浏览器中查看的链接 */
+	url: string;
+}
+interface DocumentListResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	data: {
+		/** 文件夹清单列表 */
+		files: DocumentFile[];
+	},
+}
+interface SheetInfoResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	data: {
+		/** 工作表列表 */
+		sheets: {
+			/** 工作表id */
+			sheet_id: string,
+			/** 工作表标题 */
+			title: string,
+			/** 工作表索引位置，索引从 0 开始计数。 */
+			index: string,
+			/** 工作表类型 */
+			resource_type: "sheet",
+			/** 工作表是否被隐藏 */
+			hidden: boolean;
+			/** 单元格属性 */
+			grid_properties: {
+				/** 冻结的行数量 */
+				frozen_row_count: number,
+				/** 冻结的列数量 */
+				frozen_column_count: number,
+				/** 工作表的行数 */
+				row_count: number,
+				/** 工作表的列数量 */
+				column_count: number,
+			};
+		}[];
+	};
+}
+interface SheetDataResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	data: {
+		/** sheet 的版本号 */
+		revision: number,
+		/** spreadsheet 的 token */
+		spreadsheetToken: string,
+		/** 值与范围 */
+		valueRange: {
+			/** 插入维度 */
+			majorDimension: string,
+			/** 返回数据的范围，为空时表示查询范围没有数据 */
+			range: string,
+			/** sheet 的版本号 */
+			revision: number,
+			/** 查询得到的值 */
+			values: string[][];
+		};
+	};
+}

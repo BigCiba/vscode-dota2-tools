@@ -9,6 +9,7 @@ import { localize } from "../utils/localize";
 import { getPathInfo } from "../utils/pathUtils";
 import { getBaseInfo, getKeyValueObjectByIndex, readKeyValue2 } from "../utils/kvUtils";
 import { generateJS } from "../command/cmdKvToJs";
+import { log } from "console";
 
 let eventID: number;
 let fileWatcher: fs.FSWatcher | undefined;
@@ -58,7 +59,12 @@ async function startWatch(context: vscode.ExtensionContext) {
 					let sTotalPath = gameDir + '/scripts/' + sPath;
 					let baseList = await getBaseInfo(sTotalPath);
 					if (baseList.length > 0) {
-						baseInfo[sKVName] = baseList;
+						for (const basePath of baseList) {
+							if (baseInfo[basePath] == undefined) {
+								baseInfo[basePath] = [];
+							}
+							baseInfo[basePath].push(sKVName);
+						}
 					}
 				}
 				fileWatcher = watch(gameDir + '/scripts', { recursive: true, filter: /\.txt$|\.kv$/ }, function (evt, name) {
@@ -66,11 +72,12 @@ async function startWatch(context: vscode.ExtensionContext) {
 						if (path.normalize(name).indexOf(path.normalize(kvJsConfig.kvfiles[sKVName])) !== -1) {
 							generateJS(context, kvJsConfig, sKVName);
 						}
-						if (baseInfo[sKVName]) {
-							for (const basePath of baseInfo[sKVName]) {
-								if (path.normalize(name).indexOf(path.normalize(basePath)) !== -1) {
-									generateJS(context, kvJsConfig, sKVName);
-								}
+					}
+					for (const kvPath in baseInfo) {
+						if (path.normalize(name).indexOf(path.normalize(kvPath)) !== -1) {
+							const parentList = baseInfo[kvPath];
+							for (const sKVName of parentList) {
+								generateJS(context, kvJsConfig, sKVName);
 							}
 						}
 					}

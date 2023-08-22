@@ -3,7 +3,6 @@ import * as os from 'os';
 import * as path from 'path';
 import * as fs from 'fs';
 import { FeiShu } from '../Class/FeiShu';
-import { eachExcelConfig } from '../command/cmdExcel2KV';
 import { getContentDir, getGameDir } from './addonInfo';
 import { showStatusBarMessage } from './statusBar';
 import { localize } from '../utils/localize';
@@ -12,83 +11,155 @@ import { abilityCSV2KV } from '../utils/csvUtils';
 import { dirExists } from '../utils/pathUtils';
 
 let sheetCloud: FeiShu;
+let statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -2);
+statusBarItem.text = '$(sync)';
+statusBarItem.tooltip = '云配置表: 获取所有表格到本地KV';
+statusBarItem.show();
+let compositeFileList: { [kvDir: string]: DocumentFile[]; } = {};
+let singleFileList: { [kvDir: string]: DocumentFile[]; } = {};
+let sheetIDMap: { [spreadsheetToken: string]: string; } = {};
 
 /** 云表格初始化 */
-export function sheetCloudInit(context: vscode.ExtensionContext) {
+export async function sheetCloudInit(context: vscode.ExtensionContext) {
+	context.subscriptions.push(statusBarItem);
 	if (sheetCloud === undefined) {
 		sheetCloud = new FeiShu();
+		await sheetCloud.getTenantAccessToken();
+		await syncCloudFiles();
+		statusBarItem.command = "dota2tools.fetch_all_sheet";
 	}
+
+	//云配置表: 更新文件列表
+	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.fetch_files", async (data) => {
+		await syncCloudFiles();
+	}));
+
 	// 获取所有表格到本地
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.fetch_all_sheet", async (data) => {
-		const abilityConfig = getAbilityConfig();
-		for (const kvDir in abilityConfig) {
-			const folderToken = abilityConfig[kvDir];
-			sheetCloud.getDocumentList(folderToken).then((files) => {
+		await syncAction(async () => {
+			for (const kvDir in compositeFileList) {
+				const files = compositeFileList[kvDir];
 				for (const fileData of files) {
-					sheetCloud.getDocumentInfo(fileData.shortcut_info.target_token).then((sheetInfo) => {
-						if (sheetInfo) {
-							sheetCloud.getSheetData(fileData.shortcut_info.target_token, sheetInfo.sheet_id).then(async (sheetData) => {
-								if (sheetData) {
-									const csv = convertToCSV(sheetData.data.valueRange.values);
-									if (path.isAbsolute(kvDir)) {
-										fs.writeFileSync(kvDir, writeKeyValue({ KeyValue: abilityCSV2KV(csv) }));
-									} else {
-										let realKvDir = kvDir;
-										if (kvDir.indexOf("${game}") !== -1) {
-											const gameDire = getGameDir();
-											if (gameDire) {
-												realKvDir = kvDir.replace("${game}", gameDire);
-											} else {
-												showStatusBarMessage(`[${localize("cmdExcel2KV")}]：` + kvDir + localize("game_folder_no_found"));
-											}
-										}
-										if (kvDir.indexOf("${content}") !== -1) {
-											const contentDire = getContentDir();
-											if (contentDire) {
-												realKvDir = kvDir.replace("${content}", contentDire);
-											} else {
-												showStatusBarMessage(`[${localize("cmdExcel2KV")}]：` + kvDir + localize("content_folder_no_found"));
-											}
-										}
-										await dirExists(realKvDir);
-										const data = writeKeyValue({ KeyValue: abilityCSV2KV(csv) });
-										fs.writeFileSync(path.join(realKvDir, getExtname(fileData.name)), data);
-									}
-								}
-							});
-						}
-					});
+					await processFileData(fileData, kvDir);
 				}
-			});
-		}
+			}
+		});
 	}));
 
 	// 获取指定表格到本地
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.show_fetch_sheet_list", async (data) => {
-		// 显示quickpick
-		const quickPick = vscode.window.createQuickPick();
-		quickPick.canSelectMany = false;
-		quickPick.ignoreFocusOut = false;
-		quickPick.matchOnDescription = true;
-		quickPick.placeholder = '选择一个表格';
-		quickPick.items = [
-			{
-				label: "只输出英雄相关的版本"
-			},
-			{
-				label: "输出完整版本"
-			}
-		];
-		quickPick.show();
-		quickPick.onDidChangeSelection((t) => {
+		const vsndPick = vscode.window.createQuickPick();
+		vsndPick.canSelectMany = false;
+		vsndPick.ignoreFocusOut = true;
+		vsndPick.placeholder = '选择一个配置表';
+		vsndPick.matchOnDescription = true;
+		vsndPick.items = getFilesQuickPick();
 
-			quickPick.dispose();
+		vsndPick.show();
+		vsndPick.onDidChangeSelection((t) => {
+			if (t[0].description) {
+				const data = getDocumentFileByToken(t[0].description);
+				if (data) {
+					processFileData(data.fileData, data.kvDir);
+				}
+			}
+			vsndPick.dispose();
 		});
 	}));
+
+
 }
 
-function getAbilityConfig(): Record<string, string> {
-	return vscode.workspace.getConfiguration().get('dota2-tools.A8.FeiShuAbilityExcel', {});
+async function processFileData(fileData: DocumentFile, kvDir: string): Promise<void> {
+	const spreadsheetToken = fileData.shortcut_info.target_token;
+	let sheetID = getSheetID(spreadsheetToken);
+	// 第一次获取就存下来，减少接口请求次数
+	if (sheetID == undefined) {
+		const sheetInfo = await sheetCloud.getDocumentInfo(spreadsheetToken);
+		if (sheetInfo) {
+			sheetID = sheetInfo.sheet_id;
+			sheetIDMap[spreadsheetToken] = sheetID;
+		}
+	}
+	if (sheetID) {
+		const sheetData = await sheetCloud.getSheetData(spreadsheetToken, sheetID);
+		if (sheetData) {
+			const csv = convertToCSV(sheetData.data.valueRange.values);
+			await saveCSVToKVDir(csv, kvDir, fileData);
+			console.log("write kv");
+		}
+	}
+}
+
+async function saveCSVToKVDir(csv: string, kvDir: string, fileData: DocumentFile): Promise<void> {
+	const realKvDir = getRealKvDir(kvDir);
+	if (realKvDir) {
+		await dirExists(realKvDir);
+
+		const data = writeKeyValue({ KeyValue: abilityCSV2KV(csv) });
+		const filePath = path.join(realKvDir, getExtname(fileData.name));
+		fs.writeFileSync(filePath, data);
+		fileData.modified_time;
+		// fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
+	}
+}
+
+function getRealKvDir(kvDir: string): string | undefined {
+	let realKvDir = kvDir;
+	if (kvDir.indexOf("${game}") !== -1) {
+		const gameDire = getGameDir();
+		if (gameDire) {
+			realKvDir = kvDir.replace("${game}", gameDire);
+		} else {
+			showStatusBarMessage(`[${localize("cmdExcel2KV")}]：` + kvDir + localize("game_folder_no_found"));
+			return undefined;
+		}
+	}
+	if (kvDir.indexOf("${content}") !== -1) {
+		const contentDire = getContentDir();
+		if (contentDire) {
+			realKvDir = kvDir.replace("${content}", contentDire);
+		} else {
+			showStatusBarMessage(`[${localize("cmdExcel2KV")}]：` + kvDir + localize("content_folder_no_found"));
+			return undefined;
+		}
+	}
+	return realKvDir;
+}
+
+/** 同步云文件列表 */
+async function syncCloudFiles() {
+	await syncAction(async () => {
+		const compositeConfig = getCompositeConfig();
+		// 遍历配置的技能表
+		for (const kvDir in compositeConfig) {
+			if (compositeFileList[kvDir] == undefined) {
+				compositeFileList[kvDir] = [];
+			}
+			const files = await sheetCloud.getDocumentList(compositeConfig[kvDir]);
+			for (const fileData of files) {
+				compositeFileList[kvDir].push(fileData);
+			}
+		}
+		const singleConfig = getSingleConfig();
+		// 遍历配置的技能表
+		for (const kvDir in singleConfig) {
+			if (compositeFileList[kvDir] == undefined) {
+				compositeFileList[kvDir] = [];
+			}
+			const files = await sheetCloud.getDocumentList(singleConfig[kvDir]);
+			for (const fileData of files) {
+				singleFileList[kvDir].push(fileData);
+			}
+		}
+	});
+}
+
+function getCompositeConfig(): Record<string, string> {
+	return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetComposite', {});
+}
+function getSingleConfig(): Record<string, string> {
+	return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetSingle', {});
 }
 
 function convertToCSV(data: string[][]): string {
@@ -119,4 +190,57 @@ function getExtname(fileName: string) {
 		}
 	}
 	return fileName + ".kv";
+}
+
+function getSheetID(spreadsheetToken: string) {
+	return sheetIDMap[spreadsheetToken];
+}
+
+async function syncAction(action: Function) {
+	statusBarItem.text = '$(sync~spin)';
+	await action();
+	statusBarItem.text = '$(sync)';
+}
+
+function getFilesQuickPick() {
+	const quickPickItemList: vscode.QuickPickItem[] = [];
+	for (const kvDir in compositeFileList) {
+		const files = compositeFileList[kvDir];
+		for (const fileData of files) {
+			quickPickItemList.push({
+				label: "$(run-all) " + fileData.name,
+				description: fileData.shortcut_info.target_token
+			});
+		}
+	}
+	for (const kvDir in singleFileList) {
+		const files = singleFileList[kvDir];
+		for (const fileData of files) {
+			quickPickItemList.push({
+				label: "$(run) " + fileData.name,
+				description: fileData.shortcut_info.target_token
+			});
+		}
+	}
+	return quickPickItemList;
+}
+
+// 通过target_token获得fileData和kvDir
+function getDocumentFileByToken(target_token: string) {
+	for (const kvDir in compositeFileList) {
+		const files = compositeFileList[kvDir];
+		for (const fileData of files) {
+			if (fileData.shortcut_info.target_token == target_token) {
+				return { fileData, kvDir };
+			}
+		}
+	}
+	for (const kvDir in singleFileList) {
+		const files = singleFileList[kvDir];
+		for (const fileData of files) {
+			if (fileData.shortcut_info.target_token == target_token) {
+				return { fileData, kvDir };
+			}
+		}
+	}
 }

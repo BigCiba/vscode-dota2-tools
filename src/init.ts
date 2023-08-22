@@ -45,6 +45,11 @@ const moduleList = {
 	// "localizationViewrInit": localizationViewrInit,
 };
 
+/** 需要同步加载的模块 */
+const syncModuleList = [
+	// "addonInfoInit",
+];
+
 /** 跳过的模块对应的用户设置 */
 const skipModuleList: { [key: string]: keyof ModuleListConfig; } = {
 	"dota2IconPanelInit": "ability_icon",

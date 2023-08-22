@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ENUM_STATUS_BAR_MESSAGE_TIMEOUT } from '../enum';
 import { localize } from '../utils/localize';
 
-let statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
+let statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -1);
 /** 最多信息条数 */
 const MAX_MESSAGE_COUNT = 20;
 /** 信息列表 */
