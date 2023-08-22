@@ -58,7 +58,6 @@ export async function kvToJs(context: vscode.ExtensionContext) {
 
 /** 生成js文件 */
 export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: Table, sKVName: string) {
-	console.log(sKVName);
 	const gameDir = getGameDir();
 	const contentDir = getContentDir();
 	let configs = kvJsConfig.configs;

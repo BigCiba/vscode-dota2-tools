@@ -74,7 +74,7 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 }
 
 async function processFileData(fileData: DocumentFile, kvDir: string): Promise<void> {
-	const spreadsheetToken = fileData.shortcut_info.target_token;
+	const spreadsheetToken = fileData.token;
 	let sheetID = getSheetID(spreadsheetToken);
 	// 第一次获取就存下来，减少接口请求次数
 	if (sheetID == undefined) {
@@ -89,7 +89,6 @@ async function processFileData(fileData: DocumentFile, kvDir: string): Promise<v
 		if (sheetData) {
 			const csv = convertToCSV(sheetData.data.valueRange.values);
 			await saveCSVToKVDir(csv, kvDir, fileData);
-			console.log("write kv");
 		}
 	}
 }
@@ -147,8 +146,8 @@ async function syncCloudFiles() {
 		const singleConfig = getSingleConfig();
 		// 遍历配置的技能表
 		for (const kvDir in singleConfig) {
-			if (compositeFileList[kvDir] == undefined) {
-				compositeFileList[kvDir] = [];
+			if (singleFileList[kvDir] == undefined) {
+				singleFileList[kvDir] = [];
 			}
 			const files = await sheetCloud.getDocumentList(singleConfig[kvDir]);
 			for (const fileData of files) {
@@ -216,7 +215,7 @@ function getFilesQuickPick() {
 		for (const fileData of files) {
 			quickPickItemList.push({
 				label: "$(run-all) " + fileData.name,
-				description: fileData.shortcut_info.target_token
+				description: fileData.token
 			});
 		}
 	}
@@ -225,7 +224,7 @@ function getFilesQuickPick() {
 		for (const fileData of files) {
 			quickPickItemList.push({
 				label: "$(run) " + fileData.name,
-				description: fileData.shortcut_info.target_token
+				description: fileData.token
 			});
 		}
 	}
@@ -237,7 +236,7 @@ function getDocumentFileByToken(target_token: string) {
 	for (const kvDir in compositeFileList) {
 		const files = compositeFileList[kvDir];
 		for (const fileData of files) {
-			if (fileData.shortcut_info.target_token == target_token) {
+			if (fileData.token == target_token) {
 				return { fileData, kvDir };
 			}
 		}
@@ -245,7 +244,7 @@ function getDocumentFileByToken(target_token: string) {
 	for (const kvDir in singleFileList) {
 		const files = singleFileList[kvDir];
 		for (const fileData of files) {
-			if (fileData.shortcut_info.target_token == target_token) {
+			if (fileData.token == target_token) {
 				return { fileData, kvDir };
 			}
 		}
