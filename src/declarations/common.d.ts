@@ -139,6 +139,23 @@ interface SheetInfoResponseData {
 		}[];
 	};
 }
+interface SheetMetaInfoResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	data: {
+		/** 工作表列表 */
+		sheets: {
+			/** 工作表id */
+			sheetId: string,
+			/** 工作表标题 */
+			title: string,
+			/** 工作表索引位置，索引从 0 开始计数。 */
+			index: string,
+		}[];
+	};
+}
 interface SheetDataResponseData {
 	/** 错误码，非 0 取值表示失败 */
 	code: number,

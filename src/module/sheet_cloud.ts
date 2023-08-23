@@ -100,9 +100,9 @@ async function processFileData(fileData: DocumentFile, kvDir: string, method: ty
 	let sheetID = getSheetID(spreadsheetToken);
 	// 第一次获取就存下来，减少接口请求次数
 	if (sheetID == undefined) {
-		const sheetInfo = await sheetCloud.getDocumentInfo(spreadsheetToken);
+		const sheetInfo = await sheetCloud.getSheetMetaInfo(spreadsheetToken);
 		if (sheetInfo) {
-			sheetID = sheetInfo.sheet_id;
+			sheetID = sheetInfo.sheetId;
 			sheetIDMap[spreadsheetToken] = sheetID;
 		}
 	}

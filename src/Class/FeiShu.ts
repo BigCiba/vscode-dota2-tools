@@ -9,6 +9,8 @@ const URL_LIST = {
 	FILES: 'https://open.feishu.cn/open-apis/drive/v1/files',
 	/** 获取工作表，100 次/分钟 */
 	SHEETS: 'https://open.feishu.cn/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query',
+	/** 获取表格元数据，没有次数限制 */
+	SHEET_METAINFO: 'https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/:spreadsheetToken/metainfo',
 	/** 获取表格数据，没有次数限制 */
 	SHEET: 'https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/:spreadsheetToken/values/:range',
 };
@@ -118,7 +120,7 @@ export class FeiShu {
 		}
 		return [];
 	}
-	/** 获取文档信息 */
+	/** 获取文档信息（次数限制，暂时不用） */
 	async getDocumentInfo(spreadsheetToken: string) {
 		const sheet = await this.request<SheetInfoResponseData>(
 			"GET",
@@ -129,6 +131,24 @@ export class FeiShu {
 				},
 				pathParams: {
 					spreadsheet_token: spreadsheetToken
+				}
+			}
+		);
+		if (sheet) {
+			return sheet.data.sheets[0];
+		}
+	}
+	async getSheetMetaInfo(spreadsheetToken: string) {
+		const sheet = await this.request<SheetMetaInfoResponseData>(
+			"GET",
+			URL_LIST.SHEET_METAINFO,
+			{
+				headers: {
+					'Authorization': 'Bearer ' + this.tenant_access_token,
+					'Content-Type': 'application/json; charset=utf-8'
+				},
+				pathParams: {
+					spreadsheetToken: spreadsheetToken
 				}
 			}
 		);
