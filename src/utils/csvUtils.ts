@@ -474,8 +474,7 @@ export function KVArrayProc(obj: Record<string, any>) {
 		}
 	}
 }
-export function unitCSV2KV(listenPath: string): any {
-	let csv = fs.readFileSync(listenPath, 'utf-8');
+export function unitCSV2KV(csv: string): any {
 	// 生成kv
 	let csvData: any = {};
 	let csvArr: any = csvParse(csv);

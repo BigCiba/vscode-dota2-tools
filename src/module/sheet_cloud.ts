@@ -7,7 +7,7 @@ import { getContentDir, getGameDir } from './addonInfo';
 import { showStatusBarMessage } from './statusBar';
 import { localize } from '../utils/localize';
 import { writeKeyValue } from '../utils/kvUtils';
-import { abilityCSV2KV } from '../utils/csvUtils';
+import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
 import { dirExists } from '../utils/pathUtils';
 
 let sheetCloud: FeiShu;
@@ -40,10 +40,18 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 	// 获取所有表格到本地
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.fetch_all_sheet", async (data) => {
 		await syncAction(async () => {
+			// 遍历技能表
 			for (const kvDir in compositeFileList) {
 				const files = compositeFileList[kvDir];
 				for (const fileData of files) {
-					await processFileData(fileData, kvDir);
+					processFileData(fileData, kvDir, abilityCSV2KV);
+				}
+			}
+			// 遍历单位表
+			for (const kvDir in singleFileList) {
+				const files = singleFileList[kvDir];
+				for (const fileData of files) {
+					processFileData(fileData, kvDir, unitCSV2KV);
 				}
 			}
 		});
@@ -63,7 +71,11 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 			if (t[0].description) {
 				const data = getDocumentFileByToken(t[0].description);
 				if (data) {
-					processFileData(data.fileData, data.kvDir);
+					if (t[0].label.indexOf("$(run-all)") != -1) {
+						processFileData(data.fileData, data.kvDir, abilityCSV2KV);
+					} else {
+						processFileData(data.fileData, data.kvDir, unitCSV2KV);
+					}
 				}
 			}
 			vsndPick.dispose();
@@ -73,7 +85,7 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 
 }
 
-async function processFileData(fileData: DocumentFile, kvDir: string): Promise<void> {
+async function processFileData(fileData: DocumentFile, kvDir: string, method: typeof abilityCSV2KV | typeof unitCSV2KV): Promise<void> {
 	const spreadsheetToken = fileData.token;
 	let sheetID = getSheetID(spreadsheetToken);
 	// 第一次获取就存下来，减少接口请求次数
@@ -88,17 +100,17 @@ async function processFileData(fileData: DocumentFile, kvDir: string): Promise<v
 		const sheetData = await sheetCloud.getSheetData(spreadsheetToken, sheetID);
 		if (sheetData) {
 			const csv = convertToCSV(sheetData.data.valueRange.values);
-			await saveCSVToKVDir(csv, kvDir, fileData);
+			await saveCSVToKVDir(csv, kvDir, fileData, method);
 		}
 	}
 }
 
-async function saveCSVToKVDir(csv: string, kvDir: string, fileData: DocumentFile): Promise<void> {
+async function saveCSVToKVDir(csv: string, kvDir: string, fileData: DocumentFile, method: typeof abilityCSV2KV | typeof unitCSV2KV): Promise<void> {
 	const realKvDir = getRealKvDir(kvDir);
 	if (realKvDir) {
 		await dirExists(realKvDir);
 
-		const data = writeKeyValue({ KeyValue: abilityCSV2KV(csv) });
+		const data = writeKeyValue({ KeyValue: method(csv) });
 		const filePath = path.join(realKvDir, getExtname(fileData.name));
 		fs.writeFileSync(filePath, data);
 		fileData.modified_time;
@@ -144,7 +156,7 @@ async function syncCloudFiles() {
 			}
 		}
 		const singleConfig = getSingleConfig();
-		// 遍历配置的技能表
+		// 遍历配置的单位表
 		for (const kvDir in singleConfig) {
 			if (singleFileList[kvDir] == undefined) {
 				singleFileList[kvDir] = [];
