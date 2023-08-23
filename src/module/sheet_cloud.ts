@@ -39,20 +39,30 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 
 	// 获取所有表格到本地
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.fetch_all_sheet", async (data) => {
-		await syncAction(async () => {
-			// 遍历技能表
-			for (const kvDir in compositeFileList) {
-				const files = compositeFileList[kvDir];
-				for (const fileData of files) {
-					processFileData(fileData, kvDir, abilityCSV2KV);
-				}
+		if (statusBarItem) {
+			statusBarItem.text = '$(sync~spin)';
+		}
+		// 创建一个空数组，用于存储所有异步任务的 Promise
+		const promises: Promise<void>[] = [];
+		// 遍历技能表
+		for (const kvDir in compositeFileList) {
+			const files = compositeFileList[kvDir];
+			for (const fileData of files) {
+				promises.push(processFileData(fileData, kvDir, abilityCSV2KV));
 			}
-			// 遍历单位表
-			for (const kvDir in singleFileList) {
-				const files = singleFileList[kvDir];
-				for (const fileData of files) {
-					processFileData(fileData, kvDir, unitCSV2KV);
-				}
+		}
+		// 遍历单位表
+		for (const kvDir in singleFileList) {
+			const files = singleFileList[kvDir];
+			for (const fileData of files) {
+				promises.push(processFileData(fileData, kvDir, unitCSV2KV));
+			}
+		}
+		// 使用 Promise.all 等待所有异步任务完成
+		Promise.all(promises).then(() => {
+			// 在所有异步任务完成后执行某些操作
+			if (statusBarItem) {
+				statusBarItem.text = '$(sync)';
 			}
 		});
 	}));
