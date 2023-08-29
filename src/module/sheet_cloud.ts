@@ -9,8 +9,6 @@ import { localize } from '../utils/localize';
 import { writeKeyValue } from '../utils/kvUtils';
 import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
 import { dirExists } from '../utils/pathUtils';
-import { stopWatch } from '../listener/listenerAbilityExcel';
-import { TryStartWatch } from '../listener/common';
 
 let sheetCloud: FeiShu;
 let statusBarItem: vscode.StatusBarItem;
@@ -126,7 +124,7 @@ async function saveCSVToKVDir(csv: string, kvDir: string, fileData: DocumentFile
 		const filePath = path.join(realKvDir, getExtname(fileData.name));
 		fs.writeFileSync(filePath, data);
 		// TODO:会触发监听的文件变更导致生成两次js
-		fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
+		// fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
 	}
 }
 
