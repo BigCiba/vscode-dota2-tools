@@ -179,3 +179,19 @@ interface SheetDataResponseData {
 		};
 	};
 }
+
+interface MetaDataResponseData {
+	code: number;
+	msg: string;
+	data: {
+		docs_metas: {
+			docs_token: string;
+			docs_type: string;
+			title: string;
+			owner_id: string;
+			create_time: number;
+			latest_modify_user: string;
+			latest_modify_time: number;
+		}[];
+	};
+}

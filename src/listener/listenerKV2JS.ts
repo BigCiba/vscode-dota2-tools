@@ -9,7 +9,6 @@ import { localize } from "../utils/localize";
 import { getPathInfo } from "../utils/pathUtils";
 import { getBaseInfo, getKeyValueObjectByIndex, readKeyValue2 } from "../utils/kvUtils";
 import { generateJS } from "../command/cmdKvToJs";
-import { log } from "console";
 
 let eventID: number;
 let fileWatcher: fs.FSWatcher | undefined;

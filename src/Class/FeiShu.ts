@@ -13,6 +13,8 @@ const URL_LIST = {
 	SHEET_METAINFO: 'https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/:spreadsheetToken/metainfo',
 	/** 获取表格数据，没有次数限制 */
 	SHEET: 'https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/:spreadsheetToken/values/:range',
+	/** 获取文件元数据，没有次数限制 */
+	META: 'https://open.feishu.cn/open-apis/suite/docs-api/meta',
 };
 export class FeiShu {
 	appid: string;
@@ -44,7 +46,7 @@ export class FeiShu {
 			/** 查询参数 */
 			params?: Record<string, string>,
 			/** 请求体 */
-			data?: Record<string, string>,
+			data?: Record<string, any>,
 		} = {}
 	): Promise<T | undefined> {
 		// 每次请求前检查租户访问凭证
@@ -172,6 +174,27 @@ export class FeiShu {
 				},
 				params: {
 					valueRenderOption: "FormattedValue"
+				}
+			}
+		);
+	}
+	/** 获取元数据 */
+	getMetaData(spreadsheetToken: string[]) {
+		return this.request<MetaDataResponseData>(
+			"POST",
+			URL_LIST.META,
+			{
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8',
+					'Authorization': 'Bearer ' + this.tenant_access_token,
+				},
+				data: {
+					request_docs: [
+						{
+							"docs_token": spreadsheetToken,
+							"docs_type": "sheet"
+						}
+					]
 				}
 			}
 		);

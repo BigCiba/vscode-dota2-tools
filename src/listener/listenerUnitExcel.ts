@@ -48,7 +48,7 @@ function startWatch(context: vscode.ExtensionContext) {
 						if (path.normalize(excelDir) == path.normalize(path.dirname(name)).replace("\\csv", "")) {
 							const kvName = path.join(kvDir, path.basename(name).replace(path.extname(name), getExtname(path.basename(name))));
 							let csv = fs.readFileSync(name, 'utf-8');
-							fs.writeFileSync(kvName, writeKeyValue({ KeyValue: csv }));
+							fs.writeFileSync(kvName, writeKeyValue({ KeyValue: unitCSV2KV(csv) }));
 							showStatusBarMessage("[excel导出kv]：" + path.basename(name).replace(path.extname(name), getExtname(path.basename(name))));
 							// excel2kv(kvDir, excelDir, unitCSV2KV);
 							return false;

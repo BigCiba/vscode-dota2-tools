@@ -9,6 +9,8 @@ import { localize } from '../utils/localize';
 import { writeKeyValue } from '../utils/kvUtils';
 import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
 import { dirExists } from '../utils/pathUtils';
+import { stopWatch } from '../listener/listenerAbilityExcel';
+import { TryStartWatch } from '../listener/common';
 
 let sheetCloud: FeiShu;
 let statusBarItem: vscode.StatusBarItem;
@@ -123,8 +125,8 @@ async function saveCSVToKVDir(csv: string, kvDir: string, fileData: DocumentFile
 		const data = writeKeyValue({ KeyValue: method(csv) });
 		const filePath = path.join(realKvDir, getExtname(fileData.name));
 		fs.writeFileSync(filePath, data);
-		fileData.modified_time;
-		// fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
+		// TODO:会触发监听的文件变更导致生成两次js
+		fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
 	}
 }
 
@@ -270,5 +272,25 @@ function getDocumentFileByToken(target_token: string) {
 				return { fileData, kvDir };
 			}
 		}
+	}
+}
+function checkCloundChange() {
+	const modificationTime = [];
+	for (const kvDir in compositeFileList) {
+		const realKvDir = getRealKvDir(kvDir);
+		if (realKvDir) {
+			const files = fs.readdirSync(realKvDir);
+			for (const file of files) {
+				const filePath = path.join(realKvDir, file);
+				const stats = fs.statSync(filePath);
+				const modificationTime = stats.mtime;
+				// 在这里添加你的处理逻辑，例如打印或保存文件的修改时间
+				console.log(`文件 ${file} 的修改时间为：${modificationTime}`);
+			}
+		}
+	}
+	for (const kvDir in singleFileList) {
+		const realKvDir = getRealKvDir(kvDir);
+		// 在这里可以进行类似的操作，遍历文件夹下的文件并获取修改时间
 	}
 }
