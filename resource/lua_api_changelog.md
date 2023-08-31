@@ -1,5 +1,54 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2023.08.31
+## Lua Server
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>RandomFloatWrapper</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Generate a random floating point number within a range, inclusive
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>Script_RandomFloat</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Get a random float within a range
+- ✨ API: <font color='#00D6AA'>CDOTAGameManager</font> <font color='#dcdcaa'>GetHeroLocTokenByID</font>(<font color='#569cd6'>int_1</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>string</font> Get the localization token for the given hero ID.
+- 🖊️ API: <font color='#00D6AA'>CDOTA_Modifier_Lua</font> <font color='#dcdcaa'>OnRemoved</font>(<font color='#569cd6'>bDeath</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>OnRemoved</font>(): <font color='#c586c0'>void</font>~~
+- ❌ API: <font color='#00D6AA'>CSceneEntity</font> <font color='#dcdcaa'>FindCamera</font>(): <font color='#c586c0'>handle</font>
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>RandomFloatWrapper</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Generate a random floating point number within a range, inclusive
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>Script_RandomFloat</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Get a random float within a range
+- ✨ API: <font color='#00D6AA'>CDOTAGameManager</font> <font color='#dcdcaa'>GetHeroLocTokenByID</font>(<font color='#569cd6'>int_1</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>string</font> Get the localization token for the given hero ID.
+- 🖊️ API: <font color='#00D6AA'>CDOTA_Modifier_Lua</font> <font color='#dcdcaa'>OnRemoved</font>(<font color='#569cd6'>bDeath</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>OnRemoved</font>(): <font color='#c586c0'>void</font>~~
+- ❌ API: <font color='#00D6AA'>CSceneEntity</font> <font color='#dcdcaa'>FindCamera</font>(): <font color='#c586c0'>handle</font>
+- ✨ Enum: <font color='#00D6AA'>DOTASlotType_t</font> <font color='#9cdcfe'>DOTA_LOADOUT_TYPE_TORMENTOR</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_FORCE_PROC_MAGIC_STICK</font> <font color='#dcdcaa'>OnForceProcMagicStick</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FAIL_ATTACK</font> <font color='#dcdcaa'>GetModifierPropetyFailAttack</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST</font> <font color='#dcdcaa'>MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MODEL_SCALE_CONSTANT</font> <font color='#dcdcaa'>GetModifierModelScaleConstant</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MODEL_SCALE_USE_IN_OUT_EASE</font> <font color='#dcdcaa'>GetModifierModelScaleUseInOutEase</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PREREDUCE_INCOMING_DAMAGE_MULT</font> <font color='#dcdcaa'>GetModifierPrereduceIncomingDamage_Mult</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_REINCARNATION_SUPPRESS_FX</font> <font color='#dcdcaa'>ReincarnateSuppressFX</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_FULLSCREEN_DEATH_FX</font> <font color='#dcdcaa'>GetModifierSuppressFullscreenDeathFX</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TICK_GOLD_MULTIPLIER</font> <font color='#dcdcaa'>GetModifierTickGold_Multiplier</font>
+## Lua Client
+- 🖊️ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>IsDotaAltPressed</font>(): <font color='#c586c0'>bool</font> ~~<font color='#dcdcaa'>IsDotaAltPressed</font>(): <font color='#c586c0'>unknown</font>~~
+- 🖊️ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>IsDotaCtrlPressed</font>(): <font color='#c586c0'>bool</font> ~~<font color='#dcdcaa'>IsDotaCtrlPressed</font>(): <font color='#c586c0'>unknown</font>~~
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>RandomFloatWrapper</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Generate a random floating point number within a range, inclusive
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>Script_RandomFloat</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Get a random float within a range
+- ❌ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>RandomFloat</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font>
+- ✨ API: <font color='#00D6AA'>CDOTAGameManager</font> <font color='#dcdcaa'>GetHeroLocTokenByID</font>(<font color='#569cd6'>int_1</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>string</font> Get the localization token for the given hero ID.
+- 🖊️ API: <font color='#00D6AA'>CDOTA_Modifier_Lua</font> <font color='#dcdcaa'>OnRemoved</font>(<font color='#569cd6'>bDeath</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>OnRemoved</font>(): <font color='#c586c0'>void</font>~~
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC</font> <font color='#dcdcaa'>GetUnitLocToken</font>(): <font color='#c586c0'>string</font> Get the localization token for this unit's name.
+- 🖊️ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>IsDotaAltPressed</font>(): <font color='#c586c0'>bool</font> ~~<font color='#dcdcaa'>IsDotaAltPressed</font>(): <font color='#c586c0'>unknown</font>~~
+- 🖊️ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>IsDotaCtrlPressed</font>(): <font color='#c586c0'>bool</font> ~~<font color='#dcdcaa'>IsDotaCtrlPressed</font>(): <font color='#c586c0'>unknown</font>~~
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>RandomFloatWrapper</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Generate a random floating point number within a range, inclusive
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>Script_RandomFloat</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font> Get a random float within a range
+- ❌ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>RandomFloat</font>(<font color='#569cd6'>float_1</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>float_2</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>float</font>
+- ✨ API: <font color='#00D6AA'>CDOTAGameManager</font> <font color='#dcdcaa'>GetHeroLocTokenByID</font>(<font color='#569cd6'>int_1</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>string</font> Get the localization token for the given hero ID.
+- 🖊️ API: <font color='#00D6AA'>CDOTA_Modifier_Lua</font> <font color='#dcdcaa'>OnRemoved</font>(<font color='#569cd6'>bDeath</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>OnRemoved</font>(): <font color='#c586c0'>void</font>~~
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC</font> <font color='#dcdcaa'>GetUnitLocToken</font>(): <font color='#c586c0'>string</font> Get the localization token for this unit's name.
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_FORCE_PROC_MAGIC_STICK</font> <font color='#dcdcaa'>OnForceProcMagicStick</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FAIL_ATTACK</font> <font color='#dcdcaa'>GetModifierPropetyFailAttack</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST</font> <font color='#dcdcaa'>MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MODEL_SCALE_CONSTANT</font> <font color='#dcdcaa'>GetModifierModelScaleConstant</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MODEL_SCALE_USE_IN_OUT_EASE</font> <font color='#dcdcaa'>GetModifierModelScaleUseInOutEase</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PREREDUCE_INCOMING_DAMAGE_MULT</font> <font color='#dcdcaa'>GetModifierPrereduceIncomingDamage_Mult</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_REINCARNATION_SUPPRESS_FX</font> <font color='#dcdcaa'>ReincarnateSuppressFX</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_FULLSCREEN_DEATH_FX</font> <font color='#dcdcaa'>GetModifierSuppressFullscreenDeathFX</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TICK_GOLD_MULTIPLIER</font> <font color='#dcdcaa'>GetModifierTickGold_Multiplier</font>
+
 # 2023.08.10
 ## Lua Server
 - ✨ API: <font color='#00D6AA'>CDOTABaseGameMode</font> <font color='#dcdcaa'>SetCustomScanMaxCharges</font>(<font color='#569cd6'>iMaxCharges</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> Set a custom max charges for team Scan ability.

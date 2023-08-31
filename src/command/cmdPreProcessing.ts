@@ -12,12 +12,12 @@ export async function preProcessing(context: vscode.ExtensionContext) {
 	// console.log("parseEventDocument");
 	// parsePanelList(context);
 	// console.log("parsePanelList");
-	vsndGenerator(context);
-	console.log("vsndGenerator");
-	parseLuaAPI(context);
-	console.log("parseLuaAPI");
-	parseLuaAPIChangelog(context);
-	console.log("parseLuaAPIChangelog");
+	// vsndGenerator(context);
+	// console.log("vsndGenerator");
+	// parseLuaAPI(context);
+	// console.log("parseLuaAPI");
+	// parseLuaAPIChangelog(context);
+	// console.log("parseLuaAPIChangelog");
 	// rogueItemsGameParse(context);
 	// console.log("parseLuaAPIChangelog");
 }
