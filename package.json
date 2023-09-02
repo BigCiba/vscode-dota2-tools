@@ -611,7 +611,8 @@
 						"localization": false,
 						"kv2js": false,
 						"ability_excel": false,
-						"unit_excel": false
+						"unit_excel": false,
+						"cloud_sheet": false
 					},
 					"properties": {
 						"localization": {
@@ -633,6 +634,11 @@
 							"type": "boolean",
 							"default": false,
 							"description": "监听单行单位excel变更自动生成kv"
+						},
+						"cloud_sheet": {
+							"type": "boolean",
+							"default": false,
+							"description": "监听云表格变更自动生成kv"
 						}
 					},
 					"additionalProperties": false,

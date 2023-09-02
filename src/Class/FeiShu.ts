@@ -179,7 +179,10 @@ export class FeiShu {
 		);
 	}
 	/** 获取元数据 */
-	getMetaData(spreadsheetToken: string[]) {
+	getMetaData(spreadsheetTokenList: string[]) {
+		if (spreadsheetTokenList.length <= 0) {
+			return;
+		}
 		return this.request<MetaDataResponseData>(
 			"POST",
 			URL_LIST.META,
@@ -189,12 +192,12 @@ export class FeiShu {
 					'Authorization': 'Bearer ' + this.tenant_access_token,
 				},
 				data: {
-					request_docs: [
-						{
+					request_docs: spreadsheetTokenList.map((spreadsheetToken) => {
+						return {
 							"docs_token": spreadsheetToken,
 							"docs_type": "sheet"
-						}
-					]
+						};
+					})
 				}
 			}
 		);

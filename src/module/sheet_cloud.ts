@@ -9,12 +9,28 @@ import { localize } from '../utils/localize';
 import { writeKeyValue } from '../utils/kvUtils';
 import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
 import { dirExists } from '../utils/pathUtils';
+import { setInterval } from 'timers';
 
 let sheetCloud: FeiShu;
 let statusBarItem: vscode.StatusBarItem;
+/** 双行文件列表 */
 let compositeFileList: { [kvDir: string]: DocumentFile[]; } = {};
+/** 单行文件列表 */
 let singleFileList: { [kvDir: string]: DocumentFile[]; } = {};
+/** 本地存云文档的ID，省去每次请求 */
 let sheetIDMap: { [spreadsheetToken: string]: string; } = {};
+/** 计时器 */
+let timerID: NodeJS.Timer;
+
+
+/** 检测到更新的列表 */
+let syncList: {
+	composite: { fileData: DocumentFile, kvDir: string; }[],
+	single: { fileData: DocumentFile, kvDir: string; }[],
+} = {
+	composite: [],
+	single: [],
+};
 
 /** 云表格初始化 */
 export async function sheetCloudInit(context: vscode.ExtensionContext) {
@@ -25,12 +41,17 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 		if (success) {
 			await syncCloudFiles();
 			statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -2);
-			statusBarItem.text = '$(sync)';
-			statusBarItem.tooltip = '云配置表: 获取所有表格到本地KV';
+			refreshStatusBar();
 			statusBarItem.show();
 			statusBarItem.command = "dota2tools.fetch_all_sheet";
 		}
 	}
+	if (timerID == undefined) {
+		timerID = setInterval(() => {
+			checkCloundChange();
+		}, 5000);
+	}
+	checkCloundChange();
 
 	//云配置表: 更新文件列表
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.fetch_files", async (data) => {
@@ -42,29 +63,47 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 		if (statusBarItem) {
 			statusBarItem.text = '$(sync~spin)';
 		}
-		// 创建一个空数组，用于存储所有异步任务的 Promise
-		const promises: Promise<void>[] = [];
-		// 遍历技能表
-		for (const kvDir in compositeFileList) {
-			const files = compositeFileList[kvDir];
-			for (const fileData of files) {
-				promises.push(processFileData(fileData, kvDir, abilityCSV2KV));
+		if (syncList.composite.length == 0 && syncList.single.length == 0) {
+			// 创建一个空数组，用于存储所有异步任务的 Promise
+			const promises: Promise<void>[] = [];
+			// 遍历技能表
+			for (const kvDir in compositeFileList) {
+				const files = compositeFileList[kvDir];
+				for (const fileData of files) {
+					promises.push(processFileData(fileData, kvDir, abilityCSV2KV));
+				}
 			}
+			// 遍历单位表
+			for (const kvDir in singleFileList) {
+				const files = singleFileList[kvDir];
+				for (const fileData of files) {
+					promises.push(processFileData(fileData, kvDir, unitCSV2KV));
+				}
+			}
+			// 使用 Promise.all 等待所有异步任务完成
+			Promise.all(promises).then(() => {
+				// 在所有异步任务完成后执行某些操作
+				if (statusBarItem) {
+					statusBarItem.text = '$(sync)';
+				}
+			});
+		} else {
+			const promises: Promise<void>[] = [];
+			for (const data of syncList.composite) {
+				promises.push(processFileData(data.fileData, data.kvDir, abilityCSV2KV));
+			}
+			for (const data of syncList.single) {
+				promises.push(processFileData(data.fileData, data.kvDir, unitCSV2KV));
+			}
+			// 使用 Promise.all 等待所有异步任务完成
+			Promise.all(promises).then(() => {
+				// 在所有异步任务完成后执行某些操作
+				clearSyncList();
+				if (statusBarItem) {
+					statusBarItem.text = '$(sync)';
+				}
+			});
 		}
-		// 遍历单位表
-		for (const kvDir in singleFileList) {
-			const files = singleFileList[kvDir];
-			for (const fileData of files) {
-				promises.push(processFileData(fileData, kvDir, unitCSV2KV));
-			}
-		}
-		// 使用 Promise.all 等待所有异步任务完成
-		Promise.all(promises).then(() => {
-			// 在所有异步任务完成后执行某些操作
-			if (statusBarItem) {
-				statusBarItem.text = '$(sync)';
-			}
-		});
 	}));
 
 	// 获取指定表格到本地
@@ -124,7 +163,7 @@ async function saveCSVToKVDir(csv: string, kvDir: string, fileData: DocumentFile
 		const filePath = path.join(realKvDir, getExtname(fileData.name));
 		fs.writeFileSync(filePath, data);
 		// TODO:会触发监听的文件变更导致生成两次js
-		// fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
+		fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
 	}
 }
 
@@ -272,23 +311,132 @@ function getDocumentFileByToken(target_token: string) {
 		}
 	}
 }
-function checkCloundChange() {
-	const modificationTime = [];
+async function checkCloundChange() {
+	const cloudDocInfo: Record<string, number> = {};
+	const tokenList = [];
+	// 收集token
 	for (const kvDir in compositeFileList) {
-		const realKvDir = getRealKvDir(kvDir);
-		if (realKvDir) {
-			const files = fs.readdirSync(realKvDir);
-			for (const file of files) {
-				const filePath = path.join(realKvDir, file);
-				const stats = fs.statSync(filePath);
-				const modificationTime = stats.mtime;
-				// 在这里添加你的处理逻辑，例如打印或保存文件的修改时间
-				console.log(`文件 ${file} 的修改时间为：${modificationTime}`);
+		const files = compositeFileList[kvDir];
+		for (const fileData of files) {
+			tokenList.push(fileData.token);
+			// cloudDocInfo[fileData.name] = Number(fileData.modified_time);
+		}
+	}
+	for (const kvDir in singleFileList) {
+		const files = singleFileList[kvDir];
+		for (const fileData of files) {
+			tokenList.push(fileData.token);
+			// cloudDocInfo[fileData.name] = Number(fileData.modified_time);
+		}
+	}
+	// 更新元数据
+	const metas = await sheetCloud.getMetaData(tokenList);
+	if (metas) {
+		for (const fileData of metas.data.docs_metas) {
+			cloudDocInfo[fileData.title] = Number(fileData.latest_modify_time);
+		}
+	}
+	// 更新本地储存
+	for (const kvDir in compositeFileList) {
+		for (let index = 0; index < compositeFileList[kvDir].length; index++) {
+			const fileData = compositeFileList[kvDir][index];
+			if (fileData.name == fileData.name && cloudDocInfo[fileData.name]) {
+				compositeFileList[kvDir][index].modified_time = String(cloudDocInfo[fileData.name]);
 			}
 		}
 	}
 	for (const kvDir in singleFileList) {
-		const realKvDir = getRealKvDir(kvDir);
-		// 在这里可以进行类似的操作，遍历文件夹下的文件并获取修改时间
+		for (let index = 0; index < singleFileList[kvDir].length; index++) {
+			const fileData = singleFileList[kvDir][index];
+			if (fileData.name == fileData.name && cloudDocInfo[fileData.name]) {
+				singleFileList[kvDir][index].modified_time = String(cloudDocInfo[fileData.name]);
+			}
+		}
 	}
+
+	let syncNameList = [];
+	clearSyncList();
+	for (const kvDir in compositeFileList) {
+		const files = compositeFileList[kvDir];
+		for (const fileData of files) {
+			const realKvDir = getRealKvDir(kvDir);
+			if (realKvDir) {
+				const filePath = path.join(realKvDir, getExtname(fileData.name));
+				const stats = fs.statSync(filePath);
+				const modificationTime = Math.floor(stats.mtimeMs / 1000);
+				const cloudTime = cloudDocInfo[fileData.name];
+				if (cloudTime != undefined && cloudTime != modificationTime) {
+					syncNameList.push(fileData.name);
+					syncList.composite.push({
+						fileData: fileData, kvDir: kvDir
+					});
+				}
+			}
+		}
+	}
+	for (const kvDir in singleFileList) {
+		const files = singleFileList[kvDir];
+		for (const fileData of files) {
+			const realKvDir = getRealKvDir(kvDir);
+			if (realKvDir) {
+				const filePath = path.join(realKvDir, getExtname(fileData.name));
+				const stats = fs.statSync(filePath);
+				const modificationTime = Math.floor(stats.mtimeMs / 1000);
+				const cloudTime = cloudDocInfo[fileData.name];
+				if (cloudTime != undefined && cloudTime != modificationTime) {
+					syncNameList.push(fileData.name);
+					syncList.single.push({
+						fileData: fileData, kvDir: kvDir
+					});
+				}
+			}
+		}
+	}
+	refreshStatusBar(syncNameList);
+}
+
+function refreshStatusBar(syncNameList?: string[]) {
+	if (syncNameList && syncNameList.length > 0) {
+		const count = syncNameList.length;
+		statusBarItem.text = `$(sync) ${count}↓`;
+		statusBarItem.tooltip = new vscode.MarkdownString(`云配置表: 获取以下kv` + syncNameList.map((name) => { return "\n- " + name; }).join(""));
+		if (getConfiguration()) {
+			syncCloundSheet();
+		}
+	} else {
+		statusBarItem.tooltip = new vscode.MarkdownString(`云配置表: 获取所有表格到本地KV`);
+		statusBarItem.text = '$(sync)';
+	}
+}
+
+function clearSyncList() {
+	syncList = { composite: [], single: [] };
+}
+
+function getConfiguration() {
+	let listenerConfig: ListenerConfig | undefined = vscode.workspace.getConfiguration().get("dota2-tools.A3.listener");
+	if (listenerConfig) {
+		return listenerConfig.cloud_sheet || false;
+	}
+}
+//
+function syncCloundSheet() {
+	if (statusBarItem) {
+		statusBarItem.text = '$(sync~spin)';
+	}
+	const promises: Promise<void>[] = [];
+	for (const data of syncList.composite) {
+		promises.push(processFileData(data.fileData, data.kvDir, abilityCSV2KV));
+	}
+	for (const data of syncList.single) {
+		promises.push(processFileData(data.fileData, data.kvDir, unitCSV2KV));
+	}
+	// 使用 Promise.all 等待所有异步任务完成
+	Promise.all(promises).then(() => {
+		// 在所有异步任务完成后执行某些操作
+		clearSyncList();
+		if (statusBarItem) {
+			statusBarItem.text = '$(sync)';
+		}
+	});
 }

@@ -19,6 +19,8 @@
 	"listenerKV2JSInit": "Listen kv to automatically generate JS",
 	"listenerAbilityExcelInit": "Listen ability excel change",
 	"listenerUnitExcelInit": "Listen unit excel change",
+	"translateInit": "translation services",
+	"sheetCloudInit": "cloud sheet",
 	"cmdExcel2KV": "excel export kv",
 	"generateVPDI": "generate VPDI",
 	"generateFinish": "Done!",

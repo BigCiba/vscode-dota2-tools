@@ -20,6 +20,8 @@
 	"listenerKV2JSInit": "监听kv变更自动生成js",
 	"listenerAbilityExcelInit": "监听技能excel变更",
 	"listenerUnitExcelInit": "监听单位excel变更",
+	"translateInit": "翻译服务",
+	"sheetCloudInit": "云文档",
 	"cmdExcel2KV": "excel导出kv",
 	"generateVPDI": "生成vpdi",
 	"generateFinish": "生成完毕！",

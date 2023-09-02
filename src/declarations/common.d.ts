@@ -43,6 +43,7 @@ declare interface ListenerConfig {
 	kv2js: boolean;
 	ability_excel: boolean;
 	unit_excel: boolean;
+	cloud_sheet: boolean;
 }
 
 declare interface ModuleListConfig {
