@@ -1,15 +1,14 @@
-import * as vscode from 'vscode';
-import * as os from 'os';
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
+import { setInterval } from 'timers';
+import * as vscode from 'vscode';
 import { FeiShu } from '../Class/FeiShu';
+import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
+import { writeKeyValue } from '../utils/kvUtils';
+import { localize } from '../utils/localize';
+import { dirExists } from '../utils/pathUtils';
 import { getContentDir, getGameDir } from './addonInfo';
 import { showStatusBarMessage } from './statusBar';
-import { localize } from '../utils/localize';
-import { writeKeyValue } from '../utils/kvUtils';
-import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
-import { dirExists } from '../utils/pathUtils';
-import { setInterval } from 'timers';
 
 let sheetCloud: FeiShu;
 let statusBarItem: vscode.StatusBarItem;
@@ -404,8 +403,10 @@ function refreshStatusBar(syncNameList?: string[]) {
 			syncCloundSheet();
 		}
 	} else {
-		statusBarItem.tooltip = new vscode.MarkdownString(`云配置表: 获取所有表格到本地KV`);
-		statusBarItem.text = '$(sync)';
+		if(statusBarItem){
+			statusBarItem.tooltip = new vscode.MarkdownString(`云配置表: 获取所有表格到本地KV`);
+			statusBarItem.text = '$(sync)';
+		}
 	}
 }
 

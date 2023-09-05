@@ -1,8 +1,7 @@
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as os from 'os';
-import { getPathInfo } from "./pathUtils";
 import { isNumber } from "./isNumber";
+import { getPathInfo } from "./pathUtils";
 
 // 读取kv2格式为object(兼容kv3)
 export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bOverride: boolean = true): any {
@@ -101,7 +100,7 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 			let substr = kvdata[i];
 			// 跳过转义符
 			if (substr === '\\' && kvdata[i + 1] === '"') {
-				content += substr;
+				content += '"';
 				i++;
 				continue;
 			}
