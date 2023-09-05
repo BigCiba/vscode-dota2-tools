@@ -149,10 +149,18 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 
 					for (const className in classList) {
 						const funList = classList[className];
-						const filterClassName = className.search(new RegExp(msg, 'i')) !== -1 ? true : false;
+						const filterWordList = msg.split(" ");
+						const filterResult = filterWordList.every((word) => {
+							return className.search(new RegExp(word, 'i')) !== -1;
+						});
+						const filterClassName = filterResult;
+						// className.search(new RegExp(msg, 'i')) !== -1 ? true : false;
 						for (let i = 0; i < funList.length; i++) {
 							const funInfo = funList[i];
-							if (funInfo.function.search(new RegExp(msg, 'i')) !== -1 || filterClassName === true) {
+							const funcResult = filterWordList.every((word) => {
+								return funInfo.function.search(new RegExp(word, 'i')) !== -1;
+							});
+							if (funcResult || filterClassName === true) {
 								if (filterClassList[className] === undefined) {
 									filterClassList[className] = [];
 								}
@@ -162,10 +170,24 @@ export class ApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 					}
 					for (const enumName in enumList) {
 						const enumArr = enumList[enumName];
-						const filterEnumName = enumName.search(new RegExp(msg, 'i')) !== -1 ? true : false;
+						const filterWordList = msg.split(" ");
+						const filterResult = filterWordList.every((word) => {
+							return enumName.search(new RegExp(word, 'i')) !== -1;
+						});
+						const filterEnumName = filterResult;
+						// enumName.search(new RegExp(msg, 'i')) !== -1 ? true : false;
 						for (let i = 0; i < enumArr.length; i++) {
 							const enumInfo = enumArr[i];
-							if (enumInfo.name.search(new RegExp(msg, 'i')) !== -1 || (enumInfo.function !== undefined && enumInfo.function.search(new RegExp(msg, 'i')) !== -1) || filterEnumName === true) {
+							const enumResult = filterWordList.every((word) => {
+								return enumInfo.name.search(new RegExp(word, 'i')) !== -1;
+							});
+							const enumFunctionResult = filterWordList.every((word) => {
+								if (enumInfo.function) {
+									return enumInfo.function.search(new RegExp(word, 'i')) !== -1;
+								}
+								return false;
+							});
+							if (enumResult || enumFunctionResult || filterEnumName === true) {
 								if (filterEnumList[enumName] === undefined) {
 									filterEnumList[enumName] = [];
 								}
