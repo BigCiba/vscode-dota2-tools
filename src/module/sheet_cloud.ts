@@ -10,6 +10,7 @@ import { writeKeyValue } from '../utils/kvUtils';
 import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
 import { dirExists } from '../utils/pathUtils';
 import { setInterval } from 'timers';
+import { log } from 'console';
 
 let sheetCloud: FeiShu;
 let statusBarItem: vscode.StatusBarItem;
@@ -131,7 +132,75 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 		});
 	}));
 
+	// 显示分支选项
+	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.sheet_cloud_show_branch", async (data) => {
+		const getBranchOptionItems = () => {
+			return [
+				{
+					label: "$(add) 创建新分支...",
+					alwaysShow: true,
+				},
+				{
+					label: "",
+					kind: vscode.QuickPickItemKind.Separator,
+				},
+				{
+					label: "${git-branch} main",
+				},
+			];
+		};
+		const getBranchFiles = () => {
+			return getFilesQuickPick().map((item) => {
+				item.alwaysShow = true;
+				return item;
+			});
+		};
+		vscode.window.showQuickPick(getBranchOptionItems(), { placeHolder: '选择要签出的云配置表分支' }).then((t) => {
+			if (t && t.alwaysShow) {
+				vscode.window.showInputBox({ placeHolder: `分支名称（按"Enter"以确认或按"Esc"以取消）` }).then((t) => {
+					if (t && t != "") {
+						vscode.window.showQuickPick(getBranchFiles(), { placeHolder: '选择要复制到分支的配置表', canPickMany: true }).then((t) => {
+							console.log(t);
+						});
+					} else {
+						vscode.window.showErrorMessage("分支名称不能为空");
+					}
+				});
+			}
+		});
+		// const quickPick = vscode.window.createQuickPick();
+		// quickPick.canSelectMany = false;
+		// quickPick.ignoreFocusOut = true;
+		// quickPick.placeholder = '选择要签出的云配置表分支';
+		// quickPick.matchOnDescription = true;
+		// quickPick.items = [
+		// 	{
+		// 		label: "$(add) 创建新分支...",
+		// 		alwaysShow: true,
+		// 	},
+		// 	{
+		// 		label: "",
+		// 		kind: vscode.QuickPickItemKind.Separator,
+		// 	},
+		// 	{
+		// 		label: "${git-branch} main",
+		// 	},
+		// ];
 
+		// quickPick.show();
+
+		// quickPick.onDidChangeSelection((t) => {
+		// 	if (t[0].label == "$(add) 创建新分支...") {
+		// 		// quickPick.placeholder = `分支名称（按"Enter"以确认或按"Esc"以取消）`;
+		// 		// quickPick.canSelectMany = true;
+		// 		// quickPick.items = getFilesQuickPick().map((item) => {
+		// item.alwaysShow = true;
+		// 		// 	return item;
+		// 		// });
+		// 		quickPick.dispose();
+		// 	}
+		// });
+	}));
 }
 
 async function processFileData(fileData: DocumentFile, kvDir: string, method: typeof abilityCSV2KV | typeof unitCSV2KV): Promise<void> {

@@ -327,6 +327,10 @@
 			{
 				"command": "dota2tools.fetch_files",
 				"title": "云配置表: 更新文件列表"
+			},
+			{
+				"command": "dota2tools.sheet_cloud_show_branch",
+				"title": "云配置表: 显示分支选项"
 			}
 		],
 		"menus": {
@@ -722,7 +726,8 @@
 					"type": "object",
 					"default": {
 						"App ID": "",
-						"App Secret": ""
+						"App Secret": "",
+						"Branch Folder": ""
 					},
 					"properties": {
 						"App ID": {
@@ -732,6 +737,10 @@
 						"App Secret": {
 							"type": "string",
 							"description": "dota2-tools.A4.secret"
+						},
+						"Branch Folder": {
+							"type": "string",
+							"description": "dota2-tools.A4.branch"
 						}
 					},
 					"additionalProperties": false,

@@ -15,10 +15,13 @@ const URL_LIST = {
 	SHEET: 'https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/:spreadsheetToken/values/:range',
 	/** 获取文件元数据，没有次数限制 */
 	META: 'https://open.feishu.cn/open-apis/suite/docs-api/meta',
+	/** 新建文件夹 */
+	CREATE_FOLDER: 'https://open.feishu.cn/open-apis/drive/v1/files/create_folder',
 };
 export class FeiShu {
 	appid: string;
 	secret: string;
+	branchFolder: string;
 	tenant_access_token: string | undefined;
 	/** 令牌过期时间的时间戳，以秒为单位 */
 	expire: number | undefined;
@@ -26,6 +29,7 @@ export class FeiShu {
 		const config = this.getConfig();
 		this.appid = config["App ID"];
 		this.secret = config["App Secret"];
+		this.branchFolder = config["Branch Folder"];
 	}
 	getConfig() {
 		let config: any = vscode.workspace.getConfiguration().get('dota2-tools.A8.FeiShu');
@@ -198,6 +202,23 @@ export class FeiShu {
 							"docs_type": "sheet"
 						};
 					})
+				}
+			}
+		);
+	}
+	/** 新建文件夹 */
+	createFolder(folderName: string) {
+		return this.request<CreateFolderResponseData>(
+			"POST",
+			URL_LIST.CREATE_FOLDER,
+			{
+				headers: {
+					'Authorization': 'Bearer ' + this.tenant_access_token,
+					'Content-Type': 'application/json; charset=utf-8',
+				},
+				data: {
+					name: folderName,
+					folder_token: this.branchFolder
 				}
 			}
 		);

@@ -196,3 +196,14 @@ interface MetaDataResponseData {
 		}[];
 	};
 }
+
+interface CreateFolderResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	data: {
+		token: string,
+		url: string;
+	};
+}
