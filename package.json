@@ -327,6 +327,18 @@
 			{
 				"command": "dota2tools.fetch_files",
 				"title": "云配置表: 更新文件列表"
+			},
+			{
+				"command": "dota2tools.backup_localization",
+				"title": "生成本地化文本备份"
+			},
+			{
+				"command": "dota2tools.compare_localization",
+				"title": "对比本地化文本备份"
+			},
+			{
+				"command": "dota2tools.import_localization",
+				"title": "导入本地化文本"
 			}
 		],
 		"menus": {

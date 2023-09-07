@@ -1,9 +1,8 @@
-import * as vscode from 'vscode';
-import * as os from 'os';
-import * as path from 'path';
 import * as fs from 'fs';
+import * as os from 'os';
+import * as vscode from 'vscode';
 import { getGameDir, isValidFolder } from '../module/addonInfo';
-import { changeStatusBarState, refreshStatusBarMessage, showStatusBarMessage, StatusBarState } from '../module/statusBar';
+import { StatusBarState, changeStatusBarState, refreshStatusBarMessage, showStatusBarMessage } from '../module/statusBar';
 import { getPathConfiguration } from '../utils/getPathConfiguration';
 
 export async function combineLocalization(languageType: string = "") {
@@ -17,17 +16,21 @@ export async function combineLocalization(languageType: string = "") {
 	const localizationPath = getPathConfiguration("dota2-tools.A5.localization_path");
 	if (localizationPath) {
 		if (languageType !== "") {
-			let language: string = await getLanguageContent(localizationPath, languageType);
-			fs.writeFileSync(gameDir + '/resource/addon_' + languageType + '.txt', language);
-			refreshStatusBarMessage(messageIndex, "[合并文本]：" + localizationPath + '/' + languageType);
+			let language = await getLanguageContent(localizationPath, languageType);
+			if (language != undefined) {
+				fs.writeFileSync(gameDir + '/resource/addon_' + languageType + '.txt', language);
+				refreshStatusBarMessage(messageIndex, "[合并文本]：" + localizationPath + '/' + languageType);
+			}
 		} else {
 			let langFolders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(localizationPath));
 			for (let i: number = 0; i < langFolders.length; i++) {
 				const [folderName, isDirectory] = langFolders[i];
 				if (Number(isDirectory) === vscode.FileType.Directory) {
-					let language: string = await getLanguageContent(localizationPath, folderName);
-					fs.writeFileSync(gameDir + '/resource/addon_' + folderName + '.txt', language);
-					refreshStatusBarMessage(messageIndex, "[合并文本]：" + localizationPath + '/' + folderName);
+					let language = await getLanguageContent(localizationPath, folderName);
+					if (language != undefined) {
+						fs.writeFileSync(gameDir + '/resource/addon_' + folderName + '.txt', language);
+						refreshStatusBarMessage(messageIndex, "[合并文本]：" + localizationPath + '/' + folderName);
+					}
 					// let text_editor: vscode.TextEditor = await vscode.window.showTextDocument(vscode.Uri.file(root_path + '/game/dota_addons/dota_imba/resource/addon_' + folder_name + '.txt'));
 					// text_editor.edit(function (edit_builder) {
 					// 	edit_builder.delete(new vscode.Range(new vscode.Position(0,0),text_editor.document.lineAt(text_editor.document.lineCount - 1).range.end));
@@ -41,6 +44,9 @@ export async function combineLocalization(languageType: string = "") {
 	}
 }
 async function getLanguageContent(localizationPath: string, languageType: string) {
+	if (languageType == "history") {
+		return;
+	}
 	const languagePath: string = localizationPath + '/' + languageType;
 	let language: string = `"lang"
 {
