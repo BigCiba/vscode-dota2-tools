@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "3.1.40",
+	"version": "3.1.41",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -327,6 +327,10 @@
 			{
 				"command": "dota2tools.fetch_files",
 				"title": "云配置表: 更新文件列表"
+			},
+			{
+				"command": "dota2tools.sheet_cloud_show_branch",
+				"title": "云配置表: 显示分支选项"
 			},
 			{
 				"command": "dota2tools.backup_localization",
@@ -734,7 +738,8 @@
 					"type": "object",
 					"default": {
 						"App ID": "",
-						"App Secret": ""
+						"App Secret": "",
+						"Branch Folder": ""
 					},
 					"properties": {
 						"App ID": {
@@ -744,6 +749,10 @@
 						"App Secret": {
 							"type": "string",
 							"description": "dota2-tools.A4.secret"
+						},
+						"Branch Folder": {
+							"type": "string",
+							"description": "dota2-tools.A4.branch"
 						}
 					},
 					"additionalProperties": false,
@@ -762,6 +771,25 @@
 						"type": "string"
 					},
 					"markdownDescription": "普通配置表，一般用来作为单位配置表，每行作为一个数据\n- 左侧为导出的kv路径，右侧为云文件夹的token\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
+				},
+				"dota2-tools.A8.current_branch": {
+					"type": "string",
+					"default": "main",
+					"description": "%dota2-tools.A8.branch%"
+				},
+				"dota2-tools.A8.Branch Composite": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"markdownDescription": "云配置表分支用的，插件会自动设置，不需要配置"
+				},
+				"dota2-tools.A8.Branch Single": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"markdownDescription": "云配置表分支用的，插件会自动设置，不需要配置"
 				},
 				"dota2-tools.addon_path": {
 					"scope": "resource",

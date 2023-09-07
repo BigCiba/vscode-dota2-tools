@@ -14,13 +14,13 @@ export async function request<T>(
 	} = {}
 ): Promise<T | undefined> {
 	try {
-		if (method == "GET") {
-			/** 替换路径参数 */
-			if (requestParams.pathParams) {
-				for (const key in requestParams.pathParams) {
-					url = url.replace(`:${key}`, requestParams.pathParams[key]);
-				}
+		/** 替换路径参数 */
+		if (requestParams.pathParams) {
+			for (const key in requestParams.pathParams) {
+				url = url.replace(`:${key}`, requestParams.pathParams[key]);
 			}
+		}
+		if (method == "GET") {
 			const response = await axios.get(url, {
 				headers: requestParams.headers,
 				params: requestParams.params
