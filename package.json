@@ -760,6 +760,25 @@
 					},
 					"markdownDescription": "普通配置表，一般用来作为单位配置表，每行作为一个数据\n- 左侧为导出的kv路径，右侧为云文件夹的token\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
 				},
+				"dota2-tools.A8.current_branch": {
+					"type": "string",
+					"default": "main",
+					"description": "%dota2-tools.A8.branch%"
+				},
+				"dota2-tools.A8.Branch Composite": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"markdownDescription": "云配置表分支用的，插件会自动设置，不需要配置"
+				},
+				"dota2-tools.A8.Branch Single": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"markdownDescription": "云配置表分支用的，插件会自动设置，不需要配置"
+				},
 				"dota2-tools.addon_path": {
 					"scope": "resource",
 					"type": "object",

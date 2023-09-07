@@ -17,6 +17,8 @@ const URL_LIST = {
 	META: 'https://open.feishu.cn/open-apis/suite/docs-api/meta',
 	/** 新建文件夹 */
 	CREATE_FOLDER: 'https://open.feishu.cn/open-apis/drive/v1/files/create_folder',
+	/** 复制文件 */
+	COPY_FILE: "https://open.feishu.cn/open-apis/drive/v1/files/:file_token/copy"
 };
 export class FeiShu {
 	appid: string;
@@ -207,7 +209,7 @@ export class FeiShu {
 		);
 	}
 	/** 新建文件夹 */
-	createFolder(folderName: string) {
+	createFolder(folderName: string, folderToken: string) {
 		return this.request<CreateFolderResponseData>(
 			"POST",
 			URL_LIST.CREATE_FOLDER,
@@ -218,7 +220,34 @@ export class FeiShu {
 				},
 				data: {
 					name: folderName,
-					folder_token: this.branchFolder
+					folder_token: folderToken
+				}
+			}
+		);
+	}
+	/**
+	 * 复制文件到新位置。
+	 *
+	 * @param {string} fileToken - 要复制的文件的令牌。
+	 * @param {string} newName - 复制文件的新名称。
+	 * @param {string} folderToken - 复制文件到的文件夹的令牌。
+	 */
+	copyFile(fileToken: string, newName: string, folderToken: string) {
+		return this.request<CopyFileResponseData>(
+			"POST",
+			URL_LIST.COPY_FILE,
+			{
+				headers: {
+					'Authorization': 'Bearer ' + this.tenant_access_token,
+					'Content-Type': 'application/json; charset=utf-8',
+				},
+				pathParams: {
+					file_token: fileToken
+				},
+				data: {
+					name: newName,
+					type: "sheet",
+					folder_token: folderToken
 				}
 			}
 		);

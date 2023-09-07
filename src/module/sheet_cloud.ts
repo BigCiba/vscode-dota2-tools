@@ -9,9 +9,11 @@ import { localize } from '../utils/localize';
 import { dirExists } from '../utils/pathUtils';
 import { getContentDir, getGameDir } from './addonInfo';
 import { showStatusBarMessage } from './statusBar';
+import { getRootPath } from '../utils/getRootPath';
 
 let sheetCloud: FeiShu;
 let statusBarItem: vscode.StatusBarItem;
+let branchStatusBarItem: vscode.StatusBarItem;
 /** 双行文件列表 */
 let compositeFileList: { [kvDir: string]: DocumentFile[]; } = {};
 /** 单行文件列表 */
@@ -20,6 +22,8 @@ let singleFileList: { [kvDir: string]: DocumentFile[]; } = {};
 let sheetIDMap: { [spreadsheetToken: string]: string; } = {};
 /** 计时器 */
 let timerID: NodeJS.Timer;
+/** 本地分支缓存，省去每次请求 */
+let branchList: { [name: string]: string; } = {};
 
 
 /** 检测到更新的列表 */
@@ -34,15 +38,21 @@ let syncList: {
 /** 云表格初始化 */
 export async function sheetCloudInit(context: vscode.ExtensionContext) {
 	context.subscriptions.push(statusBarItem);
+	context.subscriptions.push(branchStatusBarItem);
 	if (sheetCloud === undefined) {
 		sheetCloud = new FeiShu();
 		const success = await sheetCloud.getTenantAccessToken();
 		if (success) {
 			await syncCloudFiles();
-			statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -2);
+			await syncBranchList();
+			statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -3);
 			refreshStatusBar();
 			statusBarItem.show();
 			statusBarItem.command = "dota2tools.fetch_all_sheet";
+			branchStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -2);
+			branchStatusBarItem.text = '$(git-branch) ' + getBranch();
+			branchStatusBarItem.command = "dota2tools.sheet_cloud_show_branch";
+			branchStatusBarItem.show();
 		}
 	}
 	if (timerID == undefined) {
@@ -133,7 +143,7 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 	// 显示分支选项
 	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.sheet_cloud_show_branch", async (data) => {
 		const getBranchOptionItems = () => {
-			return [
+			const result: vscode.QuickPickItem[] = [
 				{
 					label: "$(add) 创建新分支...",
 					alwaysShow: true,
@@ -143,9 +153,17 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 					kind: vscode.QuickPickItemKind.Separator,
 				},
 				{
-					label: "${git-branch} main",
-				},
+					label: "$(git-branch) main",
+					description: "主分支"
+				}
 			];
+			for (const branchName in branchList) {
+				result.push({
+					label: "$(git-branch) " + branchName + "(暂时没用)",
+					description: branchList[branchName]
+				});
+			}
+			return result;
 		};
 		const getBranchFiles = () => {
 			return getFilesQuickPick().map((item) => {
@@ -153,51 +171,92 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 				return item;
 			});
 		};
-		vscode.window.showQuickPick(getBranchOptionItems(), { placeHolder: '选择要签出的云配置表分支' }).then((t) => {
+		vscode.window.showQuickPick(getBranchOptionItems(), { placeHolder: '选择要签出的云配置表分支' }).then(async (t) => {
 			if (t && t.alwaysShow) {
 				vscode.window.showInputBox({ placeHolder: `分支名称（按"Enter"以确认或按"Esc"以取消）` }).then((t) => {
 					if (t && t != "") {
-						vscode.window.showQuickPick(getBranchFiles(), { placeHolder: '选择要复制到分支的配置表', canPickMany: true }).then((t) => {
-							console.log(t);
+						const branchName = t;
+						vscode.window.showQuickPick(getBranchFiles(), { placeHolder: '选择要复制到分支的配置表', canPickMany: true }).then(async (t) => {
+							if (t && t.length > 0) {
+								// 切换分支
+								await switchBranch(branchName);
+								// 创建需要的文件夹并复制文件到分支文件夹中
+								const folderList: Record<string, {
+									name: string,
+									token: string,
+									kvDir: string,
+									composite: boolean;
+								}[]> = {};
+								for (const item of t) {
+									if (item.description) {
+										const data = getDocumentFileByToken(item.description);
+										if (data) {
+											const match = data.kvDir.match(/([^\/]+)$/);
+											if (match) {
+												const folderName = match[1];
+												if (folderList[folderName] == undefined) {
+													folderList[folderName] = [];
+												}
+												folderList[folderName].push({
+													name: data.fileData.name,
+													token: item.description,
+													kvDir: data.kvDir,
+													composite: item.label.indexOf("$(run-all)") != -1
+												});
+											}
+										}
+									}
+								}
+								const branchFolderRes = await sheetCloud.createFolder(branchName, sheetCloud.branchFolder);
+								let compositeBranchConfig: Record<string, string> = {};
+								let singleBranchConfig: Record<string, string> = {};
+								if (branchFolderRes && branchFolderRes.code == 0) {
+									// 直接存入本地分支列表
+									branchList[branchName] = branchFolderRes.data.token;
+									// 复制文件
+									for (let folderName in folderList) {
+										const data = folderList[folderName];
+										const folderRes = await sheetCloud.createFolder(folderName, branchFolderRes.data.token);
+										const folderToken = folderRes?.data.token;
+										if (folderToken) {
+											for (const iterator of data) {
+												if (iterator.composite) {
+													if (compositeBranchConfig[iterator.kvDir] == undefined) {
+														compositeBranchConfig[iterator.kvDir] = folderToken;
+													}
+												} else {
+													if (singleBranchConfig[iterator.kvDir] == undefined) {
+														singleBranchConfig[iterator.kvDir] = folderToken;
+													}
+												}
+												await sheetCloud.copyFile(iterator.token, iterator.name, folderToken);
+											}
+										}
+									}
+								}
+								// 修改设置
+								await vscode.workspace.getConfiguration().update("dota2-tools.A8.Branch Composite", compositeBranchConfig, vscode.ConfigurationTarget.Global);
+								await vscode.workspace.getConfiguration().update("dota2-tools.A8.Branch Single", singleBranchConfig, vscode.ConfigurationTarget.Global);
+								await resyncCloudFiles();
+							}
 						});
 					} else {
 						vscode.window.showErrorMessage("分支名称不能为空");
 					}
 				});
+			} else {
+				if (t?.description) {
+					if (t.description == "主分支") {
+						await switchBranch("main");
+						await resyncCloudFiles("main");
+					} else {
+						// const branchName = t.label.replace("$(git-branch) ", "");
+						// await switchBranch(branchName);
+						// await resyncCloudFiles(t.description);
+					}
+				}
 			}
 		});
-		// const quickPick = vscode.window.createQuickPick();
-		// quickPick.canSelectMany = false;
-		// quickPick.ignoreFocusOut = true;
-		// quickPick.placeholder = '选择要签出的云配置表分支';
-		// quickPick.matchOnDescription = true;
-		// quickPick.items = [
-		// 	{
-		// 		label: "$(add) 创建新分支...",
-		// 		alwaysShow: true,
-		// 	},
-		// 	{
-		// 		label: "",
-		// 		kind: vscode.QuickPickItemKind.Separator,
-		// 	},
-		// 	{
-		// 		label: "${git-branch} main",
-		// 	},
-		// ];
-
-		// quickPick.show();
-
-		// quickPick.onDidChangeSelection((t) => {
-		// 	if (t[0].label == "$(add) 创建新分支...") {
-		// 		// quickPick.placeholder = `分支名称（按"Enter"以确认或按"Esc"以取消）`;
-		// 		// quickPick.canSelectMany = true;
-		// 		// quickPick.items = getFilesQuickPick().map((item) => {
-		// item.alwaysShow = true;
-		// 		// 	return item;
-		// 		// });
-		// 		quickPick.dispose();
-		// 	}
-		// });
 	}));
 }
 
@@ -284,12 +343,34 @@ async function syncCloudFiles() {
 		}
 	});
 }
+async function syncBranchList() {
+	await syncAction(async () => {
+		if (sheetCloud) {
+			const folderList = await sheetCloud.getDocumentList(sheetCloud.branchFolder);
+			if (folderList) {
+				for (const folderInfo of folderList) {
+					if (folderInfo.type == "folder") {
+						branchList[folderInfo.name] = folderInfo.token;
+					}
+				}
+			}
+		}
+	});
+}
 
 function getCompositeConfig(): Record<string, string> {
-	return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetComposite', {});
+	if (getBranch() == "main") {
+		return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetComposite', {});
+	} else {
+		return vscode.workspace.getConfiguration().get('dota2-tools.A8.Branch Composite', {});
+	}
 }
 function getSingleConfig(): Record<string, string> {
-	return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetSingle', {});
+	if (getBranch() == "main") {
+		return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetSingle', {});
+	} else {
+		return vscode.workspace.getConfiguration().get('dota2-tools.A8.Branch Single', {});
+	}
 }
 
 function convertToCSV(data: string[][]): string {
@@ -509,3 +590,37 @@ function syncCloundSheet() {
 		}
 	});
 }
+
+/** 切换分支 */
+async function switchBranch(branchName: string) {
+	await vscode.workspace.getConfiguration().update("dota2-tools.A8.current_branch", branchName, vscode.ConfigurationTarget.Global);
+	branchStatusBarItem.text = '$(git-branch) ' + branchName;
+	if (branchName == "main") {
+		await vscode.workspace.getConfiguration().update("dota2-tools.A8.Branch Composite", {}, vscode.ConfigurationTarget.Global);
+		await vscode.workspace.getConfiguration().update("dota2-tools.A8.Branch Single", {}, vscode.ConfigurationTarget.Global);
+	}
+}
+
+/** 重新同步云文件 */
+async function resyncCloudFiles(branchFolderToken?: string) {
+	compositeFileList = {};
+	singleFileList = {};
+	if (branchFolderToken != undefined) {
+		const folderList = await sheetCloud.getDocumentList(branchFolderToken);
+
+	}
+	await syncCloudFiles();
+}
+
+function getBranch() {
+	return vscode.workspace.getConfiguration().get("dota2-tools.A8.current_branch", "main");
+}
+// addGitIgnore();
+// /** 自动把dota2-tools.json加入gitignore */
+// async function addGitIgnore() {
+// 	const rootPath = getRootPath();
+// 	if (rootPath) {
+// 		const stat = await vscode.workspace.fs.stat(vscode.Uri.file(path.join(rootPath, ".gitignore")));
+// 		const stat2 = await vscode.workspace.fs.stat(vscode.Uri.file(path.join(rootPath, ".gitignore2")));
+// 	}
+// }

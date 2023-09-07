@@ -94,7 +94,7 @@ interface DocumentFile {
 	/** 文件标识 */
 	token: string,
 	/** 文件类型 */
-	type: "sheet",
+	type: "sheet" | "folder",
 	/** 在浏览器中查看的链接 */
 	url: string;
 }
@@ -205,5 +205,20 @@ interface CreateFolderResponseData {
 	data: {
 		token: string,
 		url: string;
+	};
+}
+interface CopyFileResponseData {
+	/** 错误码，非 0 取值表示失败 */
+	code: number,
+	/** 错误描述 */
+	msg: string,
+	data: {
+		file: {
+			name: string,
+			parent_token: string,
+			token: string,
+			type: string,
+			url: string;
+		};
 	};
 }
