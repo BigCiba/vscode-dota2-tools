@@ -382,7 +382,10 @@ export function abilityCSV2KV(csv: string): any {
 					}
 					specialCount++;
 				}
-			} else if (key === 'AbilityValues') {
+			} else if (key.indexOf('AbilityValues') != -1) {
+				if (valuesObj[key] == undefined) {
+					valuesObj[key] = {};
+				}
 				if (csvArr[i + 1] !== undefined && csvArr[i + 1] !== "") {
 					let value = csvArr[i + 1][j];
 					// 拆分key
@@ -390,16 +393,16 @@ export function abilityCSV2KV(csv: string): any {
 					// 拆分value
 					let valueArr = value.split("\n");
 					if (keyArr.length <= 1) {
-						abilityValues[keyArr[0]] = valueArr[0];
+						valuesObj[key][keyArr[0]] = valueArr[0];
 					} else {
-						abilityValues[keyArr[0]] = {};
+						valuesObj[key][keyArr[0]] = {};
 						for (let i = 0; i < keyArr.length; i++) {
 							const _key = keyArr[i];
 							const _value = valueArr[i];
 							if (i == 0) {
-								abilityValues[keyArr[0]]["value"] = _value;
+								valuesObj[key][keyArr[0]]["value"] = _value;
 							} else {
-								abilityValues[keyArr[0]][_key] = _value;
+								valuesObj[key][keyArr[0]][_key] = _value;
 							}
 						}
 					}

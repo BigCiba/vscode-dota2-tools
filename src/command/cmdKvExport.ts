@@ -92,7 +92,7 @@ export async function abilityExport(context: vscode.ExtensionContext, uri: vscod
 						}
 						specialCount++;
 					}
-				} else if( abilityKey === "AbilityValues") {//特殊处理AbilityValues
+				} else if (abilityKey.indexOf("AbilityValues") != -1) {//特殊处理AbilityValues
 					let specialCount: number = 1;//记录第几个special值
 					let keys = Object.keys(abilityValue).sort(function (a, b) { return Number(a) - Number(b); });
 					for (let index = 0; index < keys.length; index++) {
@@ -101,17 +101,17 @@ export async function abilityExport(context: vscode.ExtensionContext, uri: vscod
 						let specialValue = '';
 
 						if (typeof specialInfo == "string") {
-							specialName = keys[index]
-							specialValue = specialInfo
+							specialName = keys[index];
+							specialValue = specialInfo;
 						} else if (typeof specialInfo == "object") {
-							specialName = keys[index]
-							specialValue = specialInfo
-							specialValue = specialInfo.value ?? specialInfo.value2 ?? "0"	// v社经常写value2适配一下
+							specialName = keys[index];
+							specialValue = specialInfo;
+							specialValue = specialInfo.value ?? specialInfo.value2 ?? "0";	// v社经常写value2适配一下
 							for (const _specialName in specialInfo) {
 								const _specialValue = specialInfo[_specialName];
 								if (_specialName != "value" && _specialName != "value2") {
-									specialName +='\n' + _specialName
-									specialValue +='\n' + _specialValue
+									specialName += '\n' + _specialName;
+									specialValue += '\n' + _specialValue;
 								}
 							}
 							specialName = '"' + specialName + '"';
@@ -120,9 +120,9 @@ export async function abilityExport(context: vscode.ExtensionContext, uri: vscod
 
 						let counter: number = 0;
 						let hasFind: boolean = false;
-						for (let i = 0; i < csvKey.length; i++) {// 寻找csv里的AbilitySpecial
+						for (let i = 0; i < csvKey.length; i++) {// 寻找csv里的AbilityValues
 							const keyName = csvKey[i];
-							if (keyName === 'AbilityValues') {
+							if (keyName == abilityKey) {
 								counter++;
 								if (counter === specialCount) {
 									normalData[i] = specialName;
@@ -132,7 +132,7 @@ export async function abilityExport(context: vscode.ExtensionContext, uri: vscod
 							}
 						}
 						if (hasFind === false) {//如果csv中的AbilitySpecial值不够则往后加
-							csvKey.push('AbilityValues');
+							csvKey.push(abilityKey);
 							normalData[csvKey.length - 1] = specialName;
 							specialData[csvKey.length - 1] = specialValue;
 						}
