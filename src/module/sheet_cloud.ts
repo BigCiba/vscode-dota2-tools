@@ -327,7 +327,9 @@ async function syncCloudFiles() {
 			}
 			const files = await sheetCloud.getDocumentList(compositeConfig[kvDir]);
 			for (const fileData of files) {
-				compositeFileList[kvDir].push(fileData);
+				if (fileData.type == "sheet") {
+					compositeFileList[kvDir].push(fileData);
+				}
 			}
 		}
 		const singleConfig = getSingleConfig();
@@ -338,7 +340,9 @@ async function syncCloudFiles() {
 			}
 			const files = await sheetCloud.getDocumentList(singleConfig[kvDir]);
 			for (const fileData of files) {
-				singleFileList[kvDir].push(fileData);
+				if (fileData.type == "sheet") {
+					singleFileList[kvDir].push(fileData);
+				}
 			}
 		}
 	});
