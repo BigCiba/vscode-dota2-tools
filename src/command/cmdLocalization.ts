@@ -274,6 +274,7 @@ export async function localizationImportTool() {
 			if (_current.length > 0) {
 				tokens[key] = `"${key}"	"${_current}"`;
 			}
+			continue;
 		}
 		const _backup = backupTokens[key]?.[sLanguage] ?? "";
 		let _import = checkSingleQuotationMark(importData[sLanguage] ?? "");

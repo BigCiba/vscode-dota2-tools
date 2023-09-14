@@ -1,14 +1,12 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
-import { getContentDir, getGameDir } from '../module/addonInfo';
-import { readKeyValueWithBase } from '../utils/kvUtils';
-import { getRootPath } from '../utils/getRootPath';
+import * as path from 'path';
+import * as vscode from 'vscode';
 import { EventManager, EventType } from '../Class/event';
+import { getContentDir, getGameDir } from '../module/addonInfo';
+import { getRootPath } from '../utils/getRootPath';
+import { readKeyValueWithBase } from '../utils/kvUtils';
 import { getPathInfo } from '../utils/pathUtils';
-import { getPathConfiguration } from '../utils/getPathConfiguration';
-import { log } from 'console';
 
 /** 关联kv的脚本路径 */
 let scriptFiles: Table = {};
@@ -71,7 +69,17 @@ export async function kv2luaInit(context: vscode.ExtensionContext) {
 				} else {
 					if (enableConfig) {
 						mkdirp(path.dirname(destPath));
-						fs.writeFileSync(destPath, getLuaScriptSnippet(path.basename(luaPath).replace(extensionName, ''), luaPath, context));
+
+						let nextLine = document.lineAt(new vscode.Position(line.lineNumber + 1, 0));
+						let snippetPath: string | undefined = undefined;
+						if (new RegExp(`"_ScriptTemplate"`).test(nextLine.text)) {
+							let _temp = nextLine.text.split('"')[3];
+							if (_temp != undefined) {
+								snippetPath = `${scriptDir}/scripts/vscripts/${_temp}`;
+							}
+						}
+
+						fs.writeFileSync(destPath, getLuaScriptSnippet(path.basename(luaPath).replace(extensionName, ''), luaPath, context, snippetPath));
 					}
 				}
 			}
@@ -113,11 +121,11 @@ export function getScriptFiles() {
 }
 
 /** 自动生成的技能物品lua文件模板 */
-function getLuaScriptSnippet(filename: string, luaPath: string, context?: vscode.ExtensionContext): string {
+function getLuaScriptSnippet(filename: string, luaPath: string, context?: vscode.ExtensionContext, snippetPath?: string): string {
 	try {
 		const templateConfig: Table = vscode.workspace.getConfiguration().get('dota2-tools.LuaTemplateFiles') as Table;
-		let snippetPath = (filename.indexOf("item_") === -1) ? ((getRootPath() + templateConfig.ability).replace(/\\/g, "/")) : ((getRootPath() + templateConfig.item).replace(/\\/g, "/"));
-		let snippet = fs.readFileSync(snippetPath, "utf-8");
+		snippetPath ??= (filename.indexOf("item_") === -1) ? ((getRootPath() + templateConfig.ability).replace(/\\/g, "/")) : ((getRootPath() + templateConfig.item).replace(/\\/g, "/"));
+		let snippet = fs.readFileSync(snippetPath!, "utf-8");
 		snippet = snippet.replace(/\[filename\]/g, filename);
 		snippet = snippet.replace(/\[path\]/g, luaPath);
 		snippet = snippet.replace(/__filename_replacer__/g, filename);
