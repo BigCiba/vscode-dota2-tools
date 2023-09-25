@@ -515,6 +515,7 @@ export function unitCSV2KV(csv: string): any {
 					block[key] = col;
 				}
 			}
+			return [block, row.length - 1]
 		};
 		for (let j = 1; j < row.length; j++) {
 			const col = row[j];
