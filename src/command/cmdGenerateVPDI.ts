@@ -8,7 +8,7 @@ import { getPathInfo } from "../utils/pathUtils";
 import path = require("path");
 
 interface VPDIConfig {
-	ImagePath: string;
+	ImagePath: string | string[];
 	VPDIPath: string;
 }
 
@@ -18,10 +18,21 @@ export async function generateVPDI(context: ExtensionContext) {
 	if (VPDIConfig == undefined) {
 		return;
 	}
-	const sImageFolder = path.join(contentDir, VPDIConfig.ImagePath);
-	if (await getPathInfo(sImageFolder) === false) {
-		showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("path_no_found") + sImageFolder);
-		return;
+	let sImageFolders: string[] = [];
+	// 允许字符串适配旧版本的配置
+	if (typeof VPDIConfig.ImagePath === "string") {
+		sImageFolders = [VPDIConfig.ImagePath];
+	} else {
+		sImageFolders = VPDIConfig.ImagePath;
+	}
+	sImageFolders = sImageFolders.map((sImageFolder) => path.join(contentDir, sImageFolder));
+
+	for (let i = 0; i < sImageFolders.length; i++) {
+		const sImageFolder = sImageFolders[i];
+		if (await getPathInfo(sImageFolder) === false) {
+			showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("path_no_found") + sImageFolder);
+			return;
+		}
 	}
 
 	changeStatusBarState(StatusBarState.LOADING);
@@ -43,7 +54,10 @@ export async function generateVPDI(context: ExtensionContext) {
 			}
 		});
 	}
-	ReadImagePath(sImageFolder);
+	for (let i = 0; i < sImageFolders.length; i++) {
+		const sImageFolder = sImageFolders[i];
+		ReadImagePath(sImageFolder);
+	}
 
 	const sVPDIPath = path.join(contentDir, VPDIConfig.VPDIPath);
 	fs.writeFileSync(sVPDIPath, writeKeyValue({

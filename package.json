@@ -809,9 +809,7 @@
 				},
 				"dota2-tools.VPDI": {
 					"type": "object",
-					"additionalProperties": {
-						"type": "string"
-					},
+					"additionalProperties": false,
 					"default": {
 						"VPDIPath": "panorama/dynamic_images_auto_generate.vpdi",
 						"ImagePath": "panorama/images/custom_game"
@@ -822,7 +820,7 @@
 							"description": "%dota2-tools.vpdi.path%"
 						},
 						"ImagePath": {
-							"type": "string",
+							"type": "array",
 							"description": "%dota2-tools.vpdi.image_path%"
 						}
 					}
