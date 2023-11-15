@@ -18,21 +18,19 @@
 - lua api支持笔记功能，可写描述与参数的说明以及范例，供自己及他人查看。（修改已有的笔记时请确保自己写的是正确的并且描述不能换行）
 - css文档支持笔记功能，可写描述说明以及范例，供自己及他人查看。（修改已有的笔记时请确保自己写的是正确的并且描述不能换行）
 
-![api_1](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/api_1.png)
+![api_1](./images/welcome/api_1.png)
 
-![api_2](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/api_2.png)
+![api_2](./images/welcome/api_2.png)
 
-![api_3](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/api_3.png)
+![api_3](./images/welcome/api_3.png)
 
-![api_4](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/api_4.png)
+![api_4](./images/welcome/api_4.png)
 
 ### 补全
 
 - lua补全（部分api有注释）、已添加Vector、Qangle、utilsinit.lua、Vlua等。
 - css补全
 - 支持在设置中关闭补全功能
-
-![snippet](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/snippet.png)
 
 ### 图标查看
 
@@ -42,7 +40,8 @@
 - 左键点击复制图标路径
 - 右键点击打开图标源文件（不包括自定义的图标）
 
-![texture](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/texture.png)
+![texture](./images/welcome/ability_icon.png)
+![texture](./images/welcome/ability_icon_3.gif)
 
 ### 饰品查询
 
@@ -50,20 +49,20 @@
 - 支持索引信使模型路径
 - 支持索引饰品编号
 
-![items_game](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/items_game.png)
+![items_game](./images/welcome/items_game.png)
+![items_game](./images/welcome/items_game_5.gif)
 
 ### 音效转换
 
 - 输入音效路径转换可用的事件名
 
-![vsnd](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/vsnd.png)
+![vsnd](./images/welcome/vsnd_picker.png)
+![vsnd](./images/welcome/vsnd_picker_3.gif)
 
 ### 本地化拆分
 
 - 监听本地化文件变化并自动合并，在项目game目录下新建localization\schinese文件夹，插件会将里面的文件自动合并至addon_schinese.txt。english同理。
 - 可在设置中关闭自动合并功能  
-
-![localization](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/localization.png)
 
 ### 划词翻译
 
@@ -76,20 +75,11 @@
 - 需要一个配置文件并在设置中指定该文件
 - 可在设置中关闭自动生成
 
-![kvtojs_1](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/kvtojs_1.png)
-
-![kvtojs_2](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/kvtojs_2.png)
-
-![kvtojs_3](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/kvtojs_3.png)
-
 ### 跳转功能
 
-- 在技能kv按住<kbd>ctrl</kbd>点击`ScriptFile`跳转到lua脚本  ，没有脚本文件的时候会自动创建
+- 在技能kv按住<kbd>ctrl</kbd>点击`ScriptFile`跳转到lua脚本，没有脚本文件的时候会自动创建
 - 在技能lua右键点击转到技能kv可跳转至kv，多个技能在同一个lua脚本中可在技能名上右键跳转至指定技能kv （某些情况下会失效）
-
-![kvtolua](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/kvtolua.png)
-
-![luatokv](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/luatokv.png)
+- 如果是ts项目可以打开设置`#dota2-tools.A6.Kv to lua generate typescript#`
 
 ### Excel转KV
 
@@ -98,34 +88,14 @@
 - excel路径下需要一个csv文件夹保存对应的csv文件（插件实际是将csv转成kv，主要是因为csv可以合并，支持多人合作）
 - 需要配合特定excel使用，该excel打开时会自动读取csv的数据并在保存时会将数据保存至csv，具体可参考[范例](https://github.com/BigCiba/GuardingAthena/tree/master/design/3.kv%E9%85%8D%E7%BD%AE%E8%A1%A8)。
 
-![exceltokv_1](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_1.png)
-
-![exceltokv_2](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_2.png)
-
-![exceltokv_3](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_3.png)
-
 - 每个技能占用两行，第二行预留给AbilitySpecial的值
 - AbilitySpecial为特殊处理，多个AbilitySpecial会自动编号
 - AbilitySpecial中支持多个键值，在单元格中换行即可
 - 支持多层结构，如下图范例所示：使用```Unit1[{]```与```Unit1[}]```将中间列包起来即可，支持嵌套
 - 单位excel仅支持单行
 
-![exceltokv_4](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_4.png)
-
-![exceltokv_5](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_5.png)
-
-![exceltokv_6](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_6.png)
-
-![exceltokv_7](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_7.png)
-
-![exceltokv_8](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_8.png)
-
-![exceltokv_9](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/exceltokv_9.png)
-
 ### KV转CSV
 
 - 在导出的kv文件上右键可以选择导出成设置中对应的csv
 - 配合Excel转KV的功能使用，方便程序直接修改kv
 - 该功能也可以用来将别人的KV转成excel，需要提前配置csv
-
-![kvtoexcel_1](https://raw.githubusercontent.com/BigCiba/vscode-dota2-tools/main/images/README/kvtoexcel_1.png)
