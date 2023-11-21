@@ -162,6 +162,7 @@ function generateCompareCSV(n1: number, n2: number) {
 	const languages = Object.keys(token2.__key_sc).filter(v => v != "key");
 	// 从英语基础上翻译的其他语言
 	const otherLanguage = languages.filter(sLanguage => sLanguage != "schinese" && sLanguage != "english");
+	const needDelete: string[] = [];
 	for (let [key, value] of Object.entries(token_out)) {
 		// 英语以中文为基础，特殊处理
 		const english_state = value["english_state"];
@@ -181,12 +182,16 @@ function generateCompareCSV(n1: number, n2: number) {
 				}
 			}
 		} else {
+			needDelete.push(key);
 			value["english_state"] = "0";
 			for (let sLanguage of otherLanguage) {
 				value[sLanguage + "_state"] = "0";
 			}
 		}
 	}
+	needDelete.forEach(key => {
+		delete token_out[key];
+	});
 	const key_sc: Record<string, string> = { key: "key" };
 	languages.forEach(sLanguage => {
 		key_sc[sLanguage] = sLanguage;
