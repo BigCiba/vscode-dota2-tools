@@ -72,12 +72,12 @@ export function localizationBackup() {
 			let sFileAutoGenerate = path.join(localizationPath, sLanguage, "auto_generate.txt");
 			if (fs.existsSync(sFileAutoGenerate)) {
 				const _tokens = readlocalizationAsKv(sFileAutoGenerate);
-				for (let [key, value] of Object.entries(_tokens)) {
-					allTokens[key] ??= { key };
-					allTokens[key][sLanguage] = value;
-
-					languages.push(sLanguage);
+				for (let key in Object.keys(allTokens)) {
+					if (_tokens[key]) {
+						allTokens[key][sLanguage] = _tokens[key];
+					}
 				}
+				languages.push(sLanguage);
 			}
 		}
 	});
