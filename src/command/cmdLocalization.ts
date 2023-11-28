@@ -72,7 +72,7 @@ export function localizationBackup() {
 			let sFileAutoGenerate = path.join(localizationPath, sLanguage, "auto_generate.txt");
 			if (fs.existsSync(sFileAutoGenerate)) {
 				const _tokens = readlocalizationAsKv(sFileAutoGenerate);
-				for (let key in Object.keys(allTokens)) {
+				for (let key of Object.keys(allTokens)) {
 					if (_tokens[key]) {
 						allTokens[key][sLanguage] = _tokens[key];
 					}
@@ -152,8 +152,11 @@ function generateCompareCSV(n1: number, n2: number) {
 					if (!(v == undefined || v == ""))
 						value_new[sLanguage + "_state"] = "new";
 				} else if (_old != v) {
-					if (!(v == undefined || v == ""))
+					if (!(v == undefined || v == "")) {
 						value_new[sLanguage + "_state"] = "change";
+						if (sLanguage == "schinese")
+							value_new["schinese_old"] = _old;
+					}
 					// else delete
 				}
 			}
@@ -194,6 +197,8 @@ function generateCompareCSV(n1: number, n2: number) {
 	});
 	const key_sc: Record<string, string> = { key: "key" };
 	languages.forEach(sLanguage => {
+		if (sLanguage == "schinese")
+			key_sc[sLanguage + "_old"] = sLanguage + "_old";
 		key_sc[sLanguage] = sLanguage;
 		key_sc[sLanguage + "_state"] = sLanguage + "_state";
 	});
