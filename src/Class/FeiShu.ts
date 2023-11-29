@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import axios, { AxiosResponse } from 'axios';
 import { request } from '../utils/request';
+import * as lark from "@larksuiteoapi/node-sdk";
 
 const URL_LIST = {
 	/** 获取Token */
@@ -27,11 +27,17 @@ export class FeiShu {
 	tenant_access_token: string | undefined;
 	/** 令牌过期时间的时间戳，以秒为单位 */
 	expire: number | undefined;
+	client: lark.Client;
 	constructor() {
 		const config = this.getConfig();
 		this.appid = config["App ID"];
 		this.secret = config["App Secret"];
 		this.branchFolder = config["Branch Folder"];
+		this.client = new lark.Client({
+			appId: this.appid,
+			appSecret: this.secret,
+			disableTokenCache: false
+		});
 	}
 	getConfig() {
 		let config: any = vscode.workspace.getConfiguration().get('dota2-tools.A8.FeiShu');
@@ -124,6 +130,8 @@ export class FeiShu {
 			}
 		);
 		if (files) {
+			console.log(files.data.files);
+
 			return files.data.files;
 		}
 		return [];
@@ -251,5 +259,17 @@ export class FeiShu {
 				}
 			}
 		);
+	}
+
+	/** 导出表格到本地csv */
+	async exportSheetToCsv(spreadsheetToken: string, range: string, path: string) {
+		const res = await this.client.drive.exportTask.create({
+			data: {
+				file_extension: 'csv',
+				token: 'WbcWsyesMhpkLitsvVQceml5nVg',
+				type: 'sheet',
+				sub_id: '0DZLKE',
+			},
+		});
 	}
 }

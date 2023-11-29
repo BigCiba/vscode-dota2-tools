@@ -18,21 +18,29 @@ let branchStatusBarItem: vscode.StatusBarItem;
 let compositeFileList: { [kvDir: string]: DocumentFile[]; } = {};
 /** 单行文件列表 */
 let singleFileList: { [kvDir: string]: DocumentFile[]; } = {};
+/** 云表格到csv */
+let sheetToCsvList: { [kvDir: string]: DocumentFile[]; } = {};
 /** 本地存云文档的ID，省去每次请求 */
 let sheetIDMap: { [spreadsheetToken: string]: string; } = {};
 /** 计时器 */
 let timerID: NodeJS.Timer;
 /** 本地分支缓存，省去每次请求 */
 let branchList: { [name: string]: string; } = {};
+/** 导出任务列表，用来轮询 */
+let exportTaskList: Record<string, { ticket: string, kvDir: string, fileName: string; }> = {};
+/** 轮询计时器 */
+let exportTaskTimerID: NodeJS.Timer;
 
 
 /** 检测到更新的列表 */
 let syncList: {
 	composite: { fileData: DocumentFile, kvDir: string; }[],
 	single: { fileData: DocumentFile, kvDir: string; }[],
+	csv: { fileData: DocumentFile, kvDir: string; }[],
 } = {
 	composite: [],
 	single: [],
+	csv: [],
 };
 
 /** 云表格初始化 */
@@ -59,6 +67,11 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 		timerID = setInterval(() => {
 			checkCloundChange();
 		}, 5000);
+	}
+	if (exportTaskTimerID == undefined) {
+		exportTaskTimerID = setInterval(() => {
+			checkExportTask();
+		}, 3000);
 	}
 	checkCloundChange();
 
@@ -87,6 +100,13 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 				const files = singleFileList[kvDir];
 				for (const fileData of files) {
 					promises.push(processFileData(fileData, kvDir, unitCSV2KV));
+				}
+			}
+			// 遍历csv表
+			for (const kvDir in sheetToCsvList) {
+				const files = sheetToCsvList[kvDir];
+				for (const fileData of files) {
+					promises.push(exportSheetToCsv(fileData, kvDir));
 				}
 			}
 			// 使用 Promise.all 等待所有异步任务完成
@@ -260,6 +280,7 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 	}));
 }
 
+/** 把文件直接导出为kv */
 async function processFileData(fileData: DocumentFile, kvDir: string, method: typeof abilityCSV2KV | typeof unitCSV2KV): Promise<void> {
 	const spreadsheetToken = fileData.token;
 	let sheetID = getSheetID(spreadsheetToken);
@@ -277,6 +298,44 @@ async function processFileData(fileData: DocumentFile, kvDir: string, method: ty
 			const csv = convertToCSV(sheetData.data.valueRange.values);
 			await saveCSVToKVDir(csv, kvDir, fileData, method);
 		}
+	}
+}
+/** 把文件直接导出为csv */
+async function exportSheetToCsv(fileData: DocumentFile, kvDir: string): Promise<void> {
+	console.log("exportSheetToCsv");
+
+	const spreadsheetToken = fileData.token;
+	let sheetID = getSheetID(spreadsheetToken);
+	// 第一次获取就存下来，减少接口请求次数
+	if (sheetID == undefined) {
+		const sheetInfo = await sheetCloud.getSheetMetaInfo(spreadsheetToken);
+		if (sheetInfo) {
+			sheetID = sheetInfo.sheetId;
+			sheetIDMap[spreadsheetToken] = sheetID;
+		}
+	}
+	if (sheetID) {
+		const fileName = fileData.name;
+		console.log("sheetID", sheetID);
+		sheetCloud.client.drive.exportTask.create({
+			data: {
+				file_extension: 'csv',
+				token: spreadsheetToken,
+				type: 'sheet',
+				sub_id: sheetID,
+			},
+		}).then(res => {
+			console.log("exportTask res", res);
+			if (res?.code == 0 && res?.data?.ticket) {
+				console.log("exportTaskList", exportTaskList);
+				exportTaskList[spreadsheetToken] = {
+					ticket: res.data.ticket,
+					kvDir: kvDir,
+					fileName
+				};
+			}
+		});
+
 	}
 }
 
@@ -322,9 +381,7 @@ async function syncCloudFiles() {
 		const compositeConfig = getCompositeConfig();
 		// 遍历配置的技能表
 		for (const kvDir in compositeConfig) {
-			if (compositeFileList[kvDir] == undefined) {
-				compositeFileList[kvDir] = [];
-			}
+			compositeFileList[kvDir] = [];
 			const files = await sheetCloud.getDocumentList(compositeConfig[kvDir]);
 			for (const fileData of files) {
 				if (fileData.type == "sheet") {
@@ -335,13 +392,23 @@ async function syncCloudFiles() {
 		const singleConfig = getSingleConfig();
 		// 遍历配置的单位表
 		for (const kvDir in singleConfig) {
-			if (singleFileList[kvDir] == undefined) {
-				singleFileList[kvDir] = [];
-			}
+			singleFileList[kvDir] = [];
 			const files = await sheetCloud.getDocumentList(singleConfig[kvDir]);
 			for (const fileData of files) {
 				if (fileData.type == "sheet") {
 					singleFileList[kvDir].push(fileData);
+				}
+			}
+		}
+		const sheetToCsvConfig = getSheetToCsvConfig();
+		// 遍历配置的单位表
+		for (const token in sheetToCsvConfig) {
+			const kvDir = sheetToCsvConfig[token];
+			sheetToCsvList[kvDir] = [];
+			const files = await sheetCloud.getDocumentList(token);
+			for (const fileData of files) {
+				if (fileData.type == "sheet") {
+					sheetToCsvList[kvDir].push(fileData);
 				}
 			}
 		}
@@ -375,6 +442,9 @@ function getSingleConfig(): Record<string, string> {
 	} else {
 		return vscode.workspace.getConfiguration().get('dota2-tools.A8.Branch Single', {});
 	}
+}
+function getSheetToCsvConfig(): Record<string, string> {
+	return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetToCsv', {});
 }
 
 function convertToCSV(data: string[][]): string {
@@ -462,7 +532,54 @@ function getDocumentFileByToken(target_token: string) {
 			}
 		}
 	}
+	for (const kvDir in sheetToCsvList) {
+		const files = sheetToCsvList[kvDir];
+		for (const fileData of files) {
+			if (fileData.token == target_token) {
+				return { fileData, kvDir };
+			}
+		}
+	}
 }
+// 轮询exportTaskList
+function checkExportTask() {
+	if (Object.keys(exportTaskList).length > 0) {
+		const tempExportTaskList = { ...exportTaskList };
+		for (const token in tempExportTaskList) {
+			const task = tempExportTaskList[token];
+
+			sheetCloud.client.drive.exportTask.get({
+				path: {
+					ticket: task.ticket,
+				},
+				params: {
+					token: token,
+				},
+			}).then(res => {
+				if (res.code == 0 && res.data?.result?.file_token) {
+					delete exportTaskList[token];
+					sheetCloud.client.drive.exportTask.download({
+						path: {
+							file_token: res.data.result.file_token,
+						},
+					}).then(async res => {
+						const kvDir = task.kvDir;
+						const fileName = task.fileName;
+						const realKvDir = getRealKvDir(kvDir);
+						if (realKvDir) {
+							await dirExists(realKvDir);
+							const filePath = path.join(realKvDir, fileName + ".csv");
+							console.log("filePath", filePath);
+							res.writeFile(filePath);
+						}
+					});
+
+				}
+			});
+		}
+	}
+}
+
 async function checkCloundChange() {
 	const cloudDocInfo: Record<string, number> = {};
 	const tokenList = [];
@@ -476,6 +593,13 @@ async function checkCloundChange() {
 	}
 	for (const kvDir in singleFileList) {
 		const files = singleFileList[kvDir];
+		for (const fileData of files) {
+			tokenList.push(fileData.token);
+			// cloudDocInfo[fileData.name] = Number(fileData.modified_time);
+		}
+	}
+	for (const kvDir in sheetToCsvList) {
+		const files = sheetToCsvList[kvDir];
 		for (const fileData of files) {
 			tokenList.push(fileData.token);
 			// cloudDocInfo[fileData.name] = Number(fileData.modified_time);
@@ -502,6 +626,14 @@ async function checkCloundChange() {
 			const fileData = singleFileList[kvDir][index];
 			if (fileData.name == fileData.name && cloudDocInfo[fileData.name]) {
 				singleFileList[kvDir][index].modified_time = String(cloudDocInfo[fileData.name]);
+			}
+		}
+	}
+	for (const kvDir in sheetToCsvList) {
+		for (let index = 0; index < sheetToCsvList[kvDir].length; index++) {
+			const fileData = sheetToCsvList[kvDir][index];
+			if (fileData.name == fileData.name && cloudDocInfo[fileData.name]) {
+				sheetToCsvList[kvDir][index].modified_time = String(cloudDocInfo[fileData.name]);
 			}
 		}
 	}
@@ -544,6 +676,24 @@ async function checkCloundChange() {
 			}
 		}
 	}
+	for (const kvDir in sheetToCsvList) {
+		const files = sheetToCsvList[kvDir];
+		for (const fileData of files) {
+			const realKvDir = getRealKvDir(kvDir);
+			if (realKvDir) {
+				const filePath = path.join(realKvDir, getExtname(fileData.name));
+				const stats = fs.statSync(filePath);
+				const modificationTime = Math.floor(stats.mtimeMs / 1000);
+				const cloudTime = cloudDocInfo[fileData.name];
+				if (cloudTime != undefined && cloudTime != modificationTime) {
+					syncNameList.push(fileData.name);
+					syncList.csv.push({
+						fileData: fileData, kvDir: kvDir
+					});
+				}
+			}
+		}
+	}
 	refreshStatusBar(syncNameList);
 }
 
@@ -564,7 +714,7 @@ function refreshStatusBar(syncNameList?: string[]) {
 }
 
 function clearSyncList() {
-	syncList = { composite: [], single: [] };
+	syncList = { composite: [], single: [], csv: [] };
 }
 
 function getConfiguration() {
