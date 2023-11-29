@@ -372,6 +372,12 @@ function getRealKvDir(kvDir: string): string | undefined {
 			return undefined;
 		}
 	}
+	const rootPath = getRootPath();
+	if (rootPath) {
+		if (path.isAbsolute(realKvDir) === false) {
+			realKvDir = path.join(rootPath, kvDir);
+		}
+	}
 	return realKvDir;
 }
 
