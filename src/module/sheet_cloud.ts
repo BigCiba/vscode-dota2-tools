@@ -387,7 +387,9 @@ async function syncCloudFiles() {
 		const compositeConfig = getCompositeConfig();
 		// 遍历配置的技能表
 		for (const kvDir in compositeConfig) {
-			compositeFileList[kvDir] = [];
+			if (compositeFileList[kvDir] == undefined) {
+				compositeFileList[kvDir] = [];
+			}
 			const files = await sheetCloud.getDocumentList(compositeConfig[kvDir]);
 			for (const fileData of files) {
 				if (fileData.type == "sheet") {
@@ -398,7 +400,9 @@ async function syncCloudFiles() {
 		const singleConfig = getSingleConfig();
 		// 遍历配置的单位表
 		for (const kvDir in singleConfig) {
-			singleFileList[kvDir] = [];
+			if (singleFileList[kvDir] == undefined) {
+				singleFileList[kvDir] = [];
+			}
 			const files = await sheetCloud.getDocumentList(singleConfig[kvDir]);
 			for (const fileData of files) {
 				if (fileData.type == "sheet") {
@@ -410,7 +414,9 @@ async function syncCloudFiles() {
 		// 遍历配置的单位表
 		for (const token in sheetToCsvConfig) {
 			const kvDir = sheetToCsvConfig[token];
-			sheetToCsvList[kvDir] = [];
+			if (sheetToCsvList[kvDir] == undefined) {
+				sheetToCsvList[kvDir] = [];
+			}
 			const files = await sheetCloud.getDocumentList(token);
 			for (const fileData of files) {
 				if (fileData.type == "sheet") {
