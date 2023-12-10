@@ -54,6 +54,9 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 	}
 
 	refreshDocument() {
+		this.snippets = [];
+		this.snippetsNoParams = [];
+
 		this.document.class_list = this.dotaApiNote.getClassList();
 		this.document.enum_list = this.dotaApiNote.getEnumList();
 		let apiNote = getDotaApiNoteClass().getApiNote();
