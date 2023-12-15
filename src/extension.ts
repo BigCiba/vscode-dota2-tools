@@ -35,6 +35,7 @@ import { vsndPicker } from './command/cmdVsndPicker';
 import { init } from './init';
 import { statusBarItemInit } from './module/statusBar';
 import { localizeInit } from './utils/localize';
+import { kvEditorProvider } from './CustomTextEditorProvider/kvEditorProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -85,8 +86,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.backup_localization', () => localizationBackup()));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.compare_localization', () => localizationCompare()));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.import_localization', () => localizationImportTool()));
-	context.subscriptions.push(vmdlEditorProvider.register(context));
+	// context.subscriptions.push(vmdlEditorProvider.register(context));
 	context.subscriptions.push(lazayboyProvider.register());
+	// context.subscriptions.push(kvEditorProvider.register(context));
 }
 
 export function deactivate() { }

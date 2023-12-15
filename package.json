@@ -18,15 +18,6 @@
 	"contributes": {
 		"customEditors": [
 			{
-				"viewType": "dota2tools.vmdl",
-				"displayName": "VMDL viewer",
-				"selector": [
-					{
-						"filenamePattern": "*.vmdl"
-					}
-				]
-			},
-			{
 				"viewType": "dota2tools.Lazyboy",
 				"displayName": "Lazyboy",
 				"priority": "option",

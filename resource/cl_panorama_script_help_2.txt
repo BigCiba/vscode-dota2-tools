@@ -4822,966 +4822,6 @@
 |}
 
 
-=== DOTAScenePanel ===
-{| class="standard-table" style="width: 100%;"
-! Function
-! Signature
-! Description
-|- 
-| visible
-| <code>DOTAScenePanel.visible( boolean boolean_1 )</code>
-| 
-|- 
-| enabled
-| <code>DOTAScenePanel.enabled( boolean boolean_1 )</code>
-| 
-|- 
-| checked
-| <code>DOTAScenePanel.checked( boolean boolean_1 )</code>
-| 
-|- 
-| defaultfocus
-| <code>DOTAScenePanel.defaultfocus( cstring cstring_1 )</code>
-| 
-|- 
-| inputnamespace
-| <code>DOTAScenePanel.inputnamespace( cstring cstring_1 )</code>
-| 
-|- 
-| hittest
-| <code>DOTAScenePanel.hittest( boolean boolean_1 )</code>
-| 
-|- 
-| hittestchildren
-| <code>DOTAScenePanel.hittestchildren( boolean boolean_1 )</code>
-| 
-|- 
-| tabindex
-| <code>DOTAScenePanel.tabindex( float float_1 )</code>
-| 
-|- 
-| selectionpos_x
-| <code>DOTAScenePanel.selectionpos_x( float float_1 )</code>
-| 
-|- 
-| selectionpos_y
-| <code>DOTAScenePanel.selectionpos_y( float float_1 )</code>
-| 
-|- 
-| type
-| <code>DOTAScenePanel.type()</code>
-| 
-|- 
-| id
-| <code>DOTAScenePanel.id()</code>
-| 
-|- 
-| layoutfile
-| <code>DOTAScenePanel.layoutfile()</code>
-| 
-|- 
-| contentwidth
-| <code>DOTAScenePanel.contentwidth()</code>
-| 
-|- 
-| contentheight
-| <code>DOTAScenePanel.contentheight()</code>
-| 
-|- 
-| desiredlayoutwidth
-| <code>DOTAScenePanel.desiredlayoutwidth()</code>
-| 
-|- 
-| desiredlayoutheight
-| <code>DOTAScenePanel.desiredlayoutheight()</code>
-| 
-|- 
-| actuallayoutwidth
-| <code>DOTAScenePanel.actuallayoutwidth()</code>
-| 
-|- 
-| actuallayoutheight
-| <code>DOTAScenePanel.actuallayoutheight()</code>
-| 
-|- 
-| actualxoffset
-| <code>DOTAScenePanel.actualxoffset()</code>
-| 
-|- 
-| actualyoffset
-| <code>DOTAScenePanel.actualyoffset()</code>
-| 
-|- 
-| scrolloffset_y
-| <code>DOTAScenePanel.scrolloffset_y()</code>
-| 
-|- 
-| scrolloffset_x
-| <code>DOTAScenePanel.scrolloffset_x()</code>
-| 
-|- 
-| actualuiscale_y
-| <code>DOTAScenePanel.actualuiscale_y()</code>
-| 
-|- 
-| actualuiscale_x
-| <code>DOTAScenePanel.actualuiscale_x()</code>
-| 
-|- 
-| style
-| <code>DOTAScenePanel.style()</code>
-| 
-|- 
-| AddClass
-| <code>DOTAScenePanel.AddClass( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveClass
-| <code>DOTAScenePanel.RemoveClass( cstring cstring_1 )</code>
-| 
-|- 
-| BHasClass
-| <code>DOTAScenePanel.BHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| BAscendantHasClass
-| <code>DOTAScenePanel.BAscendantHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| SetHasClass
-| <code>DOTAScenePanel.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>
-| 
-|- 
-| ToggleClass
-| <code>DOTAScenePanel.ToggleClass( cstring cstring_1 )</code>
-| 
-|- 
-| SwitchClass
-| <code>DOTAScenePanel.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| TriggerClass
-| <code>DOTAScenePanel.TriggerClass( cstring cstring_1 )</code>
-| 
-|- 
-| ClearPanelEvent
-| <code>DOTAScenePanel.ClearPanelEvent( cstring cstring_1 )</code>
-| 
-|- 
-| SetDraggable
-| <code>DOTAScenePanel.SetDraggable( boolean boolean_1 )</code>
-| 
-|- 
-| IsDraggable
-| <code>DOTAScenePanel.IsDraggable()</code>
-| 
-|- 
-| IsSizeValid
-| <code>DOTAScenePanel.IsSizeValid()</code>
-| 
-|- 
-| GetChildCount
-| <code>DOTAScenePanel.GetChildCount()</code>
-| 
-|- 
-| GetChild
-| <code>DOTAScenePanel.GetChild( integer integer_1 )</code>
-| 
-|- 
-| GetChildIndex
-| <code>DOTAScenePanel.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| Children
-| <code>DOTAScenePanel.Children()</code>
-| 
-|- 
-| FindChildrenWithClassTraverse
-| <code>DOTAScenePanel.FindChildrenWithClassTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| GetParent
-| <code>DOTAScenePanel.GetParent()</code>
-| 
-|- 
-| SetParent
-| <code>DOTAScenePanel.SetParent( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| FindChild
-| <code>DOTAScenePanel.FindChild( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildTraverse
-| <code>DOTAScenePanel.FindChildTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildInLayoutFile
-| <code>DOTAScenePanel.FindChildInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindPanelInLayoutFile
-| <code>DOTAScenePanel.FindPanelInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindAncestor
-| <code>DOTAScenePanel.FindAncestor( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveAndDeleteChildren
-| <code>DOTAScenePanel.RemoveAndDeleteChildren()</code>
-| 
-|- 
-| MoveChildBefore
-| <code>DOTAScenePanel.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| MoveChildAfter
-| <code>DOTAScenePanel.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| GetPositionWithinWindow
-| <code>DOTAScenePanel.GetPositionWithinWindow()</code>
-| 
-|- 
-| GetPositionWithinAncestor
-| <code>DOTAScenePanel.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| ApplyStyles
-| <code>DOTAScenePanel.ApplyStyles( boolean boolean_1 )</code>
-| 
-|- 
-| ClearPropertyFromCode
-| <code>DOTAScenePanel.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| DeleteAsync
-| <code>DOTAScenePanel.DeleteAsync( float float_1 )</code>
-| 
-|- 
-| BIsTransparent
-| <code>DOTAScenePanel.BIsTransparent()</code>
-| 
-|- 
-| BAcceptsInput
-| <code>DOTAScenePanel.BAcceptsInput()</code>
-| 
-|- 
-| BAcceptsFocus
-| <code>DOTAScenePanel.BAcceptsFocus()</code>
-| 
-|- 
-| SetFocus
-| <code>DOTAScenePanel.SetFocus()</code>
-| 
-|- 
-| UpdateFocusInContext
-| <code>DOTAScenePanel.UpdateFocusInContext()</code>
-| 
-|- 
-| BHasHoverStyle
-| <code>DOTAScenePanel.BHasHoverStyle()</code>
-| 
-|- 
-| SetAcceptsFocus
-| <code>DOTAScenePanel.SetAcceptsFocus( boolean boolean_1 )</code>
-| 
-|- 
-| SetDisableFocusOnMouseDown
-| <code>DOTAScenePanel.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>
-| 
-|- 
-| BHasKeyFocus
-| <code>DOTAScenePanel.BHasKeyFocus()</code>
-| 
-|- 
-| SetScrollParentToFitWhenFocused
-| <code>DOTAScenePanel.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>
-| 
-|- 
-| BScrollParentToFitWhenFocused
-| <code>DOTAScenePanel.BScrollParentToFitWhenFocused()</code>
-| 
-|- 
-| IsSelected
-| <code>DOTAScenePanel.IsSelected()</code>
-| 
-|- 
-| BHasDescendantKeyFocus
-| <code>DOTAScenePanel.BHasDescendantKeyFocus()</code>
-| 
-|- 
-| BLoadLayout
-| <code>DOTAScenePanel.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>
-| 
-|- 
-| BLoadLayoutSnippet
-| <code>DOTAScenePanel.BLoadLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| BHasLayoutSnippet
-| <code>DOTAScenePanel.BHasLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| SetTopOfInputContext
-| <code>DOTAScenePanel.SetTopOfInputContext( boolean boolean_1 )</code>
-| 
-|- 
-| SetDialogVariable
-| <code>DOTAScenePanel.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariableInt
-| <code>DOTAScenePanel.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetDialogVariableTime
-| <code>DOTAScenePanel.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>
-| 
-|- 
-| SetDialogVariableLocString
-| <code>DOTAScenePanel.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariablePluralLocStringInt
-| <code>DOTAScenePanel.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>
-| 
-|- 
-| ScrollToTop
-| <code>DOTAScenePanel.ScrollToTop()</code>
-| 
-|- 
-| ScrollToBottom
-| <code>DOTAScenePanel.ScrollToBottom()</code>
-| 
-|- 
-| ScrollToLeftEdge
-| <code>DOTAScenePanel.ScrollToLeftEdge()</code>
-| 
-|- 
-| ScrollToRightEdge
-| <code>DOTAScenePanel.ScrollToRightEdge()</code>
-| 
-|- 
-| ScrollParentToMakePanelFit
-| <code>DOTAScenePanel.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>
-| 
-|- 
-| ScrollToFitRegion
-| <code>DOTAScenePanel.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>
-| 
-|- 
-| BCanSeeInParentScroll
-| <code>DOTAScenePanel.BCanSeeInParentScroll()</code>
-| 
-|- 
-| GetAttributeInt
-| <code>DOTAScenePanel.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| GetAttributeString
-| <code>DOTAScenePanel.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| GetAttributeUInt32
-| <code>DOTAScenePanel.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetAttributeInt
-| <code>DOTAScenePanel.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetAttributeString
-| <code>DOTAScenePanel.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetAttributeUInt32
-| <code>DOTAScenePanel.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetInputNamespace
-| <code>DOTAScenePanel.SetInputNamespace( cstring cstring_1 )</code>
-| 
-|- 
-| RegisterForReadyEvents
-| <code>DOTAScenePanel.RegisterForReadyEvents( boolean boolean_1 )</code>
-| 
-|- 
-| BReadyForDisplay
-| <code>DOTAScenePanel.BReadyForDisplay()</code>
-| 
-|- 
-| SetReadyForDisplay
-| <code>DOTAScenePanel.SetReadyForDisplay( boolean boolean_1 )</code>
-| 
-|- 
-| SetPositionInPixels
-| <code>DOTAScenePanel.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>
-| 
-|- 
-| Data
-| <code>DOTAScenePanel.Data( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| SetSendScrollPositionChangedEvents
-| <code>DOTAScenePanel.SetSendScrollPositionChangedEvents( boolean boolean_1 )</code>
-| 
-|- 
-| FireEntityInput
-| <code>DOTAScenePanel.FireEntityInput( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| PlayEntitySoundEvent
-| <code>DOTAScenePanel.PlayEntitySoundEvent( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetUnit
-| <code>DOTAScenePanel.SetUnit( cstring cstring_1, cstring cstring_2, boolean boolean_3 )</code>
-| 
-|- 
-| SetAnimgraphParameterOnEntityInt
-| <code>DOTAScenePanel.SetAnimgraphParameterOnEntityInt( cstring cstring_1, cstring cstring_2, integer integer_3 )</code>
-| 
-|- 
-| SetAnimgraphParameterOnEntityFloat
-| <code>DOTAScenePanel.SetAnimgraphParameterOnEntityFloat( cstring cstring_1, cstring cstring_2, float float_3 )</code>
-| 
-|- 
-| SetAnimgraphParameterOnEntityEnum
-| <code>DOTAScenePanel.SetAnimgraphParameterOnEntityEnum( cstring cstring_1, cstring cstring_2, cstring cstring_3 )</code>
-| 
-|- 
-| GetPanoramaSurfacePanel
-| <code>DOTAScenePanel.GetPanoramaSurfacePanel()</code>
-| 
-|- 
-| SetRotateParams
-| <code>DOTAScenePanel.SetRotateParams( float float_1, float float_2, float float_3, float float_4 )</code>
-| 
-|- 
-| ReloadScene
-| <code>DOTAScenePanel.ReloadScene()</code>
-| 
-|- 
-| ClearScene
-| <code>DOTAScenePanel.ClearScene( boolean boolean_1 )</code>
-| 
-|- 
-| SpawnHeroInScenePanelByPlayerSlot
-| <code>DOTAScenePanel.SpawnHeroInScenePanelByPlayerSlot( cstring cstring_1, unknown_variant_type unknown_variant_type_2, cstring cstring_3 )</code>
-| 
-|- 
-| SpawnHeroInScenePanelByHeroId
-| <code>DOTAScenePanel.SpawnHeroInScenePanelByHeroId( integer integer_1, cstring cstring_2, integer integer_3 )</code>
-| 
-|- 
-| SetScenePanelToPlayerHero
-| <code>DOTAScenePanel.SetScenePanelToPlayerHero( cstring cstring_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| SetScenePanelToLocalHero
-| <code>DOTAScenePanel.SetScenePanelToLocalHero( integer integer_1 )</code>
-| 
-|- 
-| ReplaceEconItemSlot
-| <code>DOTAScenePanel.ReplaceEconItemSlot( integer integer_1, integer integer_2, integer integer_3 )</code>
-| 
-|- 
-| SetPostProcessFade
-| <code>DOTAScenePanel.SetPostProcessFade( float float_1 )</code>
-| 
-|- 
-| SetCustomPostProcessMaterial
-| <code>DOTAScenePanel.SetCustomPostProcessMaterial( cstring cstring_1 )</code>
-| 
-|- 
-| SpawnHeroInScenePanelByPlayerSlotWithFullBodyView
-| <code>DOTAScenePanel.SpawnHeroInScenePanelByPlayerSlotWithFullBodyView( cstring cstring_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| LerpToCameraEntity
-| <code>DOTAScenePanel.LerpToCameraEntity( cstring cstring_1, float float_2 )</code>
-| 
-|- 
-| SetPanelEvent
-| <code>DOTAScenePanel.SetPanelEvent( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| RunScriptInPanelContext
-| <code>DOTAScenePanel.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| rememberchildfocus
-| <code>DOTAScenePanel.rememberchildfocus( boolean boolean_1 )</code>
-| 
-|- 
-| paneltype
-| <code>DOTAScenePanel.paneltype()</code>
-| 
-|}
-
-
-=== DOTACCBackgroundSummer2023 ===
-{| class="standard-table" style="width: 100%;"
-! Function
-! Signature
-! Description
-|- 
-| visible
-| <code>DOTACCBackgroundSummer2023.visible( boolean boolean_1 )</code>
-| 
-|- 
-| enabled
-| <code>DOTACCBackgroundSummer2023.enabled( boolean boolean_1 )</code>
-| 
-|- 
-| checked
-| <code>DOTACCBackgroundSummer2023.checked( boolean boolean_1 )</code>
-| 
-|- 
-| defaultfocus
-| <code>DOTACCBackgroundSummer2023.defaultfocus( cstring cstring_1 )</code>
-| 
-|- 
-| inputnamespace
-| <code>DOTACCBackgroundSummer2023.inputnamespace( cstring cstring_1 )</code>
-| 
-|- 
-| hittest
-| <code>DOTACCBackgroundSummer2023.hittest( boolean boolean_1 )</code>
-| 
-|- 
-| hittestchildren
-| <code>DOTACCBackgroundSummer2023.hittestchildren( boolean boolean_1 )</code>
-| 
-|- 
-| tabindex
-| <code>DOTACCBackgroundSummer2023.tabindex( float float_1 )</code>
-| 
-|- 
-| selectionpos_x
-| <code>DOTACCBackgroundSummer2023.selectionpos_x( float float_1 )</code>
-| 
-|- 
-| selectionpos_y
-| <code>DOTACCBackgroundSummer2023.selectionpos_y( float float_1 )</code>
-| 
-|- 
-| type
-| <code>DOTACCBackgroundSummer2023.type()</code>
-| 
-|- 
-| id
-| <code>DOTACCBackgroundSummer2023.id()</code>
-| 
-|- 
-| layoutfile
-| <code>DOTACCBackgroundSummer2023.layoutfile()</code>
-| 
-|- 
-| contentwidth
-| <code>DOTACCBackgroundSummer2023.contentwidth()</code>
-| 
-|- 
-| contentheight
-| <code>DOTACCBackgroundSummer2023.contentheight()</code>
-| 
-|- 
-| desiredlayoutwidth
-| <code>DOTACCBackgroundSummer2023.desiredlayoutwidth()</code>
-| 
-|- 
-| desiredlayoutheight
-| <code>DOTACCBackgroundSummer2023.desiredlayoutheight()</code>
-| 
-|- 
-| actuallayoutwidth
-| <code>DOTACCBackgroundSummer2023.actuallayoutwidth()</code>
-| 
-|- 
-| actuallayoutheight
-| <code>DOTACCBackgroundSummer2023.actuallayoutheight()</code>
-| 
-|- 
-| actualxoffset
-| <code>DOTACCBackgroundSummer2023.actualxoffset()</code>
-| 
-|- 
-| actualyoffset
-| <code>DOTACCBackgroundSummer2023.actualyoffset()</code>
-| 
-|- 
-| scrolloffset_y
-| <code>DOTACCBackgroundSummer2023.scrolloffset_y()</code>
-| 
-|- 
-| scrolloffset_x
-| <code>DOTACCBackgroundSummer2023.scrolloffset_x()</code>
-| 
-|- 
-| actualuiscale_y
-| <code>DOTACCBackgroundSummer2023.actualuiscale_y()</code>
-| 
-|- 
-| actualuiscale_x
-| <code>DOTACCBackgroundSummer2023.actualuiscale_x()</code>
-| 
-|- 
-| style
-| <code>DOTACCBackgroundSummer2023.style()</code>
-| 
-|- 
-| AddClass
-| <code>DOTACCBackgroundSummer2023.AddClass( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveClass
-| <code>DOTACCBackgroundSummer2023.RemoveClass( cstring cstring_1 )</code>
-| 
-|- 
-| BHasClass
-| <code>DOTACCBackgroundSummer2023.BHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| BAscendantHasClass
-| <code>DOTACCBackgroundSummer2023.BAscendantHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| SetHasClass
-| <code>DOTACCBackgroundSummer2023.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>
-| 
-|- 
-| ToggleClass
-| <code>DOTACCBackgroundSummer2023.ToggleClass( cstring cstring_1 )</code>
-| 
-|- 
-| SwitchClass
-| <code>DOTACCBackgroundSummer2023.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| TriggerClass
-| <code>DOTACCBackgroundSummer2023.TriggerClass( cstring cstring_1 )</code>
-| 
-|- 
-| ClearPanelEvent
-| <code>DOTACCBackgroundSummer2023.ClearPanelEvent( cstring cstring_1 )</code>
-| 
-|- 
-| SetDraggable
-| <code>DOTACCBackgroundSummer2023.SetDraggable( boolean boolean_1 )</code>
-| 
-|- 
-| IsDraggable
-| <code>DOTACCBackgroundSummer2023.IsDraggable()</code>
-| 
-|- 
-| IsSizeValid
-| <code>DOTACCBackgroundSummer2023.IsSizeValid()</code>
-| 
-|- 
-| GetChildCount
-| <code>DOTACCBackgroundSummer2023.GetChildCount()</code>
-| 
-|- 
-| GetChild
-| <code>DOTACCBackgroundSummer2023.GetChild( integer integer_1 )</code>
-| 
-|- 
-| GetChildIndex
-| <code>DOTACCBackgroundSummer2023.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| Children
-| <code>DOTACCBackgroundSummer2023.Children()</code>
-| 
-|- 
-| FindChildrenWithClassTraverse
-| <code>DOTACCBackgroundSummer2023.FindChildrenWithClassTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| GetParent
-| <code>DOTACCBackgroundSummer2023.GetParent()</code>
-| 
-|- 
-| SetParent
-| <code>DOTACCBackgroundSummer2023.SetParent( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| FindChild
-| <code>DOTACCBackgroundSummer2023.FindChild( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildTraverse
-| <code>DOTACCBackgroundSummer2023.FindChildTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildInLayoutFile
-| <code>DOTACCBackgroundSummer2023.FindChildInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindPanelInLayoutFile
-| <code>DOTACCBackgroundSummer2023.FindPanelInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindAncestor
-| <code>DOTACCBackgroundSummer2023.FindAncestor( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveAndDeleteChildren
-| <code>DOTACCBackgroundSummer2023.RemoveAndDeleteChildren()</code>
-| 
-|- 
-| MoveChildBefore
-| <code>DOTACCBackgroundSummer2023.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| MoveChildAfter
-| <code>DOTACCBackgroundSummer2023.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| GetPositionWithinWindow
-| <code>DOTACCBackgroundSummer2023.GetPositionWithinWindow()</code>
-| 
-|- 
-| GetPositionWithinAncestor
-| <code>DOTACCBackgroundSummer2023.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| ApplyStyles
-| <code>DOTACCBackgroundSummer2023.ApplyStyles( boolean boolean_1 )</code>
-| 
-|- 
-| ClearPropertyFromCode
-| <code>DOTACCBackgroundSummer2023.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| DeleteAsync
-| <code>DOTACCBackgroundSummer2023.DeleteAsync( float float_1 )</code>
-| 
-|- 
-| BIsTransparent
-| <code>DOTACCBackgroundSummer2023.BIsTransparent()</code>
-| 
-|- 
-| BAcceptsInput
-| <code>DOTACCBackgroundSummer2023.BAcceptsInput()</code>
-| 
-|- 
-| BAcceptsFocus
-| <code>DOTACCBackgroundSummer2023.BAcceptsFocus()</code>
-| 
-|- 
-| SetFocus
-| <code>DOTACCBackgroundSummer2023.SetFocus()</code>
-| 
-|- 
-| UpdateFocusInContext
-| <code>DOTACCBackgroundSummer2023.UpdateFocusInContext()</code>
-| 
-|- 
-| BHasHoverStyle
-| <code>DOTACCBackgroundSummer2023.BHasHoverStyle()</code>
-| 
-|- 
-| SetAcceptsFocus
-| <code>DOTACCBackgroundSummer2023.SetAcceptsFocus( boolean boolean_1 )</code>
-| 
-|- 
-| SetDisableFocusOnMouseDown
-| <code>DOTACCBackgroundSummer2023.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>
-| 
-|- 
-| BHasKeyFocus
-| <code>DOTACCBackgroundSummer2023.BHasKeyFocus()</code>
-| 
-|- 
-| SetScrollParentToFitWhenFocused
-| <code>DOTACCBackgroundSummer2023.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>
-| 
-|- 
-| BScrollParentToFitWhenFocused
-| <code>DOTACCBackgroundSummer2023.BScrollParentToFitWhenFocused()</code>
-| 
-|- 
-| IsSelected
-| <code>DOTACCBackgroundSummer2023.IsSelected()</code>
-| 
-|- 
-| BHasDescendantKeyFocus
-| <code>DOTACCBackgroundSummer2023.BHasDescendantKeyFocus()</code>
-| 
-|- 
-| BLoadLayout
-| <code>DOTACCBackgroundSummer2023.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>
-| 
-|- 
-| BLoadLayoutSnippet
-| <code>DOTACCBackgroundSummer2023.BLoadLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| BHasLayoutSnippet
-| <code>DOTACCBackgroundSummer2023.BHasLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| SetTopOfInputContext
-| <code>DOTACCBackgroundSummer2023.SetTopOfInputContext( boolean boolean_1 )</code>
-| 
-|- 
-| SetDialogVariable
-| <code>DOTACCBackgroundSummer2023.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariableInt
-| <code>DOTACCBackgroundSummer2023.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetDialogVariableTime
-| <code>DOTACCBackgroundSummer2023.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>
-| 
-|- 
-| SetDialogVariableLocString
-| <code>DOTACCBackgroundSummer2023.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariablePluralLocStringInt
-| <code>DOTACCBackgroundSummer2023.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>
-| 
-|- 
-| ScrollToTop
-| <code>DOTACCBackgroundSummer2023.ScrollToTop()</code>
-| 
-|- 
-| ScrollToBottom
-| <code>DOTACCBackgroundSummer2023.ScrollToBottom()</code>
-| 
-|- 
-| ScrollToLeftEdge
-| <code>DOTACCBackgroundSummer2023.ScrollToLeftEdge()</code>
-| 
-|- 
-| ScrollToRightEdge
-| <code>DOTACCBackgroundSummer2023.ScrollToRightEdge()</code>
-| 
-|- 
-| ScrollParentToMakePanelFit
-| <code>DOTACCBackgroundSummer2023.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>
-| 
-|- 
-| ScrollToFitRegion
-| <code>DOTACCBackgroundSummer2023.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>
-| 
-|- 
-| BCanSeeInParentScroll
-| <code>DOTACCBackgroundSummer2023.BCanSeeInParentScroll()</code>
-| 
-|- 
-| GetAttributeInt
-| <code>DOTACCBackgroundSummer2023.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| GetAttributeString
-| <code>DOTACCBackgroundSummer2023.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| GetAttributeUInt32
-| <code>DOTACCBackgroundSummer2023.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetAttributeInt
-| <code>DOTACCBackgroundSummer2023.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetAttributeString
-| <code>DOTACCBackgroundSummer2023.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetAttributeUInt32
-| <code>DOTACCBackgroundSummer2023.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetInputNamespace
-| <code>DOTACCBackgroundSummer2023.SetInputNamespace( cstring cstring_1 )</code>
-| 
-|- 
-| RegisterForReadyEvents
-| <code>DOTACCBackgroundSummer2023.RegisterForReadyEvents( boolean boolean_1 )</code>
-| 
-|- 
-| BReadyForDisplay
-| <code>DOTACCBackgroundSummer2023.BReadyForDisplay()</code>
-| 
-|- 
-| SetReadyForDisplay
-| <code>DOTACCBackgroundSummer2023.SetReadyForDisplay( boolean boolean_1 )</code>
-| 
-|- 
-| SetPositionInPixels
-| <code>DOTACCBackgroundSummer2023.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>
-| 
-|- 
-| Data
-| <code>DOTACCBackgroundSummer2023.Data( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| SetSendScrollPositionChangedEvents
-| <code>DOTACCBackgroundSummer2023.SetSendScrollPositionChangedEvents( boolean boolean_1 )</code>
-| 
-|- 
-| SetLookAtBlendTime
-| <code>DOTACCBackgroundSummer2023.SetLookAtBlendTime( float float_1 )</code>
-| 
-|- 
-| SetLookAtTargetBlendTime
-| <code>DOTACCBackgroundSummer2023.SetLookAtTargetBlendTime( float float_1 )</code>
-| 
-|- 
-| SetLookAtEnabled
-| <code>DOTACCBackgroundSummer2023.SetLookAtEnabled( boolean boolean_1 )</code>
-| 
-|- 
-| IsLookAtEnabled
-| <code>DOTACCBackgroundSummer2023.IsLookAtEnabled()</code>
-| 
-|- 
-| SetLookAtMaxWeight
-| <code>DOTACCBackgroundSummer2023.SetLookAtMaxWeight( float float_1 )</code>
-| 
-|- 
-| SetLookAtMaxEyesWeight
-| <code>DOTACCBackgroundSummer2023.SetLookAtMaxEyesWeight( float float_1 )</code>
-| 
-|- 
-| SetLookAtPlaneDistance
-| <code>DOTACCBackgroundSummer2023.SetLookAtPlaneDistance( float float_1 )</code>
-| 
-|- 
-| ScheduleLookAtTrigger
-| <code>DOTACCBackgroundSummer2023.ScheduleLookAtTrigger( float float_1 )</code>
-| 
-|- 
-| CancelScheduledLookAtTrigger
-| <code>DOTACCBackgroundSummer2023.CancelScheduledLookAtTrigger()</code>
-| 
-|- 
-| SetPanelEvent
-| <code>DOTACCBackgroundSummer2023.SetPanelEvent( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| RunScriptInPanelContext
-| <code>DOTACCBackgroundSummer2023.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| rememberchildfocus
-| <code>DOTACCBackgroundSummer2023.rememberchildfocus( boolean boolean_1 )</code>
-| 
-|- 
-| paneltype
-| <code>DOTACCBackgroundSummer2023.paneltype()</code>
-| 
-|}
-
-
 === DOTALoadingScreen ===
 {| class="standard-table" style="width: 100%;"
 ! Function
@@ -15301,1286 +14341,6 @@
 | 
 |}
 
-
-=== TooltipContents ===
-{| class="standard-table" style="width: 100%;"
-! Function
-! Signature
-! Description
-|- 
-| visible
-| <code>TooltipContents.visible( boolean boolean_1 )</code>
-| 
-|- 
-| enabled
-| <code>TooltipContents.enabled( boolean boolean_1 )</code>
-| 
-|- 
-| checked
-| <code>TooltipContents.checked( boolean boolean_1 )</code>
-| 
-|- 
-| defaultfocus
-| <code>TooltipContents.defaultfocus( cstring cstring_1 )</code>
-| 
-|- 
-| inputnamespace
-| <code>TooltipContents.inputnamespace( cstring cstring_1 )</code>
-| 
-|- 
-| hittest
-| <code>TooltipContents.hittest( boolean boolean_1 )</code>
-| 
-|- 
-| hittestchildren
-| <code>TooltipContents.hittestchildren( boolean boolean_1 )</code>
-| 
-|- 
-| tabindex
-| <code>TooltipContents.tabindex( float float_1 )</code>
-| 
-|- 
-| selectionpos_x
-| <code>TooltipContents.selectionpos_x( float float_1 )</code>
-| 
-|- 
-| selectionpos_y
-| <code>TooltipContents.selectionpos_y( float float_1 )</code>
-| 
-|- 
-| type
-| <code>TooltipContents.type()</code>
-| 
-|- 
-| id
-| <code>TooltipContents.id()</code>
-| 
-|- 
-| layoutfile
-| <code>TooltipContents.layoutfile()</code>
-| 
-|- 
-| contentwidth
-| <code>TooltipContents.contentwidth()</code>
-| 
-|- 
-| contentheight
-| <code>TooltipContents.contentheight()</code>
-| 
-|- 
-| desiredlayoutwidth
-| <code>TooltipContents.desiredlayoutwidth()</code>
-| 
-|- 
-| desiredlayoutheight
-| <code>TooltipContents.desiredlayoutheight()</code>
-| 
-|- 
-| actuallayoutwidth
-| <code>TooltipContents.actuallayoutwidth()</code>
-| 
-|- 
-| actuallayoutheight
-| <code>TooltipContents.actuallayoutheight()</code>
-| 
-|- 
-| actualxoffset
-| <code>TooltipContents.actualxoffset()</code>
-| 
-|- 
-| actualyoffset
-| <code>TooltipContents.actualyoffset()</code>
-| 
-|- 
-| scrolloffset_y
-| <code>TooltipContents.scrolloffset_y()</code>
-| 
-|- 
-| scrolloffset_x
-| <code>TooltipContents.scrolloffset_x()</code>
-| 
-|- 
-| actualuiscale_y
-| <code>TooltipContents.actualuiscale_y()</code>
-| 
-|- 
-| actualuiscale_x
-| <code>TooltipContents.actualuiscale_x()</code>
-| 
-|- 
-| style
-| <code>TooltipContents.style()</code>
-| 
-|- 
-| AddClass
-| <code>TooltipContents.AddClass( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveClass
-| <code>TooltipContents.RemoveClass( cstring cstring_1 )</code>
-| 
-|- 
-| BHasClass
-| <code>TooltipContents.BHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| BAscendantHasClass
-| <code>TooltipContents.BAscendantHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| SetHasClass
-| <code>TooltipContents.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>
-| 
-|- 
-| ToggleClass
-| <code>TooltipContents.ToggleClass( cstring cstring_1 )</code>
-| 
-|- 
-| SwitchClass
-| <code>TooltipContents.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| TriggerClass
-| <code>TooltipContents.TriggerClass( cstring cstring_1 )</code>
-| 
-|- 
-| ClearPanelEvent
-| <code>TooltipContents.ClearPanelEvent( cstring cstring_1 )</code>
-| 
-|- 
-| SetDraggable
-| <code>TooltipContents.SetDraggable( boolean boolean_1 )</code>
-| 
-|- 
-| IsDraggable
-| <code>TooltipContents.IsDraggable()</code>
-| 
-|- 
-| IsSizeValid
-| <code>TooltipContents.IsSizeValid()</code>
-| 
-|- 
-| GetChildCount
-| <code>TooltipContents.GetChildCount()</code>
-| 
-|- 
-| GetChild
-| <code>TooltipContents.GetChild( integer integer_1 )</code>
-| 
-|- 
-| GetChildIndex
-| <code>TooltipContents.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| Children
-| <code>TooltipContents.Children()</code>
-| 
-|- 
-| FindChildrenWithClassTraverse
-| <code>TooltipContents.FindChildrenWithClassTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| GetParent
-| <code>TooltipContents.GetParent()</code>
-| 
-|- 
-| SetParent
-| <code>TooltipContents.SetParent( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| FindChild
-| <code>TooltipContents.FindChild( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildTraverse
-| <code>TooltipContents.FindChildTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildInLayoutFile
-| <code>TooltipContents.FindChildInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindPanelInLayoutFile
-| <code>TooltipContents.FindPanelInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindAncestor
-| <code>TooltipContents.FindAncestor( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveAndDeleteChildren
-| <code>TooltipContents.RemoveAndDeleteChildren()</code>
-| 
-|- 
-| MoveChildBefore
-| <code>TooltipContents.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| MoveChildAfter
-| <code>TooltipContents.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| GetPositionWithinWindow
-| <code>TooltipContents.GetPositionWithinWindow()</code>
-| 
-|- 
-| GetPositionWithinAncestor
-| <code>TooltipContents.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| ApplyStyles
-| <code>TooltipContents.ApplyStyles( boolean boolean_1 )</code>
-| 
-|- 
-| ClearPropertyFromCode
-| <code>TooltipContents.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| DeleteAsync
-| <code>TooltipContents.DeleteAsync( float float_1 )</code>
-| 
-|- 
-| BIsTransparent
-| <code>TooltipContents.BIsTransparent()</code>
-| 
-|- 
-| BAcceptsInput
-| <code>TooltipContents.BAcceptsInput()</code>
-| 
-|- 
-| BAcceptsFocus
-| <code>TooltipContents.BAcceptsFocus()</code>
-| 
-|- 
-| SetFocus
-| <code>TooltipContents.SetFocus()</code>
-| 
-|- 
-| UpdateFocusInContext
-| <code>TooltipContents.UpdateFocusInContext()</code>
-| 
-|- 
-| BHasHoverStyle
-| <code>TooltipContents.BHasHoverStyle()</code>
-| 
-|- 
-| SetAcceptsFocus
-| <code>TooltipContents.SetAcceptsFocus( boolean boolean_1 )</code>
-| 
-|- 
-| SetDisableFocusOnMouseDown
-| <code>TooltipContents.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>
-| 
-|- 
-| BHasKeyFocus
-| <code>TooltipContents.BHasKeyFocus()</code>
-| 
-|- 
-| SetScrollParentToFitWhenFocused
-| <code>TooltipContents.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>
-| 
-|- 
-| BScrollParentToFitWhenFocused
-| <code>TooltipContents.BScrollParentToFitWhenFocused()</code>
-| 
-|- 
-| IsSelected
-| <code>TooltipContents.IsSelected()</code>
-| 
-|- 
-| BHasDescendantKeyFocus
-| <code>TooltipContents.BHasDescendantKeyFocus()</code>
-| 
-|- 
-| BLoadLayout
-| <code>TooltipContents.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>
-| 
-|- 
-| BLoadLayoutSnippet
-| <code>TooltipContents.BLoadLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| BHasLayoutSnippet
-| <code>TooltipContents.BHasLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| SetTopOfInputContext
-| <code>TooltipContents.SetTopOfInputContext( boolean boolean_1 )</code>
-| 
-|- 
-| SetDialogVariable
-| <code>TooltipContents.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariableInt
-| <code>TooltipContents.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetDialogVariableTime
-| <code>TooltipContents.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>
-| 
-|- 
-| SetDialogVariableLocString
-| <code>TooltipContents.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariablePluralLocStringInt
-| <code>TooltipContents.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>
-| 
-|- 
-| ScrollToTop
-| <code>TooltipContents.ScrollToTop()</code>
-| 
-|- 
-| ScrollToBottom
-| <code>TooltipContents.ScrollToBottom()</code>
-| 
-|- 
-| ScrollToLeftEdge
-| <code>TooltipContents.ScrollToLeftEdge()</code>
-| 
-|- 
-| ScrollToRightEdge
-| <code>TooltipContents.ScrollToRightEdge()</code>
-| 
-|- 
-| ScrollParentToMakePanelFit
-| <code>TooltipContents.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>
-| 
-|- 
-| ScrollToFitRegion
-| <code>TooltipContents.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>
-| 
-|- 
-| BCanSeeInParentScroll
-| <code>TooltipContents.BCanSeeInParentScroll()</code>
-| 
-|- 
-| GetAttributeInt
-| <code>TooltipContents.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| GetAttributeString
-| <code>TooltipContents.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| GetAttributeUInt32
-| <code>TooltipContents.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetAttributeInt
-| <code>TooltipContents.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetAttributeString
-| <code>TooltipContents.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetAttributeUInt32
-| <code>TooltipContents.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetInputNamespace
-| <code>TooltipContents.SetInputNamespace( cstring cstring_1 )</code>
-| 
-|- 
-| RegisterForReadyEvents
-| <code>TooltipContents.RegisterForReadyEvents( boolean boolean_1 )</code>
-| 
-|- 
-| BReadyForDisplay
-| <code>TooltipContents.BReadyForDisplay()</code>
-| 
-|- 
-| SetReadyForDisplay
-| <code>TooltipContents.SetReadyForDisplay( boolean boolean_1 )</code>
-| 
-|- 
-| SetPositionInPixels
-| <code>TooltipContents.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>
-| 
-|- 
-| Data
-| <code>TooltipContents.Data( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| SetSendScrollPositionChangedEvents
-| <code>TooltipContents.SetSendScrollPositionChangedEvents( boolean boolean_1 )</code>
-| 
-|- 
-| GetTooltipTarget
-| <code>TooltipContents.GetTooltipTarget()</code>
-| 
-|- 
-| SetPanelEvent
-| <code>TooltipContents.SetPanelEvent( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| RunScriptInPanelContext
-| <code>TooltipContents.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| rememberchildfocus
-| <code>TooltipContents.rememberchildfocus( boolean boolean_1 )</code>
-| 
-|- 
-| paneltype
-| <code>TooltipContents.paneltype()</code>
-| 
-|}
-
-
-=== TooltipCustomLayout ===
-{| class="standard-table" style="width: 100%;"
-! Function
-! Signature
-! Description
-|- 
-| visible
-| <code>TooltipCustomLayout.visible( boolean boolean_1 )</code>
-| 
-|- 
-| enabled
-| <code>TooltipCustomLayout.enabled( boolean boolean_1 )</code>
-| 
-|- 
-| checked
-| <code>TooltipCustomLayout.checked( boolean boolean_1 )</code>
-| 
-|- 
-| defaultfocus
-| <code>TooltipCustomLayout.defaultfocus( cstring cstring_1 )</code>
-| 
-|- 
-| inputnamespace
-| <code>TooltipCustomLayout.inputnamespace( cstring cstring_1 )</code>
-| 
-|- 
-| hittest
-| <code>TooltipCustomLayout.hittest( boolean boolean_1 )</code>
-| 
-|- 
-| hittestchildren
-| <code>TooltipCustomLayout.hittestchildren( boolean boolean_1 )</code>
-| 
-|- 
-| tabindex
-| <code>TooltipCustomLayout.tabindex( float float_1 )</code>
-| 
-|- 
-| selectionpos_x
-| <code>TooltipCustomLayout.selectionpos_x( float float_1 )</code>
-| 
-|- 
-| selectionpos_y
-| <code>TooltipCustomLayout.selectionpos_y( float float_1 )</code>
-| 
-|- 
-| type
-| <code>TooltipCustomLayout.type()</code>
-| 
-|- 
-| id
-| <code>TooltipCustomLayout.id()</code>
-| 
-|- 
-| layoutfile
-| <code>TooltipCustomLayout.layoutfile()</code>
-| 
-|- 
-| contentwidth
-| <code>TooltipCustomLayout.contentwidth()</code>
-| 
-|- 
-| contentheight
-| <code>TooltipCustomLayout.contentheight()</code>
-| 
-|- 
-| desiredlayoutwidth
-| <code>TooltipCustomLayout.desiredlayoutwidth()</code>
-| 
-|- 
-| desiredlayoutheight
-| <code>TooltipCustomLayout.desiredlayoutheight()</code>
-| 
-|- 
-| actuallayoutwidth
-| <code>TooltipCustomLayout.actuallayoutwidth()</code>
-| 
-|- 
-| actuallayoutheight
-| <code>TooltipCustomLayout.actuallayoutheight()</code>
-| 
-|- 
-| actualxoffset
-| <code>TooltipCustomLayout.actualxoffset()</code>
-| 
-|- 
-| actualyoffset
-| <code>TooltipCustomLayout.actualyoffset()</code>
-| 
-|- 
-| scrolloffset_y
-| <code>TooltipCustomLayout.scrolloffset_y()</code>
-| 
-|- 
-| scrolloffset_x
-| <code>TooltipCustomLayout.scrolloffset_x()</code>
-| 
-|- 
-| actualuiscale_y
-| <code>TooltipCustomLayout.actualuiscale_y()</code>
-| 
-|- 
-| actualuiscale_x
-| <code>TooltipCustomLayout.actualuiscale_x()</code>
-| 
-|- 
-| style
-| <code>TooltipCustomLayout.style()</code>
-| 
-|- 
-| AddClass
-| <code>TooltipCustomLayout.AddClass( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveClass
-| <code>TooltipCustomLayout.RemoveClass( cstring cstring_1 )</code>
-| 
-|- 
-| BHasClass
-| <code>TooltipCustomLayout.BHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| BAscendantHasClass
-| <code>TooltipCustomLayout.BAscendantHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| SetHasClass
-| <code>TooltipCustomLayout.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>
-| 
-|- 
-| ToggleClass
-| <code>TooltipCustomLayout.ToggleClass( cstring cstring_1 )</code>
-| 
-|- 
-| SwitchClass
-| <code>TooltipCustomLayout.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| TriggerClass
-| <code>TooltipCustomLayout.TriggerClass( cstring cstring_1 )</code>
-| 
-|- 
-| ClearPanelEvent
-| <code>TooltipCustomLayout.ClearPanelEvent( cstring cstring_1 )</code>
-| 
-|- 
-| SetDraggable
-| <code>TooltipCustomLayout.SetDraggable( boolean boolean_1 )</code>
-| 
-|- 
-| IsDraggable
-| <code>TooltipCustomLayout.IsDraggable()</code>
-| 
-|- 
-| IsSizeValid
-| <code>TooltipCustomLayout.IsSizeValid()</code>
-| 
-|- 
-| GetChildCount
-| <code>TooltipCustomLayout.GetChildCount()</code>
-| 
-|- 
-| GetChild
-| <code>TooltipCustomLayout.GetChild( integer integer_1 )</code>
-| 
-|- 
-| GetChildIndex
-| <code>TooltipCustomLayout.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| Children
-| <code>TooltipCustomLayout.Children()</code>
-| 
-|- 
-| FindChildrenWithClassTraverse
-| <code>TooltipCustomLayout.FindChildrenWithClassTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| GetParent
-| <code>TooltipCustomLayout.GetParent()</code>
-| 
-|- 
-| SetParent
-| <code>TooltipCustomLayout.SetParent( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| FindChild
-| <code>TooltipCustomLayout.FindChild( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildTraverse
-| <code>TooltipCustomLayout.FindChildTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildInLayoutFile
-| <code>TooltipCustomLayout.FindChildInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindPanelInLayoutFile
-| <code>TooltipCustomLayout.FindPanelInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindAncestor
-| <code>TooltipCustomLayout.FindAncestor( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveAndDeleteChildren
-| <code>TooltipCustomLayout.RemoveAndDeleteChildren()</code>
-| 
-|- 
-| MoveChildBefore
-| <code>TooltipCustomLayout.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| MoveChildAfter
-| <code>TooltipCustomLayout.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| GetPositionWithinWindow
-| <code>TooltipCustomLayout.GetPositionWithinWindow()</code>
-| 
-|- 
-| GetPositionWithinAncestor
-| <code>TooltipCustomLayout.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| ApplyStyles
-| <code>TooltipCustomLayout.ApplyStyles( boolean boolean_1 )</code>
-| 
-|- 
-| ClearPropertyFromCode
-| <code>TooltipCustomLayout.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| DeleteAsync
-| <code>TooltipCustomLayout.DeleteAsync( float float_1 )</code>
-| 
-|- 
-| BIsTransparent
-| <code>TooltipCustomLayout.BIsTransparent()</code>
-| 
-|- 
-| BAcceptsInput
-| <code>TooltipCustomLayout.BAcceptsInput()</code>
-| 
-|- 
-| BAcceptsFocus
-| <code>TooltipCustomLayout.BAcceptsFocus()</code>
-| 
-|- 
-| SetFocus
-| <code>TooltipCustomLayout.SetFocus()</code>
-| 
-|- 
-| UpdateFocusInContext
-| <code>TooltipCustomLayout.UpdateFocusInContext()</code>
-| 
-|- 
-| BHasHoverStyle
-| <code>TooltipCustomLayout.BHasHoverStyle()</code>
-| 
-|- 
-| SetAcceptsFocus
-| <code>TooltipCustomLayout.SetAcceptsFocus( boolean boolean_1 )</code>
-| 
-|- 
-| SetDisableFocusOnMouseDown
-| <code>TooltipCustomLayout.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>
-| 
-|- 
-| BHasKeyFocus
-| <code>TooltipCustomLayout.BHasKeyFocus()</code>
-| 
-|- 
-| SetScrollParentToFitWhenFocused
-| <code>TooltipCustomLayout.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>
-| 
-|- 
-| BScrollParentToFitWhenFocused
-| <code>TooltipCustomLayout.BScrollParentToFitWhenFocused()</code>
-| 
-|- 
-| IsSelected
-| <code>TooltipCustomLayout.IsSelected()</code>
-| 
-|- 
-| BHasDescendantKeyFocus
-| <code>TooltipCustomLayout.BHasDescendantKeyFocus()</code>
-| 
-|- 
-| BLoadLayout
-| <code>TooltipCustomLayout.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>
-| 
-|- 
-| BLoadLayoutSnippet
-| <code>TooltipCustomLayout.BLoadLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| BHasLayoutSnippet
-| <code>TooltipCustomLayout.BHasLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| SetTopOfInputContext
-| <code>TooltipCustomLayout.SetTopOfInputContext( boolean boolean_1 )</code>
-| 
-|- 
-| SetDialogVariable
-| <code>TooltipCustomLayout.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariableInt
-| <code>TooltipCustomLayout.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetDialogVariableTime
-| <code>TooltipCustomLayout.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>
-| 
-|- 
-| SetDialogVariableLocString
-| <code>TooltipCustomLayout.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariablePluralLocStringInt
-| <code>TooltipCustomLayout.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>
-| 
-|- 
-| ScrollToTop
-| <code>TooltipCustomLayout.ScrollToTop()</code>
-| 
-|- 
-| ScrollToBottom
-| <code>TooltipCustomLayout.ScrollToBottom()</code>
-| 
-|- 
-| ScrollToLeftEdge
-| <code>TooltipCustomLayout.ScrollToLeftEdge()</code>
-| 
-|- 
-| ScrollToRightEdge
-| <code>TooltipCustomLayout.ScrollToRightEdge()</code>
-| 
-|- 
-| ScrollParentToMakePanelFit
-| <code>TooltipCustomLayout.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>
-| 
-|- 
-| ScrollToFitRegion
-| <code>TooltipCustomLayout.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>
-| 
-|- 
-| BCanSeeInParentScroll
-| <code>TooltipCustomLayout.BCanSeeInParentScroll()</code>
-| 
-|- 
-| GetAttributeInt
-| <code>TooltipCustomLayout.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| GetAttributeString
-| <code>TooltipCustomLayout.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| GetAttributeUInt32
-| <code>TooltipCustomLayout.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetAttributeInt
-| <code>TooltipCustomLayout.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetAttributeString
-| <code>TooltipCustomLayout.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetAttributeUInt32
-| <code>TooltipCustomLayout.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetInputNamespace
-| <code>TooltipCustomLayout.SetInputNamespace( cstring cstring_1 )</code>
-| 
-|- 
-| RegisterForReadyEvents
-| <code>TooltipCustomLayout.RegisterForReadyEvents( boolean boolean_1 )</code>
-| 
-|- 
-| BReadyForDisplay
-| <code>TooltipCustomLayout.BReadyForDisplay()</code>
-| 
-|- 
-| SetReadyForDisplay
-| <code>TooltipCustomLayout.SetReadyForDisplay( boolean boolean_1 )</code>
-| 
-|- 
-| SetPositionInPixels
-| <code>TooltipCustomLayout.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>
-| 
-|- 
-| Data
-| <code>TooltipCustomLayout.Data( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| SetSendScrollPositionChangedEvents
-| <code>TooltipCustomLayout.SetSendScrollPositionChangedEvents( boolean boolean_1 )</code>
-| 
-|- 
-| GetTooltipTarget
-| <code>TooltipCustomLayout.GetTooltipTarget()</code>
-| 
-|- 
-| SetPanelEvent
-| <code>TooltipCustomLayout.SetPanelEvent( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| RunScriptInPanelContext
-| <code>TooltipCustomLayout.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| rememberchildfocus
-| <code>TooltipCustomLayout.rememberchildfocus( boolean boolean_1 )</code>
-| 
-|- 
-| paneltype
-| <code>TooltipCustomLayout.paneltype()</code>
-| 
-|}
-
-
-=== DOTATooltipManager ===
-{| class="standard-table" style="width: 100%;"
-! Function
-! Signature
-! Description
-|- 
-| visible
-| <code>DOTATooltipManager.visible( boolean boolean_1 )</code>
-| 
-|- 
-| enabled
-| <code>DOTATooltipManager.enabled( boolean boolean_1 )</code>
-| 
-|- 
-| checked
-| <code>DOTATooltipManager.checked( boolean boolean_1 )</code>
-| 
-|- 
-| defaultfocus
-| <code>DOTATooltipManager.defaultfocus( cstring cstring_1 )</code>
-| 
-|- 
-| inputnamespace
-| <code>DOTATooltipManager.inputnamespace( cstring cstring_1 )</code>
-| 
-|- 
-| hittest
-| <code>DOTATooltipManager.hittest( boolean boolean_1 )</code>
-| 
-|- 
-| hittestchildren
-| <code>DOTATooltipManager.hittestchildren( boolean boolean_1 )</code>
-| 
-|- 
-| tabindex
-| <code>DOTATooltipManager.tabindex( float float_1 )</code>
-| 
-|- 
-| selectionpos_x
-| <code>DOTATooltipManager.selectionpos_x( float float_1 )</code>
-| 
-|- 
-| selectionpos_y
-| <code>DOTATooltipManager.selectionpos_y( float float_1 )</code>
-| 
-|- 
-| type
-| <code>DOTATooltipManager.type()</code>
-| 
-|- 
-| id
-| <code>DOTATooltipManager.id()</code>
-| 
-|- 
-| layoutfile
-| <code>DOTATooltipManager.layoutfile()</code>
-| 
-|- 
-| contentwidth
-| <code>DOTATooltipManager.contentwidth()</code>
-| 
-|- 
-| contentheight
-| <code>DOTATooltipManager.contentheight()</code>
-| 
-|- 
-| desiredlayoutwidth
-| <code>DOTATooltipManager.desiredlayoutwidth()</code>
-| 
-|- 
-| desiredlayoutheight
-| <code>DOTATooltipManager.desiredlayoutheight()</code>
-| 
-|- 
-| actuallayoutwidth
-| <code>DOTATooltipManager.actuallayoutwidth()</code>
-| 
-|- 
-| actuallayoutheight
-| <code>DOTATooltipManager.actuallayoutheight()</code>
-| 
-|- 
-| actualxoffset
-| <code>DOTATooltipManager.actualxoffset()</code>
-| 
-|- 
-| actualyoffset
-| <code>DOTATooltipManager.actualyoffset()</code>
-| 
-|- 
-| scrolloffset_y
-| <code>DOTATooltipManager.scrolloffset_y()</code>
-| 
-|- 
-| scrolloffset_x
-| <code>DOTATooltipManager.scrolloffset_x()</code>
-| 
-|- 
-| actualuiscale_y
-| <code>DOTATooltipManager.actualuiscale_y()</code>
-| 
-|- 
-| actualuiscale_x
-| <code>DOTATooltipManager.actualuiscale_x()</code>
-| 
-|- 
-| style
-| <code>DOTATooltipManager.style()</code>
-| 
-|- 
-| AddClass
-| <code>DOTATooltipManager.AddClass( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveClass
-| <code>DOTATooltipManager.RemoveClass( cstring cstring_1 )</code>
-| 
-|- 
-| BHasClass
-| <code>DOTATooltipManager.BHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| BAscendantHasClass
-| <code>DOTATooltipManager.BAscendantHasClass( cstring cstring_1 )</code>
-| 
-|- 
-| SetHasClass
-| <code>DOTATooltipManager.SetHasClass( cstring cstring_1, boolean boolean_2 )</code>
-| 
-|- 
-| ToggleClass
-| <code>DOTATooltipManager.ToggleClass( cstring cstring_1 )</code>
-| 
-|- 
-| SwitchClass
-| <code>DOTATooltipManager.SwitchClass( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| TriggerClass
-| <code>DOTATooltipManager.TriggerClass( cstring cstring_1 )</code>
-| 
-|- 
-| ClearPanelEvent
-| <code>DOTATooltipManager.ClearPanelEvent( cstring cstring_1 )</code>
-| 
-|- 
-| SetDraggable
-| <code>DOTATooltipManager.SetDraggable( boolean boolean_1 )</code>
-| 
-|- 
-| IsDraggable
-| <code>DOTATooltipManager.IsDraggable()</code>
-| 
-|- 
-| IsSizeValid
-| <code>DOTATooltipManager.IsSizeValid()</code>
-| 
-|- 
-| GetChildCount
-| <code>DOTATooltipManager.GetChildCount()</code>
-| 
-|- 
-| GetChild
-| <code>DOTATooltipManager.GetChild( integer integer_1 )</code>
-| 
-|- 
-| GetChildIndex
-| <code>DOTATooltipManager.GetChildIndex( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| Children
-| <code>DOTATooltipManager.Children()</code>
-| 
-|- 
-| FindChildrenWithClassTraverse
-| <code>DOTATooltipManager.FindChildrenWithClassTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| GetParent
-| <code>DOTATooltipManager.GetParent()</code>
-| 
-|- 
-| SetParent
-| <code>DOTATooltipManager.SetParent( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| FindChild
-| <code>DOTATooltipManager.FindChild( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildTraverse
-| <code>DOTATooltipManager.FindChildTraverse( cstring cstring_1 )</code>
-| 
-|- 
-| FindChildInLayoutFile
-| <code>DOTATooltipManager.FindChildInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindPanelInLayoutFile
-| <code>DOTATooltipManager.FindPanelInLayoutFile( cstring cstring_1 )</code>
-| 
-|- 
-| FindAncestor
-| <code>DOTATooltipManager.FindAncestor( cstring cstring_1 )</code>
-| 
-|- 
-| RemoveAndDeleteChildren
-| <code>DOTATooltipManager.RemoveAndDeleteChildren()</code>
-| 
-|- 
-| MoveChildBefore
-| <code>DOTATooltipManager.MoveChildBefore( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| MoveChildAfter
-| <code>DOTATooltipManager.MoveChildAfter( unknown_variant_type unknown_variant_type_1, unknown_variant_type unknown_variant_type_2 )</code>
-| 
-|- 
-| GetPositionWithinWindow
-| <code>DOTATooltipManager.GetPositionWithinWindow()</code>
-| 
-|- 
-| GetPositionWithinAncestor
-| <code>DOTATooltipManager.GetPositionWithinAncestor( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| ApplyStyles
-| <code>DOTATooltipManager.ApplyStyles( boolean boolean_1 )</code>
-| 
-|- 
-| ClearPropertyFromCode
-| <code>DOTATooltipManager.ClearPropertyFromCode( unknown_variant_type unknown_variant_type_1 )</code>
-| 
-|- 
-| DeleteAsync
-| <code>DOTATooltipManager.DeleteAsync( float float_1 )</code>
-| 
-|- 
-| BIsTransparent
-| <code>DOTATooltipManager.BIsTransparent()</code>
-| 
-|- 
-| BAcceptsInput
-| <code>DOTATooltipManager.BAcceptsInput()</code>
-| 
-|- 
-| BAcceptsFocus
-| <code>DOTATooltipManager.BAcceptsFocus()</code>
-| 
-|- 
-| SetFocus
-| <code>DOTATooltipManager.SetFocus()</code>
-| 
-|- 
-| UpdateFocusInContext
-| <code>DOTATooltipManager.UpdateFocusInContext()</code>
-| 
-|- 
-| BHasHoverStyle
-| <code>DOTATooltipManager.BHasHoverStyle()</code>
-| 
-|- 
-| SetAcceptsFocus
-| <code>DOTATooltipManager.SetAcceptsFocus( boolean boolean_1 )</code>
-| 
-|- 
-| SetDisableFocusOnMouseDown
-| <code>DOTATooltipManager.SetDisableFocusOnMouseDown( boolean boolean_1 )</code>
-| 
-|- 
-| BHasKeyFocus
-| <code>DOTATooltipManager.BHasKeyFocus()</code>
-| 
-|- 
-| SetScrollParentToFitWhenFocused
-| <code>DOTATooltipManager.SetScrollParentToFitWhenFocused( boolean boolean_1 )</code>
-| 
-|- 
-| BScrollParentToFitWhenFocused
-| <code>DOTATooltipManager.BScrollParentToFitWhenFocused()</code>
-| 
-|- 
-| IsSelected
-| <code>DOTATooltipManager.IsSelected()</code>
-| 
-|- 
-| BHasDescendantKeyFocus
-| <code>DOTATooltipManager.BHasDescendantKeyFocus()</code>
-| 
-|- 
-| BLoadLayout
-| <code>DOTATooltipManager.BLoadLayout( cstring cstring_1, boolean boolean_2, boolean boolean_3 )</code>
-| 
-|- 
-| BLoadLayoutSnippet
-| <code>DOTATooltipManager.BLoadLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| BHasLayoutSnippet
-| <code>DOTATooltipManager.BHasLayoutSnippet( cstring cstring_1 )</code>
-| 
-|- 
-| SetTopOfInputContext
-| <code>DOTATooltipManager.SetTopOfInputContext( boolean boolean_1 )</code>
-| 
-|- 
-| SetDialogVariable
-| <code>DOTATooltipManager.SetDialogVariable( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariableInt
-| <code>DOTATooltipManager.SetDialogVariableInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetDialogVariableTime
-| <code>DOTATooltipManager.SetDialogVariableTime( cstring cstring_1, int64 int64_2 )</code>
-| 
-|- 
-| SetDialogVariableLocString
-| <code>DOTATooltipManager.SetDialogVariableLocString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetDialogVariablePluralLocStringInt
-| <code>DOTATooltipManager.SetDialogVariablePluralLocStringInt( cstring cstring_1, cstring cstring_2, int64 int64_3 )</code>
-| 
-|- 
-| ScrollToTop
-| <code>DOTATooltipManager.ScrollToTop()</code>
-| 
-|- 
-| ScrollToBottom
-| <code>DOTATooltipManager.ScrollToBottom()</code>
-| 
-|- 
-| ScrollToLeftEdge
-| <code>DOTATooltipManager.ScrollToLeftEdge()</code>
-| 
-|- 
-| ScrollToRightEdge
-| <code>DOTATooltipManager.ScrollToRightEdge()</code>
-| 
-|- 
-| ScrollParentToMakePanelFit
-| <code>DOTATooltipManager.ScrollParentToMakePanelFit( unknown_variant_type unknown_variant_type_1, boolean boolean_2 )</code>
-| 
-|- 
-| ScrollToFitRegion
-| <code>DOTATooltipManager.ScrollToFitRegion( float float_1, float float_2, float float_3, float float_4, unknown_variant_type unknown_variant_type_5, boolean boolean_6, boolean boolean_7 )</code>
-| 
-|- 
-| BCanSeeInParentScroll
-| <code>DOTATooltipManager.BCanSeeInParentScroll()</code>
-| 
-|- 
-| GetAttributeInt
-| <code>DOTATooltipManager.GetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| GetAttributeString
-| <code>DOTATooltipManager.GetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| GetAttributeUInt32
-| <code>DOTATooltipManager.GetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetAttributeInt
-| <code>DOTATooltipManager.SetAttributeInt( cstring cstring_1, integer integer_2 )</code>
-| 
-|- 
-| SetAttributeString
-| <code>DOTATooltipManager.SetAttributeString( cstring cstring_1, cstring cstring_2 )</code>
-| 
-|- 
-| SetAttributeUInt32
-| <code>DOTATooltipManager.SetAttributeUInt32( cstring cstring_1, unsigned unsigned_2 )</code>
-| 
-|- 
-| SetInputNamespace
-| <code>DOTATooltipManager.SetInputNamespace( cstring cstring_1 )</code>
-| 
-|- 
-| RegisterForReadyEvents
-| <code>DOTATooltipManager.RegisterForReadyEvents( boolean boolean_1 )</code>
-| 
-|- 
-| BReadyForDisplay
-| <code>DOTATooltipManager.BReadyForDisplay()</code>
-| 
-|- 
-| SetReadyForDisplay
-| <code>DOTATooltipManager.SetReadyForDisplay( boolean boolean_1 )</code>
-| 
-|- 
-| SetPositionInPixels
-| <code>DOTATooltipManager.SetPositionInPixels( float float_1, float float_2, float float_3 )</code>
-| 
-|- 
-| Data
-| <code>DOTATooltipManager.Data( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| SetSendScrollPositionChangedEvents
-| <code>DOTATooltipManager.SetSendScrollPositionChangedEvents( boolean boolean_1 )</code>
-| 
-|- 
-| SetPanelEvent
-| <code>DOTATooltipManager.SetPanelEvent( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| RunScriptInPanelContext
-| <code>DOTATooltipManager.RunScriptInPanelContext( js_raw_args js_raw_args_1 )</code>
-| 
-|- 
-| rememberchildfocus
-| <code>DOTATooltipManager.rememberchildfocus( boolean boolean_1 )</code>
-| 
-|- 
-| paneltype
-| <code>DOTATooltipManager.paneltype()</code>
-| 
-|}
-
 === SteamUGCQuery ===
 {| class="standard-table" style="width: 100%;"
 ! Enumerator
@@ -18311,6 +16071,10 @@
 |-
 | DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_ALT_CASTABLE
 | 1099511627776
+| 
+|-
+| DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_BREAK_DISABLES
+| 2199023255552
 | 
 |}
 
@@ -20388,844 +18152,868 @@
 | 76
 | GetModifierPhysicalArmorBonusPost
 |-
-| modifierfunction.MODIFIER_PROPERTY_IGNORE_PHYSICAL_ARMOR
+| modifierfunction.MODIFIER_PROPERTY_MIN_PHYSICAL_ARMOR
 | 77
+| GetModifierMinPhysicalArmor
+|-
+| modifierfunction.MODIFIER_PROPERTY_IGNORE_PHYSICAL_ARMOR
+| 78
 | GetModifierIgnorePhysicalArmor
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BASE_REDUCTION
-| 78
+| 79
 | GetModifierMagicalResistanceBaseReduction
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DIRECT_MODIFICATION
-| 79
+| 80
 | GetModifierMagicalResistanceDirectModification
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS
-| 80
+| 81
 | GetModifierMagicalResistanceBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_ILLUSIONS
-| 81
+| 82
 | GetModifierMagicalResistanceBonusIllusions
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_UNIQUE
-| 82
+| 83
 | GetModifierMagicalResistanceBonusUnique
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE
-| 83
+| 84
 | GetModifierMagicalResistanceDecrepifyUnique
 |-
 | modifierfunction.MODIFIER_PROPERTY_BASE_MANA_REGEN
-| 84
+| 85
 | GetModifierBaseRegen
 |-
 | modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_CONSTANT
-| 85
+| 86
 | GetModifierConstantManaRegen
 |-
 | modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_CONSTANT_UNIQUE
-| 86
+| 87
 | GetModifierConstantManaRegenUnique
 |-
 | modifierfunction.MODIFIER_PROPERTY_MANA_REGEN_TOTAL_PERCENTAGE
-| 87
+| 88
 | GetModifierTotalPercentageManaRegen
 |-
 | modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT
-| 88
+| 89
 | GetModifierConstantHealthRegen
 |-
 | modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE
-| 89
+| 90
 | GetModifierHealthRegenPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE_UNIQUE
-| 90
+| 91
 | GetModifierHealthRegenPercentageUnique
 |-
 | modifierfunction.MODIFIER_PROPERTY_HEALTH_BONUS
-| 91
+| 92
 | GetModifierHealthBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_MANA_BONUS
-| 92
+| 93
 | GetModifierManaBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_EXTRA_STRENGTH_BONUS
-| 93
+| 94
 | GetModifierExtraStrengthBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_EXTRA_HEALTH_BONUS
-| 94
+| 95
 | GetModifierExtraHealthBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_BONUS
-| 95
+| 96
 | GetModifierExtraManaBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_BONUS_PERCENTAGE
-| 96
+| 97
 | GetModifierExtraManaBonusPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_EXTRA_HEALTH_PERCENTAGE
-| 97
+| 98
 | GetModifierExtraHealthPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_EXTRA_MANA_PERCENTAGE
-| 98
+| 99
 | GetModifierExtraManaPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_STATS_STRENGTH_BONUS
-| 99
+| 100
 | GetModifierBonusStats_Strength
 |-
 | modifierfunction.MODIFIER_PROPERTY_STATS_AGILITY_BONUS
-| 100
+| 101
 | GetModifierBonusStats_Agility
 |-
 | modifierfunction.MODIFIER_PROPERTY_STATS_INTELLECT_BONUS
-| 101
+| 102
 | GetModifierBonusStats_Intellect
 |-
 | modifierfunction.MODIFIER_PROPERTY_STATS_STRENGTH_BONUS_PERCENTAGE
-| 102
+| 103
 | GetModifierBonusStats_Strength_Percentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_STATS_AGILITY_BONUS_PERCENTAGE
-| 103
+| 104
 | GetModifierBonusStats_Agility_Percentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_STATS_INTELLECT_BONUS_PERCENTAGE
-| 104
+| 105
 | GetModifierBonusStats_Intellect_Percentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS
-| 105
+| 106
 | GetModifierCastRangeBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_PERCENTAGE
-| 106
+| 107
 | GetModifierCastRangeBonusPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_TARGET
-| 107
+| 108
 | GetModifierCastRangeBonusTarget
 |-
 | modifierfunction.MODIFIER_PROPERTY_CAST_RANGE_BONUS_STACKING
-| 108
+| 109
 | GetModifierCastRangeBonusStacking
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BASE_OVERRIDE
-| 109
+| 110
 | GetModifierAttackRangeOverride
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS
-| 110
+| 111
 | GetModifierAttackRangeBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_UNIQUE
-| 111
+| 112
 | GetModifierAttackRangeBonusUnique
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_PERCENTAGE
-| 112
+| 113
 | GetModifierAttackRangeBonusPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAX_ATTACK_RANGE
-| 113
+| 114
 | GetModifierMaxAttackRange
 |-
 | modifierfunction.MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS
-| 114
+| 115
 | GetModifierProjectileSpeedBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS_PERCENTAGE
-| 115
+| 116
 | GetModifierProjectileSpeedBonusPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_PROJECTILE_NAME
-| 116
+| 117
 | GetModifierProjectileName
 |-
 | modifierfunction.MODIFIER_PROPERTY_REINCARNATION
-| 117
+| 118
 | ReincarnateTime
 |-
 | modifierfunction.MODIFIER_PROPERTY_REINCARNATION_SUPPRESS_FX
-| 118
+| 119
 | ReincarnateSuppressFX
 |-
 | modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME
-| 119
+| 120
 | GetModifierConstantRespawnTime
 |-
 | modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME_PERCENTAGE
-| 120
+| 121
 | GetModifierPercentageRespawnTime
 |-
 | modifierfunction.MODIFIER_PROPERTY_RESPAWNTIME_STACKING
-| 121
+| 122
 | GetModifierStackingRespawnTime
 |-
 | modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE
-| 122
+| 123
 | GetModifierPercentageCooldown
 |-
 | modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_ONGOING
-| 123
+| 124
 | GetModifierPercentageCooldownOngoing
 |-
 | modifierfunction.MODIFIER_PROPERTY_CASTTIME_PERCENTAGE
-| 124
+| 125
 | GetModifierPercentageCasttime
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACK_ANIM_TIME_PERCENTAGE
-| 125
+| 126
 | GetModifierPercentageAttackAnimTime
 |-
 | modifierfunction.MODIFIER_PROPERTY_MANACOST_PERCENTAGE
-| 126
+| 127
 | GetModifierPercentageManacost
 |-
 | modifierfunction.MODIFIER_PROPERTY_MANACOST_PERCENTAGE_STACKING
-| 127
+| 128
 | GetModifierPercentageManacostStacking
 |-
 | modifierfunction.MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE
-| 128
+| 129
 | GetModifierPercentageHealthcost
 |-
 | modifierfunction.MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE_STACKING
-| 129
+| 130
 | GetModifierPercentageHealthcostStacking
 |-
 | modifierfunction.MODIFIER_PROPERTY_DEATHGOLDCOST
-| 130
+| 131
 | GetModifierConstantDeathGoldCost
 |-
 | modifierfunction.MODIFIER_PROPERTY_EXP_RATE_BOOST
-| 131
+| 132
 | GetModifierPercentageExpRateBoost
 |-
 | modifierfunction.MODIFIER_PROPERTY_GOLD_RATE_BOOST
-| 132
+| 133
 | GetModifierPercentageGoldRateBoost
 |-
 | modifierfunction.MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE
-| 133
+| 134
 | GetModifierPreAttack_CriticalStrike
 |-
 | modifierfunction.MODIFIER_PROPERTY_PREATTACK_TARGET_CRITICALSTRIKE
-| 134
+| 135
 | GetModifierPreAttack_Target_CriticalStrike
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAGICAL_CONSTANT_BLOCK
-| 135
+| 136
 | GetModifierMagical_ConstantBlock
 |-
 | modifierfunction.MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK
-| 136
+| 137
 | GetModifierPhysical_ConstantBlock
 |-
 | modifierfunction.MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK_SPECIAL
-| 137
+| 138
 | GetModifierPhysical_ConstantBlockSpecial
 |-
 | modifierfunction.MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_UNAVOIDABLE_PRE_ARMOR
-| 138
+| 139
 | GetModifierPhysical_ConstantBlockUnavoidablePreArmor
 |-
 | modifierfunction.MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK
-| 139
+| 140
 | GetModifierTotal_ConstantBlock
 |-
 | modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION
-| 140
+| 141
 | GetOverrideAnimation
 |-
 | modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION_WEIGHT
-| 141
+| 142
 | GetOverrideAnimationWeight
 |-
 | modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE
-| 142
+| 143
 | GetOverrideAnimationRate
 |-
 | modifierfunction.MODIFIER_PROPERTY_ABSORB_SPELL
-| 143
+| 144
 | GetAbsorbSpell
 |-
 | modifierfunction.MODIFIER_PROPERTY_REFLECT_SPELL
-| 144
+| 145
 | GetReflectSpell
 |-
 | modifierfunction.MODIFIER_PROPERTY_DISABLE_AUTOATTACK
-| 145
+| 146
 | GetDisableAutoAttack
 |-
 | modifierfunction.MODIFIER_PROPERTY_BONUS_DAY_VISION
-| 146
+| 147
 | GetBonusDayVision
 |-
+| modifierfunction.MODIFIER_PROPERTY_BONUS_DAY_VISION_PERCENTAGE
+| 148
+| GetBonusDayVisionPercentage
+|-
 | modifierfunction.MODIFIER_PROPERTY_BONUS_NIGHT_VISION
-| 147
+| 149
 | GetBonusNightVision
 |-
 | modifierfunction.MODIFIER_PROPERTY_BONUS_NIGHT_VISION_UNIQUE
-| 148
+| 150
 | GetBonusNightVisionUnique
 |-
 | modifierfunction.MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE
-| 149
+| 151
 | GetBonusVisionPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_FIXED_DAY_VISION
-| 150
+| 152
 | GetFixedDayVision
 |-
 | modifierfunction.MODIFIER_PROPERTY_FIXED_NIGHT_VISION
-| 151
+| 153
 | GetFixedNightVision
 |-
 | modifierfunction.MODIFIER_PROPERTY_MIN_HEALTH
-| 152
+| 154
 | GetMinHealth
 |-
 | modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL
-| 153
+| 155
 | GetAbsoluteNoDamagePhysical
 |-
 | modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL
-| 154
+| 156
 | GetAbsoluteNoDamageMagical
 |-
 | modifierfunction.MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE
-| 155
+| 157
 | GetAbsoluteNoDamagePure
 |-
 | modifierfunction.MODIFIER_PROPERTY_IS_ILLUSION
-| 156
+| 158
 | GetIsIllusion
 |-
 | modifierfunction.MODIFIER_PROPERTY_ILLUSION_LABEL
-| 157
+| 159
 | GetModifierIllusionLabel
 |-
 | modifierfunction.MODIFIER_PROPERTY_STRONG_ILLUSION
-| 158
+| 160
 | GetModifierStrongIllusion
 |-
 | modifierfunction.MODIFIER_PROPERTY_SUPER_ILLUSION
-| 159
+| 161
 | GetModifierSuperIllusion
 |-
 | modifierfunction.MODIFIER_PROPERTY_SUPER_ILLUSION_WITH_ULTIMATE
-| 160
+| 162
 | GetModifierSuperIllusionWithUltimate
 |-
 | modifierfunction.MODIFIER_PROPERTY_XP_DURING_DEATH
-| 161
+| 163
 | GetModifierXPDuringDeath
 |-
 | modifierfunction.MODIFIER_PROPERTY_TURN_RATE_PERCENTAGE
-| 162
+| 164
 | GetModifierTurnRate_Percentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_TURN_RATE_OVERRIDE
-| 163
+| 165
 | GetModifierTurnRate_Override
 |-
 | modifierfunction.MODIFIER_PROPERTY_DISABLE_HEALING
-| 164
+| 166
 | GetDisableHealing
 |-
 | modifierfunction.MODIFIER_PROPERTY_ALWAYS_ALLOW_ATTACK
-| 165
+| 167
 | GetAlwaysAllowAttack
 |-
 | modifierfunction.MODIFIER_PROPERTY_ALWAYS_ETHEREAL_ATTACK
-| 166
+| 168
 | GetAllowEtherealAttack
 |-
 | modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ATTACK_MAGICAL
-| 167
+| 169
 | GetOverrideAttackMagical
 |-
 | modifierfunction.MODIFIER_PROPERTY_UNIT_STATS_NEEDS_REFRESH
-| 168
+| 170
 | GetModifierUnitStatsNeedsRefresh
 |-
 | modifierfunction.MODIFIER_PROPERTY_BOUNTY_CREEP_MULTIPLIER
-| 169
+| 171
 | Unused
 |-
 | modifierfunction.MODIFIER_PROPERTY_BOUNTY_OTHER_MULTIPLIER
-| 170
+| 172
 | Unused
 |-
 | modifierfunction.MODIFIER_PROPERTY_UNIT_DISALLOW_UPGRADING
-| 171
+| 173
 | GetModifierUnitDisllowUpgrading
 |-
 | modifierfunction.MODIFIER_PROPERTY_DODGE_PROJECTILE
-| 172
+| 174
 | GetModifierDodgeProjectile
 |-
 | modifierfunction.MODIFIER_PROPERTY_TRIGGER_COSMETIC_AND_END_ATTACK
-| 173
+| 175
 | GetTriggerCosmeticAndEndAttack
 |-
 | modifierfunction.MODIFIER_PROPERTY_MAX_DEBUFF_DURATION
-| 174
+| 176
 | GetModifierMaxDebuffDuration
 |-
 | modifierfunction.MODIFIER_PROPERTY_PRIMARY_STAT_DAMAGE_MULTIPLIER
-| 175
+| 177
 | GetPrimaryStatDamageMultiplier
 |-
 | modifierfunction.MODIFIER_PROPERTY_PREATTACK_DEADLY_BLOW
-| 176
+| 178
 | GetModifierPreAttack_DeadlyBlow
 |-
 | modifierfunction.MODIFIER_PROPERTY_ALWAYS_AUTOATTACK_WHILE_HOLD_POSITION
-| 177
+| 179
 | GetAlwaysAutoAttackWhileHoldPosition
 |-
 | modifierfunction.MODIFIER_EVENT_ON_SPELL_TARGET_READY
-| 178
+| 180
 | OnSpellTargetReady
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_RECORD
-| 179
+| 181
 | OnAttackRecord
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_START
-| 180
+| 182
 | OnAttackStart
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK
-| 181
+| 183
 | OnAttack
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_LANDED
-| 182
+| 184
 | OnAttackLanded
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_FAIL
-| 183
+| 185
 | OnAttackFail
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_ALLIED
-| 184
+| 186
 | OnAttackAllied
 |-
 | modifierfunction.MODIFIER_EVENT_ON_PROJECTILE_DODGE
-| 185
+| 187
 | OnProjectileDodge
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ORDER
-| 186
+| 188
 | OnOrder
 |-
 | modifierfunction.MODIFIER_EVENT_ON_UNIT_MOVED
-| 187
+| 189
 | OnUnitMoved
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ABILITY_START
-| 188
+| 190
 | OnAbilityStart
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ABILITY_EXECUTED
-| 189
+| 191
 | OnAbilityExecuted
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ABILITY_FULLY_CAST
-| 190
+| 192
 | OnAbilityFullyCast
 |-
 | modifierfunction.MODIFIER_EVENT_ON_BREAK_INVISIBILITY
-| 191
+| 193
 | OnBreakInvisibility
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ABILITY_END_CHANNEL
-| 192
+| 194
 | OnAbilityEndChannel
 |-
 | modifierfunction.MODIFIER_EVENT_ON_PROCESS_UPGRADE
-| 193
+| 195
 | Unused
 |-
 | modifierfunction.MODIFIER_EVENT_ON_REFRESH
-| 194
+| 196
 | Unused
 |-
 | modifierfunction.MODIFIER_EVENT_ON_TAKEDAMAGE
-| 195
+| 197
 | OnTakeDamage
 |-
 | modifierfunction.MODIFIER_EVENT_ON_DEATH_PREVENTED
-| 196
+| 198
 | OnDamagePrevented
 |-
 | modifierfunction.MODIFIER_EVENT_ON_STATE_CHANGED
-| 197
+| 199
 | OnStateChanged
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ORB_EFFECT
-| 198
+| 200
 | Unused
 |-
 | modifierfunction.MODIFIER_EVENT_ON_PROCESS_CLEAVE
-| 199
+| 201
 | OnProcessCleave
 |-
 | modifierfunction.MODIFIER_EVENT_ON_DAMAGE_CALCULATED
-| 200
+| 202
 | OnDamageCalculated
 |-
 | modifierfunction.MODIFIER_EVENT_ON_MAGIC_DAMAGE_CALCULATED
-| 201
+| 203
 | OnMagicDamageCalculated
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACKED
-| 202
+| 204
 | OnAttacked
 |-
 | modifierfunction.MODIFIER_EVENT_ON_DEATH
-| 203
+| 205
 | OnDeath
 |-
 | modifierfunction.MODIFIER_EVENT_ON_DEATH_COMPLETED
-| 204
+| 206
 | OnDeathCompleted
 |-
 | modifierfunction.MODIFIER_EVENT_ON_RESPAWN
-| 205
+| 207
 | OnRespawn
 |-
 | modifierfunction.MODIFIER_EVENT_ON_SPENT_MANA
-| 206
+| 208
 | OnSpentMana
 |-
 | modifierfunction.MODIFIER_EVENT_ON_SPENT_HEALTH
-| 207
+| 209
 | OnSpentHealth
 |-
 | modifierfunction.MODIFIER_EVENT_ON_TELEPORTING
-| 208
+| 210
 | OnTeleporting
 |-
 | modifierfunction.MODIFIER_EVENT_ON_TELEPORTED
-| 209
+| 211
 | OnTeleported
 |-
 | modifierfunction.MODIFIER_EVENT_ON_SET_LOCATION
-| 210
+| 212
 | OnSetLocation
 |-
 | modifierfunction.MODIFIER_EVENT_ON_HEALTH_GAINED
-| 211
+| 213
 | OnHealthGained
 |-
 | modifierfunction.MODIFIER_EVENT_ON_MANA_GAINED
-| 212
+| 214
 | OnManaGained
 |-
 | modifierfunction.MODIFIER_EVENT_ON_TAKEDAMAGE_KILLCREDIT
-| 213
+| 215
 | OnTakeDamageKillCredit
 |-
 | modifierfunction.MODIFIER_EVENT_ON_HERO_KILLED
-| 214
+| 216
 | OnHeroKilled
 |-
 | modifierfunction.MODIFIER_EVENT_ON_HEAL_RECEIVED
-| 215
+| 217
 | OnHealReceived
 |-
 | modifierfunction.MODIFIER_EVENT_ON_BUILDING_KILLED
-| 216
+| 218
 | OnBuildingKilled
 |-
 | modifierfunction.MODIFIER_EVENT_ON_MODEL_CHANGED
-| 217
+| 219
 | OnModelChanged
 |-
 | modifierfunction.MODIFIER_EVENT_ON_MODIFIER_ADDED
-| 218
+| 220
 | OnModifierAdded
 |-
 | modifierfunction.MODIFIER_PROPERTY_TOOLTIP
-| 219
+| 221
 | OnTooltip
 |-
 | modifierfunction.MODIFIER_PROPERTY_MODEL_CHANGE
-| 220
+| 222
 | GetModifierModelChange
 |-
 | modifierfunction.MODIFIER_PROPERTY_MODEL_SCALE
-| 221
+| 223
 | GetModifierModelScale
 |-
 | modifierfunction.MODIFIER_PROPERTY_MODEL_SCALE_ANIMATE_TIME
-| 222
+| 224
 | GetModifierModelScaleAnimateTime
 |-
 | modifierfunction.MODIFIER_PROPERTY_MODEL_SCALE_USE_IN_OUT_EASE
-| 223
+| 225
 | GetModifierModelScaleUseInOutEase
 |-
 | modifierfunction.MODIFIER_PROPERTY_MODEL_SCALE_CONSTANT
-| 224
+| 226
 | GetModifierModelScaleConstant
 |-
 | modifierfunction.MODIFIER_PROPERTY_IS_SCEPTER
-| 225
+| 227
 | GetModifierScepter
 |-
 | modifierfunction.MODIFIER_PROPERTY_IS_SHARD
-| 226
+| 228
 | GetModifierShard
 |-
 | modifierfunction.MODIFIER_PROPERTY_RADAR_COOLDOWN_REDUCTION
-| 227
+| 229
 | GetModifierRadarCooldownReduction
 |-
 | modifierfunction.MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS
-| 228
+| 230
 | GetActivityTranslationModifiers
 |-
 | modifierfunction.MODIFIER_PROPERTY_TRANSLATE_ATTACK_SOUND
-| 229
+| 231
 | GetAttackSound
 |-
 | modifierfunction.MODIFIER_PROPERTY_LIFETIME_FRACTION
-| 230
+| 232
 | GetUnitLifetimeFraction
 |-
 | modifierfunction.MODIFIER_PROPERTY_PROVIDES_FOW_POSITION
-| 231
+| 233
 | GetModifierProvidesFOWVision
 |-
 | modifierfunction.MODIFIER_PROPERTY_SPELLS_REQUIRE_HP
-| 232
+| 234
 | GetModifierSpellsRequireHP
 |-
 | modifierfunction.MODIFIER_PROPERTY_FORCE_DRAW_MINIMAP
-| 233
+| 235
 | GetForceDrawOnMinimap
 |-
 | modifierfunction.MODIFIER_PROPERTY_DISABLE_TURNING
-| 234
+| 236
 | GetModifierDisableTurning
 |-
 | modifierfunction.MODIFIER_PROPERTY_IGNORE_CAST_ANGLE
-| 235
+| 237
 | GetModifierIgnoreCastAngle
 |-
 | modifierfunction.MODIFIER_PROPERTY_CHANGE_ABILITY_VALUE
-| 236
+| 238
 | GetModifierChangeAbilityValue
 |-
 | modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL
-| 237
+| 239
 | GetModifierOverrideAbilitySpecial
 |-
 | modifierfunction.MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL_VALUE
-| 238
+| 240
 | GetModifierOverrideAbilitySpecialValue
 |-
 | modifierfunction.MODIFIER_PROPERTY_ABILITY_LAYOUT
-| 239
+| 241
 | GetModifierAbilityLayout
 |-
 | modifierfunction.MODIFIER_EVENT_ON_DOMINATED
-| 240
+| 242
 | OnDominated
 |-
 | modifierfunction.MODIFIER_EVENT_ON_KILL
-| 241
+| 243
 | OnKill
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ASSIST
-| 242
+| 244
 | OnAssist
 |-
 | modifierfunction.MODIFIER_PROPERTY_TEMPEST_DOUBLE
-| 243
+| 245
 | GetModifierTempestDouble
 |-
 | modifierfunction.MODIFIER_PROPERTY_PRESERVE_PARTICLES_ON_MODEL_CHANGE
-| 244
+| 246
 | PreserveParticlesOnModelChanged
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_FINISHED
-| 245
+| 247
 | OnAttackFinished
 |-
 | modifierfunction.MODIFIER_PROPERTY_IGNORE_COOLDOWN
-| 246
+| 248
 | GetModifierIgnoreCooldown
 |-
 | modifierfunction.MODIFIER_PROPERTY_CAN_ATTACK_TREES
-| 247
+| 249
 | GetModifierCanAttackTrees
 |-
 | modifierfunction.MODIFIER_PROPERTY_VISUAL_Z_DELTA
-| 248
+| 250
 | GetVisualZDelta
 |-
 | modifierfunction.MODIFIER_PROPERTY_VISUAL_Z_SPEED_BASE_OVERRIDE
-| 249
+| 251
 | GetVisualZSpeedBaseOverride
 |-
 | modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_ILLUSION
-| 250
+| 252
 | 
 |-
 | modifierfunction.MODIFIER_PROPERTY_DONT_GIVE_VISION_OF_ATTACKER
-| 251
+| 253
 | GetModifierNoVisionOfAttacker
 |-
 | modifierfunction.MODIFIER_PROPERTY_TOOLTIP2
-| 252
+| 254
 | OnTooltip2
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_RECORD_DESTROY
-| 253
+| 255
 | OnAttackRecordDestroy
 |-
 | modifierfunction.MODIFIER_EVENT_ON_PROJECTILE_OBSTRUCTION_HIT
-| 254
+| 256
 | OnProjectileObstructionHit
 |-
 | modifierfunction.MODIFIER_PROPERTY_SUPPRESS_TELEPORT
-| 255
+| 257
 | GetSuppressTeleport
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTACK_CANCELLED
-| 256
+| 258
 | OnAttackCancelled
 |-
 | modifierfunction.MODIFIER_PROPERTY_SUPPRESS_CLEAVE
-| 257
+| 259
 | GetSuppressCleave
 |-
 | modifierfunction.MODIFIER_PROPERTY_BOT_ATTACK_SCORE_BONUS
-| 258
+| 260
 | BotAttackScoreBonus
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACKSPEED_REDUCTION_PERCENTAGE
-| 259
+| 261
 | GetModifierAttackSpeedReductionPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_MOVESPEED_REDUCTION_PERCENTAGE
-| 260
+| 262
 | GetModifierMoveSpeedReductionPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACK_WHILE_MOVING_TARGET
-| 261
+| 263
 | 
 |-
 | modifierfunction.MODIFIER_PROPERTY_ATTACKSPEED_PERCENTAGE
-| 262
+| 264
 | GetModifierAttackSpeedPercentage
 |-
 | modifierfunction.MODIFIER_EVENT_ON_ATTEMPT_PROJECTILE_DODGE
-| 263
+| 265
 | OnAttemptProjectileDodge
 |-
 | modifierfunction.MODIFIER_EVENT_ON_PREDEBUFF_APPLIED
-| 264
+| 266
 | OnPreDebuffApplied
 |-
 | modifierfunction.MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_STACKING
-| 265
+| 267
 | GetModifierPercentageCooldownStacking
 |-
 | modifierfunction.MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET
-| 266
+| 268
 | GetModifierSpellRedirectTarget
 |-
 | modifierfunction.MODIFIER_PROPERTY_TURN_RATE_CONSTANT
-| 267
+| 269
 | GetModifierTurnRateConstant
 |-
 | modifierfunction.MODIFIER_PROPERTY_RAT_PACK
-| 268
+| 270
 | GetModifierIsRatPack
 |-
 | modifierfunction.MODIFIER_PROPERTY_PHYSICALDAMAGEOUTGOING_PERCENTAGE
-| 269
+| 271
 | GetModifierPhysicalDamageOutgoing_Percentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_KNOCKBACK_AMPLIFICATION_PERCENTAGE
-| 270
+| 272
 | GetModifierKnockbackAmplification_Percentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_HEALTHBAR_PIPS
-| 271
+| 273
 | GetModifierHealthBarPips
 |-
 | modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT
-| 272
+| 274
 | GetModifierIncomingDamageConstant
 |-
 | modifierfunction.MODIFIER_EVENT_SPELL_APPLIED_SUCCESSFULLY
-| 273
+| 275
 | OnSpellAppliedSuccessfully
 |-
 | modifierfunction.MODIFIER_PROPERTY_AVOID_DAMAGE_AFTER_REDUCTIONS
-| 274
+| 276
 | GetModifierAvoidDamageAfterReductions
 |-
 | modifierfunction.MODIFIER_PROPERTY_FAIL_ATTACK
-| 275
+| 277
 | GetModifierPropetyFailAttack
 |-
 | modifierfunction.MODIFIER_PROPERTY_PREREDUCE_INCOMING_DAMAGE_MULT
-| 276
+| 278
 | GetModifierPrereduceIncomingDamage_Mult
 |-
 | modifierfunction.MODIFIER_PROPERTY_SUPPRESS_FULLSCREEN_DEATH_FX
-| 277
+| 279
 | GetModifierSuppressFullscreenDeathFX
 |-
 | modifierfunction.MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST
-| 278
+| 280
 | MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST
 |-
 | modifierfunction.MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_MULTIPLICATIVE
-| 279
+| 281
 | GetModifierDamageOutgoing_PercentageMultiplicative
 |-
 | modifierfunction.MODIFIER_PROPERTY_TICK_GOLD_MULTIPLIER
-| 280
+| 282
 | GetModifierTickGold_Multiplier
 |-
 | modifierfunction.MODIFIER_PROPERTY_SLOW_RESISTANCE
-| 281
+| 283
 | GetModifierSlowResistance
 |-
 | modifierfunction.MODIFIER_PROPERTY_AOE_BONUS_PERCENTAGE
-| 282
+| 284
 | GetModifierAoEBonusPercentage
 |-
 | modifierfunction.MODIFIER_PROPERTY_PROJECTILE_SPEED
-| 283
+| 285
 | GetModifierProjectileSpeed
 |-
 | modifierfunction.MODIFIER_PROPERTY_BECOME_UNIVERSAL
-| 284
+| 286
 | GetModifierBecomeUniversal
 |-
 | modifierfunction.MODIFIER_EVENT_ON_FORCE_PROC_MAGIC_STICK
-| 285
+| 287
 | OnForceProcMagicStick
 |-
+| modifierfunction.MODIFIER_PROPERTY_DO_NOT_SINK_AFTER_DEATH
+| 288
+| GetModifierDoNotSinkAfterDeath
+|-
+| modifierfunction.MODIFIER_EVENT_ON_DAMAGE_HPLOSS
+| 289
+| OnDamageHPLoss
+|-
+| modifierfunction.MODIFIER_PROPERTY_FORCE_MAX_HEALTH
+| 290
+| GetModifierForceMaxHealth
+|-
+| modifierfunction.MODIFIER_PROPERTY_AOE_BONUS_CONSTANT
+| 291
+| GetModifierAoEBonusConstant
+|-
 | modifierfunction.MODIFIER_FUNCTION_LAST
-| 286
+| 292
 | 
 |-
 | modifierfunction.MODIFIER_FUNCTION_INVALID
@@ -22873,164 +20661,160 @@
 | 199
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_HARVEST
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_ITEM
 | 200
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_ITEM
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_GOLD
 | 201
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_GOLD
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_XP
 | 202
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_XP
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_FANTASY
 | 203
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_FANTASY
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_WINCHANCE
 | 204
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_STATS_WINCHANCE
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEBOTH
 | 205
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEBOTH
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLERADIENT
 | 206
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLERADIENT
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEDIRE
 | 207
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOW_TOGGLEDIRE
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_OPEN_BROADCASTER_MENU
 | 208
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_OPEN_BROADCASTER_MENU
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_KDA
 | 209
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_KDA
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LASTHITS_DENIES
 | 210
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LASTHITS_DENIES
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LEVEL
 | 211
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_LEVEL
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_XP_PER_MIN
 | 212
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_XP_PER_MIN
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD
 | 213
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_TOTALGOLD
 | 214
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_TOTALGOLD
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD_PER_MIN
 | 215
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_GOLD_PER_MIN
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_BUYBACK
 | 216
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_BUYBACK
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_NETWORTH
 | 217
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_NETWORTH
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_FANTASY
 | 218
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_FANTASY
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_SORT
 | 219
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_SORT
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_CLOSE
 | 220
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_DROPDOWN_CLOSE
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_1
 | 221
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_1
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_2
 | 222
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_2
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_3
 | 223
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_3
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_4
 | 224
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_4
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_5
 | 225
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_5
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_6
 | 226
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_6
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_7
 | 227
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_7
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_8
 | 228
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_8
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_9
 | 229
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_9
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_10
 | 230
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_FOCUS_PLAYER_10
+| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_COACH_VIEWTOGGLE
 | 231
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_SPEC_COACH_VIEWTOGGLE
+| DOTAKeybindCommand_t.DOTA_KEYBIND_INSPECTHEROINWORLD
 | 232
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_INSPECTHEROINWORLD
+| DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_IN
 | 233
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_IN
+| DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_OUT
 | 234
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_CAMERA_ZOOM_OUT
+| DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUPCYCLEPREV
 | 235
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_CONTROL_GROUPCYCLEPREV
+| DOTAKeybindCommand_t.DOTA_KEYBIND_DOTA_ALT
 | 236
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_DOTA_ALT
+| DOTAKeybindCommand_t.DOTA_KEYBIND_DOTA_ALTERNATIVE_CAST_SWITCH
 | 237
 | 
 |-
-| DOTAKeybindCommand_t.DOTA_KEYBIND_DOTA_ALTERNATIVE_CAST_SWITCH
-| 238
-| 
-|-
 | DOTAKeybindCommand_t.DOTA_KEYBIND_COUNT
-| 239
+| 238
 | 
 |}
 

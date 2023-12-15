@@ -164,7 +164,7 @@ blur: gaussian( 6, 6, 1 );
 
 
 # border
-Shorthand for setting panel border. Specify width, style, and color.  Supported styles are: solid, none.
+Shorthand for setting panel border. Specify width, style, and color.  Supported styles are: solid, dashed, none.
 
 ## Examples:
 ```
@@ -173,7 +173,7 @@ border: 2px solid #111111FF;
 
 
 # border-bottom
-Shorthand for setting the bottom panel border. Specify width, style, and color.  Supported styles are: solid, none.
+Shorthand for setting the bottom panel border. Specify width, style, and color.  Supported styles are: solid, dashed, none.
 
 ## Examples:
 ```
@@ -236,7 +236,6 @@ EXPERIMENTAL: Sets a more-complex brush for the entire border paint area (ignore
 border-brush: gradient( linear, 0% 0%, 0% 100%, from( #fbfbfbff ), to( #c0c0c0c0 ) );
 border-brush: gradient( linear, 0% 0%, 0% 100%, from( #fbfbfbff ), color-stop( 0.3, #ebebebff ), to( #c0c0c0c0 ) );
 border-brush: gradient( radial, 50% 50%, 0% 0%, 80% 80%, from( #00ff00ff ), to( #0000ffff ) );
-
 ```
 
 
@@ -251,7 +250,7 @@ border-color: #FF0000FF #00FF00FF #0000FFFF #00FFFFFF;
 
 
 # border-left
-Shorthand for setting the left panel border. Specify width, style, and color.  Supported styles are: solid, none.
+Shorthand for setting the left panel border. Specify width, style, and color.  Supported styles are: solid, dashed, none.
 
 ## Examples:
 ```
@@ -303,7 +302,7 @@ border-radius: 2px 3px 4px 2px / 2px 3px 3px 2px;
 
 
 # border-right
-Shorthand for setting the right panel border. Specify width, style, and color.  Supported styles are: solid, none.
+Shorthand for setting the right panel border. Specify width, style, and color.  Supported styles are: solid, dashed, none.
 
 ## Examples:
 ```
@@ -343,13 +342,13 @@ Specifies border style for panel.  If a single style value is set it applies to 
 
 ## Examples:
 ```
-border-style: solid;
+border-style: dashed;
 border-style: solid none solid none;
 ```
 
 
 # border-top
-Shorthand for setting the top panel border. Specify width, style, and color.  Supported styles are: solid, none.
+Shorthand for setting the top panel border. Specify width, style, and color.  Supported styles are: solid, dashed, none.
 
 ## Examples:
 ```
@@ -415,12 +414,12 @@ border-width: 20px 1px 20px 1px;
 
 
 # box-shadow
-Specifies outer shadows for boxes, or inset shadows/glows.  The shadow shape will match the border box for the panel,so use border-radius to affect rounding.  Syntax takes optional 'inset', optional 'fill' then color, and then horizontal offset pixels, vertical offset pixels, blur radius pixels, and spread distance in pixels. Inset means the shadow is an inner shadow/glow, fill is valid only on outer shadows and means draw the shadow behind the entire box, not clipping it to outside the border area only. A negative blur radius will give a hard-edged look to the shadow, effectively a rounded outline of the same size as the blur.
+Specifies shadows for boxes, or inset shadows/glows.  The shadow shape will match the border box for the panel,so use border-radius to affect rounding.  Syntax takes optional shape 'inset', 'fill', or 'hollow', then color, horizontal offset pixels, vertical offset pixels, blur radius pixels, and spread distance in pixels. Inset means the shadow is an inner shadow/glow, fill is a a shadow behind the entire box, hollow means clipping it to outside the border area only (before offset). A negative blur radius will give a hard-edged look to the shadow, effectively a rounded outline of the same size as the blur.
 
 ## Examples:
 ```
-box-shadow: #ffffff80 4px 4px 8px 0px; // outer
-box-shadow: fill #ffffff80 4px 4px 8px 0px; // outer, filled
+box-shadow: #ffffff80 4px 4px 8px 0px; // outer, filled
+box-shadow: hollow #ffffff80 4px 4px 8px 0px; // outer, hollow
 box-shadow: inset #333333b0 0px 0px 8px 12px; // inner
 ```
 
@@ -439,7 +438,8 @@ Specifies a clip region within the panel, where contents will be clipped at rend
 
 ## Example:
 ```
-clip: rect( 10%, 90%, 90%, 10% );clip: radial( 50% %50, 0deg, 90deg );
+clip: rect( 10%, 90%, 90%, 10% );
+clip: radial( 50% %50, 0deg, 90deg );
 ```
 
 
@@ -603,7 +603,10 @@ Specifies the line height (distance between top edge of line above and line belo
 
 ## Example:
 ```
-line-height: normal;line-height: 20px;line-height: 1.2;line-height: 120%;
+line-height: normal;
+line-height: 20px;
+line-height: 1.2;
+line-height: 120%;
 ```
 
 
@@ -662,27 +665,23 @@ opacity-brush: gradient( linear, 0% 0%, 0% 100%, from( #ffffffff ), to( #ffffff0
 
 
 # opacity-mask
-Applies an image as an opacity mask that stretches to the panel bounds and fades out it's content based on the alpha channel. The second float value is an optional opacity value for the mask itself, the image won't interpolate/cross-fade, but you can animate the opacity to fade the mask in/out. The -scroll-up, -scroll-down, and -scroll-up-down varients override the mask and apply only when the various vertical scroll scenarios affect the panel based on the overflow property.
-
-## Examples:
+Applies an image as an opacity mask that stretches to the panel bounds and fades out it's content based on the alpha channel. The second float value is an optional opacity value for the mask itself, the image won't interpolate/cross-fade, but you can animate the opacity to fade the mask in/out. ## Examples:
 ```
 opacity-mask: url( "file://{images}/upper_row_mask.tga" );
 opacity-mask: url( "file://{images}/upper_row_mask.tga" ) 0.5;
-opacity-mask-scroll-up: url( "file://{images}/upper_row_mask_up.tga" ) 0.5;
-opacity-mask-scroll-down: url( "file://{images}/upper_row_mask_down.tga" ) 0.5;
-opacity-mask-scroll-up-down: url( "file://{images}/upper_row_mask_up_down.tga" ) 0.5;
+opacity-mask: url( "file://{images}/upper_row_mask.tga" ) -1.0;
+opacity-mask-position: 5px 50%;
+opacity-mask-scale: 200%;
+opacity-mask-scale: 50% 100%;
+
 ```
 
 
-# opacity-mask-scroll-down
+# opacity-mask-position
 
 
 
-# opacity-mask-scroll-up
-
-
-
-# opacity-mask-scroll-up-down
+# opacity-mask-scale
 
 
 
@@ -827,6 +826,8 @@ text-decoration-style: dotted;
 
 # text-overflow
 Controls truncation of text that doesn't fit in a panel.  "clip" means to simply truncate (on char boundaries), "ellipsis" means to end with '...', and "shrink" means lower the font size to fit.  "noclip" allows the text to overflow based on the "overflow" style.
+"shrink min( 10px )" won't shrink beyond a minimum font size, clipping the overflow. "shrink min( 10px ) ellipsis" is similar but will ellipsis the overflow.
+
 We default to ellipsis, which is contrary to the normal CSS spec.
 
 ## Examples:
@@ -834,8 +835,9 @@ We default to ellipsis, which is contrary to the normal CSS spec.
 text-overflow: ellipsis;
 text-overflow: clip;
 text-overflow: shrink;
+text-overflow: shrink min( 10px );
+text-overflow: shrink min( 10px ) ellipsis;
 text-overflow: noclip;
-
 ```
 
 
@@ -1058,7 +1060,8 @@ Sets the amount of blur to apply to the world / backbuffer before drawing.
 ## Examples:
 ```
 world-blur: gaussian( 2.5 );
-world-blur: gaussian( 6, 6, 1 );world-blur: mipmapgaussian( 6, 6, 4 );  In this version each gaussian pass is preceded by a quarter area downsample.
+world-blur: gaussian( 6, 6, 1 );
+world-blur: mipmapgaussian( 6, 6, 4 );  In this version each gaussian pass is preceded by a quarter area downsample.
 ```
 
 

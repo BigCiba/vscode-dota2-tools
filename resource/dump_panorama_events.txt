@@ -3,19 +3,19 @@
 ! Panel Event
 ! Description
 |-
-| <code>AddStyle(string class)</code>
+| <code>AddStyle(panoramasymbol class)</code>
 | Yes
 | Add a CSS class to a panel.
 |-
-| <code>AddStyleAfterDelay(string class, float pre-delay)</code>
+| <code>AddStyleAfterDelay(panoramasymbol class, float pre-delay)</code>
 | Yes
 | Add a CSS class to a panel after a specified delay. 
 |-
-| <code>AddStyleToEachChild(string class)</code>
+| <code>AddStyleToEachChild(panoramasymbol class)</code>
 | Yes
 | Add a CSS class to all children of this panel.
 |-
-| <code>AddTimedStyle(string class, float duration, float pre-delay)</code>
+| <code>AddTimedStyle(panoramasymbol class, float duration, float pre-delay)</code>
 | Yes
 | Add a class for a specified duration, with optional pre-delay; clears existing timers when called with same class. 
 |-
@@ -81,6 +81,10 @@
 |-
 | <code>DOTALiveStreamVideoLive(bool isLive)</code>
 | Yes
+| Notify change in stream state (we detected the stream going live)
+|-
+| <code>DOTALiveStreamVideoPlaying(bool isShowingVideo)</code>
+| Yes
 | Notify change in video state (is it pointing at a live stream page or not)
 |-
 | <code>DOTAShowAbilityInventoryItemTooltip(int32 entityIndex, int32 inventorySlot)</code>
@@ -127,7 +131,7 @@
 | Yes
 | Show a user's profile card. Use pro name determines whether to use their professional team name if applicable.
 |-
-| <code>DOTAShowRankTierTooltip(uint64 steamID, enum EDOTAPlayerMMRType)</code>
+| <code>DOTAShowRankTierTooltip(uint64 steamID)</code>
 | Yes
 | Show the rank tier tooltip for a user
 |-
@@ -139,7 +143,7 @@
 | Yes
 | Show a tooltip with the given text.
 |-
-| <code>DOTAShowTextTooltipStyled(string text, string style)</code>
+| <code>DOTAShowTextTooltipStyled(string text, panoramasymbol style)</code>
 | Yes
 | Show a tooltip with the given text. Also apply a CSS class named "style" to allow custom styling.
 |-
@@ -151,7 +155,7 @@
 | Yes
 | Show a tooltip with the given title, image, and text.
 |-
-| <code>DOTAShowTitleImageTextTooltipStyled(string title, string imagePath, string text, string style)</code>
+| <code>DOTAShowTitleImageTextTooltipStyled(string title, string imagePath, string text, panoramasymbol style)</code>
 | Yes
 | Show a tooltip with the given title, image, and text. Also apply a CSS class named "style" to allow custom styling.
 |-
@@ -159,7 +163,7 @@
 | Yes
 | Show a tooltip with the given title and text.
 |-
-| <code>DOTAShowTitleTextTooltipStyled(string title, string text, string style)</code>
+| <code>DOTAShowTitleTextTooltipStyled(string title, string text, panoramasymbol style)</code>
 | Yes
 | Show a tooltip with the given title and text. Also apply a CSS class named "style" to allow custom styling.
 |-
@@ -167,7 +171,7 @@
 | Yes
 | Drop focus entirely from the window containing this panel.
 |-
-| <code>IfHasClassEvent(string class, event eventToFire)</code>
+| <code>IfHasClassEvent(panoramasymbol class, event eventToFire)</code>
 | Yes
 | Fire another event if this panel has a given class.
 |-
@@ -175,7 +179,7 @@
 | Yes
 | Fire another event if currently hovering over a panel with the given ID.
 |-
-| <code>IfNotHasClassEvent(string class, event eventToFire)</code>
+| <code>IfNotHasClassEvent(panoramasymbol class, event eventToFire)</code>
 | Yes
 | Fire another event if this panel does not have a given class.
 |-
@@ -231,15 +235,15 @@
 | No
 | Scroll the panel up by one page.
 |-
-| <code>RemoveStyle(string class)</code>
+| <code>RemoveStyle(panoramasymbol class)</code>
 | Yes
 | Remove a CSS class from a panel.
 |-
-| <code>RemoveStyleAfterDelay(string class, float pre-delay)</code>
+| <code>RemoveStyleAfterDelay(panoramasymbol class, float pre-delay)</code>
 | Yes
 | Remove a CSS class from a panel after a specified delay. 
 |-
-| <code>RemoveStyleFromEachChild(string class)</code>
+| <code>RemoveStyleFromEachChild(panoramasymbol class)</code>
 | Yes
 | Remove a CSS class from all children of this panel.
 |-
@@ -299,7 +303,7 @@
 | Yes
 | Set whether this panel is :selected.
 |-
-| <code>SwitchStyle(string slot, string class)</code>
+| <code>SwitchStyle(panoramasymbol slot, panoramasymbol class)</code>
 | Yes
 | Switch which class the panel has for a given attribute slot. Allows easily changing between multiple states.
 |-
@@ -307,11 +311,11 @@
 | Yes
 | Toggle whether this panel is :selected.
 |-
-| <code>ToggleStyle(string class)</code>
+| <code>ToggleStyle(panoramasymbol class)</code>
 | Yes
 | Toggle whether a panel has the given CSS class.
 |-
-| <code>TriggerStyle(string class)</code>
+| <code>TriggerStyle(panoramasymbol class)</code>
 | Yes
 | Remove then immediately add back a CSS class from a panel. Useful to re-trigger events like animations or sound effects.
 |}
