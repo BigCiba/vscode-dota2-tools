@@ -210,8 +210,16 @@ function generateCompareCSV(n1: number, n2: number) {
 			if (key == "__key_sc") {
 				continue;
 			}
-			if (value.schinese[0] != "'") {
-				value.schinese = "'" + value.schinese;
+			// 因为垃圾excel自动公式，所以加个单引号变成字符串
+			let _value = value["schinese_old"];
+			if (typeof _value == "string" && _value.length > 0 && _value[0] != "'") {
+				value["schinese_old"] = "'" + _value;
+			}
+			for (let sLanguage of languages) {
+				let _value = value[sLanguage];
+				if (typeof _value == "string" && _value.length > 0 && _value[0] != "'") {
+					value[sLanguage] = "'" + _value;
+				}
 			}
 		}
 
