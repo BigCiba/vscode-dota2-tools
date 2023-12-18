@@ -73,7 +73,20 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 	let kv = getKeyValueObjectByIndex(await readKeyValueWithBase(sTotalPath.replace(/\\/g, "/")));
 	// 特殊处理
 	if (stringToAny(configs.OverrideAbilities) === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
-		let npcAbilitiesKv = getKeyValueObjectByIndex(await readKeyValueWithBase((context.extensionPath + '/resource/npc/npc_abilities.txt').replace(/\\/g, "/")));
+		let npcAbilitiesKv = getKeyValueObjectByIndex(await readKeyValueWithBase(path.join(context.extensionPath + '/resource/npc/npc_abilities.txt')));
+		// 读取v蛇拆分的英雄技能
+		const heroAbilitiesFolder = context.extensionPath + '/resource/npc/heroes';
+		const files = fs.readdirSync(heroAbilitiesFolder);
+		// 遍历每个文件和文件夹
+		files.forEach(async file => {
+			// 构建完整的文件路径
+			const filePath = path.join(heroAbilitiesFolder, file);
+			// 检查当前路径是文件还是文件夹
+			if (!fs.statSync(filePath).isDirectory()) {
+				const heroAbilitiesKv = await readKeyValueWithBase(filePath);
+				kv = overrideKeyValue(kv, heroAbilitiesKv.DOTAAbilities);
+			}
+		});
 		let npcAbilitiesOverrideKv = getKeyValueObjectByIndex(await readKeyValueWithBase((gameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
 		kv = overrideKeyValue(replaceKeyValue(npcAbilitiesKv, npcAbilitiesOverrideKv), kv);
 	} else if (stringToAny(configs.OverrideUnits) === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
