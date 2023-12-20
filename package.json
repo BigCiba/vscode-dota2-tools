@@ -304,8 +304,8 @@
 				"title": "%dota2tools.CopyDotaResourcePath%"
 			},
 			{
-				"command": "dota2tools.generate_db_csv",
-				"title": "%dota2tools.generate_db_csv%"
+				"command": "dota2tools.csv_to_db",
+				"title": "%dota2tools.csv_to_db%"
 			},
 			{
 				"command": "dota2tools.fetch_all_sheet",
@@ -354,6 +354,11 @@
 					"when": "resource =~ /panorama/ && resourceExtname =~ /(\\.png)|(\\.jpg)/",
 					"command": "dota2tools.CopyDotaResourcePath",
 					"group": "6_copypath"
+				},
+				{
+					"when": "resourceExtname == '.csv'",
+					"command": "dota2tools.csv_to_db",
+					"group": "navigation"
 				}
 			],
 			"editor/title": [
@@ -387,6 +392,11 @@
 				{
 					"when": "resource =~ /panorama/ && resourceExtname =~ /(\\.png)|(\\.jpg)/",
 					"command": "dota2tools.CopyDotaResourcePath",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceExtname == '.csv'",
+					"command": "dota2tools.csv_to_db",
 					"group": "navigation"
 				}
 			],
@@ -873,6 +883,9 @@
 						"type": "string",
 						"default": "${game}/scripts/vscripts/libraries",
 						"description": "lua api文档生成相对路径，用于Emmylua插件补全相关功能，${game}或者${content}可以指代当前game或者content目录"
+					},
+					"dota2-tools.csv_db_config": {
+						"type": "object"
 					}
 				}
 			}

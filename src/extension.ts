@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { FeiShu } from './Class/FeiShu';
 import { EventManager, EventType } from './Class/event';
 import { lazayboyProvider } from './CustomTextEditorProvider/lazayboyProvider';
-import { vmdlEditorProvider } from './CustomTextEditorProvider/vmdlEditorProvider';
 import { combineLocalization } from './command/cmdCombineLocalization';
 import { copyWearable } from './command/cmdCopyWearable';
 import { createWearableItems } from './command/cmdCreateWearableItems';
@@ -17,7 +16,7 @@ import { exportWearable } from './command/cmdExportWearable';
 import { exportWearablePortraits } from './command/cmdExportWearablePortraits';
 import { exportWearableWithHero } from './command/cmdExportWearableWithHero';
 import { formatKv } from './command/cmdFormatKv';
-import { GenerateDBCSV } from "./command/cmdGenerateDBCSV";
+import { CSV_ExportDB } from "./command/cmdGenerateDBCSV";
 import { generateLuaApiDocument } from './command/cmdGenerateLuaApiDocument';
 import { generateVPDI } from './command/cmdGenerateVPDI';
 import { getItemRemoveList } from './command/cmdGetItemRemoveList';
@@ -35,7 +34,6 @@ import { vsndPicker } from './command/cmdVsndPicker';
 import { init } from './init';
 import { statusBarItemInit } from './module/statusBar';
 import { localizeInit } from './utils/localize';
-import { kvEditorProvider } from './CustomTextEditorProvider/kvEditorProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// 基础模块单独载入
@@ -82,7 +80,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => mklinkForDota2Addon(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_modifier_function', () => exportModifierFunction(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.CopyDotaResourcePath', (uri) => CopyDotaResourcePath(context, uri)));
-	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_db_csv', () => GenerateDBCSV(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.csv_to_db', (uri) => CSV_ExportDB(context, uri)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.backup_localization', () => localizationBackup()));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.compare_localization', () => localizationCompare()));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.import_localization', () => localizationImportTool()));
