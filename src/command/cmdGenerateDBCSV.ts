@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import * as mysql from 'mysql2';
 import * as vscode from 'vscode';
 import { showStatusBarMessage } from "../module/statusBar";
-import { csvParse } from "../utils/csvUtils";
 import { localize } from "../utils/localize";
 import path = require("path");
 
@@ -10,7 +9,7 @@ type DBConfigList = Record<string, mysql.ConnectionOptions>;
 
 export function CSV_ExportDB(context: vscode.ExtensionContext, uri: vscode.Uri) {
 	let filePath: string = path.normalize(uri.fsPath);
-	let csv = csvParse(fs.readFileSync(filePath, "utf-8")) as string[][];
+	let csv = MyCsvParse(fs.readFileSync(filePath, "utf-8")) as string[][];
 	if (csv.length <= 0) {
 		showStatusBarMessage(`[${localize("dota2tools.csv_to_db")}]: ${localize("dota2tools.csv_invalid")} 1`);
 		return;
@@ -69,6 +68,8 @@ function GenerateInsertSQL(table: string, csv: string[][]) {
 }
 
 // csv转array
+// 会把两个双引号转成一个双引号
+// 为什么不把csvUtils里的方法改了：因为那会导致kv里有双引号出错，所以那还得再改writeKeyValue(可能V社也不支持双引号里的双引号)
 function MyCsvParse(csv: string) {
 	csv = csv.replace(/\r\n/g, '\n');
 	let arr: any = [];
@@ -88,7 +89,7 @@ function MyCsvParse(csv: string) {
 				state = "string";
 				continue;
 			}
-			// 处理"""转义？
+			// 处理"""转义
 			if (substr === "\"" && state === "string") {
 				if (csv[i + 1] == '"') {
 					value += '"';
