@@ -4,12 +4,12 @@ import { setInterval } from 'timers';
 import * as vscode from 'vscode';
 import { FeiShu } from '../Class/FeiShu';
 import { abilityCSV2KV, unitCSV2KV } from '../utils/csvUtils';
+import { getRootPath } from '../utils/getRootPath';
 import { writeKeyValue } from '../utils/kvUtils';
 import { localize } from '../utils/localize';
 import { dirExists } from '../utils/pathUtils';
 import { getContentDir, getGameDir } from './addonInfo';
 import { showStatusBarMessage } from './statusBar';
-import { getRootPath } from '../utils/getRootPath';
 
 let sheetCloud: FeiShu;
 let statusBarItem: vscode.StatusBarItem;
@@ -295,8 +295,16 @@ async function processFileData(fileData: DocumentFile, kvDir: string, method: ty
 	if (sheetID) {
 		const sheetData = await sheetCloud.getSheetData(spreadsheetToken, sheetID);
 		if (sheetData) {
-			const csv = convertToCSV(sheetData.data.valueRange.values);
-			await saveCSVToKVDir(csv, kvDir, fileData, method);
+			sheetData.data.valueRange.values.forEach((row) => {
+				row.forEach((cell, i) => {
+					if (cell === undefined || cell === null) {
+						row[i] = "";
+					} else if (typeof cell == "number") {
+						row[i] = String(cell);
+					}
+				});
+			});
+			await saveCSVToKVDir(sheetData.data.valueRange.values, kvDir, fileData, method);
 		}
 	}
 }
@@ -339,11 +347,10 @@ async function exportSheetToCsv(fileData: DocumentFile, kvDir: string): Promise<
 	}
 }
 
-async function saveCSVToKVDir(csv: string, kvDir: string, fileData: DocumentFile, method: typeof abilityCSV2KV | typeof unitCSV2KV): Promise<void> {
+async function saveCSVToKVDir(csv: string[][], kvDir: string, fileData: DocumentFile, method: typeof abilityCSV2KV | typeof unitCSV2KV): Promise<void> {
 	const realKvDir = getRealKvDir(kvDir);
 	if (realKvDir) {
 		await dirExists(realKvDir);
-
 		const data = writeKeyValue({ KeyValue: method(csv) });
 		const filePath = path.join(realKvDir, getExtname(fileData.name));
 		fs.writeFileSync(filePath, data);

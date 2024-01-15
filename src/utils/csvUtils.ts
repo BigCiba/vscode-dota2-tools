@@ -336,16 +336,20 @@ export function multilayerCSV2KV(listenPath: string): any {
 		console.log(error);
 	}
 }
-export function abilityCSV2KV(csv: string): any {
+// 竖线分割的kv项
+const _DotaListKey: Record<string, boolean> = {
+	AbilityBehavior: true, AbilityUnitTargetTeam: true, AbilityUnitTargetType: true, AbilityUnitTargetFlags: true
+};
+export function abilityCSV2KV(csv: string | string[][]): any {
 	// 生成kv
 	let csvData: any = {};
-	let csvArr: any = csvParse(csv);
+	let csvArr: any = typeof csv == "string" ? csvParse(csv) : csv;
 	// let csv_arr:any = CSV2Array(csv);
 	const csvKey: [] = csvArr[1];
 	for (let i = 2; i < csvArr.length; i++) {
 		const row: any = csvArr[i];
 		// 空行、空值则跳过
-		if (row.length === 0 || row[0] === undefined || row[0] === "") {
+		if (Boolean(row[0]) == false) {
 			continue;
 		}
 
@@ -359,10 +363,13 @@ export function abilityCSV2KV(csv: string): any {
 		for (let j = 1; j < row.length; j++) {
 			const col = row[j];
 			// 跳过空值
-			if (col === '') {
+			if (Boolean(col) == false) {
 				continue;
 			}
 			let key: string = csvKey[j];
+			if (Boolean(key) == false) {
+				continue;
+			}
 			// special值特殊处理
 			if (key === 'AbilitySpecial') {
 				key = ("0" + specialCount).substr(-2);
@@ -407,8 +414,6 @@ export function abilityCSV2KV(csv: string): any {
 						}
 					}
 				}
-			} else if (key === '') {
-				continue;
 			} else if (key === 'precache') {
 				if (csvArr[i + 1] !== undefined && csvArr[i + 1] !== "") {
 					let value = csvArr[i + 1][j];
@@ -428,6 +433,8 @@ export function abilityCSV2KV(csv: string): any {
 						precacheCount++;
 					}
 				}
+			} else if (_DotaListKey[key]) {
+				valuesObj[key] = col.replace(/,/g, " | ");
 			} else {
 				valuesObj[key] = col;
 			}
@@ -454,7 +461,8 @@ export function KVArrayProc(obj: Record<string, any>) {
 	for (const [k, v] of Object.entries(obj)) {
 		switch (typeof v) {
 			case "object":
-				KVArrayProc(v);
+				// NOTE:typeof null == object
+				v !== null && KVArrayProc(v);
 				break;
 			case "string":
 				// "^-1-5*10";
@@ -477,10 +485,10 @@ export function KVArrayProc(obj: Record<string, any>) {
 		}
 	}
 }
-export function unitCSV2KV(csv: string): any {
+export function unitCSV2KV(csv: string | string[][]): any {
 	// 生成kv
 	let csvData: any = {};
-	let csvArr: any = csvParse(csv);
+	let csvArr: any = typeof csv == "string" ? csvParse(csv) : csv;
 	const csvKey: [] = csvArr[1];
 	for (let i = 2; i < csvArr.length; i++) {
 		const row: any = csvArr[i];
