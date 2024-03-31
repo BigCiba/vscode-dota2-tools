@@ -8,7 +8,7 @@ export async function request<T>(
 		/** 路径参数 */
 		pathParams?: Record<string, string>,
 		/** 查询参数 */
-		params?: Record<string, string>,
+		params?: Record<string, string | number>,
 		/** 请求体 */
 		data?: Record<string, any>,
 	} = {}

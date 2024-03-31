@@ -18,12 +18,16 @@ const URL_LIST = {
 	/** 新建文件夹 */
 	CREATE_FOLDER: 'https://open.feishu.cn/open-apis/drive/v1/files/create_folder',
 	/** 复制文件 */
-	COPY_FILE: "https://open.feishu.cn/open-apis/drive/v1/files/:file_token/copy"
+	COPY_FILE: "https://open.feishu.cn/open-apis/drive/v1/files/:file_token/copy",
+	/** 多维表格列出记录 */
+	RECORDS: "https://open.feishu.cn/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records"
 };
 export class FeiShu {
 	appid: string;
 	secret: string;
 	branchFolder: string;
+	appToken: string;
+	languageConfig: Record<string, { tableID: string, viewID: string; }> = {};
 	tenant_access_token: string | undefined;
 	/** 令牌过期时间的时间戳，以秒为单位 */
 	expire: number | undefined;
@@ -33,6 +37,21 @@ export class FeiShu {
 		this.appid = config["App ID"];
 		this.secret = config["App Secret"];
 		this.branchFolder = config["Branch Folder"];
+		this.appToken = config["App Token"];
+		this.languageConfig = {
+			"Schinese": {
+				tableID: config["Schinese ID"]?.split("|")?.[0],
+				viewID: config["Schinese ID"]?.split("|")?.[1]
+			},
+			"English": {
+				tableID: config["English ID"]?.split("|")?.[0],
+				viewID: config["English ID"]?.split("|")?.[1]
+			},
+			"Russian": {
+				tableID: config["Russian ID"]?.split("|")?.[0],
+				viewID: config["Russian ID"]?.split("|")?.[1]
+			}
+		};
 		this.client = new lark.Client({
 			appId: this.appid,
 			appSecret: this.secret,
@@ -56,7 +75,7 @@ export class FeiShu {
 			/** 路径参数 */
 			pathParams?: Record<string, string>,
 			/** 查询参数 */
-			params?: Record<string, string>,
+			params?: Record<string, string | number>,
 			/** 请求体 */
 			data?: Record<string, any>,
 		} = {}
@@ -271,5 +290,49 @@ export class FeiShu {
 				sub_id: '0DZLKE',
 			},
 		});
+	}
+
+
+	/** 导出多维表格数据 */
+	async exportRecords(type: string) {
+		const config = this.languageConfig[type];
+		const result: Record<string, string> = await this.records(type, config.tableID, config.viewID);
+		return result;
+	}
+
+	async records(type: string, tableID: string, viewID: string, page_token?: string, result: Record<string, string> = {}): Promise<Record<string, string>> {
+		const params: any = {
+			view_id: viewID,
+			field_names: `["Tokens","${type}"]`,
+			page_size: 500
+		};
+		if (page_token) {
+			params.page_token = page_token;
+		}
+		const data = await this.request<RecordResponseData>(
+			"GET",
+			URL_LIST.RECORDS,
+			{
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8',
+					'Authorization': 'Bearer ' + this.tenant_access_token,
+				},
+				pathParams: {
+					app_token: this.appToken,
+					table_id: tableID
+				},
+				params: params
+			}
+		);
+		if (data?.code == 0) {
+			for (const iterator of data.data.items) {
+				result[iterator.fields["Tokens"]] = iterator.fields[type];
+			}
+			if (data.data.has_more) {
+				let pageData = await this.records(type, tableID, viewID, data.data.page_token, result);
+				result = Object.assign(result, pageData);
+			}
+		}
+		return result;
 	}
 }

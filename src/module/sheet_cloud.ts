@@ -278,6 +278,31 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 			}
 		});
 	}));
+	// 下载多维表格文本
+	context.subscriptions.push(vscode.commands.registerCommand("dota2tools.export_record", async (data) => {
+		vscode.window.showQuickPick([{ label: "Schinese" }, { label: "English" }, { label: "Russian" }], { placeHolder: '选择语言' }).then(async (t) => {
+			if (t) {
+				const language = t.label;
+				const result = await sheetCloud.exportRecords(language);
+				let insert = "";
+				for (const key in result) {
+					const element = result[key];
+					insert += `\t\t"${key}"	"${element}"\n`;
+				}
+				const exportText = `"lang"
+{
+	"Language"		${language}
+	"Tokens"
+	{
+${insert}
+	}
+}`;
+				fs.writeFileSync(path.join(getGameDir(), `resource/addon_${language.toLowerCase()}.txt`), exportText);
+
+			}
+		});
+
+	}));
 }
 
 /** 把文件直接导出为kv */

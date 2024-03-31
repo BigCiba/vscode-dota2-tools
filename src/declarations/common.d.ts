@@ -222,3 +222,17 @@ interface CopyFileResponseData {
 		};
 	};
 }
+
+interface RecordResponseData {
+	code: number,
+	data: {
+		has_more: boolean;
+		items: {
+			fields: Record<string, string>;
+			id: string;
+			record_id: string;
+		}[];
+		page_token: string;
+		total: number;
+	};
+}

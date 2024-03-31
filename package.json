@@ -334,6 +334,10 @@
 			{
 				"command": "dota2tools.import_localization",
 				"title": "导入本地化文本"
+			},
+			{
+				"command": "dota2tools.export_record",
+				"title": "下载多维表格文本"
 			}
 		],
 		"menus": {
@@ -708,6 +712,22 @@
 							"Branch Folder": {
 								"type": "string",
 								"description": "dota2-tools.A4.branch"
+							},
+							"App Token": {
+								"type": "string",
+								"description": "dota2-tools.A4.app_token"
+							},
+							"Schinese ID": {
+								"type": "string",
+								"description": "dota2-tools.A4.schinese_id"
+							},
+							"English ID": {
+								"type": "string",
+								"description": "dota2-tools.A4.english_id"
+							},
+							"Russian ID": {
+								"type": "string",
+								"description": "dota2-tools.A4.russian_id"
 							}
 						},
 						"additionalProperties": false,
