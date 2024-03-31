@@ -291,7 +291,7 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 				}
 				const exportText = `"lang"
 {
-	"Language"		${language}
+	"Language"		"${language}"
 	"Tokens"
 	{
 ${insert}
