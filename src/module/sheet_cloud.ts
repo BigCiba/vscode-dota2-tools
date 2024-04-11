@@ -287,7 +287,9 @@ export async function sheetCloudInit(context: vscode.ExtensionContext) {
 				let insert = "";
 				for (const key in result) {
 					const element = result[key];
-					insert += `\t\t"${key}"	"${element}"\n`;
+					if (element != undefined) {
+						insert += `\t\t"${key}"	"${element}"\n`;
+					}
 				}
 				const exportText = `"lang"
 {
