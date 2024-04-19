@@ -1,5 +1,71 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2024.04.19
+## Lua Server
+- ❌ API: <font color='#00D6AA'>CBaseModelEntity</font> <font color='#dcdcaa'>SetLightGroup</font>(<font color='#569cd6'>pLightGroup</font>: <font color='#c586c0'>string</font>): <font color='#c586c0'>void</font>
+- ✨ API: <font color='#00D6AA'>CDOTABaseGameMode</font> <font color='#dcdcaa'>SetLuaGameMode</font>(<font color='#569cd6'>hScript</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>void</font> 
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC_Creature</font> <font color='#dcdcaa'>SetEconItemGroup</font>(<font color='#569cd6'>nGroup</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> Switches visible econ item group.
+- ✨ API: <font color='#00D6AA'>CDOTA_Item_Physical</font> <font color='#dcdcaa'>IsLoot</font>(): <font color='#c586c0'>bool</font> Is this drop flagged as a loot drop?
+- ✨ API: <font color='#00D6AA'>CDOTA_Item_Physical</font> <font color='#dcdcaa'>SetIsLoot</font>(<font color='#569cd6'>bIsLoot</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font> Set if this drop is flagged as a loot drop
+- ✨ API: <font color='#00D6AA'>CDOTA_Unit_Courier</font> <font color='#dcdcaa'>RespawnCourier</font>(): <font color='#c586c0'>void</font> Respawn the courier.
+- ❌ API: <font color='#00D6AA'>CBaseModelEntity</font> <font color='#dcdcaa'>SetLightGroup</font>(<font color='#569cd6'>pLightGroup</font>: <font color='#c586c0'>string</font>): <font color='#c586c0'>void</font>
+- ✨ API: <font color='#00D6AA'>CDOTABaseGameMode</font> <font color='#dcdcaa'>SetLuaGameMode</font>(<font color='#569cd6'>hScript</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>void</font> 
+- ❌ API: <font color='#00D6AA'>CDOTA_AghsFort_Ability_ArcWardenBoss_TempestDouble</font> <font color='#dcdcaa'>SetNumDoubles</font>(<font color='#569cd6'>nDoubles</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font>
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC_Creature</font> <font color='#dcdcaa'>SetEconItemGroup</font>(<font color='#569cd6'>nGroup</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> Switches visible econ item group.
+- ✨ API: <font color='#00D6AA'>CDOTA_Item_Physical</font> <font color='#dcdcaa'>IsLoot</font>(): <font color='#c586c0'>bool</font> Is this drop flagged as a loot drop?
+- ✨ API: <font color='#00D6AA'>CDOTA_Item_Physical</font> <font color='#dcdcaa'>SetIsLoot</font>(<font color='#569cd6'>bIsLoot</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font> Set if this drop is flagged as a loot drop
+- ✨ API: <font color='#00D6AA'>CDOTA_Unit_Courier</font> <font color='#dcdcaa'>RespawnCourier</font>(): <font color='#c586c0'>void</font> Respawn the courier.
+- ❌ API: <font color='#00D6AA'>CDOTA_Unit_Diretide_Portal</font> <font color='#dcdcaa'>GetPartnerPortal</font>(): <font color='#c586c0'>handle</font>
+- ❌ API: <font color='#00D6AA'>CDOTA_Unit_Diretide_Portal</font> <font color='#dcdcaa'>ResetPortal</font>(): <font color='#c586c0'>void</font>
+- ❌ API: <font color='#00D6AA'>CDOTA_Unit_Diretide_Portal</font> <font color='#dcdcaa'>SetInvasionRuneType</font>(<font color='#569cd6'>nRuneType</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font>
+- ❌ API: <font color='#00D6AA'>CDOTA_Unit_Diretide_Portal</font> <font color='#dcdcaa'>SetPartnerPortal</font>(<font color='#569cd6'>hPortal</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>void</font>
+- ❌ API: <font color='#00D6AA'>CDOTA_Unit_Diretide_Portal</font> <font color='#dcdcaa'>SetPortalActive</font>(<font color='#569cd6'>bActive</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_FadeIn</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_FadeOut</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_LetterboxOff</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_LetterboxOn</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Lock</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Pitch</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Position</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_PositionPlayerHero</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_ResetDefault</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_SpecificPlayer</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Unlock</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Yaw</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Zoom</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTASlotType_t</font> <font color='#9cdcfe'>DOTA_LOADOUT_TYPE_ANCIENT</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_SKIP_FOR_KEYBINDS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_UNIT_TARGET_TYPE</font> <font color='#9cdcfe'>DOTA_UNIT_TARGET_HEROES_AND_CREEPS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_MODIFIER_REMOVED</font> <font color='#dcdcaa'>OnModifierRemoved</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_MUTE_DAMAGE_ABILITIES</font> <font color='#dcdcaa'>OnMuteDamageAbilities</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_TAKEDAMAGE_POST_UNAVOIDABLE_BLOCK</font> <font color='#dcdcaa'>OnTakeDamagePostUnavoidableBlock</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_CRIT</font> <font color='#dcdcaa'>GetSuppressCrit</font>
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_DO_NOT_SINK_AFTER_DEATH</font> <font color='#dcdcaa'>GetModifierDoNotSinkAfterDeath</font>~~
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_OVERRIDE_ANIMATION_WEIGHT</font> <font color='#dcdcaa'>GetOverrideAnimationWeight</font>~~
+## Lua Client
+- ❌ API: <font color='#00D6AA'>C_DOTA_AghsFort_Ability_ArcWardenBoss_TempestDouble</font> <font color='#dcdcaa'>SetNumDoubles</font>(<font color='#569cd6'>nDoubles</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_FadeIn</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_FadeOut</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_LetterboxOff</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_LetterboxOn</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Lock</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Pitch</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Position</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_PositionPlayerHero</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_ResetDefault</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_SpecificPlayer</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Unlock</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Yaw</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTACustomCameraEventFlags_t</font> <font color='#9cdcfe'>k_ECustomCameraEventFlags_Zoom</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_SKIP_FOR_KEYBINDS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_UNIT_TARGET_TYPE</font> <font color='#9cdcfe'>DOTA_UNIT_TARGET_HEROES_AND_CREEPS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_MODIFIER_REMOVED</font> <font color='#dcdcaa'>OnModifierRemoved</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_MUTE_DAMAGE_ABILITIES</font> <font color='#dcdcaa'>OnMuteDamageAbilities</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_TAKEDAMAGE_POST_UNAVOIDABLE_BLOCK</font> <font color='#dcdcaa'>OnTakeDamagePostUnavoidableBlock</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_CRIT</font> <font color='#dcdcaa'>GetSuppressCrit</font>
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_DO_NOT_SINK_AFTER_DEATH</font> <font color='#dcdcaa'>GetModifierDoNotSinkAfterDeath</font>~~
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_OVERRIDE_ANIMATION_WEIGHT</font> <font color='#dcdcaa'>GetOverrideAnimationWeight</font>~~
+
 # 2023.12.15
 ## Lua Server
 - ✨ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>ForceSetFrozenCooldown</font>(<font color='#569cd6'>nValue</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> 
