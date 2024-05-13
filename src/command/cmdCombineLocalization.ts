@@ -69,15 +69,18 @@ async function readLanguage(path: string): Promise<string> {
 		const [fileName, fileType] = files[i];
 		if (Number(fileType) === vscode.FileType.File) {
 			let document: vscode.TextDocument = await vscode.workspace.openTextDocument(path + '/' + fileName);
+			const langContent = document.getText();
+			const modifiedContent = langContent.replace(/^"lang"\s*{\s*"Language"\s*"[^"]*"\s*"Tokens"\s*{\s*/, '').replace(/\s*}\s*}$/, '');
 			lang += "\t\t//" + path.split("localization/")[1] + '/' + fileName + os.EOL;
-			for (let line: number = 0; line < document.lineCount; line++) {
-				const textLine: vscode.TextLine = document.lineAt(line);
-				const charStart: number = textLine.firstNonWhitespaceCharacterIndex;
-				let lineText: string = document.lineAt(line).text;
-				lineText = lineText.substr(charStart, lineText.length);
+			lang += modifiedContent + os.EOL;
+			// for (let line: number = 0; line < document.lineCount; line++) {
+			// 	const textLine: vscode.TextLine = document.lineAt(line);
+			// 	const charStart: number = textLine.firstNonWhitespaceCharacterIndex;
+			// 	let lineText: string = document.lineAt(line).text;
+			// 	lineText = lineText.substr(charStart, lineText.length);
 
-				lang += '\t\t' + lineText + os.EOL;
-			}
+			// 	lang += '\t\t' + lineText + os.EOL;
+			// }
 			lang += os.EOL;
 		} else if (Number(fileType) === vscode.FileType.Directory) {
 			let promise: string = await readLanguage(path + '/' + fileName);
