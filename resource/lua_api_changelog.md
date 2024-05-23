@@ -1,5 +1,129 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2024.05.23
+## Lua Server
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>DebugCreateHeroWithVariant</font>(<font color='#569cd6'>handle_1</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>string_2</font>: <font color='#c586c0'>string</font>, <font color='#569cd6'>int_3</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>int_4</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>bool_5</font>: <font color='#c586c0'>bool</font>, <font color='#569cd6'>handle_6</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>int</font> Creates a unit with a specified hero variant, controllable by the specified player.
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>ConsumeItem</font>(<font color='#569cd6'>hItem</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>void</font> Consume the item, deleting it from the inventory and granting the hero the specified bonuses.
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetHeroFacetID</font>(): <font color='#c586c0'>unsigned</font> 
+- 🖊️ API: <font color='#00D6AA'>CDOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetIntellect</font>(<font color='#569cd6'>bSkipNoConsume</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>float</font> ~~<font color='#dcdcaa'>GetIntellect</font>(): <font color='#c586c0'>float</font>~~
+- ✨ API: <font color='#00D6AA'></font> <font color='#dcdcaa'>DebugCreateHeroWithVariant</font>(<font color='#569cd6'>handle_1</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>string_2</font>: <font color='#c586c0'>string</font>, <font color='#569cd6'>int_3</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>int_4</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>bool_5</font>: <font color='#c586c0'>bool</font>, <font color='#569cd6'>handle_6</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>int</font> Creates a unit with a specified hero variant, controllable by the specified player.
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>ConsumeItem</font>(<font color='#569cd6'>hItem</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>void</font> Consume the item, deleting it from the inventory and granting the hero the specified bonuses.
+- ✨ API: <font color='#00D6AA'>CDOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetHeroFacetID</font>(): <font color='#c586c0'>unsigned</font> 
+- 🖊️ API: <font color='#00D6AA'>CDOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetIntellect</font>(<font color='#569cd6'>bSkipNoConsume</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>float</font> ~~<font color='#dcdcaa'>GetIntellect</font>(): <font color='#c586c0'>float</font>~~
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_INNATE_UI</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_INVALID_ORDERS</font> <font color='#9cdcfe'>DOTA_INVALID_ORDER_ITEM_CANNOT_BE_CONSUMED</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_CHAOS_KNIGHT_INNATE_REFUND</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_HOODWINK_REDIRECT</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_PANGOLIER_PARRY</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_SNAPFIRE_GLANCING</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> ~~<font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_ANTIMAGE_SILENT</font> <font color='#dcdcaa'></font>~~
+- ✨ Enum: <font color='#00D6AA'>EDOTA_ModifyXP_Reason</font> <font color='#9cdcfe'>DOTA_ModifyXP_CatchUp</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>EDOTA_ModifyXP_Reason</font> <font color='#9cdcfe'>DOTA_ModifyXP_HeroAbility</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_DAY_STARTED</font> <font color='#dcdcaa'>OnDayStarted</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_HERO_BEGIN_DYING</font> <font color='#dcdcaa'>OnHeroBeginDying</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ABILITY_POINTS</font> <font color='#dcdcaa'>GetModifierAbilityPoints</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ADDITIONAL_NEUTRAL_ITEM_DROPS</font> <font color='#dcdcaa'>GetModifierAdditionalNutralItemDrops</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_AOE_BONUS_CONSTANT_STACKING</font> <font color='#dcdcaa'>GetModifierAoEBonusConstantStacking</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ATTACKSPEED_ABSOLUTE_MAX</font> <font color='#dcdcaa'>GetModifierAttackSpeedAbsoluteMax</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ATTACK_HEIGHT_BONUS</font> <font color='#dcdcaa'>GetModifierAttackHeightBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_ARMOR_PER_AGI_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_HP_REGEN_PER_STR_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_MP_REGEN_PER_INT_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_MRES_PER_INT_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_AGILITY</font> <font color='#dcdcaa'>GetModifierBecomeAgility</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_INTELLIGENCE</font> <font color='#dcdcaa'>GetModifierBecomeIntelligence</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_STRENGTH</font> <font color='#dcdcaa'>GetModifierBecomeStrength</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BONUS_LOTUS_HEAL</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BONUS_UPHILL_MISS_CHANCE</font> <font color='#dcdcaa'>GetModifierBonusUphillMissChance</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BUYBACK_PENALTY_PERCENT</font> <font color='#dcdcaa'>GetModifierBuybackPenaltyPercent</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CONVERT_MANA_COST_TO_HEALTH_COST</font> <font color='#dcdcaa'>GetModifierConvertManaCostToHealthCost</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_CHANCE</font> <font color='#dcdcaa'>GetModifierCreateBonusIllusionChance</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_COUNT</font> <font color='#dcdcaa'>GetModifierCreateBonusIllusionCount</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CREEP_DENY_PERCENT</font> <font color='#dcdcaa'>GetModifierCreepDenyPercent</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_DISASSEMBLE_ANYTHING</font> <font color='#dcdcaa'>GetModifierDisassembleAnything</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FIXED_MANA_REGEN</font> <font color='#dcdcaa'>GetModifierFixedManaRegen</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FORCE_MAX_MANA</font> <font color='#dcdcaa'>GetModifierForceMaxMana</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FOW_TEAM</font> <font color='#dcdcaa'>GetModifierFoWTeam</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HAS_BONUS_NEUTRAL_ITEM_CHOICE</font> <font color='#dcdcaa'>GetModifierHasBonusNeutralItemChoice</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HEROFACET_OVERRIDE</font> <font color='#dcdcaa'>GetModifierHeroFacetOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HP_REGEN_MULTIPLIER_PRE_AMPLIFICATION</font> <font color='#dcdcaa'>GetModifierHPRegenMultiplierPreAmplification</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ITEM_SELLBACK_COST</font> <font color='#dcdcaa'>GetModifierItemSellbackCost</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_KILL_STREAK_BONUS_GOLD_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierKillStreakBonusGoldPercentage</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MISS_PERCENTAGE_TARGET</font> <font color='#dcdcaa'>GetModifierMiss_Percentage_Target</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_NO_FREE_TP_SCROLL_ON_DEATH</font> <font color='#dcdcaa'>GetModifierNoFreeTPScrollOnDeath</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PACK_RAT</font> <font color='#dcdcaa'>GetModifierIsPackRat</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PERCENTAGE_DEATHGOLDCOST</font> <font color='#dcdcaa'>GetModifierPercentageDeathGoldCost</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PROJECTILE_SPEED_TARGET</font> <font color='#dcdcaa'>GetModifierProjectileSpeedTarget</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PSEUDORANDOM_BONUS</font> <font color='#dcdcaa'>GetModofierPropertyPseudoRandomBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SHARE_XPRUNE</font> <font color='#dcdcaa'>GetModifierShareXPRune</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SKIP_ATTACK_REGULATOR</font> <font color='#dcdcaa'>GetSkipAttackRegulator</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE_STACKING</font> <font color='#dcdcaa'>GetModifierSlowResistance_Stacking</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE_UNIQUE</font> <font color='#dcdcaa'>GEtModifierSlowResistance_Unique</font>
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_RAT_PACK</font> <font color='#dcdcaa'>GetModifierIsRatPack</font>~~
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE</font> <font color='#dcdcaa'>GetModifierSlowResistance</font>~~
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_ATTACKS_ARE_MELEE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_ATTACKS_DONT_REVEAL</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_CAN_USE_BACKPACK_ITEMS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_CASTS_IGNORE_CHANNELING</font> <font color='#dcdcaa'></font>
+## Lua Client
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetHeroFacetID</font>(): <font color='#c586c0'>unsigned</font> 
+- 🖊️ API: <font color='#00D6AA'>C_DOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetIntellect</font>(<font color='#569cd6'>bSkipNoConsume</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>float</font> ~~<font color='#dcdcaa'>GetIntellect</font>(): <font color='#c586c0'>float</font>~~
+- ✨ API: <font color='#00D6AA'>C_DOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetHeroFacetID</font>(): <font color='#c586c0'>unsigned</font> 
+- 🖊️ API: <font color='#00D6AA'>C_DOTA_BaseNPC_Hero</font> <font color='#dcdcaa'>GetIntellect</font>(<font color='#569cd6'>bSkipNoConsume</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>float</font> ~~<font color='#dcdcaa'>GetIntellect</font>(): <font color='#c586c0'>float</font>~~
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_INNATE_UI</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_INVALID_ORDERS</font> <font color='#9cdcfe'>DOTA_INVALID_ORDER_ITEM_CANNOT_BE_CONSUMED</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_CHAOS_KNIGHT_INNATE_REFUND</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_HOODWINK_REDIRECT</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_PANGOLIER_PARRY</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_SNAPFIRE_GLANCING</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> ~~<font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_ANTIMAGE_SILENT</font> <font color='#dcdcaa'></font>~~
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_DAY_STARTED</font> <font color='#dcdcaa'>OnDayStarted</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_HERO_BEGIN_DYING</font> <font color='#dcdcaa'>OnHeroBeginDying</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ABILITY_POINTS</font> <font color='#dcdcaa'>GetModifierAbilityPoints</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ADDITIONAL_NEUTRAL_ITEM_DROPS</font> <font color='#dcdcaa'>GetModifierAdditionalNutralItemDrops</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_AOE_BONUS_CONSTANT_STACKING</font> <font color='#dcdcaa'>GetModifierAoEBonusConstantStacking</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ATTACKSPEED_ABSOLUTE_MAX</font> <font color='#dcdcaa'>GetModifierAttackSpeedAbsoluteMax</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ATTACK_HEIGHT_BONUS</font> <font color='#dcdcaa'>GetModifierAttackHeightBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_ARMOR_PER_AGI_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_HP_REGEN_PER_STR_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_MP_REGEN_PER_INT_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASE_MRES_PER_INT_BONUS_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_AGILITY</font> <font color='#dcdcaa'>GetModifierBecomeAgility</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_INTELLIGENCE</font> <font color='#dcdcaa'>GetModifierBecomeIntelligence</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BECOME_STRENGTH</font> <font color='#dcdcaa'>GetModifierBecomeStrength</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BONUS_LOTUS_HEAL</font> <font color='#dcdcaa'>GetModifierBonusLotusHeal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BONUS_UPHILL_MISS_CHANCE</font> <font color='#dcdcaa'>GetModifierBonusUphillMissChance</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BUYBACK_PENALTY_PERCENT</font> <font color='#dcdcaa'>GetModifierBuybackPenaltyPercent</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CONVERT_MANA_COST_TO_HEALTH_COST</font> <font color='#dcdcaa'>GetModifierConvertManaCostToHealthCost</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_CHANCE</font> <font color='#dcdcaa'>GetModifierCreateBonusIllusionChance</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_COUNT</font> <font color='#dcdcaa'>GetModifierCreateBonusIllusionCount</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CREEP_DENY_PERCENT</font> <font color='#dcdcaa'>GetModifierCreepDenyPercent</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_DISASSEMBLE_ANYTHING</font> <font color='#dcdcaa'>GetModifierDisassembleAnything</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FIXED_MANA_REGEN</font> <font color='#dcdcaa'>GetModifierFixedManaRegen</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FORCE_MAX_MANA</font> <font color='#dcdcaa'>GetModifierForceMaxMana</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FOW_TEAM</font> <font color='#dcdcaa'>GetModifierFoWTeam</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HAS_BONUS_NEUTRAL_ITEM_CHOICE</font> <font color='#dcdcaa'>GetModifierHasBonusNeutralItemChoice</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HEROFACET_OVERRIDE</font> <font color='#dcdcaa'>GetModifierHeroFacetOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HP_REGEN_MULTIPLIER_PRE_AMPLIFICATION</font> <font color='#dcdcaa'>GetModifierHPRegenMultiplierPreAmplification</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_ITEM_SELLBACK_COST</font> <font color='#dcdcaa'>GetModifierItemSellbackCost</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_KILL_STREAK_BONUS_GOLD_PERCENTAGE</font> <font color='#dcdcaa'>GetModifierKillStreakBonusGoldPercentage</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MISS_PERCENTAGE_TARGET</font> <font color='#dcdcaa'>GetModifierMiss_Percentage_Target</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_NO_FREE_TP_SCROLL_ON_DEATH</font> <font color='#dcdcaa'>GetModifierNoFreeTPScrollOnDeath</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PACK_RAT</font> <font color='#dcdcaa'>GetModifierIsPackRat</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PERCENTAGE_DEATHGOLDCOST</font> <font color='#dcdcaa'>GetModifierPercentageDeathGoldCost</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PROJECTILE_SPEED_TARGET</font> <font color='#dcdcaa'>GetModifierProjectileSpeedTarget</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PSEUDORANDOM_BONUS</font> <font color='#dcdcaa'>GetModofierPropertyPseudoRandomBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SHARE_XPRUNE</font> <font color='#dcdcaa'>GetModifierShareXPRune</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SKIP_ATTACK_REGULATOR</font> <font color='#dcdcaa'>GetSkipAttackRegulator</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE_STACKING</font> <font color='#dcdcaa'>GetModifierSlowResistance_Stacking</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE_UNIQUE</font> <font color='#dcdcaa'>GEtModifierSlowResistance_Unique</font>
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_RAT_PACK</font> <font color='#dcdcaa'>GetModifierIsRatPack</font>~~
+- ❌ Enum: <font color='#00D6AA'>modifierfunction</font> ~~<font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE</font> <font color='#dcdcaa'>GetModifierSlowResistance</font>~~
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_ATTACKS_ARE_MELEE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_ATTACKS_DONT_REVEAL</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_CAN_USE_BACKPACK_ITEMS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_CASTS_IGNORE_CHANNELING</font> <font color='#dcdcaa'></font>
+
 # 2024.04.19
 ## Lua Server
 - ❌ API: <font color='#00D6AA'>CBaseModelEntity</font> <font color='#dcdcaa'>SetLightGroup</font>(<font color='#569cd6'>pLightGroup</font>: <font color='#c586c0'>string</font>): <font color='#c586c0'>void</font>
