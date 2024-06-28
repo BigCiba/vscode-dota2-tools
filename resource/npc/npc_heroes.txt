@@ -138,7 +138,6 @@
 		"HealthBarOffset"		"200" 		
 		"IdleExpression"		"scenes/default_idle.vcd"
 		"IdleSoundLoop"				""
-		"AbilityDraftDisabled"		"0"
 		"ARDMDisabled"		"0"
 		"HUD"
 		{
@@ -165,6 +164,7 @@
 			}
 		}
 	}
+
 	//=================================================================================================================
 	// HERO: Antimage
 	//=================================================================================================================
@@ -222,14 +222,38 @@
 		"Ability4"		"antimage_mana_overload"
 		"Ability5"		"antimage_counterspell_ally"
 		"Ability6"		"antimage_mana_void"
-		"Ability10"		"special_bonus_strength_9"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"antimage_mana_break"
+			"Ability2"	"antimage_blink"
+			"Ability3"	"antimage_counterspell"
+			"Ability4"	"antimage_mana_void"
+		}
+
+		"Ability10"		"special_bonus_unique_antimage_4"
 		"Ability11"		"special_bonus_unique_antimage_manavoid_aoe"
 		"Ability12"		"special_bonus_unique_antimage_7"
-		"Ability13"		"special_bonus_unique_antimage"
+		"Ability13"		"special_bonus_unique_antimage_5"
 		"Ability14"		"special_bonus_unique_antimage_6"
-		"Ability15"		"special_bonus_unique_antimage_3"
-		"Ability16"		"special_bonus_unique_antimage_4"
+		"Ability15"		"special_bonus_unique_antimage"
+		"Ability16"		"special_bonus_unique_antimage_3"
 		"Ability17"		"special_bonus_unique_antimage_2"
+		"Facets"
+		{
+			"antimage_magebanes_mirror" 
+			{
+				"Icon"				"ricochet"
+				"Color"				"Purple"
+				"GradientID"		"1"
+			}
+			"antimage_mana_thirst" 
+			{
+				"Icon"				"mana"
+				"Color"				"Blue"
+				"GradientID"		"3"
+			}
+		}
 
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -536,14 +560,49 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"axe_culling_blade"
+		"Ability7"		"axe_coat_of_blood"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"axe_berserkers_call"
+			"Ability2"	"axe_battle_hunger"
+			"Ability3"	"axe_counter_helix"
+			"Ability4"	"axe_culling_blade"
+		}
+
 		"Ability10"		"special_bonus_unique_axe_culling_blade_speed_duration"
 		"Ability11"		"special_bonus_unique_axe_8"
 		"Ability12"		"special_bonus_unique_axe_6"
 		"Ability13"		"special_bonus_unique_axe_4"
 		"Ability14"		"special_bonus_unique_axe_5"
-		"Ability15"		"special_bonus_unique_axe_3"
+		"Ability15"		"special_bonus_unique_axe_7"
 		"Ability16"		"special_bonus_unique_axe_2"
 		"Ability17"		"special_bonus_unique_axe"
+		
+		"Facets"
+		{
+			"axe_one_man_army"
+			{
+				"Icon"				"strength"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"axe_one_man_army"
+					}
+				}
+			}
+			"axe_call_out"
+			{
+				"Icon"				"armor"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+		}
+		
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"30"
@@ -749,7 +808,7 @@
 				"17"		""
 				"18"		"axe_culling_blade"
 				"19"		""
-				"20"		"special_bonus_unique_axe_3"
+				"20"		"special_bonus_unique_axe_5"
 				"21"		""
 				"22"		""
 				"23"		""
@@ -830,6 +889,16 @@
 		"Ability5"		"generic_hidden"
 		"Ability6"		"bane_fiends_grip"
 		"Ability7"		"bane_nightmare_end"
+		"Ability8"		"bane_ichor_of_nyctasha"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"bane_enfeeble"
+			"Ability2"	"bane_brain_sap"
+			"Ability3"	"bane_nightmare"
+			"Ability4"	"bane_fiends_grip"
+		}
+
 		"Ability10"		"special_bonus_unique_bane_8"
 		"Ability11"		"special_bonus_unique_bane_11"
 		"Ability12"		"special_bonus_unique_bane_10"
@@ -838,6 +907,23 @@
 		"Ability15"		"special_bonus_movement_speed_30"
 		"Ability16"		"special_bonus_unique_bane_2"
 		"Ability17"		"special_bonus_unique_bane_3"
+		
+		"Facets"
+		{
+			"bane_dream_stalker" 
+			{
+				"Icon"				"damage"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+			"bane_sleepwalk" 
+			{
+				"Icon"				"movement"
+				"Color"				"Purple"
+				"GradientID"		"1"
+			}
+		}
+		
 		"AbilityDraftIgnoreCount"		"7"
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -851,11 +937,11 @@
 		"ProjectileSpeed"		"900"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_ALL"
 		"AttributeBaseStrength"		"23"
-		"AttributeStrengthGain"		"2.500000"
+		"AttributeStrengthGain"		"2.700000"
 		"AttributeBaseIntelligence"		"23"
-		"AttributeIntelligenceGain"		"2.500000"
+		"AttributeIntelligenceGain"		"2.700000"
 		"AttributeBaseAgility"		"23"
-		"AttributeAgilityGain"		"2.500000"
+		"AttributeAgilityGain"		"2.700000"
 		"MovementSpeed"		"305"
 		"VisionNighttimeRange"		"1200"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -1066,8 +1152,17 @@
 		"Ability2"		"bloodseeker_blood_bath"
 		"Ability3"		"bloodseeker_thirst"
 		"Ability4"		"bloodseeker_blood_mist"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"bloodseeker_sanguivore"
 		"Ability6"		"bloodseeker_rupture"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"bloodseeker_bloodrage"
+			"Ability2"	"bloodseeker_blood_bath"
+			"Ability3"	"bloodseeker_thirst"
+			"Ability4"	"bloodseeker_rupture"
+		}
+
 		"Ability10"		"special_bonus_unique_bloodseeker_5"
 		"Ability11"		"special_bonus_unique_bloodseeker_6"
 		"Ability12"		"special_bonus_unique_bloodseeker_7"
@@ -1076,6 +1171,23 @@
 		"Ability15"		"special_bonus_spell_lifesteal_15"
 		"Ability16"		"special_bonus_unique_bloodseeker_rupture_charges"
 		"Ability17"		"special_bonus_unique_bloodseeker_4"
+		
+		"Facets"
+		{
+			"bloodseeker_arterial_spray" 
+			{
+				"Icon"				"movement"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+			"bloodseeker_bloodrush" 
+			{
+				"Icon"				"speed"
+				"Color"				"Gray"
+				"GradientID"		"1"
+			}
+		}
+		
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"35"
@@ -1089,9 +1201,9 @@
 		"AttributeStrengthGain"		"2.700000"
 		"AttributeBaseIntelligence"		"17"
 		"AttributeIntelligenceGain"		"2.0"
-		"AttributeBaseAgility"		"22"
+		"AttributeBaseAgility"		"24"
 		"AttributeAgilityGain"		"3.100000"
-		"MovementSpeed"		"300"
+		"MovementSpeed"		"285"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"particle_folder"		"particles/units/heroes/hero_bloodseeker"
 		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_bloodseeker.vsndevts"
@@ -1358,10 +1470,19 @@
 		"Ability2"		"crystal_maiden_frostbite"
 		"Ability3"		"crystal_maiden_brilliance_aura"
 		"Ability4"		"crystal_maiden_crystal_clone"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"crystal_maiden_blueheart_floe"
 		"Ability6"		"crystal_maiden_freezing_field"
 		"Ability7"		"crystal_maiden_freezing_field_stop"
-		"Ability10"		"special_bonus_hp_250"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"crystal_maiden_crystal_nova"
+			"Ability2"	"crystal_maiden_frostbite"
+			"Ability3"	"crystal_maiden_brilliance_aura"
+			"Ability4"	"crystal_maiden_freezing_field"
+		}
+
+		"Ability10"		"special_bonus_hp_200"
 		"Ability11"		"special_bonus_unique_crystal_maiden_6"
 		"Ability12"		"special_bonus_unique_crystal_maiden_frostbite_castrange"
 		"Ability13"		"special_bonus_unique_crystal_maiden_5"
@@ -1369,6 +1490,24 @@
 		"Ability15"		"special_bonus_unique_crystal_maiden_3"
 		"Ability16"		"special_bonus_unique_crystal_maiden_1"
 		"Ability17"		"special_bonus_unique_crystal_maiden_2"
+		
+		"Facets"
+		{
+			"crystal_maiden_frozen_expanse"
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Gray"
+				"GradientID"		"1"
+			}
+
+			"crystal_maiden_cold_comfort"
+			{
+				"Icon"				"mana"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
+		
  
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -1393,7 +1532,7 @@
 		"AttributeIntelligenceGain"		"3.300000"
 		"AttributeBaseAgility"		"16"
 		"AttributeAgilityGain"		"1.600000"
-		"StatusManaRegen"	"0.5"
+		"StatusManaRegen"	"0"
 		"MovementSpeed"		"280"
 		"HasAggressiveStance"		"1"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -1731,16 +1870,50 @@
 		"Ability2"		"drow_ranger_wave_of_silence"
 		"Ability3"		"drow_ranger_multishot"
 		"Ability4"		"drow_ranger_glacier"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"drow_ranger_trueshot"
 		"Ability6"		"drow_ranger_marksmanship"
-		"Ability10"		"special_bonus_unique_drow_ranger_gust_selfmovespeed"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"drow_ranger_frost_arrows"
+			"Ability2"	"drow_ranger_wave_of_silence"
+			"Ability3"	"drow_ranger_multishot"
+			"Ability4"	"drow_ranger_marksmanship"
+		}
+
+		"Ability10"		"special_bonus_unique_drow_ranger_7"
 		"Ability11"		"special_bonus_unique_drow_ranger_2"
 		"Ability12"		"special_bonus_lifesteal_20"
 		"Ability13"		"special_bonus_unique_drow_ranger_6"
 		"Ability14"		"special_bonus_unique_drow_ranger_1"
-		"Ability15"		"special_bonus_unique_drow_ranger_7"
+		"Ability15"		"special_bonus_unique_drow_ranger_gust_selfmovespeed"
 		"Ability16"		"special_bonus_unique_drow_ranger_3"
 		"Ability17"		"special_bonus_unique_drow_ranger_8"
+
+		"Facets"
+		{
+			"drow_ranger_high_ground"
+			{
+				"Icon"				"damage"
+				"Color"				"Gray"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"drow_ranger_vantage_point"
+					}
+				}
+			}
+			"drow_ranger_sidestep" 
+			{
+				"Icon"				"multi_arrow"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}
+		}
+
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"29"
@@ -1761,7 +1934,7 @@
 		"AttributeAgilityGain"		"2.900000"
 		"StatusHealthRegen"		"0.25"
 		"VisionDaytimeRange"		"1800"
-		"MovementSpeed"		"300"
+		"MovementSpeed"		"310"
 		"MovementTurnRate"		"0.7000"
 		"HasAggressiveStance"		"0"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -2040,14 +2213,38 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"earthshaker_echo_slam"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"earthshaker_fissure"
+			"Ability2"	"earthshaker_enchant_totem"
+			"Ability3"	"earthshaker_aftershock"
+			"Ability4"	"earthshaker_echo_slam"
+		}
+
 		"Ability10"		"special_bonus_attack_base_damage_30"
 		"Ability11"		"special_bonus_unique_earthshaker_4"
 		"Ability12"		"special_bonus_unique_earthshaker_3"
 		"Ability13"		"special_bonus_unique_earthshaker_6"
 		"Ability14"		"special_bonus_unique_earthshaker_2"
 		"Ability15"		"special_bonus_unique_earthshaker_totem_damage"
-		"Ability16"		"special_bonus_unique_earthshaker_5"
+		"Ability16"		"special_bonus_unique_earthshaker_echo_cd"
 		"Ability17"		"special_bonus_unique_earthshaker"
+		"Facets"
+		{
+			"earthshaker_tectonic_buildup" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+			"earthshaker_slugger" 
+			{
+				"Icon"				"movement"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+		}
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"27"
@@ -2310,8 +2507,17 @@
 		"Ability2"		"juggernaut_healing_ward"
 		"Ability3"		"juggernaut_blade_dance"
 		"Ability4"		"juggernaut_swift_slash"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"juggernaut_duelist"
 		"Ability6"		"juggernaut_omni_slash"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"juggernaut_blade_fury"
+			"Ability2"	"juggernaut_healing_ward"
+			"Ability3"	"juggernaut_blade_dance"
+			"Ability4"	"juggernaut_omni_slash"
+		}
+
 		"Ability10"		"special_bonus_unique_juggernaut_4"
 		"Ability11"		"special_bonus_unique_juggernaut_3"
 		"Ability12"		"special_bonus_unique_juggernaut_5"
@@ -2319,6 +2525,31 @@
 		"Ability14"		"special_bonus_unique_juggernaut_blade_dance_lifesteal"
 		"Ability15"		"special_bonus_unique_juggernaut_blade_fury_cooldown"
 		"Ability16"		"special_bonus_unique_juggernaut_omnislash_duration"
+				
+		"Facets"
+		{
+			"juggernaut_bladestorm" 
+			{
+				"Icon"				"spinning"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+			"juggernaut_agigain"
+			{
+				"Icon"				"agility"
+				"Color"				"Red"
+				"GradientID"		"2"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"juggernaut_bladeform"
+					}
+				}
+			}
+		}
+
 		"Ability17"		"special_bonus_unique_juggernaut_2"
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
@@ -2338,7 +2569,7 @@
 		"ProjectileSpeed"		"0"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_AGILITY"
 		"AttributeBaseStrength"		"20"
-		"AttributeStrengthGain"		"2.2000"
+		"AttributeStrengthGain"		"2.0000"
 		"AttributeBaseIntelligence"		"14"
 		"AttributeIntelligenceGain"		"1.400000"
 		"AttributeBaseAgility"		"34"
@@ -2604,9 +2835,18 @@
 		"Ability1"		"mirana_starfall"
 		"Ability2"		"mirana_arrow"
 		"Ability3"		"mirana_leap"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"mirana_selemenes_faithful"
 		"Ability5"		"generic_hidden"
-		"Ability6"		"mirana_invis"
+		"Ability6"		"generic_hidden"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"mirana_starfall"
+			"Ability2"		"mirana_arrow"
+			"Ability3"		"mirana_leap"
+			"Ability6"		"mirana_invis"
+		}
+
 		"Ability10"		"special_bonus_unique_mirana_3"
 		"Ability11"		"special_bonus_unique_mirana_6"
 		"Ability12"		"special_bonus_unique_mirana_5"
@@ -2615,6 +2855,43 @@
 		"Ability15"		"special_bonus_20_crit_2"
 		"Ability16"		"special_bonus_unique_mirana_2"
 		"Ability17"		"special_bonus_unique_mirana_7"
+		"Facets"
+		{
+			"mirana_moonlight"
+			{
+				"Icon"				"moon"
+				"Color"				"Blue"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"mirana_invis"
+						"AbilityIndex"	"5"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+			
+			"mirana_sunlight"
+			{
+				"Icon"				"sun"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"mirana_solar_flare"
+						"AbilityIndex"	"5"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+		}
+
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"-5"
 		"AttackDamageMax"		"-1"
@@ -2633,7 +2910,7 @@
 		"AttributeBaseAgility"		"24"
 		"AttributeAgilityGain"		"2.5"
 		"StatusManaRegen"	"0.4"
-		"MovementSpeed"		"290"
+		"MovementSpeed"		"285"
 		"HasAggressiveStance"		"1"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"particle_folder"		"particles/units/heroes/hero_mirana"
@@ -2964,7 +3241,6 @@
 		"NameAliases"		"sf,nevermore"
 		"workshop_guide_name"		"Shadow Fiend"
 		"LastHitChallengeRival"		"npc_dota_hero_lion"
-		"AbilityDraftDisabled"		"0"
 		"HeroSelectSoundEffect"		"Hero_Nevermore.Pick"
 		"GibType"		"ethereal"
 		"GibTintColor"	"78 27 27 255"
@@ -2981,17 +3257,34 @@
 		"Ability1"		"nevermore_shadowraze1"
 		"Ability2"		"nevermore_shadowraze2"
 		"Ability3"		"nevermore_shadowraze3"
-		"Ability4"		"nevermore_necromastery"
+		"Ability4"		"nevermore_frenzy"
 		"Ability5"		"nevermore_dark_lord"
 		"Ability6"		"nevermore_requiem"
+		"Ability7"		"nevermore_necromastery"
 		"Ability10"		"special_bonus_unique_nevermore_7"
-		"Ability11"		"special_bonus_attack_speed_25"
+		"Ability11"		"special_bonus_unique_nevermore_4"
 		"Ability12"		"special_bonus_unique_nevermore_3"
 		"Ability13"		"special_bonus_unique_nevermore_2"
 		"Ability14"		"special_bonus_unique_nevermore_1"
 		"Ability15"		"special_bonus_unique_nevermore_6"
-		"Ability16"		"special_bonus_unique_nevermore_shadowraze_cooldown"
+		"Ability16"		"special_bonus_unique_nevermore_frenzy_castspeed"
 		"Ability17"		"special_bonus_unique_nevermore_raze_procsattacks"
+		"Facets"
+		{
+			"nevermore_lasting_presence" 	
+			{
+				"Icon"				"armor_broken"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}			
+			"nevermore_shadowmire" 		
+			{
+				"Icon"				"slow"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+
+		}
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"nevermore_shadowraze2"
@@ -3243,6 +3536,7 @@
 		"Ability6"		"morphling_replicate"
 		"Ability7"		"morphling_morph_replicate"
 		"Ability8"		"morphling_morph"
+		"Ability9"		"morphling_accumulation"
 		"Ability15"		"special_bonus_magic_resistance_15"
 		"Ability16"		"special_bonus_unique_morphling_1"
 		"Ability17"		"special_bonus_unique_morphling_8"
@@ -3251,6 +3545,40 @@
 		"Ability20"		"special_bonus_unique_morphling_10"
 		"Ability21"		"special_bonus_unique_morphling_waveform_cooldown"
 		"Ability22"		"special_bonus_strength_35"
+		
+		"Facets"
+		{
+			"morphling_agi"
+			{
+				"Icon"				"agility"
+				"Color"				"Green"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"morphling_ebb"
+					}
+				}
+			}
+
+			"morphling_str"
+			{
+				"Icon"				"strength"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"morphling_flow"
+					}
+				}
+			}
+		}
+		
 		"AbilityTalentStart"		"15"
 		"AbilityDraftAbilities"
 		{
@@ -3263,8 +3591,8 @@
 		"StatusHealthRegen"		"0.5"
 		"StatusManaRegen"		"0.5"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"9"
-		"AttackDamageMax"		"18"
+		"AttackDamageMin"		"12"
+		"AttackDamageMax"		"21"
 		"AttackRate"		"1.5000"
 		"AttackAnimationPoint"		"0.500000"
 		"AttackAcquisitionRange"		"800"
@@ -3432,6 +3760,15 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"phantom_lancer_juxtapose"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"phantom_lancer_spirit_lance"
+			"Ability2"	"phantom_lancer_doppelwalk"
+			"Ability3"	"phantom_lancer_phantom_edge"
+			"Ability4"	"phantom_lancer_juxtapose"
+		}
+
 		"Ability10"		"special_bonus_unique_phantom_lancer_lance_damage"
 		"Ability11"		"special_bonus_unique_phantom_lancer_phantom_rush_agility"
 		"Ability12"		"special_bonus_unique_phantom_lancer_2"
@@ -3439,12 +3776,29 @@
 		"Ability14"		"special_bonus_unique_phantom_lancer"
 		"Ability15"		"special_bonus_unique_phantom_lancer_6"
 		"Ability16"		"special_bonus_unique_phantom_lancer_4"
-		"Ability17"		"special_bonus_24_crit_2"
-		"ArmorPhysical"		"-1"
+		"Ability17"		"special_bonus_20_crit_2"
+		"Facets"
+		{
+			"phantom_lancer_convergence" 
+			{
+				"Icon"				"illusion"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+
+			}
+			"phantom_lancer_divergence" 
+			{
+				"Icon"				"summons"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
+		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"26"
 		"AttackDamageMax"		"36"
 		"AttackRate"		"1.700000"
+		"BaseAttackSpeed"		"110"
 		"AttackAnimationPoint"		"0.500000"
 		"AttackAcquisitionRange"		"600"
 		"AttackRange"		"225"
@@ -3455,7 +3809,7 @@
 		"AttributeIntelligenceGain"		"1.800000"
 		"AttributeBaseAgility"		"26"
 		"AttributeAgilityGain"		"2.8"
-		"StatusHealthRegen"		"2.0"
+		"StatusHealthRegen"		"1.5"
 		"MovementSpeed"		"285"
 		"HasAggressiveStance"		"1"
 		"particle_folder"		"particles/units/heroes/hero_phantom_lancer"
@@ -3614,7 +3968,7 @@
 		"LastHitChallengeRival"		"npc_dota_hero_jakiro"
 		"HeroSelectSoundEffect"		"Hero_Puck.Pick"
 		"GibType"		"default"
-		"ArmorPhysical"		"-3"
+		"ArmorPhysical"		"0"
 		"new_player_enable"		"1"
 		"SimilarHeroes"	"45,34,101"
 		"Adjectives"
@@ -3630,7 +3984,7 @@
 		"Ability2"		"puck_waning_rift"
 		"Ability3"		"puck_phase_shift"
 		"Ability4"		"puck_ethereal_jaunt"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"puck_puckish"
 		"Ability6"		"puck_dream_coil"
 		"Ability10"		"special_bonus_unique_puck_orb_damage"
 		"Ability11"		"special_bonus_unique_puck_7"
@@ -3640,6 +3994,21 @@
 		"Ability15"		"special_bonus_unique_puck_coil_damage"
 		"Ability16"		"special_bonus_unique_puck_5"
 		"Ability17"		"special_bonus_unique_puck_rift_radius"
+		"Facets"
+		{
+			"puck_jostling_rift" 
+			{
+				"Icon"				"movement"
+				"Color"				"Purple"
+				"GradientID"		"0"
+			}
+			"puck_curveball" 
+			{
+				"Icon"				"curve_ball"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
 
 		"AbilityDraftAbilities"
 		{
@@ -3651,6 +4020,7 @@
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"22"
+		"BaseAttackSpeed"	"100"
 		"AttackDamageMax"		"30"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.500000"
@@ -3663,7 +4033,7 @@
 		"AttributeStrengthGain"		"2.400000"
 		"AttributeBaseIntelligence"		"23"
 		"AttributeIntelligenceGain"		"3.800000"
-		"AttributeBaseAgility"		"22"
+		"AttributeBaseAgility"		"14"
 		"AttributeAgilityGain"		"2.5"
 		"StatusHealthRegen"		"0.5"
 		"StatusManaRegen"	"0.5"
@@ -3829,8 +4199,17 @@
 		"Ability2"		"pudge_rot"
 		"Ability3"		"pudge_flesh_heap"
 		"Ability4"		"pudge_eject"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"pudge_innate_graft_flesh"
 		"Ability6"		"pudge_dismember"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"pudge_meat_hook"
+			"Ability2"	"pudge_rot"
+			"Ability3"	"pudge_flesh_heap"
+			"Ability4"	"pudge_dismember"
+		}
+
 		"Ability10"		"special_bonus_armor_5"
 		"Ability11"		"special_bonus_unique_pudge_4"
 		"Ability12"		"special_bonus_spell_lifesteal_8"
@@ -3839,8 +4218,22 @@
 		"Ability15"		"special_bonus_unique_pudge_5"
 		"Ability16"		"special_bonus_unique_pudge_3"
 		"Ability17"		"special_bonus_unique_pudge_1"
-
-		"ArmorPhysical"		"-1"
+		"Facets"
+		{
+			"pudge_fresh_meat" 
+			{
+				"Icon"				"meat"
+				"Color"				"Green"
+				"GradientID"		"3"
+			}
+			"pudge_flayers_hook" 
+			{
+				"Icon"				"pudge_hook"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+		}
+		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"45"
 		"AttackDamageMax"		"51"
@@ -3854,9 +4247,9 @@
 		"AttributeStrengthGain"		"3.0"
 		"AttributeBaseIntelligence"		"16"
 		"AttributeIntelligenceGain"		"1.800000"
-		"AttributeBaseAgility"		"14"
+		"AttributeBaseAgility"		"11"
 		"AttributeAgilityGain"		"1.400000"
-		"StatusHealthRegen"		"1.75"
+		"StatusHealthRegen"		"2.5"
 		"MovementSpeed"		"280"
 		"MovementTurnRate"		"0.700000"
 		"particle_folder"		"particles/units/heroes/hero_pudge"
@@ -4217,10 +4610,19 @@
 		"NameAliases"	"Lightning Revenant"
 		"Ability1"		"razor_plasma_field"
 		"Ability2"		"razor_static_link"
-		"Ability3"		"razor_unstable_current"
-		"Ability4"		"generic_hidden"
+		"Ability3"		"razor_storm_surge"
+		"Ability4"		"razor_unstable_current"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"razor_eye_of_the_storm"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"razor_plasma_field"
+			"Ability2"	"razor_static_link"
+			"Ability3"	"razor_storm_surge"
+			"Ability4"	"razor_eye_of_the_storm"
+		}
+
 		"Ability10"		"special_bonus_unique_razor_4"
 		"Ability11"		"special_bonus_spell_lifesteal_10"
 		"Ability12"		"special_bonus_unique_razor"
@@ -4229,6 +4631,30 @@
 		"Ability15"		"special_bonus_unique_razor_2"
 		"Ability16"		"special_bonus_unique_razor_plasmafield_second_ring"
 		"Ability17"		"special_bonus_unique_razor_static_link_aspd"
+		"Facets"
+		{
+			"razor_thunderhead"
+			{
+				"Icon"				"barrier"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+
+			"razor_spellamp"
+			{
+				"Icon"				"nuke"
+				"Color"				"Blue"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"razor_dynamo"
+					}
+				}
+			}
+		}
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"23"
 		"AttackDamageMax"		"25"
@@ -4516,22 +4942,51 @@
 		"GibType"		"default"
 		"Ability1"		"sandking_burrowstrike"
 		"Ability2"		"sandking_sand_storm"
-		"Ability3"		"sandking_caustic_finale"
-		"Ability4"		"generic_hidden"
+		"Ability3"		"sandking_scorpion_strike"
+		"Ability4"		"sandking_caustic_finale"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"sandking_epicenter"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"sandking_burrowstrike"
+			"Ability2"	"sandking_sand_storm"
+			"Ability3"	"sandking_scorpion_strike"
+			"Ability4"	"sandking_epicenter"
+		}
+
 		"Ability10"		"special_bonus_unique_sand_king_2"
 		"Ability11"		"special_bonus_unique_sand_king_burrowstrike_stun"
 		"Ability12"		"special_bonus_unique_sand_king_3"
-		"Ability13"		"special_bonus_unique_sand_king_8"
+		"Ability13"		"special_bonus_unique_sand_king_scorpion_strike_damage"
 		"Ability14"		"special_bonus_unique_sand_king_7"
 		"Ability15"		"special_bonus_unique_sand_king_5"
 		"Ability16"		"special_bonus_unique_sand_king"
 		"Ability17"		"special_bonus_unique_sand_king_4"
+		
+		"Facets"
+		{
+			"sand_king_sandshroud" 
+			{
+				//Sandstorm invisibility, doesn't move 
+				"Icon"				"vision"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+			"sand_king_dust_devil" 
+			{
+				//sandstorm follows 
+				"Icon"				"speed"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			} 
+			
+		}
+		
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"1"
-		"AttackDamageMax"		"9"
+		"AttackDamageMin"		"7"
+		"AttackDamageMax"		"15"
 		"AttackRate"		"1.700000"
 		"BaseAttackSpeed"		"110"
 		"AttackAnimationPoint"		"0.530000"
@@ -4539,7 +4994,7 @@
 		"AttackRange"		"150"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_ALL"
 		"AttributeBaseStrength"		"22"
-		"AttributeStrengthGain"		"2.700000"
+		"AttributeStrengthGain"		"2.300000"
 		"AttributeBaseIntelligence"		"17"
 		"AttributeIntelligenceGain"		"1.800000"
 		"AttributeBaseAgility"		"19"
@@ -4765,6 +5220,16 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"storm_spirit_ball_lightning"
+		"Ability7"		"storm_spirit_galvanized"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"storm_spirit_static_remnant"
+			"Ability2"	"storm_spirit_electric_vortex"
+			"Ability3"	"storm_spirit_overload"
+			"Ability4"	"storm_spirit_ball_lightning"
+		}
+
 		"Ability10"		"special_bonus_unique_storm_spirit_overload_aspd"
 		"Ability11"		"special_bonus_mp_regen_150"
 		"Ability12"		"special_bonus_hp_250"
@@ -4773,6 +5238,23 @@
 		"Ability15"		"special_bonus_unique_storm_spirit_8"
 		"Ability16"		"special_bonus_unique_storm_spirit_7"
 		"Ability17"		"special_bonus_unique_storm_spirit_4"
+		"Facets"
+		{
+			"storm_spirit_shock_collar"
+			{
+				"Icon"				"nuke"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}
+
+			"storm_spirit_static_slide"	
+			{
+				"Icon"				"movement"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+		}
+
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"24"
@@ -4791,7 +5273,6 @@
 		"AttributeIntelligenceGain"		"3.900000"
 		"AttributeBaseAgility"		"22"
 		"AttributeAgilityGain"		"2.600000"
-		"StatusManaRegen"	"0.6"
 		"StatusHealthRegen"	"0.5"
 		"MovementSpeed"		"285"
 		"MovementTurnRate"		"0.800000"
@@ -4941,15 +5422,48 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"sven_gods_strength"
+		"Ability7"		"sven_vanquisher"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"sven_storm_bolt"
+			"Ability2"	"sven_great_cleave"
+			"Ability3"	"sven_warcry"
+			"Ability4"	"sven_gods_strength"
+		}
+
 		"Ability10"		"special_bonus_unique_sven_5"
-		"Ability11"		"special_bonus_attack_speed_15"
+		"Ability11"		"special_bonus_attack_speed_20"
 		"Ability12"		"special_bonus_unique_sven_3"
 		"Ability13"		"special_bonus_unique_sven_8"
 		"Ability14"		"special_bonus_unique_sven_gods_strength_slow_resist"
 		"Ability15"		"special_bonus_unique_sven_7"
 		"Ability16"		"special_bonus_unique_sven_2"
 		"Ability17"		"special_bonus_unique_sven_4"
-		"ArmorPhysical"		"0"
+		"Facets"
+		{
+			"sven_heavy_plate"	
+			{
+				"Icon"				"armor"
+				"Color"				"Blue"
+				"GradientID"		"0"
+			}
+			"sven_strscaling"
+			{
+				"Icon"				"strength"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"sven_wrath_of_god"
+					}
+				}
+			}
+		}
+		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"37"
 		"AttackDamageMax"		"39"
@@ -4960,7 +5474,7 @@
 		"AttackRange"		"150"
 		"ProjectileSpeed"		"0"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
-		"AttributeBaseStrength"		"22"
+		"AttributeBaseStrength"		"25"
 		"AttributeStrengthGain"		"3.200000"
 		"AttributeBaseIntelligence"		"16"
 		"AttributeIntelligenceGain"		"1.500000"
@@ -5210,17 +5724,51 @@
 		"Ability2"		"tiny_toss"
 		"Ability3"		"tiny_tree_grab"
 		"Ability4"		"tiny_tree_channel"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"tiny_craggy_exterior"
 		"Ability6"		"tiny_grow"
 		"Ability7"		"tiny_toss_tree"
-		"Ability10"		"special_bonus_movement_speed_20"
-		"Ability11"		"special_bonus_strength_10"
-		"Ability12"		"special_bonus_status_resistance_10"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"tiny_avalanche"
+			"Ability2"	"tiny_toss"
+			"Ability3"	"tiny_tree_grab"
+			"Ability4"	"tiny_grow"
+		}
+
+		"Ability10"		"special_bonus_unique_tiny_4"
+		"Ability11"		"special_bonus_strength_8"
+		"Ability12"		"special_bonus_unique_tiny_6"
 		"Ability13"		"special_bonus_unique_tiny"
 		"Ability14"		"special_bonus_unique_tiny_7"
 		"Ability15"		"special_bonus_unique_tiny_5"
 		"Ability16"		"special_bonus_unique_tiny_3"
 		"Ability17"		"special_bonus_unique_tiny_2"
+
+		"Facets"
+		{
+			"tiny_crash_landing" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Gray"
+				"GradientID"		"2"
+			}
+			"tiny_insurmountable" 
+			{
+				"Icon"				"armor"
+				"Color"				"Green"
+				"GradientID"		"4"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"tiny_insurmountable"
+					}
+				}
+			}
+		}
+
 		"AbilityDraftIgnoreCount"		"7"
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
@@ -5238,8 +5786,8 @@
 		"AttributeIntelligenceGain"		"2.200000"
 		"AttributeBaseAgility"		"0"
 		"AttributeAgilityGain"		"0.00000"
-		"StatusHealthRegen"		"1.5"
-		"MovementSpeed"		"285"
+		"StatusHealthRegen"		"2"
+		"MovementSpeed"		"275"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"particle_folder"		"particles/units/heroes/hero_tiny"
 		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_tiny.vsndevts"
@@ -5485,19 +6033,56 @@
 		"Ability1"		"vengefulspirit_magic_missile"
 		"Ability2"		"vengefulspirit_wave_of_terror"
 		"Ability3"		"vengefulspirit_command_aura"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"vengefulspirit_retribution"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"vengefulspirit_nether_swap"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"vengefulspirit_magic_missile"
+			"Ability2"	"vengefulspirit_wave_of_terror"
+			"Ability3"	"vengefulspirit_command_aura"
+			"Ability4"	"vengefulspirit_nether_swap"
+		}
+
 		"Ability10"		"special_bonus_unique_vengeful_spirit_swap_damage"
 		"Ability11"		"special_bonus_unique_vengeful_spirit_missile_castrange"
 		"Ability12"		"special_bonus_unique_vengeful_spirit_4"
-		"Ability13"		"special_bonus_unique_vengeful_spirit_5"
-		"Ability14"		"special_bonus_unique_vengeful_spirit_1"
+		"Ability13"		"special_bonus_unique_vengeful_spirit_1"
+		"Ability14"		"special_bonus_unique_vengeful_spirit_5"
 		"Ability15"		"special_bonus_unique_vengeful_spirit_wave_of_terror_steal"
 		"Ability16"		"special_bonus_unique_vengeful_spirit_2"
 		"Ability17"		"special_bonus_unique_vengeful_spirit_9"
 		"AbilityDraftIgnoreCount"		"6"
 
+		"Facets"
+		{
+			"vengefulspirit_avenging_missile" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+
+			"vvengefulspirit_melee"
+			{
+				"Icon"				"fist"
+				"Color"				"Blue"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"vengefulspirit_soul_strike"
+					}
+				}
+				"KeyValueOverrides"
+				{
+					"AttackRate"		"1.5"
+				}
+			}
+		}
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"9"
 		"AttackDamageMax"		"15"
@@ -5506,6 +6091,27 @@
 		"AttackAnimationPoint"		"0.330000"
 		"AttackAcquisitionRange"		"800"
 		"AttackRange"		"400"
+		"HasAggressiveStance"		"1"	
+		"AttackSpeedActivityModifiers"
+		{
+			"fast"		"200"
+			//"faster"	"220"
+			//"fastest"	"280"
+			//"crazy_fast"	"340"			
+		}
+		"animation_transitions"
+		{
+			"ACT_DOTA_IDLE"
+			{
+				"regular"		"1.2"
+				"aggressive"		"1.2"
+			}
+			"ACT_DOTA_RUN"
+			{
+				"regular"		"1.2"
+				"aggressive"		"1.2"
+			}						
+		}		
 		"ProjectileModel"		"particles/units/heroes/hero_vengeful/vengeful_base_attack.vpcf"
 		"ProjectileSpeed"		"1500"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_ALL"
@@ -5729,8 +6335,18 @@
 		"Ability2"		"windrunner_powershot"
 		"Ability3"		"windrunner_windrun"
 		"Ability4"		"windrunner_gale_force"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"windrunner_focusfire_cancel"
 		"Ability6"		"windrunner_focusfire"
+		"Ability7"		"windrunner_easy_breezy"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"windrunner_shackleshot"
+			"Ability2"	"windrunner_powershot"
+			"Ability3"	"windrunner_windrun"
+			"Ability4"	"windrunner_focusfire"
+		}
+
 		"Ability10"		"special_bonus_unique_windranger_powershot_slow"
 		"Ability11"		"special_bonus_unique_windranger_9"
 		"Ability12"		"special_bonus_unique_windranger_4"
@@ -5739,10 +6355,30 @@
 		"Ability15"		"special_bonus_unique_windranger_8"
 		"Ability16"		"special_bonus_unique_windranger_windrun_undispellable"
 		"Ability17"		"special_bonus_unique_windranger_2"
+		"Facets"
+		{
+			"windrunner_tailwind" 
+			{
+				"Icon"				"speed"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+			}
+			"windrunner_whirlwind" 
+			{
+				"Icon"				"multi_arrow"
+				"Color"				"Green"
+				"GradientID"		"0"
+				"AbilityIconReplacements"
+				{
+					"windrunner_focusfire"	"windrunner_whirlwind"
+					"windrunner_focusfire_cancel"	"windrunner_whirlwind_stop"
+				}
+			}
+		}
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"5"
-		"AttackDamageMax"		"11"
+		"AttackDamageMin"		"7"
+		"AttackDamageMax"		"13"
 		"AttackRate"		"1.500000"
 		"AttackAnimationPoint"		"0.400000"
 		"AttackAcquisitionRange"		"800"
@@ -5998,15 +6634,33 @@
 		"Ability3"		"zuus_heavenly_jump"
 		"Ability4"		"zuus_cloud"
 		"Ability5"		"zuus_lightning_hands"
-		"Ability6"		"zuus_thundergods_wrath"		
+		"Ability6"		"zuus_thundergods_wrath"
+		"Ability7"		"zuus_static_field"	
 		"Ability10"		"special_bonus_unique_zeus_jump_cooldown"
-		"Ability11"		"special_bonus_hp_250"
+		"Ability11"		"special_bonus_hp_200"
 		"Ability12"		"special_bonus_unique_zeus_jump_postjump_movespeed"
 		"Ability13"		"special_bonus_unique_zeus"
 		"Ability14"		"special_bonus_unique_zeus_2"
 		"Ability15"		"special_bonus_unique_zeus_3"
 		"Ability16"		"special_bonus_unique_zeus_5"
 		"Ability17"		"special_bonus_unique_zeus_4"
+		
+		"Facets"
+		{
+			"zuus_livewire"	
+			{
+				"Icon"				"range"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}			
+			"zuus_divine_rampage" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+		}
+		
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"zuus_arc_lightning"
@@ -6265,14 +6919,40 @@
 		"Ability5"		"kunkka_tidal_wave"
 		"Ability6"		"kunkka_ghostship"
 		"Ability7"		"kunkka_return"
+
 		"Ability10"		"special_bonus_unique_kunkka_tidebringer_slow"
 		"Ability11"		"special_bonus_unique_kunkka_6"
 		"Ability12"		"special_bonus_unique_kunkka_7"
-		"Ability13"		"special_bonus_attack_damage_45"
+		"Ability13"		"special_bonus_unique_kunkka_2"
 		"Ability14"		"special_bonus_unique_kunkka_torrent_cooldown"
-		"Ability15"		"special_bonus_unique_kunkka_4"
+		"Ability15"		"special_bonus_unique_kunkka_rum"
 		"Ability16"		"special_bonus_unique_kunkka_3"
-		"Ability17"		"special_bonus_unique_kunkka_5"
+		"Ability17"		"special_bonus_unique_kunkka_4"
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"kunkka_torrent"
+			"Ability2"	"kunkka_tidebringer"
+			"Ability3"	"kunkka_x_marks_the_spot"
+			"Ability4"	"kunkka_ghostship"
+		}
+		
+		"Facets"
+		{
+			"kunkka_high_tide"	
+			{
+				"Icon"				"cooldown"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+			"kunkka_grog"	
+			{
+				"Icon"				"armor"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+			}
+
+		}
+				
 		"AbilityDraftIgnoreCount"		"7"
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
@@ -6284,7 +6964,7 @@
 		"AttackRange"		"150"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
 		"AttributeBaseStrength"		"24"
-		"AttributeStrengthGain"		"3.800000"
+		"AttributeStrengthGain"		"3.600000"
 		"AttributeBaseIntelligence"		"18"
 		"AttributeIntelligenceGain"		"1.800000"
 		"AttributeBaseAgility"		"14"
@@ -6553,14 +7233,49 @@
 		"Ability4"		"lina_flame_cloak"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"lina_laguna_blade"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"lina_dragon_slave"
+			"Ability2"		"lina_light_strike_array"
+			"Ability3"		"lina_fiery_soul"
+			"Ability6"		"lina_laguna_blade"
+		}
+
 		"Ability10"		"special_bonus_attack_damage_25"
 		"Ability11"		"special_bonus_unique_lina_1"
-		"Ability12"		"special_bonus_hp_325"
+		"Ability12"		"special_bonus_unique_lina_4"
 		"Ability13"		"special_bonus_unique_lina_3"
-		"Ability14"		"special_bonus_unique_lina_supercharge_stacks"
+		"Ability14"		"special_bonus_unique_lina_6"
 		"Ability15"		"special_bonus_unique_lina_2"
-		"Ability16"		"special_bonus_unique_lina_6"
-		"Ability17"		"special_bonus_unique_lina_dragon_slave_crits"
+		"Ability16"		"special_bonus_unique_lina_7"
+		"Ability17"		"special_bonus_unique_lina_crit_debuff"
+		
+		"Facets"
+		{
+			"lina_supercharge"
+			{
+				// no burn
+				"Icon"				"damage"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+			}
+			"lina_dot"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"lina_slow_burn"
+					}
+				}
+			}
+		}
+		
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"21"
@@ -6724,7 +7439,7 @@
 				"17"		""
 				"18"		"lina_laguna_blade"
 				"19"		""
-				"20"		"special_bonus_unique_lina_supercharge_stacks"
+				"20"		"special_bonus_unique_lina_2"
 				"21"		""
 				"22"		""
 				"23"		""
@@ -6797,8 +7512,17 @@
 		"Ability2"		"lich_frost_shield"
 		"Ability3"		"lich_sinister_gaze"
 		"Ability4"		"lich_ice_spire"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"lich_death_charge"
 		"Ability6"		"lich_chain_frost"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"lich_frost_nova"
+			"Ability2"	"lich_frost_shield"
+			"Ability3"	"lich_sinister_gaze"
+			"Ability4"	"lich_chain_frost"
+		}
+
 		"Ability10"		"special_bonus_unique_lich_8"
 		"Ability11"		"special_bonus_unique_lich_6"
 		"Ability12"		"special_bonus_unique_lich_2"
@@ -6807,6 +7531,23 @@
 		"Ability15"		"special_bonus_unique_lich_4"
 		"Ability16"		"special_bonus_unique_lich_1"
 		"Ability17"		"special_bonus_unique_lich_5"
+		
+		"Facets"
+		{
+			"lich_frostbound"		
+			{
+				"Icon"				"snowflake"
+				"Color"				"Blue"
+				"GradientID"		"0"
+			}
+			"lich_growing_cold" 	
+			{
+				"Icon"				"cooldown"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+		}
+		
 		"StatusHealthRegen"		"0.5"
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -7056,17 +7797,42 @@
 		"Ability1"		"lion_impale"
 		"Ability2"		"lion_voodoo"
 		"Ability3"		"lion_mana_drain"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"lion_to_hell_and_back"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"lion_finger_of_death"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"lion_impale"
+			"Ability2"	"lion_voodoo"
+			"Ability3"	"lion_mana_drain"
+			"Ability4"	"lion_finger_of_death"
+		}
+
 		"Ability10"		"special_bonus_unique_lion_6"
 		"Ability11"		"special_bonus_unique_lion_3"
 		"Ability12"		"special_bonus_unique_lion_5"
 		"Ability13"		"special_bonus_unique_lion_11"
 		"Ability14"		"special_bonus_unique_lion_8"
 		"Ability15"		"special_bonus_unique_lion_10"
-		"Ability16"		"special_bonus_unique_lion_manadrain_damage"
+		"Ability16"		"special_bonus_unique_lion_2"
 		"Ability17"		"special_bonus_unique_lion_4"
+		"Facets"
+		{
+			"lion_essence_eater" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+			"lion_fist_of_death" 
+			{
+				"Icon"				"fist"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+
+		}
 		"StatusHealthRegen"		"0.5"
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -7082,11 +7848,11 @@
 		"ProjectileSpeed"		"900"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_INTELLECT"
 		"AttributeBaseStrength"		"18"
-		"AttributeStrengthGain"		"2.200000"
+		"AttributeStrengthGain"		"2.4"
 		"AttributeBaseIntelligence"		"20"
 		"AttributeIntelligenceGain"		"3.500000"
 		"AttributeBaseAgility"		"15"
-		"AttributeAgilityGain"		"1.500000"
+		"AttributeAgilityGain"		"1.7"
 		"MovementSpeed"		"290"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"VoiceFile"		"soundevents/voscripts/game_sounds_vo_lion.vsndevts"
@@ -7260,7 +8026,7 @@
 				"22"		""
 				"23"		""
 				"24"		""
-				"25"		"special_bonus_unique_lion_manadrain_damage"
+				"25"		"special_bonus_unique_lion_2"
 			}
 			"HeroType"		"DOTA_BOT_GANKER | DOTA_BOT_STUN_SUPPORT | DOTA_BOT_NUKER"
 			"LaningInfo"
@@ -7321,17 +8087,44 @@
 		"Ability1"		"shadow_shaman_ether_shock"
 		"Ability2"		"shadow_shaman_voodoo"
 		"Ability3"		"shadow_shaman_shackles"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"shadow_shaman_fowl_play"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"shadow_shaman_mass_serpent_ward"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"shadow_shaman_ether_shock"
+			"Ability2"	"shadow_shaman_voodoo"
+			"Ability3"	"shadow_shaman_shackles"
+			"Ability4"	"shadow_shaman_mass_serpent_ward"
+		}
+
 		"Ability10"		"special_bonus_unique_shadow_shaman_6"
-		"Ability11"		"special_bonus_unique_shadow_shaman_hex_damage_amp"
+		"Ability11"		"special_bonus_mp_regen_175"
 		"Ability12"		"special_bonus_unique_shadow_shaman_8"
 		"Ability13"		"special_bonus_unique_shadow_shaman_2"
 		"Ability14"		"special_bonus_unique_shadow_shaman_7"
 		"Ability15"		"special_bonus_unique_shadow_shaman_1"
 		"Ability16"		"special_bonus_unique_shadow_shaman_3"
 		"Ability17"		"special_bonus_unique_shadow_shaman_4"
+		
+		"Facets"
+		{
+			"shadow_shaman_cluster_cluck" 	
+			{
+				"Icon"				"chicken"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+			"shadow_shaman_massive_serpent_ward" 		
+			{
+				"Icon"				"snake"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+
+		}
+		
 		"ArmorPhysical"		"3"
 		"StatusHealthRegen"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -7345,7 +8138,7 @@
 		"ProjectileModel"		"particles/units/heroes/hero_shadowshaman/shadowshaman_base_attack.vpcf"
 		"ProjectileSpeed"		"900"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_INTELLECT"
-		"AttributeBaseStrength"		"23"
+		"AttributeBaseStrength"		"20"
 		"AttributeStrengthGain"		"2.300000"
 		"AttributeBaseIntelligence"		"25"
 		"AttributeIntelligenceGain"		"3.500000"
@@ -7592,17 +8385,41 @@
 		"Ability1"		"slardar_sprint"
 		"Ability2"		"slardar_slithereen_crush"
 		"Ability3"		"slardar_bash"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"slardar_seaborn_sentinel"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"slardar_amplify_damage"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"slardar_sprint"
+			"Ability2"	"slardar_slithereen_crush"
+			"Ability3"	"slardar_bash"
+			"Ability4"	"slardar_amplify_damage"
+		}
+
 		"Ability10"		"special_bonus_unique_slardar_7"
 		"Ability11"		"special_bonus_unique_slardar_slithereen_crush_stun"
-		"Ability12"		"special_bonus_hp_325"
+		"Ability12"		"special_bonus_hp_275"
 		"Ability13"		"special_bonus_unique_slardar_2"
 		"Ability14"		"special_bonus_unique_slardar"
 		"Ability15"		"special_bonus_unique_slardar_5"
 		"Ability16"		"special_bonus_unique_slardar_4"
 		"Ability17"		"special_bonus_unique_slardar_3"
+		"Facets"
+		{
+			"slardar_leg_day"
+			{
+				"Icon"				"speed"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+			"slardar_brineguard"
+			{
+				"Icon"				"armor"
+				"Color"				"Purple"
+				"GradientID"		"1"
+			}
+		}		
 		"ArmorPhysical"		"3"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"30"
@@ -7619,7 +8436,7 @@
 		"AttributeBaseIntelligence"		"15"
 		"AttributeIntelligenceGain"		"1.500000"
 		"AttributeBaseAgility"		"17"
-		"AttributeAgilityGain"		"2.400000"
+		"AttributeAgilityGain"		"2.100000"
 		"StatusHealthRegen"		"0.5"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"VoiceFile"		"soundevents/voscripts/game_sounds_vo_slardar.vsndevts"
@@ -7795,14 +8612,52 @@
 		"Ability4"		"tidehunter_dead_in_the_water"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"tidehunter_ravage"
+		"Ability7"		"tidehunter_blubber"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"tidehunter_gush"
+			"Ability2"	"tidehunter_kraken_shell"
+			"Ability3"	"tidehunter_anchor_smash"
+			"Ability4"	"tidehunter_ravage"
+		}
+
 		"Ability10"		"special_bonus_unique_tidehunter_9"
 		"Ability11"		"special_bonus_unique_tidehunter_5"
 		"Ability12"		"special_bonus_unique_tidehunter_2"
 		"Ability13"		"special_bonus_unique_tidehunter_3"
 		"Ability14"		"special_bonus_unique_tidehunter_10"
-		"Ability15"		"special_bonus_unique_tidehunter_4"
+		"Ability15"		"special_bonus_unique_tidehunter"
 		"Ability16"		"special_bonus_unique_tidehunter_7"
 		"Ability17"		"special_bonus_unique_tidehunter_8"
+		"Facets"
+		{
+			"tidehunter_kraken_swell"
+			{
+				"Icon"				"armor"
+				"Color"				"Green"
+				"GradientID"		"2"
+			}
+			"tidehunter_sizescale"
+			{
+				"Icon"				"overshadow"
+				"Color"				"Green"
+				"GradientID"		"0"
+
+				"KeyValueOverrides"
+				{
+					"AttributeBaseStrength"		"24"
+					"AttributeStrengthGain"		"4.1"
+				}
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"tidehunter_krill_eater"
+					}
+				}
+			}
+		}
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"25"
@@ -7813,7 +8668,7 @@
 		"AttackRange"		"150"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
 		"AttributeBaseStrength"		"27"
-		"AttributeStrengthGain"		"3.500000"
+		"AttributeStrengthGain"		"3.600000"
 		"AttributeBaseIntelligence"		"18"
 		"AttributeIntelligenceGain"		"1.700000"
 		"StatusManaRegen"	"0.5"
@@ -8068,16 +8923,47 @@
 		"Ability2"		"witch_doctor_voodoo_restoration"
 		"Ability3"		"witch_doctor_maledict"
 		"Ability4"		"witch_doctor_voodoo_switcheroo"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"witch_doctor_gris_gris"
 		"Ability6"		"witch_doctor_death_ward"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"witch_doctor_paralyzing_cask"
+			"Ability2"	"witch_doctor_voodoo_restoration"
+			"Ability3"	"witch_doctor_maledict"
+			"Ability4"	"witch_doctor_death_ward"
+		}
+
 		"Ability10"		"special_bonus_unique_witch_doctor_4"
-		"Ability11"		"special_bonus_unique_witch_doctor_6"
+		"Ability11"		"special_bonus_hp_200"
 		"Ability12"		"special_bonus_unique_witch_doctor_3"
-		"Ability13"		"special_bonus_hp_300"
+		"Ability13"		"special_bonus_unique_witch_doctor_6"
 		"Ability14"		"special_bonus_unique_witch_doctor_1"
 		"Ability15"		"special_bonus_unique_witch_doctor_7"
 		"Ability16"		"special_bonus_unique_witch_doctor_2"
 		"Ability17"		"special_bonus_unique_witch_doctor_5"
+		"Facets"
+		{
+			"witch_doctor_headhunter"
+			{
+				"Icon"				"ricochet"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}			
+			"witch_doctor_voodoo_festeration"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+
+			"witch_doctor_cleft_death"
+			{
+				"Icon"				"death_ward"
+				"Color"				"Purple"
+				"GradientID"		"0"
+			}
+		}
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"26"
@@ -8348,9 +9234,18 @@
 		"Ability1"		"riki_smoke_screen"
 		"Ability2"		"riki_blink_strike"
 		"Ability3"		"riki_tricks_of_the_trade"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"riki_innate_backstab"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"riki_backstab"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"riki_smoke_screen"
+			"Ability2"	"riki_blink_strike"
+			"Ability3"	"riki_tricks_of_the_trade"
+			"Ability4"	"riki_backstab"
+		}
+
 		"Ability10"		"special_bonus_unique_riki_7"
 		"Ability11"		"special_bonus_unique_riki_8"
 		"Ability12"		"special_bonus_unique_riki_2"
@@ -8359,10 +9254,27 @@
 		"Ability15"		"special_bonus_unique_riki_9"
 		"Ability16"		"special_bonus_unique_riki_6"
 		"Ability17"		"special_bonus_unique_riki_5"
-			"ArmorPhysical"		"0"
+		"Facets"
+		{
+			"riki_contract_killer" 	
+			{
+				"Icon"				"xp"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}			
+			"riki_exterminator" 
+			{
+				"Icon"				"agility"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+
+		}
+
+		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"27"
-		"AttackDamageMax"		"31"
+		"AttackDamageMin"		"22"
+		"AttackDamageMax"		"26"
 		"AttackRate"		"1.700000"
 		"BaseAttackSpeed"		"90"
 		"AttackAnimationPoint"		"0.300000"
@@ -8476,6 +9388,13 @@
 				"SlotIndex" "9"
 				"SlotName" "ability_effects_2"
 				"SlotText" "riki_blink_strike"
+				"DisplayInLoadout" "0"
+			}
+			"10"
+			{
+				"SlotIndex" "10"
+				"SlotName" "ability_effects_3"
+				"SlotText" "riki_tricks_of_the_trade"
 				"DisplayInLoadout" "0"
 			}
 		}
@@ -8624,9 +9543,18 @@
 		"Ability1"		"enigma_malefice"
 		"Ability2"		"enigma_demonic_conversion"
 		"Ability3"		"enigma_midnight_pulse"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"enigma_gravity_well"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"enigma_black_hole"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"enigma_malefice"
+			"Ability2"	"enigma_demonic_conversion"
+			"Ability3"	"enigma_midnight_pulse"
+			"Ability4"	"enigma_black_hole"
+		}
+
 		"Ability10"		"special_bonus_unique_enigma_4"
 		"Ability11"		"special_bonus_unique_enigma_6"
 		"Ability12"		"special_bonus_hp_250"
@@ -8635,6 +9563,39 @@
 		"Ability15"		"special_bonus_unique_enigma_3"
 		"Ability16"		"special_bonus_unique_enigma_2"
 		"Ability17"		"special_bonus_unique_enigma"
+		
+		"Facets"
+		{
+			"enigma_gravity"
+			{
+				"Icon"				"slow"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"enigma_event_horizon"
+					}
+				}
+			}
+			"enigma_fragment"
+			{
+				"Icon"				"summons"
+				"Color"				"Purple"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"enigma_splitting_image"
+					}
+				}
+			}
+		}
+		
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"7"
@@ -8653,7 +9614,7 @@
 		"AttributeBaseAgility"		"14"
 		"AttributeAgilityGain"		"1.0"
 		"StatusManaRegen"	"0.5"
-		"MovementSpeed"		"290"
+		"MovementSpeed"		"280"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"RingRadius"		"90"
 		"particle_folder"		"particles/units/heroes/hero_enigma"
@@ -8799,19 +9760,38 @@
 		"GibType"		"motor"
 		"NameAliases"	"Boush"
 		"Ability1"		"tinker_laser"
-		"Ability2"		"tinker_heat_seeking_missile"
+		"Ability2"		"tinker_march_of_the_machines"
 		"Ability3"		"tinker_defense_matrix"
 		"Ability4"		"tinker_warp_grenade"
 		"Ability5"		"tinker_keen_teleport"
 		"Ability6"		"tinker_rearm"
-		"Ability10"		"special_bonus_unique_tinker_4"
+		"Ability7"		"tinker_eureka"
+		"Ability10"		"special_bonus_unique_tinker_march_duration"
 		"Ability11"		"special_bonus_mana_reduction_8"
 		"Ability12"		"special_bonus_unique_tinker_7"
-		"Ability13"		"special_bonus_unique_tinker_6"
-		"Ability14"		"special_bonus_unique_tinker_defense_matrix_cdr"
+		"Ability13"		"special_bonus_unique_tinker"
+		"Ability14"		"special_bonus_unique_tinker_defense_matrix_status_resistance"
 		"Ability15"		"special_bonus_unique_tinker_5"
-		"Ability16"		"special_bonus_unique_tinker"
-		"Ability17"		"special_bonus_unique_tinker_3"
+		"Ability16"		"special_bonus_unique_tinker_4"
+		"Ability17"		"special_bonus_unique_tinker_rearm_magic_resistance"
+		
+		"Facets"
+		{
+			"tinker_repair_bots"
+			{
+				"Icon"				"healing"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+
+			"tinker_translocator"
+			{
+				"Icon"				"movement"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+			}
+		}
+		
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"tinker_laser"
@@ -8819,7 +9799,7 @@
 			"Ability3"		"tinker_defense_matrix"
 			"Ability4"		"tinker_rearm"
 		}
-		"ArmorPhysical"		"2"
+		"ArmorPhysical"		"4"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"22"
 		"AttackDamageMax"		"28"
@@ -8836,7 +9816,7 @@
 		"AttributeIntelligenceGain"		"3.300000"
 		"AttributeBaseAgility"		"17"
 		"AttributeAgilityGain"		"1.400000"
-		"MovementSpeed"		"290"
+		"MovementSpeed"		"310"
 		"StatusManaRegen"	"0.75"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"particle_folder"		"particles/units/heroes/hero_tinker"
@@ -9012,16 +9992,41 @@
 		"Ability2"		"sniper_headshot"
 		"Ability3"		"sniper_take_aim"
 		"Ability4"		"sniper_concussive_grenade"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"sniper_keen_scope"
 		"Ability6"		"sniper_assassinate"
-		"Ability10"		"special_bonus_unique_sniper_4"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"sniper_shrapnel"
+			"Ability2"	"sniper_headshot"
+			"Ability3"	"sniper_take_aim"
+			"Ability4"	"sniper_assassinate"
+		}
+
+		"Ability10"		"special_bonus_unique_sniper_5"
 		"Ability11"		"special_bonus_unique_sniper_headshot_damage"
 		"Ability12"		"special_bonus_attack_speed_30"
-		"Ability13"		"special_bonus_unique_sniper_5"
-		"Ability14"		"special_bonus_unique_sniper_3"
-		"Ability15"		"special_bonus_unique_sniper_1"
-		"Ability16"		"special_bonus_attack_range_100"
-		"Ability17"		"special_bonus_unique_sniper_2"
+		"Ability13"		"special_bonus_unique_sniper_4"
+		"Ability14"		"special_bonus_unique_sniper_take_aim_armor"
+		"Ability15"		"special_bonus_attack_range_100"
+		"Ability16"		"special_bonus_unique_sniper_2"
+		"Ability17"		"special_bonus_unique_sniper_3"
+		"Facets"
+		{
+			"sniper_ghillie_suit" 
+			{
+				"Icon"				"vision"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+			}
+
+			"sniper_scattershot" 	
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+		}
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"13"
@@ -9287,11 +10292,20 @@
 		"GibTintColor"	"95 210 156 255"
 		"NameAliases"	"Rotundjere"
 		"Ability1"		"necrolyte_death_pulse"
-		"Ability2"		"necrolyte_sadist"
+		"Ability2"		"necrolyte_ghost_shroud"
 		"Ability3"		"necrolyte_heartstopper_aura"
 		"Ability4"		"necrolyte_death_seeker"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"necrolyte_sadist"
 		"Ability6"		"necrolyte_reapers_scythe"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"necrolyte_death_pulse"
+			"Ability2"	"necrolyte_ghost_shroud"
+			"Ability3"	"necrolyte_heartstopper_aura"
+			"Ability4"	"necrolyte_reapers_scythe"
+		}
+
 		"Ability10"		"special_bonus_unique_necrophos_6"
 		"Ability11"		"special_bonus_unique_necrophos_heartstopper_regen_duration"
 		"Ability12"		"special_bonus_unique_necrophos_3"
@@ -9300,6 +10314,23 @@
 		"Ability15"		"special_bonus_unique_necrophos_5"
 		"Ability16"		"special_bonus_unique_necrophos_2"
 		"Ability17"		"special_bonus_unique_necrophos"
+		
+		"Facets"
+		{
+			"necrolyte_profane_potency" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+			}
+			"necrolyte_rapid_decay" 
+			{
+				"Icon"				"speed"
+				"Color"				"Green"
+				"GradientID"		"3"
+			}
+		}
+		
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"26"
@@ -9396,7 +10427,7 @@
 			{
 				"SlotIndex" "8"
 				"SlotName" "ability_effects_2"
-				"SlotText" "necrolyte_sadist"
+				"SlotText" "necrolyte_ghost_shroud"
 				"DisplayInLoadout" "0"
 			}
 			"9"
@@ -9492,14 +10523,14 @@
 				"1"		"necrolyte_heartstopper_aura"
 				"2"		"necrolyte_death_pulse"
 				"3"		"necrolyte_death_pulse"
-				"4"		"necrolyte_sadist"
+				"4"		"necrolyte_ghost_shroud"
 				"5"		"necrolyte_death_pulse"
 				"6"		"necrolyte_reapers_scythe"
 				"7"		"necrolyte_death_pulse"
-				"8"		"necrolyte_sadist"
-				"9"		"necrolyte_sadist"
+				"8"		"necrolyte_ghost_shroud"
+				"9"		"necrolyte_ghost_shroud"
 				"10"		"special_bonus_unique_necrophos_heartstopper_regen_duration"
-				"11"		"necrolyte_sadist"
+				"11"		"necrolyte_ghost_shroud"
 				"12"		"necrolyte_reapers_scythe"
 				"13"		"necrolyte_heartstopper_aura"
 				"14"		"necrolyte_heartstopper_aura"
@@ -9577,9 +10608,18 @@
 		"Ability1"		"warlock_fatal_bonds"
 		"Ability2"		"warlock_shadow_word"
 		"Ability3"		"warlock_upheaval"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"warlock_eldritch_summoning"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"warlock_rain_of_chaos"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"warlock_fatal_bonds"
+			"Ability2"	"warlock_shadow_word"
+			"Ability3"	"warlock_upheaval"
+			"Ability4"	"warlock_rain_of_chaos"
+		}
+
 		"Ability10"		"special_bonus_unique_warlock_5"
 		"Ability11"		"special_bonus_unique_warlock_upheaval_aoe"
 		"Ability12"		"special_bonus_unique_warlock_10"
@@ -9588,6 +10628,32 @@
 		"Ability15"		"special_bonus_unique_warlock_3"
 		"Ability16"		"special_bonus_unique_warlock_2"
 		"Ability17"		"special_bonus_unique_warlock_1"
+
+		"Facets"
+		{
+			"warlock_golem" 
+			{
+				"Icon"				"summons"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+
+			"warlock_grimoire"
+			{
+				"Icon"				"xp"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"warlock_black_grimoire"
+					}
+				}
+			}
+		}
+
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"24"
@@ -9601,7 +10667,7 @@
 		"ProjectileSpeed"		"1200"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_INTELLECT"
 		"AttributeBaseStrength"		"22"
-		"AttributeStrengthGain"		"2.800000"
+		"AttributeStrengthGain"		"2.4"
 		"AttributeBaseIntelligence"		"25"
 		"AttributeIntelligenceGain"		"3.100000"
 		"AttributeBaseAgility"		"10"
@@ -9870,7 +10936,8 @@
 		"Ability4"		"beastmaster_inner_beast"
 		"Ability5"		"beastmaster_drums_of_slom"
 		"Ability6"		"beastmaster_primal_roar"
-		"Ability10"		"special_bonus_attack_damage_30"
+		"Ability7"		"generic_hidden"
+		"Ability10"		"special_bonus_unique_beastmaster_3"
 		"Ability11"		"special_bonus_unique_beastmaster_9"
 		"Ability12"		"special_bonus_unique_beastmaster_5"
 		"Ability13"		"special_bonus_unique_beastmaster_4"
@@ -9878,6 +10945,21 @@
 		"Ability15"		"special_bonus_unique_beastmaster_6"
 		"Ability16"		"special_bonus_unique_beastmaster_wild_axe_cooldown"
 		"Ability17"		"special_bonus_unique_beastmaster_7"
+		"Facets"
+		{
+			"beastmaster_wild_hunt" 
+			{
+				"Icon"				"summons"
+				"Color"				"Red"
+				"GradientID"		"1"
+			} 				
+			"beastmaster_beast_mode" 
+			{
+				"Icon"				"damage"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			} 
+		}
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"beastmaster_wild_axes"
@@ -9885,7 +10967,6 @@
 			"Ability3"		"beastmaster_inner_beast"
 			"Ability4"		"beastmaster_primal_roar"
 		}
-		"AbilityDraftDisabled"		"0"
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"5"
@@ -9901,7 +10982,7 @@
 		"AttributeStrengthGain"		"2.900000"
 		"AttributeBaseIntelligence"		"16"
 		"AttributeIntelligenceGain"		"1.200000"
-		"AttributeBaseAgility"		"18"
+		"AttributeBaseAgility"		"22"
 		"AttributeAgilityGain"		"1.600000"
 		"MovementSpeed"		"305"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -10084,17 +11165,61 @@
 		"Ability1"		"queenofpain_shadow_strike"
 		"Ability2"		"queenofpain_blink"
 		"Ability3"		"queenofpain_scream_of_pain"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"queenofpain_bondage"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"queenofpain_sonic_wave"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"queenofpain_shadow_strike"
+			"Ability2"	"queenofpain_blink"
+			"Ability3"	"queenofpain_scream_of_pain"
+			"Ability4"	"queenofpain_sonic_wave"
+		}
+
 		"Ability10"		"special_bonus_attack_damage_20"
-		"Ability11"		"special_bonus_unique_queen_of_pain_strike_heal"
+		"Ability11"		"special_bonus_strength_8"
 		"Ability12"		"special_bonus_unique_queen_of_pain_4"
-		"Ability13"		"special_bonus_attack_speed_30"
+		"Ability13"		"special_bonus_unique_queen_of_pain_1"
 		"Ability14"		"special_bonus_unique_queen_of_pain_2"
 		"Ability15"		"special_bonus_unique_queen_of_pain_3"
 		"Ability16"		"special_bonus_unique_queen_of_pain_6"
 		"Ability17"		"special_bonus_unique_queen_of_pain_7"
+
+		"Facets"
+		{
+			"queenofpain_lifesteal"
+			{
+				"Icon"				"healing"
+				"Color"				"Blue"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"queenofpain_succubus"
+					}
+				}
+			}			
+			"queenofpain_selfdmg"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"queenofpain_masochist"
+					}
+				}
+			}
+
+
+		}
+
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"26"
@@ -10295,9 +11420,18 @@
 		"Ability1"		"venomancer_venomous_gale"
 		"Ability2"		"venomancer_poison_sting"
 		"Ability3"		"venomancer_plague_ward"
-		"Ability4"		"venomancer_latent_poison"
-		"Ability5"		"venomancer_poison_nova"
+		"Ability4"		"generic_hidden"
+		"Ability5"		"generic_hidden"
 		"Ability6"		"venomancer_noxious_plague"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"venomancer_venomous_gale"
+			"Ability2"	"venomancer_poison_sting"
+			"Ability3"	"venomancer_plague_ward"
+			"Ability4"	"venomancer_noxious_plague"
+		}
+
 		"Ability10"		"special_bonus_unique_venomancer_3"
 		"Ability11"		"special_bonus_unique_venomancer_poisonsting_regen_reduction"
 		"Ability12"		"special_bonus_unique_venomancer_8"
@@ -10306,6 +11440,23 @@
 		"Ability15"		"special_bonus_unique_venomancer_gale_plagueward"
 		"Ability16"		"special_bonus_unique_venomancer_5"
 		"Ability17"		"special_bonus_unique_venomancer"
+		
+		"Facets"
+		{
+			"venomancer_patient_zero" 	
+			{
+				"Icon"				"snot"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+			"venomancer_plague_carrier" 	
+			{
+				"Icon"				"summons"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+			}
+		}
+		
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"-1"
@@ -10506,8 +11657,17 @@
 		"Ability2"		"faceless_void_time_dilation"	
 		"Ability3"		"faceless_void_time_lock"
 		"Ability4"		"faceless_void_time_walk_reverse"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"faceless_void_distortion_field"
 		"Ability6"		"faceless_void_chronosphere"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"faceless_void_time_walk"
+			"Ability2"	"faceless_void_time_dilation"
+			"Ability3"	"faceless_void_time_lock"
+			"Ability4"	"faceless_void_chronosphere"
+		}
+
 		"Ability10"		"special_bonus_unique_faceless_void_6"
 		"Ability11"		"special_bonus_unique_faceless_void_7"
 		"Ability12"		"special_bonus_unique_faceless_void_3"
@@ -10516,7 +11676,35 @@
 		"Ability15"		"special_bonus_unique_faceless_void_5"
 		"Ability16"		"special_bonus_unique_faceless_void_4"
 		"Ability17"		"special_bonus_unique_faceless_void_2"
-		"ArmorPhysical"		"1"
+
+		"Facets"
+		{
+			"faceless_void_temporal_impunity"
+			{
+				"Icon"				"armor"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+
+			"faceless_void_time_zone"
+			{
+				"Icon"				"chrono_cube"
+				"Color"				"Purple"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"		"faceless_void_time_zone"
+						"ReplaceAbility"   	"faceless_void_chronosphere"
+						"AutoLevelAbility" 	"false"
+					}
+				}
+			}
+		}
+
+		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"37"
 		"AttackDamageMax"		"43"
@@ -10528,7 +11716,7 @@
 		"AttributeBaseStrength"		"20"
 		"AttributeStrengthGain"		"2.600000"
 		"AttributeBaseAgility"		"19"
-		"AttributeAgilityGain"		"3.0"
+		"AttributeAgilityGain"		"3.3"
 		"AttributeBaseIntelligence"		"15"
 		"AttributeIntelligenceGain"		"1.500000"
 		"StatusHealthRegen"		"1"
@@ -10697,19 +11885,65 @@
 		"GibType"		"ethereal"
 		"GibTintColor"	"92 196 128 255"
 		"Ability1"		"skeleton_king_hellfire_blast"
-		"Ability2"		"skeleton_king_vampiric_aura"
+		"Ability2"		"generic_hidden"
 		"Ability3"		"skeleton_king_mortal_strike"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"skeleton_king_vampiric_spirit"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"skeleton_king_reincarnation"
 		"Ability10"		"special_bonus_unique_wraith_king_2"
-		"Ability11"		"special_bonus_unique_wraith_king_vampiric_skeleton_duration"
+		"Ability11"		"special_bonus_unique_wraith_king_3"
 		"Ability12"		"special_bonus_unique_wraith_king_11"
-		"Ability13"		"special_bonus_unique_wraith_king_6"
+		"Ability13"		"special_bonus_hp_400"
 		"Ability14"		"special_bonus_cleave_35"
-		"Ability15"		"special_bonus_unique_wraith_king_5"
+		"Ability15"		"special_bonus_attack_speed_70"
 		"Ability16"		"special_bonus_unique_wraith_king_10"
 		"Ability17"		"special_bonus_unique_wraith_king_4"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"skeleton_king_hellfire_blast"
+			"Ability2"		"skeleton_king_bone_guard,skeleton_king_spectral_blade"
+			"Ability3"		"skeleton_king_mortal_strike"
+			"Ability4"		"skeleton_king_reincarnation"
+		}
+
+		"Facets"
+		{
+			"skeleton_king_facet_bone_guard" 
+			{
+				"Icon"				"summons"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"skeleton_king_bone_guard"
+						"AbilityIndex"	"1"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+
+			"skeleton_king_facet_cursed_blade"
+			{
+				"Icon"				"damage"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"skeleton_king_spectral_blade"
+						"AbilityIndex"	"1"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+		}
+
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"38"
@@ -10859,7 +12093,7 @@
 			{
 				"SlotIndex" "10"
 				"SlotName" "ability_effects_2"
-				"SlotText" "skeleton_king_vampiric_aura"
+				"SlotText" "skeleton_king_bone_guard"
 				"DisplayInLoadout" "0"
 			}
 		}
@@ -10916,7 +12150,7 @@
 			"Build"
 			{
 				"1"		"skeleton_king_hellfire_blast"
-				"2"		"skeleton_king_vampiric_aura"
+				"2"		"skeleton_king_bone_guard"
 				"3"		"skeleton_king_hellfire_blast"
 				"4"		"skeleton_king_mortal_strike"
 				"5"		"skeleton_king_hellfire_blast"
@@ -10924,17 +12158,17 @@
 				"7"		"skeleton_king_hellfire_blast"
 				"8"		"skeleton_king_mortal_strike"
 				"9"		"skeleton_king_mortal_strike"
-				"10"		"special_bonus_unique_wraith_king_vampiric_skeleton_duration"
+				"10"		"special_bonus_agility_10"
 				"11"		"skeleton_king_mortal_strike"
 				"12"		"skeleton_king_reincarnation"
-				"13"		"skeleton_king_vampiric_aura"
-				"14"		"skeleton_king_vampiric_aura"
-				"15"		"special_bonus_unique_wraith_king_6"
-				"16"		"skeleton_king_vampiric_aura"
+				"13"		"skeleton_king_bone_guard"
+				"14"		"skeleton_king_bone_guard"
+				"15"		"special_bonus_hp_400"
+				"16"		"skeleton_king_bone_guard"
 				"17"		""
 				"18"		"skeleton_king_reincarnation"
 				"19"		""
-				"20"		"special_bonus_unique_wraith_king_5"
+				"20"		"special_bonus_cleave_35"
 				"21"		""
 				"22"		""
 				"23"		""
@@ -11004,17 +12238,53 @@
 		"Ability1"		"death_prophet_carrion_swarm"
 		"Ability2"		"death_prophet_silence"
 		"Ability3"		"death_prophet_spirit_siphon"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"death_prophet_witchcraft"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"death_prophet_exorcism"
-		"Ability10"		"special_bonus_attack_damage_30"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"death_prophet_carrion_swarm"
+			"Ability2"	"death_prophet_silence"
+			"Ability3"	"death_prophet_spirit_siphon"
+			"Ability4"	"death_prophet_exorcism"
+		}
+
+		"Ability10"		"special_bonus_attack_speed_40"
 		"Ability11"		"special_bonus_magic_resistance_12"
-		"Ability12"		"special_bonus_hp_300"
+		"Ability12"		"special_bonus_hp_250"
 		"Ability13"		"special_bonus_unique_death_prophet_2"
-		"Ability14"		"special_bonus_unique_death_prophet_silence_slow"
+		"Ability14"		"special_bonus_unique_death_prophet_crypt_swarm_damage"
 		"Ability15"		"special_bonus_unique_death_prophet_3"
 		"Ability16"		"special_bonus_unique_death_prophet_5"
 		"Ability17"		"special_bonus_unique_death_prophet"
+		
+		"Facets"
+		{
+			
+			"death_prophet_suppress"
+			{
+				"Icon"				"slow"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+			"death_prophet_ghosts"
+			{
+				"Icon"				"spirit"
+				"Color"				"Green"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"death_prophet_spirit_collector"
+					}
+				}
+			}
+
+		}
+		
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"23"
@@ -11213,7 +12483,7 @@
 				"17"		""
 				"18"		"death_prophet_exorcism"
 				"19"		""
-				"20"		"special_bonus_unique_death_prophet_silence_slow"
+				"20"		"special_bonus_unique_death_prophet_crypt_swarm_damage"
 				"21"		""
 				"22"		""
 				"23"		""
@@ -11285,8 +12555,17 @@
 		"Ability2"		"phantom_assassin_phantom_strike"
 		"Ability3"		"phantom_assassin_blur"
 		"Ability4"		"phantom_assassin_fan_of_knives"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"phantom_assassin_immaterial"
 		"Ability6"		"phantom_assassin_coup_de_grace"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"phantom_assassin_stifling_dagger"
+			"Ability2"	"phantom_assassin_phantom_strike"
+			"Ability3"	"phantom_assassin_blur"
+			"Ability4"	"phantom_assassin_coup_de_grace"
+		}
+
 		"Ability10"		"special_bonus_unique_phantom_assassin_4"
 		"Ability11"		"special_bonus_unique_phantom_assassin_7"
 		"Ability12"		"special_bonus_unique_phantom_assassin_3"
@@ -11295,11 +12574,28 @@
 		"Ability15"		"special_bonus_unique_phantom_assassin_strike_aspd"
 		"Ability16"		"special_bonus_unique_phantom_assassin_2"
 		"Ability17"		"special_bonus_unique_phantom_assassin"
+		"Facets"
+		{
+			"phantom_assassin_veiled_one" 
+			{
+				"Icon"				"mana"
+				"Color"				"Blue"
+				"GradientID"		"3"
+			}			
+			"phantom_assassin_methodical" 
+			{
+				"Icon"				"damage"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+
+		}
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"31"
-		"AttackDamageMax"		"33"
+		"AttackDamageMin"		"35"
+		"AttackDamageMax"		"37"
 		"AttackRate"		"1.700000"
+		"BaseAttackSpeed"		"110"
 		"StatusHealthRegen"		"1.0"
 		"AttackAnimationPoint"		"0.300000"
 		"AttackSpeedActivityModifiers"
@@ -11314,7 +12610,7 @@
 		"AttributeBaseStrength"		"19" 
 		"AttributeStrengthGain"		"2.0000"
 		"AttributeBaseAgility"		"21"
-		"AttributeAgilityGain"		"3.20000"
+		"AttributeAgilityGain"		"3.40000"
 		"AttributeBaseIntelligence"		"15"
 		"AttributeIntelligenceGain"		"1.700000"
 		"MovementSpeed"		"310"
@@ -11641,9 +12937,18 @@
 		"Ability1"		"pugna_nether_blast"
 		"Ability2"		"pugna_decrepify"
 		"Ability3"		"pugna_nether_ward"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"pugna_oblivion_savant"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"pugna_life_drain"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"pugna_nether_blast"
+			"Ability2"	"pugna_decrepify"
+			"Ability3"	"pugna_nether_ward"
+			"Ability4"	"pugna_life_drain"
+		}
+
 		"Ability10"		"special_bonus_unique_pugna_decrepify_ally_movespeed"
 		"Ability11"		"special_bonus_hp_200"
 		"Ability12"		"special_bonus_unique_pugna_4"
@@ -11652,6 +12957,24 @@
 		"Ability15"		"special_bonus_unique_pugna_5"
 		"Ability16"		"special_bonus_unique_pugna_2"
 		"Ability17"		"special_bonus_unique_pugna_3"
+		
+		"Facets"
+		{
+			"pugna_siphoning_ward" 
+			{
+				"Icon"				"healing"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+			"pugna_rewards_of_ruin" 
+			{
+				"Icon"				"siege"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+		}
+		
+
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"21"
@@ -11859,6 +13182,23 @@
 		"Ability15"		"special_bonus_unique_templar_assassin_2"
 		"Ability16"		"special_bonus_unique_templar_assassin_7"
 		"Ability17"		"special_bonus_unique_templar_assassin"
+		
+		"Facets"
+		{
+			"templar_assassin_voidblades" 
+			{
+				"Icon"				"slow"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+			"templar_assassin_refractor" 
+			{
+				"Icon"				"damage"
+				"Color"				"Purple"
+				"GradientID"		"0"
+			}
+		}
+		
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"templar_assassin_refraction"
@@ -11872,12 +13212,12 @@
 		"AttackDamageMin"		"30"
 		"AttackDamageMax"		"36"
 		"BaseAttackSpeed"		"100"
-		"AttackRate"		"1.700000"
+		"AttackRate"		"1.600000"
 		"AttackAnimationPoint"		"0.300000"
 		"AttackAcquisitionRange"		"800"
-		"AttackRange"		"200"
+		"AttackRange"		"250"
 		"ProjectileModel"		"particles/units/heroes/hero_templar_assassin/templar_assassin_base_attack.vpcf"
-		"ProjectileSpeed"		"900"
+		"ProjectileSpeed"		"1000"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_AGILITY"
 		"AttributeBaseStrength"		"23"
 		"AttributeStrengthGain"		"2.400000"
@@ -11885,7 +13225,7 @@
 		"AttributeAgilityGain"		"3.200000"
 		"AttributeBaseIntelligence"		"20"
 		"AttributeIntelligenceGain"		"2.000000"
-		"StatusHealthRegen"		"0.25"
+		"StatusHealthRegen"		"1"
 		"MovementSpeed"		"310"
 		"MovementTurnRate"		"0.700000"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -12055,6 +13395,15 @@
 		"Ability4"		"viper_nose_dive"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"viper_viper_strike"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"viper_poison_attack"
+			"Ability2"	"viper_nethertoxin"
+			"Ability3"	"viper_corrosive_skin"
+			"Ability4"	"viper_viper_strike"
+		}
+
 		"Ability10"		"special_bonus_unique_viper_4"
 		"Ability11"		"special_bonus_unique_viper_1"
 		"Ability12"		"special_bonus_unique_viper_3"
@@ -12063,6 +13412,23 @@
 		"Ability15"		"special_bonus_unique_viper_7"
 		"Ability16"		"special_bonus_unique_viper_5"
 		"Ability17"		"special_bonus_unique_viper_8"
+		"Facets"		
+		{
+			"viper_poison_burst"			
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+			"viper_caustic_bath"	
+			{
+				"Icon"				"armor"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+			}
+		}
+		//"VariantAbility1"	"viper_innate_corrosive_skin_vile"
+		//"VariantAbility2"	"viper_innate_corrosive_skin_virulent"
 		"ArmorPhysical"		"-2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"27"
@@ -12307,14 +13673,32 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"luna_eclipse"
+		"Ability7"		"luna_selemenes_favor"
 		"Ability10"		"special_bonus_unique_luna_7"
 		"Ability11"		"special_bonus_unique_luna_4"
-		"Ability12"		"special_bonus_unique_luna_2"
+		"Ability12"		"special_bonus_unique_luna_1"
 		"Ability13"		"special_bonus_unique_luna_6"
 		"Ability14"		"special_bonus_unique_luna_8"
-		"Ability15"		"special_bonus_unique_luna_1"
+		"Ability15"		"special_bonus_unique_luna_2"
 		"Ability16"		"special_bonus_unique_luna_3"
 		"Ability17"		"special_bonus_unique_luna_5"
+
+		"Facets"
+		{
+			"luna_lunar_orbit" 
+			{
+				"Icon"				"armor"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+			"luna_moonstorm" 
+			{
+				"Icon"				"damage"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}
+		}
+
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"luna_lucent_beam"
@@ -12583,14 +13967,38 @@
 		"Ability4"		"dragon_knight_fireball"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"dragon_knight_elder_dragon_form"
+		"Ability7"		"dragon_knight_inherited_vigor"
 		"Ability10"		"special_bonus_attack_damage_15"
 		"Ability11"		"special_bonus_unique_dragon_knight_3"
 		"Ability12"		"special_bonus_unique_dragon_knight_2"
-		"Ability13"		"special_bonus_hp_400"
+		"Ability13"		"special_bonus_hp_300"
 		"Ability14"		"special_bonus_unique_dragon_knight_7"
 		"Ability15"		"special_bonus_unique_dragon_knight_9"
 		"Ability16"		"special_bonus_unique_dragon_knight"
 		"Ability17"		"special_bonus_unique_dragon_knight_8"
+		"Facets"
+		{
+			"dragon_knight_fire_dragon" 
+			{
+				"Icon"				"dragon_fire"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+			"dragon_knight_corrosive_dragon" 
+			{
+				"Icon"				"dragon_poison"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+
+			"dragon_knight_frost_dragon" 
+			{
+				"Icon"				"dragon_frost"
+				"Color"				"Blue"
+				"GradientID"		"0"
+			}
+		}
+
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"dragon_knight_breathe_fire"
@@ -12920,7 +14328,7 @@
 		"Ability1"		"dazzle_poison_touch"
 		"Ability2"		"dazzle_shallow_grave"
 		"Ability3"		"dazzle_shadow_wave"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"dazzle_innate_weave"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"dazzle_bad_juju"
 		"Ability10"		"special_bonus_unique_dazzle_poison_touch_attack_range_bonus"
@@ -12931,6 +14339,30 @@
 		"Ability15"		"special_bonus_unique_dazzle_3"
 		"Ability16"		"special_bonus_unique_dazzle_1"
 		"Ability17"		"special_bonus_unique_dazzle_4"
+		"Facets"
+		{
+			"dazzle_facet_nothl_boon"
+			{
+				"Icon"				"armor"
+				"Color"				"Red"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"dazzle_nothl_boon"
+					}
+				}
+			}
+			"dazzle_poison_bloom" 
+			{
+				"Icon"				"ricochet"
+				"Color"				"Purple"
+				"GradientID"		"0"
+			}
+		}
+
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"dazzle_poison_touch"
@@ -13174,6 +14606,16 @@
 		"Ability4"		"rattletrap_overclocking"
 		"Ability5"		"rattletrap_jetpack"
 		"Ability6"		"rattletrap_hookshot"
+		"Ability7"		"rattletrap_armor_power"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"rattletrap_battery_assault"
+			"Ability2"	"rattletrap_power_cogs"
+			"Ability3"	"rattletrap_rocket_flare"
+			"Ability4"	"rattletrap_hookshot"
+		}
+
 		"Ability10"		"special_bonus_unique_clockwerk_7"
 		"Ability11"		"special_bonus_unique_clockwerk_9"
 		"Ability12"		"special_bonus_unique_clockwerk_5"
@@ -13182,6 +14624,24 @@
 		"Ability15"		"special_bonus_unique_clockwerk_flare_damage"
 		"Ability16"		"special_bonus_unique_clockwerk_6"
 		"Ability17"		"special_bonus_unique_clockwerk"
+		
+		"Facets"
+		{
+			"rattletrap_hookup" 
+			{
+				"Icon"				"cooldown"
+				"Color"				"Gray"
+				"GradientID"		"2"
+			}
+
+			"rattletrap_expanded_armature" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+		}
+		
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"StatusHealthRegen"		"0.5"
@@ -13360,17 +14820,49 @@
 		"Ability2"		"leshrac_diabolic_edict"
 		"Ability3"		"leshrac_lightning_storm"
 		"Ability4"		"leshrac_greater_lightning_storm"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"leshrac_defilement"
 		"Ability6"		"leshrac_pulse_nova"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"leshrac_split_earth"
+			"Ability2"	"leshrac_diabolic_edict"
+			"Ability3"	"leshrac_lightning_storm"
+			"Ability4"	"leshrac_pulse_nova"
+		}
+
 		"Ability10"		"special_bonus_mp_regen_150"
-		"Ability11"		"special_bonus_unique_leshrac_5"
+		"Ability11"		"special_bonus_armor_4"
 		"Ability12"		"special_bonus_unique_leshrac_6"
 		"Ability13"		"special_bonus_unique_leshrac_7"
 		"Ability14"		"special_bonus_unique_leshrac_4"
 		"Ability15"		"special_bonus_unique_leshrac_3"
 		"Ability16"		"special_bonus_unique_leshrac_pulse_nova_lightning"
 		"Ability17"		"special_bonus_unique_leshrac_1"
-		"ArmorPhysical"		"0"
+		"Facets"
+		{
+			"leshrac_attacks_mana" 
+			{
+				"Icon"				"mana"
+				"Color"				"Blue"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"leshrac_chronoptic_nourishment"
+					}
+				}
+			}
+			"leshrac_misanthropy" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Purple"
+				"GradientID"		"0"
+			}
+		}
+		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"27"
 		"AttackDamageMax"		"31"
@@ -13385,8 +14877,8 @@
 		"AttributeStrengthGain"		"2.8"
 		"AttributeBaseIntelligence"		"22"
 		"AttributeIntelligenceGain"		"3.5"
-		"AttributeBaseAgility"		"23"
-		"AttributeAgilityGain"		"2.800000"
+		"AttributeBaseAgility"		"17"
+		"AttributeAgilityGain"		"2.5"
 		"MovementSpeed"		"325"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"VoiceFile"		"soundevents/voscripts/game_sounds_vo_leshrac.vsndevts"
@@ -13544,20 +15036,46 @@
 		"Ability2"		"furion_teleportation"
 		"Ability3"		"furion_force_of_nature"
 		"Ability4"		"furion_curse_of_the_forest"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"furion_spirit_of_the_forest"
 		"Ability6"		"furion_wrath_of_nature"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"furion_sprout"
+			"Ability2"	"furion_teleportation"
+			"Ability3"	"furion_force_of_nature"
+			"Ability4"	"furion_wrath_of_nature"
+		}
+
 		"Ability10"		"special_bonus_unique_furion_6"
 		"Ability11"		"special_bonus_unique_furion_5"
 		"Ability12"		"special_bonus_unique_furion_2"
-		"Ability13"		"special_bonus_unique_furion_teleportation_max_stacks"
+		"Ability13"		"special_bonus_unique_furion_teleportation_barrier"
 		"Ability14"		"special_bonus_unique_furion_7"
 		"Ability15"		"special_bonus_unique_furion_4"
 		"Ability16"		"special_bonus_unique_furion_3"
 		"Ability17"		"special_bonus_unique_furion"
+		"Facets"
+		{
+			"furion_soothing_saplings"	
+			{
+				"Icon"				"healing"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+			
+			"furion_ironwood_treant" 	
+			{
+				"Icon"				"siege"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+
+		}
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"27"
-		"AttackDamageMax"		"37"
+		"AttackDamageMin"		"18"
+		"AttackDamageMax"		"28"
 		"AttackRate"		"1.5" 
 		"AttackAnimationPoint"		"0.400000"
 		"MovementTurnRate"		"0.900000"
@@ -13742,16 +15260,16 @@
 		"HeroSelectSoundEffect"		"Hero_LifeStealer.Pick"
 		"GibType"		"default"
 		"Ability1"		"life_stealer_rage"
-		"Ability2"		"life_stealer_feast"
+		"Ability2"		"life_stealer_open_wounds"
 		"Ability3"		"life_stealer_ghoul_frenzy"
-		"Ability4"		"life_stealer_open_wounds"
+		"Ability4"		"life_stealer_feast"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"life_stealer_infest"
 		"Ability7"		"life_stealer_consume"
 		"Ability10"		"special_bonus_unique_lifestealer_infest_damage"
 		"Ability11"		"special_bonus_unique_lifestealer_2"
-		"Ability12"		"special_bonus_hp_350"
-		"Ability13"		"special_bonus_attack_damage_30"
+		"Ability12"		"special_bonus_unique_lifestealer_5"
+		"Ability13"		"special_bonus_unique_lifestealer_4"
 		"Ability14"		"special_bonus_unique_lifestealer_infest_target_bonus"
 		"Ability15"		"special_bonus_unique_lifestealer_6"
 		"Ability16"		"special_bonus_unique_lifestealer_3"
@@ -13760,17 +15278,49 @@
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"life_stealer_rage"
-			"Ability2"		"life_stealer_feast"
+			"Ability2"		"life_stealer_open_wounds"
 			"Ability3"		"life_stealer_ghoul_frenzy"
 			"Ability4"		"life_stealer_infest"
 		}
 
+		"Facets"
+		{
+			"life_stealer_maxhp_gain"
+			{
+				"Icon"				"armor"
+				"Color"				"Yellow"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"life_stealer_corpse_eater"
+					}
+				}
+			}
+			"life_stealer_rage_dispell" 
+			{
+				"Icon"				"broken_chain"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"life_stealer_unfettered"
+						"ReplaceAbility"   	"life_stealer_rage"
+						"AutoLevelAbility" 	"false"
+					}					
+				}
+			}
+		}
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"22"
-		"AttackDamageMax"		"28"
+		"AttackDamageMin"		"16"
+		"AttackDamageMax"		"22"
 		"AttackRate"		"1.7000"
-		"BaseAttackSpeed"		"120"
 		"AttackAnimationPoint"		"0.390000"
 		"AttackAcquisitionRange"		"600"
 		"AttackRange"		"150"
@@ -13780,7 +15330,7 @@
 		"AttributeBaseIntelligence"		"15"
 		"AttributeIntelligenceGain"		"1.8000"
 		"AttributeBaseAgility"		"19"
-		"AttributeAgilityGain"		"2.600000"
+		"AttributeAgilityGain"		"1.900000"
 		"MovementSpeed"		"320" 
 		"MovementTurnRate"		"0.900000"
 		"HasAggressiveStance"		"1"
@@ -13947,8 +15497,17 @@
 		"Ability2"		"dark_seer_ion_shell"
 		"Ability3"		"dark_seer_surge"
 		"Ability4"		"dark_seer_normal_punch"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"dark_seer_mental_fortitude"
 		"Ability6"		"dark_seer_wall_of_replica"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"dark_seer_vacuum"
+			"Ability2"	"dark_seer_ion_shell"
+			"Ability3"	"dark_seer_surge"
+			"Ability4"	"dark_seer_wall_of_replica"
+		}
+
 		"Ability10"		"special_bonus_unique_dark_seer_7"
 		"Ability11"		"special_bonus_unique_dark_seer_5"
 		"Ability12"		"special_bonus_unique_dark_seer_2"
@@ -13957,6 +15516,45 @@
 		"Ability15"		"special_bonus_unique_dark_seer"
 		"Ability16"		"special_bonus_unique_dark_seer_14"
 		"Ability17"		"special_bonus_unique_dark_seer_3"
+		
+		"Facets"
+		{
+			"dark_seer_atkspd"
+			{
+				"Icon"				"damage"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"dark_seer_quick_wit"
+					}
+				}
+			}
+
+			"dark_seer_movespd"
+			{
+				"Icon"				"speed"
+				"Color"				"Purple"
+				"GradientID"		"2"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"dark_seer_heart_of_battle"
+					}
+					
+				}
+				"KeyValueOverrides"
+				{
+					"MovementSpeed"		"275"
+				}
+			}
+		}
+		
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"7"
@@ -14134,9 +15732,19 @@
 		"Ability1"		"clinkz_strafe"
 		"Ability2"		"clinkz_tar_bomb"
 		"Ability3"		"clinkz_death_pact"
-		"Ability4"		"clinkz_burning_army"
-		"Ability5"		"clinkz_burning_barrage"
+		"Ability4"		"clinkz_burning_barrage"
+		"Ability5"		"clinkz_burning_army"
 		"Ability6"		"clinkz_wind_walk"
+		"Ability7"		"clinkz_bone_and_arrow"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"clinkz_strafe"
+			"Ability2"	"clinkz_tar_bomb"
+			"Ability3"	"clinkz_death_pact"
+			"Ability4"	"clinkz_wind_walk"
+		}
+
 		"Ability10"		"special_bonus_unique_clinkz_1"
 		"Ability11"		"special_bonus_unique_clinkz_10"
 		"Ability12"		"special_bonus_attack_range_75"
@@ -14145,6 +15753,21 @@
 		"Ability15"		"special_bonus_unique_clinkz_7"
 		"Ability16"		"special_bonus_unique_clinkz_4"
 		"Ability17"		"special_bonus_unique_clinkz_3"
+		"Facets"
+		{
+			"clinkz_suppressive_fire" 
+			{
+				"Icon"				"no_vision"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+			"clinkz_engulfing_step" 
+			{
+				"Icon"				"teleport"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+			}
+		}
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"19"
@@ -14342,9 +15965,18 @@
 		"Ability1"		"omniknight_purification"
 		"Ability2"		"omniknight_martyr"
 		"Ability3"		"omniknight_hammer_of_purity"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"omniknight_degen_aura"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"omniknight_guardian_angel"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"omniknight_purification"
+			"Ability2"	"omniknight_martyr"
+			"Ability3"	"omniknight_hammer_of_purity"
+			"Ability4"	"omniknight_guardian_angel"
+		}
+
 		"Ability10"		"special_bonus_unique_omniknight_6"
 		"Ability11"		"special_bonus_attack_base_damage_50"
 		"Ability12"		"special_bonus_unique_omniknight_2"
@@ -14353,6 +15985,33 @@
 		"Ability15"		"special_bonus_unique_omniknight_3"
 		"Ability16"		"special_bonus_unique_omniknight_1"
 		"Ability17"		"special_bonus_unique_omniknight_4"
+		
+		"Facets"
+		{
+			"omniknight_omnipresent"		
+			{
+				"Icon"				"damage"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+
+			"omniknight_dmgheals"
+			{
+				"Icon"				"healing"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"omniknight_healing_hammer"
+					}
+				}
+			}
+		}
+
+
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"31"
@@ -14618,14 +16277,40 @@
 		"Ability4"		"enchantress_bunny_hop"
 		"Ability5"		"enchantress_little_friends"
 		"Ability6"		"enchantress_untouchable"
+		"Ability7"		"enchantress_forest_freebie"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"enchantress_impetus"
+			"Ability2"	"enchantress_enchant"
+			"Ability3"	"enchantress_natures_attendants"
+			"Ability4"	"enchantress_untouchable"
+		}
+
 		"Ability10"		"special_bonus_unique_enchantress_enchant_armor"
 		"Ability11"		"special_bonus_unique_enchantress_6"
 		"Ability12"		"special_bonus_attack_damage_45"
-		"Ability13"		"special_bonus_unique_enchantress_2"
+		"Ability13"		"special_bonus_unique_enchantress_5"
 		"Ability14"		"special_bonus_unique_enchantress_3"
 		"Ability15"		"special_bonus_unique_enchantress_enchant_health_damage"
 		"Ability16"		"special_bonus_unique_enchantress_4"
-		"Ability17"		"special_bonus_unique_enchantress_5"
+		"Ability17"		"special_bonus_unique_enchantress_2"
+		
+		"Facets"
+		{
+			"enchantress_overprotective_wisps" 
+			{
+				"Icon"				"healing"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+			"enchantress_spellbound" 
+			{
+				"Icon"				"range"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+			}
+		}
 
 		"ArmorPhysical"		"1.00000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -14645,6 +16330,7 @@
 		"AttributeBaseIntelligence"		"22"
 		"AttributeIntelligenceGain"		"3.80000"
 		"MovementSpeed"		"320"
+		"StatusManaRegen"	"0.5"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"ItemSlots"
 		{
@@ -14805,9 +16491,18 @@
 		"Ability1"		"huskar_inner_fire"
 		"Ability2"		"huskar_burning_spear"
 		"Ability3"		"huskar_berserkers_blood"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"huskar_blood_magic"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"huskar_life_break"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"huskar_inner_fire"
+			"Ability2"	"huskar_burning_spear"
+			"Ability3"	"huskar_berserkers_blood"
+			"Ability4"	"huskar_life_break"
+		}
+
 		"Ability10"		"special_bonus_unique_huskar_3"
 		"Ability11"		"special_bonus_unique_huskar_4"
 		"Ability12"		"special_bonus_unique_huskar_2"
@@ -14816,7 +16511,22 @@
 		"Ability15"		"special_bonus_unique_huskar_7"
 		"Ability16"		"special_bonus_unique_huskar"
 		"Ability17"		"special_bonus_unique_huskar_5"
-		"ArmorPhysical"		"0"
+		"Facets"
+		{
+			"huskar_bloodbath" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+			"huskar_nothl_transfusion" 
+			{
+				"Icon"				"healing"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
+		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"21"
 		"AttackDamageMax"		"26"
@@ -14833,6 +16543,7 @@
 		"AttributeAgilityGain"		"1.50000"
 		"AttributeBaseIntelligence"		"18"
 		"AttributeIntelligenceGain"		"1.500000"
+		"StatusMana"		"0"
 		"MovementSpeed"		"295"
 		"HasAggressiveStance"		"1"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -15042,14 +16753,47 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"night_stalker_darkness"
+		"Ability7"		"night_stalker_heart_of_darkness"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"night_stalker_void"
+			"Ability2"	"night_stalker_crippling_fear"
+			"Ability3"	"night_stalker_hunter_in_the_night"
+			"Ability4"	"night_stalker_darkness"
+		}
+
 		"Ability10"		"special_bonus_unique_night_stalker_4"
 		"Ability11"		"special_bonus_unique_night_stalker_7"
 		"Ability12"		"special_bonus_unique_night_stalker_3"
 		"Ability13"		"special_bonus_unique_night_stalker_hunter_status_resist"
-		"Ability14"		"special_bonus_unique_night_stalker_6"
+		"Ability14"		"special_bonus_unique_night_stalker_crippling_fear_damage"
 		"Ability15"		"special_bonus_strength_20"
 		"Ability16"		"special_bonus_unique_night_stalker_2"
 		"Ability17"		"special_bonus_unique_night_stalker"
+		"Facets"
+		{
+			"night_stalker_blinding_void" 
+			{
+				"Icon"				"no_vision"
+				"Color"				"Blue"
+				"GradientID"		"0"
+			}
+			"night_stalker_dayswap" 
+			{
+				"Icon"				"moon"
+				"Color"				"Gray"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"night_stalker_night_reign"
+					}
+				}
+			}
+		}
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"40"
@@ -15066,7 +16810,7 @@
 		"AttributeIntelligenceGain"		"1.600000"
 		"AttributeBaseAgility"		"18"
 		"AttributeAgilityGain"		"2.20000"
-		"StatusHealthRegen"		"2.0"
+		"StatusHealthRegen"		"1.5"
 		"StatusManaRegen"	"0.25"
 		"MovementSpeed"		"295"
 		"VisionDaytimeRange"		"800"
@@ -15233,10 +16977,19 @@
 		"GibTintColor"	"39 131 80 255"
 		"Ability1"		"broodmother_insatiable_hunger"
 		"Ability2"		"broodmother_spin_web"
-		"Ability3"		"broodmother_silken_bola"
+		"Ability3"		"broodmother_incapacitating_bite"
 		"Ability4"		"broodmother_sticky_snare"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"broodmother_spiders_milk"
 		"Ability6"		"broodmother_spawn_spiderlings"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"broodmother_insatiable_hunger"
+			"Ability2"	"broodmother_spin_web"
+			"Ability3"	"broodmother_incapacitating_bite"
+			"Ability4"	"broodmother_spawn_spiderlings"
+		}
+
 		"Ability10"		"special_bonus_unique_broodmother_3"
 		"Ability11"		"special_bonus_unique_broodmother_6"
 		"Ability12"		"special_bonus_unique_broodmother_5"
@@ -15245,6 +16998,23 @@
 		"Ability15"		"special_bonus_attack_speed_35"
 		"Ability16"		"special_bonus_unique_broodmother_1"
 		"Ability17"		"special_bonus_unique_broodmother_4"
+		
+		"Facets"
+		{
+			"broodmother_necrotic_webs" 	
+			{
+				"Icon"				"debuff"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+			"broodmother_feeding_frenzy"	
+			{
+				"Icon"				"summons"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+		}
+		
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"9"
@@ -15413,16 +17183,51 @@
 		"Ability2"		"bounty_hunter_jinada"
 		"Ability3"		"bounty_hunter_wind_walk"
 		"Ability4"		"bounty_hunter_wind_walk_ally"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"bounty_hunter_big_game_hunter"
 		"Ability6"		"bounty_hunter_track"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"bounty_hunter_shuriken_toss"
+			"Ability2"	"bounty_hunter_jinada"
+			"Ability3"	"bounty_hunter_wind_walk"
+			"Ability4"	"bounty_hunter_track"
+		}
+
 		"Ability10"		"special_bonus_unique_bounty_hunter_5"
 		"Ability11"		"special_bonus_unique_bounty_hunter_4"
 		"Ability12"		"special_bonus_unique_bounty_hunter_9"
 		"Ability13"		"special_bonus_unique_bounty_hunter_3"
 		"Ability14"		"special_bonus_unique_bounty_hunter_8"
 		"Ability15"		"special_bonus_unique_bounty_hunter"
-		"Ability16"		"special_bonus_unique_bounty_hunter_7"
+		"Ability16"		"special_bonus_unique_bounty_hunter_2"
 		"Ability17"		"special_bonus_unique_bounty_hunter_jinada_no_cooldown"
+
+		"Facets"
+		{
+			"bounty_hunter_shuriken"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+
+			"bounty_hunter_mugging"
+			{
+				"Icon"				"gold"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"bounty_hunter_cutpurse"
+						"AutoLevelAbility" "false"
+					}
+				}
+			}
+		}
+
 		"ArmorPhysical"		"5"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"33"
@@ -15687,14 +17492,42 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"weaver_time_lapse"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"weaver_the_swarm"
+			"Ability2"	"weaver_shukuchi"
+			"Ability3"	"weaver_geminate_attack"
+			"Ability4"	"weaver_time_lapse"
+		}
+
 		"Ability10"		"special_bonus_unique_weaver_1"
-		"Ability11"		"special_bonus_strength_8"
+		"Ability11"		"special_bonus_strength_7"
 		"Ability12"		"special_bonus_mana_break_20"
 		"Ability13"		"special_bonus_unique_weaver_4"
 		"Ability14"		"special_bonus_unique_weaver_2"
 		"Ability15"		"special_bonus_unique_weaver_3"
 		"Ability16"		"special_bonus_unique_weaver_6"
 		"Ability17"		"special_bonus_unique_weaver_5"
+
+		"Facets"
+		{
+			"weaver_skitterstep"
+			{
+				"Icon"				"speed"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}			
+			"weaver_hivemind"
+			{
+				"Icon"				"xp"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}
+
+
+		}
+
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"37"
@@ -15712,7 +17545,7 @@
 		"AttributeBaseIntelligence"		"20"
 		"AttributeIntelligenceGain"		"2.00000"
 		"AttributeBaseAgility"		"17"
-		"AttributeAgilityGain"		"3.100000"
+		"AttributeAgilityGain"		"3.3"
 		"StatusHealthRegen"		"1.25"
 		"StatusManaRegen"	"0.5"
 		"MovementSpeed"		"275"
@@ -15873,18 +17706,65 @@
 		"NameAliases"	"thd;twin headed dragon"
 		"Ability1"		"jakiro_dual_breath"
 		"Ability2"		"jakiro_ice_path"
-		"Ability3"		"jakiro_liquid_fire"
-		"Ability4"		"jakiro_liquid_ice"
-		"Ability5"		"generic_hidden"
+		"Ability3"		"generic_hidden"
+		"Ability4"		"generic_hidden"
+		"Ability5"		"jakiro_double_trouble"
 		"Ability6"		"jakiro_macropyre"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"jakiro_dual_breath"
+			"Ability2"		"jakiro_ice_path"
+			"Ability3"		"jakiro_liquid_fire,jakiro_liquid_ice"
+			"Ability6"		"jakiro_macropyre"
+		}
+
 		"Ability10"		"special_bonus_attack_range_200"
 		"Ability11"		"special_bonus_unique_jakiro_dualbreath_slow"
 		"Ability12"		"special_bonus_unique_jakiro_4"
-		"Ability13"		"special_bonus_hp_325"
+		"Ability13"		"special_bonus_unique_jakiro_6"
 		"Ability14"		"special_bonus_unique_jakiro"
 		"Ability15"		"special_bonus_unique_jakiro_7"
 		"Ability16"		"special_bonus_unique_jakiro_2"
-		"Ability17"		"special_bonus_unique_jakiro_6"
+		"Ability17"		"special_bonus_unique_jakiro_3"
+		
+		"Facets"
+		{
+			"jakiro_fire"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"jakiro_liquid_fire"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+
+			"jakiro_ice"
+			{
+				"Icon"				"snowflake"
+				"Color"				"Blue"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"jakiro_liquid_ice"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+		}
+		
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"27"
@@ -15903,6 +17783,7 @@
 		"AttributeBaseAgility"		"15"
 		"AttributeAgilityGain"		"1.200000"
 		"MovementSpeed"		"290"
+		"MovementTurnRate"		"0.8"
 		"particle_folder"		"particles/units/heroes/hero_jakiro"
 		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_jakiro.vsndevts"
 		"VoiceFile"		"soundevents/voscripts/game_sounds_vo_jakiro.vsndevts"
@@ -16114,8 +17995,17 @@
 		"Ability2"		"batrider_flamebreak"
 		"Ability3"		"batrider_firefly"
 		"Ability4"		"batrider_sticky_napalm_application_damage"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"batrider_smoldering_resin"
 		"Ability6"		"batrider_flaming_lasso"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"batrider_sticky_napalm"
+			"Ability2"	"batrider_flamebreak"
+			"Ability3"	"batrider_firefly"
+			"Ability4"	"batrider_flaming_lasso"
+		}
+
 		"Ability10"		"special_bonus_unique_batrider_7"
 		"Ability11"		"special_bonus_unique_batrider_3"
 		"Ability12"		"special_bonus_movement_speed_20"
@@ -16124,6 +18014,29 @@
 		"Ability15"		"special_bonus_unique_batrider_5"
 		"Ability16"		"special_bonus_unique_batrider_4"
 		"Ability17"		"special_bonus_unique_batrider_2"
+		"Facets"
+		{
+			"batrider_buff_on_displacement" 
+			{
+				"Icon"				"speed"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"batrider_stoked"
+					}
+				}
+			}
+			"batrider_arsonist" 
+			{
+				"Icon"				"siege"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+		}
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"-4"
@@ -16276,7 +18189,7 @@
 		"Ability1"		"chen_penitence"
 		"Ability2"		"chen_holy_persuasion"
 		"Ability3"		"chen_divine_favor"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"chen_summon_convert"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"chen_hand_of_god"
 		"Ability10"		"special_bonus_unique_chen_11"
@@ -16287,6 +18200,61 @@
 		"Ability15"		"special_bonus_unique_chen_4"
 		"Ability16"		"special_bonus_unique_chen_12"
 		"Ability17"		"special_bonus_unique_chen_2"
+		
+		"Facets"
+		{
+			"chen_centaur_convert" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Blue"
+				"GradientID"		"3"
+				"AbilityIconReplacements"
+				{
+					"chen_summon_convert"	"chen_summon_convert_centaur"
+				}
+
+			}
+			"chen_wolf_convert" 
+			{
+				"Icon"				"damage"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+				"AbilityIconReplacements"
+				{
+					"chen_summon_convert"	"chen_summon_convert_wolf"
+				}
+			}
+			"chen_hellbear_convert" 
+			{
+				"Icon"				"slow"
+				"Color"				"Red"
+				"GradientID"		"0"
+				"AbilityIconReplacements"
+				{
+					"chen_summon_convert"	"chen_summon_convert_hellbear"
+				}
+			}
+			"chen_troll_convert" 
+			{
+				"Icon"				"summons"
+				"Color"				"Green"
+				"GradientID"		"0"
+				"AbilityIconReplacements"
+				{
+					"chen_summon_convert"	"chen_summon_convert_troll"
+				}
+			}
+			"chen_satyr_convert" 
+			{
+				"Icon"				"mana"
+				"Color"				"Purple"
+				"GradientID"		"1"
+				"AbilityIconReplacements"
+				{
+					"chen_summon_convert"	"chen_summon_convert_satyr"
+				}
+			}
+		}
 
 		"AbilityDraftAbilities"
 		{
@@ -16473,21 +18441,37 @@
 		"Ability4"		"spectre_reality"
 		"Ability5"		"spectre_haunt"
 		"Ability6"		"spectre_haunt_single"
+		"Ability7"		"spectre_spectral"
 		"Ability10"		"special_bonus_unique_spectre"
-		"Ability11"		"special_bonus_unique_spectre_desolate_radius"
+		"Ability11"		"special_bonus_hp_regen_4"
 		"Ability12"		"special_bonus_unique_spectre_2"
 		"Ability13"		"special_bonus_unique_spectre_6"
 		"Ability14"		"special_bonus_hp_350"
 		"Ability15"		"special_bonus_unique_spectre_3"
 		"Ability16"		"special_bonus_unique_spectre_4"
 		"Ability17"		"special_bonus_unique_spectre_5"
+		"Facets"
+		{
+			"spectre_forsaken" 
+			{
+				"Icon"				"spectre"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+			"spectre_twist_the_knife" 	
+			{
+				"Icon"				"nuke"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+		}
 
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"spectre_spectral_dagger"
 			"Ability2"		"spectre_desolate"
 			"Ability3"		"spectre_dispersion"
-			"Ability4"		"spectre_haunt"
+			"Ability4"		"spectre_haunt_single"
 		}
 
 		"ArmorPhysical"		"0"
@@ -16668,6 +18652,7 @@
 		"Ability4"		"doom_bringer_empty1"
 		"Ability5"		"doom_bringer_empty2"
 		"Ability6"		"doom_bringer_doom"
+		"Ability7"		"doom_bringer_lvl_pain"
 		"Ability10"		"special_bonus_unique_doom_3"
 		"Ability11"		"special_bonus_unique_doom_4"
 		"Ability12"		"special_bonus_unique_doom_6"
@@ -16676,6 +18661,30 @@
 		"Ability15"		"special_bonus_unique_doom_1"
 		"Ability16"		"special_bonus_unique_doom_10"
 		"Ability17"		"special_bonus_unique_doom_11"
+		"Facets"
+		{
+			"doom_bringer_gluttony"
+			{
+				"Icon"				"meat"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+
+			"doom_bringer_boost_selling"
+			{
+				"Icon"				"gold"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"doom_bringer_devils_bargain"
+					}
+				}
+			}
+		}
 
 		"AbilityDraftAbilities"
 		{
@@ -16687,19 +18696,21 @@
 
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"34"
-		"AttackDamageMax"		"44"
+		"AttackDamageMin"		"32"
+		"AttackDamageMax"		"42"
 		"AttackRate"		"1.90000"
 		"AttackAnimationPoint"		"0.500000"
 		"AttackAcquisitionRange"		"600"
 		"AttackRange"		"200"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
 		"AttributeBaseStrength"		"24"
-		"AttributeStrengthGain"		"3.7"
+		"AttributeStrengthGain"		"3.8"
 		"AttributeBaseAgility"		"15"
 		"AttributeAgilityGain"		"1.5"
 		"AttributeBaseIntelligence"		"15"
 		"AttributeIntelligenceGain"		"1.7"
+		"StatusHealthRegen"		"1.25"
+
 		"MovementSpeed"		"290"
 		"particle_folder"		"particles/units/heroes/hero_doom_bringer"
 		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts"
@@ -16871,10 +18882,19 @@
 		"Ability1"		"ancient_apparition_cold_feet"
 		"Ability2"		"ancient_apparition_ice_vortex"
 		"Ability3"		"ancient_apparition_chilling_touch"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"ancient_apparition_death_rime"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"ancient_apparition_ice_blast"
 		"Ability7"		"ancient_apparition_ice_blast_release"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"ancient_apparition_cold_feet"
+			"Ability2"	"ancient_apparition_ice_vortex"
+			"Ability3"	"ancient_apparition_chilling_touch"
+			"Ability4"	"ancient_apparition_ice_blast"
+		}
+
 		"Ability10"		"special_bonus_unique_ancient_apparition_7"
 		"Ability11"		"special_bonus_unique_ancient_apparition_8"
 		"Ability12"		"special_bonus_unique_ancient_apparition_3"
@@ -16883,6 +18903,23 @@
 		"Ability15"		"special_bonus_unique_ancient_apparition_2"
 		"Ability16"		"special_bonus_unique_ancient_apparition_6"
 		"Ability17"		"special_bonus_unique_ancient_apparition_5"
+		
+		"Facets"
+		{
+			"ancient_apparition_bone_chill" 
+			{
+				"Icon"				"debuff"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+			"ancient_apparition_exposure" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Blue"
+				"GradientID"		"0"
+			}
+		}
+		
 		"AbilityDraftIgnoreCount"		"7"
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -17058,7 +19095,7 @@
 		"Ability1"		"ursa_earthshock"
 		"Ability2"		"ursa_overpower"
 		"Ability3"		"ursa_fury_swipes"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"ursa_maul"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"ursa_enrage"
 		"Ability10"		"special_bonus_unique_ursa_4"
@@ -17069,7 +19106,30 @@
 		"Ability15"		"special_bonus_unique_ursa"
 		"Ability16"		"special_bonus_unique_ursa_3"
 		"Ability17"		"special_bonus_unique_ursa_7"
+		"Facets"
+		{
+			"ursa_grudge_bearer" 
+			{
+				"Icon"				"damage"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+			
+			"ursa_debuff_reduce"
+			{
+				"Icon"				"cooldown"
+				"Color"				"Blue"
+				"GradientID"		"0"
 
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"ursa_bear_down"
+					}
+				}
+			}
+		}
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"ursa_earthshock"
@@ -17087,11 +19147,11 @@
 		"AttackRange"		"150"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_AGILITY"
 		"AttributeBaseStrength"		"25"
-		"AttributeStrengthGain"		"2.600000"
+		"AttributeStrengthGain"		"2.4"
 		"AttributeBaseAgility"		"18"
-		"AttributeAgilityGain"		"2.800000"
+		"AttributeAgilityGain"		"2.8"
 		"AttributeBaseIntelligence"		"16"
-		"AttributeIntelligenceGain"		"1.500000"
+		"AttributeIntelligenceGain"		"1.5"
 		"MovementSpeed"		"310"
 		"StatusHealthRegen"		"1.0"
 		"particle_folder"		"particles/units/heroes/hero_ursa"
@@ -17233,8 +19293,17 @@
 		"Ability2"		"spirit_breaker_bulldoze"
 		"Ability3"		"spirit_breaker_greater_bash"
 		"Ability4"		"spirit_breaker_planar_pocket"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"spirit_breaker_herd_mentality"
 		"Ability6"		"spirit_breaker_nether_strike"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"spirit_breaker_charge_of_darkness"
+			"Ability2"	"spirit_breaker_bulldoze"
+			"Ability3"	"spirit_breaker_greater_bash"
+			"Ability4"	"spirit_breaker_nether_strike"
+		}
+
 		"Ability10"		"special_bonus_night_vision_500"
 		"Ability11"		"special_bonus_armor_4"
 		"Ability12"		"special_bonus_unique_spirit_breaker_2"
@@ -17243,6 +19312,21 @@
 		"Ability15"		"special_bonus_unique_spirit_breaker_shield"
 		"Ability16"		"special_bonus_unique_spirit_breaker_3"
 		"Ability17"		"special_bonus_unique_spirit_breaker_4"
+		"Facets"
+		{
+			"spirit_breaker_bull_rush" 
+			{
+				"Icon"				"speed"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+			"spirit_breaker_imbalanced" 
+			{
+				"Icon"				"movement"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
 		"ArmorPhysical"		"1.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"31"
@@ -17250,7 +19334,7 @@
 		"AttackRate"		"1.900000"
 		"AttackAnimationPoint"		"0.600000"
 		"AttackAcquisitionRange"		"600"
-		"AttackRange"		"150"
+		"AttackRange"		"170"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
 		"AttributeBaseStrength"		"28"
 		"AttributeStrengthGain"		"3.300000"
@@ -17421,10 +19505,12 @@
 		"Ability1"		"gyrocopter_rocket_barrage"
 		"Ability2"		"gyrocopter_homing_missile"
 		"Ability3"		"gyrocopter_flak_cannon"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"gyrocopter_chop_shop"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"gyrocopter_call_down"
-		"Ability10"		"special_bonus_unique_gyrocopter_4"
+		"Ability7"		"generic_hidden"
+		"Ability8"		"generic_hidden"
+		"Ability10"		"special_bonus_unique_gyrocopter_homing_missile_damage"
 		"Ability11"		"special_bonus_hp_175"
 		"Ability12"		"special_bonus_unique_gyrocopter_6"
 		"Ability13"		"special_bonus_unique_gyrocopter_flak_cannon_bonus_damage"
@@ -17432,6 +19518,23 @@
 		"Ability15"		"special_bonus_unique_gyrocopter_3"
 		"Ability16"		"special_bonus_unique_gyrocopter_1"
 		"Ability17"		"special_bonus_unique_gyrocopter_5"
+		"Facets"
+		{
+			"gyrocopter_secondary_strikes"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+			
+			"gyrocopter_afterburner"
+			{
+				"Icon"				"speed"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+		}
+
 
 		"AbilityDraftAbilities"
 		{
@@ -17652,7 +19755,7 @@
 		"Ability4"		"alchemist_berserk_potion"
 		"Ability5"		"alchemist_goblins_greed"
 		"Ability6"		"alchemist_chemical_rage"
-		"Ability7"		"alchemist_unstable_concoction_throw"
+		"Ability7"		"alchemist_unstable_concoction_throw"	
 		"Ability10"		"special_bonus_unique_alchemist_5"
 		"Ability11"		"special_bonus_unique_alchemist"
 		"Ability12"		"special_bonus_unique_alchemist_3"
@@ -17661,12 +19764,39 @@
 		"Ability15"		"special_bonus_unique_alchemist_2"
 		"Ability16"		"special_bonus_unique_alchemist_6"
 		"Ability17"		"special_bonus_unique_alchemist_4"
+
+
+		"Facets"
+		{
+			"alchemist_seed_money"
+			{
+				"Icon"				"gold"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+			}
+
+			"alchemist_mixologist"		
+			{
+				"Icon"				"cooldown"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+		}
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"alchemist_acid_spray"
+			"Ability2"	"alchemist_unstable_concoction"
+			"Ability3"	"alchemist_corrosive_weaponry"
+			"Ability4"	"alchemist_chemical_rage"
+		}
 		"AbilityDraftIgnoreCount"		"7"
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"27"
 		"AttackDamageMax"		"33"
 		"AttackRate"		"1.700000"
+		"BaseAttackSpeed"		"110"
 		"AttackAnimationPoint"		"0.350000"
 		"AttackAcquisitionRange"		"600"
 		"AttackRange"		"150"
@@ -17895,7 +20025,24 @@
 		"Ability14"		"invoker_forge_spirit"
 		"Ability15"		"invoker_ice_wall"
 		"Ability16"		"invoker_deafening_blast"
-		"Ability25"		""
+		"Ability25"		"invoker_mastermind"
+
+		"Facets"
+		{
+			"invoker_agnostic"
+			{
+				"Icon"				"invoker_passive"
+				"Color"				"Purple"
+				"GradientID"		"0"
+			}			
+			"invoker_elitist"
+			{
+				"Icon"				"invoker_active"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+
+		}
 
 
 		"AbilityDraftAbilities"
@@ -17922,12 +20069,11 @@
 		"Ability22"		"special_bonus_unique_invoker_5"
 		"Ability23"		"special_bonus_unique_invoker_2"
 		"Ability24"		"special_bonus_unique_invoker_13"
-		"AbilityDraftDisabled"		"0"
 		"ArmorPhysical"		"-1"
 		"StatusHealthRegen"		"0.5"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"1"
-		"AttackDamageMax"		"9"
+		"AttackDamageMin"		"3"
+		"AttackDamageMax"		"11"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.400000"
 		"AttackAcquisitionRange"		"800"
@@ -18270,9 +20416,18 @@
 		"Ability1"		"silencer_curse_of_the_silent"
 		"Ability2"		"silencer_glaives_of_wisdom"
 		"Ability3"		"silencer_last_word"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"silencer_brain_drain"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"silencer_global_silence"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"silencer_curse_of_the_silent"
+			"Ability2"	"silencer_glaives_of_wisdom"
+			"Ability3"	"silencer_last_word"
+			"Ability4"	"silencer_global_silence"
+		}
+
 		"Ability10"		"special_bonus_unique_silencer"
 		"Ability11"		"special_bonus_attack_speed_20"
 		"Ability12"		"special_bonus_unique_silencer_7"
@@ -18280,7 +20435,32 @@
 		"Ability14"		"special_bonus_unique_silencer_glaives_bounces"
 		"Ability15"		"special_bonus_unique_silencer_arcane_curse_undispellable"
 		"Ability16"		"special_bonus_unique_silencer_3"
-		"Ability17"		"special_bonus_unique_silencer_2"
+		"Ability17"		"special_bonus_unique_silencer_arcane_curse_charges"
+
+		"Facets"
+		{
+			"silencer_irrepressible"
+			{
+				"Icon"				"silencer"
+				"Color"				"Purple"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"silencer_irrepressible"
+					}
+				}
+			}
+
+			"silencer_reverberating_silence" 
+			{
+				"Icon"				"debuff"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+		}
 		"ArmorPhysical"		"0"
 		"BaseAttackSpeed"		"100"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -18466,17 +20646,42 @@
 		"Ability2"		"obsidian_destroyer_astral_imprisonment"
 		"Ability3"		"obsidian_destroyer_equilibrium"
 		"Ability4"		"generic_hidden"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"obsidian_destroyer_ominous_discernment"
 		"Ability6"		"obsidian_destroyer_sanity_eclipse"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"obsidian_destroyer_arcane_orb"
+			"Ability2"	"obsidian_destroyer_astral_imprisonment"
+			"Ability3"	"obsidian_destroyer_equilibrium"
+			"Ability4"	"obsidian_destroyer_sanity_eclipse"
+		}
+
 		"Ability10"		"special_bonus_hp_200"
-		"Ability11"		"special_bonus_attack_speed_20"
+		"Ability11"		"special_bonus_mp_250"
 		"Ability12"		"special_bonus_unique_outworld_devourer_astral_castrange"
-		"Ability13"		"special_bonus_movement_speed_30"
+		"Ability13"		"special_bonus_unique_outworld_devourer_3"
 		"Ability14"		"special_bonus_spell_lifesteal_20"
 		"Ability15"		"special_bonus_unique_outworld_devourer_4"
 		"Ability16"		"special_bonus_unique_outworld_devourer"
 		"Ability17"		"special_bonus_unique_outworld_devourer_5"
-		"ArmorPhysical"		"2.5"
+		"Facets"
+		{
+			"obsidian_destroyer_obsidian_decimator"	
+			{
+				"Icon"				"mana"
+				"Color"				"Blue"
+				"GradientID"		"0"
+			}
+
+			"obsidian_destroyer_overwhelming_devourer"
+			{
+				"Icon"				"healing"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
+		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"19"
 		"AttackDamageMax"		"31"
@@ -18493,7 +20698,7 @@
 		"AttributeAgilityGain"		"1.60000"
 		"AttributeBaseIntelligence"		"30"
 		"AttributeIntelligenceGain"		"4.200000"
-		"MovementSpeed"		"320"
+		"MovementSpeed"		"315"
 		"StatusHealthRegen"		"1"
 		"HealthBarOffset"		"300"
 		"particle_folder"		"particles/units/heroes/hero_obsidian_destroyer"
@@ -18646,7 +20851,7 @@
 		"Ability2"		"lycan_howl"
 		"Ability3"		"lycan_feral_impulse"
 		"Ability4"		"lycan_wolf_bite"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"lycan_apex_predator"
 		"Ability6"		"lycan_shapeshift"
 		"Ability10"		"special_bonus_unique_lycan_howl_armor"
 		"Ability11"		"special_bonus_unique_lycan_3"
@@ -18656,6 +20861,27 @@
 		"Ability15"		"special_bonus_unique_lycan_4"
 		"Ability17"		"special_bonus_unique_lycan_2"
 		"Ability16"		"special_bonus_unique_lycan_5"
+		
+		"Facets"
+		{
+			"lycan_pack_leader"
+			{
+				"Icon"				"wolf"
+				"Color"				"Gray"
+				"GradientID"		"1"
+			}
+			"lycan_spirit_wolves"	
+			{
+				"Icon"				"spirit"
+				"Color"				"Red"
+				"GradientID"		"0"
+				"AbilityIconReplacements"
+				{
+					"lycan_summon_wolves"	"lycan_summon_spirit_wolves"
+				}
+			}
+		}
+		
 
 		"AbilityDraftAbilities"
 		{
@@ -18865,6 +21091,15 @@
 		"Ability4"		"brewmaster_primal_companion"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"brewmaster_primal_split"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"brewmaster_thunder_clap"
+			"Ability2"	"brewmaster_cinder_brew"
+			"Ability3"	"brewmaster_drunken_brawler"
+			"Ability4"	"brewmaster_primal_split"
+		}
+
 		"Ability10"		"special_bonus_unique_brewmaster_2"
 		"Ability11"		"special_bonus_unique_brewmaster_7"
 		"Ability12"		"special_bonus_unique_brewmaster_5"
@@ -18873,6 +21108,22 @@
 		"Ability15"		"special_bonus_attack_speed_90"
 		"Ability16"		"special_bonus_unique_brewmaster_6"
 		"Ability17"		"special_bonus_unique_brewmaster_4"
+		"Facets"
+		{
+			"brewmaster_roll_out_the_barrel"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+			"brewmaster_drunken_master"
+			{
+				"Icon"				"speed"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+		}
+
 		"ArmorPhysical"		"0.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"9"
@@ -19044,15 +21295,40 @@
 		"Ability4"		"shadow_demon_shadow_poison_release"
 		"Ability5"		"shadow_demon_demonic_cleanse"
 		"Ability6"		"shadow_demon_demonic_purge"
+		"Ability7"		"shadow_demon_menace"
 		"Ability10"		"special_bonus_unique_shadow_demon_4"
-		"Ability11"		"special_bonus_strength_12"
+		"Ability11"		"special_bonus_strength_10"
 		"Ability12"		"special_bonus_movement_speed_25"
 		"Ability13"		"special_bonus_unique_shadow_demon_3"
 		"Ability14"		"special_bonus_unique_shadow_demon_disseminate_damage"
 		"Ability15"		"special_bonus_unique_shadow_demon_1"
 		"Ability16"		"special_bonus_unique_shadow_demon_9"
 		"Ability17"		"special_bonus_unique_shadow_demon_7"
+		"Facets"
+		{
+			"shadow_demon_promulgate" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+			"shadow_demon_facet_soul_mastery"
+			{
+				"Icon"				"illusion"
+				"Color"				"Purple"
+				"GradientID"		"0"
 
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"shadow_demon_shadow_servant"
+					}
+				}
+			}
+
+
+		}
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"shadow_demon_disruption"
@@ -19229,10 +21505,26 @@
 		"Ability11"		"special_bonus_unique_lone_druid_11"
 		"Ability12"		"special_bonus_unique_lone_druid_4"
 		"Ability13"		"special_bonus_unique_lone_druid_2"
-		"Ability14"		"special_bonus_unique_lone_druid_8"
-		"Ability15"		"special_bonus_unique_lone_druid_9"
-		"Ability16"		"special_bonus_unique_lone_druid_10"
-		"Ability17"		"special_bonus_unique_lone_druid_7"
+		"Ability14"		"special_bonus_unique_lone_druid_savage_roar_aoe"
+		"Ability15"		"special_bonus_unique_lone_druid_entangle_dps"
+		"Ability16"		"special_bonus_unique_lone_druid_8"
+		"Ability17"		"special_bonus_unique_lone_druid_spirit_link_attack_speed"
+		"Facets"
+		{
+			"lone_druid_bear_with_me" 
+			{
+				"Icon"				"healing"
+				"Color"				"Green"
+				"GradientID"		"1"
+			}
+			"lone_druid_unbearable" 
+			{
+				"Icon"				"overshadow"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+		}
+
 		"AbilityDraftIgnoreCount" "7"
 		
 		"AbilityDraftAbilities"
@@ -19436,16 +21728,51 @@
 		"Ability2"		"chaos_knight_reality_rift"
 		"Ability3"		"chaos_knight_chaos_strike"
 		"Ability4"		"generic_hidden"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"chaos_knight_reins_of_chaos"
 		"Ability6"		"chaos_knight_phantasm"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"chaos_knight_chaos_bolt"
+			"Ability2"	"chaos_knight_reality_rift"
+			"Ability3"	"chaos_knight_chaos_strike"
+			"Ability4"	"chaos_knight_phantasm"
+		}
+
 		"Ability10"		"special_bonus_unique_chaos_knight_6"
 		"Ability11"		"special_bonus_unique_chaos_knight_2"
 		"Ability12"		"special_bonus_unique_chaos_knight_8"
-		"Ability13"		"special_bonus_unique_chaos_knight_7"
+		"Ability13"		"special_bonus_strength_10"
 		"Ability14"		"special_bonus_unique_chaos_knight_3"
 		"Ability15"		"special_bonus_unique_chaos_knight"
 		"Ability16"		"special_bonus_unique_chaos_knight_5"
 		"Ability17"		"special_bonus_unique_chaos_knight_4"
+
+		"Facets"
+		{
+			"chaos_knight_strong_illusions"
+			{
+				"Icon"				"illusion"
+				"Color"				"Red"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"chaos_knight_phantasmagoria"
+					}
+				}
+			}
+
+			"chaos_knight_irrationality" 
+			{
+				"Icon"				"rng"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+		}
+
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"24"
@@ -19456,7 +21783,7 @@
 		"AttackRange"		"150"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
 		"AttributeBaseStrength"		"24"
-		"AttributeStrengthGain"		"3.200000"
+		"AttributeStrengthGain"		"3.100000"
 		"AttributeBaseAgility"		"18"
 		"AttributeAgilityGain"		"1.400000"
 		"AttributeBaseIntelligence"		"18"
@@ -19606,7 +21933,7 @@
 				"12"		"chaos_knight_phantasm"
 				"13"		"chaos_knight_chaos_strike"
 				"14"		"chaos_knight_chaos_strike"
-				"15"		"special_bonus_unique_chaos_knight_7"
+				"15"		"special_bonus_unique_chaos_knight_8"
 				"16"		"chaos_knight_chaos_strike"
 				"17"		""
 				"18"		"chaos_knight_phantasm"
@@ -19672,7 +21999,6 @@
 			"Cute"			"1"
 		}
 		"LastHitChallengeRival"		"npc_dota_hero_sand_king"
-		"AbilityDraftDisabled"		"0"
 		"ARDMDisabled"		"1"
 		"HeroSelectSoundEffect"		"Hero_Meepo.Pick"
 		"GibType"		"default"
@@ -19683,14 +22009,39 @@
 		"Ability5"		"meepo_megameepo"
 		"Ability6"		"meepo_divided_we_stand"
 		"Ability7"		"meepo_megameepo_fling"
+		"Ability8"		"meepo_sticky_fingers"
 		"Ability10"		"special_bonus_strength_7"
 		"Ability11"		"special_bonus_unique_meepo_2"
 		"Ability12"		"special_bonus_evasion_15"
 		"Ability13"		"special_bonus_unique_meepo_3"
 		"Ability14"		"special_bonus_unique_meepo_4"
 		"Ability15"		"special_bonus_unique_meepo_6"
-		"Ability16"		"special_bonus_unique_meepo_7"
-		"Ability17"		"special_bonus_unique_meepo_5"
+		"Ability16"		"special_bonus_hp_350"
+		"Ability17"		"special_bonus_unique_meepo_poof_cast_point"
+		"Facets"
+		{
+			"meepo_more_meepo" 
+			{
+				"Icon"				"summons"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}			
+			"meepo_pack_rat" 
+			{
+				"Icon"				"item"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"			"meepo_pack_rat"
+					}
+				}
+			}
+
+		}
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"meepo_earthbind"
@@ -19716,7 +22067,7 @@
 		"StatusHealthRegen"		"0.25"
 		"StatusManaRegen"	"0.25"
 		"VisionDaytimeRange"		"1800"
-		"MovementSpeed"		"330"
+		"MovementSpeed"		"320"
 		"MovementTurnRate"		"0.90000"
 		"particle_folder"		"particles/units/heroes/hero_meepo"
 		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_meepo.vsndevts"
@@ -19878,6 +22229,7 @@
 		"Ability4"		"treant_eyes_in_the_forest"
 		"Ability5"		"treant_natures_guise"
 		"Ability6"		"treant_overgrowth"
+		"Ability7"		"treant_innate_attack_damage"
 		"Ability10"		"special_bonus_unique_treant_8"
 		"Ability11"		"special_bonus_unique_treant_12"
 		"Ability12"		"special_bonus_unique_treant_3"
@@ -19886,6 +22238,21 @@
 		"Ability15"		"special_bonus_unique_treant_2"
 		"Ability16"		"special_bonus_unique_treant_14"
 		"Ability17"		"special_bonus_unique_treant_7"
+		"Facets"
+		{
+			"treant_primeval_power" 
+			{
+				"Icon"				"damage"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+			}
+			"treant_sapling" 		
+			{
+				"Icon"				"tree"
+				"Color"				"Green"
+				"GradientID"		"2"
+			}
+		}
 
 		"AbilityDraftAbilities"
 		{
@@ -20074,6 +22441,23 @@
 		"Ability16"		"special_bonus_unique_ogre_magi_3"
 		"Ability17"		"special_bonus_unique_ogre_magi_2"
 
+		"Facets"
+		{
+			"ogre_magi_fat_chance" 
+			{
+				"Icon"				"rng"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+			"ogre_magi_learning_curve" 
+			{
+				"Icon"				"ogre"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}
+		}
+		
+		"AbilityDraftIgnoreCount" "7"
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"ogre_magi_fireblast"
@@ -20265,9 +22649,18 @@
 		"Ability1"		"undying_decay"
 		"Ability2"		"undying_soul_rip"
 		"Ability3"		"undying_tombstone"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"undying_ceaseless_dirge"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"undying_flesh_golem"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"undying_decay"
+			"Ability2"		"undying_soul_rip"
+			"Ability3"		"undying_tombstone"
+			"Ability4"		"undying_flesh_golem"
+		}
+
 		"Ability10"		"special_bonus_unique_undying_8"
 		"Ability11"		"special_bonus_unique_undying_7"
 		"Ability12"		"special_bonus_unique_undying"
@@ -20276,6 +22669,22 @@
 		"Ability15"		"special_bonus_unique_undying_2"
 		"Ability16"		"special_bonus_unique_undying_4"
 		"Ability17"		"special_bonus_unique_undying_5"
+		"Facets"
+		{
+			"undying_rotting_mitts" 
+			{
+				"Icon"				"summons"
+				"Color"				"Green"
+				"GradientID"		"4"
+			}			
+			"undying_ripped" 
+			{
+				"Icon"				"strength"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+
+		}
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"31"
@@ -20462,7 +22871,7 @@
 		"Ability7"		"rubick_telekinesis_land"
 		"Ability8"		"rubick_hidden1"
 		"Ability9"		"rubick_hidden2"
-		"Ability10"		"rubick_hidden3"
+		"Ability10"		"rubick_might_and_magus"
 		"Ability11"		"rubick_telekinesis_land_self"
 		"Ability12"		"special_bonus_unique_rubick_8"
 		"Ability13"		"special_bonus_unique_rubick_2"
@@ -20472,7 +22881,21 @@
 		"Ability17"		"special_bonus_unique_rubick_4"
 		"Ability18"		"special_bonus_unique_rubick"
 		"Ability19"		"special_bonus_unique_rubick_5"
-		"AbilityDraftDisabled"		"0"
+		"Facets"
+		{
+			"rubick_frugal_filch" 
+			{
+				"Icon"				"mana"
+				"Color"				"Purple"
+				"GradientID"		"2"
+			}
+			"rubick_arcane_accumulation" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+		}
 		"AbilityDraftIgnoreCount" "11"
 		"AbilityDraftAbilities"
 		{
@@ -20654,9 +23077,18 @@
 		"Ability1"		"disruptor_thunder_strike"
 		"Ability2"		"disruptor_glimpse"
 		"Ability3"		"disruptor_kinetic_field"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"disruptor_electromagnetic_repulsion"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"disruptor_static_storm"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"disruptor_thunder_strike"
+			"Ability2"		"disruptor_glimpse"
+			"Ability3"		"disruptor_kinetic_field"
+			"Ability4"		"disruptor_static_storm"
+		}
+
 		"Ability10"		"special_bonus_unique_disruptor_2"
 		"Ability11"		"special_bonus_unique_disruptor_consecutive_strike_damage"
 		"Ability12"		"special_bonus_unique_disruptor_9"
@@ -20665,6 +23097,34 @@
 		"Ability15"		"special_bonus_unique_disruptor"
 		"Ability16"		"special_bonus_unique_disruptor_4"
 		"Ability17"		"special_bonus_unique_disruptor_8"
+		
+		"Facets"
+		{
+			"disruptor_thunderstorm"
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+
+			"disruptor_line_walls"
+			{
+				"Icon"				"fence"
+				"Color"				"Blue"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"disruptor_kinetic_fence"
+						"ReplaceAbility"   	"disruptor_kinetic_field"
+						"AutoLevelAbility" 	"false"
+					}
+				}
+			}
+		}
+		
 		"ArmorPhysical"		"0.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"27"
@@ -20850,17 +23310,17 @@
 		"Ability2"		"nyx_assassin_jolt"
 		"Ability3"		"nyx_assassin_spiked_carapace"
 		"Ability4"		"nyx_assassin_burrow"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"nyx_assassin_nyxth_sense"
 		"Ability6"		"nyx_assassin_vendetta"
 		"Ability7"		"nyx_assassin_unburrow"
 		"Ability10"		"special_bonus_unique_nyx_vendetta_damage"
 		"Ability11"		"special_bonus_unique_nyx_4"
 		"Ability12"		"special_bonus_unique_nyx_carapace_reflect_duration"
-		"Ability13"		"special_bonus_unique_nyx_5"
+		"Ability13"		"special_bonus_unique_nyx_jolt_cooldown"
 		"Ability14"		"special_bonus_unique_nyx_6"
 		"Ability15"		"special_bonus_unique_nyx_2"
 		"Ability16"		"special_bonus_unique_nyx"
-		"Ability17"		"special_bonus_unique_nyx_3"
+		"Ability17"		"special_bonus_unique_nyx_vendetta_cd_manacost"
 		"AbilityDraftIgnoreCount" "7"
 		"AbilityDraftAbilities"
 		{
@@ -20870,11 +23330,36 @@
 			"Ability4"		"nyx_assassin_vendetta"
 		}
 
+		
+		"Facets"
+		{
+			"nyx_assassin_burn_mana"
+			{
+				"Icon"				"nuke"
+				"Color"				"Blue"
+				"GradientID"		"3"
 
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"nyx_assassin_innate_mana_burn"
+					}
+				}
+			}
+
+			"nyx_assassin_scuttle" 
+			{
+				"Icon"				"speed"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+		}
+		
 		"ArmorPhysical"		"1.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"9"
-		"AttackDamageMax"		"13"
+		"AttackDamageMin"		"12"
+		"AttackDamageMax"		"16"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.460000"
 		"AttackAcquisitionRange"		"600"
@@ -20883,7 +23368,7 @@
 		"AttributeBaseStrength"		"17"
 		"AttributeStrengthGain"		"2.500000"
 		"AttributeBaseAgility"		"18"
-		"AttributeAgilityGain"		"2.100000"
+		"AttributeAgilityGain"		"2.3"
 		"AttributeBaseIntelligence"		"21"
 		"AttributeIntelligenceGain"		"2.500000"
 		"StatusHealthRegen"		"2.0"
@@ -21023,20 +23508,64 @@
 		"GibType"		"default"
 		"Ability1"		"naga_siren_mirror_image"
 		"Ability2"		"naga_siren_ensnare"
-		"Ability3"		"naga_siren_rip_tide"
+		"Ability3"		"generic_hidden"
 		"Ability4"		"naga_siren_reel_in"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"naga_siren_eelskin"
 		"Ability6"		"naga_siren_song_of_the_siren"
 		"Ability7"		"naga_siren_song_of_the_siren_cancel"
 		"Ability10"		"special_bonus_unique_naga_siren_net_cooldown"
 		"Ability11"		"special_bonus_unique_naga_siren_2"
 		"Ability12"		"special_bonus_unique_naga_siren_4"
-		"Ability13"		"special_bonus_strength_15"
+		"Ability13"		"special_bonus_unique_naga_siren_3"
 		"Ability14"		"special_bonus_unique_naga_siren_5"
 		"Ability15"		"special_bonus_unique_naga_siren"
 		"Ability16"		"special_bonus_unique_naga_siren_6"
-		"Ability17"		"special_bonus_unique_naga_siren_3"
+		"Ability17"		"special_bonus_unique_naga_siren_net_breaks"
+		"Facets"
+		{
+			"naga_siren_passive_riptide" 	
+			{
+				"Icon"				"armor_broken"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"naga_siren_rip_tide"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility" "false"
+					}
+				}
+			}
+			"naga_siren_active_riptide" 	
+			{
+				"Icon"				"nuke"
+				"Color"				"Green"
+				"GradientID"		"2"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"naga_siren_deluge"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility" "false"
+					}
+				}
+			}
+
+
+		}
 		"AbilityDraftIgnoreCount" "7"
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"naga_siren_mirror_image"
+			"Ability2"		"naga_siren_ensnare"
+			"Ability3"		"naga_siren_rip_tide,naga_siren_deluge"
+			"Ability4"		"naga_siren_song_of_the_siren"
+		}
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"23"
@@ -21212,30 +23741,68 @@
 		"Ability1"		"keeper_of_the_light_illuminate"
 		"Ability2"		"keeper_of_the_light_blinding_light"
 		"Ability3"		"keeper_of_the_light_chakra_magic"
-		"Ability4"		"keeper_of_the_light_radiant_bind"
+		"Ability4"		"generic_hidden"
 		"Ability5"		"keeper_of_the_light_will_o_wisp"
 		"Ability6"		"keeper_of_the_light_spirit_form"
 		"Ability7"		"keeper_of_the_light_illuminate_end"
-		"Ability8"		"keeper_of_the_light_spirit_form_illuminate"
-		"Ability9"		"keeper_of_the_light_spirit_form_illuminate_end"
-		"Ability10"		"keeper_of_the_light_recall"
-		"Ability11"		"special_bonus_unique_keeper_of_the_light_8"
-		"Ability12"		"special_bonus_unique_keeper_of_the_light_illuminate_cooldown"
-		"Ability13"		"special_bonus_unique_keeper_of_the_light_7"
-		"Ability14"		"special_bonus_unique_keeper_of_the_light_13"
-		"Ability15"		"special_bonus_unique_keeper_of_the_light_11"
-		"Ability16"		"special_bonus_unique_keeper_of_the_light_10"
-		"Ability17"		"special_bonus_unique_keeper_of_the_light_14"
-		"Ability18"		"special_bonus_unique_keeper_of_the_light"
-		"AbilityTalentStart" "11"
-		"AbilityDraftIgnoreCount" "10"
+		"Ability8"		"keeper_of_the_light_mana_magnifier"
+		"Ability9"		"generic_hidden"
+		"Ability10"		"generic_hidden"
+
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"keeper_of_the_light_illuminate"
-			"Ability2"		"keeper_of_the_light_radiant_bind"
+			"Ability2"		"keeper_of_the_light_blinding_light"
 			"Ability3"		"keeper_of_the_light_chakra_magic"
 			"Ability4"		"keeper_of_the_light_spirit_form"
 		}
+
+		"Ability11"		"special_bonus_unique_keeper_of_the_light_8"
+		"Ability12"		"special_bonus_unique_keeper_of_the_light_illuminate_cooldown"
+		"Ability13"		"special_bonus_unique_keeper_of_the_light_7"
+		"Ability14"		"special_bonus_unique_keeper_of_the_light_5"
+		"Ability15"		"special_bonus_unique_keeper_of_the_light_11"
+		"Ability16"		"special_bonus_unique_keeper_of_the_light_2"
+		"Ability17"		"special_bonus_unique_keeper_of_the_light_14"
+		"Ability18"		"special_bonus_unique_keeper_of_the_light"
+		
+		"Facets"
+		{
+			"keeper_of_the_light_facet_solar_bind"
+			{
+				"Icon"				"slow"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"keeper_of_the_light_radiant_bind"
+						"AbilityIndex"	"3"
+						"AutoLevelAbility"	"true"						
+					}
+				}
+			}
+
+			"keeper_of_the_light_facet_recall"
+			{
+				"Icon"				"teleport"
+				"Color"				"Gray"
+				"GradientID"		"3"
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"keeper_of_the_light_recall"
+						"AbilityIndex"	"3"
+						"AutoLevelAbility"	"true"						
+					}
+				}
+			}
+		}		
+		"AbilityTalentStart" "11"
+		"AbilityDraftIgnoreCount" "10"
+
 		"ArmorPhysical"		"0.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"20"
@@ -21391,7 +23958,6 @@
 		"NameAliases"		"wisp"
 		"NoCombine"		"1"
 		"LastHitChallengeRival"		"npc_dota_hero_zuus"
-		"AbilityDraftDisabled"		"0"
 		"HeroSelectSoundEffect"		"Hero_Wisp.Pick"
 		"GibType"		"ethereal"
 		"GibTintColor"	"171 230 255 255"
@@ -21402,6 +23968,16 @@
 		"Ability5"		"wisp_spirits_out"
 		"Ability6"		"wisp_relocate"
 		"Ability7"		"wisp_tether_break"
+		"Ability8"		"wisp_sight_seer"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"wisp_tether"
+			"Ability2"		"wisp_spirits"
+			"Ability3"		"wisp_overcharge"
+			"Ability4"		"wisp_relocate"
+		}
+
 		"Ability10"		"special_bonus_unique_wisp_11"
 		"Ability11"		"special_bonus_unique_wisp_8"
 		"Ability12"		"special_bonus_unique_wisp_3"
@@ -21410,6 +23986,23 @@
 		"Ability15"		"special_bonus_unique_wisp_6"
 		"Ability16"		"special_bonus_unique_wisp_9"
 		"Ability17"		"special_bonus_unique_wisp_4"
+		
+		"Facets"
+		{
+			"wisp_kritzkrieg" 
+			{
+				"Icon"				"damage"
+				"Color"				"Blue"
+				"GradientID"		"3"
+			}
+			"wisp_medigun" 
+			{
+				"Icon"				"armor"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+		}
+		
 		"AbilityDraftIgnoreCount" "8"
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -21549,6 +24142,15 @@
 		"Ability5"		"visage_silent_as_the_grave"
 		"Ability6"		"visage_summon_familiars"
 		"Ability7"		"visage_summon_familiars_stone_form"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"visage_grave_chill"
+			"Ability2"		"visage_soul_assumption"
+			"Ability3"		"visage_gravekeepers_cloak"
+			"Ability4"		"visage_summon_familiars"
+		}
+
 		"AbilityDraftIgnoreCount" "7"
 		"Ability10"		"special_bonus_unique_visage_8"
 		"Ability11"		"special_bonus_unique_visage_7"
@@ -21558,7 +24160,22 @@
 		"Ability15"		"special_bonus_unique_visage_1"
 		"Ability16"		"special_bonus_unique_visage_5"
 		"Ability17"		"special_bonus_unique_visage_6"
-		"ArmorPhysical"		"-1.000000"
+		"Facets"
+		{
+			"visage_sepulchre" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+			"visage_faithful_followers" 
+			{
+				"Icon"				"summons"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
+		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"4"
 		"AttackDamageMax"		"14"
@@ -21711,8 +24328,17 @@
 		"Ability2"		"slark_pounce"
 		"Ability3"		"slark_essence_shift"
 		"Ability4"		"slark_depth_shroud"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"slark_barracuda"
 		"Ability6"		"slark_shadow_dance"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"slark_dark_pact"
+			"Ability2"		"slark_pounce"
+			"Ability3"		"slark_essence_shift"
+			"Ability4"		"slark_shadow_dance"
+		}
+
 		"Ability10"		"special_bonus_unique_slark_6"
 		"Ability11"		"special_bonus_unique_slark"
 		"Ability12"		"special_bonus_unique_slark_2"
@@ -21721,6 +24347,23 @@
 		"Ability15"		"special_bonus_unique_slark_7"
 		"Ability16"		"special_bonus_unique_slark_3"
 		"Ability17"		"special_bonus_unique_slark_4"
+		"Facets"
+		{
+			"slark_leeching_leash" 
+			{
+				"Icon"				"agility"
+				"Color"				"Green"
+				"GradientID"		"2"
+			}
+			
+			"slark_dark_reef_renegade"
+			{
+				"Icon"				"cooldown"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+		}
+
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"34"
@@ -21740,7 +24383,7 @@
 		"AttributeAgilityGain"		"1.500000"
 		"VisionDaytimeRange"		"1800"
 		"VisionNighttimeRange"		"1800"
-		"StatusHealthRegen"		"1.75"
+		"StatusHealthRegen"		"0.25"
 		"MovementSpeed"		"300"
 		"MovementTurnRate"		"0.700000"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -21916,7 +24559,16 @@
 		"Ability4"		"medusa_cold_blooded"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"medusa_stone_gaze"
-		"Ability10"		"special_bonus_unique_medusa_7"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"medusa_split_shot"
+			"Ability2"		"medusa_mystic_snake"
+			"Ability3"		"medusa_mana_shield"
+			"Ability4"		"medusa_stone_gaze"
+		}
+
+		"Ability10"		"special_bonus_unique_medusa_snake_damage"
 		"Ability11"		"special_bonus_unique_medusa_8"
 		"Ability12"		"special_bonus_unique_medusa_2"
 		"Ability13"		"special_bonus_unique_medusa_5"
@@ -21924,6 +24576,21 @@
 		"Ability15"		"special_bonus_unique_medusa"
 		"Ability16"		"special_bonus_unique_medusa_6"
 		"Ability17"		"special_bonus_unique_medusa_4"
+		"Facets"
+		{
+			"medusa_engorged" 
+			{
+				"Icon"				"snake"
+				"Color"				"Green"
+				"GradientID"		"1"
+			}
+			"medusa_mana_pact" 
+			{
+				"Icon"				"mana"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}
+		}
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"BaseAttackSpeed"		"100"
@@ -21939,7 +24606,7 @@
 		"AttributeBaseStrength"		"0"
 		"AttributeStrengthGain"		"0"
 		"AttributeBaseIntelligence"		"25"
-		"AttributeIntelligenceGain"		"3.4"
+		"AttributeIntelligenceGain"		"3.6"
 		"AttributeBaseAgility"		"22"
 		"AttributeAgilityGain"		"3.6"
 		"StatusHealthRegen"		"0.25"
@@ -22107,6 +24774,22 @@
 		"Ability15"		"special_bonus_unique_troll_warlord"
 		"Ability16"		"special_bonus_unique_troll_warlord_6"
 		"Ability17"		"special_bonus_unique_troll_warlord_4"
+		"Facets"
+		{
+			"troll_warlord_insensitive" 
+			{
+				"Icon"				"armor"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+			"troll_warlord_bad_influence" 
+			{
+				"Icon"				"damage"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+
+		}
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"troll_warlord_fervor"
@@ -22288,16 +24971,51 @@
 		"Ability4"		"centaur_mount"
 		"Ability5"		"centaur_work_horse"
 		"Ability6"		"centaur_stampede"
-		"Ability10"		"special_bonus_hp_regen_5"
+		"Ability7"		"centaur_rawhide"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"centaur_hoof_stomp"
+			"Ability2"	"centaur_double_edge"
+			"Ability3"	"centaur_return"
+			"Ability4"	"centaur_stampede"
+		}
+
+		"Ability10"		"special_bonus_hp_regen_4"
 		"Ability11"		"special_bonus_movement_speed_20"
-		"Ability12"		"special_bonus_strength_15"
+		"Ability12"		"special_bonus_strength_12"
 		"Ability13"		"special_bonus_unique_centaur_4"
 		"Ability14"		"special_bonus_unique_centaur_3"
 		"Ability15"		"special_bonus_unique_centaur_5"
 		"Ability16"		"special_bonus_unique_centaur_1"
 		"Ability17"		"special_bonus_unique_centaur_2"
+		
+		"Facets"
+		{
+			"centaur_counter_strike"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+			"centaur_horsepower"
+			{
+				"Icon"				"speed"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"centaur_horsepower"
+					}
+				}
+			}
+		}
+		
 		"ArmorPhysical"		"-2"
-		"StatusHealthRegen"		"5"
+		"StatusHealthRegen"		"3"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"36"
 		"AttackDamageMax"		"38"
@@ -22314,7 +25032,7 @@
 		"AttributeBaseAgility"		"15"
 		"AttributeAgilityGain"		"1.0000"
 		"VisionDaytimeRange"		"1800"
-		"MovementSpeed"		"310"
+		"MovementSpeed"		"305"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_centaur.vsndevts"
 		"particle_folder"		"particles/units/heroes/hero_centaur"
@@ -22452,9 +25170,16 @@
 			}
 			"12"
 			{
-				"SlotIndex" "11"
+				"SlotIndex" "12"
 				"SlotName" "ability_effects_4"
 				"SlotText" "centaur_stampede"
+				"DisplayInLoadout" "0"
+			}
+			"13"
+			{
+				"SlotIndex" "13"
+				"SlotName" "ability_effects_3"
+				"SlotText" "centaur_return"
 				"DisplayInLoadout" "0"
 			}
 		}
@@ -22505,8 +25230,17 @@
 		"Ability2"		"magnataur_empower"
 		"Ability3"		"magnataur_skewer"
 		"Ability4"		"magnataur_horn_toss"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"magnataur_solid_core"
 		"Ability6"		"magnataur_reverse_polarity"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"magnataur_shockwave"
+			"Ability2"		"magnataur_empower"
+			"Ability3"		"magnataur_skewer"
+			"Ability4"		"magnataur_reverse_polarity"
+		}
+
 		"Ability10"		"special_bonus_unique_magnus_4"
 		"Ability11"		"special_bonus_unique_magnus_6"
 		"Ability12"		"special_bonus_unique_magnus_reverse_polarity_stats"
@@ -22515,6 +25249,27 @@
 		"Ability15"		"special_bonus_unique_magnus_3"
 		"Ability16"		"special_bonus_unique_magnus_2"
 		"Ability17"		"special_bonus_unique_magnus_5"
+		"Facets"
+		{
+			"magnataur_run_through" 
+			{
+				"Icon"				"movement"
+				"Color"				"Gray"
+				"GradientID"		"3"
+				
+			}
+			"magnataur_reverse_reverse_polarity" 
+			{
+				"Icon"				"vortex_out"
+				"Color"				"Gray"
+				"GradientID"		"0"
+				"AbilityIconReplacements"
+				{
+					"magnataur_reverse_polarity"	"magnataur_reversed_reverse_polarity"
+				}
+			}
+		}
+
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"9"
@@ -22526,7 +25281,7 @@
 		"AttributePrimary"		"DOTA_ATTRIBUTE_ALL"
 		"AttributeBaseStrength"		"25"
 		"AttributeStrengthGain"		"3.10000"
-		"AttributeBaseIntelligence"		"19"
+		"AttributeBaseIntelligence"		"20"
 		"AttributeIntelligenceGain"		"1.60000"
 		"AttributeBaseAgility"		"9"
 		"AttributeAgilityGain"		"2.000000"
@@ -22685,11 +25440,12 @@
 		"Ability1"		"shredder_whirling_death"
 		"Ability2"		"shredder_timber_chain"
 		"Ability3"		"shredder_reactive_armor"
-		"Ability4"		"shredder_chakram_2"
+		"Ability4"		"generic_hidden"
 		"Ability5"		"shredder_flamethrower"
 		"Ability6"		"shredder_chakram"
 		"Ability7"		"shredder_return_chakram"
 		"Ability8"		"shredder_return_chakram_2"
+		"Ability9"		"shredder_exposure_therapy"
 		"Ability10"		"special_bonus_unique_timbersaw_reactive_armor_regen_per_stack"
 		"Ability11"		"special_bonus_mp_regen_150"
 		"Ability12"		"special_bonus_unique_timbersaw_5"
@@ -22698,6 +25454,33 @@
 		"Ability15"		"special_bonus_unique_timbersaw_4"
 		"Ability16"		"special_bonus_unique_timbersaw"
 		"Ability17"		"special_bonus_unique_timbersaw_3"
+
+		"Facets"
+		{
+			"shredder_shredder"
+			{				
+				"Icon"				"tree"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}			
+			"shredder_second_chakram"
+			{
+				"Icon"				"spinning"
+				"Color"				"Red"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"shredder_twisted_chakram"
+						"AbilityIndex"	"3"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+
+		}
 		"AbilityDraftIgnoreCount" "8"
 		"AbilityDraftAbilities"
 		{
@@ -22709,17 +25492,17 @@
 
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"4"
-		"AttackDamageMax"		"8"
+		"AttackDamageMin"		"23"
+		"AttackDamageMax"		"27"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.360000"
 		"AttackAcquisitionRange"		"600"
 		"AttackRange"		"150"
-		"AttributePrimary"		"DOTA_ATTRIBUTE_ALL"
+		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
 		"AttributeBaseStrength"		"27"
 		"AttributeStrengthGain"		"3.50000"
 		"AttributeBaseAgility"		"16"
-		"AttributeAgilityGain"		"1.300000"
+		"AttributeAgilityGain"		"1.600000"
 		"AttributeBaseIntelligence"		"23"
 		"AttributeIntelligenceGain"		"2.700000"
 		"StatusManaRegen"	"0.5"
@@ -22894,6 +25677,15 @@
 		"Ability4"		"bristleback_hairball"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"bristleback_warpath"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"bristleback_viscous_nasal_goo"
+			"Ability2"	"bristleback_quill_spray"
+			"Ability3"	"bristleback_bristleback"
+			"Ability4"	"bristleback_warpath"
+		}
+
 		"Ability10"		"special_bonus_attack_speed_25"
 		"Ability11"		"special_bonus_mp_regen_150"
 		"Ability12"		"special_bonus_unique_bristleback_5"
@@ -22902,10 +25694,27 @@
 		"Ability15"		"special_bonus_unique_bristleback_2"
 		"Ability16"		"special_bonus_spell_lifesteal_12"
 		"Ability17"		"special_bonus_unique_bristleback_3"
+		
+		"Facets"
+		{
+			"bristleback_berserk" 
+			{
+				"Icon"				"damage"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+			"bristleback_snot_rocket" 
+			{
+				"Icon"				"snot"
+				"Color"				"Green"
+				"GradientID"		"3"
+			}
+		}
+		
 		"ArmorPhysical"		"1.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"33"
-		"AttackDamageMax"		"39"
+		"AttackDamageMin"		"25"
+		"AttackDamageMax"		"31"
 		"AttackRate"		"1.800000"
 		"AttackAnimationPoint"		"0.300000"
 		"AttackAcquisitionRange"		"600"
@@ -23171,9 +25980,9 @@
 		"NameAliases"	"Ymir"
 		"Ability1"		"tusk_ice_shards"
 		"Ability2"		"tusk_snowball"
-		"Ability3"		"tusk_tag_team"
+		"Ability3"		"generic_hidden"
 		"Ability4"		"tusk_walrus_kick"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"tusk_bitter_chill"
 		"Ability6"		"tusk_walrus_punch"
 		"Ability7"		"tusk_launch_snowball"
 		"Ability10"		"special_bonus_unique_tusk_3"
@@ -23184,12 +25993,50 @@
 		"Ability15"		"special_bonus_unique_tusk"
 		"Ability16"		"special_bonus_unique_tusk_4"
 		"Ability17"		"special_bonus_unique_tusk_6"
+
+		"Facets"
+		{
+			"tusk_facet_tag_team"
+			{
+				"Icon"				"damage"
+				"Color"				"Blue"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"tusk_tag_team"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+
+			"tusk_facet_fist_bump"
+			{
+				"Icon"				"movement"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"tusk_drinking_buddies"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+		}
+
 		"AbilityDraftIgnoreCount" "7"
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"tusk_ice_shards"
 			"Ability2"		"tusk_snowball"
-			"Ability3"		"tusk_tag_team"
+			"Ability3"		"tusk_tag_team,tusk_drinking_buddies"
 			"Ability4"		"tusk_walrus_punch"
 		}
 
@@ -23393,17 +26240,62 @@
 		"Ability1"		"skywrath_mage_arcane_bolt"
 		"Ability2"		"skywrath_mage_concussive_shot"
 		"Ability3"		"skywrath_mage_ancient_seal"
-		"Ability4"		"skywrath_mage_shield_of_the_scion"
-		"Ability5"		"generic_hidden"
+		"Ability4"		"generic_hidden"	// RESERVED FOR FACET ABILITY
+		"Ability5"		"skywrath_mage_ruin_and_restoration"
 		"Ability6"		"skywrath_mage_mystic_flare"
-		"Ability10"		"special_bonus_hp_200"
-		"Ability11"		"special_bonus_intelligence_8"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"skywrath_mage_arcane_bolt"
+			"Ability2"		"skywrath_mage_concussive_shot"
+			"Ability3"		"skywrath_mage_ancient_seal"
+			"Ability4"		"skywrath_mage_mystic_flare"
+		}
+
+		"Ability10"		"special_bonus_mp_regen_150"
+		"Ability11"		"special_bonus_unique_skywrath_2"
 		"Ability12"		"special_bonus_unique_skywrath"
 		"Ability13"		"special_bonus_unique_skywrath_arcane_bolt_lifesteal"
 		"Ability14"		"special_bonus_unique_skywrath_4"
 		"Ability15"		"special_bonus_unique_skywrath_3"
 		"Ability16"		"special_bonus_unique_skywrath_6"
 		"Ability17"		"special_bonus_unique_skywrath_5"
+
+		"Facets"
+		{
+			"skywrath_mage_shield"
+			{
+				"Icon"				"armor"
+				"Color"				"Blue"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"skywrath_mage_shield_of_the_scion"
+						"AbilityIndex"	"3"
+					}
+				}
+			}
+
+			"skywrath_mage_staff"
+			{
+				"Icon"				"cooldown"
+				"Color"				"Yellow"
+				"GradientID"		"2"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"skywrath_mage_staff_of_the_scion"
+						"AbilityIndex"	"3"
+					}
+				}
+			}
+		}
+
 		"ArmorPhysical"		"-2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"16"
@@ -23412,6 +26304,15 @@
 		"AttackAnimationPoint"		"0.400000"
 		"AttackAcquisitionRange"		"800"
 		"AttackRange"		"625"
+		"AttackSpeedActivityModifiers"
+		{
+			"fast"		"200"		
+		}
+		"AttackRangeActivityModifiers"
+		{
+			"attack_normal_range"	"0"
+			"attack_long_range"		"300"
+		}
 		"BaseAttackSpeed"		"90"
 		"ProjectileModel"		"particles/units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
 		"ProjectileSpeed"		"1000"
@@ -23422,7 +26323,7 @@
 		"AttributeAgilityGain"		"0.800000"
 		"AttributeBaseIntelligence"		"23"
 		"AttributeIntelligenceGain"		"4.100000"
-		"StatusManaRegen"	"0.0"
+		"StatusManaRegen"	"0.25"
 		"MovementSpeed"		"325"
 		"HasAggressiveStance"		"1"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -23587,7 +26488,7 @@
 				"7"		"skywrath_mage_arcane_bolt"
 				"8"		"skywrath_mage_ancient_seal"
 				"9"		"skywrath_mage_ancient_seal"
-				"10"		"special_bonus_hp_200"
+				"10"		"special_bonus_mp_regen_150"
 				"11"		"skywrath_mage_ancient_seal"
 				"12"		"skywrath_mage_mystic_flare"
 				"13"		"skywrath_mage_concussive_shot"
@@ -23666,9 +26567,18 @@
 		"Ability1"		"abaddon_death_coil"
 		"Ability2"		"abaddon_aphotic_shield"
 		"Ability3"		"abaddon_frostmourne"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"abaddon_font_of_avernus"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"abaddon_borrowed_time"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"abaddon_death_coil"
+			"Ability2"		"abaddon_aphotic_shield"
+			"Ability3"		"abaddon_frostmourne"
+			"Ability4"		"abaddon_borrowed_time"
+		}
+
 		"Ability10"		"special_bonus_unique_abaddon_6"
 		"Ability11"		"special_bonus_unique_abaddon_7"
 		"Ability12"		"special_bonus_unique_abaddon_5"
@@ -23677,10 +26587,37 @@
 		"Ability15"		"special_bonus_unique_abaddon_immolation"
 		"Ability16"		"special_bonus_unique_abaddon_3"
 		"Ability17"		"special_bonus_unique_abaddon_4"
+		"Facets"
+		{
+			"abaddon_death_dude"
+			{
+				"Icon"				"cooldown"
+				"Color"				"Gray"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"abaddon_the_quickening"
+					}
+				}
+			}
+
+			"abaddon_mephitic_shroud" 
+			{
+				"Icon"				"barrier"
+				"Color"				"Blue"
+				"GradientID"		"1"
+			}
+		}
+//		"VariantAbility1"		""
+
+//		"VariantAbility2"		""
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"		"2"
-		"AttackDamageMax"		"12"
+		"AttackDamageMin"		"-4"
+		"AttackDamageMax"		"6"
 		"BaseAttackSpeed"		"95"
 		"AttackRate"		"1.500000"
 		"AttackAnimationPoint"		"0.560000"
@@ -23878,6 +26815,31 @@
 		"Ability15"		"special_bonus_unique_elder_titan_5"
 		"Ability16"		"special_bonus_unique_elder_titan_3"
 		"Ability17"		"special_bonus_unique_elder_titan_4"
+
+		"Facets"
+		{
+			"elder_titan_deconstruction" 
+			{
+				"Icon"				"armor_broken"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+			"elder_titan_boost_atkspd" 
+			{
+				"Icon"				"damage"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"elder_titan_momentum"
+					}
+				}
+			}
+		}
+		
 		"AbilityDraftIgnoreCount" "7"
 		"AbilityDraftAbilities"
 		{
@@ -24054,6 +27016,15 @@
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"legion_commander_duel"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"legion_commander_overwhelming_odds"
+			"Ability2"		"legion_commander_press_the_attack"
+			"Ability3"		"legion_commander_moment_of_courage"
+			"Ability4"		"legion_commander_duel"
+		}
+
 		"Ability10"		"special_bonus_unique_legion_commander_9"
 		"Ability11"		"special_bonus_unique_legion_commander_pta_movespeed"
 		"Ability12"		"special_bonus_unique_legion_commander_6"
@@ -24062,6 +27033,21 @@
 		"Ability15"		"special_bonus_unique_legion_commander_3"
 		"Ability16"		"special_bonus_unique_legion_commander_7"
 		"Ability17"		"special_bonus_unique_legion_commander_8"
+		"Facets"
+		{
+			"legion_commander_stonehall_plate" 
+			{
+				"Icon"				"armor"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+			"legion_commander_spoils_of_war" 
+			{
+				"Icon"				"damage"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+		}
 		"ArmorPhysical"		"0.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"33"
@@ -24262,10 +27248,25 @@
 		"Ability11"		"special_bonus_unique_ember_spirit_1"
 		"Ability12"		"special_bonus_unique_ember_spirit_3"
 		"Ability13"		"special_bonus_unique_ember_spirit_2"
-		"Ability14"		"special_bonus_unique_ember_spirit_7"
+		"Ability14"		"special_bonus_unique_ember_spirit_chains_dps"
 		"Ability15"		"special_bonus_unique_ember_spirit_6"
 		"Ability16"		"special_bonus_unique_ember_spirit_4"
 		"Ability17"		"special_bonus_unique_ember_spirit_5"
+		"Facets"
+		{
+			"ember_spirit_double_impact"		
+			{
+				"Icon"				"fist"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+			"ember_spirit_chain_gang"		
+			{
+				"Icon"				"debuff"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+		}
 		"ArmorPhysical"		"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"33"
@@ -24429,7 +27430,6 @@
 		"VoiceFile"		"soundevents/voscripts/game_sounds_vo_earth_spirit.vsndevts"
 		"workshop_guide_name"		"Earth Spirit"
 		"NoCombine"		"0"
-		"AbilityDraftDisabled"		"0"
 		"HeroSelectSoundEffect"		"Hero_EarthSpirit.Pick"
 		"GibType"		"stone"
 		"SimilarHeroes"		"126,106,17"
@@ -24466,6 +27466,21 @@
 		"Ability15"		"special_bonus_unique_earth_spirit_5"
 		"Ability16"		"special_bonus_unique_earth_spirit_2"
 		"Ability17"		"special_bonus_unique_earth_spirit_3"
+		"Facets"
+		{
+			"earth_spirit_resonance" 
+			{
+				"Icon"				"damage"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+			"earth_spirit_stepping_stone" 
+			{
+				"Icon"				"cooldown"
+				"Color"				"Gray"
+				"GradientID"		"2"
+			}
+		}
 		"ArmorPhysical"		"0.00000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"25"
@@ -24657,6 +27672,7 @@
 		"Ability4"		"terrorblade_demon_zeal"
 		"Ability5"		"terrorblade_terror_wave"
 		"Ability6"		"terrorblade_sunder"
+		"Ability7"		"terrorblade_dark_unity"
 		"Ability10"		"special_bonus_unique_terrorblade_2"
 		"Ability11"		"special_bonus_unique_terrorblade_4"
 		"Ability12"		"special_bonus_unique_terrorblade_metamorphosis_cooldown"
@@ -24665,6 +27681,22 @@
 		"Ability15"		"special_bonus_unique_terrorblade_5"
 		"Ability16"		"special_bonus_unique_terrorblade"
 		"Ability17"		"special_bonus_unique_terrorblade_3"
+		"Facets"
+		{
+			"terrorblade_condemned" 	
+			{
+				"Icon"				"twin_hearts"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+			"terrorblade_soul_fragment" 	
+			{
+				"Icon"				"illusion"
+				"Color"				"Blue"
+				"GradientID"		"2"
+			}
+
+		}
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"terrorblade_reflection"
@@ -24686,7 +27718,7 @@
 		"MovementTurnRate"		"0.800000"
 		"ProjectileSpeed"		"900"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_AGILITY"
-		"AttributeBaseStrength"		"16"
+		"AttributeBaseStrength"		"18"
 		"AttributeStrengthGain"		"2.0"
 		"AttributeBaseIntelligence"		"19"
 		"AttributeIntelligenceGain"		"1.60000"
@@ -24813,7 +27845,7 @@
 		"Model"		"models/heroes/phoenix/phoenix_bird.vmdl"
 		"SoundSet"		"Hero_Phoenix"
 		"IdleSoundLoop"		"Hero_Phoenix.IdleLoop"
-		"IdleExpression"		"scenes/phoenix/phoenix/exp_idle_01.vcd"
+		"IdleExpression"		"scenes/phoenix/phoenix/phoenix_phoenix_bird_exp_idle_01.vcd"
 		"HeroID"		"110"
 		"HeroOrderID"	"106"
 		"Enabled"		"1"
@@ -24846,7 +27878,7 @@
 		"Ability2"		"phoenix_fire_spirits"
 		"Ability3"		"phoenix_sun_ray"
 		"Ability4"		"phoenix_sun_ray_toggle_move"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"phoenix_blinding_sun"
 		"Ability6"		"phoenix_supernova"
 		"Ability7"		"phoenix_launch_fire_spirit"
 		"Ability8"		"phoenix_icarus_dive_stop"
@@ -24854,11 +27886,37 @@
 		"Ability10"		"special_bonus_unique_phoenix_6"
 		"Ability11"		"special_bonus_unique_phoenix_dive_damage"
 		"Ability12"		"special_bonus_unique_phoenix_3"
-		"Ability13"		"special_bonus_hp_500"
+		"Ability13"		"special_bonus_hp_regen_20"
 		"Ability14"		"special_bonus_unique_phoenix_5"
 		"Ability15"		"special_bonus_unique_phoenix_2"
 		"Ability16"		"special_bonus_unique_phoenix_1"
 		"Ability17"		"special_bonus_unique_phoenix_4"
+		
+		"Facets"
+		{
+			"phoenix_facet_immolate"
+			{
+				"Icon"				"barrier"
+				"Color"				"Red"
+				"GradientID"		"2"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"phoenix_dying_light"
+					}
+				}
+			}
+
+			"phoenix_hotspot" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+		}
+		
 		"AbilityDraftIgnoreCount" "9"
 		"AbilityDraftAbilities"
 		{
@@ -25045,8 +28103,17 @@
 		"Ability2"		"oracle_fates_edict"
 		"Ability3"		"oracle_purifying_flames"
 		"Ability4"		"oracle_rain_of_destiny"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"oracle_prognosticate"
 		"Ability6"		"oracle_false_promise"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"oracle_fortunes_end"
+			"Ability2"		"oracle_fates_edict"
+			"Ability3"		"oracle_purifying_flames"
+			"Ability4"		"oracle_false_promise"
+		}
+
 		"Ability10"		"special_bonus_unique_oracle_2"
 		"Ability11"		"special_bonus_unique_oracle_9"
 		"Ability12"		"special_bonus_unique_oracle_damage_per_purge"
@@ -25055,6 +28122,40 @@
 		"Ability15"		"special_bonus_unique_oracle_8"
 		"Ability16"		"special_bonus_unique_oracle_7"
 		"Ability17"		"special_bonus_unique_oracle"
+		
+		"Facets"
+		{
+			"oracle_facet_dmg"
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"2"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"oracle_clairvoyant_curse"
+					}
+				}
+			}
+
+			"oracle_facet_heal"
+			{
+				"Icon"				"healing"
+				"Color"				"Green"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"oracle_clairvoyant_cure"
+					}
+				}
+			}
+		}
+		
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"13"
@@ -25282,7 +28383,6 @@
 		"HeroSelectSoundEffect"		"Hero_Techies.Pick"
 		"GibType"		"default"
 		"NameAliases"	"Squee;Spleen;Spoon"
-		"AbilityDraftDisabled"		"0"
 		"Ability1"		"techies_sticky_bomb"
 		"Ability2"		"techies_reactive_tazer"
 		"Ability3"		"techies_suicide"
@@ -25304,7 +28404,45 @@
 			"Ability3"		"techies_suicide"
 			"Ability4"		"techies_land_mines"
 		}
+		"Facets"
+		{
+			"techies_atk_range"
+			{
+				"Icon"				"range"
+				"Color"				"Gray"
+				"GradientID"		"0"
 
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"techies_squees_scope"
+					}
+				}
+			}
+
+			"techies_spleens_secret_sauce" 
+			{
+				"Icon"				"nuke"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+
+			"techies_backpack"
+			{
+				"Icon"				"item"
+				"Color"				"Blue"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"techies_spoons_stash"
+					}
+				}
+			}
+		}
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"3"
@@ -25314,7 +28452,7 @@
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.500000"
 		"AttackAcquisitionRange"		"800"
-		"AttackRange"		"700"
+		"AttackRange"		"600"
 		"ProjectileModel"		"particles/units/heroes/hero_techies/techies_base_attack.vpcf"
 		"ProjectileSpeed"		"900"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_ALL"
@@ -25325,6 +28463,7 @@
 		"AttributeBaseAgility"		"14"
 		"AttributeAgilityGain"		"1.300000"
 		"StatusManaRegen"	"1.0"
+		"StatusHealthRegen"		"1.0"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"RingRadius"		"70"
 		"particle_folder"		"particles/units/heroes/hero_techies"
@@ -25592,9 +28731,18 @@
 		"Ability1"		"winter_wyvern_arctic_burn"
 		"Ability2"		"winter_wyvern_splinter_blast"
 		"Ability3"		"winter_wyvern_cold_embrace"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"winter_wyvern_eldwurm_scholar"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"winter_wyvern_winters_curse"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"winter_wyvern_arctic_burn"
+			"Ability2"		"winter_wyvern_splinter_blast"
+			"Ability3"		"winter_wyvern_cold_embrace"
+			"Ability4"		"winter_wyvern_winters_curse"
+		}
+
 		"Ability10"		"special_bonus_unique_winter_wyvern_5"
 		"Ability11"		"special_bonus_attack_damage_35"
 		"Ability12"		"special_bonus_unique_winter_wyvern_6"
@@ -25603,10 +28751,42 @@
 		"Ability15"		"special_bonus_unique_winter_wyvern_7"
 		"Ability16"		"special_bonus_unique_winter_wyvern_3"
 		"Ability17"		"special_bonus_unique_winter_wyvern_4"
+		"Facets"
+		{
+			"winter_wyvern_heal_mana"
+			{
+				"Icon"				"mana"
+				"Color"				"Blue"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"winter_wyvern_essence_of_the_blueheart"
+					}
+				}
+			}
+
+			"winter_wyvern_atk_range"
+			{
+				"Icon"				"damage"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"winter_wyvern_dragon_sight"
+					}
+				}
+			}
+		}
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"-4"
-		"AttackDamageMax"		"1"
+		"AttackDamageMin"		"-1"
+		"AttackDamageMax"		"4"
 		"AttackDamageType"		"DAMAGE_TYPE_ArmorPhysical"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.250000"
@@ -25627,6 +28807,7 @@
 		"AttributeIntelligenceGain"	"2.8"
 		"AttributeBaseAgility"		"16"
 		"AttributeAgilityGain"		"1.5"
+		"VisionNighttimeRange"		"1200"
 		"BaseAttackSpeed"		"90"
 		"StatusManaRegen"	"0.5"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -25768,18 +28949,35 @@
 		"Ability1"		"arc_warden_flux"
 		"Ability2"		"arc_warden_magnetic_field"
 		"Ability3"		"arc_warden_spark_wraith"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"arc_warden_runic_infusion"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"arc_warden_tempest_double"
 		"Ability10"		"special_bonus_unique_arc_warden_5"
-		"Ability11"		"special_bonus_hp_250"
+		"Ability11"		"special_bonus_hp_200"
 		"Ability12"		"special_bonus_unique_arc_warden_4"
 		"Ability13"		"special_bonus_unique_arc_warden_3"
 		"Ability14"		"special_bonus_unique_arc_warden"
 		"Ability15"		"special_bonus_unique_arc_warden_9"
 		"Ability16"		"special_bonus_unique_arc_warden_8"
-		"Ability17"		"special_bonus_unique_arc_warden_6"
+		"Ability17"		"special_bonus_unique_arc_warden_7"
+		
+		"Facets"
+		{
+			"arc_warden_order" 
+			{
+				"Icon"				"arc_warden"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
 
+			"arc_warden_disorder" 
+			{
+				"Icon"				"arc_warden_alt"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+		}
+		
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"arc_warden_flux"
@@ -25815,12 +29013,12 @@
 		// Attributes
 		//-------------------------------------------------------------------------------------------------------------
 		"AttributePrimary"		"DOTA_ATTRIBUTE_AGILITY"
-		"AttributeBaseStrength"		"22"
-		"AttributeStrengthGain"		"2.6"
+		"AttributeBaseStrength"		"20"
+		"AttributeStrengthGain"		"2.4"
 		"AttributeBaseIntelligence"		"24"
 		"AttributeIntelligenceGain"		"2.6"
 		"AttributeBaseAgility"		"20"
-		"AttributeAgilityGain"		"3.0"
+		"AttributeAgilityGain"		"3"
 		"StatusHealthRegen"		"0.25"
 
 		// Movement
@@ -25975,8 +29173,17 @@
 		"Ability3"		"abyssal_underlord_atrophy_aura"
 		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
-		"Ability6"		"abyssal_underlord_dark_portal"		
-		"Ability10"		"special_bonus_armor_5"
+		"Ability6"		"abyssal_underlord_dark_portal"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"abyssal_underlord_firestorm"
+			"Ability2"		"abyssal_underlord_pit_of_malice"
+			"Ability3"		"abyssal_underlord_atrophy_aura"
+			"Ability4"		"abyssal_underlord_dark_portal"
+		}
+
+		"Ability10"		"special_bonus_unique_underlord_7"
 		"Ability11"		"special_bonus_unique_underlord_8"
 		"Ability12"		"special_bonus_unique_underlord_6"
 		"Ability13"		"special_bonus_unique_underlord_5"
@@ -25984,6 +29191,31 @@
 		"Ability15"		"special_bonus_unique_underlord_3"
 		"Ability16"		"special_bonus_unique_underlord"
 		"Ability17"		"special_bonus_unique_underlord_9"
+		"Facets"
+		{
+			"abyssal_underlord_demons_reach" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+
+			"abyssal_underlord_summons"
+			{
+				"Icon"				"summons"
+				"Color"				"Yellow"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"abyssal_underlord_abyssal_horde"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+		}
 		"AbilityDraftIgnoreCount" "7"
 		"ArmorPhysical"		"3.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
@@ -26158,7 +29390,6 @@
 		"VersusScale"		"0.81"
 		"LoadoutScale"		"0.8100"
 		"workshop_guide_name"		"Monkey King"
-		"AbilityDraftDisabled"	"0"
 		"Ability1"		"monkey_king_boundless_strike"
 		"Ability2"		"monkey_king_tree_dance"
 		"Ability3"		"monkey_king_primal_spring"
@@ -26175,6 +29406,22 @@
 		"Ability15"		"special_bonus_unique_monkey_king_10"
 		"Ability16"		"special_bonus_unique_monkey_king_11"
 		"Ability17"		"special_bonus_unique_monkey_king_6"
+		"Facets"
+		{
+			"monkey_king_wukongs_faithful"
+			{
+				"Icon"				"summons"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+			"monkey_king_simian_stride" 
+			{
+				"Icon"				"tree"
+				"Color"				"Green"
+				"GradientID"		"4"
+			}
+
+		}
 		"AbilityDraftIgnoreCount" "8"
 		"AbilityDraftAbilities"
 		{
@@ -26207,7 +29454,7 @@
 		"AttributeStrengthGain"		"2.8"
 		"AttributeBaseIntelligence"		"20"
 		"AttributeIntelligenceGain"		"1.8"
-		"AttributeBaseAgility"	"23"
+		"AttributeBaseAgility"	"24"
 		"AttributeAgilityGain"	"3.700000"
 		"StatusHealthRegen"		"1.0"
 		"MovementSpeed"			"300"
@@ -26351,10 +29598,20 @@
 		"Ability1"					"pangolier_swashbuckle"
 		"Ability2"					"pangolier_shield_crash"
 		"Ability3"					"pangolier_lucky_shot"
-		"Ability4"					"pangolier_rollup"
-		"Ability5"					"pangolier_rollup_stop"
+		"Ability4"					"pangolier_fortune_favors_the_bold"
+		"Ability5"					"pangolier_rollup"
 		"Ability6"					"pangolier_gyroshell"
 		"Ability7"					"pangolier_gyroshell_stop"
+		"Ability8"					"pangolier_rollup_stop"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"			"pangolier_swashbuckle"
+			"Ability2"			"pangolier_shield_crash"
+			"Ability3"			"pangolier_lucky_shot"
+			"Ability4"			"pangolier_gyroshell"
+		}
+
 		"Ability10"					"special_bonus_unique_pangolier_luckyshot_armor"
 		"Ability11"					"special_bonus_unique_pangolier"
 		"Ability12"					"special_bonus_unique_pangolier_6"
@@ -26363,6 +29620,22 @@
 		"Ability15"					"special_bonus_unique_pangolier_shield_crash_radius"
 		"Ability16"					"special_bonus_unique_pangolier_4"
 		"Ability17"					"special_bonus_unique_pangolier_5"
+		"Facets"
+		{
+			"pangolier_double_jump" 
+			{
+				"Icon"				"double_bounce"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+			"pangolier_thunderbolt" 
+			{
+				"Icon"				"speed"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+
+		}
 		"AbilityDraftIgnoreCount"	"7"
 		"ArmorPhysical"				"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
@@ -26382,10 +29655,10 @@
 		"AttributeBaseStrength"		"19"
 		"AttributeStrengthGain"		"2.70000"
 		"AttributeBaseIntelligence"	"16"
-		"AttributeIntelligenceGain"	"1.900000"		
+		"AttributeIntelligenceGain"	"2.200000"		
 		"AttributeBaseAgility"		"18"
-		"AttributeAgilityGain"		"2.50000"
-		"StatusHealthRegen"		"0.75"
+		"AttributeAgilityGain"		"2.80000"
+		"StatusHealthRegen"			"1.25"
 		"MovementSpeed"				"295"
 		"MovementTurnRate"			"0.900000"
 		"MovementSpeedActivityModifiers"
@@ -26550,7 +29823,7 @@
 		"Ability2"		"dark_willow_shadow_realm"
 		"Ability3"		"dark_willow_cursed_crown"
 		"Ability4"		"dark_willow_bedlam"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"dark_willow_pixie_dust"
 		"Ability6"		"dark_willow_terrorize"
 		"Ability10"		"special_bonus_unique_dark_willow_6"
 		"Ability11"		"special_bonus_unique_dark_willow_5"
@@ -26558,8 +29831,24 @@
 		"Ability13"		"special_bonus_unique_dark_willow_7"
 		"Ability14"		"special_bonus_unique_dark_willow_1"
 		"Ability15"		"special_bonus_unique_dark_willow_3"
-		"Ability16"		"special_bonus_attack_speed_100"
+		"Ability16"		"special_bonus_unique_dark_willow_2"
 		"Ability17"		"special_bonus_unique_dark_willow_bedlam_targets"
+		"Facets"
+		{
+			"dark_willow_throwing_shade" 
+			{
+				"Icon"				"damage"
+				"Color"				"Purple"
+				"GradientID"		"1"
+			}
+			"dark_willow_thorny_thicket" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Green"
+				"GradientID"		"4"
+			}
+		}
+
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"dark_willow_bramble_maze"
@@ -26577,7 +29866,7 @@
 			"fast"		"200"
 			"faster"	"300"
 		}
-		"ArmorPhysical"		"-1"
+		"ArmorPhysical"		"0"
 		"AttackAnimationPoint"		"0.30000"
 		"AttackAcquisitionRange"		"800"
 		"AttackRange"		"475"
@@ -26788,15 +30077,41 @@
 		"Ability4"				"grimstroke_dark_portrait"
 		"Ability5"				"grimstroke_return"
 		"Ability6"				"grimstroke_soul_chain"
+		"Ability7"				"grimstroke_ink_trail"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"			"grimstroke_dark_artistry"
+			"Ability2"			"grimstroke_ink_creature"
+			"Ability3"			"grimstroke_spirit_walk"
+			"Ability4"			"grimstroke_soul_chain"
+		}
+
 		"Ability10"				"special_bonus_unique_grimstroke_8"
 		"Ability11"				"special_bonus_unique_grimstroke_7"
 		"Ability12"				"special_bonus_unique_grimstroke_soul_chain_reflect_damage"
 		"Ability13"				"special_bonus_unique_grimstroke_6"
-		"Ability14"				"special_bonus_unique_grimstroke_3"
+		"Ability14"				"special_bonus_unique_grimstroke_2"
 		"Ability15"				"special_bonus_unique_grimstroke_4"
 		"Ability16"				"special_bonus_unique_grimstroke_1"
-		"Ability17"				"special_bonus_unique_grimstroke_2"
+		"Ability17"				"special_bonus_unique_grimstroke_3"
+		
+		"Facets"
+		{
 
+			"grimstroke_inkstigate" 
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Gray"
+				"GradientID"		"0"
+			}
+			"grimstroke_fine_art" 
+			{
+				"Icon"				"brush"
+				"Color"				"Red"
+				"GradientID"		"1"
+			}
+		}
 
 		"ArmorPhysical"				"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
@@ -26978,9 +30293,18 @@
 		"Ability1"		"mars_spear"
 		"Ability2"		"mars_gods_rebuke"
 		"Ability3"		"mars_bulwark"
-		"Ability4"		"generic_hidden"
+		"Ability4"		"mars_dauntless"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"mars_arena_of_blood"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"mars_spear"
+			"Ability2"		"mars_gods_rebuke"
+			"Ability3"		"mars_bulwark"
+			"Ability4"		"mars_arena_of_blood"
+		}
+
 		"Ability10"		"special_bonus_unique_mars_rebuke_radius"
 		"Ability11"		"special_bonus_unique_mars_bulwark_redirect_chance"
 		"Ability12"		"special_bonus_unique_mars_rebuke_cooldown"
@@ -26989,6 +30313,21 @@
 		"Ability15"		"special_bonus_unique_mars_spear_stun_duration"
 		"Ability16"		"special_bonus_unique_mars_gods_rebuke_extra_crit"
 		"Ability17"		"special_bonus_unique_mars_arena_of_blood_hp_regen"
+		"Facets"
+		{
+			"mars_victory_feast" 
+			{
+				"Icon"				"healing"
+				"Color"				"Red"
+				"GradientID"		"2"
+			}
+			"mars_arena" 
+			{
+				"Icon"				"no_vision"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+			}
+		}
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"26"
@@ -27165,9 +30504,18 @@
 		"Ability1"					"void_spirit_aether_remnant"
 		"Ability2"					"void_spirit_dissimilate"
 		"Ability3"					"void_spirit_resonant_pulse"
-		"Ability4"					"generic_hidden"
+		"Ability4"					"void_spirit_intrinsic_edge"
 		"Ability5"					"generic_hidden"
 		"Ability6"					"void_spirit_astral_step"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"				"void_spirit_aether_remnant"
+			"Ability2"				"void_spirit_dissimilate"
+			"Ability3"				"void_spirit_resonant_pulse"
+			"Ability4"				"void_spirit_astral_step"
+		}
+
 		"Ability10"					"special_bonus_mp_regen_175"
 		"Ability11"					"special_bonus_unique_void_spirit_2"
 		"Ability12"					"special_bonus_unique_void_spirit_7"
@@ -27176,6 +30524,34 @@
 		"Ability15"					"special_bonus_unique_void_spirit_1"
 		"Ability16"					"special_bonus_unique_void_spirit_8"
 		"Ability17"					"special_bonus_unique_void_spirit_3"
+		
+		"Facets"
+		{
+			"void_spirit_sanctuary" 
+			{
+				"Icon"				"armor"
+				"Color"				"Purple"
+				"GradientID"		"1"
+			}			
+			"void_spirit_phys_barrier"
+			{
+				"Icon"				"nuke"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"void_spirit_symmetry"
+					}
+				}
+			}
+
+
+		}
+
+		
 		"ArmorPhysical"				"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"			"4"
@@ -27363,6 +30739,7 @@
 		"Ability4"				"snapfire_gobble_up"
 		"Ability5"				"snapfire_spit_creep"
 		"Ability6"				"snapfire_mortimer_kisses"
+		"Ability7"				"snapfire_buckshot"
 		"Ability10"				"special_bonus_unique_snapfire_7"
 		"Ability11"				"special_bonus_unique_snapfire_5"
 		"Ability12"				"special_bonus_unique_snapfire_2"
@@ -27377,12 +30754,29 @@
 			"Ability2"				"snapfire_firesnap_cookie"
 			"Ability3"				"snapfire_lil_shredder"
 			"Ability4"				"snapfire_mortimer_kisses"
-		}		
+		}
+		
+		"Facets"
+		{
+			"snapfire_ricochet_ii" 
+			{
+				"Icon"				"ricochet"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+			"snapfire_full_bore" 
+			{
+				"Icon"				"range"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+		}
+
 		"ArmorPhysical"				"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"			"4"
-		"AttackDamageMax"			"10"
-		"AttackRate"				"1.600000"
+		"AttackDamageMin"			"11"
+		"AttackDamageMax"			"17"
+		"AttackRate"				"1.8"
 		"AttackAnimationPoint"		"0.350000"
 		"AttackSpeedActivityModifiers"
 		{
@@ -27390,7 +30784,7 @@
 			"faster"	"320"
 		}
 		"AttackAcquisitionRange"	"800"
-		"AttackRange"				"500"
+		"AttackRange"				"400"
 		"ProjectileModel"			"particles/units/heroes/hero_snapfire/hero_snapfire_base_attack.vpcf"
 		"ProjectileSpeed"			"1800"
 		"AttributePrimary"			"DOTA_ATTRIBUTE_ALL"
@@ -27565,23 +30959,39 @@
 		"workshop_guide_name"		"Hoodwink"
 		"LastHitChallengeRival"		"npc_dota_hero_snapfire"
 		"HeroSelectSoundEffect"		"Hero_Hoodwink.Pick"
-		"AbilityDraftDisabled"		"0"
 		"AbilityLayout"					"5"
 		"Ability1"					"hoodwink_acorn_shot"
 		"Ability2"					"hoodwink_bushwhack"
 		"Ability3"					"hoodwink_scurry"
 		"Ability4"					"hoodwink_decoy"
 		"Ability5"					"hoodwink_hunters_boomerang"
-		"Ability6"					"hoodwink_sharpshooter"
-		"Ability7"					"hoodwink_sharpshooter_release"
-		"Ability10"					"special_bonus_unique_hoodwink_scurry_evasion"
+		"Ability6"					"hoodwink_mistwoods_wayfarer"
+		"Ability7"					"hoodwink_sharpshooter"
+		"Ability8"					"hoodwink_sharpshooter_release"		
+		"Ability10"					"special_bonus_unique_hoodwink_scurry_duration"
 		"Ability11"					"special_bonus_unique_hoodwink_bushwhack_cooldown"
 		"Ability12"					"special_bonus_unique_hoodwink_bushwhack_damage"
 		"Ability13"					"special_bonus_unique_hoodwink_acorn_shot_bounces"
 		"Ability14"					"special_bonus_unique_hoodwink_sharpshooter_damage"
 		"Ability15"					"special_bonus_corruption_4"
 		"Ability16"					"special_bonus_unique_hoodwink_acorn_shot_charges"
-		"Ability17"					"special_bonus_unique_hoodwink_bushwhack_radius"
+		"Ability17"					"special_bonus_unique_hoodwink_sharpshooter_pure_damage"
+
+		"Facets"
+		{
+			"hoodwink_hunter" 
+			{
+				"Icon"				"range"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+			}
+			"hoodwink_treebounce_trickshot" 
+			{
+				"Icon"				"tree"
+				"Color"				"Green"
+				"GradientID"		"0"
+			}
+		}
 		
 		"AbilityDraftIgnoreCount"   "7"
 		"AbilityDraftAbilities"
@@ -27729,7 +31139,7 @@
 		"Enabled"			"1"
 		"CMEnabled"			"1"
 		"Role"				"Carry,Durable"
-		"Rolelevels"		"1,2,1,1,1"
+		"Rolelevels"		"1,2"
 		"Complexity"		"1"
 		"Team"				"Good"
 		"HeroID"			"135"
@@ -27756,9 +31166,18 @@
 		"Ability2"		"dawnbreaker_celestial_hammer"
 		"Ability3"		"dawnbreaker_luminosity"
 		"Ability4"		"dawnbreaker_converge"
-		"Ability5"		"generic_hidden"
+		"Ability5"		"dawnbreaker_break_of_dawn"
 		"Ability6"		"dawnbreaker_solar_guardian"
 		"Ability7"		"dawnbreaker_land"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"	"dawnbreaker_fire_wreath"
+			"Ability2"	"dawnbreaker_celestial_hammer"
+			"Ability3"	"dawnbreaker_luminosity"
+			"Ability4"	"dawnbreaker_solar_guardian"
+		}
+
 		"Ability10"		"special_bonus_unique_dawnbreaker_fire_wreath_swipe"
 		"Ability11"		"special_bonus_unique_dawnbreaker_celestial_hammer_slow"
 		"Ability12"		"special_bonus_unique_dawnbreaker_luminosity_crit"
@@ -27768,6 +31187,22 @@
 		"Ability16"		"special_bonus_unique_dawnbreaker_fire_wreath_cooldown"
 		"Ability17"		"special_bonus_unique_dawnbreaker_celestial_hammer_cast_range"
 		
+		"Facets"
+		{
+			"dawnbreaker_solar_charged"		
+			{
+				"Icon"				"cooldown"
+				"Color"				"Gray"
+				"GradientID"		"3"
+			}
+			"dawnbreaker_gleaming_hammer"	
+			{
+				"Icon"				"dawnbreaker_hammer"
+				"Color"				"Yellow"
+				"GradientID"		"1"
+			}
+		}
+
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"29"
@@ -27942,8 +31377,8 @@
 		"GibType"		"default"
 		"Ability1"		"marci_grapple"
 		"Ability2"		"marci_companion_run"
-		"Ability3"		"marci_guardian"
-		"Ability4"		"generic_hidden"
+		"Ability3"		"generic_hidden"
+		"Ability4"		"marci_special_delivery"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"marci_unleash"
 		
@@ -27951,7 +31386,7 @@
 		{
 			"Ability1"		"marci_grapple"
 			"Ability2"		"marci_companion_run"
-			"Ability3"		"marci_guardian"
+			"Ability3"		"marci_guardian,marci_bodyguard"
 			"Ability6"		"marci_unleash"
 		}	
 
@@ -27961,8 +31396,45 @@
 		"Ability13"		"special_bonus_unique_marci_lunge_movespeed"
 		"Ability14"		"special_bonus_unique_marci_grapple_stun_duration"
 		"Ability15"		"special_bonus_unique_marci_unleash_speed"
-		"Ability16"		"special_bonus_unique_marci_dispose_range"
+		"Ability16"		"special_bonus_unique_marci_unleash_extend_duration"
 		"Ability17"		"special_bonus_unique_marci_guardian_damage"
+		"Facets"
+		{
+			"marci_sidekick" 
+			{
+				"Icon"				"healing"
+				"Color"				"Gray"
+				"GradientID"		"3"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"marci_guardian"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}			
+			"marci_bodyguard" 
+			{
+				"Icon"				"ricochet"
+				"Color"				"Blue"
+				"GradientID"		"1"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"marci_bodyguard"
+						"AbilityIndex"	"2"
+						"AutoLevelAbility"	"false"
+					}
+				}
+			}
+
+		}
+		
 		"ArmorPhysical"				"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"			"7"
@@ -28083,8 +31555,10 @@
 		"Team"					"Bad"
 		"HeroID"				"137"
 		"HeroOrderID"			"123"
+		"NameAliases"			"pb"
 		"ModelScale"			"0.900000"
 		"MaxModelScaleMultiplier"	"1.25"
+                "HealthBarOffset"		"250"
 		"LoadoutScale"		"0.900000"
 		"VersusScale"		"0.9"
 		"SpectatorLoadoutScale" "0.7"
@@ -28107,6 +31581,7 @@
 		"Ability4"				"primal_beast_rock_throw"
 		"Ability5"				"primal_beast_onslaught_release"
 		"Ability6"				"primal_beast_pulverize"
+		"Ability7"				"primal_beast_colossal"
 		"Ability10"				"special_bonus_unique_primal_beast_onslaught_damage"
 		"Ability11"				"special_bonus_unique_primal_beast_trample_magic_resist"
 		"Ability12"				"special_bonus_unique_primal_beast_trample_cooldown"
@@ -28115,6 +31590,23 @@
 		"Ability15"				"special_bonus_unique_primal_beast_uproar_armor"
 		"Ability16"				"special_bonus_unique_primal_beast_trample_unslowable"
 		"Ability17"				"special_bonus_unique_primal_beast_pulverize_duration"
+		
+		"Facets"
+		{
+			"primal_beast_romp_n_stomp"		
+			{
+				"Icon"				"speed"
+				"Color"				"Red"
+				"GradientID"		"0"
+			}
+			"primal_beast_ferocity"
+			{
+				"Icon"				"area_of_effect"
+				"Color"				"Yellow"
+				"GradientID"		"3"
+			}
+		}
+		
 		"AbilityDraftAbilities"
 		{
 			"Ability1"		"primal_beast_onslaught"
@@ -28288,23 +31780,57 @@
 		"Ability4"		"muerta_parting_shot"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"muerta_pierce_the_veil"
-		"Ability7"		"generic_hidden"
+		"Ability7"		"muerta_supernatural"
 		"Ability8"		"generic_hidden"
 		"Ability9"		"generic_hidden"
-		"Ability10"		"special_bonus_unique_muerta_dead_shot_damage"
-		"Ability11"		"special_bonus_strength_8"
-		"Ability12"		"special_bonus_unique_muerta_dead_shot_range"
-		"Ability13"		"special_bonus_attack_damage_35"
+
+		"AbilityDraftAbilities"
+		{
+			"Ability1"		"muerta_dead_shot"
+			"Ability2"		"muerta_the_calling"
+			"Ability3"		"muerta_gunslinger"
+			"Ability4"		"muerta_pierce_the_veil"
+		}
+
+		"Ability10"		"special_bonus_unique_muerta_dead_shot_range"
+		"Ability11"		"special_bonus_unique_muerta_calling_hp_regen"
+		"Ability12"		"special_bonus_unique_muerta_dead_shot_damage"
+		"Ability13"		"special_bonus_unique_muerta_gunslinger_bonus_damage"
 		"Ability14"		"special_bonus_unique_muerta_dead_shot_charges"
-		"Ability15"		"special_bonus_unique_muerta_gunslinger_double_shot_chance"
-		"Ability16"		"special_bonus_unique_muerta_the_calling_num_revenants"
+		"Ability15"		"special_bonus_unique_muerta_the_calling_num_revenants"
+		"Ability16"		"special_bonus_unique_muerta_gunslinger_double_shot_chance"
 		"Ability17"		"special_bonus_magic_resistance_25"
+		"Facets"
+		{
+			"muerta_dance_of_the_dead" 
+			{
+				"Icon"				"spirit"
+				"Color"				"Green"
+				"GradientID"		"1"
+			}
+
+			"muerta_ofrenda"
+			{
+				"Icon"				"teleport"
+				"Color"				"Yellow"
+				"GradientID"		"0"
+
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"muerta_ofrenda"
+						"AbilityIndex"	"4"
+					}
+				}
+			}
+		}
 		"ArmorPhysical"		"-1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"24"
 		"AttackDamageMax"		"32"
-		"AttackRate"		"1.6"
-		"BaseAttackSpeed"		"100"
+		"AttackRate"		"1.7"
+		"BaseAttackSpeed"		"115"
 		"AttackAnimationPoint"		"0.35"
 		"AttackSpeedActivityModifiers"
 		{
