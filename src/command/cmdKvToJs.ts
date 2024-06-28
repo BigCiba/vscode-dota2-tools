@@ -79,6 +79,8 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 		const files = fs.readdirSync(heroAbilitiesFolder);
 		// 遍历每个文件和文件夹
 		files.forEach(async file => {
+			console.log(file);
+
 			// 构建完整的文件路径
 			const filePath = path.join(heroAbilitiesFolder, file);
 			// 检查当前路径是文件还是文件夹
