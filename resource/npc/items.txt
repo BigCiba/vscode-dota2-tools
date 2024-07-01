@@ -16513,40 +16513,6 @@
 			"gold_tick_interval"							"3"
 		}
 	}
-
-}
-
-
-
-
-		
- ItemPurchasable"				"0"
-		"ItemSellable"				"0"
-		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
-
-		"Model"							"models/props_gameplay/neutral_box.vmdl"
-		
-		// Special	
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"damage"			"10"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"hp_regen"			"7"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"mana_regen_amp"			"50"
-			}		
-		}
-	}
 	
 
 	//=================================================================================================================
