@@ -357,7 +357,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 			markdown += `# ${serverKeys[index].replace(/_/g, ".")}\n## Lua Server\n`;
 			const changelog_old = serverChangelogs[serverKeys[index - 1]];
 			const changelog_new = serverChangelogs[serverKeys[index]];
-			const classList = Object.keys(changelog_new.class_list??{}).concat(Object.keys(changelog_old.class_list??{}))
+			const classList = Array.from(new Set(Object.keys(changelog_new.class_list ?? {}).concat(Object.keys(changelog_old.class_list ?? {}))));
 			// 比对function
 			for (const className of classList) {
 				const funcList_old = changelog_old.class_list[className];
@@ -454,7 +454,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 			let client_markdown = `## Lua Client\n`;
 			const changelog_old = clientChangelogs[clientKeys[index - 1]];
 			const changelog_new = clientChangelogs[clientKeys[index]];
-			const classList = Object.keys(changelog_new.class_list??{}).concat(Object.keys(changelog_old.class_list??{}))
+			const classList = Array.from(new Set(Object.keys(changelog_new.class_list ?? {}).concat(Object.keys(changelog_old.class_list ?? {}))));
 			// 比对function
 			for (const className of classList) {
 				const funcList_old = changelog_old.class_list[className];

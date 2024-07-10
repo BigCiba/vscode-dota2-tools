@@ -19,5 +19,5 @@ export async function preProcessing(context: vscode.ExtensionContext) {
 	parseLuaAPIChangelog(context);
 	console.log("parseLuaAPIChangelog");
 	// rogueItemsGameParse(context);
-	// console.log("parseLuaAPIChangelog");
+	// console.log("rogueItemsGameParse");
 }
