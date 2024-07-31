@@ -97,6 +97,7 @@
 	"dota2tools.csv_to_db": "CSV覆盖数据库(server_db_config.kv)",
 	"dota2tools.csv_invalid": "CSV格式不正确",
 	"dota2tools.generate_vpdi": "生成VPDI",
+	"dota2tools.generate_recent_vpdi": "生成近期VPDI",
 	"dota2tools.mklink": "自动移动game和content文件夹并且mklink",
 	"dota2tools.export_modifier_function": "导出modifierfunction",
 	"dota2-tools.A4.FeiShu": "飞书云配置表的配置。主要用于多人协作，解决excel不能合并等问题。需要自行申请飞书企业应用（免费）。",

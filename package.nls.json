@@ -90,6 +90,7 @@
 	"dota2tools.csv_to_db": "CSV Overwrite Database",
 	"dota2tools.csv_invalid": "CSV Format Invalid",
 	"dota2tools.generate_vpdi": "Generate VPDI",
+	"dota2tools.generate_recent_vpdi": "Generate recent VPDI",
 	"dota2tools.mklink": "move game and content folder and then mklink",
 	"dota2tools.export_modifier_function": "export modifierfunction",
 	"dota2-tools.A4.FeiShu": "FeiShu cloud sheet config",

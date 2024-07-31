@@ -18,7 +18,7 @@ import { exportWearableWithHero } from './command/cmdExportWearableWithHero';
 import { formatKv } from './command/cmdFormatKv';
 import { CSV_ExportDB } from "./command/cmdGenerateDBCSV";
 import { generateLuaApiDocument } from './command/cmdGenerateLuaApiDocument';
-import { generateVPDI } from './command/cmdGenerateVPDI';
+import { generateRecentVPDI, generateVPDI } from './command/cmdGenerateVPDI';
 import { getItemRemoveList } from './command/cmdGetItemRemoveList';
 import { inheritTable } from './command/cmdInheritTable';
 import { abilityExport, unitExport } from './command/cmdKvExport';
@@ -77,6 +77,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.preProcessing', () => preProcessing(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.welcomePage', (tag) => quickStart(context, tag)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_vpdi', () => generateVPDI(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_recent_vpdi', () => generateRecentVPDI(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => mklinkForDota2Addon(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.export_modifier_function', () => exportModifierFunction(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.CopyDotaResourcePath', (uri) => CopyDotaResourcePath(context, uri)));
