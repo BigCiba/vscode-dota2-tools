@@ -279,7 +279,7 @@
 				"duration"				"10"
 				"damage"				
 				{
-					"value"					"40"
+					"value"					"35"
 					"CalculateSpellDamageTooltip"	"1"
 				}
 				"tick_rate"				"1.0"
@@ -300,6 +300,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"MaxLevel"						"1"
+		"IsBreakable"					"1"
+
 		"AbilityValues"
 		{
 			"spell_amplification"		"0.75"
@@ -317,6 +319,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"MaxLevel"						"1"
+		"IsBreakable"					"1"
+
 		"AbilityValues"
 		{
 			"heal_amplification"		"0.75"

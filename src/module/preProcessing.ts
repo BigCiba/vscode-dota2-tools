@@ -1,15 +1,14 @@
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import { readKeyValue2, readKeyValue3 } from '../utils/kvUtils';
+import * as vscode from 'vscode';
 import { eachLine } from '../utils/eachLine';
-import { objectHasKey } from '../utils/objectHasKey';
-import { getDotaApiNoteClass } from './apiNote';
-import { readFunction } from '../utils/readFunction';
-import { readEnum } from '../utils/readEnum';
 import { getLiteItemsGame } from '../utils/getLiteItemsGame';
-import { log } from 'console';
+import { readKeyValue2, readKeyValue3 } from '../utils/kvUtils';
+import { objectHasKey } from '../utils/objectHasKey';
+import { readEnum } from '../utils/readEnum';
+import { readFunction } from '../utils/readFunction';
+import { getDotaApiNoteClass } from './apiNote';
 
 /**
  * 更新步骤：
@@ -173,7 +172,7 @@ export function parsePanelList(context: vscode.ExtensionContext) {
 
 /** 生成音效json */
 export async function vsndGenerator(context: vscode.ExtensionContext) {
-	const sound_path: string = 'C:/Users/bigciba/Documents/Dota Addons/dota2 tracking/root/soundevents';
+	const sound_path: string = 'E:/Dota Addons/dota2 tracking/root/soundevents';
 
 	let json_obj: any = {};
 	await readFolder(sound_path);

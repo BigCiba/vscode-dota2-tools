@@ -39,7 +39,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"duration"		"10"
+			"duration"		"15"
 			"attack_speed"		"50"
 			"hp_regen"		"40"
 			"projectile_speed"			"900"
@@ -225,6 +225,7 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_SELF"
 		"MaxLevel"						"1"
 		"Innate"						"1"
+		"IsBreakable"					"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -237,7 +238,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"duration"				"36"
+			"duration"				"40"
 			"bonus_gold"			"2"
 			"bonus_bonus_gold"		"2"
 			"bounty_multiplier"		"2"
@@ -344,6 +345,7 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilitySound"					"Hero_Meepo.Geostrike"
+		"IsBreakable"					"1"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------

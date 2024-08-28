@@ -50,7 +50,7 @@
 		"ItemAliases"					"blink dagger"
 		//"SideShop"						"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@
 		"ItemAliases"					"blink dagger"
 		//"SideShop"						"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -139,7 +139,7 @@
 		"ItemAliases"					"blink dagger"
 		//"SideShop"						"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -181,7 +181,7 @@
 		"ItemAliases"					"blink dagger"
 		//"SideShop"						"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -196,9 +196,6 @@
 				
 		}
 	}
-
-	
-	
 	
 	//=================================================================================================================
 	// Recipe: Arcane Blink
@@ -223,9 +220,6 @@
 			"01"						"item_blink*;item_mystic_staff"
 		}
 	}
-
-	
-	
 	
 	//=================================================================================================================
 	// Recipe: Swift Blink
@@ -250,9 +244,6 @@
 			"01"						"item_blink*;item_eagle"
 		}
 	}
-
-	
-	
 	
 	//=================================================================================================================
 	// Recipe: Overwhelming Blink
@@ -277,8 +268,6 @@
 			"01"						"item_blink*;item_reaver"
 		}
 	}
-
-
 
 	//=================================================================================================================
 	// Blades of Attack
@@ -532,8 +521,7 @@
 		"ItemQuality"					"component"
 		"ItemAliases"					"qb;quelling blade"
 		//"SideShop"						"1"
-		"ShouldBeSuggested"				"1"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		
 		// Special	
@@ -573,7 +561,7 @@
 		"ItemInitialCharges"			"1"
 		"ItemHideCharges"				"1"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 		
@@ -621,7 +609,7 @@
 		"ItemStockMax"					"1"
 		"ItemInitialStockTime"			"270.0"
 		"ItemInitialStockTimeTurbo"		"150.0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		
 		// Sounden
 		//-------------------------------------------------------------------------------------------------------------			
@@ -661,7 +649,7 @@
 		"ItemPermanent"					"1"
 		//"ItemInitialCharges"			"3"
 		//"ItemRequiresCharges"			"1"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		
 		// Sounden
@@ -694,7 +682,7 @@
 		"ItemShopTags"					"armor"
 		"ItemQuality"					"component"
 		"ItemAliases"					"rop;ring of protection"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		
 		// Sound
 		//-------------------------------------------------------------------------------------------------------------			
@@ -726,7 +714,7 @@
 		"ItemShopTags"					"block"
 		"ItemQuality"					"component"
 		"ItemAliases"					"stout shield"
-		"ShouldBeSuggested"				"0"
+		"SuggestLategame"				"0"
 		"ItemPurchasable"				"0"
         "IsObsolete"                    "1"
 
@@ -783,7 +771,7 @@
 		"ItemShopTags"					"attack_speed"
 		"ItemQuality"					"consumable"
 		"ItemAliases"					"moon shard"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -811,7 +799,7 @@
 		"ItemShopTags"					"str"
 		"ItemQuality"					"component"
 		"ItemAliases"					"gauntlets of strength"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -836,7 +824,7 @@
 		"ItemShopTags"					"agi"
 		"ItemQuality"					"component"
 		"ItemAliases"					"slippers of agility"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -861,7 +849,7 @@
 		"ItemShopTags"					"int"
 		"ItemQuality"					"component"
 		"ItemAliases"					"mantle of intelligence"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -894,7 +882,7 @@
 		"ItemShopTags"					"agi;int;str"
 		"ItemQuality"					"consumable"
 		"ItemAliases"					"gg branch;iron branch"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -995,7 +983,7 @@
 		"ItemShopTags"					"agi;int;str"
 		"ItemQuality"					"component"
 		"ItemAliases"					"circlet"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -1020,7 +1008,7 @@
 		"ItemShopTags"					"agi;int;str"
 		"ItemQuality"					"component"
 		"ItemAliases"					"crown"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestEarlygame"				"1"
 		//"SideShop"						"1"
 
 		// Special	
@@ -1218,7 +1206,6 @@
 		"ItemQuality"					"component"
 		"ItemAliases"					"morbid mask"
 		//"SideShop"						"1"
-		"ShouldBeSuggested"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -1245,7 +1232,6 @@
 		"ItemQuality"					"component"
 		"ItemAliases"					"voodoo mask;voom;vodo;vm"
 		//"SideShop"						"1"
-		"ShouldBeSuggested"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -1270,7 +1256,7 @@
 		"ItemShopTags"					"regen_health"
 		"ItemQuality"					"component"
 		"ItemAliases"					"ror"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Sound
 		//-------------------------------------------------------------------------------------------------------------			
@@ -1304,7 +1290,7 @@
 		"ItemShopTags"					"regen_mana"
 		"ItemQuality"					"component"
 		"ItemAliases"					"sage\'s mask"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -1331,8 +1317,8 @@
 		"ItemQuality"					"component"
 		"ItemAliases"					"boots of speed"
 		//"SideShop"						"1"
-		"ShouldBeSuggested"	"1"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
+		"SuggestEarlygame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -1374,7 +1360,7 @@
 		"ItemContributesToNetWorthWhenDropped"	"0"
 		"AllowedInBackpack"				"0"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -1521,7 +1507,7 @@
 		"ItemRequiresCharges"			"1"
 		"ItemDisplayCharges"			"1"
 		//"SideShop"						"1"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -1586,7 +1572,7 @@
 		"ItemAliases"					"magic wand"
 		"ItemRequiresCharges"			"1"
 		"ItemDisplayCharges"			"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -1625,7 +1611,7 @@
 		"ItemShopTags"					"int;agi;str;hard_to_tag"
 		"ItemQuality"					"component"
 		"ItemAliases"					"ghost scepter"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -1667,7 +1653,7 @@
 		"ItemStockInitial"				"4"
 		"ItemStockTime"					"120"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -1710,7 +1696,7 @@
 		"ItemInitialCharges"			"1"
 		"ItemPermanent"					"0"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -1750,7 +1736,7 @@
 		"ItemInitialCharges"			"1"
 		"ItemPermanent"					"0"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"0"
+		"SuggestPregame"	"0"
 		"ItemPurchasable"				"0"
 		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
 		"SpeciallyBannedFromNeutralSlot"		"1"
@@ -1792,7 +1778,7 @@
 		"ItemInitialCharges"			"1"
 		"ItemPermanent"					"0"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"0"
+		"SuggestPregame"	"0"
 		"ItemPurchasable"				"0"
 		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
 		"SpeciallyBannedFromNeutralSlot"		"1"
@@ -1830,7 +1816,7 @@
 		"ItemInitialCharges"			"1"
 		"ItemPermanent"					"0"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"0"
+		"SuggestPregame"	"0"
 		"ItemPurchasable"				"0"
 		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
 		"ItemAllowCombineFromGround"	"0"
@@ -1895,7 +1881,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"	
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"	
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
@@ -1921,7 +1907,7 @@
 		"ItemInitialCharges"			"1"
 		"ItemPermanent"					"0"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -2022,7 +2008,7 @@
 		"ItemStockInitial"				"4"
 		"ItemStockTime"					"120"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -2120,8 +2106,8 @@
 		"ItemInitialCharges"			"3"
 		"ItemDisplayCharges"			"1"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeSuggested"				"1"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
+		"SuggestEarlygame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 		
@@ -2176,7 +2162,7 @@
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES"
 		"ItemSupport"					"1"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -2227,7 +2213,7 @@
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES"
 		"ItemSupport"					"1"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 		// Special	
@@ -2309,7 +2295,6 @@
 				"sentry_cost"			"100"
 				"lifetime_observer"				"360"
 				"lifetime_sentry"				"420"
-				"creation_delay"		"0"
 				"observer_vision_range_tooltip"		"1600"
 				"observer_duration_minutes_tooltip"		"6"
 				"sentry_duration_minutes_tooltip"		"8"
@@ -2352,7 +2337,7 @@
 		"ItemStockTime"					"120"
 		"ItemInitialCharges"			"3"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -2432,7 +2417,6 @@
 		"ItemKillable"					"0"
 		"ItemSellable"					"0"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"0"
 		"ItemPurchasable"				"0"
 		// Not sellable, but handled in code.
 	}
@@ -2577,7 +2561,7 @@
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
 		"MaxUpgradeLevel"				"2"
 		"ItemBaseLevel"					"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
 		"UpgradesItems"					"item_travel_boots"
@@ -2617,7 +2601,7 @@
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
 		"MaxUpgradeLevel"				"2"
 		"ItemBaseLevel"					"2"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
 		// Special	
@@ -2676,7 +2660,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"phase boots"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
 		// Special	
@@ -2837,6 +2821,7 @@
 		"ItemShopTags"					"regen_health"
 		"ItemQuality"					"component"
 		"ItemAliases"					"roh;ring of health"
+		"SuggestEarlygame"				"1"
 		
 		// Sound
 		//-------------------------------------------------------------------------------------------------------------			
@@ -2853,7 +2838,7 @@
 	}
 	
 
-		//=================================================================================================================
+	//=================================================================================================================
 	// Ring of Health
 	//=================================================================================================================
 	"item_ring_of_tarrasque"
@@ -3057,7 +3042,7 @@
 		"ItemAliases"					"flf;fluffy hat;hat;fh"
 		//"SecretShop"					"1"
 		//"SideShop"						"1"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -3109,7 +3094,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"power treads"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
 		// Special	
@@ -3166,7 +3151,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"tabi"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"ItemPurchasable"				"0"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
@@ -3244,7 +3229,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"sandals"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"ItemPurchasable"				"0"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
@@ -3310,7 +3295,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"switch"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -3404,7 +3389,7 @@
 		"ItemShopTags"					"regen_health;magic_resist"
 		"ItemQuality"					"common"
 		"ItemAliases"					"lunar crest"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -3464,7 +3449,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"common"
 		"ItemAliases"					"phylactery"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -3525,7 +3510,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"common"
 		"ItemAliases"					"angel;demise"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -3562,7 +3547,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"power treads"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 
 		"ItemPurchasable"				"0"
@@ -3658,7 +3643,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"hand of midas"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -3705,7 +3690,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"common"
 		"ItemAliases"					"aetherial halo"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -3830,7 +3815,7 @@
 		"ItemShopTags"					"damage;int;attack_speed;regen_mana"
 		"ItemQuality"					"common"
 		"ItemAliases"					"witch blade;wb"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -4056,8 +4041,7 @@
 		"ItemShopTags"					"damage;int;agi;str"
 		"ItemQuality"					"common"
 		"ItemAliases"					"bracer"
-		"ShouldBeInitiallySuggested"	"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		
 
 		// Special	
@@ -4067,8 +4051,9 @@
 			"bonus_strength"		"5 10"
 			"bonus_agility"			"2 4"
 			"bonus_intellect"		"2 4"
-			"bonus_damage"			"3 6"
+			"bonus_damage"			"0"
 			"bonus_health_regen"	"0.75 1.5"
+			"bonus_health"			"50 100"
 			"clock_time"			"25"
 		}
 	}
@@ -4118,8 +4103,7 @@
 		"ItemShopTags"					"damage;int;agi;str"
 		"ItemQuality"					"common"
 		"ItemAliases"					"wraith band"
-		"ShouldBeInitiallySuggested"	"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		
 
 		// Special	
@@ -4179,8 +4163,7 @@
 		"ItemShopTags"					"damage;int;agi;str"
 		"ItemQuality"					"common"
 		"ItemAliases"					"null talisman"
-		"ShouldBeInitiallySuggested"	"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		
 
 		// Special	
@@ -4245,7 +4228,7 @@
 		"ItemAliases"					"mechanism;mekansm"
 		"ItemAlertable"					"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -4308,7 +4291,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"vladmir\'s offering;vlads"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 
 		
@@ -4394,7 +4377,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"pact;wp"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -4527,7 +4510,7 @@
 		"ItemShopTags"					"regen_mana"
 		"ItemQuality"					"rare"
 		"ItemAliases"					"rob;ring of basilius"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestEarlygame"				"1"
 		
 		// Sound
 		//-------------------------------------------------------------------------------------------------------------			
@@ -4599,7 +4582,7 @@
 		"ItemCost"						"2250"
 		"ItemQuality"					"rare"
 		"ItemAliases"					"hl;holy locket"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Stats	
 		//-------------------------------------------------------------------------------------------------------------
@@ -4691,7 +4674,7 @@
 		"ItemAliases"					"pipe of insight"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
 		"ItemAlertable"					"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -4702,14 +4685,14 @@
 			"barrier_debuff_duration"	"50.0"
 			"tooltip_resist"			"20"
 			"aura_health_regen"		"2.5"
-			"magic_resistance_aura"		"10"
+			"magic_resistance_aura"		"8"
 			"aura_radius"			
 			{	
 				"value"			"1200"
 				"affected_by_aoe_increase"	"1"
 			}
 			"barrier_block"			"450"
-			"barrier_duration"		"12.0"
+			"barrier_duration"		"10.0"
 			"barrier_radius"		
 			{
 				"value"		"1200"
@@ -4731,7 +4714,7 @@
 		
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
-		"ItemCost"						"375"	
+		"ItemCost"						"280"	
 		"ItemShopTags"					""
 		
 		// Recipe
@@ -4740,7 +4723,7 @@
 		"ItemResult"					"item_urn_of_shadows"
 		"ItemRequirements"
 		{
-			"01"						"item_sobi_mask;item_ring_of_protection;item_circlet"
+			"01"						"item_sobi_mask;item_ring_of_protection;item_fluffy_hat"
 		}
 	}
 	
@@ -4751,7 +4734,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"FightRecapLevel"				"1"
@@ -4764,7 +4747,7 @@
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"10.0"
 		"AbilitySharedCooldown"			"urn"
 
 		// Items
@@ -4781,15 +4764,15 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"urn of shadows"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
 				"mana_regen"			"1.4"
-				"bonus_all_stats"		"2"
 				"bonus_armor"			"2"
+				"bonus_health"			"125"
 				"soul_radius"			
 				{	
 					"value"	"1400"
@@ -4843,6 +4826,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"headdress"
 		"AbilityCastRange"				"1200"
+		"SuggestEarlygame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -4911,7 +4895,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"hex;sheepstick;scythe of vyse"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -4939,6 +4923,7 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"FightRecapLevel"				"2"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES_STRONG"
+		"SpeciallyBannedFromNeutralSlot" "1"
 
         "IsObsolete"                    "1"
 
@@ -4957,7 +4942,6 @@
 		"AllowedInBackpack"				"0"
 		"IsTempestDoubleClonable"		"0"
 		"ItemDisassembleRule"				"DOTA_ITEM_DISASSEMBLE_NEVER"
-		"ShouldBeSuggested"				"1"
 
 		"AbilityCooldown"			"9"
 
@@ -5023,7 +5007,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"orchid malevolence;silence"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5095,7 +5079,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"orchid malevolence"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5110,7 +5094,8 @@
 				"bonus_damage"				"10"
 				"duration"					"6"			
 				"spell_amp_debuff"			"35"
-				"proc_damage"				"50"
+				"proc_damage_heroes"				"50"
+				"proc_damage_creeps"				"25"
 				"passive_proc_damage"		"60"
 				"proc_chance"				"40"
 		}
@@ -5166,7 +5151,7 @@
 		"ItemAliases"					"echo sabre"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5235,7 +5220,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"cyclone euls;eul\'s scepter of divinity"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5305,7 +5290,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"cyclone;wind waker;ww"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5361,7 +5346,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"aether lens"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5425,7 +5410,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"fs;force staff"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5490,7 +5475,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"fs;force staff"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5656,7 +5641,6 @@
 		
 		"UpgradesItems"					"item_dagon;item_dagon_2;item_dagon_3;item_dagon_4"
 		"UpgradeRecipe"					"item_recipe_dagon"
-		"ShouldBeSuggested"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5669,7 +5653,7 @@
 			"damage_delay"				"0"
 			"mana_cost_tooltip"		"120 140 160 180 200"
 			"int_damage"		"0"
-			"passive_spell_lifesteal"			"15"
+			"passive_spell_lifesteal"			"15 16 17 18 19"
 			"dagon_spell_lifesteal"				"75"
 		}
 	}
@@ -5703,7 +5687,6 @@
 		
 		"UpgradesItems"					"item_dagon_2;item_dagon_3;item_dagon_4"
 		"UpgradeRecipe"					"item_recipe_dagon"
-		"ShouldBeSuggested"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5716,7 +5699,7 @@
 			"damage_delay"				"0"
 			"mana_cost_tooltip"		"120 140 160 180 200"
 			"int_damage"		"0"
-			"passive_spell_lifesteal"			"15"
+			"passive_spell_lifesteal"			"15 16 17 18 19"
 			"dagon_spell_lifesteal"				"75"
 		}
 	}
@@ -5750,7 +5733,6 @@
 
 		"UpgradesItems"					"item_dagon_3;item_dagon_4"
 		"UpgradeRecipe"					"item_recipe_dagon"
-		"ShouldBeSuggested"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5763,7 +5745,7 @@
 			"damage_delay"				"0"
 			"mana_cost_tooltip"		"120 140 160 180 200"
 			"int_damage"		"0"
-			"passive_spell_lifesteal"			"15"
+			"passive_spell_lifesteal"			"15 16 17 18 19"
 			"dagon_spell_lifesteal"				"75"
 		}
 	}
@@ -5797,7 +5779,6 @@
 
 		"UpgradesItems"					"item_dagon_4"
 		"UpgradeRecipe"					"item_recipe_dagon"
-		"ShouldBeSuggested"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5810,7 +5791,7 @@
 			"damage_delay"				"0"
 			"mana_cost_tooltip"		"120 140 160 180 200"
 			"int_damage"		"0"
-			"passive_spell_lifesteal"			"15"
+			"passive_spell_lifesteal"			"15 16 17 18 19"
 			"dagon_spell_lifesteal"				"75"
 		}
 	}
@@ -5841,7 +5822,7 @@
 		"ItemShopTags"					"damage;int;str;agi;hard_to_tag"
 		"ItemQuality"					"rare"
 		"ItemAliases"					"dagon 5"	
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -5854,7 +5835,7 @@
 			"damage_delay"				"0"
 			"mana_cost_tooltip"		"120 140 160 180 200"
 			"int_damage"		"0"
-			"passive_spell_lifesteal"			"15"
+			"passive_spell_lifesteal"			"15 16 17 18 19"
 			"dagon_spell_lifesteal"				"75"
 		}
 	}
@@ -5873,7 +5854,6 @@
 		"ItemCost"						"1250"	
 		"ItemShopTags"					""
 
-		"ShouldBeSuggested"				"0"
 		"ItemPurchasable"				"0"
         "IsObsolete"                    "1"
 		
@@ -5898,7 +5878,6 @@
 		"ItemShopTags"					""
 		"ItemBaseLevel"					"2"
 
-		"ShouldBeSuggested"				"0"
 		"ItemPurchasable"				"0"
         "IsObsolete"                    "1"
 		
@@ -5923,7 +5902,6 @@
 		"ItemShopTags"					""
 		"ItemBaseLevel"					"3"
 
-		"ShouldBeSuggested"				"0"
 		"ItemPurchasable"				"0"
         "IsObsolete"                    "1"
 		
@@ -5954,7 +5932,6 @@
 		"AbilitySharedCooldown"			"necronomicon"
 		"FightRecapLevel"				"1"
 
-		"ShouldBeSuggested"				"0"
 		"ItemPurchasable"				"0"
         "IsObsolete"                    "1"
 
@@ -6006,7 +5983,6 @@
 		"AbilitySharedCooldown"			"necronomicon"
 		"FightRecapLevel"				"1"
 
-		"ShouldBeSuggested"				"0"
 		"ItemPurchasable"				"0"
         "IsObsolete"                    "1"
 
@@ -6058,7 +6034,6 @@
 		"AbilitySharedCooldown"			"necronomicon"
 		"FightRecapLevel"				"1"
 
-		"ShouldBeSuggested"				"0"
 		"ItemPurchasable"				"0"
         "IsObsolete"                    "1"
 
@@ -6139,7 +6114,7 @@
 
 		//"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_NEVER"		// heroes for whom this is a problem solve it in their code - ogre magi, meepo
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6244,7 +6219,7 @@
 		"ItemInitialStockTime"			"990.0"
 		"ItemInitialStockTimeTurbo"		"510.0"
 
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 	}
 	
 	//=================================================================================================================
@@ -6305,6 +6280,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL"
+		"AbilitySharedCooldown"			"refresher"
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -6319,7 +6295,8 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"refresher orb"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
+		"CooldownPausedOutOfInventory"	"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6373,7 +6350,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"ac;assault cuirass"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6432,14 +6409,14 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"hot;heart of tarrasque"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
 			"bonus_strength"		"40"
-			"health_regen_pct"		"1.6"
+			"health_regen_pct"		"1.4"
 		}
 	}
 
@@ -6490,7 +6467,7 @@
 		"ItemAliases"					"bkb;black king bar"
 		"ItemSellable"					"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6592,7 +6569,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"shiva\'s guard;shivas"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6674,7 +6651,7 @@
 		"ItemAliases"					"bs;bloodstone"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
 		"AllowedInBackpack"				"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6684,9 +6661,9 @@
 				"bonus_health"			"450"
 				"bonus_mana"			"450"
 				"bonus_mp_regen"		"3"
-				"spell_lifesteal"		"30"
-				"buff_duration"			"6"
-				"lifesteal_multiplier"	"2.5"
+				"spell_lifesteal"		"20"
+				"buff_duration"			"5"
+				"lifesteal_multiplier"	"4"
 				"hp_cost"				"0"
 		}
 	}
@@ -6740,7 +6717,7 @@
 		"ItemAliases"					"ls;linken\'s sphere"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
 		"ActiveDescriptionLine"			"2"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6804,7 +6781,7 @@
 		"ItemAliases"					"ls;lotus orb"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6814,7 +6791,7 @@
 				"bonus_health_regen"	"6.5"
 				"bonus_mana_regen"		"4.0"
 				"bonus_mana"			"250"
-				"active_duration"		"6"
+				"active_duration"		"5"
 		}
 	}
 
@@ -6873,7 +6850,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"mh;meteor hammer"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -6956,7 +6933,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"nlf;nullifier"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7016,7 +6993,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"ad;aeon disk"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS | DECLARE_PURCHASES_IN_SPEECH"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7072,7 +7049,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"ky;kaya"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS | DECLARE_PURCHASES_IN_SPEECH"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7143,7 +7120,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"FightRecapLevel"				"2"
 		"Model"							"models/props_gameplay/refresher_shard.vmdl"
-		"Effect"						"particles/generic_gameplay/dropped_refresher_shard.vpcf"	
+		"Effect"						"particles/generic_gameplay/dropped_refresher_shard.vpcf"
+		"AbilitySharedCooldown"			"refresher"
 		
 		// Stats	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7164,6 +7142,7 @@
 		"ItemContributesToNetWorthWhenDropped"	"0"
 		"IsTempestDoubleClonable"		"0"
 		"SpeciallyBannedFromNeutralSlot"		"1"
+		"CooldownPausedOutOfInventory"	"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7186,7 +7165,7 @@
 		
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
-		"ItemCost"						"1200"	
+		"ItemCost"						"900"	
 		"ItemShopTags"					""
 		
 		// Recipe
@@ -7195,7 +7174,7 @@
 		"ItemResult"					"item_spirit_vessel"
 		"ItemRequirements"
 		{
-			"01"						"item_urn_of_shadows*;item_crown;item_fluffy_hat"
+			"01"						"item_urn_of_shadows*;item_vitality_booster"
 		}
 	}
 	
@@ -7206,7 +7185,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 
@@ -7217,7 +7196,7 @@
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"10.0"
 		"AbilitySharedCooldown"			"urn"
 
 		// Items
@@ -7233,16 +7212,16 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"sv;spirit vessel"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
 				"bonus_mana_regen"		"1.75"
-				"bonus_all_stats"		"6"
+				"bonus_all_stats"		"0"
 				"bonus_armor"			"2"
-				"bonus_health"			"125"
+				"bonus_health"			"375"
 				"soul_radius"			
 				{
 					"value"		"1400"
@@ -7251,9 +7230,9 @@
 				"soul_initial_charge"	"2"
 				"soul_additional_charges"	"1"
 				"soul_heal_amount"		"40"
-				"soul_damage_amount"	"35"
+				"soul_damage_amount"	"25"
 				"duration"			"8.0"
-				"hp_regen_reduction_enemy"	"45"
+				"hp_regen_reduction_enemy"	"50"
 				"enemy_hp_drain"		"4"
 		}
 	}
@@ -7298,7 +7277,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"vg;vanguard"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		
 		// Special	
@@ -7351,7 +7330,7 @@
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"35.0"
+		"AbilityCooldown"				"40.0"
 		"AbilityCastRange"				"1200"
 		"AbilityManaCost"				"75"
 
@@ -7363,7 +7342,7 @@
 		"ItemQuality"					"epic"
 		"ItemAlertable"					"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7384,7 +7363,7 @@
 				"block_damage_active"			"70"
 				"block_chance_active"			"100"
 				"tooltip_reapply_time"			"35"
-				"max_hp_pct"					"2.5"
+				"max_hp_pct"					"2.2"
 		}
 	}
 
@@ -7434,7 +7413,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"bm;blade mail;blademail"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 
 		// Special	
@@ -7601,7 +7580,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"eternal shroud;es"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7612,7 +7591,7 @@
 			"bonus_health"							"250"
 			"stack_threshold"						"300"
 			"stack_duration"						"5"
-			"stack_resist"							"4"
+			"stack_resist"							"3.5"
 			"mana_restore_pct"						"20"
 			"max_stacks"							"6"
 
@@ -7668,8 +7647,8 @@
 		"AllowedInBackpack"				"0"
 		"IsTempestDoubleClonable"		"0"
 		"ItemDisassembleRule"				"DOTA_ITEM_DISASSEMBLE_NEVER"
-		"ShouldBeSuggested"				"1"
 		"AbilityCooldown"				"6"
+		"SpeciallyBannedFromNeutralSlot" "1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7720,7 +7699,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"mkb;monkey king bar"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7764,7 +7743,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_TOGGLE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_TOGGLE | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"
 
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
@@ -7773,7 +7752,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"radiance"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		
 
@@ -7837,7 +7816,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"bfly;butterfly"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7890,7 +7869,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"daedalus"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -7949,7 +7928,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"skull basher"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8011,7 +7990,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"bf;battle fury"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8088,7 +8067,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"manta style"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8100,7 +8079,7 @@
 				"bonus_attack_speed"	"15"
 				"bonus_movement_speed"	"10"
 				"images_count"			"2"
-				"tooltip_illusion_duration"			"20"
+				"illusion_duration"			"18"
 				"images_do_damage_percent_melee"	"-67"
 				"tooltip_damage_outgoing_melee"			"33"
 				"images_take_damage_percent"	"200"
@@ -8151,7 +8130,6 @@
 		"ItemShopTags"					"damage;crit"
 		"ItemQuality"					"epic"
 		"ItemAliases"					"crystalys"
-		"ShouldBeSuggested"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8204,7 +8182,7 @@
 		"ItemShopTags"					"damage"
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"dragon lance"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8261,7 +8239,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"armlet of mordiggian"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8326,7 +8304,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"sb;invis;shadow blade;silver edge"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8388,7 +8366,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"sb;invis;shadow blade"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8448,7 +8426,7 @@
 		"ItemAliases"					"sny;s&y;sy;sange and yasha"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8505,7 +8483,7 @@
 		"ItemAliases"					"snk;s&k;sk;sange and kaya"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8562,7 +8540,7 @@
 		"ItemAliases"					"ynk;y&k;sk;yasha and kaya"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8626,7 +8604,7 @@
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"satanic"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8692,7 +8670,7 @@
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"mjollnir"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8758,7 +8736,7 @@
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"eos;eye of skadi"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8816,7 +8794,7 @@
 		"ItemShopTags"					"damage;str;unique"
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"sange"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8878,7 +8856,7 @@
 		"ItemShopTags"					"damage;armor;unique;hard_to_tag"
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"hotd;helm of the dominator"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -8949,7 +8927,7 @@
 		"ItemShopTags"					"damage;armor;unique;hard_to_tag"
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"hoto;helm of the overlord"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9011,7 +8989,7 @@
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"maelstrom"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9082,7 +9060,7 @@
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"gleipnir;gliepnir;glaypnir"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9101,7 +9079,7 @@
 				"duration"				"2.0"
 				"radius"				
 				{
-					"value"		"375"
+					"value"		"350"
 					"affected_by_aoe_increase"	"1"
 				}
 				"active_damage"			"180"
@@ -9150,7 +9128,7 @@
 		"ItemAliases"					"desolator"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 
 		// Special	
@@ -9204,7 +9182,7 @@
 		"ItemShopTags"					"agi;attack_speed;move_speed"
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"yasha"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9264,7 +9242,7 @@
 		"ItemAliases"					"mom;mask of madness"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9337,7 +9315,7 @@
 
 		"UpgradesItems"					"item_diffusal_blade"
 		"UpgradeRecipe"					"item_recipe_diffusal_blade"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9414,7 +9392,7 @@
 
 		"UpgradesItems"					"item_diffusal_blade"
 		"UpgradeRecipe"					"item_recipe_diffusal_blade"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9487,7 +9465,7 @@
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"ItemAliases"					"eb;ethereal blade;eblade"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9505,7 +9483,7 @@
 				"blast_damage_base"			"50"
 				"duration_ally"				"4.0"
 				"ethereal_damage_bonus"	"-40"
-				"projectile_speed"	"1275"
+				"projectile_speed"	"1400"
 
 		}
 	}
@@ -9555,7 +9533,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"soul ring"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		
 		// Sound
 		//-------------------------------------------------------------------------------------------------------------			
@@ -9621,7 +9599,7 @@
 		"ItemAliases"					"mana;mb;arcane boots"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
 		"ItemAlertable"					"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
 		// Special	
@@ -9685,7 +9663,7 @@
 		"ItemAliases"					"mana;mb;octarine core"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9706,7 +9684,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 
 		// Item Info
@@ -9715,7 +9693,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"component"
 		"ItemAliases"					"oov;orb of venom"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"	"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9745,7 +9723,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"component"
 		"ItemAliases"					"blight stone"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"	"1"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 
 		// Special	
@@ -9797,7 +9775,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"rare"
 		"ItemAliases"					"ooc;orb of corrosion;corosion;corossion"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9857,7 +9835,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"rare"
 		"ItemAliases"					"fb;falcon blade"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9865,7 +9843,10 @@
 		{
 				"bonus_health"			"200"
 				"bonus_mana_regen"		"1.8"
-				"bonus_damage"			"14"			
+				"bonus_damage"			"14"		
+			//	"stack_limit"				"3"
+			//	"stack_duration"			"20"
+			//	"mana_regen_per_stack"		"0.75"
 		}
 	}
 
@@ -9904,7 +9885,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
@@ -9919,7 +9900,7 @@
 		"ItemShopTags"					"hard_to_tag"
 		"ItemQuality"					"rare"
 		"ItemAliases"					"mage slayer;ms"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -9986,7 +9967,7 @@
 		"ItemDisplayCharges"			"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
 		//"ItemRequiresCharges"			"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10033,7 +10014,7 @@
 	}
 	
 	//=================================================================================================================
-	// Ancient Janggo of Endurance
+	// Boots of Bearing
 	//=================================================================================================================
 	"item_boots_of_bearing"
 	{
@@ -10055,7 +10036,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"marching boots"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 		// Special	
@@ -10133,7 +10114,6 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"medallion of courage"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10157,7 +10137,7 @@
 		
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
-		"ItemCost"						"600"	
+		"ItemCost"						"500"	
 		"ItemShopTags"					""
 		
 		// Recipe
@@ -10194,12 +10174,12 @@
 
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
-		"ItemCost"						"2700"
+		"ItemCost"						"2600"
 		"ItemShopTags"					"armor;regen_mana;hard_to_tag"
 		"ItemQuality"					"rare"
 		"ItemAliases"					"solar crest"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10244,7 +10224,7 @@
 	}
 
 	//=================================================================================================================
-	// Medallion of Courage
+	// Item: Pavise
 	//=================================================================================================================
 	"item_pavise"
 	{
@@ -10271,7 +10251,6 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"pavise"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
 
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10279,7 +10258,7 @@
 		{
 			"bonus_armor"			"2"
 			"bonus_mana"			"250"
-			"bonus_health"			"150"
+			"bonus_health"			"175"
 			"duration"				"8"
 			"absorb_amount"				"300"
 		}
@@ -10322,7 +10301,7 @@
 		"ItemSupport"					"1"
 		"ItemAlertable"					"1"
 		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
+		"SuggestPregame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 
@@ -10437,7 +10416,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"vod;veil of discord"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10500,7 +10479,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"staff;misery;sm"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10512,6 +10491,8 @@
 				
 		}
 	}
+
+
 
 	
 	//=================================================================================================================
@@ -10560,7 +10541,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"staff;misery;sm"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10615,7 +10596,7 @@
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"40"
+		"AbilityCooldown"				"45"
 
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
@@ -10626,7 +10607,7 @@
 		"ItemAliases"					"guardian greaves"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
 		"ItemAlertable"					"1"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 
 		// Special	
@@ -10712,7 +10693,7 @@
 		"ItemQuality"					"rare"
 		"ItemAliases"					"rod of atos"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10765,7 +10746,7 @@
 
 		"AbilityCastRange"				"350"
 		"AbilityCastPoint"				"0.0"
-		"AbilityCooldown"				"25.0"
+		"AbilityCooldown"				"20.0"
 
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
 		
@@ -10785,11 +10766,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"bonus_attack_speed"			"15"
+				"bonus_attack_speed"			"20"
 				"quelling_range_tooltip"			"350"
 				"cast_range_ward"			"450"
-				"creep_damage_pct"			"40"
-				"bonus_armor"	"2"
+				"creep_damage_pct"			"80"
+				"bonus_armor"	"4"
 				"alternative_cooldown"	"4"
 		}
 	}
@@ -10847,7 +10828,7 @@
 		"ItemQuality"					"epic"
 		"ItemAliases"					"abyssal blade"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 
 		// Special	
@@ -10916,14 +10897,14 @@
 
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"100"
+		"AbilityManaCost"				"75"
 		"ItemCost"						"3500"
 		"ItemShopTags"					"str;damage;evasion"
 		"ItemQuality"					"artifact"
 		"ItemAliases"					"heaven\'s halberd"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -10934,7 +10915,7 @@
 				"bonus_strength"		"20"
 				"disarm_range"				"5.0"
 				"disarm_melee"				"3.0"
-				"slow_resistance"				"20"
+				"slow_resistance"				"25"
 				"hp_regen_amp"			"25"
 		}
 	}
@@ -10983,7 +10964,6 @@
 		"ItemShareability"				""		
 		"ActiveDescriptionLine"			"2"
 		"ItemPurchasable"				"0"
-		"ShouldBeSuggested"				"0"
 		"ItemSellable"					"0"
 		"ItemIsNeutralDrop"				"1"
 		"DisplayOverheadAlertOnReceived" "0"
@@ -11057,7 +11037,7 @@
 		"ItemAliases"					"tranquil boots"
 		"ItemHideCharges"		     	"1"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		"SpeciallyBannedFromNeutralSlot"		"1"
 		
 		// Special	
@@ -11088,13 +11068,15 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
+
 		"FightRecapLevel"				"1"
 
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"600"
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"18.0"
 		"AbilityManaCost"				"0"
 		
 		// Item Info
@@ -11107,8 +11089,9 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{			
-				"fade_time"				"1.25"
-				"fade_duration"			"15"
+				"fade_time"						"1.25"
+				"movement_speed_reduction"		"35"
+				"fade_duration"					"3.5"
 		}
 	}
 
@@ -11160,7 +11143,7 @@
 		"ItemShopTags"					""
 		"ItemQuality"					"rare"
 		"ItemAliases"					"glimmer cape"
-		"ShouldBeSuggested"				"1"
+		"SuggestEarlygame"				"1"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -11661,7 +11644,8 @@
 		"DisplayOverheadAlertOnReceived" "0"
 		"ItemPurchasable"				"0"
 		"ItemSellable"				"0"
-
+		"ItemInitialCharges"			"750"
+		"ItemPermanent"					"0"
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
 		
 
@@ -11672,6 +11656,8 @@
 				"bonus_gpm"			"75"
 				"bonus_mana"		"200"
 				"bonus_damage"		"-30"
+				"gold_on_expire"		"375"
+				"charges_tooltip"		"750"
 		}
 	}
 	
@@ -12163,32 +12149,6 @@
 		}
 	}
 
-
-
-	//=================================================================================================================
-	// Recipe: Ironwood Tree
-	//=================================================================================================================
-	"item_recipe_ironwood_tree"
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		
-		// Item Info
-		//-------------------------------------------------------------------------------------------------------------
-		"ItemCost"						"1"
-		"ItemIsNeutralDrop"				"1"
-		"ItemPurchasable"				"0"
-		"ItemSellable"				"0"
-
-		"Model"							"models/props_gameplay/neutral_box.vmdl"
-		
-		// Recipe
-		//-------------------------------------------------------------------------------------------------------------
-		"ItemRecipe"					"1"
-		"ItemResult"					"item_ironwood_tree"
-	}
-
-	
 	
 	//=================================================================================================================
 	// Ironwood Tree
@@ -12201,7 +12161,7 @@
 		
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"800"
+		"AbilityCastRange"				"400"
 		"AbilityCooldown"				"15.0"
 					
 		// Item Info
@@ -12217,7 +12177,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"bonus_all_stats"			"6"
+				"bonus_all_stats"			"5"
 				"tree_duration"		"20"
 		}
 	}
@@ -12772,7 +12732,7 @@
 		"ItemQuality"					"common"
 		"ItemAliases"					"bracer"
 		"ItemIsNeutralDrop"				"1"
-		"ItemSellable"				"0"
+		"ItemSellable"					"0"
 		"ItemPurchasable"				"0"
 
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
@@ -12781,11 +12741,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"bonus_primary_stat"		"8"
-				"bonus_secondary_stat"			"2"
-				"bonus_spell_amp"		"6"
-				"bonus_magic_resistance"	"8"
-				"bonus_attack_speed"	"10"
+				"bonus_primary_stat"		"10"
+				"bonus_secondary_stat"		"4"
+				"bonus_spell_amp"			"8"
+				"bonus_magic_resistance"	"10"
+				"bonus_attack_speed"		"15"
 		}
 	}
 	
@@ -12977,6 +12937,7 @@
 		"ItemIsNeutralDrop"				"1"
 		"ItemPurchasable"				"0"
 		"ItemSellable"				"0"
+		"CooldownPausedOutOfInventory"	"1"
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
 		
 		// Special	
@@ -13996,7 +13957,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"
 		
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
@@ -14954,8 +14915,9 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"duration"		"4"
-				"all_stats"			"5"
+				"duration"					"4"
+				"all_stats"					"4"
+				"active_movespeed_pct"		"15"
 		}
 	}
 
@@ -15033,7 +14995,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
@@ -15212,7 +15174,7 @@
 
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
 		"AbilityCastPoint"				"0.3"
-		"AbilityCooldown"				"40.0"
+		"AbilityCooldown"				"35.0"
         "AbilityManaCost"               "25"
 
 		// Special	
@@ -15220,8 +15182,8 @@
 		"AbilityValues"
 		{
 
-			"bonus_strength"			"10"
-
+			"bonus_strength"			"12"
+			"movement_turn_rate"		"75"
 			"leap_distance"				"400"
 			"leap_speed"				"800.0"
 			"leap_acceleration"			"1250.0"
@@ -15230,7 +15192,7 @@
 				"value"				"275"
 					"affected_by_aoe_increase"	"1"
 			}
-            "flop_damage"               "150"
+            "flop_damage"               "250"
 	        "slow_duration"             "1.5"
 	        "slow"           			"-100"
 	        "max_bounces"				"2"
@@ -15358,7 +15320,7 @@
 		"ItemPurchasable"				"1"
 		"ItemCost"						"4700"
 		"Model"							"models/props_gameplay/neutral_box.vmdl"
-		"ShouldBeSuggested"				"1"
+		"SuggestLategame"				"1"
 		
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -16433,7 +16395,7 @@
 		"AbilityValues"
 		{
 			"duration"				"120"
-			"radius"				"600"
+			"radius"				"650"
 			"health"				"24"
 			"hp_bonus"				"75"
 			"damage_bonus"			"50"
@@ -16486,6 +16448,40 @@
 	"item_grisgris"
 	{
 		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_UNSWAPPABLE"
+		"FightRecapLevel"				"1"
+		
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"							"0"
+		"ItemIsNeutralDrop"					"0"
+		"ItemPurchasable"					"0"
+		"DisplayOverheadAlertOnReceived"	"0"
+		"ItemSellable"					"0"
+		"SpeciallyAllowedInNeutralSlot"		"1"
+		"ItemCanBeConsumed"					"1"
+		"ItemDroppable"					"0"
+		"AllowedInBackpack"				"0"
+
+		"Model"							"models/props_gameplay/neutral_box.vmdl"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityValues"
+		{
+			"death_gold_lost_reduction_pct"					"100"
+			"gold_tick_interval"							"3"
+		}
+	}
+}
+
+
+
+
+		
+ eral
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_UNSWAPPABLE"
 		"FightRecapLevel"				"1"

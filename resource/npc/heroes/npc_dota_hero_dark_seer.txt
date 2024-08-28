@@ -31,7 +31,7 @@
 				"max_distance"			"1100"
 				"knockback_distance"			"350"
 				"illusion_duration"			"6.0"
-				"max_damage"					"450"
+				"max_damage"					"400"
 				"normal_punch_illusion_delay"   "0.25"
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
@@ -72,7 +72,7 @@
 				{
 					"value"		"325 400 475 550"
 					"affected_by_aoe_increase"	"1"
-					"special_bonus_unique_dark_seer_2" "+100"
+					"special_bonus_unique_dark_seer_2" "+75"
 				}
 				"duration"				"0.3 0.4 0.5 0.6"
 				"damage"				"70 130 190 250"
@@ -324,6 +324,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"MaxLevel"						"1"
+		"IsBreakable"					"1"
+
 		"AbilityValues"
 		{
 			"radius"		
@@ -347,6 +349,13 @@
 
 		"MaxLevel"						"1"
 		"Innate"						"1"
+		"AbilityValues"
+		{
+			"str_agi_average_tooltip"
+			{
+				"dynamic_value"		"true"
+			}
+		}
 	}
 	
 	//=================================================================================================================

@@ -143,6 +143,7 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
 		"AbilityCastGestureSlot"		"DEFAULT"
+		"IsBreakable"					"1"
 
 		
 		// Special
@@ -283,7 +284,7 @@
 		"Innate"						"1"
 		"AbilityValues"
 		{
-			"strength_to_movement_pct"			"35"
+			"strength_to_movement_pct"			"30"
 			"move_speed_limit"					"600"
 			"base_move_speed_penalty"			"0"
 		}

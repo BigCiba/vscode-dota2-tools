@@ -1,5 +1,52 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2024.08.28
+## Lua Server
+- 🖊️ API: <font color='#00D6AA'>CDOTA_Item</font> <font color='#dcdcaa'>SpendCharge</font>(<font color='#569cd6'>flDelayRemove</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>SpendCharge</font>(): <font color='#c586c0'>void</font>~~
+- ✨ Enum: <font color='#00D6AA'>DOTADamageFlag_t</font> <font color='#9cdcfe'>DOTA_DAMAGE_FLAG_BYPASSES_ALL_BLOCK</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTADamageFlag_t</font> <font color='#9cdcfe'>DOTA_DAMAGE_FLAG_BYPASSES_PHYSICAL_BLOCK</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>DOTADamageFlag_t</font> ~~<font color='#9cdcfe'>DOTA_DAMAGE_FLAG_BYPASSES_BLOCK</font> <font color='#dcdcaa'></font>~~
+- ✨ Enum: <font color='#00D6AA'>DOTASlotType_t</font> <font color='#9cdcfe'>DOTA_LOADOUT_TYPE_HERO_EFFIGY</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTASlotType_t</font> <font color='#9cdcfe'>DOTA_LOADOUT_TYPE_HERO_EFFIGY_PERSONA_1</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_AFFECTED_BY_MUTE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_IGNORE_INVISIBLE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_IS_FAKE_ITEM</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> ~~<font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_BREAK_DISABLES</font> <font color='#dcdcaa'></font>~~
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_SHADOW_VAULT</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_FOW_TEAM_CHANGED</font> <font color='#dcdcaa'>OnFoWTeamChanged</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_TIER_TOKEN_REROLLED</font> <font color='#dcdcaa'>OnTierTokenRerolled</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASEATTACK_POSTBONUS</font> <font color='#dcdcaa'>GetBaseAttackPostBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CRITICAL_STRIKE_BONUS</font> <font color='#dcdcaa'>GetCriticalStrikeBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_DISABLE_MANA_GAIN</font> <font color='#dcdcaa'>GetDisableManaGain</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_INNATE_DAMAGE_BLOCK_PCT_OVERRIDE</font> <font color='#dcdcaa'>GetModifierInnateDamageBlockPctOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_INVENTORY_SLOT_RESTRICTED</font> <font color='#dcdcaa'>GetModifierInventorySlotRestricted</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE_UNIQUE</font> <font color='#dcdcaa'>GetModifierMPRegenAmplify_Percentage_Unique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_REDIRECT_SPELL</font> <font color='#dcdcaa'>GetRedirectSpell</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE_UNIQUE</font> <font color='#dcdcaa'>GetModifierSpellLifestealRegenAmplify_Percentage_Unique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TIER_TOKEN_REROLL</font> <font color='#dcdcaa'>GetTierTokenReroll</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_STACKING</font> <font color='#dcdcaa'>GetModifierTotal_ConstantBlockStacking</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_VISION_DEGREES_RESTRICTION</font> <font color='#dcdcaa'>GetVisionDegreeRestriction</font>
+## Lua Client
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_AFFECTED_BY_MUTE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_IGNORE_INVISIBLE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> <font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_IS_FAKE_ITEM</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>DOTA_ABILITY_BEHAVIOR</font> ~~<font color='#9cdcfe'>DOTA_ABILITY_BEHAVIOR_BREAK_DISABLES</font> <font color='#dcdcaa'></font>~~
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_FOW_TEAM_CHANGED</font> <font color='#dcdcaa'>OnFoWTeamChanged</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_TIER_TOKEN_REROLLED</font> <font color='#dcdcaa'>OnTierTokenRerolled</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_BASEATTACK_POSTBONUS</font> <font color='#dcdcaa'>GetBaseAttackPostBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CRITICAL_STRIKE_BONUS</font> <font color='#dcdcaa'>GetCriticalStrikeBonus</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_DISABLE_MANA_GAIN</font> <font color='#dcdcaa'>GetDisableManaGain</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_INNATE_DAMAGE_BLOCK_PCT_OVERRIDE</font> <font color='#dcdcaa'>GetModifierInnateDamageBlockPctOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_INVENTORY_SLOT_RESTRICTED</font> <font color='#dcdcaa'>GetModifierInventorySlotRestricted</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE_UNIQUE</font> <font color='#dcdcaa'>GetModifierMPRegenAmplify_Percentage_Unique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_REDIRECT_SPELL</font> <font color='#dcdcaa'>GetRedirectSpell</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE_UNIQUE</font> <font color='#dcdcaa'>GetModifierSpellLifestealRegenAmplify_Percentage_Unique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TIER_TOKEN_REROLL</font> <font color='#dcdcaa'>GetTierTokenReroll</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_STACKING</font> <font color='#dcdcaa'>GetModifierTotal_ConstantBlockStacking</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_VISION_DEGREES_RESTRICTION</font> <font color='#dcdcaa'>GetVisionDegreeRestriction</font>
+
 # 2024.07.10
 ## Lua Server
 - 🖊️ API: <font color='#00D6AA'>CDOTABaseAbility</font> <font color='#dcdcaa'>GetAOERadius</font>(): <font color='#c586c0'>float</font> ~~<font color='#dcdcaa'>GetAOERadius</font>(): <font color='#c586c0'>int</font>~~

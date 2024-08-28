@@ -290,7 +290,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_INNATE_UI"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"MaxLevel"						"1"
 	}
 
@@ -310,6 +310,10 @@
 			"agi_pct_at_min_cooldown_speed"			"50"
 			"min_cooldown_speed_pct"			"0"
 			"max_cooldown_speed_pct"			"60"
+			"cooldown_reduction_tooltip"
+			{
+				"dynamic_value"				"true"
+			}
 		}
 	}
 	

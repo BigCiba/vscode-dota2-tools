@@ -205,7 +205,13 @@
 			{
 				"value"			"300"
 			}
-			"push_duration"		"0.8"
+			"push_duration"		
+			{
+				"value"						"0.8"
+				"special_bonus_facet_rattletrap_expanded_armature"	"=0.6"
+			}
+			
+
 			"cogs_radius"
 			{
 				"value"						"215"
@@ -226,7 +232,7 @@
 			"bonus_armor"		"0"
 			"leash"			
 			{
-				"value"			"0"
+				"value"			"0"	// NOTE: deprecated, uncomment in .cpp if updating this
 			}
 			"AbilityCooldown"				
 			{
@@ -361,6 +367,10 @@
 				{
 					"special_bonus_facet_rattletrap_hookup"	"4"
 				}
+				"allied_armor_bonus"
+				{
+					"special_bonus_facet_rattletrap_hookup"	"15 20 25"
+				}
 
 				"duration"			"1.2 1.4 1.6"
 				"speed"				"4000 5000 6000"
@@ -379,9 +389,11 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"MaxLevel"						"1"
 		"Innate"						"1"
+		"IsBreakable"					"1"
+
 		"AbilityValues"
 		{
-			"damage_per_armor"			"0.3"
+			"damage_per_armor"			"0.25"
 		}
 	}
 	//=================================================================================================================
