@@ -21237,10 +21237,6 @@
 	{
 		"include_keys_from"			"npc_dota_shmup_basic"
 		"Model"						"models/events/crownfall/shmup_shooting/shmup_splinter_blast.vmdl"	// Model.
-		"ModelScale"				"1.0"
-	}
-}
-e"					// Name of sound set.
 		"ModelScale"				"1"
 		"Level"						"4"
 		"IsSummoned"				"1"

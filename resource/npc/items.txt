@@ -16475,40 +16475,6 @@
 			"gold_tick_interval"							"3"
 		}
 	}
-}
-
-
-
-
-		
- eral
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_UNSWAPPABLE"
-		"FightRecapLevel"				"1"
-		
-
-		// Item Info
-		//-------------------------------------------------------------------------------------------------------------
-		"ItemCost"							"0"
-		"ItemIsNeutralDrop"					"0"
-		"ItemPurchasable"					"0"
-		"DisplayOverheadAlertOnReceived"	"0"
-		"ItemSellable"					"0"
-		"SpeciallyAllowedInNeutralSlot"		"1"
-		"ItemCanBeConsumed"					"1"
-		"ItemDroppable"					"0"
-		"AllowedInBackpack"				"0"
-
-		"Model"							"models/props_gameplay/neutral_box.vmdl"
-		
-		// Special	
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityValues"
-		{
-			"death_gold_lost_reduction_pct"					"100"
-			"gold_tick_interval"							"3"
-		}
-	}
 	
 
 	//=================================================================================================================
