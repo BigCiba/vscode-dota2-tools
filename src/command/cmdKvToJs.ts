@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { getContentDir, getGameDir } from '../module/addonInfo';
 import { StatusBarState, changeStatusBarState, showStatusBarMessage } from '../module/statusBar';
+import { getRootPath } from "../utils/getRootPath";
 import { isNumber } from '../utils/isNumber';
 import { getKeyValueObjectByIndex, overrideKeyValue, readKeyValue2, readKeyValueWithBase, replaceKeyValue } from '../utils/kvUtils';
 import { localize } from '../utils/localize';
@@ -110,6 +111,12 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 	showStatusBarMessage("[生成js]：" + sKVName);
 	// 生成定义文件
 	if (configs.DeclarePath && kvJsConfig.DeclareConfig) {
+		let DeclarePathAbs: string = configs.DeclarePath;
+		if (DeclarePathAbs.startsWith("$Root")) {
+			DeclarePathAbs = DeclarePathAbs.replace("$Root", getRootPath() ?? "");
+		} else {
+			DeclarePathAbs = `${contentDir}/${DeclarePathAbs}`;
+		}
 		let DeclareType = kvJsConfig.DeclareConfig[sKVName];
 		if (DeclareType != undefined) {
 			let sDetail = "";
@@ -122,7 +129,7 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 					break;
 			}
 			if (sDetail.length > 0) {
-				let sPath = `${contentDir}/${configs.DeclarePath}/${sKVName}.d.ts`.replace(/\\/g, "/");
+				let sPath = `${DeclarePathAbs}/${sKVName}.d.ts`.replace(/\\/g, "/");
 				let sDeclareData = `interface CustomUIConfig {\n\t${sKVName}: ${sDetail}\n}`;
 				fs.writeFileSync(sPath, sDeclareData);
 			}
