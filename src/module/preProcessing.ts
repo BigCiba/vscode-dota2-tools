@@ -222,7 +222,7 @@ export async function vsndGenerator(context: vscode.ExtensionContext) {
 							}
 						}
 					}
-				} else if (kvdata[0] === '{') {
+				} else if (kvdata[0] === '{' || kvdata[0] === "<") {
 					let kv = readKeyValue3(kvdata);
 					for (const key in kv[0]) {
 						const value = kv[0][key];
