@@ -261,7 +261,7 @@
 			}
 			"spirits"				
 			{
-				"value"					"8 16 24"
+				"value"					"10 17 24"
 				"special_bonus_unique_death_prophet"	"+8"
 			}
 			"spirit_speed"			"525"
@@ -434,7 +434,7 @@
 
 		"AbilityValues"
 		{
-			"delay_pct"					"20 30 40 50"
+			"delay_pct"					"15 25 35 45"
 			"delay_time"				"5"
 			"damage_interval"			"1"
 		}

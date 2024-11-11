@@ -231,7 +231,7 @@
 			"Ability4"	"antimage_mana_void"
 		}
 
-		"Ability10"		"special_bonus_unique_antimage_4"
+		"Ability10"		"special_bonus_hp_regen_3"
 		"Ability11"		"special_bonus_unique_antimage_manavoid_aoe"
 		"Ability12"		"special_bonus_unique_antimage_7"
 		"Ability13"		"special_bonus_unique_antimage_5"
@@ -1561,7 +1561,7 @@
 		"AttributeBaseIntelligence"		"18"
 		"AttributeIntelligenceGain"		"3.300000"
 		"AttributeBaseAgility"		"16"
-		"AttributeAgilityGain"		"1.600000"
+		"AttributeAgilityGain"		"1.800000"
 		"StatusManaRegen"	"0"
 		"MovementSpeed"		"280"
 		"HasAggressiveStance"		"1"
@@ -1972,7 +1972,7 @@
 		"AttributeStrengthGain"		"1.900000"
 		"AttributeBaseIntelligence"		"15"
 		"AttributeIntelligenceGain"		"1.400000"
-		"AttributeBaseAgility"		"20"
+		"AttributeBaseAgility"		"22"
 		"AttributeAgilityGain"		"2.900000"
 		"StatusHealthRegen"		"0.25"
 		"VisionDaytimeRange"		"1800"
@@ -2291,6 +2291,13 @@
 				"Icon"				"movement"
 				"Color"				"Yellow"
 				"GradientID"		"1"
+				"Abilities"
+				{
+					"Ability1"
+					{
+						"AbilityName"	"earthshaker_slugger"
+					}
+				}
 			}
 		}
 		"ArmorPhysical"		"2"
@@ -5117,7 +5124,7 @@
 		"AttackAcquisitionRange"		"600"
 		"AttackRange"		"150"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_ALL"
-		"AttributeBaseStrength"		"22"
+		"AttributeBaseStrength"		"21"
 		"AttributeStrengthGain"		"2.300000"
 		"AttributeBaseIntelligence"		"17"
 		"AttributeIntelligenceGain"		"1.800000"
@@ -6557,7 +6564,7 @@
 		"AttributeStrengthGain"		"2.0"
 		"AttributeBaseIntelligence"		"21"
 		"AttributeIntelligenceGain"		"2.400000"
-		"AttributeBaseAgility"		"19"
+		"AttributeBaseAgility"		"17"
 		"AttributeAgilityGain"		"1.400000"
 		"StatusManaRegen"	"0.25"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
@@ -7417,7 +7424,7 @@
 		{
 			"Ability1"		"lina_dragon_slave"
 			"Ability2"		"lina_light_strike_array"
-			"Ability3"		"lina_flame_cloak"
+			"Ability3"		"lina_fiery_soul"
 			"Ability6"		"lina_laguna_blade"
 		}
 
@@ -10050,7 +10057,7 @@
 		"AttributeBaseAgility"		"17"
 		"AttributeAgilityGain"		"1.400000"
 		"MovementSpeed"		"310"
-		"StatusManaRegen"	"0.75"
+		"StatusManaRegen"	"0.50"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"particle_folder"		"particles/units/heroes/hero_tinker"
 		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_tinker.vsndevts"
@@ -10589,7 +10596,7 @@
 		"AttributePrimary"		"DOTA_ATTRIBUTE_INTELLECT"
 		"AttributeBaseStrength"		"18"
 		"AttributeStrengthGain"		"2.300000"
-		"AttributeBaseIntelligence"		"22"
+		"AttributeBaseIntelligence"		"23"
 		"AttributeIntelligenceGain"		"2.700000"
 		"AttributeBaseAgility"		"12"
 		"AttributeAgilityGain"		"1.300000"
@@ -12605,8 +12612,8 @@
 		
 		"ArmorPhysical"		"1"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"23"
-		"AttackDamageMax"		"33"
+		"AttackDamageMin"		"25"
+		"AttackDamageMax"		"35"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.5"
 		"AttackAcquisitionRange"		"800"
@@ -14064,7 +14071,7 @@
 		{
 			"Ability1"		"luna_lucent_beam"
 			"Ability2"		"luna_moon_glaive"
-			"Ability3"		"luna_lunar_blessing"
+			"Ability3"		"luna_lunar_orbit"
 			"Ability4"		"luna_eclipse"
 		}
 
@@ -14713,7 +14720,7 @@
 		"Ability10"		"special_bonus_unique_dazzle_poison_touch_attack_range_bonus"
 		"Ability11"		"special_bonus_mp_regen_175"
 		"Ability12"		"special_bonus_unique_dazzle_2"
-		"Ability13"		"special_bonus_attack_speed_80"
+		"Ability13"		"special_bonus_attack_speed_90"
 		"Ability14"		"special_bonus_unique_dazzle_5"
 		"Ability15"		"special_bonus_unique_dazzle_3"
 		"Ability16"		"special_bonus_unique_dazzle_1"
@@ -16415,11 +16422,11 @@
 			"Ability4"	"omniknight_guardian_angel"
 		}
 
-		"Ability10"		"special_bonus_unique_omniknight_guardian_angel_duration"
+		"Ability10"		"special_bonus_unique_omniknight_5"
 		"Ability11"		"special_bonus_attack_base_damage_35"
 		"Ability12"		"special_bonus_unique_omniknight_2"
 		"Ability13"		"special_bonus_unique_omniknight_7"
-		"Ability14"		"special_bonus_unique_omniknight_5"
+		"Ability14"		"special_bonus_unique_omniknight_guardian_angel_duration"
 		"Ability15"		"special_bonus_unique_omniknight_6"
 		"Ability16"		"special_bonus_unique_omniknight_1"
 		"Ability17"		"special_bonus_unique_omniknight_4"
@@ -16460,13 +16467,13 @@
 		"AttackRange"		"150"
 		"AttackRangeBuffer"			"550"		
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
-		"AttributeBaseStrength"		"23"
+		"AttributeBaseStrength"		"22"
 		"AttributeStrengthGain"		"3.10000"
 		"AttributeBaseAgility"		"15"
 		"AttributeAgilityGain"		"2.0000"
 		"AttributeBaseIntelligence"		"16"
 		"AttributeIntelligenceGain"		"2.100000"
-		"MovementSpeed"		"315"
+		"MovementSpeed"		"310"
 		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
 		"VoiceFile"		"soundevents/voscripts/game_sounds_vo_omniknight.vsndevts"
 		"particle_folder"		"particles/units/heroes/hero_omniknight"
@@ -18071,10 +18078,10 @@
 				"SlotIndex"		"2"
 				"SlotName"		"arms"
 				"SlotText"		"#LoadoutSlot_Arms"
-				"TextureWidth"		"256"
-				"TextureHeight"		"256"
-				"MaxPolygonsLOD0"		"1600"
-				"MaxPolygonsLOD1"		"750"
+				"TextureWidth"		"512"
+				"TextureHeight"		"512"
+				"MaxPolygonsLOD0"		"2500"
+				"MaxPolygonsLOD1"		"1200"
 			}
 			"3"
 			{
@@ -18503,7 +18510,7 @@
 		"Ability11"		"special_bonus_unique_batrider_3"
 		"Ability12"		"special_bonus_movement_speed_20"
 		"Ability13"		"special_bonus_unique_batrider_6"
-		"Ability14"		"special_bonus_unique_batrider_1"
+		"Ability14"		"special_bonus_unique_batrider_smoldering_resin_ticks"
 		"Ability15"		"special_bonus_unique_batrider_5"
 		"Ability16"		"special_bonus_unique_batrider_4"
 		"Ability17"		"special_bonus_unique_batrider_2"
@@ -20089,8 +20096,8 @@
 		"ArmorPhysical"		"2"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"BaseAttackSpeed"		"125"
-		"AttackDamageMin"		"16"
-		"AttackDamageMax"		"22"
+		"AttackDamageMin"		"18"
+		"AttackDamageMax"		"24"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.200000"
 		"AttackAcquisitionRange"		"800"
@@ -20124,7 +20131,7 @@
 				"SlotName"		"weapon"
 				"SlotText"		"#LoadoutSlot_Gyrocopter_Guns"
 				"TextureWidth"		"256"
-				"TextureHeight"		"256"
+				"TextureHeight"		"512"
 				"MaxPolygonsLOD0"		"2500"
 				"MaxPolygonsLOD1"		"1000"
 			}
@@ -20145,7 +20152,7 @@
 				"SlotName"		"back"
 				"SlotText"		"#LoadoutSlot_Back"
 				"TextureWidth"		"512"
-				"TextureHeight"		"128"
+				"TextureHeight"		"512"
 				"MaxPolygonsLOD0"		"4500"
 				"MaxPolygonsLOD1"		"1800"
 			}
@@ -20156,8 +20163,8 @@
 				"SlotText"		"#LoadoutSlot_Gyrocopter_Propeller"
 				"TextureWidth"		"512"
 				"TextureHeight"		"128"
-				"MaxPolygonsLOD0"		"400"
-				"MaxPolygonsLOD1"		"320"
+				"MaxPolygonsLOD0"		"1000"
+				"MaxPolygonsLOD1"		"400"
 			}
 			"5"
 			{
@@ -20166,8 +20173,8 @@
 				"SlotText"		"#LoadoutSlot_Gyrocopter_MissileCompartment"
 				"TextureWidth"		"256"
 				"TextureHeight"		"256"
-				"MaxPolygonsLOD0"		"300"
-				"MaxPolygonsLOD1"		"200"
+				"MaxPolygonsLOD0"		"500"
+				"MaxPolygonsLOD1"		"300"
 				"LoadoutPreviewMode"		"hero"
 				"GeneratesUnits"
 				{
@@ -21028,7 +21035,7 @@
 			}
 		}
 		"ArmorPhysical"		"0"
-		"BaseAttackSpeed"		"100"
+		"BaseAttackSpeed"		"110"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttackDamageMin"		"18"
 		"AttackDamageMax"		"32"
@@ -21042,7 +21049,7 @@
 		"AttributeBaseStrength"		"19"
 		"AttributeStrengthGain"		"2.200000"
 		"AttributeBaseAgility"		"22"
-		"AttributeAgilityGain"		"2.400000"
+		"AttributeAgilityGain"		"2.200000"
 		"AttributeBaseIntelligence"		"25"
 		"AttributeIntelligenceGain"		"2.900000"
 		"MovementSpeed"		"290"
@@ -22101,9 +22108,10 @@
 		"Ability1"		"lone_druid_spirit_bear"
 		"Ability2"		"lone_druid_spirit_link"
 		"Ability3"		"lone_druid_savage_roar"
-		"Ability4"		"lone_druid_gift_bearer"
+		"Ability4"		"generic_hidden"
 		"Ability5"		"generic_hidden"
 		"Ability6"		"lone_druid_true_form"
+		"Ability9"		"lone_druid_gift_bearer"
 		"Ability10"		"special_bonus_hp_200"
 		"Ability11"		"special_bonus_unique_lone_druid_11"
 		"Ability12"		"special_bonus_unique_lone_druid_4"
@@ -23560,8 +23568,8 @@
 		"AbilityTalentStart"	"12"
 		"ArmorPhysical"		"1.000000"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"27"
-		"AttackDamageMax"		"33"
+		"AttackDamageMin"		"25"
+		"AttackDamageMax"		"31"
 		"AttackRate"		"1.700000"
 		"BaseAttackSpeed"		"100"
 		"StatusManaRegen"	"0.5"
@@ -26253,7 +26261,7 @@
 		"AttackAcquisitionRange"		"600"
 		"AttackRange"		"150"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_STRENGTH"
-		"AttributeBaseStrength"		"27"
+		"AttributeBaseStrength"		"26"
 		"AttributeStrengthGain"		"3.50000"
 		"AttributeBaseAgility"		"16"
 		"AttributeAgilityGain"		"1.600000"
@@ -29845,8 +29853,8 @@
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AttackDamageMin"		"31"
-		"AttackDamageMax"		"37"
+		"AttackDamageMin"		"33"
+		"AttackDamageMax"		"39"
 		"AttackDamageType"		"DAMAGE_TYPE_ArmorPhysical"
 		"AttackRate"		"1.700000"
 		"AttackAnimationPoint"		"0.3"
@@ -30313,7 +30321,7 @@
 			"attack_long_range"		"200"
 		}
 		"AttributePrimary"		"DOTA_ATTRIBUTE_AGILITY"
-		"AttributeBaseStrength"		"18"
+		"AttributeBaseStrength"		"19"
 		"AttributeStrengthGain"		"2.8"
 		"AttributeBaseIntelligence"		"20"
 		"AttributeIntelligenceGain"		"1.8"
@@ -31636,6 +31644,7 @@
 		{
 			"Red"		"1"
 			"Steed"		"1"
+			"Female"	"1"
 		}
 		"SimilarHeroes"		"68,120,100"
 		"Ability1"				"snapfire_scatterblast"
@@ -32121,6 +32130,7 @@
 		}
 
 		"ArmorPhysical"		"2"
+		"StatusHealthRegen"		"0.5"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"		"29"
 		"AttackDamageMax"		"33"
@@ -32563,7 +32573,7 @@
 		"AttributeBaseAgility"		"15"
 		"AttributeAgilityGain"		"1.000000"
 		"ShowcasePlayIdleExpression" "0"
-		"MovementSpeed"				"310"
+		"MovementSpeed"				"305"
 		"MovementTurnRate"			"0.600000"
 		"HasAggressiveStance"		"0"
 		"animation_transitions"
@@ -32929,6 +32939,7 @@
 		"Ability5"		"ringmaster_spotlight"
 		"Ability6"		"ringmaster_wheel"
 		"Ability7"		"ringmaster_tame_the_beasts_crack"
+		"Ability8"		"generic_hidden"
 
 		"AbilityDraftAbilities"
 		{
@@ -32966,13 +32977,13 @@
 
 		"ProjectileSpeed"		"1200"
 		"AttributePrimary"		"DOTA_ATTRIBUTE_INTELLECT"
-		"AttributeBaseStrength"		"23"
-		"AttributeStrengthGain"		"2.4"
+		"AttributeBaseStrength"		"21"
+		"AttributeStrengthGain"		"2.1"
 		"AttributeBaseIntelligence"		"25"
 		"AttributeIntelligenceGain"		"3.0"
 		"AttributeBaseAgility"		"13"
 		"AttributeAgilityGain"		"1.4"
-		"MovementSpeed"				"315"
+		"MovementSpeed"				"310"
 		"HasAggressiveStance"		"1"
 		"MovementSpeedActivityModifiers"
 		{
@@ -33091,6 +33102,161 @@
 			}
 
 		}
+	}
+	"npc_dota_hero_kez"
+	{
+		"Model"		"models/heroes/kez/kez_base.vmdl"
+		"IdleExpression"		"scenes/kez/kez_exp_idle_01.vcd"
+		"SoundSet"		"Hero_Kez"
+		"Enabled"		"1"
+		"RandomEnabled"		"0"
+		"BotImplemented"		"0"
+		"HeroUnlockOrder"		"1"
+		"Complexity"	"3"
+		"Role"			"Carry,Escape,Disabler"
+		"Rolelevels"	"3,2,1"
+		"Team"		"Good"
+		"HeroID"		"145"
+		"ModelScale"		"1.0"
+		"LoadoutScale"		"1.10"
+		"HeroGlowColor"		"154 97 133"
+		"PickSound"		"kez_kez_battlebegins_07"
+		"BanSound"		"kez_kez_anger_05"
+		"NameAliases"		"bird samurai;kestrel"
+		"CMEnabled"		"0"
+		"workshop_guide_name"		"Kez"
+		"LastHitChallengeRival"		"npc_dota_hero_invoker"
+		"HeroSelectSoundEffect"		"Hero_Kez.Pick"
+		"Ability1"					"kez_echo_slash"
+		"Ability2"					"kez_grappling_claw"
+		"Ability3"					"kez_kazurai_katana"
+		"Ability4"					"kez_switch_weapons"
+		"Ability5"					"generic_hidden"
+		"Ability6"					"kez_raptor_dance"
+		"Ability7"					"kez_falcon_rush"
+		"Ability8"					"kez_talon_toss"
+		"Ability9"					"kez_shodo_sai"
+		"Ability10"					"kez_ravens_veil"
+		"Ability11"					"kez_shodo_sai_parry_cancel"
+		"Ability12"					"special_bonus_magic_resistance_12"
+		"Ability13"					"special_bonus_mp_regen_150"
+		"Ability14"					"special_bonus_unique_kez_falcon_rush_duration"
+		"Ability15"					"special_bonus_unique_kez_raptor_dance_radius"
+		"Ability16"					"special_bonus_unique_kez_kazura_katana_bleed_damage"
+		"Ability17"					"special_bonus_unique_kez_falcon_rush_evasion"
+		"Ability18"					"special_bonus_unique_kez_mark_damage"
+		"Ability19"					"special_bonus_unique_kez_echo_slash_strike_count"
+		"AbilityTalentStart"		"12"
+
+		"Facets"
+		{	
+			"kez_default"	
+			{
+				"Icon"				"kez"
+				"Color"				"Blue"
+				"GradientID"		"3"
+			}
+		}
+
+		"ArmorPhysical"		"0"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
+		"AttackDamageMin"		"23"
+		"AttackDamageMax"		"29"
+		"AttackRate"		"2.0"
+		"AttackAnimationPoint"		"0.35"
+		"AttackAcquisitionRange"		"600"
+		"AttackRange"		"225"
+		"AttributePrimary"		"DOTA_ATTRIBUTE_AGILITY"
+		"AttributeBaseStrength"		"19"
+		"AttributeStrengthGain"		"2.6"
+		"AttributeBaseAgility"		"26"
+		"AttributeAgilityGain"		"3.5"
+		"AttributeBaseIntelligence"		"18"
+		"AttributeIntelligenceGain"		"1.7"
+		"StatusHealthRegen"				"1.0"
+		"MovementSpeed"		"315"
+		"AttackSpeedActivityModifiers"
+		{
+			"fast"		"150"
+			"faster"	"200"
+		}
+		"MovementTurnRate"		"1.0"
+		"HasAggressiveStance"		"1"
+		"RenderablePortrait"
+		{
+			"Particles"
+			{
+				"particles/units/heroes/hero_phantom_assassin/phantom_assassin_loadout.vpcf"
+				{
+					"0"
+					{
+						"type"		"follow_origin"
+						"location"		"attach_hitloc"
+					}
+				}
+			}
+		}
+		"ItemSlots"
+		{
+			"0"
+			{
+				"SlotIndex"		"0"
+				"SlotName"		"weapon"
+				"SlotText"		"#LoadoutSlot_Weapon"
+				"TextureWidth"		"256"
+				"TextureHeight"		"256"
+				"MaxPolygonsLOD0"		"700"
+				"MaxPolygonsLOD1"		"600"
+			}
+			"1"
+			{
+				"SlotIndex"		"1"
+				"SlotName"		"head"
+				"SlotText"		"#LoadoutSlot_Head_Accessory"
+				"TextureWidth"		"256"
+				"TextureHeight"		"256"
+				"MaxPolygonsLOD0"		"1200"
+				"MaxPolygonsLOD1"		"600"
+			}
+			"2"
+			{
+				"SlotIndex"		"2"
+				"SlotName"		"shoulder"
+				"SlotText"		"#LoadoutSlot_Shoulder"
+				"TextureWidth"		"256"
+				"TextureHeight"		"256"
+				"MaxPolygonsLOD0"		"1000"
+				"MaxPolygonsLOD1"		"550"
+			}
+			"3"
+			{
+				"SlotIndex"		"3"
+				"SlotName"		"belt"
+				"SlotText"		"#LoadoutSlot_Belt"
+				"TextureWidth"		"256"
+				"TextureHeight"		"128"
+				"MaxPolygonsLOD0"		"500"
+				"MaxPolygonsLOD1"		"300"
+			}
+			"4"
+			{
+				"SlotIndex"		"4"
+				"SlotName"		"taunt"
+				"SlotText"		"#LoadoutSlot_Taunt"
+			}
+			"5"
+			{
+				"SlotIndex"		"5"
+				"SlotName"		"hero_effigy"
+				"SlotText"		"#LoadoutSlot_HeroEffigy"
+			}
+		}
+		"BoundsHullName"		"DOTA_HULL_SIZE_HERO"
+		"HealthBarOffset"		"180"
+		"particle_folder"		"particles/units/heroes/hero_kez"
+		"GameSoundsFile"		"soundevents/game_sounds_heroes/game_sounds_kez.vsndevts"
+		"VoiceFile"				"soundevents/voscripts/game_sounds_vo_kez.vsndevts"
+		
 	}
 	
 }

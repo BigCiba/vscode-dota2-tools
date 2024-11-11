@@ -162,7 +162,10 @@
 					"value"		"1200"
 					"affected_by_aoe_increase"	"1"
 				}
-
+				"aura_enabled"
+				{
+					"special_bonus_unique_centaur_1"	"=1"
+				}
 		}
 	}
 
@@ -383,11 +386,14 @@
 		{
 			"health_per_upgrade"		"30"
 			"upgrade_rate"				"120.0"
+			"bonus_hp_total"
+			{
+				"dynamic_value"			"true"
+			}
 		}
 	}
-
-	//=================================================================================================================
-	// Ability: Special Bonus
+}
+onus
 	//=================================================================================================================
 	"special_bonus_unique_centaur_1"
 	{

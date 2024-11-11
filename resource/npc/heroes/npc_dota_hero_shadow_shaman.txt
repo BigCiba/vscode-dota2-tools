@@ -170,7 +170,7 @@
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityChannelTime"			"2.4 3.0 3.6 4.2"
-		"AbilityCooldown"				"16 14 12 10"
+		"AbilityCooldown"				"13 12 11 10"
 		
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -374,7 +374,7 @@
 			"hex_duration"				"3.0"
 			"movespeed_bonus_pct"		"0"	// if changing this, change ally_chicken_movement_speed_bonus_pct
 
-			"damage_reduction_duration"	"0.75"
+			"damage_reduction_duration"	"1"
 			"damage_reduction_pct"		"100"
 		}
 	}
@@ -527,4 +527,5 @@
 			"voodoo_manacost"		"110"
 		}
 	}
+}
 }

@@ -179,6 +179,41 @@
 		"OverrideWearableClass"		"dota_item_wearable"
 	}
 
+//=================================================================================
+// Generic building unit
+//=================================================================================
+	"npc_dota_building_generic"
+	{
+		// General
+		//----------------------------------------------------------------
+		"BaseClass"					"npc_dota_rotatable_building"
+		"Model"						"models/development/invisiblebox.vmdl"	// Model.
+		"SoundSet"					"0"					// Name of sound set.
+		"ModelScale" 				"1.0"
+
+		// Attack
+		//----------------------------------------------------------------
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Bounds
+		//----------------------------------------------------------------
+		"BoundsHullName"			"DOTA_HULL_SIZE_REGULAR"
+
+		// Movement
+		//----------------------------------------------------------------
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
+		"MovementSpeed"				"0"
+		"MovementTurnRate"			"1.0"
+
+		// Vision
+		//----------------------------------------------------------------
+		"VisionDaytimeRange"		"0"
+		"VisionNighttimeRange"		"0"
+
+		"DisableDamageDisplay"              "1"
+		"PathfindingSearchDepthScale"		"0.0"
+	}
+
 		
 //=================================================================================
 // Creeps: Bad Ranged
@@ -11229,7 +11264,7 @@
 		"AttackDamageMin"			"102"		// Damage range min.
 		"AttackDamageMax"			"114"		// Damage range max.
 		"AttackDamageType"			"DAMAGE_TYPE_ArmorPhysical"
-		"AttackRate"				"1.4"		// Speed of attack.
+		"AttackRate"				"1.6"		// Speed of attack.
 		"AttackAnimationPoint"		"0.467"		// Normalized time in animation cycle to attack.
 		"AttackAcquisitionRange"	"500"		// Range within a target can be acquired.
 		"AttackRange"				"100"		// Range within a target can be attacked.
@@ -21237,41 +21272,10 @@
 	{
 		"include_keys_from"			"npc_dota_shmup_basic"
 		"Model"						"models/events/crownfall/shmup_shooting/shmup_splinter_blast.vmdl"	// Model.
-		"ModelScale"				"1"
-		"Level"						"4"
-		"IsSummoned"				"1"
-		"IsAncient"					"1"
-		"IsOther"					"1"
-				
-		// Abilities
-		//----------------------------------------------------------------
-		
-		"Ability1"					"neutral_spell_immunity"			// Ability 1.
-		"Ability2"					""			// Ability 2.
-		"Ability3"					""			// Ability 3.
-		"Ability4"					""			// Ability 4.
-		"Ability5"					""			// Ability 5.
-		"Ability6"					""			// Ability 6 - Extra.
-		"Ability7"					""			// Ability 7 - Extra.
-		"Ability8"					""			// Ability 8 - Extra.
-
-		// Armor
-		//----------------------------------------------------------------
-		"ArmorPhysical"				"5"			// Physical protection.
-		"MagicalResistance"				"33"		// Magical protection.
-
-		// Attack
-		//----------------------------------------------------------------
-		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
-
-		// Bounty
-		//----------------------------------------------------------------
-		"BountyXP"					"0"		// Experience earn.
-		"BountyGoldMin"				"50"		// Gold earned min.
-		"BountyGoldMax"				"50"		// Gold earned max.
-
-		// Bounds
-		//----------------------------------------------------------------
+		"ModelScale"				"1.0"
+	}
+}
+----------
 		"BoundsHullName"			"DOTA_HULL_SIZE_REGULAR"			// Hull type used for navigation/locomotion.
 		"HealthBarOffset"			"250"
 

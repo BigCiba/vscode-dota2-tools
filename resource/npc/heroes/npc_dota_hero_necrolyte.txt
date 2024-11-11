@@ -220,7 +220,7 @@
 			}			
 			"movement_speed"
 			{
-				"value"			"10 15 20 25"
+				"value"			"16 19 22 25"
 				"special_bonus_unique_necrophos_3"		"+20"
 			}
 			"movement_transfer"
@@ -233,7 +233,7 @@
 				"value"		"750"
 				"affected_by_aoe_increase"	"1"
 			}
-			"bonus_damage" "-25"
+			"bonus_damage" "-20"
 			"AbilityCooldown"
 			{
 				"value"						"28 24 20 16"
@@ -280,7 +280,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"110"
+		"AbilityCooldown"				"100"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------

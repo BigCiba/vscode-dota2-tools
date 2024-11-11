@@ -1,5 +1,26 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2024.11.08
+## Lua Server
+- 🖊️ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>TriggerModifierDodge</font>(<font color='#569cd6'>hAbility</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>hBuff</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>bool</font> ~~<font color='#dcdcaa'>TriggerModifierDodge</font>(): <font color='#c586c0'>bool</font>~~
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_KEZ_SAI</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_KEZ_KATANA_IMPALE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_KEZ_KATANA_IMPALE_FAST</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_KEZ_KATANA_ULT_CHAIN_A</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_KEZ_KATANA_ULT_CHAIN_B</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_KEZ_KATANA_ULT_END</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_KEZ_KATANA_ULT_START</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_ABILITY_TOGGLED</font> <font color='#dcdcaa'>OnAbilityToggled</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_AVOID_ATTACK_PROCS</font> <font color='#dcdcaa'>GetModifierAvoidAttackProcs</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CONVERT_ATTACK_PHYSICAL_TO_PURE</font> <font color='#dcdcaa'>GetConvertAttackPhysicalToPure</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_ATTACK_PROCS</font> <font color='#dcdcaa'>GetSuppressAttackProcs</font>
+## Lua Client
+- ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_KEZ_SAI</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_ABILITY_TOGGLED</font> <font color='#dcdcaa'>OnAbilityToggled</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_AVOID_ATTACK_PROCS</font> <font color='#dcdcaa'>GetModifierAvoidAttackProcs</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CONVERT_ATTACK_PHYSICAL_TO_PURE</font> <font color='#dcdcaa'>GetConvertAttackPhysicalToPure</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_ATTACK_PROCS</font> <font color='#dcdcaa'>GetSuppressAttackProcs</font>
+
 # 2024.08.28
 ## Lua Server
 - 🖊️ API: <font color='#00D6AA'>CDOTA_Item</font> <font color='#dcdcaa'>SpendCharge</font>(<font color='#569cd6'>flDelayRemove</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>SpendCharge</font>(): <font color='#c586c0'>void</font>~~

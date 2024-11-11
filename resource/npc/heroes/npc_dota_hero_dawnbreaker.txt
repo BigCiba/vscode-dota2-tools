@@ -57,8 +57,8 @@
 			}
 			"smash_damage"
 			{
-				"value"				"25 40 55 70"
-				"special_bonus_unique_dawnbreaker_fire_wreath_swipe"			"+18"
+				"value"											"25 40 55 70"
+				"special_bonus_unique_dawnbreaker_fire_wreath_swipe"			"+20"
 			}
 			"movement_speed"				"215"
 			"total_attacks"				"3"
@@ -105,7 +105,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"110 120 130 140"
+		"AbilityManaCost"				"100 110 120 130"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@
 			}
 			"projectile_speed"				
 			{
-				"value"					"1500"
+				"value"					"1600"
 				"special_bonus_unique_dawnbreaker_celestial_hammer_cast_range"				"+80%"
 			}
 			"flare_debuff_duration"				"2.5 3 3.5 4"
@@ -387,7 +387,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_INNATE_UI"
 		"MaxLevel"						"1"
 	}
-	//=================================================================================================================
+}
+==========================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
   	"special_bonus_unique_dawnbreaker_solar_guardian_radius"
