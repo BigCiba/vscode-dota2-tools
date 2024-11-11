@@ -910,6 +910,11 @@
 					},
 					"dota2-tools.csv_db_config": {
 						"type": "object"
+					},
+					"dota2-tools.dota2_install_path": {
+						"type": "string",
+						"default": "C:/Program Files (x86)/Steam/steamapps/common/dota 2 beta",
+						"description": "%dota2-tools.dota2_install_path%"
 					}
 				}
 			}

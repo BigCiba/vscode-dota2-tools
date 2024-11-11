@@ -100,6 +100,7 @@
 	"dota2tools.generate_recent_vpdi": "生成近期VPDI",
 	"dota2tools.mklink": "自动移动game和content文件夹并且mklink",
 	"dota2tools.export_modifier_function": "导出modifierfunction",
+	"dota2-tools.dota2_install_path": "Dota2安装目录",
 	"dota2-tools.A4.FeiShu": "飞书云配置表的配置。主要用于多人协作，解决excel不能合并等问题。需要自行申请飞书企业应用（免费）。",
 	"dota2-tools.A6.Kv to lua generate script": "开启kv跳转lua脚本时自动生成不存在的脚本功能",
 	"dota2-tools.A6.Kv to lua generate typescript": "kv跳转lua是否生成typescript而不是lua",

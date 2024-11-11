@@ -93,6 +93,7 @@
 	"dota2tools.generate_recent_vpdi": "Generate recent VPDI",
 	"dota2tools.mklink": "move game and content folder and then mklink",
 	"dota2tools.export_modifier_function": "export modifierfunction",
+	"dota2-tools.dota2_install_path": "Dota2 install path",
 	"dota2-tools.A4.FeiShu": "FeiShu cloud sheet config",
 	"dota2-tools.A6.Kv to lua generate script": "Enable the function of automatically generating non-existent script when kv jump lua script is enabled",
 	"dota2-tools.A6.Kv to lua generate typescript": "Does kv jump lua generate typescript instead of lua",
