@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { rogueItemsGameParse } from '../module/preProcessing';
 
 export async function preProcessing(context: vscode.ExtensionContext) {
 	// itemsGameParse(context);
@@ -17,6 +18,6 @@ export async function preProcessing(context: vscode.ExtensionContext) {
 	// console.log("parseLuaAPI");
 	// parseLuaAPIChangelog(context);
 	// console.log("parseLuaAPIChangelog");
-	// rogueItemsGameParse(context);
-	// console.log("rogueItemsGameParse");
+	rogueItemsGameParse(context);
+	console.log("rogueItemsGameParse");
 }
