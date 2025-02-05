@@ -7,7 +7,7 @@ const publish = spawn('vsce', ['publish', 'patch'], {
 
 publish.stdout.on('data', (data) => {
 	if (data.toString().includes('Do you want to continue?')) {
-		publish.stdin.write('N\n');
+		publish.stdin.write('y\n');
 	}
 });
 
