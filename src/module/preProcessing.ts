@@ -564,6 +564,6 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 }
 
 /** 将items_game.txt的套装信息解析出来 */
-export function rogueItemsGameParse(context: vscode.ExtensionContext) {
+export function liteItemsGameParse(context: vscode.ExtensionContext) {
 	fs.writeFileSync(path.join(context.extensionPath, "resource/rogue_wearable.json"), JSON.stringify(getLiteItemsGame(context)));
 }
