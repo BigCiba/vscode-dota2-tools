@@ -1,7 +1,55 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2025.02.19
+## Lua Server
+- ❌ API: <font color='#00D6AA'>CBaseEntity</font> <font color='#dcdcaa'>OverrideFriction</font>(<font color='#569cd6'>duration</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>friction</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>void</font>
+- ✨ API: <font color='#00D6AA'>CDOTA_Item</font> <font color='#dcdcaa'>IsActiveNeutral</font>(): <font color='#c586c0'>bool</font> 
+- ❌ API: <font color='#00D6AA'>CDOTA_Item</font> <font color='#dcdcaa'>IsNeutralDrop</font>(): <font color='#c586c0'>bool</font>
+- ❌ API: <font color='#00D6AA'>CPhysicsProp</font> <font color='#dcdcaa'>SetDynamicVsDynamicContinuous</font>(<font color='#569cd6'>bIsDynamicVsDynamicContinuousEnabled</font>: <font color='#c586c0'>bool</font>): <font color='#c586c0'>void</font>
+- ✨ Enum: <font color='#00D6AA'>DOTA_INVALID_ORDERS</font> <font color='#9cdcfe'>DOTA_INVALID_ORDER_CANT_ATTACK_BUILDINGS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>DamageCategory_t</font> <font color='#9cdcfe'>DOTA_DAMAGE_CATEGORY_BARRIER</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_UNICYCLE</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_UNICYCLE_END</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_NEUTRAL_ENHANCEMENT_OPTIONS</font> <font color='#dcdcaa'>GetModifierNeutralEnhancementOptions</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_NEUTRAL_TRINKET_OPTIONS</font> <font color='#dcdcaa'>GetModifierNeutralTrinketOptions</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_NIGHT_STARTED</font> <font color='#dcdcaa'>OnNightStarted</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_PURE_DAMAGE_CALCULATED</font> <font color='#dcdcaa'>OnPureDamageCalculated</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_RUNE_SPAWN</font> <font color='#dcdcaa'>OnRuneSpawn</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MAGICAL_LIFESTEAL</font> <font color='#dcdcaa'>GetModifierProperty_MagicalLifesteal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MIN_MANA</font> <font color='#dcdcaa'>GetMinMana</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_MAX_BONUS_CONSTANT</font> <font color='#dcdcaa'>GetModifierMoveSpeedMax_BonusConstant</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_MAX_OVERRIDE</font> <font color='#dcdcaa'>GetModifierMoveSpeed_MaxOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_MIN_OVERRIDE</font> <font color='#dcdcaa'>GetModifierMoveSpeed_MinOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_POST_MULTIPLIER_BONUS_CONSTANT</font> <font color='#dcdcaa'>GetModifierMoveSpeedPostMultiplierBonus_Constant </font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PHYSICAL_LIFESTEAL</font> <font color='#dcdcaa'>GetModifierProperty_PhysicalLifesteal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PRESERVE_NEUTRAL_ITEM_PASSIVES</font> <font color='#dcdcaa'>GetModifierPreserveNeutralItemPassives</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE_APPLIES_TO_ATTACKS</font> <font color='#dcdcaa'>GetModifierSlowResistanceAppliesToAttacks</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_XP_FOUNTAIN_COUNTDOWN_TIME_OVERRIDE</font> <font color='#dcdcaa'>GetModifierXPFountainCountdownTimeOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_NEUTRALS_DONT_ATTACK</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>modifierstate</font> ~~<font color='#9cdcfe'>MODIFIER_STATE_NO_INVISIBILITY_VISUALS</font> <font color='#dcdcaa'></font>~~
+## Lua Client
+- ✨ Enum: <font color='#00D6AA'>DOTA_INVALID_ORDERS</font> <font color='#9cdcfe'>DOTA_INVALID_ORDER_CANT_ATTACK_BUILDINGS</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_NEUTRAL_ENHANCEMENT_OPTIONS</font> <font color='#dcdcaa'>GetModifierNeutralEnhancementOptions</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_NEUTRAL_TRINKET_OPTIONS</font> <font color='#dcdcaa'>GetModifierNeutralTrinketOptions</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_NIGHT_STARTED</font> <font color='#dcdcaa'>OnNightStarted</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_PURE_DAMAGE_CALCULATED</font> <font color='#dcdcaa'>OnPureDamageCalculated</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_EVENT_ON_RUNE_SPAWN</font> <font color='#dcdcaa'>OnRuneSpawn</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MAGICAL_LIFESTEAL</font> <font color='#dcdcaa'>GetModifierProperty_MagicalLifesteal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MIN_MANA</font> <font color='#dcdcaa'>GetMinMana</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_MAX_BONUS_CONSTANT</font> <font color='#dcdcaa'>GetModifierMoveSpeedMax_BonusConstant</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_MAX_OVERRIDE</font> <font color='#dcdcaa'>GetModifierMoveSpeed_MaxOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_MIN_OVERRIDE</font> <font color='#dcdcaa'>GetModifierMoveSpeed_MinOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MOVESPEED_POST_MULTIPLIER_BONUS_CONSTANT</font> <font color='#dcdcaa'>GetModifierMoveSpeedPostMultiplierBonus_Constant </font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PHYSICAL_LIFESTEAL</font> <font color='#dcdcaa'>GetModifierProperty_PhysicalLifesteal</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_PRESERVE_NEUTRAL_ITEM_PASSIVES</font> <font color='#dcdcaa'>GetModifierPreserveNeutralItemPassives</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SLOW_RESISTANCE_APPLIES_TO_ATTACKS</font> <font color='#dcdcaa'>GetModifierSlowResistanceAppliesToAttacks</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_XP_FOUNTAIN_COUNTDOWN_TIME_OVERRIDE</font> <font color='#dcdcaa'>GetModifierXPFountainCountdownTimeOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierstate</font> <font color='#9cdcfe'>MODIFIER_STATE_NEUTRALS_DONT_ATTACK</font> <font color='#dcdcaa'></font>
+- ❌ Enum: <font color='#00D6AA'>modifierstate</font> ~~<font color='#9cdcfe'>MODIFIER_STATE_NO_INVISIBILITY_VISUALS</font> <font color='#dcdcaa'></font>~~
+
 # 2024.11.08
 ## Lua Server
+- 🖊️ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>TriggerModifierDodge</font>(<font color='#569cd6'>hAbility</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>hBuff</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>bool</font> ~~<font color='#dcdcaa'>TriggerModifierDodge</font>(): <font color='#c586c0'>bool</font>~~
 - 🖊️ API: <font color='#00D6AA'>CDOTA_BaseNPC</font> <font color='#dcdcaa'>TriggerModifierDodge</font>(<font color='#569cd6'>hAbility</font>: <font color='#c586c0'>handle</font>, <font color='#569cd6'>hBuff</font>: <font color='#c586c0'>handle</font>): <font color='#c586c0'>bool</font> ~~<font color='#dcdcaa'>TriggerModifierDodge</font>(): <font color='#c586c0'>bool</font>~~
 - ✨ Enum: <font color='#00D6AA'>DotaPseudoRandomType</font> <font color='#9cdcfe'>DOTA_PSEUDO_RANDOM_KEZ_SAI</font> <font color='#dcdcaa'></font>
 - ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_KEZ_KATANA_IMPALE</font> <font color='#dcdcaa'></font>
