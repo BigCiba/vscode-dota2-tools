@@ -18,6 +18,7 @@ import { EventManager, EventType } from "./Class/event";
 import { localizationViewrInit } from './module/localizationViewr';
 import { sheetCloudInit } from './module/sheet_cloud';
 import { translateInit } from './module/translate';
+import { kvEditorInit } from './module/kvEditor';
 
 /** 模块列表 */
 const moduleList = {
@@ -42,6 +43,7 @@ const moduleList = {
 	"listenerUnitExcelInit": listenerUnitExcelInit,
 	"translateInit": translateInit,
 	"sheetCloudInit": sheetCloudInit,
+	"kvEditorInit": kvEditorInit,
 	// "localizationViewrInit": localizationViewrInit,
 };
 
