@@ -104,6 +104,10 @@
 					"name": "Units KV"
 				},
 				{
+					"id": "item_kv",
+					"name": "Items KV"
+				},
+				{
 					"id": "kv_config",
 					"name": "Config KV"
 				}

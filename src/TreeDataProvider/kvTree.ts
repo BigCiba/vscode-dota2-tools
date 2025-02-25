@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
-import { getContentDir, getGameDir } from '../module/addonInfo';
 
 
 
@@ -13,11 +11,9 @@ export class KvEditorTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 	private _onDidChangeTreeData: vscode.EventEmitter<NodeItem | undefined> = new vscode.EventEmitter<NodeItem | undefined>();
 	readonly onDidChangeTreeData: vscode.Event<NodeItem | undefined> = this._onDidChangeTreeData.event;
 
-	constructor(private context: vscode.ExtensionContext) {
-		const gameDir = getGameDir();
-		const abilitiesDir = path.join(gameDir, "scripts/npc/kv/abilities");
+	constructor(private context: vscode.ExtensionContext, dir: string) {
 		// 遍历abilitiesDir下面所有的文件
-		const files = fs.readdirSync(abilitiesDir);
+		const files = fs.readdirSync(dir);
 		files.forEach(file => {
 			this.treeData[file] = {};
 		});
