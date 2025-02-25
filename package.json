@@ -18,15 +18,6 @@
 	"contributes": {
 		"customEditors": [
 			{
-				"viewType": "dota2tools.kv",
-				"displayName": "kv viewer",
-				"selector": [
-					{
-						"filenamePattern": "*.kv"
-					}
-				]
-			},
-			{
 				"viewType": "dota2tools.Lazyboy",
 				"displayName": "Lazyboy",
 				"priority": "option",
@@ -96,20 +87,8 @@
 			],
 			"dota2kv": [
 				{
-					"id": "ability_kv",
-					"name": "Abilities Kv"
-				},
-				{
-					"id": "unit_kv",
-					"name": "Units KV"
-				},
-				{
-					"id": "item_kv",
-					"name": "Items KV"
-				},
-				{
-					"id": "kv_config",
-					"name": "Config KV"
+					"id": "kv_explorer",
+					"name": "Kv Explorer"
 				}
 			]
 		},
