@@ -1,31 +1,46 @@
 import * as fs from 'fs';
+import watch from "node-watch";
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { KvNode, KvNodePool, KvNodeType } from '../Class/KvTreeItem';
 import { getGameDir } from '../module/addonInfo';
 import { readKeyValue2 } from '../utils/kvUtils';
 
-export class KvEditorTreeProvider implements vscode.TreeDataProvider<NodeItem> {
-	private readonly treeData: any = {};
+export class KvEditorTreeProvider implements vscode.TreeDataProvider<KvNode> {
+	private treeData: any = {};
 	private readonly descData: any = {};
+	private readonly fileWatcher: fs.FSWatcher;
+	private readonly kvNodePool: KvNodePool;
+	private readonly nodeMap: Record<string, KvNode> = {};
 	private filteredTreeData: any = undefined;
+	private rootPath: string;
 	public collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-	private _onDidChangeTreeData: vscode.EventEmitter<NodeItem | undefined> = new vscode.EventEmitter<NodeItem | undefined>();
-	readonly onDidChangeTreeData: vscode.Event<NodeItem | undefined> = this._onDidChangeTreeData.event;
+	private _onDidChangeTreeData: vscode.EventEmitter<KvNode | undefined> = new vscode.EventEmitter<KvNode | undefined>();
+	readonly onDidChangeTreeData: vscode.Event<KvNode | undefined> = this._onDidChangeTreeData.event;
 
 	constructor(private context: vscode.ExtensionContext) {
+		this.kvNodePool = new KvNodePool();
 		const gameDir = getGameDir();
-		this.treeData = this.readDirectory(path.join(gameDir, "scripts/npc"));
+		this.rootPath = path.normalize(path.join(gameDir, "scripts/npc"));
+		this.treeData = this.readDirectory(this.rootPath);
 		this.descData = readKeyValue2(fs.readFileSync(path.join(gameDir, "resource/addon_schinese.txt"), "utf-8")).lang.Tokens;
+		this.fileWatcher = watch(this.rootPath, { recursive: true, filter: /\.txt$|\.kv$/ }, (evt, name) => {
+			// this.nodeMap[name].children.forEach(node => {
+			// });
+			this.treeData = this.readDirectory(this.rootPath);
+			this._onDidChangeTreeData.fire(undefined);
+		});
 	}
 
 	private readDirectory(dir: string): any {
 		const result: any = {};
 		const items = fs.readdirSync(dir, { withFileTypes: true });
 		items.forEach(item => {
+			const filePath = path.normalize(path.join(dir, item.name));
 			if (item.isDirectory()) {
-				result[item.name] = this.readDirectory(path.join(dir, item.name));
+				result[item.name] = this.readDirectory(filePath);
 			} else {
-				result[item.name] = path.join(dir, item.name);
+				result[item.name] = filePath;
 			}
 		});
 		return result;
@@ -45,46 +60,50 @@ export class KvEditorTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 		}, 10);
 	}
 
-	getTreeItem(element: NodeItem): vscode.TreeItem {
+	getTreeItem(element: KvNode): vscode.TreeItem {
 		return element;
 	}
 
-	getChildren(element?: NodeItem): Thenable<NodeItem[]> {
+	getChildren(element?: KvNode): Thenable<KvNode[]> {
 		if (element) {
-			const children = element.filePath as Record<string, any>;
-			if (typeof children == "object") {
+			if (element.itemType == KvNodeType.folder) {
 				const childItems = [];
-				for (const childName in children) {
-					const isDirectory = typeof children[childName] === 'object';
-					if (isDirectory) {
-						childItems.push(new NodeItem(childName, vscode.TreeItemCollapsibleState.Collapsed, ItemType.folder, children[childName]));
-					} else {
-						childItems.push(new NodeItem(childName, vscode.TreeItemCollapsibleState.Collapsed, ItemType.file, children[childName]));
-					}
+				for (const childName in element.childrenData) {
+					const isDirectory = typeof element.childrenData[childName] === 'object';
+					const filePath = path.normalize(path.join(element.filePath, childName));
+					const node = isDirectory
+						? this.nodeMap[filePath] ?? this.kvNodePool.getNodeItem(childName, vscode.TreeItemCollapsibleState.Collapsed, KvNodeType.folder, filePath, element.childrenData[childName])
+						: this.nodeMap[filePath] ?? this.kvNodePool.getNodeItem(childName, vscode.TreeItemCollapsibleState.Collapsed, KvNodeType.file, filePath);
+					childItems.push(node);
+					node.parent = element;
+					this.nodeMap[filePath] = node;
 				}
+				element.children = childItems;
 				// 对 childItems 进行排序，文件夹在上面，文件在下面
-				childItems.sort((a, b) => {
-					if (a.itemType === ItemType.folder && b.itemType === ItemType.file) {
-						return -1;
-					} else if (a.itemType === ItemType.file && b.itemType === ItemType.folder) {
-						return 1;
-					} else {
-						return a.label.localeCompare(b.label);
-					}
-				});
+				this.sortNode(childItems);
 				return Promise.resolve(childItems);
-			} else if (element.itemType === ItemType.file) {
+			} else if (element.itemType === KvNodeType.file) {
 				const childItems = [];
+				let kv: any = {};
 				// 创建kv的子节点导航
-				const kv = readKeyValue2(fs.readFileSync(children, 'utf-8'));
-				const keys = kv[Object.keys(kv)[0]];
+				try {
+					kv = readKeyValue2(fs.readFileSync(element.filePath, 'utf-8'));
+				} catch (error) {
+					return Promise.resolve([]);
+				};
+				const header = Object.keys(kv)[0];
+				if (header == undefined) return Promise.resolve([]);
+				const keys = kv[header];
 				for (const key in keys) {
 					const descKey = Object.keys(this.descData).find(k => k.toLowerCase() === ("dota_tooltip_ability_" + key).toLowerCase())
 						?? Object.keys(this.descData).find(k => k.toLowerCase() === key.toLowerCase());
 					const desc = descKey ? this.descData[descKey] : undefined;
 					const tooltip = descKey ? this.descData[descKey + "_description"] : undefined;
-					childItems.push(new NodeItem(key, vscode.TreeItemCollapsibleState.None, ItemType.key, element.filePath, desc, tooltip));
+					const node = this.kvNodePool.getNodeItem(key, vscode.TreeItemCollapsibleState.None, KvNodeType.key, element.filePath, undefined, desc, tooltip);
+					childItems.push(node);
+					node.parent = element;
 				}
+				element.children = childItems;
 				return Promise.resolve(childItems);
 			} else {
 				return Promise.resolve([]);
@@ -92,64 +111,31 @@ export class KvEditorTreeProvider implements vscode.TreeDataProvider<NodeItem> {
 		} else {
 			let apiTreeData = this.filteredTreeData ? this.filteredTreeData : this.treeData;
 			// 根目录
-			const rootItems = [];
+			const childItems = [];
 			for (const rootName in apiTreeData) {
+				const filePath = path.normalize(path.join(this.rootPath, rootName));
 				const isDirectory = typeof apiTreeData[rootName] === 'object';
-				if (isDirectory) {
-					rootItems.push(new NodeItem(rootName, vscode.TreeItemCollapsibleState.Expanded, ItemType.folder, apiTreeData[rootName]));
-				} else {
-					rootItems.push(new NodeItem(rootName, vscode.TreeItemCollapsibleState.Collapsed, ItemType.file, apiTreeData[rootName]));
-				}
+				const node = isDirectory
+					? this.kvNodePool.getNodeItem(rootName, vscode.TreeItemCollapsibleState.Expanded, KvNodeType.folder, filePath, apiTreeData[rootName])
+					: this.kvNodePool.getNodeItem(rootName, vscode.TreeItemCollapsibleState.Collapsed, KvNodeType.file, filePath);
+				childItems.push(node);
+				this.nodeMap[filePath] = node;
 			}
-			// 对 rootItems 进行排序，文件夹在上面，文件在下面
-			rootItems.sort((a, b) => {
-				if (a.itemType === ItemType.folder && b.itemType === ItemType.file) {
-					return -1;
-				} else if (a.itemType === ItemType.file && b.itemType === ItemType.folder) {
-					return 1;
-				} else {
-					return a.label.localeCompare(b.label);
-				}
-			});
-			return Promise.resolve(rootItems);
+			// 对 childItems 进行排序，文件夹在上面，文件在下面
+			this.sortNode(childItems);
+			return Promise.resolve(childItems);
 		}
 	}
-}
-
-enum ItemType {
-	folder = 0,
-	file = 1,
-	key = 2,
-}
-
-export class NodeItem extends vscode.TreeItem {
-	constructor(
-		public readonly label: string,	// 用来保存名字
-		public collapsibleState: vscode.TreeItemCollapsibleState,	// 折叠状态
-		public readonly itemType: ItemType,	// 类型
-		public readonly filePath: string | object,	// 文件路径
-		public readonly description?: string,	// 描述
-		public readonly tooltip?: string,	// tooltip
-		public readonly command?: vscode.Command	// 注册指令
-	) {
-		super(label, collapsibleState);
-		if (this.itemType === ItemType.folder) {
-			this.iconPath = vscode.ThemeIcon.Folder;
-		} else if (this.itemType === ItemType.key) {
-			this.iconPath = new vscode.ThemeIcon("symbol-method");
-			this.command = {
-				command: 'extension.openFileAtPosition',
-				title: 'Open File at Position',
-				arguments: [this.filePath, this.label]
-			};
-		} else if (this.itemType === ItemType.file) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'kv.svg');
-			this.command = {
-				command: 'vscode.open',
-				title: 'Open File',
-				arguments: [vscode.Uri.file(this.filePath as string)]
-			};
-		}
+	sortNode(nodeItems: KvNode[]) {
+		nodeItems.sort((a, b) => {
+			if (a.itemType === KvNodeType.folder && b.itemType === KvNodeType.file) {
+				return -1;
+			} else if (a.itemType === KvNodeType.file && b.itemType === KvNodeType.folder) {
+				return 1;
+			} else {
+				return a.label.localeCompare(b.label);
+			}
+		});
 	}
 }
 
