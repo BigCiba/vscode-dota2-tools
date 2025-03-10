@@ -86,7 +86,7 @@
 				"CalculateSpellDamageTooltip"	"1"
 			}
 			"tick_interval"			"3.0 3.0 3.0 3.0"
-			"movement_slow"			"-50 -50 -50 -50"
+			"movement_slow"			"-35 -40 -45 -50"
 			"radius"				
 			{
 				"value"		"125"
@@ -238,7 +238,7 @@
 			}
 			"threshold_max_hp_pct"							
 			{
-				"value"							"1 1.5 2 2.5"
+				"value"							"1.5 2 2.5 3"
 				"special_bonus_unique_venomancer" "x2.5"
 				"RequiresFacet"					"venomancer_plague_carrier"				
 			}
@@ -261,7 +261,6 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilitySound"					"Hero_Venomancer.PoisonNova"
 		"FightRecapLevel"				"1"
-		"AbilityDraftUltShardAbility"		"venomancer_latent_poison"
 
 		// Time
 		//-------------------------------------------------------------------------------------------------------------
@@ -528,6 +527,10 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+}
+OR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
 	}
 }

@@ -42,7 +42,7 @@
 			"beam_damage"
 			{
 				"value"					"75 150 225 300"
-				"special_bonus_unique_luna_1"	"+80"
+				"special_bonus_unique_luna_1"	"+110"
 			}
 			"glaives_fired"
 			{
@@ -112,6 +112,7 @@
 			"rotating_glaives"
 			{
 				"value"								"4"
+				"special_bonus_unique_luna_lunar_orbit_glaive_count"				"+1"
 			}
 
 			"rotating_glaives_movement_radius"
@@ -119,21 +120,21 @@
 				"value"								"250"
 			}
 
+			"rotating_glaives_movement_radius_expand_speed_scale"
+			{
+				"value"								"3"
+			}
+
 			"rotating_glaives_hit_radius"
 			{
-				"value"								"150"
+				"value"								"175"
 				"affected_by_aoe_increase"			"1"
 			}
 
 			"rotating_glaives_collision_damage"
 			{
-				"value"								"20 25 30 35"
-				"special_bonus_shard"				"+15"
-			}
-
-			"unclamp_max_radius"
-			{
-				"value"								"0"
+				"value"								"22 28 34 40"
+				"special_bonus_shard"				"+20"
 			}
 
 			"rotating_glaives_speed"
@@ -160,7 +161,7 @@
 			"rotating_glaives_damage_reduction"
 			{
 				"value"									"0"
-				"special_bonus_facet_luna_moonshield"	"10 15 20 25"
+				"special_bonus_facet_luna_moonshield"	"15 20 25 30"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
@@ -192,7 +193,7 @@
 			"damage_reduction_percent"
 			{
 				"value"							"50 45 40 35"
-				"special_bonus_unique_luna_7"	"-8"
+				"special_bonus_unique_luna_7"	"-5"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
@@ -224,12 +225,12 @@
 
 				"bonus_night_vision_self"		
 				{
-					"value"			"400"
+					"value"			"250"
 				}
 
 				"bonus_night_vision_per_level"
 				{
-					"value"			"20"
+					"value"			"25"
 				}
 
 				"bonus_damage_per_level"			
@@ -436,6 +437,7 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"ad_linked_abilities"			"luna_eclipse"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
+
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
@@ -447,6 +449,7 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"ad_linked_abilities"			"luna_moon_glaive"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
+
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
@@ -457,5 +460,18 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"ad_linked_abilities"			"luna_lucent_beam && luna_moon_glaive"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
+	}
+
+	//=================================================================================================================
+	// Ability: Special Bonus
+	//=================================================================================================================
+	"special_bonus_unique_luna_lunar_orbit_glaive_count"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+		"ad_linked_abilities"			"luna_lunar_orbit"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 }

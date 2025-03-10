@@ -40,19 +40,19 @@
 			"knockback_radius"			
 			{
 				"value"	"190"
-				"affected_by_aoe_increase"	"1"	
+				//"affected_by_aoe_increase"	"1"	
 
 			}
 			"max_distance"				"2000"
 			"knockback_distance"		
 			{
 				"value"			"200"
-				"affected_by_aoe_increase"	"1"	
+			//	"affected_by_aoe_increase"	"1"	
 			}
 			"knockback_damage"
 			{
 				"value"					"75 170 265 360"
-				"special_bonus_unique_primal_beast_onslaught_damage"	"+90"
+				"special_bonus_unique_primal_beast_onslaught_damage"	"+80"
 			}
 			"knockback_duration"		"0.2"
 			"max_charge_time"			"1.7"
@@ -100,7 +100,7 @@
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 
-		"AbilityManaCost"				"90"
+		"AbilityManaCost"				"100"
 
 		// Damage.
 		//-------------------------------------------------------------------------------------------------------------
@@ -197,16 +197,22 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"bonus_damage"				"5 10 15 20"
-			"bonus_damage_per_stack"	"10 20 30 40"
+			"bonus_damage_per_stack"
+			{
+				"value"													"10 20 30 40"
+			}
 			"stack_limit"				
 			{
 				"value"						"5"
-	
+			}
+			"stack_count_increase_on_disable"
+			{
+				"value"													"0"
+				"special_bonus_facet_primal_beast_provoke_the_beast"	"3"
 			}
 			"damage_limit"				"50"
 			"stack_duration"			"20"
-			"move_slow_per_stack"		"5 6 7 8"
+			"move_slow_per_stack"		"4 6 8 10"
 			"slow_duration"				"3.0"
 			"damage_min"				"20"
 			"damage_max"				"2000"
@@ -334,17 +340,22 @@
 			"animation_rate"			"1.5"			// FLAIL MULTIPLIER ON ENEMY UNITS
 			"damage"
 			{
-				"value"						"125 175 225"
+				"value"						"100 175 250"
 			}
 			"bonus_aoe_duration"
 			{
 				"value"							"0"
-				"special_bonus_facet_primal_beast_ferocity"	"+10"
+				"special_bonus_facet_primal_beast_ferocity"	"+15"
 			}
 			"bonus_aoe_pct_per_hit"
 			{
 				"value"									"0"
-				"special_bonus_facet_primal_beast_ferocity"	"+20"
+				"special_bonus_facet_primal_beast_ferocity"	"+25"
+			}
+			"max_stacks"
+			{
+				"value"										"0"
+				"special_bonus_facet_primal_beast_ferocity"	"+10"		// 0 disables
 			}
 			"channel_time"
 			{

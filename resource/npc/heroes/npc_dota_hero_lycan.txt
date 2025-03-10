@@ -110,9 +110,10 @@
 			}
 			"health_per_wolf"				
 			{
-				"value"							"50 100 150 200"	
+				"value"							"60 115 170 225"	
 				"special_bonus_unique_lycan_7"	"+250"
 				"RequiresFacet"					"lycan_spirit_wolves"
+
 			}
 			"damage_per_wolf"				
 			{
@@ -173,7 +174,6 @@
 		"AbilityValues"
 		{
 			"lifesteal_percent"		"40"
-			"creep_penalty"			"0.4"
 			"lifesteal_range"		
 			{
 				"value"		"1200"		
@@ -451,7 +451,7 @@
 
 		"AbilityValues"
 		{
-			"duration"				"8"
+			"duration"				"6"
 			"evasion"				"100"
 			"min_movespeed"			"550"
 			"bonus_attack_speed"	"20"
@@ -591,6 +591,11 @@
 			"extra_damage_tooltip"
 			{
 				"dynamic_value"				"true"
+			}
+		}
+	}
+}
+"true"
 			}
 		}
 	}

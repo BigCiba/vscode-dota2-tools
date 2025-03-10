@@ -90,7 +90,7 @@
 			"building_damage_pct"
 			{
 				"value"					"0"
-				"special_bonus_facet_batrider_arsonist"			"+35"
+				"special_bonus_facet_batrider_arsonist"			"+45"
 			}				
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -117,7 +117,7 @@
 				"special_bonus_unique_batrider_smoldering_resin_ticks"	"+2"
 			}
 			"tick_rate"				"1"
-			"tick_attack_damage_pct"		"15"
+			"tick_attack_damage_pct"		"20"
 		}
 
 	}
@@ -242,7 +242,7 @@
 				"value"	"0"
 				"special_bonus_unique_batrider_5"	"+2"
 			}
-			"slow"	"15 20 25 30"		
+			"slow"	"8 16 24 32"		
 
 						
 		}
@@ -467,3 +467,4 @@
 		"BaseClass"						"special_bonus_base"
 	}
 }
+

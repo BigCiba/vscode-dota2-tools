@@ -40,7 +40,6 @@
 			"leash"
 			{
 				"value"				"0"
-				"special_bonus_unique_furion_7"		"+1"
 			}
 
 			"sprout_damage"					
@@ -240,8 +239,26 @@
 			{
 				"value"						"0"
 			}
-			
+
+			"treant_gold_bounty_min"
+			{
+				"value" "18"
+				"special_bonus_facet_furion_ironwood_treant"	"=16 =24 =32 =40"
+			}
+
+			"treant_gold_bounty_max"
+			{
+				"value" "24"
+				"special_bonus_facet_furion_ironwood_treant"	"=16 =24 =32 =40"
+			}
+
+			"treant_xp_bounty"
+			{
+				"value" "30"
+				"special_bonus_facet_furion_ironwood_treant"	"=30 =40 =50 =60"
+			}
 		}
+
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
 	}
 	
@@ -284,7 +301,7 @@
 			"damage"
 			{
 				"value"				"100 140 180"
-				"special_bonus_unique_furion_5"			"+30"
+				"special_bonus_unique_furion_5"			"+25"
 			}
 			"damage_percent_add"
 			{
@@ -307,8 +324,8 @@
 			}
 			"AbilityCooldown"
 			{
-				"value"						"85"
-				"special_bonus_scepter"		"-25"
+				"value"							"85"
+				"special_bonus_unique_furion_7"	"-15"
 			}	
 			"scepter_min_entangle_duration"
 			{
@@ -458,17 +475,17 @@
 
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_INNATE_UI"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
-		"MaxLevel"						"5"
-		"DependentOnAbility"			"furion_force_of_nature"
+		"MaxLevel"						"4"
+		"DependentOnAbility"			"furion_wrath_of_nature"
 		"Innate"						"1"
 		"IsBreakable"					"1"
 
 		"AbilityValues"
 		{
-			"damage_per_tree_pct"		"2 3 4 5 6"
+			"damage_per_tree_pct"		"4"
 			"radius"	
 			{
-				"value"		"300"
+				"value"		"300 400 500 600"
 				"affected_by_aoe_increase"	"1"
 			}
 			"radius_treant"				
@@ -479,7 +496,7 @@
 			"multiplier"			
 			{
 				"value"			"1 1 1 1 1"
-				"special_bonus_facet_furion_ironwood_treant"	"x2 x3 x4 x5 x6"
+				"special_bonus_facet_furion_ironwood_treant"	"x4"
 				"special_bonus_unique_furion"	"x3"
 			}
 		}
@@ -598,5 +615,8 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
+	}
+}
+						"special_bonus_base"
 	}
 }

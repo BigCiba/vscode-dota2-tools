@@ -22,10 +22,9 @@
 		
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"375 425 475 525"
 		"AbilityCastPoint"				"0.3 0.3 0.3 0.3"
 		"AbilityCooldown"				"5"
-		"AbilityManaCost"				"65 70 75 80"
+		"AbilityManaCost"				"75 80 85 90"
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -52,12 +51,6 @@
 				"value"				"0.35"
 				"special_bonus_unique_bounty_hunter_5"		"+0.6"
 			}
-			"scepter_cast_range"
-			{
-
-				"value"				"600"
-				"RequiresScepter"	"1"
-			}
 			"scepter_cooldown"
 			{
 				"value"				"6"
@@ -76,6 +69,12 @@
 			
 			"cast_range"			"375 425 475 525"
 			"slow"					"100"		
+			
+			"AbilityCastRange"
+			{
+				"value"				"375 425 475 525"
+				"special_bonus_scepter"	"=600"
+			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
 	}
@@ -108,7 +107,6 @@
 			"bonus_damage"
 			{
 				"value"			"70 105 140 175"
-				"special_bonus_unique_bounty_hunter_4"	"+30"
 			}
 			"gold_steal"
 			{
@@ -133,16 +131,11 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES_ENEMIES_NO"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
-		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		//"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilitySound"					"Hero_BountyHunter.WindWalk"
 		"AbilityDraftShardAbility"		"bounty_hunter_wind_walk_ally"
 
-        "HasShardUpgrade"               "1"
-		"AbilityCastRange"				"650"
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.0 0.0 0.0 0.0"
@@ -257,7 +250,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"target_damage_amp"	"6 12 18"
+				"target_damage_amp"	"8 12 16"
 				"bonus_gold_radius"		
 				{
 					"value"		"1200"
@@ -266,16 +259,16 @@
 				"bonus_gold_self"		
 				{
 					"value"		"130 225 320"
-					"special_bonus_unique_bounty_hunter_3"	"+45"
+					"special_bonus_unique_bounty_hunter_3"	"+50"
 				}
 				"bonus_gold"			
 				{
 					"value"		"40 80 120"
-					"special_bonus_unique_bounty_hunter_3"	"+45"
+					"special_bonus_unique_bounty_hunter_3"	"+50"
 				}
 				"duration"				"25"
 				"gold_steal"			"0.3 0.4 0.5"
-				"bonus_move_speed_pct"	"16 20 24"
+				"bonus_move_speed_pct"	"12 16 20"
 		}
 	}
 
@@ -338,7 +331,7 @@
 
 		"AbilityValues"
 		{
-			"gold_steal"					"4 8 12 16"
+			"gold_steal"					"4 11 18 25"
 		}
 
 	}
@@ -459,6 +452,20 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+
+	
+}
+--------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+
+	
+}
+R_PASSIVE"
 		"BaseClass"						"special_bonus_base"
 	}
 

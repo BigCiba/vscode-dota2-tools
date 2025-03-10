@@ -45,12 +45,16 @@
 			"stun_duration"
 			{
 				"value" 							"0.3 0.5 0.7 0.9"
-				"special_bonus_shard"		"+0.30"
-			}		
+				"special_bonus_shard"				"+0.30"		// if updating this, update shard_bonus_stun_duration_tooltip
+			}
+			"shard_bonus_stun_duration_tooltip"
+			{
+				"value"								"0.30"		// if updating this, update stun_duration
+			}
 			"damage"
 			{
 				"value"								"55 70 85 100"
-				"special_bonus_unique_enigma_5"		"+40"
+				"special_bonus_unique_enigma_5"		"+50"
 			}
 			"stun_instances"
 			{
@@ -129,7 +133,7 @@
 			"spawn_offset"				"100"
 			"current_health_pct"		"3"
 			"eidolon_xp_bounty"					"10"
-			"eidolon_gold_bounty_min"			"14"
+			"eidolon_gold_bounty_min"			"17"
 			"eidolon_gold_bounty_max"			"20"
 			"non_splitting_bounty_reduction"		"50"
 
@@ -417,7 +421,7 @@
 				"value"		"600"
 				"affected_by_aoe_increase"	"1"
 			}
-			"speed_bonus"		"9 11 13 15"
+			"speed_bonus"		"8 12 16 20"
 			"vision_cone"		"0.08715"
 		}
 	}	

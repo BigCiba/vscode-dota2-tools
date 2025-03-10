@@ -32,7 +32,7 @@
 				"AbilityCooldown"				
 				{	
 					"value"				"21 18 15 12"
-					"special_bonus_unique_pangolier_4"	"-3"
+					"special_bonus_unique_pangolier_4"	"-4"
 				}
 				"dash_range"			"400 500 600 700"
 				"range"					
@@ -279,7 +279,7 @@
 			"AbilityCooldown"				
 			{	
 				"value"			"90 85 80"
-				"special_bonus_unique_pangolier_5"	"-16"
+				"special_bonus_unique_pangolier_5"	"-15"
 			}
 			"cast_time_tooltip"		"1.2"
 			"tick_interval"			"0.05"
@@ -291,12 +291,12 @@
 			"turn_rate_boosted"		
 			{
 				"value"			"165"
-				"special_bonus_facet_pangolier_thunderbolt"	"+115"
+				"special_bonus_facet_pangolier_thunderbolt"	"+40%"
 			}
 			"turn_rate"				
 			{
 				"value"		"120"
-				"special_bonus_facet_pangolier_thunderbolt"	"+110"
+				"special_bonus_facet_pangolier_thunderbolt"	"+40%"
 			}
 			"radius"				
 			{

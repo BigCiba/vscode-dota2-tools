@@ -200,7 +200,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0 0 0 0"
-		"AbilityManaCost"				"50 60 70 80"
+		"AbilityManaCost"				"80"
 		"AbilityCooldown"				"10 9 8 7"
 
 		// Special
@@ -220,7 +220,7 @@
 			}
 			"duration"					
 			{
-				"value"			"4"				
+				"value"			"3.5"				
 			}
 
 			"status_resistance"
@@ -254,7 +254,7 @@
 
 		"AbilityValues"
 		{
-			"evasion_per_naga"	"6"
+			"evasion_per_naga"	"8"
 			"radius"		
 			{
 				"value"			"900"
@@ -340,7 +340,7 @@
 			"heal_pct"
 			{
 				"value"									"2 3 4"
-				"special_bonus_shard"					"+4"
+				"special_bonus_shard"					"+3"
 			}
 			"mana_pct"
 			{
@@ -414,7 +414,11 @@
 				"value"						"1600"
 				"affected_by_aoe_increase"	"1"
 			}
-			"pull_strength"				"200"
+			"pull_strength"			
+			{
+				"value"												"200"
+				"special_bonus_unique_naga_siren_reel_in_speed"		"+100"
+			}
 			"min_pull_distance"			"100"
 			"can_target_magic_immune"
 			{
@@ -521,7 +525,6 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"							"special_bonus_base"
 	}
-
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
@@ -533,4 +536,15 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
 	}
+	//=================================================================================================================
+	// Ability: Special Bonus
+	//=================================================================================================================
+	"special_bonus_unique_naga_siren_reel_in_speed"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}	
 }

@@ -44,18 +44,18 @@
 					"affected_by_aoe_increase"	"1"
 				}
 				"tick_interval"				"0.3"
-				"total_duration"			"1.4"
+				"total_duration"			"1.5"
 				"tick_count"			"5"
 				"stun_duration"				"0.3"
 				"projectile_speed"		"1200"
 				"avalanche_damage"			
 				{
-					"value"				"80 160 240 320"
+					"value"				"100 200 300 400"
 					"special_bonus_unique_tiny"			"+70"
 				}
 				"toss_damage_bonus_pct"		
 				{
-					"value"				"100"
+					"value"				"0"
 				}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -109,7 +109,7 @@
 				"bonus_damage_pct"		"0"
 				"toss_damage"	
 				{
-					"value"				"80 160 240 320"
+					"value"				"90 180 270 360"
 					"CalculateSpellDamageTooltip"	"1"
 				}
 				"AbilityCharges"		
@@ -131,7 +131,7 @@
 				"bonus_land_damage_pct"
 				{
 					"value"						"0"
-					"special_bonus_facet_tiny_crash_landing"				"20 25 30 35"
+					"special_bonus_facet_tiny_crash_landing"				"20"
 				}
 				"land_debuff_duration"
 				{
@@ -360,7 +360,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"bonus_armor"				"10 17 24"
+				"bonus_armor"				"5 10 15"
 				"bonus_damage"			
 				{
 					"value"					"60 120 180"
@@ -518,5 +518,9 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"ad_linked_abilities"			"tiny_grow"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 		
+	}
+}
+
+	
 	}
 }
