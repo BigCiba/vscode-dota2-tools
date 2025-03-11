@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
+import { EventManager, EventType } from "./Class/event";
 import { dota2IconPanelInit } from './command/cmdDota2IconPanel';
 import { dota2ItemsGameInit } from './command/cmdDota2ItemsGame';
 import { vsndPickerInit } from './command/cmdVsndPicker';
@@ -11,14 +12,12 @@ import { listenerUnitExcelInit } from './listener/listenerUnitExcel';
 import { addonInfoInit } from './module/addonInfo';
 import { apiNoteInit } from './module/apiNote';
 import { cssCompletionInit, jsCompletionInit, luaCompletionInit } from './module/completion';
-import { getStatusBarItem, refreshStatusBarMessage, showStatusBarMessage, statusBarItemInit } from './module/statusBar';
-import { cssApiInit, jsApiInit, luaApiInit, panelDocumentInit } from './module/treeApi';
-import { localize, localizeInit } from './utils/localize';
-import { EventManager, EventType } from "./Class/event";
-import { localizationViewrInit } from './module/localizationViewr';
-import { sheetCloudInit } from './module/sheet_cloud';
-import { translateInit } from './module/translate';
 import { kvEditorInit } from './module/kvEditor';
+import { sheetCloudInit } from './module/sheet_cloud';
+import { getStatusBarItem, refreshStatusBarMessage, showStatusBarMessage } from './module/statusBar';
+import { translateInit } from './module/translate';
+import { cssApiInit, jsApiInit, luaApiInit, panelDocumentInit } from './module/treeApi';
+import { localize } from './utils/localize';
 
 /** 模块列表 */
 const moduleList = {
@@ -68,6 +67,7 @@ const skipModuleList: { [key: string]: keyof ModuleListConfig; } = {
 	"kv2luaInit": "kv_lua_associated",
 	"translateInit": "translate",
 	"sheetCloudInit": "sheet_cloud",
+	"kvEditorInit": "dota2kv",
 };
 
 let eventID: number;

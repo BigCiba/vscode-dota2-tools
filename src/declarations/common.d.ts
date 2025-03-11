@@ -61,6 +61,7 @@ declare interface ModuleListConfig {
 	kv_lua_associated: boolean;
 	translate: boolean;
 	sheet_cloud: boolean;
+	dota2kv: boolean;
 }
 
 
