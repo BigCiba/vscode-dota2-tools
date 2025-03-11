@@ -67,28 +67,34 @@
 				{
 					"id": "dota2apiExplorer",
 					"when": "config.dota2-tools.A1.module_list.lua_api_tree",
-					"name": "Dota2 API"
+					"name": "Dota2 API",
+					"icon": "$(notebook)"
 				},
 				{
 					"id": "dota2JSApiExplorer",
 					"when": "config.dota2-tools.A1.module_list.js_api_tree",
-					"name": "Dota2 JS API"
+					"name": "Dota2 JS API",
+					"icon": "$(notebook)"
 				},
 				{
 					"id": "dota2CssApiExplorer",
 					"when": "config.dota2-tools.A1.module_list.css_api_tree",
-					"name": "Dota2 CSS Document"
+					"name": "Dota2 CSS Document",
+					"icon": "$(notebook)"
 				},
 				{
 					"id": "dota2PanelExplorer",
 					"when": "config.dota2-tools.A1.module_list.panel_tree",
-					"name": "Dota2 Panel Document"
+					"name": "Dota2 Panel Document",
+					"icon": "$(notebook)"
 				}
 			],
 			"dota2kv": [
 				{
 					"id": "kv_explorer",
-					"name": "Kv Explorer"
+					"when": "config.dota2-tools.A1.module_list.dota2kv",
+					"name": "Kv Explorer",
+					"icon": "$(notebook)"
 				}
 			]
 		},
@@ -535,7 +541,8 @@
 							"css_completion": true,
 							"kv_lua_associated": true,
 							"translate": true,
-							"sheet_cloud": true
+							"sheet_cloud": true,
+							"dota2kv": false
 						},
 						"properties": {
 							"ability_icon": {
@@ -607,6 +614,11 @@
 								"type": "boolean",
 								"default": true,
 								"description": "云表格模块"
+							},
+							"dota2kv": {
+								"type": "boolean",
+								"default": false,
+								"description": "kv文件视图（开发中）"
 							}
 						},
 						"additionalProperties": false,
