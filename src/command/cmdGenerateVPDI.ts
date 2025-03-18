@@ -103,7 +103,7 @@ export async function generateRecentVPDI(context: ExtensionContext) {
 			const stat = fs.statSync(sFilePath);
 			if (stat.isFile()) {
 				const sFullPath = sFilePath.replace(sDotaImageFolder, "{images}");
-				const modifiedTime = fs.statSync(sFilePath).mtimeMs;
+				const modifiedTime = Math.max(stat.mtimeMs, stat.birthtimeMs);
 				const currentTime = Date.now();
 				const timeDifference = currentTime - modifiedTime;
 				const twentyFourHours = 1 * 60 * 60 * 1000; // 24 hours in milliseconds
