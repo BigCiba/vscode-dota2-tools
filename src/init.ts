@@ -12,7 +12,6 @@ import { listenerUnitExcelInit } from './listener/listenerUnitExcel';
 import { addonInfoInit } from './module/addonInfo';
 import { apiNoteInit } from './module/apiNote';
 import { cssCompletionInit, jsCompletionInit, luaCompletionInit } from './module/completion';
-import { kvEditorInit } from './module/kvEditor';
 import { sheetCloudInit } from './module/sheet_cloud';
 import { getStatusBarItem, refreshStatusBarMessage, showStatusBarMessage } from './module/statusBar';
 import { translateInit } from './module/translate';
@@ -42,7 +41,7 @@ const moduleList = {
 	"listenerUnitExcelInit": listenerUnitExcelInit,
 	"translateInit": translateInit,
 	"sheetCloudInit": sheetCloudInit,
-	"kvEditorInit": kvEditorInit,
+	// "kvEditorInit": kvEditorInit,
 	// "localizationViewrInit": localizationViewrInit,
 };
 
