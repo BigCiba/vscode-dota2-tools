@@ -20,7 +20,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"9"
+		"AbilityCooldown"				"10"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -204,23 +204,24 @@
 			}
 			"trail_duration"		
 			{
-				"value" 					"7"
-				"RequiresShard"			"1"
+				"special_bonus_shard" 	"7"
 			}
 			"trail_move_slow"		
 			{
-				"value" 					"-50"
-				"RequiresShard"			"1"
+				"special_bonus_shard"	"-50"
 			}
 			"trail_damage"			
 			{
-				"value" 					"40"
-				"RequiresShard"			"1"
+				"special_bonus_shard"	"40"
 			}
 			"trail_damage_interval"		
 			{
-				"value" 				"0.5"
-				"RequiresShard"			"1"
+				"special_bonus_shard"	"0.5"
+			}
+			"aoe_radius"
+			{
+				"special_bonus_unique_dark_seer_3"	"350"
+				"affected_by_aoe_increase"	"1"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
@@ -238,8 +239,10 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_Dark_Seer.Wall_of_Replica_Start"
-
-		"AbilityDraftUltScepterAbility"		"dark_seer_normal_punch"
+		"AbilityDraftExtraAbilities"
+		{
+			"dark_seer_normal_punch" "scepter"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -263,12 +266,12 @@
 				"replica_damage_outgoing"	
 				{
 					"value"				"-30 -20 -10"
-					"special_bonus_unique_dark_seer_7"		"+20"
+					"special_bonus_unique_dark_seer_7"		"+15"
 				}
 				"tooltip_outgoing"	
 				{
 					"value"		"70 80 90"
-					"special_bonus_unique_dark_seer_7" "+20"
+					"special_bonus_unique_dark_seer_7" "+15"
 				}
 				"replica_damage_incoming"	"100"
 				"tooltip_replica_total_damage_incoming"	
@@ -290,10 +293,13 @@
 				}	
 				"scepter_length_multiplier"				
 				{
-					"value"		"2"
-					"RequiresScepter"		"1"
+					"special_bonus_scepter"		"2"
 				}
 				"wall_damage"				"25 40 55"
+				"cooldown_reduction"
+				{
+					"special_bonus_unique_dark_seer_13"		"40"
+				}
 		}
 	}
 
@@ -331,7 +337,7 @@
 		{
 			"radius"		
 			{
-				"value"			"900"
+				"value"			"1200"
 				"affected_by_aoe_increase"	"1"
 			}
 			"movement_speed_pct"	"7"
@@ -383,11 +389,6 @@
 			}
 		}
 	}
-	
-
-	//=================================================================================================================
-	// Ability: Special Bonus
-	//=================================================================================================================
 	"special_bonus_unique_dark_seer"
 	{
 		// General

@@ -14,7 +14,11 @@
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"AbilityDraftPreAbility"		"techies_minefield_sign"
+
+		"AbilityDraftExtraAbilities"
+		{
+			"techies_minefield_sign" ""
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -53,8 +57,7 @@
 				}
 				"cast_range_scepter_bonus"		
 				{
-					"value"		"300"
-					"RequiresScepter"			"1"
+					"special_bonus_scepter"		"300"
 				}
 				"AbilityChargeRestoreTime"
 				{
@@ -127,8 +130,7 @@
 			}
 			"cast_range_scepter_bonus"
 			{
-				"value" "300"
-				"RequiresScepter" "1"
+				"special_bonus_scepter" "300"
 			}
 		}
 	}
@@ -308,8 +310,7 @@
 			}
 			"shard_damage"	
 			{
-				"value"					"300"
-				"RequiresShard"			"1"
+				"special_bonus_shard"	"300"
 				"DamageTypeTooltip"		"DAMAGE_TYPE_MAGICAL"
 			}	
 		}
@@ -345,7 +346,6 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"HasScepterUpgrade"				"1"
-		"AbilityDraftPreAbility"		"techies_focused_detonate"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -383,18 +383,15 @@
 			}
 			"damage_scepter"
 			{
-				"value" "450 600 750"
-				"RequiresScepter" "1"
+				"special_bonus_scepter" "450 600 750"
 			}
 			"radius_scepter"
 			{
-				"value" "425"
-				"RequiresScepter" "1"
+				"special_bonus_scepter" "425"
 			}
 			"cast_range_scepter_bonus"
 			{
-				"value" "300"
-				"RequiresScepter" "1"
+				"special_bonus_scepter" "300"
 			}
 			"vision_radius"
 			{
@@ -497,7 +494,6 @@
 			"AbilityCooldown"
 			{
 				"value"					"60.0"
-				
 			}
 
 			"lifetime"
@@ -513,15 +509,13 @@
 			}
 			"scepter_move_damage"
 			{
-				"value"					"300"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter"					"300"
 			}
 
 
 			"scepter_move_amt"
 			{
-				"value"					"200"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter"					"200"
 			}
 			"bonus_mine_damage_pct"		"15"
 		}
@@ -579,9 +573,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"techies_sticky_bomb"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-		
-		
 	}
 
 	//=================================================================================================================
@@ -593,7 +584,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"techies_land_mines"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
 	//=================================================================================================================
@@ -605,7 +595,21 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"techies_land_mines"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
+	}
+
+	//=================================================================================================================
+	// Ability: Special Bonus
+	//=================================================================================================================
+	"special_bonus_unique_techies_5"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass" "special_bonus_base"
+	}
+}
+ed for Ability Draft to correctly choose talents.
 		
 	}
 

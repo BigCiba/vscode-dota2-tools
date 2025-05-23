@@ -70,7 +70,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"475 550 625 700"
+		"AbilityCastRange"				"550 600 650 700"
 		"AbilityCastPoint"				"0.2 0.2 0.2 0.2"
 		
 		// Time		
@@ -252,42 +252,35 @@
 			"drain_buffer"				"200"
 			"shard_damage_pct_from_ward"
 			{
-				"value"				"75"
-				"RequiresShard"		"1"
+				"special_bonus_shard"			"75"
 			}
 			"bonus_heal_pct"
 			{
-				"value"					"0"
 				"special_bonus_unique_pugna_1"			"+20"
 			}
 			"spell_amp_drain_rate"
 			{
-				"value"						"0"
 				"special_bonus_scepter"		"+8"
 			}
 			"spell_amp_drain_max"
 			{
-				"value"						"0"
 				"special_bonus_scepter"		"+75"
 			}
 			"spell_amp_drain_rate_ward"
 			{
-				"value"						"0"
 				"special_bonus_scepter"		"+4"
 			}
 			"spell_amp_drain_duration"
 			{
-				"value"						"0"
 				"special_bonus_scepter"		"+8"
 			}			
 			"max_spell_amp_drain_pct"
 			{
-				"value"						"0"
 				"special_bonus_scepter"		"+100"
 			}	
 			"AbilityCooldown"				
 			{
-				"value"						"7"		
+				"value"						"7"
 				"special_bonus_scepter"		"-50%"
 			}
 		}
@@ -307,7 +300,7 @@
 			"tower_scale"
 			{
 				"value"			"0"
-				"special_bonus_facet_pugna_rewards_of_ruin"		"1.25"
+				"special_bonus_facet_pugna_rewards_of_ruin"		"1.5"
 			}
 		}
 	}
@@ -326,7 +319,6 @@
 			"value"
 			{
 				"value" "20"
-				"ad_linked_abilities" "pugna_life_drain"
 			}
 		}
 	}
@@ -382,7 +374,6 @@
 			"value"
 			{
 				"value" "1.5"
-				"ad_linked_abilities" "pugna_decrepify"
 			}
 		}
 	}
@@ -405,6 +396,13 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+
+}
+------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"

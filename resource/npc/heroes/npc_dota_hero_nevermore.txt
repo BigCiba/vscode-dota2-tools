@@ -66,7 +66,7 @@
 				"movement_speed_debuff"
 				{
 					"value"											"0 0 0 0"
-					"special_bonus_facet_nevermore_shadowmire"		"=3 =6 =9 =12"
+					"special_bonus_facet_nevermore_shadowmire"		"=6 =8 =10 =12"
 				}
 				"turn_rate_pct"								"0"
 				"AbilityCooldown"				
@@ -141,7 +141,7 @@
 				"movement_speed_debuff"
 				{
 					"value"											"0 0 0 0"
-					"special_bonus_facet_nevermore_shadowmire"		"=3 =6 =9 =12"
+					"special_bonus_facet_nevermore_shadowmire"		"=6 =8 =10 =12"
 				}
 				"turn_rate_pct"								"0"
 				"AbilityCooldown"				
@@ -217,7 +217,7 @@
 			"movement_speed_debuff"
 			{
 				"value"											"0 0 0 0"
-				"special_bonus_facet_nevermore_shadowmire"		"=3 =6 =9 =12"
+				"special_bonus_facet_nevermore_shadowmire"		"=6 =8 =10 =12"
 			}
 			"turn_rate_pct"								"0"
 			"AbilityCooldown"				
@@ -261,28 +261,25 @@
 					"value"						"20"
 					"special_bonus_scepter"		"+5"
 				}
-				"souls_per_kill"				"1"
+				"souls_per_kill"					"1"
+				"souls_per_hero_kill"				"3"
 				"necromastery_soul_release"		"0.7"
 				"attack_range_bonus" "0"
 				"shard_souls_per_kill" 
 				{
-					"value"				"2"
-					"RequiresShard"			"1"
+					"special_bonus_shard"		"2"
 				}
 				"shard_crit_pct"		 
 				{
-					"value"				"190"
-					"RequiresShard"			"1"
+					"special_bonus_shard"		"190"
 				}	
 				"shard_fear_duration"		 
 				{
-					"value"				"0.4"
-					"RequiresShard"			"1"
+					"special_bonus_shard"		"0.4"
 				}
 				"soul_release_tooltip"			"30.0"
 				"max_soul_increase_on_hero_kill"
 				{
-					"value"												"0"
 					"special_bonus_facet_nevermore_lasting_presence"	"1"
 				}
 			
@@ -314,6 +311,7 @@
 			"presence_armor_reduction"
 			{
 				"value"		"-4 -5 -6 -7"
+				"special_bonus_unique_nevermore_3"	"-2"
 			}
 			"presence_radius"				
 			{
@@ -345,8 +343,8 @@
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"16.0"
-		"AbilityManaCost"				"60"
+		"AbilityCooldown"				"21.0"
+		"AbilityManaCost"				"60 65 70 75"
 		
 		// Special	
 		//-------------------------------------------------------------------------------------------------------------
@@ -356,6 +354,10 @@
 			{
 				"value"			"40 55 70 85"
 				"special_bonus_unique_nevermore_4"	"+30"
+			}
+			"bonus_move_speed"	
+			{
+				"value"			"5 7 9 11"
 			}
 			"cast_speed_pct"		
 			{
@@ -367,8 +369,9 @@
 				"value"													"0"
 				"special_bonus_unique_nevermore_frenzy_castspeed"		"=140"
 			}
-			"duration"				"7.5 8 8.5 9"
+			"duration"				"8"
 			"soul_cost"				"5"
+			"max_soul_increase"		"5"
 		}
 	}
 
@@ -450,13 +453,11 @@
 				"soul_death_release"	"0.5"
 				"requiem_heal_pct_scepter"	
 				{
-					"value"			"100"
-					"RequiresScepter"			"1"
+					"special_bonus_scepter"			"100"
 				}	
 				"requiem_damage_pct_scepter"	
 				{
-					"value"			"60"
-					"RequiresScepter"			"1"
+					"special_bonus_scepter"			"60"
 					"CalculateSpellDamageTooltip"	"0"
 				}
 		}
@@ -499,7 +500,6 @@
 			"value"
 			{
 				"value" "0"
-				"ad_linked_abilities" "nevermore_dark_lord"
 			}
 		}
 	}
@@ -538,7 +538,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"nevermore_shadowraze2"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 		"BaseClass"						"special_bonus_base"
 	}
 	//=================================================================================================================
@@ -571,6 +570,11 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+}
+tyType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
 	}

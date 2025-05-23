@@ -54,18 +54,15 @@
 				"turn_rate_slow"			"0"
 				"aghs_shard_move_slow"	
 				{
-					"value"					"50"
-					"RequiresShard"			"1"
+					"special_bonus_shard"					"50"
 				}
 				"aghs_shard_damage"			
 				{
-					"value"					"85"
-					"RequiresShard"			"1"
+					"special_bonus_shard"					"85"
 				}
 				"aghs_shard_depth"			
 				{
-					"value"						"300"
-					"RequiresShard"				"1"
+					"special_bonus_shard"					"300"
 				}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -366,8 +363,10 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"FightRecapLevel"				"1"
 		"AbilitySound"					"Hero_Tusk.WalrusPunch.Target"
-
-		"AbilityDraftUltScepterAbility"		"tusk_walrus_kick"
+		"AbilityDraftExtraAbilities"
+		{
+			"tusk_walrus_kick" "scepter"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -508,7 +507,6 @@
 			"value"
 			{
 				"value" "12"
-				"ad_linked_abilities" "tusk_walrus_punch"
 			}
 		}
 	}
@@ -527,7 +525,6 @@
 			"value"
 			{
 				"value" "6"
-				"ad_linked_abilities" "tusk_ice_shards"
 			}
 		}
 	}
@@ -546,7 +543,6 @@
 			"value"
 			{
 				"value" "8"
-				"ad_linked_abilities" "tusk_snowball"
 			}
 		}
 	}
@@ -558,6 +554,12 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass" "special_bonus_base"
+	}
+}
+--------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass" "special_bonus_base"

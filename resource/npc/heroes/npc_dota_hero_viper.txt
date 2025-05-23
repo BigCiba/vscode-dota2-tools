@@ -34,7 +34,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"24"
+		"AbilityManaCost"				"22"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -60,18 +60,15 @@
 				"bonus_range"			"25"
 				"shard_armor_reduction"
 				{
-					"special_bonus_shard"				"1"
-					"RequiresShard"		"1"
+					"special_bonus_shard"			"1"
 				}
 				"shard_building_dmg_pct"
 				{
 					"special_bonus_shard"			"40"
-					"RequiresShard"		"1"
 				}
 				"shard_bonus_max_stacks"
 				{
 					"special_bonus_shard"			"2"
-					"RequiresShard"		"1"
 				}
 				"expiration_damage_radius"	
 				{
@@ -197,23 +194,19 @@
 			}
 			"effect_multiplier_distance"
 			{
-				"value"						"500"
+				"special_bonus_scepter"		"500"
 				"affected_by_aoe_increase"	"1"
-				"RequiresScepter"		"1"
 			}
 			"effect_multiplier"
 			{
-				"value"						"4"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter"		"4"
 			}
 			"nethertoxin_bonus_pct"		
 			{
-				"value"					"0"
 				"special_bonus_facet_viper_caustic_bath"					"=100"
 			}
 			"nethertoxin_bonus_pct_max_duration_tooltip"
 			{
-				"value"										"0"
 				"special_bonus_facet_viper_caustic_bath"		"=4.0"
 			}
 			
@@ -270,8 +263,10 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"hero_viper.viperStrike"
-
-		"AbilityDraftUltScepterAbility" "viper_nose_dive"
+		"AbilityDraftExtraAbilities"
+		{
+			"viper_nose_dive" "scepter"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -302,7 +297,7 @@
 				"special_bonus_unique_viper_2"	"+80"
 			}
 			"bonus_movement_speed"	"-60 -70 -80"
-			"bonus_attack_speed"	"-80 -120 -160"
+			"bonus_attack_speed"	"-100 -140 -180"
 
 			"AbilityCooldown"
 			{
@@ -402,7 +397,6 @@
 			"value"
 			{
 				"value" "80"
-				"ad_linked_abilities" "viper_viper_strike"
 			}
 		}
 	}
@@ -498,6 +492,14 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}		
+	
+	
+}
+-----------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"

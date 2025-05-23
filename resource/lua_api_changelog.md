@@ -1,5 +1,31 @@
 # DOTA2 API 更新日志
 以下日期是插件更新日志的时间。
+# 2025.05.23
+## Lua Server
+- 🖊️ API: <font color='#00D6AA'>CBaseModelEntity</font> <font color='#dcdcaa'>SetBodygroup</font>(<font color='#569cd6'>nBodyGroup</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>nChoice</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>SetBodygroup</font>(<font color='#569cd6'>iGroup</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>iValue</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font>~~
+- 🖊️ API: <font color='#00D6AA'>CBaseModelEntity</font> <font color='#dcdcaa'>SetBodygroup</font>(<font color='#569cd6'>nBodyGroup</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>nChoice</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font> ~~<font color='#dcdcaa'>SetBodygroup</font>(<font color='#569cd6'>iGroup</font>: <font color='#c586c0'>int</font>, <font color='#569cd6'>iValue</font>: <font color='#c586c0'>int</font>): <font color='#c586c0'>void</font>~~
+- ✨ Enum: <font color='#00D6AA'>DOTADamageFlag_t</font> <font color='#9cdcfe'>DOTA_DAMAGE_FLAG_NO_REFLECTION</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>GameActivity_t</font> <font color='#9cdcfe'>ACT_DOTA_MVP_SCREEN</font> <font color='#dcdcaa'></font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CONSUMABLE_USE_SPEED</font> <font color='#dcdcaa'>GetModifierPropertyConsumableUseSpeed</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FORBID_ILLUSIONS</font> <font color='#dcdcaa'>GetModifierPropertyForbidIllusions</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FORCE_NETWORK_TRANSMIT</font> <font color='#dcdcaa'>undefined</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE_UNIQUE</font> <font color='#dcdcaa'>GetModifierPropertyHealingAmplificationUnique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MANACOST_OVERRIDE</font> <font color='#dcdcaa'>GetModifierPropertyManacostOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION</font> <font color='#dcdcaa'>GetModifierPropertyRestorationAmplification</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION_UNIQUE</font> <font color='#dcdcaa'>GetModifierPropertyRestorationAmplificationUnique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_INCOMING_CRIT</font> <font color='#dcdcaa'>GetSuppressIncomingCrit</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_UPGRADE_NEUTRAL_ARTIFACTS</font> <font color='#dcdcaa'>GetModifierPropertyUpgradeNeutralArtifacts</font>
+## Lua Client
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_CONSUMABLE_USE_SPEED</font> <font color='#dcdcaa'>GetModifierPropertyConsumableUseSpeed</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FORBID_ILLUSIONS</font> <font color='#dcdcaa'>GetModifierPropertyForbidIllusions</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_FORCE_NETWORK_TRANSMIT</font> <font color='#dcdcaa'>undefined</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE_UNIQUE</font> <font color='#dcdcaa'>GetModifierPropertyHealingAmplificationUnique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_MANACOST_OVERRIDE</font> <font color='#dcdcaa'>GetModifierPropertyManacostOverride</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION</font> <font color='#dcdcaa'>GetModifierPropertyRestorationAmplification</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION_UNIQUE</font> <font color='#dcdcaa'>GetModifierPropertyRestorationAmplificationUnique</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_SUPPRESS_INCOMING_CRIT</font> <font color='#dcdcaa'>GetSuppressIncomingCrit</font>
+- ✨ Enum: <font color='#00D6AA'>modifierfunction</font> <font color='#9cdcfe'>MODIFIER_PROPERTY_UPGRADE_NEUTRAL_ARTIFACTS</font> <font color='#dcdcaa'>GetModifierPropertyUpgradeNeutralArtifacts</font>
+
 # 2025.02.19
 ## Lua Server
 - ❌ API: <font color='#00D6AA'>CBaseEntity</font> <font color='#dcdcaa'>OverrideFriction</font>(<font color='#569cd6'>duration</font>: <font color='#c586c0'>float</font>, <font color='#569cd6'>friction</font>: <font color='#c586c0'>float</font>): <font color='#c586c0'>void</font>

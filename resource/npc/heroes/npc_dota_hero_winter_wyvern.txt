@@ -59,13 +59,11 @@
 				"max_attacks"			"5"
 				"mana_cost_scepter"		
 				{
-					"value"		"20"
-					"RequiresScepter"			"1"
+					"special_bonus_scepter"		"20"
 				}
 				"movement_scepter"		
 				{
-					"value"		"25"
-					"RequiresScepter"			"1"
+					"special_bonus_scepter"		"25"
 				}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -109,7 +107,7 @@
 			{
 				"value"		"500"
 				"affected_by_aoe_increase"	"1"	
-				"special_bonus_unique_winter_wyvern_2" "+400"
+				"special_bonus_unique_winter_wyvern_2" "+300"
 			}
 			"bonus_movespeed"		"-28 -32 -36 -40"
 			"movespeed_slow_tooltip"		"28 32 36 40"
@@ -123,7 +121,7 @@
 			"stun_duration"				
 			{
 				"value"		"0"
-				"special_bonus_unique_winter_wyvern_4" "+1.5"
+				"special_bonus_unique_winter_wyvern_4" "+1.25"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
@@ -172,29 +170,24 @@
 				"heal_percentage"	"2.25 3 3.75 4.5"
 				"shard_cooldown_reduction"
 				{
-					"value"		"4.0"	
-					"RequiresShard"				"1"
+					"special_bonus_shard"		"4.0"
 				}
 				"shard_splinter_range"
 				{
-					"value"		"1150"	
-					"RequiresShard"				"1"
-					"affected_by_aoe_increase"	"1"	
+					"special_bonus_shard"		"1150"	
+					"affected_by_aoe_increase"	"1"
 				}
 				"tick_interval"					"0.25"
 				"can_target_buildings"
 				{
-					"value"											"0"
 					"special_bonus_facet_winter_wyvern_winterproof"	"=1"
 				}
 				"damage_buff_pct"
 				{
-					"value"											"0"
 					"special_bonus_facet_winter_wyvern_winterproof"	"=60"
 				}
 				"damage_buff_duration"
 				{
-					"value"											"0"
 					"special_bonus_facet_winter_wyvern_winterproof"	"=6.0"
 				}
 		}
@@ -396,6 +389,12 @@
 		"AbilityValues"
 		{
 			"attack_range_per_damage"			"40 30 20 10"
+			"damage_per_ten_attack_range_tooltip"	"0.25 0.33 0.5 1.0"
+			"attack_range_min"					"400"
+		}
+	}	
+}
+range_per_damage"			"40 30 20 10"
 			"damage_per_ten_attack_range_tooltip"	"0.25 0.33 0.5 1.0"
 			"attack_range_min"					"400"
 		}

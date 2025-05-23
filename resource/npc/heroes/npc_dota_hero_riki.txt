@@ -180,7 +180,7 @@
 			"fade_delay"					
 			{
 				"value"										"4 3 2"
-				"special_bonus_unique_riki_6"				"-1"
+				"special_bonus_unique_riki_6"				"-1.25"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
@@ -304,22 +304,18 @@
 			}
 			"scepter_duration"				
 			{
-				"value"			"2"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter"			"2"
 			}
 			"scepter_attacks"
 			{
-				"value"		"5"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter"		"5"
 			}
 			"scepter_cast_range"
 			{
-				"value"		"700"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter"		"700"
 			}
 			"dispel"
 			{
-				"value"				"0"
 				"special_bonus_unique_riki_5"	"+1"
 			}
 			"creep_agility_multiplier"
@@ -329,7 +325,6 @@
 			}
 			"cooldown_reduction_per_creep_kill"
 			{
-				"value"									"0"
 				"special_bonus_facet_riki_exterminator"	"=0.75"
 			}
 		}
@@ -356,8 +351,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"riki_tricks_of_the_trade"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-		
 	}
 
 	//=================================================================================================================
@@ -374,7 +367,6 @@
 			"value"
 			{
 				"value" "3"
-				"ad_linked_abilities" "riki_smoke_screen"
 			}
 		}
 	}
@@ -388,9 +380,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"riki_tricks_of_the_trade"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-		
-		
 	}
 
 	//=================================================================================================================
@@ -433,13 +422,23 @@
 		{
 			"value"
 			{
-				"value" "8"
-				"ad_linked_abilities" "riki_backstab"
+				"value" "10"
 			}
 		}
 	}
 
 	//=================================================================================================================
+	// Ability: Special Bonus
+	//=================================================================================================================
+	"special_bonus_unique_riki_9"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+	}
+}
+===========================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
 	"special_bonus_unique_riki_9"

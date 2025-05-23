@@ -49,18 +49,15 @@
 				}
 				"armor_per_creep"	
 				{
-					"value" 				"1"
-					"RequiresShard"				"1"
+					"special_bonus_shard"	"1"
 				}
 				"armor_per_hero"	
 				{
-					"value" 				"5"
-					"RequiresShard"  		"1"
+					"special_bonus_shard"	"5"
 				}
 				"shard_duration"	
 				{	
-					"value" 				"8"
-					"RequiresShard"		"1"
+					"special_bonus_shard"	"8"
 				}
 				"AbilityCooldown"
 				{
@@ -69,18 +66,14 @@
 				}
 				"duel_radius_bonus"
 				{
-					"value"					"0"
 					"special_bonus_shard"	"+100"
-					"RequiresShard"		"1"
 				}
 				"shield_per_damage_pct"
 				{
-					"value"						"0"
 					"special_bonus_facet_legion_commander_stonehall_plate"	"+40"					
 				}
 				"shield_duration"
 				{
-					"value"						"0"
 					"special_bonus_facet_legion_commander_stonehall_plate"	"+6"					
 				}
 		}
@@ -241,12 +234,14 @@
 			}
 			"assist_reward_damage"
 			{
-				"value"			"0"
 				"special_bonus_facet_legion_commander_spoils_of_war"	"5 10 15"				
+			}
+			"assist_pta_duration_pct"
+			{
+				"special_bonus_facet_legion_commander_spoils_of_war"	"50"				
 			}
 			"debuff_immunity"
 			{
-				"value"				"0"
 				"special_bonus_scepter"		"+1"
 			}
 			"damage_reduction_pct"			
@@ -255,12 +250,11 @@
 			}
 			"AbilityCooldown"	
 			{
-				"value"					"60 55 50"
+				"value"				"60 55 50"
 			}
 			"shard_duel_damage_bonus"
 			{
-				"value"			"5"
-				"RequiresShard"	"1"
+				"special_bonus_shard"	"5"
 			}
 
 		}
@@ -274,15 +268,16 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
-		"MaxLevel"						"1"
+		"MaxLevel"						"4"
 		"Innate"						"1"
+		"DependentOnAbility"			"legion_commander_duel"
 		"IsBreakable"					"1"
 
 		"AbilityValues"
 		{
 			"heal_bonus_pct"	
 			{
-				"value"						"50"
+				"value"						"30 40 50 60"
 			}
 			"duration"				"4.0"
 		}
@@ -358,7 +353,6 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
-		"ad_linked_abilities"			"legion_commander_press_the_attack"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 		"AbilityValues"
 		{
 			"value"
@@ -387,6 +381,12 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+}
+--------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"

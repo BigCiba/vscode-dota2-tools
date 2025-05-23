@@ -75,24 +75,20 @@
 				}
 				"shard_knockback_distance"			
 				{
-					"value"		"250"
-					"RequiresShard"				"1"
+					"special_bonus_shard"		"250"
 					"affected_by_aoe_increase"	"1"		
 				}
 				"shard_knockback_duration"			
 				{
-					"value"		"0.3"
-					"RequiresShard"				"1"
+					"special_bonus_shard"		"0.3"
 				}
 				"shard_stun_duration"			
 				{
-					"value"		"1.4"
-					"RequiresShard"				"1"
+					"special_bonus_shard"		"1.4"
 				}
 				"shard_bonus_point_blank_dmg_pct"			
 				{
-					"value"		"85.0"
-					"RequiresShard"				"1"
+					"special_bonus_shard"		"85.0"
 				}
 		}
 	}
@@ -115,14 +111,8 @@
 		// Gobble up scepter ability not tied to any spell in regular game, for AD, associating it here.
 		"AbilityDraftExtraAbilities"
 		{
-			"snapfire_gobble_up"
-			{
-				"ScepterAbility"	"true"
-			}
-			"snapfire_spit_creep"
-			{
-				"ScepterAbility"	"true"
-			}
+			"snapfire_gobble_up" "scepter"
+			"snapfire_spit_creep" "scepter"
 		}
 
 		// Casting
@@ -230,8 +220,7 @@
 		{
 			"max_time_in_belly"
 			{
-				"value" "3"
-				"RequiresScepter" "1"
+				"special_bonus_scepter" "3"
 			}
 		}
 	}
@@ -345,6 +334,18 @@
 					"special_bonus_unique_snapfire_3"	"-4"
 				}
 
+				"AbilityCharges"		
+				{
+					"value"	"0"
+					"special_bonus_unique_snapfire_firesnap_cookie_additional_charge"	"+2"
+				}
+
+				"AbilityChargeRestoreTime"		
+				{
+					"value"		"21 19 17 15"
+					"special_bonus_unique_snapfire_3"	"-4"
+				}
+
 				"projectile_speed"		"1200"
 				"pre_hop_duration"		"0.0"
 				"jump_duration"			
@@ -400,7 +401,7 @@
 		"AbilityValues"
 		{
 			"miss_chance" "25" 
-			"damage_amp"	"25"
+			"damage_amp"	"30"
 			"split_shot"
 			{
 				"value"	"0"
@@ -447,7 +448,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-				"damage"					"20 35 50 65"
+				"damage"					"25 40 55 70"
 				"buffed_attacks"			
 				{
 					"value"		"5"
@@ -493,7 +494,6 @@
 		"AbilityType"				"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"					"special_bonus_base"
-		"ad_linked_abilities"			"snapfire_lil_shredder"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
  	//=================================================================================================================
@@ -505,8 +505,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"				"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"snapfire_firesnap_cookie"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-
 	}
 
  	//=================================================================================================================
@@ -518,8 +516,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"				"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"snapfire_firesnap_cookie"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-
 	}
 
 	//=================================================================================================================
@@ -536,7 +532,6 @@
 			"value"
 			{
 				"value" "1"
-				"ad_linked_abilities" "snapfire_lil_shredder"
 			}
 		}
 	}
@@ -567,15 +562,29 @@
 			"value"
 			{
 				"value" "3"
-				"ad_linked_abilities" "snapfire_lil_shredder"
 			}
 		}
 	}
+
 	"special_bonus_unique_snapfire_mortimer_kisses_impact_damage"
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"				"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"							"special_bonus_base"
+	}
+
+	"special_bonus_unique_snapfire_firesnap_cookie_additional_charge"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"				"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"							"special_bonus_base"
+	}
+}
+ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"							"special_bonus_base"
 	}

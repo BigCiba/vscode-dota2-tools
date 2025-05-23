@@ -49,53 +49,37 @@
 			}
 			"shard_regen_reduction_pct_per_stack"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+10"
-				"RequiresScepter"					"1"
 			}
 			"shard_bonus_damage_per_stack"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+18"
-				"RequiresScepter"					"1"
 			}
 			"shard_stack_duration"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+7.0"
-				"RequiresScepter"					"1"
 			}
 			"shard_burst_radius"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+650"
-				"RequiresScepter"					"1"
 				"affected_by_aoe_increase"	"1"
 			}
 			"shard_burst_damage_per_stack"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+60"
-				"DamageTypeTooltip"						"DAMAGE_TYPE_MAGICAL"
-				"RequiresScepter"					"1"
+				"DamageTypeTooltip"					"DAMAGE_TYPE_MAGICAL"
 			}
 			"shard_burst_move_slow_pct"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+40"
-				"RequiresScepter"					"1"
 			}
 			"shard_burst_slow_duration"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+2.0"
-				"RequiresScepter"					"1"
 			}
 			"shard_max_stacks"
 			{
-				"value"								"0"
 				"special_bonus_scepter"				"+9"
-				"RequiresScepter"					"1"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -314,8 +298,10 @@
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
-
-		"AbilityDraftUltShardAbility"	"drow_ranger_glacier"
+		"AbilityDraftExtraAbilities"
+		{
+			"drow_ranger_glacier" "shard"
+		}
 		"IsBreakable"					"1"
 
 		//"HasScepterUpgrade"			"1"
@@ -382,7 +368,7 @@
 				"attack_range_bonus"		"200"
 				"multishot_arrow_bonus"		"1"
 				"knockback_duration"		"0.1"
-				"knockback_distance"		"175"
+				"knockback_distance"		"225"
 				"knockback_height"			"50"
 				"z_speed_override"			"800"
 		}
@@ -495,6 +481,16 @@
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
+	"special_bonus_unique_drow_ranger_gust_selfmovespeed"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+}
+===========================================================================
 	"special_bonus_unique_drow_ranger_gust_selfmovespeed"
 	{
 		// General

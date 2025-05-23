@@ -96,7 +96,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"500 600 700 800"
+		"AbilityCastRange"				"700"
 		"AbilityCastPoint"				"0.3"
 		
 		// Time		
@@ -179,8 +179,10 @@
 		"AbilitySound"					"Hero_Oracle.FalsePromise.Cast"
 
         "HasScepterUpgrade"               "1"
-
-		"AbilityDraftUltShardAbility"		"oracle_rain_of_destiny"
+		"AbilityDraftExtraAbilities"
+		{
+			"oracle_rain_of_destiny" "shard"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -211,18 +213,15 @@
 			}
 			"shard_fade_time"
 			{
-				"value"								"0.15"
-				"RequiresShard"						"1"
+				"special_bonus_scepter"				"0.15"
 			}
 			"shard_spell_amp_bonus"
 			{
-				"value"								"30"
-				"RequiresShard"						"1"
+				"special_bonus_scepter"				"30"
 			}
 			"shard_bat_bonus"
 			{
-				"value"								"0.25"
-				"RequiresShard"						"1"
+				"special_bonus_scepter"				"0.25"
 			}
 			"AbilityCooldown"
 			{
@@ -231,7 +230,6 @@
 			}			
 			"bonus_armor"
 			{
-				"value"								"0"
 				"special_bonus_unique_oracle_9"		"+8"
 			}	
 			"heal_amp_pct"
@@ -279,7 +277,7 @@
 				"duration"				"10"
 				"damage"				
 				{
-					"value"					"35"
+					"value"					"30"
 					"CalculateSpellDamageTooltip"	"1"
 				}
 				"tick_rate"				"1.0"
@@ -364,7 +362,6 @@
 			"value"
 			{
 				"value" "0.4"
-				"ad_linked_abilities" "oracle_fortunes_end"
 			}
 		}
 	}
@@ -383,7 +380,6 @@
 			"value"
 			{
 				"value" "1"
-				"ad_linked_abilities" "oracle_purifying_flames"
 			}
 		}
 	}
@@ -414,7 +410,6 @@
 			"value"
 			{
 				"value" "2.5"
-				"ad_linked_abilities" "oracle_fortunes_end"
 			}
 		}
 	}
@@ -432,8 +427,7 @@
 		{
 			"value"
 			{
-				"value" "30"
-				"ad_linked_abilities" "oracle_purifying_flames"
+				"value" "25"
 			}
 		}
 	}
@@ -456,6 +450,15 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+
+	
+	
+}
+/-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"

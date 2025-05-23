@@ -51,19 +51,15 @@
 				"duration"			"1.7"
 				"shard_radius_increase"
 				{
-					"value"		"45"
-					"RequiresShard"					"1"
-					
+					"special_bonus_shard"		"45"
 				}
 				"shard_max_count"
 				{
-					"value"			"3"
-					"RequiresShard"					"1"
+					"special_bonus_shard"		"2"
 				}
 				"shard_secondary_delay"			
 				{
-					"value"		"5"
-					"RequiresShard"					"1"
+					"special_bonus_shard"		"5"
 				}						
 
 		}
@@ -260,8 +256,10 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"FightRecapLevel"				"1"
-
-		"AbilityDraftUltScepterAbility" "leshrac_greater_lightning_storm"
+		"AbilityDraftExtraAbilities"
+		{
+			"leshrac_greater_lightning_storm" "scepter"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -305,15 +303,14 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_SKIP_FOR_KEYBINDS | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
-		"MaxLevel"						"4"
-		"DependentOnAbility"			"leshrac_pulse_nova"
+		"MaxLevel"						"1"
 		"IsBreakable"					"1"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
-			"mana_pct_per_hit"				"14 21 28 35"
+			"mana_pct_per_hit"				"25"
 			"creep_penalty_reduction_pct"	"50"
 		}		
 	}
@@ -407,6 +404,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+		
+	}
+}
+ior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
 		
 	}

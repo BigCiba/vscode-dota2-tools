@@ -315,13 +315,11 @@
 
 			"scepter_aura_duration"
 			{
-				value "3"
-				"RequiresScepter"			"1"
+				"special_bonus_scepter"		"3"
 			}
 			"miss_rate"				
 			{
-				"value"			"0"
-				"RequiresScepter"			"1"
+				"special_bonus_scepter"		"0"
 			}
 			"base_heal"				
 			{
@@ -349,13 +347,11 @@
 			"max_offset_distance"			"350"
 			"scepter_channel_time"				
 			{
-				"value"	"1.0"
-				"RequiresScepter"			"1"
+				"special_bonus_scepter"		"1.0"
 			}
 			"airtime_scepter_bonus"	
 			{
-				"value"				"3.5"
-				"RequiresScepter"			"1"
+				"special_bonus_scepter"		"3.5"
 			}
 			"airtime_scepter_movement_speed"				"200"
 			"airtime_duration"
@@ -392,17 +388,24 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 		"MaxLevel"						"1"
 		"Innate"						"1"
-		"DependentOnAbility"				"dawnbreaker_solar_guardian"
+
 		"AbilityValues"
 		{
-				"reveal_duration"				"4"
-				"think_interval"				"0.1"
-				"reveal_linger"					"1"
-				"reveal_radius"					"20000"
-				"conceal_duration"				"1"
+			"day_threshold"				"0.006"
+			"max_dmg_pct"				"25"
+			"max_vision_pct"			"20"
+
+			"current_dmg_tooltip"
+			{
+				"dynamic_value"					"true"
+			}
+			"current_vision_tooltip"
+			{
+				"dynamic_value"					"true"
+			}
 		}
 	}
 
@@ -441,15 +444,7 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"	
 	}
-}
-ABILITY_TYPE_ATTRIBUTES"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"BaseClass"						"special_bonus_base"	
-	}
-}
 TA_ABILITY_BEHAVIOR_PASSIVE"
-		"BaseClass"						"special_bonus_base"
-	}
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================

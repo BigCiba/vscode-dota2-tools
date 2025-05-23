@@ -114,11 +114,7 @@
 
 		"AbilityDraftExtraAbilities"
 		{
-			"crystal_maiden_crystal_clone"
-			{
-				"ShardAbility"		"true"
-				"HiddenAbility"		"true"
-			}
+			"crystal_maiden_crystal_clone" "shard"
 		}
 
 		// Stats
@@ -207,7 +203,7 @@
 			"mana_battery_mana_pct"
 			{
 				"value"													"0"
-				"special_bonus_facet_crystal_maiden_arcane_overflow"	"25"
+				"special_bonus_facet_crystal_maiden_arcane_overflow"	"15"
 			}
 			"activation_duration"
 			{
@@ -284,35 +280,27 @@
 			{
 				"value"						"-1"
 				"special_bonus_scepter"		"+3.5"
-				"RequiresScepter"			"1"
 			}
 			"shard_bonus_explosion"
 			{
-				"shard_bonus_explosion"		"0"
 				"special_bonus_scepter"		"+20"
-				"RequiresShard"				"1"
 			}
 			"shard_self_movement_speed_slow_pct"			
 			{
-				"value"						"0"
 				"special_bonus_scepter"		"-75"
-				"RequiresScepter"				"1"
 			}
 			"can_move"
 			{
-				"value"						"0"
 				"special_bonus_scepter"		"+1"
 			}
 
 			"self_cast_range_bonus"
 			{
-				"value"													"0"
 				"special_bonus_facet_crystal_maiden_frozen_expanse"		"75 100 125"
 			}
 
 			"aoe_bonus"
 			{
-				"value"													"0"
 				"special_bonus_facet_crystal_maiden_frozen_expanse"		"6 8 10"
 			}
 		}
@@ -415,7 +403,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"crystal_maiden_frostbite"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
 	//=================================================================================================================
@@ -427,7 +414,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"crystal_maiden_crystal_nova"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
 	//=================================================================================================================
@@ -439,7 +425,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"crystal_maiden_freezing_field"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
 	//=================================================================================================================
@@ -451,12 +436,29 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"crystal_maiden_crystal_nova"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
+	"special_bonus_unique_crystal_maiden_6"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+	}
+	//=================================================================================================================
+	// Ability: Special Bonus
+	//=================================================================================================================
+	"special_bonus_unique_crystal_maiden_frostbite_castrange"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
 	"special_bonus_unique_crystal_maiden_6"
 	{
 		// General

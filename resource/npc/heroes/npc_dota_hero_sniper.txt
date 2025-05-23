@@ -229,16 +229,15 @@
 			{
 				"value"								"65"				
 			}
-			"headshot_chance"			"100"
+			"headshot_chance"						"100"
 			"active_attack_range_bonus"
 			{
-				"value"									"200"				
+				"value"									"100 150 200 250"				
 				"special_bonus_unique_sniper_5" 		"+55"
 			}
-			"bonus_armor"		
-			{
-				"value"												"5 10 15 20"
-			}
+
+			"bonus_vision"								"500 750 1000 1250"
+			"view_restrict"								"140"
 				
 			"does_root"
 			{
@@ -283,8 +282,10 @@
 		"FightRecapLevel"				"2"
 		"HasScepterUpgrade"					"1"
 		"AbilitySound"					"Ability.Assassinate"
-
-		"AbilityDraftUltShardAbility"		"sniper_concussive_grenade"
+		"AbilityDraftExtraAbilities"
+		{
+			"sniper_concussive_grenade" "shard"
+		}
 
 
 		// Casting
@@ -321,35 +322,27 @@
 			"projectile_speed"			"2500 2500 2500"
 			"scepter_stun_duration"			
 			{
-				"value" "0.8 1.0 1.2"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter" "0.8 1.0 1.2"
 			}
 			"scepter_crit"			
 			{
-				"value" "0"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter" "0"
 			}
 			"scepter_cast_point"			
 			{
-				"value" "0.5"
-				"RequiresScepter"		"1"
+				"special_bonus_scepter" "0.5"
 			}
 			"scatter_range"
 			{
-				"value"			"0"
 				"special_bonus_shard"	"0"
 			}
 			"scatter_width"
 			{
-				"value"			"0" 
 				"special_bonus_shard"			"0"
-				"RequiresShard"	"1"
 			}
 			"scatter_damage_pct"
 			{
-				"value"			"0"
 				"special_bonus_shard"			"0"
-				"RequiresShard"	"1"
 			}
 			"cooldown_reduction_on_kill"		"0 5 10"
 			
@@ -366,6 +359,14 @@
 		"Innate"						"1"
 		"DependentOnAbility"			"sniper_assassinate"
 		"IsBreakable"					"1"
+
+		"AbilityValues"
+		{
+			"bonus_range"				"160 260 360 460"
+		}
+	}
+}
+IsBreakable"					"1"
 
 		"AbilityValues"
 		{

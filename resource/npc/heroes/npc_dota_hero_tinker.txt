@@ -3,7 +3,7 @@
     "Version"       "1"
 	
 	//=================================================================================================================
-	// Tinker: Defense Matrix ( shard ability )
+	// Tinker: Defense Matrix
 	//=================================================================================================================
 	"tinker_defense_matrix"
 	{
@@ -29,7 +29,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"80 95 110 125"
+		"AbilityManaCost"				"90 105 120 135"
 		
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@
 			"damage_absorb"
 			{
 				"value"							"80 160 240 320"
-				"special_bonus_unique_tinker_7"	"+75"
+				"special_bonus_unique_tinker_7"	"+60"
 			}
 			"status_resistance"
 			{
@@ -248,19 +248,16 @@
 				"splash_pct"		"100"
 				"scepter_bonus_cast_range"		
 				{
-					"value"		"0"
-					"RequiresScepter"				"1"
+					"special_bonus_scepter"		"0"
 				}
 				"scepter_reduction_pct"		
 				{
-					"value"		"15"
-					"RequiresScepter"				"1"
+					"special_bonus_scepter"		"13"
 				}						
 				"scepter_bounce_radius"		
 				{
-					"value"			"700"
+					"special_bonus_scepter"		"700"
 					"affected_by_aoe_increase"	"1"
-					"RequiresScepter"				"1"
 				}			
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -430,7 +427,7 @@
 			"speed"					"400"
 			"machines_per_sec"		"24"
 			"distance"				"1800"
-			"damage"				"17 26 35 44"
+			"damage"				"13 22 31 40"
 			
 			"heal_per_second"
 			{
@@ -457,8 +454,10 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilitySound"					"Hero_Tinker.Rearm"
-
-		"AbilityDraftUltShardAbility"		"tinker_warp_grenade"
+		"AbilityDraftExtraAbilities"
+		{
+			"tinker_warp_grenade" "shard"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -587,7 +586,6 @@
 			"value"
 			{
 				"value" "125"
-				"ad_linked_abilities" "tinker_defense_matrix"
 			}
 		}
 	}
@@ -625,6 +623,10 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+}
+tyBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
 	}
 }

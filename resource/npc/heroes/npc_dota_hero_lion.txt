@@ -171,18 +171,14 @@
 				"movespeed_bonus_when_empty_pct"			"15"
 				"shard_bonus_targets"			
 				{
-					"value"		"2"
-					"RequiresShard"				"1"
+					"special_bonus_shard"		"2"
 				}		
 				"damage_pct"					
 				{
-					"value"					"0"		
 					"special_bonus_facet_lion_essence_eater"	"+100"
-					"RequiresFacet"		"lion_essence_eater"
 				}
 				"magic_resist"
 				{
-					"value"				"0"
 					"special_bonus_shard"		"+60"
 				}
 				"ally_pct"				"50"
@@ -216,7 +212,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"140.0 90.0 40.0"
+		"AbilityCooldown"				"130.0 85.0 40.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -249,72 +245,52 @@
 			}
 			"cooldown_scepter"			
 			{
-				"value"	"80.0 50.0 20.0"
-				"RequiresScepter"			"1"
+				"special_bonus_scepter"	"90.0 60.0 30.0"
 			}
 			"splash_radius_scepter"		
 			{
-				"value"		"325"
-				"RequiresScepter"			"1"
+				"special_bonus_scepter"		"325"
 				"affected_by_aoe_increase"	"1"
 			}
 				
 			"punch_duration"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"+20"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"punch_attack_range"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"=250"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"punch_bonus_damage_base"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"+40"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"punch_bonus_damage_per_stack"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"+30"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"punch_grace_period"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"+3"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"cleave_starting_width"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"+150"
 				"affected_by_aoe_increase"	"1"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"cleave_ending_width"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"+360"
 				"affected_by_aoe_increase"	"1"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"cleave_distance"
 			{
-				"value"						"0"
 				"special_bonus_facet_lion_fist_of_death"	"+650"
 				"affected_by_aoe_increase"	"1"
-				"RequiresFacet"			"lion_fist_of_death"
 			}
 			"cleave_damage"
 			{
-				"value"							"0"
 				"special_bonus_facet_lion_fist_of_death"	"+50"
-				"RequiresFacet"					"lion_fist_of_death"
 				"CalculateSpellDamageTooltip"	"0"
 				"DamageTypeTooltip"				"DAMAGE_TYPE_NONE"
 			}
@@ -381,9 +357,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"lion_mana_drain"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-		
-		
 	}
 
 	//=================================================================================================================
@@ -395,9 +368,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"ad_linked_abilities"			"lion_finger_of_death"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
-		
-		
 	}
 
 	//=================================================================================================================
@@ -419,6 +389,40 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+
+	//=================================================================================================================
+	// Lion Innate To Hell and Back
+	//=================================================================================================================
+	"lion_to_hell_and_back"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_SKIP_FOR_KEYBINDS"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
+		"MaxLevel"						"1"
+		"Innate"						"1"
+		"AbilityValues"
+		{
+			"duration"					"90"
+			"spell_amp"
+			{
+				"value"							"20"
+				"special_bonus_unique_lion_11"	"+15"
+			}
+			"debuff_amp"
+			{
+				"value"							"20"
+				"special_bonus_unique_lion_11"	"+15"
+			}
+		}
+	}
+}
+----------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"

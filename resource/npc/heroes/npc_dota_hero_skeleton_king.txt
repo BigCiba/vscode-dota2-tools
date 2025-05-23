@@ -25,7 +25,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"17 14 11 8"
+		"AbilityCooldown"				"14 12 10 8"
 
 		// Damage.
 		//-------------------------------------------------------------------------------------------------------------
@@ -53,6 +53,11 @@
 			"blast_dot_duration"
 			{
 				"value"					"2.0"
+				"special_bonus_facet_skeleton_king_facet_bone_guard"
+				{
+					"value"				"+0"
+					"special_bonus_unique_wraith_king_facet_1" "+2"
+				}
 			}
 
 			"blast_slow"				"-20"
@@ -66,8 +71,6 @@
 			{
 				"value"					"20 40 60 80"
 			}
-
-			
 		}
 
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
@@ -99,14 +102,12 @@
 
 			"skeleton_duration"			
 			{
-				"value"					"40"
-				"special_bonus_unique_wraith_king_facet_1" "+25%"
+				"value"					"46"
 			}
 
 			"AbilityCooldown"
 			{
-				"value"					"50"
-				"special_bonus_unique_wraith_king_facet_1" "-25%"
+				"value"					"42"
 			}
 
 			"max_skeleton_charges"		"2 4 6 8"	
@@ -140,6 +141,16 @@
 
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
+	}
+
+	//=================================================================================================================
+	// Ability: Bone Guard Damage Tracker
+	//=================================================================================================================
+	"skeleton_king_bone_guard_damage_tracker"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 	}
 
 	//=================================================================================================================
@@ -269,7 +280,7 @@
 			"slow_duration"			"5.0"
 			"AbilityManaCost"
 			{
-				"value"					"200"
+				"value"					"225"
 				"special_bonus_shard"	"=0"
 			}
 
@@ -289,6 +300,10 @@
 			{
 				"value"							"180 150 120"
 				"special_bonus_scepter"			"-15"
+			}
+			"trigger_wraithfire_blast"
+			{
+				"special_bonus_unique_wraith_king_4"				"=1"
 			}
 		}
 	}
@@ -311,7 +326,7 @@
 		{
 			"vampiric_aura"
 			{
-				"value"									"16 24 32 40"
+				"value"									"10 20 30 40"
 				"special_bonus_unique_wraith_king_2"	"+10"
 			}
 
@@ -330,10 +345,8 @@
 			}
 			"scepter_aura_radius"
 			{
-				"value"							"0"
 				"special_bonus_scepter"			"+1200"
 				"affected_by_aoe_increase"	"1"
-				"RequiresScepter"				"1"
 			}
 		}
 	}
@@ -369,14 +382,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"AbilityValues"
-		{
-			"value"
-			{
-				"value" "1"
-				"ad_linked_abilities" "skeleton_king_reincarnation && skeleton_king_hellfire_blast"
-			}
-		}
+		"BaseClass"						"special_bonus_base"
+
 	}
 
 	//=================================================================================================================
@@ -393,7 +400,6 @@
 			"value"
 			{
 				"value" "2"
-				"ad_linked_abilities" "skeleton_king_mortal_strike"
 			}
 		}
 	}

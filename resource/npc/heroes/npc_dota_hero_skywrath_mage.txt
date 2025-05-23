@@ -20,7 +20,6 @@
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"875"
 		"AbilityCastPoint"				"0.1 0.1 0.1 0.1"
 		
 		// Time		
@@ -29,19 +28,24 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"85"
+		"AbilityManaCost"				"70"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityValues"
 		{
+				"AbilityCastRange"
+				{
+					"value"								"875"
+					"special_bonus_unique_skywrath_6"	"+125"
+				}
 				"bolt_speed"			"500"
 				"bolt_vision"			"325"
 				"bolt_damage"			"60 85 110 135"
 				"int_multiplier"		
 				{
 					"value"		"1.5"
-					"special_bonus_unique_skywrath_2"	"+0.5"
+					"special_bonus_unique_skywrath_2"	"+1.5"
 					"CalculateSpellDamageTooltip"	"1"
 				}
 				"vision_duration"		"3.34"
@@ -121,8 +125,7 @@
 				"vision_duration"		"3.34"
 				"scepter_radius"		
 				{
-					"value"	"500"
-					"RequiresScepter"	"1"
+					"special_bonus_scepter"	"500"
 					"affected_by_aoe_increase"	"1"
 				}
 		}
@@ -170,9 +173,8 @@
 				"seal_duration"			"3.0 4.0 5.0 6.0"
 				"scepter_radius"		
 				{
-					"value"		"500"
+					"special_bonus_scepter"		"500"
 					"affected_by_aoe_increase"	"1"
-					"RequiresScepter"	"1"
 				}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
@@ -193,8 +195,10 @@
 		"FightRecapLevel"				"2"
 
 		"HasScepterUpgrade"			"1"
-
-		"AbilityDraftUltShardAbility" "skywrath_mage_shield_of_the_scion"
+		"AbilityDraftExtraAbilities"
+		{
+			"skywrath_mage_shield_of_the_scion" "shard"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -229,8 +233,7 @@
 				"damage_interval"		"0.1"
 				"scepter_radius"		
 				{
-					"value"		"500"
-					"RequiresScepter"	"1"
+					"special_bonus_scepter"		"500"
 					"affected_by_aoe_increase"	"1"
 				}
 		}
@@ -316,7 +319,6 @@
 			"value"
 			{
 				"value" "7"
-				"ad_linked_abilities" "skywrath_mage_ancient_seal"
 			}
 		}
 	}
@@ -359,7 +361,6 @@
 			"value"
 			{
 				"value" "0"
-				"ad_linked_abilities" "skywrath_mage_concussive_shot"
 			}
 		}
 	}
@@ -390,7 +391,6 @@
 			"value"
 			{
 				"value" "1"
-				"ad_linked_abilities" "skywrath_mage_arcane_bolt"
 			}
 		}
 	}
@@ -415,6 +415,11 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"special_bonus_base"
+	}
+}
+
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"
 	}

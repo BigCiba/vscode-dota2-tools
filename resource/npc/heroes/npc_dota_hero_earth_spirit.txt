@@ -54,7 +54,7 @@
 				}
 				"rock_damage"			
 				{
-					"value"			"120 180 240 300"
+					"value"			"110 180 250 320"
 					"special_bonus_unique_earth_spirit_6"	"+80"
 				}	
 				"move_slow"				"50"
@@ -135,7 +135,7 @@
 				"damage"				
 				{
 					"value"		"60 70 80 90"
-					"special_bonus_unique_earth_spirit" "+160"
+					"special_bonus_unique_earth_spirit" "+180"
 				}
 				"stun_duration"			
 				{
@@ -225,7 +225,7 @@
 				"AbilityCooldown"		
 				{
 					"value"		"13"
-					"special_bonus_unique_earth_spirit_5"	"-2"
+					"special_bonus_unique_earth_spirit_5"	"-3"
 				}
 		}
 	}
@@ -376,8 +376,11 @@
 		"FightRecapLevel"				"2"
 		"AbilitySound"					"Hero_EarthSpirit.Magnetize.Cast"
 
-		"AbilityDraftPreAbility"		"earth_spirit_stone_caller"
-		"AbilityDraftUltScepterAbility" "earth_spirit_petrify"
+		"AbilityDraftExtraAbilities"
+		{
+			"earth_spirit_stone_caller" ""
+			"earth_spirit_petrify" "scepter"
+		}
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -470,7 +473,6 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"	
-		"ad_linked_abilities"			"earth_spirit_magnetize"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
 	//=================================================================================================================
@@ -507,7 +509,6 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"BaseClass"						"special_bonus_base"	
-		"ad_linked_abilities"			"earth_spirit_geomagnetic_grip"				// this is the ability this bonus affects.  This line is required for Ability Draft to correctly choose talents.
 	}
 
 	//=================================================================================================================
@@ -537,6 +538,16 @@
 	//=================================================================================================================
 	// Ability: Special Bonus
 	//=================================================================================================================
+	"special_bonus_unique_earth_spirit_8"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"							"special_bonus_base"		
+	}
+}
+==========
 	"special_bonus_unique_earth_spirit_8"
 	{
 		// General
