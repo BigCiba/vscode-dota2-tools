@@ -310,28 +310,69 @@ ${insert}
 /** 把文件直接导出为kv */
 async function processFileData(fileData: DocumentFile, kvDir: string, method: typeof abilityCSV2KV | typeof unitCSV2KV): Promise<void> {
 	const spreadsheetToken = fileData.token;
+	// 是否合并表
+	const isMerge = getSheetMergeConfig()[spreadsheetToken];
 	let sheetID = getSheetID(spreadsheetToken);
 	// 第一次获取就存下来，减少接口请求次数
 	if (sheetID == undefined) {
-		const sheetInfo = await sheetCloud.getSheetMetaInfo(spreadsheetToken);
-		if (sheetInfo) {
-			sheetID = sheetInfo.sheetId;
-			sheetIDMap[spreadsheetToken] = sheetID;
-		}
-	}
-	if (sheetID) {
-		const sheetData = await sheetCloud.getSheetData(spreadsheetToken, sheetID);
-		if (sheetData) {
-			sheetData.data.valueRange.values.forEach((row) => {
-				row.forEach((cell, i) => {
-					if (cell === undefined || cell === null) {
-						row[i] = "";
-					} else if (typeof cell == "number") {
-						row[i] = String(cell);
+		const sheetInfoList = await sheetCloud.getSheetMetaInfo(spreadsheetToken);
+		if (sheetInfoList) {
+			if (isMerge != undefined) {
+				const result: any = {};
+				for (const sheetInfo of sheetInfoList) {
+					sheetID = sheetInfo.sheetId;
+					sheetIDMap[spreadsheetToken] = sheetID;
+					if (sheetID) {
+						const sheetData = await sheetCloud.getSheetData(spreadsheetToken, sheetID);
+						if (sheetData) {
+							sheetData.data.valueRange.values.forEach((row) => {
+								row.forEach((cell, i) => {
+									if (cell === undefined || cell === null) {
+										row[i] = "";
+									} else if (typeof cell == "number") {
+										row[i] = String(cell);
+									}
+								});
+							});
+							if (isMerge) {
+								result[sheetInfo.title] = method(sheetData.data.valueRange.values);
+							} else {
+								const kv = method(sheetData.data.valueRange.values);
+								for (const key in kv) {
+									const value = kv[key];
+									result[key] = value;
+								}
+							}
+						}
 					}
-				});
-			});
-			await saveCSVToKVDir(sheetData.data.valueRange.values, kvDir, fileData, method);
+				}
+				const realKvDir = getRealKvDir(kvDir);
+				if (realKvDir) {
+					await dirExists(realKvDir);
+					const data = writeKeyValue({ KeyValue: result });
+					const filePath = path.join(realKvDir, getExtname(fileData.name));
+					fs.writeFileSync(filePath, data);
+					fs.utimesSync(filePath, fileData.created_time, fileData.modified_time);
+				}
+			} else {
+				sheetID = sheetInfoList[0].sheetId;
+				sheetIDMap[spreadsheetToken] = sheetID;
+				if (sheetID) {
+					const sheetData = await sheetCloud.getSheetData(spreadsheetToken, sheetID);
+					if (sheetData) {
+						sheetData.data.valueRange.values.forEach((row) => {
+							row.forEach((cell, i) => {
+								if (cell === undefined || cell === null) {
+									row[i] = "";
+								} else if (typeof cell == "number") {
+									row[i] = String(cell);
+								}
+							});
+						});
+						await saveCSVToKVDir(sheetData.data.valueRange.values, kvDir, fileData, method);
+					}
+				}
+			}
 		}
 	}
 }
@@ -345,7 +386,7 @@ async function exportSheetToCsv(fileData: DocumentFile, kvDir: string): Promise<
 	if (sheetID == undefined) {
 		const sheetInfo = await sheetCloud.getSheetMetaInfo(spreadsheetToken);
 		if (sheetInfo) {
-			sheetID = sheetInfo.sheetId;
+			sheetID = sheetInfo[0].sheetId;
 			sheetIDMap[spreadsheetToken] = sheetID;
 		}
 	}
@@ -491,6 +532,9 @@ function getSingleConfig(): Record<string, string> {
 }
 function getSheetToCsvConfig(): Record<string, string> {
 	return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetToCsv', {});
+}
+function getSheetMergeConfig(): Record<string, boolean> {
+	return vscode.workspace.getConfiguration().get('dota2-tools.A8.CloudSheetMerge', {});
 }
 
 function convertToCSV(data: string[][]): string {

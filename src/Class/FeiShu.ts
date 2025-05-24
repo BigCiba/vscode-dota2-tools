@@ -1,6 +1,6 @@
+import * as lark from "@larksuiteoapi/node-sdk";
 import * as vscode from 'vscode';
 import { request } from '../utils/request';
-import * as lark from "@larksuiteoapi/node-sdk";
 
 const URL_LIST = {
 	/** 获取Token */
@@ -188,7 +188,7 @@ export class FeiShu {
 			}
 		);
 		if (sheet) {
-			return sheet.data.sheets[0];
+			return sheet.data.sheets;
 		}
 	}
 	/** 读取表格数据 */

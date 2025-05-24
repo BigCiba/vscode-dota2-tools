@@ -799,6 +799,13 @@
 							"type": "string"
 						},
 						"markdownDescription": "云配置表导出csv到本地\n- 左侧为云文件夹的token，右侧为本地文件夹路径\n- 可使用${game}或者${content}可以指代当前game或者content目录用于拼接文件路径"
+					},
+					"dota2-tools.A8.CloudSheetMerge": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "boolean"
+						},
+						"markdownDescription": "云配置表复合型，将同一个表下不同sheet合并一起导出\n- 左侧为指定云文档的token，右侧true表示根据sheetid套一层，false表示只是合并。"
 					}
 				}
 			},
