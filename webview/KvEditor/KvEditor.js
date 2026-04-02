@@ -174,6 +174,11 @@ let fillPopupState = null;
 let columnDragState = null;
 let autofillPopupState = null;
 
+// 列筛选状态 - Map<columnKey, Set<string>>，空 Set 表示显示全部
+const columnFilters = new Map();
+// 当前打开的筛选浮层状态
+let filterDropdownState = null;
+
 // AbilityValues 描述数据缓存 - 从 payload 接收
 // 格式: { rowId: { key: description } }
 let abilityValuesDescriptions = {};
@@ -3585,6 +3590,9 @@ function resetColumnState() {
 	}
 	modifiedColumns.clear();
 	savedColumnWidths.clear();
+	// 切换文档时清除筛选状态
+	columnFilters.clear();
+	closeColumnFilterDropdown();
 }
 
 function cancelColumnWidthSave() {
@@ -4261,6 +4269,25 @@ function createHeaderCell(column, columnIndex, ctx) {
 			});
 		});
 		titleRow.appendChild(optionsButton);
+
+		// 添加列筛选按钮
+		const filterButton = document.createElement('button');
+		filterButton.type = 'button';
+		filterButton.className = 'kv-column-options-button kv-filter-btn-header';
+		filterButton.dataset.filterColumn = column;
+		const hasFilter = columnFilters.has(column) && (columnFilters.get(column)?.size ?? 0) > 0;
+		filterButton.classList.toggle('kv-filter-active', hasFilter);
+		filterButton.title = hasFilter ? `列 "${headerLabel}" 已筛选，点击修改` : `筛选 ${headerLabel}`;
+		filterButton.setAttribute('aria-label', filterButton.title);
+		filterButton.innerHTML = '<span class="codicon codicon-filter"></span>';
+		filterButton.addEventListener('mousedown', (event) => event.stopPropagation());
+		filterButton.addEventListener('click', (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			openColumnFilterDropdown(filterButton, column, headerLabel);
+		});
+		titleRow.appendChild(filterButton);
+
 		wrapper.appendChild(titleRow);
 		if (formulaIndicator) {
 			th.appendChild(formulaIndicator);
@@ -4349,6 +4376,10 @@ function renderTable(columns, rows, columnOptions) {
 	const ctx = createRenderContext(columns, rows, columnOptions);
 	const { displayColumns, columnLabels, columnLetters, texturePreviewMap, scriptSupport } = ctx;
 
+	// 应用列筛选
+	const filteredRows = getFilteredRows(rows);
+	const hasActiveFilter = columnFilters.size > 0 && Array.from(columnFilters.values()).some(s => s && s.size > 0);
+
 	// 创建表格结构（使用辅助函数）
 	const table = document.createElement('table');
 	const colgroup = createColgroup(ctx);
@@ -4362,7 +4393,7 @@ function renderTable(columns, rows, columnOptions) {
 
 	// 使用 DocumentFragment 批量构建行，减少 DOM 重排
 	const fragment = document.createDocumentFragment();
-	rows.forEach((row, rowIndex) => {
+	filteredRows.forEach((row, rowIndex) => {
 		const tr = document.createElement('tr');
 		tr.classList.add('kv-row');
 		tr.dataset.rowId = row.id ?? '';
@@ -4392,7 +4423,7 @@ function renderTable(columns, rows, columnOptions) {
 					icon.className = 'codicon codicon-gripper';
 					dragBtn.appendChild(icon);
 					dragBtn.draggable = true;
-					dragBtn.addEventListener('dragstart', (event) => handleRowDragStart(event, row.id, rowIndex, rows.length));
+					dragBtn.addEventListener('dragstart', (event) => handleRowDragStart(event, row.id, rowIndex, filteredRows.length));
 					dragBtn.addEventListener('dragend', handleRowDragEnd);
 					dragBtn.addEventListener('mousedown', (event) => event.stopPropagation());
 					dragBtn.addEventListener('click', (event) => event.preventDefault());
@@ -4886,6 +4917,30 @@ function renderTable(columns, rows, columnOptions) {
 	table.appendChild(tbody);
 	tableSection.innerHTML = '';
 	tableSection.appendChild(table);
+
+	// 筛选状态栏：显示当前筛选结果
+	if (hasActiveFilter) {
+		const filterBar = document.createElement('div');
+		filterBar.className = 'kv-filter-status-bar';
+		const filterIcon = document.createElement('span');
+		filterIcon.className = 'codicon codicon-filter';
+		filterIcon.setAttribute('aria-hidden', 'true');
+		const filterInfo = document.createElement('span');
+		filterInfo.className = 'kv-filter-status-info';
+		filterInfo.textContent = `已筛选：显示 ${filteredRows.length} / ${rows.length} 行`;
+		const clearAllBtn = document.createElement('button');
+		clearAllBtn.type = 'button';
+		clearAllBtn.className = 'kv-filter-status-clear';
+		clearAllBtn.textContent = '清除所有筛选';
+		clearAllBtn.addEventListener('click', () => {
+			columnFilters.clear();
+			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
+		});
+		filterBar.appendChild(filterIcon);
+		filterBar.appendChild(filterInfo);
+		filterBar.appendChild(clearAllBtn);
+		tableSection.appendChild(filterBar);
+	}
 	refreshTableWidth();
 	updateRowSelectionVisuals(); // 恢复行选择的视觉状态
 	restoreSelection(columnLabels, columnLetters, columnOptions);
@@ -6009,6 +6064,335 @@ function openRowContextMenu(invocationEvent, context) {
 		keyHandler,
 		cleanupHandler
 	};
+}
+
+// ============================================================================
+// 列筛选功能
+// ============================================================================
+
+/**
+ * 获取经过列筛选后的行数组
+ */
+function getFilteredRows(rows) {
+	if (!rows || !columnFilters.size) {
+		return rows;
+	}
+	return rows.filter((row) => {
+		for (const [columnKey, selectedValues] of columnFilters) {
+			if (!selectedValues || selectedValues.size === 0) {
+				continue; // 该列无筛选
+			}
+			const cellValue = columnKey === 'id' ? (row.id ?? '') : (row.values?.[columnKey] ?? '');
+			const normalizedValue = String(cellValue ?? '');
+			if (!selectedValues.has(normalizedValue)) {
+				return false;
+			}
+		}
+		return true;
+	});
+}
+
+/**
+ * 获取某列所有唯一值（用于构建筛选列表）
+ */
+function getColumnUniqueValues(rows, columnKey) {
+	const values = new Set();
+	if (!rows) return values;
+	for (const row of rows) {
+		const v = columnKey === 'id' ? (row.id ?? '') : (row.values?.[columnKey] ?? '');
+		values.add(String(v ?? ''));
+	}
+	return values;
+}
+
+/**
+ * 关闭当前打开的列筛选浮层
+ */
+function closeColumnFilterDropdown(options = {}) {
+	if (!filterDropdownState) {
+		return;
+	}
+	const { element, outsideHandler, keyHandler } = filterDropdownState;
+	if (outsideHandler) {
+		document.removeEventListener('mousedown', outsideHandler, true);
+	}
+	if (keyHandler) {
+		document.removeEventListener('keydown', keyHandler, true);
+	}
+	if (element && element.parentElement) {
+		element.remove();
+	}
+	filterDropdownState = null;
+	if (!options.skipDialogState) {
+		setDialogOpenState(false);
+	}
+}
+
+/**
+ * 打开列筛选浮层（Excel 风格）
+ * @param {HTMLElement} anchorEl - 触发按钮元素（用于定位）
+ * @param {string} columnKey - 列 key
+ * @param {string} columnName - 列显示名称
+ */
+function openColumnFilterDropdown(anchorEl, columnKey, columnName) {
+	// 若已打开同一列的筛选器，则关闭
+	if (filterDropdownState && filterDropdownState.columnKey === columnKey) {
+		closeColumnFilterDropdown();
+		return;
+	}
+	closeColumnFilterDropdown({ skipDialogState: true });
+
+	const allRows = latestPayload?.rows ?? [];
+	const uniqueValues = getColumnUniqueValues(allRows, columnKey);
+	const activeFilter = columnFilters.get(columnKey);
+	// 当前已选中的值（若无筛选则表示全选）
+	const checkedValues = new Set(activeFilter && activeFilter.size > 0 ? activeFilter : uniqueValues);
+
+	// 构建浮层容器
+	const dropdown = document.createElement('div');
+	dropdown.className = 'kv-filter-dropdown';
+	dropdown.setAttribute('role', 'dialog');
+	dropdown.setAttribute('aria-label', `筛选 ${columnName}`);
+
+	// 标题行
+	const header = document.createElement('div');
+	header.className = 'kv-filter-dropdown-header';
+	const titleEl = document.createElement('span');
+	titleEl.className = 'kv-filter-dropdown-title';
+	titleEl.textContent = `筛选: ${columnName}`;
+	const closeBtn = document.createElement('button');
+	closeBtn.type = 'button';
+	closeBtn.className = 'kv-filter-dropdown-close';
+	closeBtn.title = '关闭';
+	closeBtn.innerHTML = '<span class="codicon codicon-close"></span>';
+	closeBtn.addEventListener('click', () => closeColumnFilterDropdown());
+	header.appendChild(titleEl);
+	header.appendChild(closeBtn);
+	dropdown.appendChild(header);
+
+	// 搜索框
+	const searchInput = createInput({
+		type: 'search',
+		className: 'kv-filter-search',
+		placeholder: '搜索值...',
+		enableUndoRedo: false
+	});
+	dropdown.appendChild(searchInput);
+
+	// 全选行
+	const selectAllRow = document.createElement('div');
+	selectAllRow.className = 'kv-filter-option kv-filter-select-all';
+	const selectAllCheckbox = document.createElement('input');
+	selectAllCheckbox.type = 'checkbox';
+	selectAllCheckbox.id = 'kv-filter-select-all-cb';
+	selectAllCheckbox.className = 'kv-filter-checkbox';
+	const selectAllLabel = document.createElement('label');
+	selectAllLabel.htmlFor = 'kv-filter-select-all-cb';
+	selectAllLabel.className = 'kv-filter-option-label';
+	selectAllLabel.textContent = '(全选)';
+	selectAllRow.appendChild(selectAllCheckbox);
+	selectAllRow.appendChild(selectAllLabel);
+	dropdown.appendChild(selectAllRow);
+
+	// 分隔线
+	const separator = document.createElement('hr');
+	separator.className = 'kv-filter-separator';
+	dropdown.appendChild(separator);
+
+	// 值列表容器
+	const listContainer = document.createElement('div');
+	listContainer.className = 'kv-filter-list';
+	dropdown.appendChild(listContainer);
+
+	// 排序后的唯一值
+	const sortedValues = Array.from(uniqueValues).sort((a, b) => {
+		// 空值排最前
+		if (a === '') return -1;
+		if (b === '') return 1;
+		// 尝试数值排序
+		const na = parseFloat(a), nb = parseFloat(b);
+		if (!isNaN(na) && !isNaN(nb)) return na - nb;
+		return a.localeCompare(b, undefined, { sensitivity: 'base' });
+	});
+
+	const checkboxes = [];
+
+	function buildList(filterText) {
+		listContainer.innerHTML = '';
+		checkboxes.length = 0;
+		const keyword = filterText.trim().toLowerCase();
+		let visibleCount = 0;
+		for (const val of sortedValues) {
+			const displayText = val === '' ? '(空值)' : val;
+			if (keyword && !displayText.toLowerCase().includes(keyword) && !val.toLowerCase().includes(keyword)) {
+				continue;
+			}
+			visibleCount++;
+			const optionRow = document.createElement('div');
+			optionRow.className = 'kv-filter-option';
+			const cb = document.createElement('input');
+			cb.type = 'checkbox';
+			cb.className = 'kv-filter-checkbox';
+			cb.value = val;
+			cb.checked = checkedValues.has(val);
+			cb.id = `kv-filter-cb-${CSS.escape(val)}-${columnKey}`;
+			const lbl = document.createElement('label');
+			lbl.htmlFor = cb.id;
+			lbl.className = 'kv-filter-option-label';
+			lbl.textContent = displayText;
+			lbl.title = displayText;
+			cb.addEventListener('change', () => {
+				if (cb.checked) {
+					checkedValues.add(val);
+				} else {
+					checkedValues.delete(val);
+				}
+				updateSelectAllState();
+			});
+			optionRow.appendChild(cb);
+			optionRow.appendChild(lbl);
+			listContainer.appendChild(optionRow);
+			checkboxes.push(cb);
+		}
+		if (visibleCount === 0) {
+			const emptyMsg = document.createElement('div');
+			emptyMsg.className = 'kv-filter-empty';
+			emptyMsg.textContent = '没有匹配的值';
+			listContainer.appendChild(emptyMsg);
+		}
+		updateSelectAllState();
+	}
+
+	function updateSelectAllState() {
+		const visible = checkboxes.filter(cb => cb.offsetParent !== null || listContainer.contains(cb));
+		const checkedVisible = checkboxes.filter(cb => cb.checked);
+		if (checkedVisible.length === 0) {
+			selectAllCheckbox.checked = false;
+			selectAllCheckbox.indeterminate = false;
+		} else if (checkedVisible.length === checkboxes.length) {
+			selectAllCheckbox.checked = true;
+			selectAllCheckbox.indeterminate = false;
+		} else {
+			selectAllCheckbox.checked = false;
+			selectAllCheckbox.indeterminate = true;
+		}
+	}
+
+	selectAllCheckbox.addEventListener('change', () => {
+		const shouldCheck = selectAllCheckbox.checked;
+		for (const cb of checkboxes) {
+			cb.checked = shouldCheck;
+			if (shouldCheck) {
+				checkedValues.add(cb.value);
+			} else {
+				checkedValues.delete(cb.value);
+			}
+		}
+		selectAllCheckbox.indeterminate = false;
+	});
+
+	searchInput.addEventListener('input', () => {
+		buildList(searchInput.value);
+	});
+
+	// 底部按钮区
+	const footer = document.createElement('div');
+	footer.className = 'kv-filter-dropdown-footer';
+
+	const clearBtn = document.createElement('button');
+	clearBtn.type = 'button';
+	clearBtn.className = 'kv-filter-btn kv-filter-btn-secondary';
+	clearBtn.textContent = '清除筛选';
+	clearBtn.addEventListener('click', () => {
+		columnFilters.delete(columnKey);
+		closeColumnFilterDropdown();
+		// 重新渲染表格
+		if (latestPayload) {
+			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
+		}
+		updateAllFilterButtonStates();
+	});
+
+	const applyBtn = document.createElement('button');
+	applyBtn.type = 'button';
+	applyBtn.className = 'kv-filter-btn kv-filter-btn-primary';
+	applyBtn.textContent = '确定';
+	applyBtn.addEventListener('click', () => {
+		const allSelected = checkedValues.size >= uniqueValues.size &&
+			Array.from(uniqueValues).every(v => checkedValues.has(v));
+		if (allSelected) {
+			columnFilters.delete(columnKey);
+		} else {
+			columnFilters.set(columnKey, new Set(checkedValues));
+		}
+		closeColumnFilterDropdown();
+		if (latestPayload) {
+			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
+		}
+		updateAllFilterButtonStates();
+	});
+
+	footer.appendChild(clearBtn);
+	footer.appendChild(applyBtn);
+	dropdown.appendChild(footer);
+
+	// 外部点击关闭
+	const outsideHandler = (event) => {
+		if (!dropdown.contains(event.target) && event.target !== anchorEl) {
+			closeColumnFilterDropdown();
+		}
+	};
+	const keyHandler = (event) => {
+		if (event.key === 'Escape') {
+			event.stopPropagation();
+			closeColumnFilterDropdown();
+		}
+	};
+
+	// 定位：相对于 anchorEl
+	document.body.appendChild(dropdown);
+	const anchorRect = anchorEl.getBoundingClientRect();
+	const ddWidth = 220;
+	const ddHeight = dropdown.getBoundingClientRect().height || 300;
+	let left = anchorRect.left;
+	let top = anchorRect.bottom + 4;
+	// 防止超出视口右侧
+	if (left + ddWidth > window.innerWidth - 8) {
+		left = window.innerWidth - ddWidth - 8;
+	}
+	// 防止超出视口底部
+	if (top + ddHeight > window.innerHeight - 8) {
+		top = anchorRect.top - ddHeight - 4;
+	}
+	dropdown.style.left = `${Math.max(4, left)}px`;
+	dropdown.style.top = `${Math.max(4, top)}px`;
+
+	// 初始构建列表
+	buildList('');
+
+	setTimeout(() => {
+		document.addEventListener('mousedown', outsideHandler, true);
+		document.addEventListener('keydown', keyHandler, true);
+		searchInput.focus();
+	}, 0);
+
+	filterDropdownState = { element: dropdown, columnKey, outsideHandler, keyHandler };
+	setDialogOpenState(true);
+}
+
+/**
+ * 更新所有表头筛选按钮的激活状态（筛选器重新渲染后调用）
+ */
+function updateAllFilterButtonStates() {
+	if (!tableSection) return;
+	const filterBtns = tableSection.querySelectorAll('.kv-filter-btn-header');
+	filterBtns.forEach((btn) => {
+		const col = btn.dataset.filterColumn;
+		if (!col) return;
+		const hasFilter = columnFilters.has(col) && (columnFilters.get(col)?.size ?? 0) > 0;
+		btn.classList.toggle('kv-filter-active', hasFilter);
+		btn.title = hasFilter ? `列 "${col}" 已筛选，点击修改` : `筛选 ${col}`;
+	});
 }
 
 function closeAutofillPopup() {

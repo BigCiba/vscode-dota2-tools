@@ -2078,10 +2078,6 @@ body.kv-column-options-editor-open {
 	background: var(--vscode-editor-background); */
 }
 
-.kv-column-options-input {
-	/* width: 100%; */
-}
-
 .kv-column-options-actions {
 	display: flex;
 	align-items: center;
@@ -3009,4 +3005,231 @@ body.kv-texture-menu-open {
 	display: flex;
 	align-items: center;
 	gap: 6px;
+}
+
+/* ============================================================================
+ * 列筛选功能样式
+ * ============================================================================ */
+
+/* 筛选按钮激活状态 */
+.kv-filter-btn-header.kv-filter-active {
+	opacity: 1 !important;
+	pointer-events: auto !important;
+	color: var(--vscode-charts-blue) !important;
+}
+
+.kv-column-header-title-row:hover .kv-filter-btn-header {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/* 筛选浮层 */
+.kv-filter-dropdown {
+	position: fixed;
+	z-index: var(--kv-z-context-menu);
+	width: 220px;
+	max-height: 360px;
+	background: var(--vscode-dropdown-background, var(--vscode-editor-background));
+	border: 1px solid var(--vscode-panel-border);
+	border-radius: var(--kv-radius-lg);
+	box-shadow: var(--kv-shadow-md);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.kv-filter-dropdown-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 10px 6px;
+	border-bottom: 1px solid var(--vscode-panel-border);
+	flex-shrink: 0;
+}
+
+.kv-filter-dropdown-title {
+	font-size: var(--kv-font-size-md);
+	font-weight: 600;
+	color: var(--vscode-editor-foreground);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.kv-filter-dropdown-close {
+	flex-shrink: 0;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 2px;
+	border-radius: var(--kv-radius-sm);
+	color: var(--vscode-descriptionForeground);
+	display: flex;
+	align-items: center;
+}
+
+.kv-filter-dropdown-close:hover {
+	background: var(--vscode-toolbar-hoverBackground);
+	color: var(--vscode-editor-foreground);
+}
+
+/* 搜索框 */
+.kv-filter-search {
+	margin: 6px 8px;
+	padding: 4px 8px;
+	height: var(--kv-input-height-sm);
+	background: var(--vscode-input-background);
+	color: var(--vscode-input-foreground);
+	border: 1px solid var(--vscode-input-border, var(--vscode-panel-border));
+	border-radius: var(--kv-radius-sm);
+	font-size: var(--kv-font-size-md);
+	font-family: inherit;
+	width: calc(100% - 16px);
+	box-sizing: border-box;
+	flex-shrink: 0;
+}
+
+.kv-filter-search:focus {
+	outline: 1px solid var(--vscode-focusBorder);
+	outline-offset: -1px;
+}
+
+/* 分隔线 */
+.kv-filter-separator {
+	margin: 2px 0;
+	border: none;
+	border-top: 1px solid var(--vscode-panel-border);
+	flex-shrink: 0;
+}
+
+/* 值列表 */
+.kv-filter-list {
+	overflow-y: auto;
+	flex: 1 1 auto;
+	padding: 2px 0;
+}
+
+/* 单个筛选选项行 */
+.kv-filter-option {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 3px 10px;
+	cursor: pointer;
+}
+
+.kv-filter-option:hover {
+	background: var(--vscode-list-hoverBackground);
+}
+
+.kv-filter-select-all {
+	padding: 4px 10px 3px;
+	flex-shrink: 0;
+}
+
+.kv-filter-checkbox {
+	flex-shrink: 0;
+	accent-color: var(--vscode-charts-blue);
+	cursor: pointer;
+}
+
+.kv-filter-option-label {
+	font-size: var(--kv-font-size-md);
+	color: var(--vscode-editor-foreground);
+	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	flex: 1;
+}
+
+.kv-filter-empty {
+	padding: 8px 10px;
+	font-size: var(--kv-font-size-md);
+	color: var(--vscode-descriptionForeground);
+	text-align: center;
+}
+
+/* 底部按钮区 */
+.kv-filter-dropdown-footer {
+	display: flex;
+	gap: 6px;
+	justify-content: flex-end;
+	padding: 6px 8px;
+	border-top: 1px solid var(--vscode-panel-border);
+	flex-shrink: 0;
+}
+
+.kv-filter-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 12px;
+	height: var(--kv-button-height-sm);
+	box-sizing: border-box;
+	line-height: 1;
+	font-size: var(--kv-font-size-md);
+	font-family: inherit;
+	border-radius: var(--kv-radius-sm);
+	border: none;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.kv-filter-btn-primary {
+	background: var(--vscode-button-background);
+	color: var(--vscode-button-foreground);
+}
+
+.kv-filter-btn-primary:hover {
+	background: var(--vscode-button-hoverBackground);
+}
+
+.kv-filter-btn-secondary {
+	background: var(--vscode-button-secondaryBackground, transparent);
+	color: var(--vscode-button-secondaryForeground, var(--vscode-editor-foreground));
+	border: 1px solid var(--vscode-panel-border);
+}
+
+.kv-filter-btn-secondary:hover {
+	background: var(--vscode-toolbar-hoverBackground);
+}
+
+/* 筛选状态栏 */
+.kv-filter-status-bar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 5px 14px;
+	background: color-mix(in srgb, var(--vscode-charts-blue) 10%, transparent);
+	border-top: 1px solid color-mix(in srgb, var(--vscode-charts-blue) 30%, transparent);
+	font-size: var(--kv-font-size-md);
+	color: var(--vscode-editor-foreground);
+	flex-shrink: 0;
+}
+
+.kv-filter-status-bar .codicon-filter {
+	color: var(--vscode-charts-blue);
+	font-size: 13px;
+}
+
+.kv-filter-status-info {
+	flex: 1;
+	font-size: var(--kv-font-size-md);
+}
+
+.kv-filter-status-clear {
+	background: transparent;
+	border: 1px solid var(--vscode-panel-border);
+	color: var(--vscode-editor-foreground);
+	font-size: var(--kv-font-size-sm);
+	font-family: inherit;
+	padding: 2px 8px;
+	border-radius: var(--kv-radius-sm);
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+.kv-filter-status-clear:hover {
+	background: var(--vscode-toolbar-hoverBackground);
 }

@@ -1011,6 +1011,30 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 	}
 
+	private getDocumentLineEnding(text: string): string {
+		return text.includes('\r\n') ? '\r\n' : '\n';
+	}
+
+	private extractBaseDirectives(text: string): string[] {
+		if (!text) {
+			return [];
+		}
+		return text
+			.split(/\r?\n/u)
+			.map((line) => line.trim())
+			.filter((line) => /^#base\s+"[^"]+"$/u.test(line));
+	}
+
+	private serializeKvDocument(kvObject: unknown, originalText: string, depth: number = 0): string {
+		const body = writeKeyValue(kvObject, depth);
+		const baseDirectives = this.extractBaseDirectives(originalText);
+		if (!baseDirectives.length) {
+			return body;
+		}
+		const eol = this.getDocumentLineEnding(originalText);
+		return `${baseDirectives.join(eol)}${eol}${eol}${body}`;
+	}
+
 	private isPlainObject(value: unknown): value is Record<string, unknown> {
 		return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 	}
@@ -1635,7 +1659,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				delete record.AbilityValues;
 			}
 		}
-		const newContent = writeKeyValue(kvObject);
+		const newContent = this.serializeKvDocument(kvObject, originalText);
 		const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 		const edit = new vscode.WorkspaceEdit();
 		edit.replace(document.uri, fullRange, newContent);
@@ -1826,7 +1850,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				record[normalizedKey] = normalizedValue;
 			}
 
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -1930,7 +1954,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			if (!mutated) {
 				return;
 			}
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -1997,7 +2021,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 			kvObject[header] = newBlock;
 
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -2584,7 +2608,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 			// 如果有修改，写回文件
 			if (hasChanges) {
-				const newKvText = writeKeyValue(kvObject, 0);
+				const newKvText = this.serializeKvDocument(kvObject, kvText, 0);
 				const edit = new vscode.WorkspaceEdit();
 				const fullRange = new vscode.Range(
 					document.positionAt(0),
@@ -2905,7 +2929,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		});
 		kvObject[header] = reorderedBlock;
-		const newContent = writeKeyValue(kvObject);
+		const newContent = this.serializeKvDocument(kvObject, originalText);
 		const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 		const edit = new vscode.WorkspaceEdit();
 		edit.replace(document.uri, fullRange, newContent);
@@ -2995,7 +3019,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				reorderedBlock[key] = value;
 			});
 			kvObject[header] = reorderedBlock;
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -3169,7 +3193,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			});
 
 			kvObject[header] = reorderedBlock;
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -3244,7 +3268,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 
 			kvObject[header] = newBlock;
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -3349,7 +3373,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 
 			kvObject[header] = updatedBlock;
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -3441,7 +3465,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 
 			kvObject[header] = updatedBlock;
-			const newContent = writeKeyValue(kvObject);
+			const newContent = this.serializeKvDocument(kvObject, originalText);
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 			const edit = new vscode.WorkspaceEdit();
 			edit.replace(document.uri, fullRange, newContent);
@@ -3587,7 +3611,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 		kvObject[header] = reorderedBlock;
-		const newContent = writeKeyValue(kvObject);
+		const newContent = this.serializeKvDocument(kvObject, originalText);
 		const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(originalText.length));
 		const edit = new vscode.WorkspaceEdit();
 		edit.replace(document.uri, fullRange, newContent);
