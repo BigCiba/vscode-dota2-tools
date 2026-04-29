@@ -17,6 +17,9 @@
 					<p id="kv-file-meta" class="kv-subtitle"></p>
 				</div>
 				<div class="kv-header-actions">
+					<button id="kv-open-localization-file" class="kv-header-button" type="button" title="打开本地化文件" disabled>
+						<span class="codicon codicon-book"></span>
+					</button>
 					<button id="kv-toggle-localized-mode" class="kv-header-button" type="button" title="切换本地化模式">
 						<span class="codicon codicon-globe"></span>
 					</button>
@@ -32,6 +35,10 @@
 				</div>
 			</div>
 		</header>
+		<section id="kv-external-change" class="kv-external-change" hidden>
+			<div id="kv-external-change-message" class="kv-external-change-message"></div>
+			<button id="kv-reload-data" class="kv-external-change-button" type="button">重载</button>
+		</section>
 		<section class="kv-formula-bar">
 			<input id="kv-editor-address" class="kv-formula-address" type="text" value="" readonly>
 			<button id="kv-formula-help" class="kv-formula-help-button" type="button" title="公式使用指南">

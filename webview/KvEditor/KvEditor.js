@@ -3,18 +3,28 @@ const vscode = acquireVsCodeApi();
 const fileNameEl = document.getElementById('kv-file-name');
 const fileMetaEl = document.getElementById('kv-file-meta');
 const openTextEditorBtn = document.getElementById('kv-open-text-editor');
+const openLocalizationFileBtn = document.getElementById('kv-open-localization-file');
 const localizationSettingsBtn = document.getElementById('kv-localization-settings');
 const toggleCompactModeBtn = document.getElementById('kv-toggle-compact-mode');
 const toggleLocalizedModeBtn = document.getElementById('kv-toggle-localized-mode');
 const tableSection = document.getElementById('kv-table');
 const emptySection = document.getElementById('kv-empty');
 const errorSection = document.getElementById('kv-error');
+const externalChangeSection = document.getElementById('kv-external-change');
+const externalChangeMessageEl = document.getElementById('kv-external-change-message');
+const reloadDataBtn = document.getElementById('kv-reload-data');
 const formulaAddressInput = document.getElementById('kv-editor-address');
 const formulaValueInput = document.getElementById('kv-editor-value');
 const formulaHelpBtn = document.getElementById('kv-formula-help');
 
 if (emptySection) {
 	emptySection.textContent = 'Loading KV data...';
+}
+
+if (reloadDataBtn) {
+	reloadDataBtn.addEventListener('click', () => {
+		vscode.postMessage({ type: 'reloadData' });
+	});
 }
 setSectionVisibility({ showTable: false, showEmpty: true, showError: false });
 
@@ -25,10 +35,53 @@ if (formulaHelpBtn) {
 	});
 }
 
+function showExternalChangeNotice(message) {
+	if (externalChangeMessageEl) {
+		externalChangeMessageEl.textContent = message || '检测到该 KV 文件已被外部修改。请点击“重载”以重新加载最新内容。';
+	}
+	if (externalChangeSection) {
+		externalChangeSection.hidden = false;
+	}
+}
+
+function hideExternalChangeNotice() {
+	if (externalChangeSection) {
+		externalChangeSection.hidden = true;
+	}
+	if (externalChangeMessageEl) {
+		externalChangeMessageEl.textContent = '';
+	}
+}
+
 // 绑定"用文本编辑器打开"按钮事件
 if (openTextEditorBtn) {
 	openTextEditorBtn.addEventListener('click', () => {
 		vscode.postMessage({ type: 'openTextEditor' });
+	});
+}
+
+function updateOpenLocalizationFileButtonState() {
+	if (!openLocalizationFileBtn) {
+		return;
+	}
+	const hasConfig = Boolean(localizationSettings?.enabled && typeof localizationSettings.filePath === 'string' && localizationSettings.filePath.trim().length > 0);
+	openLocalizationFileBtn.disabled = !hasConfig;
+	openLocalizationFileBtn.title = hasConfig
+		? `打开本地化文件: ${localizationSettings.filePath}`
+		: '本地化设置未配置，无法打开本地化文件';
+}
+
+if (openLocalizationFileBtn) {
+	openLocalizationFileBtn.addEventListener('click', () => {
+		if (!localizationSettings.enabled || !localizationSettings.filePath) {
+			return;
+		}
+		vscode.postMessage({
+			type: 'openLocalizationFile',
+			payload: {
+				path: localizationSettings.filePath,
+			}
+		});
 	});
 }
 
@@ -47,6 +100,8 @@ let localizationSettings = {
 	autoUpdateOnOpen: false, // 打开文件时自动更新本地化
 	mappings: [] // { columnName: string, rule: string }[]
 };
+
+updateOpenLocalizationFileButtonState();
 
 // 精简模式状态管理
 let compactMode = false;
@@ -272,6 +327,7 @@ document.addEventListener('keydown', (event) => {
 // 行复制粘贴优先于单元格复制粘贴
 document.addEventListener('keydown', handleRowClipboardShortcuts);
 document.addEventListener('keydown', handleClipboardShortcuts);
+document.addEventListener('keydown', handleDeleteClearSelectedCell);
 document.addEventListener('keydown', handleEscapeClearSelection);
 document.addEventListener('keydown', handleCellNavigation);
 
@@ -1588,6 +1644,70 @@ function handleEscapeClearSelection(event) {
 		event.preventDefault();
 		clearRowSelection();
 	}
+}
+
+function handleDeleteClearSelectedCell(event) {
+	if (isDialogOpen) {
+		return;
+	}
+	if (event.key !== 'Delete') {
+		return;
+	}
+	if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
+		return;
+	}
+	if (!selectedCell) {
+		return;
+	}
+	if (isEditableElement(document.activeElement)) {
+		return;
+	}
+	if (selectedCell.column === 'id') {
+		return;
+	}
+
+	event.preventDefault();
+	event.stopPropagation();
+
+	if (selectedCell.dataType === 'abilityValues') {
+		if (!selectedCell.rowId) {
+			return;
+		}
+		vscode.postMessage({
+			type: 'editAbilityValues',
+			payload: {
+				id: selectedCell.rowId,
+				entries: [],
+			},
+		});
+		selectedCell.value = '';
+		selectedCell.abilityEntries = [];
+		if (selectedTd) {
+			populateAbilityValuesCell(selectedTd, [], false);
+		}
+		if (formulaValueInput) {
+			formulaValueInput.value = '';
+		}
+		return;
+	}
+
+	if (!selectedCell.editable || !selectedCell.element) {
+		return;
+	}
+
+	setElementValue(selectedCell.element, '', selectedCell.fieldConfig);
+	if (selectedCell.usesDropdown) {
+		const container = selectedCell.element.parentElement;
+		const display = container?.querySelector('.kv-select-display');
+		if (display) {
+			updateSelectDisplay(selectedCell.element, display, selectedCell.fieldConfig);
+		}
+	}
+	if (formulaValueInput) {
+		formulaValueInput.value = '';
+	}
+	handleElementChange(selectedCell.element, selectedCell.fieldConfig);
+	selectedCell.value = '';
 }
 
 // 处理方向键导航和空格键进入编辑状态
@@ -4206,8 +4326,9 @@ function createHeaderCell(column, columnIndex, ctx) {
 		letterIcon.className = 'codicon codicon-gripper kv-column-letter-icon';
 		letterIcon.setAttribute('aria-hidden', 'true');
 		letterButton.appendChild(letterIcon);
+		const isCreatureColumn = isCreatureColumnKey(column);
 
-		if (columnIndex > 0) {
+		if (columnIndex > 0 && !isCreatureColumn) {
 			letterButton.setAttribute('draggable', 'true');
 			letterButton.setAttribute('aria-label', `拖动列 ${headerLabel}`);
 			letterButton.addEventListener('dragstart', (event) => handleColumnDragStart(event, column, columnIndex, letterButton));
@@ -4215,6 +4336,14 @@ function createHeaderCell(column, columnIndex, ctx) {
 			letterButton.addEventListener('mousedown', (event) => event.stopPropagation());
 			letterButton.addEventListener('click', (event) => event.preventDefault());
 			th.classList.add('kv-column-draggable');
+		} else if (isCreatureColumn) {
+			letterButton.setAttribute('draggable', 'false');
+			letterButton.setAttribute('aria-disabled', 'true');
+			letterButton.setAttribute('aria-label', `${headerLabel} 属于 Creature 字段组，暂不支持单独拖拽`);
+			letterButton.title = 'Creature 子字段需要保持嵌套结构，暂不支持单独拖拽';
+			letterButton.tabIndex = -1;
+			letterButton.addEventListener('mousedown', (event) => event.stopPropagation());
+			letterButton.addEventListener('click', (event) => event.preventDefault());
 		} else {
 			letterButton.setAttribute('draggable', 'false');
 			letterButton.setAttribute('aria-disabled', 'true');
@@ -4250,7 +4379,7 @@ function createHeaderCell(column, columnIndex, ctx) {
 		const columnFieldConfig = columnOptions?.[column];
 		const optionsButton = document.createElement('button');
 		optionsButton.type = 'button';
-		optionsButton.className = 'kv-column-options-button';
+		optionsButton.className = 'kv-column-options-button kv-column-settings-button';
 		optionsButton.title = `编辑 ${headerLabel} 下拉选项`;
 		optionsButton.setAttribute('aria-label', `编辑 ${headerLabel} 下拉选项`);
 		optionsButton.innerHTML = '<span class="codicon codicon-fold-down"></span>';
@@ -4276,6 +4405,7 @@ function createHeaderCell(column, columnIndex, ctx) {
 		filterButton.className = 'kv-column-options-button kv-filter-btn-header';
 		filterButton.dataset.filterColumn = column;
 		const hasFilter = columnFilters.has(column) && (columnFilters.get(column)?.size ?? 0) > 0;
+		titleRow.classList.toggle('kv-column-header-title-row-filter-active', hasFilter);
 		filterButton.classList.toggle('kv-filter-active', hasFilter);
 		filterButton.title = hasFilter ? `列 "${headerLabel}" 已筛选，点击修改` : `筛选 ${headerLabel}`;
 		filterButton.setAttribute('aria-label', filterButton.title);
@@ -6391,6 +6521,7 @@ function updateAllFilterButtonStates() {
 		if (!col) return;
 		const hasFilter = columnFilters.has(col) && (columnFilters.get(col)?.size ?? 0) > 0;
 		btn.classList.toggle('kv-filter-active', hasFilter);
+		btn.closest('.kv-column-header-title-row')?.classList.toggle('kv-column-header-title-row-filter-active', hasFilter);
 		btn.title = hasFilter ? `列 "${col}" 已筛选，点击修改` : `筛选 ${col}`;
 	});
 }
@@ -7794,11 +7925,58 @@ function handleTextureMenuError(payload) {
 	pending.reject(payload.error || '加载失败');
 }
 
+function isCreatureColumnKey(columnKey) {
+	return columnKey === 'DisableClumpingBehavior'
+		|| columnKey === 'UsesGestureBasedAttackAnimation'
+		|| columnKey === 'AttachWearables';
+}
+
+function getCreatureColumnBounds(columns) {
+	if (!Array.isArray(columns) || !columns.length) {
+		return undefined;
+	}
+	const indices = columns
+		.map((column, index) => (isCreatureColumnKey(column) ? index : -1))
+		.filter((index) => index >= 0);
+	if (!indices.length) {
+		return undefined;
+	}
+	return {
+		firstIndex: indices[0],
+		lastIndex: indices[indices.length - 1],
+	};
+}
+
+function canDropColumnAroundCreatureGroup(sourceKey, targetColumnKey, columnIndex, position) {
+	const bounds = getCreatureColumnBounds(latestPayload?.columns);
+	if (!bounds) {
+		return true;
+	}
+	if (isCreatureColumnKey(sourceKey)) {
+		return false;
+	}
+	if (!isCreatureColumnKey(targetColumnKey)) {
+		return true;
+	}
+	if (position === 'before' && columnIndex === bounds.firstIndex) {
+		return true;
+	}
+	if (position === 'after' && columnIndex === bounds.lastIndex) {
+		return true;
+	}
+	return false;
+}
+
 function handleColumnDragStart(event, columnKey, columnIndex, handleElement) {
 	if (!event || columnIndex <= 0 || !latestPayload?.columns?.length) {
 		if (event) {
 			event.preventDefault();
 		}
+		return;
+	}
+	if (isCreatureColumnKey(columnKey)) {
+		event.preventDefault();
+		showTemporaryMessage('Creature 子字段暂不支持单独拖拽，请将普通列移动到该字段组前后。');
 		return;
 	}
 	columnDragState = {
@@ -7837,6 +8015,11 @@ function handleColumnDragOver(event, headerElement, columnKey, columnIndex) {
 	let position = event.clientX < center ? 'before' : 'after';
 	if (columnIndex === 0 && position === 'before') {
 		position = 'after';
+	}
+	if (!canDropColumnAroundCreatureGroup(columnDragState.sourceKey, columnKey, columnIndex, position)) {
+		columnDragState.targetIndex = undefined;
+		clearColumnDropIndicator();
+		return;
 	}
 	let dropIndex = position === 'before' ? columnIndex : columnIndex + 1;
 	dropIndex = Math.max(1, Math.min(dropIndex, columns.length));
@@ -8857,6 +9040,7 @@ function render(payload) {
 	if (!payload) {
 		return;
 	}
+	hideExternalChangeNotice();
 	// 递增版本号，用于检测过期编辑
 	payloadVersion++;
 	// 如果正在编辑中，跳过本次更新以防止数据覆盖
@@ -8931,6 +9115,7 @@ function render(payload) {
 			? payload.localizationSettings.mappings
 			: [];
 	}
+	updateOpenLocalizationFileButtonState();
 
 	// 加载 AbilityValues 描述数据
 	if (payload.abilityValuesDescriptions && typeof payload.abilityValuesDescriptions === 'object') {
@@ -9006,6 +9191,12 @@ window.addEventListener('message', (event) => {
 		case 'update':
 			render(message.payload);
 			break;
+		case 'externalChangeDetected':
+			showExternalChangeNotice(message.payload?.message);
+			break;
+		case 'clearExternalChangeNotice':
+			hideExternalChangeNotice();
+			break;
 		case 'textureMenuData':
 			handleTextureMenuData(message.payload);
 			break;
@@ -9026,6 +9217,7 @@ function handleLocalizationPathResponse(payload) {
 	if (pathInput && payload && typeof payload.path === 'string') {
 		pathInput.value = payload.path;
 		localizationSettings.filePath = payload.path;
+		updateOpenLocalizationFileButtonState();
 	}
 }
 
@@ -9319,6 +9511,7 @@ function openLocalizationSettingsDialog() {
 		localizationSettings.autoUpdateOnOpen = autoUpdateCheckbox.checked;
 		localizationSettings.language = languageSelect.value;
 		localizationSettings.filePath = pathInput.value;
+		updateOpenLocalizationFileButtonState();
 
 		// 发送设置到后端
 		vscode.postMessage({

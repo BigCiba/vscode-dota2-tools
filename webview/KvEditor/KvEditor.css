@@ -2205,6 +2205,24 @@ body.kv-column-options-editor-open {
 	gap: 6px;
 	width: 100%;
 	min-height: 18px;
+	position: relative;
+	padding-right: 0;
+	box-sizing: border-box;
+	transition: padding-right 0.12s ease;
+}
+
+.kv-column-header-title-row:hover,
+.kv-column-header-title-row:focus-within {
+	padding-right: 42px;
+}
+
+.kv-column-header-title-row.kv-column-header-title-row-filter-active {
+	padding-right: 18px;
+}
+
+.kv-column-header-title-row.kv-column-header-title-row-filter-active:hover,
+.kv-column-header-title-row.kv-column-header-title-row-filter-active:focus-within {
+	padding-right: 42px;
 }
 
 .kv-column-formula-indicator {
@@ -2222,11 +2240,14 @@ body.kv-column-options-editor-open {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
 	border: none;
 	background: transparent;
 	color: var(--vscode-descriptionForeground);
 	padding: 0;
-	margin-left: auto;
 	width: 18px;
 	height: 18px;
 	border-radius: 3px;
@@ -2238,6 +2259,14 @@ body.kv-column-options-editor-open {
 
 .kv-column-options-button .codicon {
 	font-size: 14px;
+}
+
+.kv-column-settings-button {
+	right: 24px;
+}
+
+.kv-filter-btn-header {
+	right: 0;
 }
 
 .kv-column-header-title-row:hover .kv-column-options-button,
@@ -3232,4 +3261,38 @@ body.kv-texture-menu-open {
 
 .kv-filter-status-clear:hover {
 	background: var(--vscode-toolbar-hoverBackground);
+}
+
+.kv-external-change {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 10px 16px;
+	border-bottom: 1px solid var(--vscode-notificationsWarningIcon-foreground, var(--vscode-panel-border));
+	background: color-mix(in srgb, var(--vscode-editorWarning-foreground, #cca700) 12%, var(--vscode-editor-background));
+	color: var(--vscode-editor-foreground);
+}
+
+.kv-external-change-message {
+	flex: 1;
+	min-width: 0;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.kv-external-change-button {
+	flex: 0 0 auto;
+	padding: 5px 12px;
+	border: 1px solid var(--vscode-button-border, transparent);
+	border-radius: 3px;
+	background: var(--vscode-button-secondaryBackground, var(--vscode-button-background));
+	color: var(--vscode-button-secondaryForeground, var(--vscode-button-foreground));
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 1.2;
+}
+
+.kv-external-change-button:hover {
+	background: var(--vscode-button-secondaryHoverBackground, var(--vscode-button-hoverBackground));
 }
