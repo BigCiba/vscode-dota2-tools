@@ -1,0 +1,418 @@
+:root {
+	font-family: var(--vscode-font-family);
+	color: var(--vscode-foreground);
+	background: var(--vscode-editor-background);
+	font-synthesis: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-width: 300px;
+	background: var(--vscode-editor-background);
+}
+
+button,
+input {
+	font: inherit;
+}
+
+button {
+	color: inherit;
+}
+
+.page-shell {
+	min-height: 100vh;
+}
+
+.toolbar {
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	display: grid;
+	grid-template-columns: minmax(150px, 1fr) minmax(320px, 520px) minmax(90px, 1fr);
+	align-items: center;
+	gap: 18px;
+	min-height: 76px;
+	padding: 18px 24px;
+	border-bottom: 1px solid var(--vscode-panel-border);
+	background: var(--vscode-editor-background);
+	box-shadow: 0 4px 14px var(--vscode-widget-shadow);
+}
+
+.texture-type-content {
+	display: inline-flex;
+	justify-self: start;
+	padding: 2px;
+	border: 1px solid var(--vscode-input-border, transparent);
+	border-radius: 5px;
+	background: var(--vscode-editorWidget-background);
+}
+
+.texture-type {
+	min-width: 70px;
+	height: 32px;
+	padding: 0 14px;
+	border: 0;
+	border-radius: 3px;
+	background: transparent;
+	cursor: pointer;
+}
+
+.texture-type:hover {
+	background: var(--vscode-toolbar-hoverBackground);
+}
+
+.texture-type.selected {
+	color: var(--vscode-button-foreground);
+	background: var(--vscode-button-background);
+}
+
+.texture-type:focus-visible,
+.hero-picker summary:focus-visible,
+.hero-grid button:focus-visible,
+.icon-card:focus-visible,
+.clear-search:focus-visible {
+	outline: 1px solid var(--vscode-focusBorder);
+	outline-offset: 2px;
+}
+
+.search-content {
+	display: flex;
+	justify-self: stretch;
+	height: 36px;
+	border: 1px solid var(--vscode-input-border, transparent);
+	border-radius: 4px;
+	background: var(--vscode-input-background);
+	box-shadow: 0 2px 8px var(--vscode-widget-shadow);
+}
+
+.search-content:focus-within {
+	border-color: var(--vscode-focusBorder);
+}
+
+.hero-picker {
+	flex: 0 0 auto;
+	border-right: 1px solid var(--vscode-input-border, var(--vscode-panel-border));
+}
+
+.hero-picker summary {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 76px;
+	height: 34px;
+	padding-right: 12px;
+	border-radius: 3px 0 0 3px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.hero-picker summary::-webkit-details-marker {
+	display: none;
+}
+
+.hero-picker summary:hover {
+	background: var(--vscode-list-hoverBackground);
+}
+
+.hero-picker summary img,
+.hero-placeholder {
+	display: block;
+	width: 50px;
+	height: 28px;
+	border-radius: 2px;
+	object-fit: cover;
+}
+
+.hero-placeholder {
+	background: var(--vscode-input-placeholderForeground);
+	opacity: 0.25;
+}
+
+.chevron {
+	position: absolute;
+	right: 5px;
+	width: 0;
+	height: 0;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	border-top: 5px solid var(--vscode-foreground);
+	opacity: 0.7;
+	transition: transform 120ms ease;
+}
+
+.hero-picker[open] .chevron {
+	transform: rotate(180deg);
+}
+
+.hero-menu {
+	position: fixed;
+	top: 68px;
+	left: 50%;
+	z-index: 100;
+	width: min(720px, calc(100vw - 32px));
+	max-height: min(640px, calc(100vh - 92px));
+	padding: 14px;
+	overflow: auto;
+	border: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+	border-radius: 6px;
+	background: var(--vscode-editorWidget-background);
+	box-shadow: 0 8px 24px var(--vscode-widget-shadow);
+	transform: translateX(-50%);
+}
+
+.hero-section + .hero-section {
+	margin-top: 14px;
+	padding-top: 14px;
+	border-top: 1px solid var(--vscode-panel-border);
+}
+
+.hero-section h2 {
+	margin: 0 0 8px;
+	color: var(--vscode-descriptionForeground);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+}
+
+.hero-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 64px);
+	gap: 7px;
+}
+
+.hero-grid button {
+	position: relative;
+	width: 64px;
+	height: 36px;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	background: var(--vscode-button-secondaryBackground);
+	cursor: pointer;
+}
+
+.hero-grid button:hover {
+	border-color: var(--vscode-focusBorder);
+}
+
+.hero-grid button.selected {
+	border-color: var(--vscode-focusBorder);
+	box-shadow: inset 0 0 0 1px var(--vscode-focusBorder);
+}
+
+.hero-grid img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.search-box {
+	position: relative;
+	display: flex;
+	flex: 1;
+	align-items: center;
+	min-width: 0;
+}
+
+.search-icon {
+	position: absolute;
+	left: 11px;
+	width: 12px;
+	height: 12px;
+	border: 1.5px solid var(--vscode-input-placeholderForeground);
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+.search-icon::after {
+	position: absolute;
+	right: -5px;
+	bottom: -3px;
+	width: 6px;
+	height: 1.5px;
+	background: var(--vscode-input-placeholderForeground);
+	content: '';
+	transform: rotate(45deg);
+	transform-origin: left center;
+}
+
+#filter {
+	width: 100%;
+	height: 34px;
+	padding: 0 34px 0 32px;
+	border: 0;
+	outline: 0;
+	color: var(--vscode-input-foreground);
+	background: transparent;
+}
+
+#filter::placeholder {
+	color: var(--vscode-input-placeholderForeground);
+}
+
+#filter::-webkit-search-cancel-button {
+	display: none;
+}
+
+.clear-search {
+	position: absolute;
+	right: 5px;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: 0;
+	border-radius: 3px;
+	color: var(--vscode-icon-foreground);
+	background: transparent;
+	cursor: pointer;
+	font-size: 18px;
+	line-height: 20px;
+}
+
+.clear-search:hover {
+	background: var(--vscode-toolbar-hoverBackground);
+}
+
+.result-count {
+	justify-self: end;
+	min-width: 72px;
+	color: var(--vscode-descriptionForeground);
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+}
+
+.content {
+	padding: 26px 24px 40px;
+}
+
+.icon-grid {
+	display: grid;
+	justify-content: center;
+	gap: 14px;
+}
+
+.icon-grid.ability {
+	grid-template-columns: repeat(auto-fill, 64px);
+}
+
+.icon-grid.item {
+	grid-template-columns: repeat(auto-fill, 88px);
+}
+
+.icon-card {
+	position: relative;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background: var(--vscode-editorWidget-background);
+	box-shadow: 0 3px 8px var(--vscode-widget-shadow);
+	cursor: pointer;
+	transition: border-color 100ms ease, box-shadow 100ms ease, transform 100ms ease;
+}
+
+.ability .icon-card {
+	width: 64px;
+	height: 64px;
+}
+
+.item .icon-card {
+	width: 88px;
+	height: 64px;
+}
+
+.icon-card:hover {
+	border-color: var(--vscode-focusBorder);
+	box-shadow: 0 0 0 1px var(--vscode-focusBorder), 0 4px 12px var(--vscode-widget-shadow);
+	transform: translateY(-1px);
+}
+
+.icon-card:active {
+	transform: translateY(1px);
+}
+
+.icon-card img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.icon-card.custom {
+	border-color: var(--vscode-charts-blue);
+}
+
+.source-marker {
+	position: absolute;
+	right: 3px;
+	bottom: 3px;
+	width: 7px;
+	height: 7px;
+	border: 1px solid var(--vscode-editor-background);
+	border-radius: 50%;
+	background: var(--vscode-charts-blue);
+}
+
+.empty-state {
+	display: grid;
+	min-height: 180px;
+	place-items: center;
+	color: var(--vscode-descriptionForeground);
+}
+
+.status-toast {
+	position: fixed;
+	right: 18px;
+	bottom: 18px;
+	z-index: 120;
+	max-width: min(480px, calc(100vw - 36px));
+	padding: 9px 12px;
+	border: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+	border-radius: 4px;
+	color: var(--vscode-notifications-foreground);
+	background: var(--vscode-notifications-background);
+	box-shadow: 0 4px 16px var(--vscode-widget-shadow);
+	overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+	.toolbar {
+		grid-template-columns: 1fr auto;
+		gap: 12px;
+		padding: 14px 16px;
+	}
+
+	.search-content {
+		grid-column: 1 / -1;
+		grid-row: 2;
+	}
+
+	.result-count {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.hero-menu {
+		top: 118px;
+		max-height: calc(100vh - 142px);
+	}
+
+	.content {
+		padding: 20px 16px 32px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.chevron,
+	.icon-card {
+		transition: none;
+	}
+}

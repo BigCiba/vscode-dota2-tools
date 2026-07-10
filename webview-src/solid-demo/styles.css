@@ -1,0 +1,139 @@
+:root {
+	font-family: var(--vscode-font-family);
+	color: var(--vscode-foreground);
+	background: var(--vscode-editor-background);
+	font-synthesis: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-width: 280px;
+}
+
+button {
+	font: inherit;
+}
+
+.page-shell {
+	display: grid;
+	min-height: 100vh;
+	place-items: center;
+	padding: 32px;
+}
+
+.card {
+	width: min(680px, 100%);
+	padding: 28px;
+	border: 1px solid var(--vscode-widget-border, transparent);
+	border-radius: 8px;
+	background: var(--vscode-sideBar-background);
+	box-shadow: 0 8px 24px color-mix(in srgb, var(--vscode-widget-shadow) 35%, transparent);
+}
+
+.eyebrow {
+	margin: 0 0 8px;
+	color: var(--vscode-descriptionForeground);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+}
+
+h1 {
+	margin: 0;
+	font-size: 24px;
+}
+
+.description {
+	margin: 12px 0 24px;
+	color: var(--vscode-descriptionForeground);
+	line-height: 1.6;
+}
+
+.status-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+	margin: 0 0 24px;
+}
+
+.status-grid div {
+	padding: 12px;
+	border-radius: 4px;
+	background: var(--vscode-textBlockQuote-background);
+}
+
+.status-grid dt {
+	margin-bottom: 6px;
+	color: var(--vscode-descriptionForeground);
+	font-size: 12px;
+}
+
+.status-grid dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.counter {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+	padding: 12px 0;
+	border-block: 1px solid var(--vscode-widget-border, transparent);
+}
+
+.counter strong {
+	font-size: 24px;
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.actions button {
+	padding: 7px 14px;
+	border: 1px solid var(--vscode-button-border, transparent);
+	border-radius: 2px;
+	color: var(--vscode-button-foreground);
+	background: var(--vscode-button-background);
+	cursor: pointer;
+}
+
+.actions button:hover {
+	background: var(--vscode-button-hoverBackground);
+}
+
+.actions button:focus-visible {
+	outline: 1px solid var(--vscode-focusBorder);
+	outline-offset: 2px;
+}
+
+.actions .secondary {
+	color: var(--vscode-button-secondaryForeground);
+	background: var(--vscode-button-secondaryBackground);
+}
+
+.actions .secondary:hover {
+	background: var(--vscode-button-secondaryHoverBackground);
+}
+
+@media (max-width: 520px) {
+	.page-shell {
+		place-items: start stretch;
+		padding: 16px;
+	}
+
+	.card {
+		padding: 20px;
+	}
+
+	.status-grid {
+		grid-template-columns: 1fr;
+	}
+}

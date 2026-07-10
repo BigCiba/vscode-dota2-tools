@@ -31,6 +31,7 @@ import { parseMapEntities } from './command/cmdParseMapEntities';
 import { pasteCssImageSnippet } from './command/cmdPasteCssImage';
 import { preProcessing } from './command/cmdPreProcessing';
 import { quickStart } from './command/cmdQuickStart';
+import { openSolidWebviewDemo } from './command/cmdSolidWebviewDemo';
 import { translateSelection } from './command/cmdTranslateSelection';
 import { vsndPicker } from './command/cmdVsndPicker';
 import { init } from './init';
@@ -78,6 +79,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.unit_export', (uri) => unitExport(context, uri)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.preProcessing', () => preProcessing(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.welcomePage', (tag) => quickStart(context, tag)));
+	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.solidWebviewDemo', () => openSolidWebviewDemo(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_vpdi', () => generateVPDI(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.generate_recent_vpdi', () => generateRecentVPDI(context)));
 	context.subscriptions.push(vscode.commands.registerCommand('dota2tools.mklink', () => mklinkForDota2Addon(context)));

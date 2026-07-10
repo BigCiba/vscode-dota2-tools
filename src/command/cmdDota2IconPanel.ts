@@ -2,9 +2,17 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { Uri } from "vscode";
 import * as path from 'path';
-import { exec } from 'child_process';
-import { getUri } from '../utils/getUri';
-import { getWebviewContent } from '../utils/getWebViewContent';
+import type {
+	Dota2HeroAttribute,
+	Dota2HeroEntry,
+	Dota2IconEntry,
+	Dota2IconHostMessage,
+	Dota2IconKind,
+	Dota2IconPayload,
+	Dota2IconSource,
+	Dota2IconWebviewMessage,
+} from '../types/dota2IconWebviewMessages';
+import { getBundledWebviewContent } from '../utils/getBundledWebviewContent';
 import { readKeyValue2 } from '../utils/kvUtils';
 import { readFile } from '../utils/readFile';
 import { showStatusBarMessage } from '../module/statusBar';
@@ -15,9 +23,21 @@ let spellicons: Table;
 let items: Table;
 let npcHeroes: Table;
 let abilityCN: Table;
+const heroAttributeList: Dota2HeroAttribute[] = [
+	'DOTA_ATTRIBUTE_STRENGTH',
+	'DOTA_ATTRIBUTE_AGILITY',
+	'DOTA_ATTRIBUTE_INTELLECT',
+	'DOTA_ATTRIBUTE_ALL',
+];
+
 interface CustomIcon {
 	game: Table,
 	content: Table,
+}
+
+interface IconAction {
+	copyValue: string;
+	revealUri: Uri;
 }
 let customSpellicons: CustomIcon = {
 	game: {},
@@ -35,8 +55,7 @@ export async function dota2IconPanelInit(context: vscode.ExtensionContext) {
 	abilityCN = readKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/abilities_schinese.txt"), 'utf-8'), false).lang.Tokens;
 
 	// 自定义图标
-	await locdCustomSpellicons();
-	await locdCustomItems();
+	await Promise.all([locdCustomSpellicons(), locdCustomItems()]);
 }
 
 async function locdCustomSpellicons() {
@@ -73,124 +92,179 @@ async function locdCustomItems() {
  * @param {vscode.ExtensionContext} context
  */
 export async function dota2IconPanel(context: vscode.ExtensionContext) {
-	// 创建一个Webview视图
+	const gameDir = getGameDir();
+	const contentDir = getContentDir();
+	const localResourceRoots = [
+		Uri.joinPath(context.extensionUri, 'dist', 'webview'),
+		Uri.joinPath(context.extensionUri, 'images'),
+	];
+	if (gameDir) {
+		localResourceRoots.push(
+			Uri.joinPath(Uri.file(gameDir), 'resource', 'flash3', 'images', 'spellicons'),
+			Uri.joinPath(Uri.file(gameDir), 'resource', 'flash3', 'images', 'items'),
+		);
+	}
+	if (contentDir) {
+		localResourceRoots.push(
+			Uri.joinPath(Uri.file(contentDir), 'panorama', 'images', 'spellicons'),
+			Uri.joinPath(Uri.file(contentDir), 'panorama', 'images', 'items'),
+		);
+	}
+
 	const panel = vscode.window.createWebviewPanel(
-		'dota2IconPanel', // viewType
-		"Dota2图标", // 视图标题
-		vscode.ViewColumn.One, // 显示在编辑器的哪个部位
+		'dota2IconPanel',
+		'Dota2图标',
+		vscode.ViewColumn.One,
 		{
-			enableScripts: true, // 启用JS，默认禁用
-			retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+			enableScripts: true,
+			localResourceRoots,
 		}
 	);
 
-	// 防止数据为空
 	if (spellicons === undefined) {
-		spellicons = await getFolderIcons(context.extensionUri, "/images/spellicons");
+		spellicons = await getFolderIcons(context.extensionUri, '/images/spellicons');
 	}
 	if (items === undefined) {
-		items = await getFolderIcons(context.extensionUri, "/images/items");
+		items = await getFolderIcons(context.extensionUri, '/images/items');
 	}
 	if (npcHeroes === undefined) {
-		npcHeroes = await readHeroesIcon(context.extensionUri, "/images/heroes_icon");
+		npcHeroes = await readHeroesIcon(context.extensionUri, '/images/heroes_icon');
 	}
 	if (abilityCN === undefined) {
-		abilityCN = readKeyValue2(fs.readFileSync(path.join(context.extensionPath, "resource/abilities_schinese.txt"), 'utf-8'), false).lang.Tokens;
+		abilityCN = readKeyValue2(
+			fs.readFileSync(path.join(context.extensionPath, 'resource/abilities_schinese.txt'), 'utf-8'),
+			false
+		).lang.Tokens;
 	}
 
-	// 自定义图标
-	if (customSpellicons === undefined) {
-		locdCustomSpellicons();
-	}
-	if (customItems === undefined) {
-		locdCustomItems();
-	}
+	const iconActions = new Map<string, IconAction>();
+	const payload = buildIconPayload(
+		panel.webview,
+		context.extensionUri,
+		gameDir,
+		contentDir,
+		iconActions
+	);
+	const postMessage = (message: Dota2IconHostMessage) => panel.webview.postMessage(message);
 
-	// 页面内容
-	panel.webview.html = await getWebviewContent(panel.webview, context.extensionUri, "dota2Icon", html => {
-		let replaceText = "";
-		// 英雄图标
-		const attributeList = ["DOTA_ATTRIBUTE_STRENGTH", "DOTA_ATTRIBUTE_AGILITY", "DOTA_ATTRIBUTE_INTELLECT", "DOTA_ATTRIBUTE_ALL"];
-		for (const attributeType of attributeList) {
-			replaceText = "";
-			for (const heroName in npcHeroes[attributeType]) {
-				replaceText += `\t\t\t\t\t\t<img class="hero-icon" src="../../${npcHeroes[attributeType][heroName]}" onclick="heroFilter(this,'${heroName}')">\n`;
-			}
-			html = html.replace("<div>__replace__</div>", replaceText);
+	const messageSubscription = panel.webview.onDidReceiveMessage(async (message: Dota2IconWebviewMessage) => {
+		if (!message || typeof message.type !== 'string') {
+			return;
 		}
-		// 技能图标
-		replaceText = "";
-		for (const iconName in spellicons) {
-			const iconPath = spellicons[iconName];
-			replaceText += `\t\t<img id="${iconName}" data-abilityName="${abilityCN["DOTA_Tooltip_ability_" + iconName]}" class="icon texture-icon" src="../../${iconPath}" onclick="copyIconName('${iconName}')" oncontextmenu="openFolder('spellicons/${iconName}')">\n`;
+		if (message.type === 'ready') {
+			await postMessage({ type: 'initialize', payload });
+			return;
 		}
-		if (Object.keys(customSpellicons.game).length > 0) {
-			let gameDir = getGameDir();
-			for (const iconName in customSpellicons.game) {
-				const iconPath = customSpellicons.game[iconName];
-				const src = getUri(panel.webview, vscode.Uri.file(gameDir), [iconPath]);
-				replaceText += `\t\t<img id="${iconName}" class="icon texture-icon" src="${src}" onclick="copyIconName('${iconName}')" oncontextmenu="openFolder('spellicons/${iconName}')">\n`;
-			}
-		}
-		if (Object.keys(customSpellicons.content).length > 0) {
-			let contentDir = getContentDir();
-			for (const iconName in customSpellicons.content) {
-				const iconPath = customSpellicons.content[iconName];
-				const src = getUri(panel.webview, vscode.Uri.file(contentDir), [iconPath]);
-				replaceText += `\t\t<img id="${iconName}" class="icon texture-icon" src="${src}" onclick="copyIconName('${iconName}')" oncontextmenu="openFolder('spellicons/${iconName}')">\n`;
-			}
-		}
-		html = html.replace("<div>__replace__</div>", replaceText);
 
-		// 物品图标
-		replaceText = "";
-		for (const iconName in items) {
-			const iconPath = items[iconName];
-			replaceText += `\t\t<img id="${iconName}" data-abilityName="${abilityCN["DOTA_Tooltip_Ability_item_" + iconName]}" class="icon item-texture-icon" src="../../${iconPath}" onclick="copyIconName('item_${iconName}')" oncontextmenu="openFolder('items/${iconName}')">\n`;
+		const action = iconActions.get(message.payload.key);
+		if (!action) {
+			return;
 		}
-		if (Object.keys(customItems.game).length > 0) {
-			let gameDir = getGameDir();
-			for (const iconName in customItems.game) {
-				const iconPath = customItems.game[iconName];
-				const src = getUri(panel.webview, vscode.Uri.file(gameDir), [iconPath]);
-				replaceText += `\t\t<img id="${iconName}" class="icon item-texture-icon" src="${src}" onclick="copyIconName('item_${iconName}')" oncontextmenu="openFolder('spellicons/${iconName}')">\n`;
-			}
+		if (message.type === 'copyIcon') {
+			await vscode.env.clipboard.writeText(action.copyValue);
+			showStatusBarMessage('已将图标路径复制到剪切板：' + action.copyValue);
+			await postMessage({
+				type: 'copyComplete',
+				payload: { key: message.payload.key, copyValue: action.copyValue },
+			});
+			return;
 		}
-		if (Object.keys(customItems.content).length > 0) {
-			let contentDir = getContentDir();
-			for (const iconName in customItems.content) {
-				const iconPath = customItems.content[iconName];
-				const src = getUri(panel.webview, vscode.Uri.file(contentDir), [iconPath]);
-				replaceText += `\t\t<img id="${iconName}" class="icon item-texture-icon" src="${src}" onclick="copyIconName('item_${iconName}')" oncontextmenu="openFolder('spellicons/${iconName}')">\n`;
-			}
+		if (message.type === 'revealIcon') {
+			await vscode.commands.executeCommand('revealFileInOS', action.revealUri);
 		}
-		html = html.replace("<div>__replace__</div>", replaceText);
-		return html;
 	});
 
-	// 监听消息
-	panel.webview.onDidReceiveMessage(async (message: { type: string, text: string; }) => {
-		console.log(message);
+	panel.onDidDispose(() => messageSubscription.dispose(), null, context.subscriptions);
+	panel.webview.html = await getBundledWebviewContent(
+		panel.webview,
+		context.extensionUri,
+		'dota2-icon'
+	);
+}
 
-		const type = message.type;
-		const text = message.text;
+function buildIconPayload(
+	webview: vscode.Webview,
+	extensionUri: Uri,
+	gameDir: string | undefined,
+	contentDir: string | undefined,
+	actions: Map<string, IconAction>
+): Dota2IconPayload {
+	const abilities: Dota2IconEntry[] = [];
+	const itemEntries: Dota2IconEntry[] = [];
 
-		switch (type) {
-			case "copy_ability_name":	// 复制技能名
-				let texture: string = text.replace(/_png\.png/, '').replace(/\\/g, "/");
-				vscode.env.clipboard.writeText(texture);
-				showStatusBarMessage('已将图标路径复制到剪切板：' + texture);
-				return;
-			case "copy_ability_file":	// 复制文件
-				let fullpath = path.join(context.extensionPath, 'images', text);
-				exec(`explorer.exe /select,"${fullpath}_png.png"`);
-				return;
-		}
-	}, null, context.subscriptions);
-	// 销毁处理
-	panel.onDidDispose(() => {
+	appendIconEntries(webview, extensionUri, spellicons, 'ability', 'builtin', abilities, actions);
+	appendIconEntries(webview, extensionUri, items, 'item', 'builtin', itemEntries, actions);
 
-	}, null, context.subscriptions);
+	if (gameDir) {
+		const gameUri = Uri.file(gameDir);
+		appendIconEntries(webview, gameUri, customSpellicons.game, 'ability', 'game', abilities, actions);
+		appendIconEntries(webview, gameUri, customItems.game, 'item', 'game', itemEntries, actions);
+	}
+	if (contentDir) {
+		const contentUri = Uri.file(contentDir);
+		appendIconEntries(webview, contentUri, customSpellicons.content, 'ability', 'content', abilities, actions);
+		appendIconEntries(webview, contentUri, customItems.content, 'item', 'content', itemEntries, actions);
+	}
+
+	const heroes = Object.fromEntries(
+		heroAttributeList.map((attribute) => {
+			const attributeHeroes = npcHeroes[attribute] ?? {};
+			const entries: Dota2HeroEntry[] = Object.entries(attributeHeroes).map(([name, iconPath]) => ({
+				name,
+				uri: webview.asWebviewUri(resolveRelativeUri(extensionUri, String(iconPath))).toString(),
+			}));
+			return [attribute, entries];
+		})
+	) as Record<Dota2HeroAttribute, Dota2HeroEntry[]>;
+
+	const defaultHero = heroAttributeList
+		.flatMap((attribute) => heroes[attribute])
+		.find((hero) => hero.name === 'base');
+	const fallbackHeroUri = webview.asWebviewUri(
+		Uri.joinPath(extensionUri, 'images', 'heroes_icon', 'npc_dota_hero_default_png.png')
+	).toString();
+
+	return {
+		abilities,
+		items: itemEntries,
+		heroes,
+		defaultHeroUri: defaultHero?.uri ?? fallbackHeroUri,
+	};
+}
+
+function appendIconEntries(
+	webview: vscode.Webview,
+	rootUri: Uri,
+	iconTable: Table,
+	kind: Dota2IconKind,
+	source: Dota2IconSource,
+	target: Dota2IconEntry[],
+	actions: Map<string, IconAction>
+): void {
+	for (const [name, iconPath] of Object.entries(iconTable)) {
+		const key = kind + ':' + source + ':' + name;
+		const copyValue = kind === 'item' ? 'item_' + name : name;
+		const localizationKey = kind === 'item'
+			? 'DOTA_Tooltip_Ability_item_' + name
+			: 'DOTA_Tooltip_ability_' + name;
+		const localizedNameValue = abilityCN[localizationKey];
+		const revealUri = resolveRelativeUri(rootUri, String(iconPath));
+
+		target.push({
+			key,
+			name,
+			copyValue,
+			localizedName: typeof localizedNameValue === 'string' ? localizedNameValue : undefined,
+			uri: webview.asWebviewUri(revealUri).toString(),
+			source,
+		});
+		actions.set(key, { copyValue, revealUri });
+	}
+}
+
+function resolveRelativeUri(rootUri: Uri, relativePath: string): Uri {
+	const pathSegments = relativePath.split(/[\\/]+/).filter(Boolean);
+	return Uri.joinPath(rootUri, ...pathSegments);
 }
 /** 
  * 获取文件夹中的图标信息

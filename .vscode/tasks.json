@@ -20,6 +20,23 @@
 		},
 		{
 			"type": "npm",
+			"script": "build:webview",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build:webview",
+			"detail": "vite build"
+		},
+		{
+			"label": "tasks: build-webview-and-watch-extension",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"npm: build:webview",
+				"npm: watch"
+			],
+			"problemMatcher": []
+		},
+		{
+			"type": "npm",
 			"script": "watch-tests",
 			"problemMatcher": "$tsc-watch",
 			"isBackground": true,
@@ -43,7 +60,7 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: compile",
-			"detail": "webpack"
+			"detail": "Type-check and build the extension host and Solid Webviews"
 		},
 		{
 			"label": "$(cloud-upload) 增量更新",
