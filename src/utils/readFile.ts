@@ -2,7 +2,7 @@ import { TextDecoder } from "util";
 import { Uri, workspace } from "vscode";
 
 /**
- * 读取插件内的文件
+ * Read a file inside the extension
  */
 export async function readFile(uri: Uri) {
 	let array = await workspace.fs.readFile(uri);

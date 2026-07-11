@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
 import { getKeyValueObjectByIndex, readKeyValueWithBase } from '../utils/kvUtils';
+import { localize } from '../utils/localize';
+import { getResourcePath } from '../utils/releaseData';
 
-/** 复制dota2官方物品删除列表到剪切板 */
+/** Copy the official Dota 2 item removal list to the clipboard */
 export async function getItemRemoveList(context: vscode.ExtensionContext) {
-	let kv = getKeyValueObjectByIndex(await readKeyValueWithBase(context.extensionPath + '\\resource\\npc\\items.txt'));
+	let kv = getKeyValueObjectByIndex(await readKeyValueWithBase(getResourcePath(context, 'resource', 'npc', 'items.txt')));
 	let str = "";
 	for (const name in kv) {
 		if (typeof (kv[name]) !== "object") { continue; }
@@ -15,5 +17,5 @@ export async function getItemRemoveList(context: vscode.ExtensionContext) {
 	}
 
 	vscode.env.clipboard.writeText(str);
-	vscode.window.showInformationMessage('官方物品删除列表生成完毕，已复制到剪切板');
+	vscode.window.showInformationMessage(localize('msg_item_remove_list'));
 }

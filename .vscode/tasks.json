@@ -2,13 +2,36 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			// $ts-webpack-watch / $tslint-webpack-watch are NOT built-in matchers, so naming them
+			// left this background watch task with no working matcher — that is why F5 popped the
+			// "task 'npm: watch' ... doesn't have a 'problemMatcher' defined" dialog. The inline
+			// background matcher below tracks webpack-cli's start/finish output so VS Code knows
+			// when the first build is done and can launch the Extension Host.
 			"type": "npm",
 			"script": "watch",
-			"problemMatcher": [
-				"$ts-webpack-watch",
-				"$tslint-webpack-watch"
-			],
 			"isBackground": true,
+			"problemMatcher": {
+				"owner": "webpack",
+				"severity": "error",
+				"fileLocation": "absolute",
+				"pattern": [
+					{
+						"regexp": "\\[tsl\\] ERROR in (.*)?\\((\\d+),(\\d+)\\)",
+						"file": 1,
+						"line": 2,
+						"column": 3
+					},
+					{
+						"regexp": "\\s*TS\\d+:\\s*(.*)",
+						"message": 1
+					}
+				],
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "(Compiler starting|Compilation .* starting|webpack \\d.* compiling)",
+					"endsPattern": "(compiled successfully|compiled with \\d+ (error|warning)|Compiler finished)"
+				}
+			},
 			"presentation": {
 				"reveal": "never",
 				"group": "watchers"
@@ -46,16 +69,16 @@
 			"detail": "webpack"
 		},
 		{
-			"label": "$(cloud-upload) 增量更新",
+			// Publish task — must NOT be a default build task (there can be only one, and it is
+			// `npm: watch` that F5 uses via ${defaultBuildTask}). Keep it in the build group but
+			// not default, so Ctrl+Shift+B / the launch resolve to watch, not the publisher.
+			"label": "$(cloud-upload) Publish patch",
 			"type": "shell",
 			"command": "node",
 			"args": [
 				"${workspaceFolder}/publish_patch.js"
 			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
+			"group": "build",
 			"problemMatcher": []
 		}
 	]

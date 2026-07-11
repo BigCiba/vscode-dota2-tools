@@ -1,63 +1,38 @@
-# Change Log
-## [3.1.86] - 2025-10-20
-- kv编辑器
-## [3.1.41] - 2023-09-07
-- 新增飞书云配置表分支功能
-## [3.1.31] - 2023-08-22
-- 新增飞书云配置表功能
-- 修复kv转js中#base的错误
-## [3.1.30] - 2023-08-21
-- 更新划词翻译功能，现在有可选的四种翻译服务，智能中英互翻
-## [3.1.29] - 2023-08-11
-- 大幅减少插件大小
-## [3.1.28] - 2023-08-10
-- 饰品查询新增图片预览功能，需要自行解包资源并配置本地图片路径
-- 修复饰品查询部分英雄缺失问题
-- 更新7.34相关资源
-## [3.1.25] - 2023-07-26
-- 修复bug
-## [3.1.24] - 2023-07-24
-- 图标选择功能现在支持中文搜索基础物品
-## [3.1.19] - 2023-07-04
-- kv转lua功能支持ts
-## [3.1.18] - 2023-07-04
-- 音效选择新增匹配转换后结果的功能
-## [3.1.13] - 2023-05-23
-- 更新生成官方物品的指令
-## [3.1.12] - 2023-05-16
-- 修复图标选择bug
-## [3.1.11] - 2023-05-14
-- 更新lua api
-## [3.1.8] - 2023-04-21
-- 更新大展宏图更新的图标资源
-## [3.1.7] - 2023-04-21
-- 更新大展宏图更新的api（暂时缺失新图标的资源）
-## [3.1.6] - 2023-03-07
-- 更新穷逼的资源
-- 增加一个设置开关kv跳转lua自动生成脚本
-## [3.1.5] - 2023-03-07
-- 更新一些资源（暂时缺失穷逼的资源）
-## [3.1.4] - 2023-01-04
-- 新增配置可以使excel转kv导出的文件后缀改为.txt
-## [3.1.3] - 2022-12-20
-- 新增导出只有英雄饰品的items_game到单文件
-## [3.1.2] - 2022-12-14
-- 新增导出items_game里的portrait信息
-## [3.1.1] - 2022-12-12
-- 新增分英雄导出饰品
-## [2.9.9] - 2022-11-24
-- 更新雷泽资源
-- 增加导出modifierfunction指令
-## [2.9.8] - 2022-11-04
-- 更新Ti11新增的API
-## [2.9.7] - 2022-11-04
-- 更新Ti11第二部分的相关资源
-## [2.9.6] - 2022-10-26
-- 修复了#base带注释的bug
-## [2.9.5] - 2022-10-19
-- 修复翻译bug
-- 增加导出items_game.txt的功能
-## [2.9.3] - 2022-10-09
-- 饰品查询功能增加兽，并且支持中文英雄名查找
-## [2.9.2] - 2022-10-09
-- 导出功能支持AbilityValues
+# Changelog
+
+## 2.0.3
+- Recompile Resource: fixed images (png/jpg/tga/psd) failing with "Failed to find compiler" — they now compile through a temporary `<name>_<ext>.vtex` descriptor (RGBA8888, no mips), producing the `<name>_png.vtex_c` panorama expects; a hand-written `.vtex` next to the image is used as-is
+- Recompile Resource: multi-select works — all selected files compile in a single resourcecompiler run
+
+## 2.0.2
+- API search: results group under their class header like on the ModDota site — e.g. "find mod" shows a `CDOTA_BaseNPC` block with only the matching methods, then `CEntities` with its own
+- API search: searching a class by name (or by its global instance — `GameRules` finds `CDOTAGameRules`, `CustomNetTables` finds `CCustomNetTableManager`) shows the class with its full member list
+- API search: qualified queries work — `GameRules.GetGameTime` or `gamerules pause` find the method inside the class
+- API search: enum blocks filter to the matching members (e.g. `DOTA_ABILITY_BEHAVIOR_HIDDEN` shows just that member)
+- API: class headers show the global instance name (`CDOTAGameRules` → `instance GameRules`)
+- New: "Recompile Resource" in the explorer context menu for files under `content/` — runs `resourcecompiler.exe -fshallow` (found via the Dota 2 install path setting or derived from the file path; mklink junctions are resolved), output goes to the extension output channel
+
+## 2.0.1
+- API sidebar: signature badges (s/c, GitHub) now sit to the right of the declaration, not below
+- API sidebar: function signatures with many arguments wrap per-argument instead of breaking mid-token
+- API search: enum types (e.g. `DOTA_ABILITY_BEHAVIOR`) render as a single block, still findable by member name
+- API search: clicking a type/element link keeps the current source filter instead of jumping to "All"
+- API: removed the Google/magnifier badge and the non-functional `#` link; removed `#` under Panorama CSS properties
+- API: GitHub search now builds a correct query for Panorama (drops the C++ binding-class prefix)
+- Localization: new tab reusing the ModDota site browser, grouped by entity (hero / ability / item / modifier) with display-name headers
+- Localization: language blocks on top (RU / EN / ZH only); removed "Collapse all" and the search clear button
+- Icons: removed the broken hero-filter thumbnail from the search bar
+- Abilities: added a button to copy just the ability's internal name (site + extension)
+- JS completions: fixed `$.M` + Tab inserting a duplicated prefix (`$.$.Msg(...)`)
+- Debug: fixed the `npm: watch` task problem matcher so F5 no longer prompts about a missing problemMatcher
+
+## 2.0.0
+- Rewrote the API browsers into a single activity-bar sidebar reusing the ModDota site's React components
+- Tabs: API search, Panels, Icons, items_game, Music
+
+## 1.0.0
+- Fork from BigCiba/vscode-dota2-tools
+- Remove Excel/CSV, cloud sheets, and translate features
+- Add VPK sync scripts for extracting images and data from Dota 2
+- Rename extension to dota2tools (publisher: iwasinminedream)
+- Remove bundled images from repo (users extract locally)

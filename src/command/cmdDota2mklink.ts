@@ -6,6 +6,7 @@ import { StopAllListener, TryStartWatch } from "../listener/common";
 import { getContentDir, getGameDir } from "../module/addonInfo";
 import { changeStatusBarState, showStatusBarMessage, StatusBarState } from "../module/statusBar";
 import { getRootPath } from "../utils/getRootPath";
+import { localize } from '../utils/localize';
 import path = require("path");
 
 export async function mklinkForDota2Addon(context: ExtensionContext) {
@@ -13,7 +14,7 @@ export async function mklinkForDota2Addon(context: ExtensionContext) {
 	const sDotaDir = workspace.getConfiguration().get<string>("dota2-tools.dota2_install_path");
 	if (sDotaDir) {
 		if (!pathExistsSync(sDotaDir)) {
-			showStatusBarMessage("请先配置正确的Dota2安装目录");
+			showStatusBarMessage(localize('msg_config_dota2_dir'));
 			return;
 		}
 
@@ -30,13 +31,13 @@ export async function mklinkForDota2Addon(context: ExtensionContext) {
 
 		if (!pathExistsSync(sDotaContentAddon)) {
 			changeStatusBarState(StatusBarState.ALL_DONE);
-			showStatusBarMessage("Dota2 content 目录不存在");
+			showStatusBarMessage(localize('msg_content_dir_missing'));
 			return;
 		}
 
 		if (!pathExistsSync(sDotaGameAddon)) {
 			changeStatusBarState(StatusBarState.ALL_DONE);
-			showStatusBarMessage("Dota2 game 目录不存在");
+			showStatusBarMessage(localize('msg_game_dir_missing'));
 			return;
 		}
 

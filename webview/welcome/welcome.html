@@ -10,141 +10,338 @@
 </head>
 
 <body>
-	<h1>Dota2作图工具使用手册</h1>
+	<h1>Dota 2 Modding Tools Manual</h1>
 	<vscode-divider></vscode-divider>
-	<!-- 分类 -->
+	<!-- Categories -->
 	<vscode-panels activeid="tab-1" aria-label="With Active Tab">
-		<vscode-panel-tab id="tab-1">图标查询</vscode-panel-tab>
-		<vscode-panel-tab id="tab-2">饰品查询</vscode-panel-tab>
-		<vscode-panel-tab id="tab-3">音效查询</vscode-panel-tab>
-		<vscode-panel-tab id="tab-4">API文档</vscode-panel-tab>
-		<vscode-panel-tab id="tab-5">项目配置</vscode-panel-tab>
+		<vscode-panel-tab id="tab-1">Icon Browser</vscode-panel-tab>
+		<vscode-panel-tab id="tab-2">Cosmetics Browser</vscode-panel-tab>
+		<vscode-panel-tab id="tab-3">Sound Browser</vscode-panel-tab>
+		<vscode-panel-tab id="tab-4">API Docs</vscode-panel-tab>
+		<vscode-panel-tab id="tab-5">Project Setup</vscode-panel-tab>
 		<vscode-panel-view id="view-1">
 			<section style="display: flex; flex-direction: column; width: 100%;">
-				<h1>如何打开</h1>
+				<h1>How to Open</h1>
 				<vscode-divider></vscode-divider>
-				<p>点击如图所示的按钮或使用组合键 <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P
+				<p>Click the button shown below or use <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P
 					</vscode-tag>
-					搜索指令 <vscode-tag>Dota2图标</vscode-tag> 打开技能选择窗口</p>
+					and search for <vscode-tag>Dota2 Icons</vscode-tag> to open the icon picker</p>
 				<img width="282" height="161" src="../../images/welcome/ability_icon.png" />
 				<!-- <ul>
-					<li>点击图标即可复制图标名直接复制到kv中即可使用</li>
-					<li>右键点击图标可浏览图标原文件，但是注意不要修改该文件夹中的文件，会影响插件功能</li>
+					<li>Click an icon to copy its name for direct use in KV files</li>
+					<li>Right-click an icon to browse the source file, but do not modify files in that folder as it affects the extension's features</li>
 				</ul> -->
-				<h1>使用</h1>
+				<h1>Usage</h1>
 				<vscode-divider></vscode-divider>
-				<p>点击图标即可复制图标名直接复制到kv中即可使用，右键点击图标可浏览图标原文件，但是注意不要修改该文件夹中的文件，会影响插件功能。搜索功能支持空格分割和正则，搜索框左侧可以选择英雄头像辅助搜索。</p>
+				<p>Click an icon to copy its name for use in KV files. Right-click to browse the source file (do not modify files in that folder). Search supports space-separated terms and regex. Use the hero portrait on the left to filter by hero.</p>
 				<img width="557" height="408" src="../../images/welcome/ability_icon_3.gif" />
-				<h1>注意事项</h1>
+				<h1>Notes</h1>
 				<vscode-divider></vscode-divider>
-				<p>如果插件正确获取到game目录与content目录，则项目中的自定义图标会显示在官方图标之后，关于目录获取请参考项目配置。</p>
+				<p>If the extension correctly detects the game and content directories, custom icons from your project will appear after the official icons. See Project Setup for directory configuration.</p>
 			</section>
 		</vscode-panel-view>
 		<vscode-panel-view id="view-2">
 			<section style="display: flex; flex-direction: column; width: 100%;">
-				<h1>如何打开</h1>
+				<h1>How to Open</h1>
 				<vscode-divider></vscode-divider>
-				<p>点击如图所示的按钮或使用组合键 <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P
+				<p>Click the button shown below or use <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P
 					</vscode-tag>
-					搜索指令 <vscode-tag>Dota2饰品查询工具</vscode-tag> 打开窗口</p>
+					and search for <vscode-tag>Dota2 Cosmetics Browser</vscode-tag> to open the window</p>
 				<img width="282" height="161" src="../../images/welcome/items_game.png" />
-				<h1>使用</h1>
+				<h1>Usage</h1>
 				<vscode-divider></vscode-divider>
-				<p>当你为一个单位配置饰品时通常需要解包dota2的items_game.txt文件去搜寻该模型的饰品id，或者你使用官方的UI标签DOTAUIEconSetPreview时需要用到信使的饰品id用来展示3D信使模型。将模型路径粘贴至搜索框即可获得相关信息。
+				<p>When configuring cosmetics for a unit, you typically need to unpack items_game.txt to find the cosmetic ID, or use the DOTAUIEconSetPreview UI tag which requires courier cosmetic IDs. Paste the model path into the search box to get the relevant info.
 				</p>
 				<section style="display: flex; flex-direction: row; width: 100%;">
 					<div style="margin-right: 10px;">
-						<p>1.复制饰品模型路径</p>
+						<p>1. Copy the cosmetic model path</p>
 						<img width="233" height="347" src="../../images/welcome/items_game_2.png" />
 					</div>
 					<div>
-						<p>2.粘贴至搜索框</p>
+						<p>2. Paste into the search box</p>
 						<img width="539" height="347" src="../../images/welcome/items_game_4.png" />
 					</div>
 				</section>
-				<p>搜索套装的技巧，先搜索单个饰品，然后复制套装id进行搜索。</p>
+				<p>Tip for searching sets: first search for a single cosmetic item, then copy the set ID to search.</p>
 				<img width="915" height="589" src="../../images/welcome/items_game_5.gif" />
-				<p>直接搜索英雄名字会展示该英雄的所有饰品（暂时只支持英雄内部名称）</p>
+				<p>Searching a hero name directly will show all cosmetics for that hero (currently only supports internal hero names).</p>
 				<img width="955" height="495" src="../../images/welcome/items_game_6.png" />
 			</section>
 		</vscode-panel-view>
 		<vscode-panel-view id="view-3">
 			<section style="display: flex; flex-direction: column; width: 100%;">
-				<h1>如何打开</h1>
+				<h1>How to Open</h1>
 				<vscode-divider></vscode-divider>
-				<p>点击如图所示的按钮或使用组合键 <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P
+				<p>Click the button shown below or use <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P
 					</vscode-tag>
-					搜索指令 <vscode-tag>vsnd转换</vscode-tag> 打开选择界面</p>
+					and search for <vscode-tag>vsnd picker</vscode-tag> to open the selector</p>
 				<img width="282" height="161" src="../../images/welcome/vsnd_picker.png" />
-				<h1>使用</h1>
+				<h1>Usage</h1>
 				<vscode-divider></vscode-divider>
-				<p>在dota2的资源管理器中找到心仪的音效文件，复制其路径粘贴至搜索框中。选择后会自动写入当前文本编辑器的光标位置。</p>
+				<p>Find the desired sound file in the Dota 2 resource browser, copy its path and paste it into the search box. The selected sound will be automatically inserted at the cursor position in the current text editor.</p>
 				<img width="808" height="586" src="../../images/welcome/vsnd_picker_2.png" />
 				<img width="613" height="425" src="../../images/welcome/vsnd_picker_3.gif" style="margin-top: 10px;" />
 			</section>
 		</vscode-panel-view>
 		<vscode-panel-view id="view-4">
 			<section style="display: flex; flex-direction: column; width: 100%;">
-				<h1>如何打开</h1>
+				<h1>How to Open</h1>
 				<vscode-divider></vscode-divider>
-				<p>找到左侧书一样的按钮</p>
+				<p>Find the book-like icon on the left sidebar.</p>
 				<img width="370" height="722" src="../../images/welcome/api_1.png" />
-				<h1>如何使用</h1>
+				<h1>How to Use</h1>
 				<vscode-divider></vscode-divider>
-				<p>点击树状图中的函数可查看详细信息。</p>
+				<p>Click a function in the tree view to see its details.</p>
 				<img width="812" height="505" src="../../images/welcome/api_3.png" />
-				<p>可以点击列表查看该类下的所有函数</p>
+				<p>Click a class in the list to view all its functions.</p>
 				<img width="812" height="505" src="../../images/welcome/api_4.png" />
-				<p>点击编辑可以修改其信息，包括描述，参数的类型名字描述，返回值，范例等。</p>
+				<p>Click edit to modify its info, including description, parameter types/names/descriptions, return values, examples, etc.</p>
 				<img width="812" height="505" src="../../images/welcome/api_5.png" />
-				<p>lua api的更新日志，可以查看不同时期api的变化。</p>
+				<p>Lua API changelog — view API changes across different periods.</p>
 				<img width="812" height="505" src="../../images/welcome/api_2.png" />
-				<p>其余功能如<vscode-tag>搜索</vscode-tag>
-					<vscode-tag>常用</vscode-tag>请自行体验
+				<p>Other features like <vscode-tag>Search</vscode-tag>
+					and <vscode-tag>Favorites</vscode-tag> can be explored on your own.
 				</p>
-				<h1>注意事项</h1>
+				<h1>Notes</h1>
 				<vscode-divider></vscode-divider>
 				<ul>
-					<li>目前编辑笔记功能只支持lua和css，此处修改的内容存在数据库中，请慎重修改别人的成果。当然对于错误的部分可以进行修正。</li>
-					<li>编辑笔记功能的描述部分请不要使用换行，会跟其他内容产生冲突，所以换行符会自动清除无法上传。</li>
-					<li>如果使用插件的lua代码补全功能，笔记也会更新到补全代码的提示中。</li>
-					<li>如果使用了lua解析插件，比如emmylua，可以使用指令<vscode-tag>生成Emmylua插件用lua api文档</vscode-tag>
-						生成一份定义文档到项目中，每次生成都会根据当前最新的笔记生成。</li>
-					<li>对于不想看到的文档可以在设置中关闭</li>
+					<li>Currently the note editing feature only supports Lua and CSS. Changes are stored in the database — please be careful when editing others' contributions. You can correct errors though.</li>
+					<li>Do not use line breaks in the description field of note editing — they conflict with other content and will be automatically removed before upload.</li>
+					<li>If you use the extension's Lua code completion, notes will also update in the completion hints.</li>
+					<li>If you use a Lua parser plugin like EmmyLua, you can use the command <vscode-tag>Generate EmmyLua API docs</vscode-tag>
+						to generate a definition file in your project. Each generation uses the latest notes.</li>
+					<li>Documents you don't want to see can be disabled in settings.</li>
 				</ul>
 			</section>
 		</vscode-panel-view>
 		<vscode-panel-view id="view-5">
 			<section style="display: flex; flex-direction: column; width: 100%;">
-				<h1>为什么要进行项目配置</h1>
+				<h1>Why Configure the Project</h1>
 				<vscode-divider></vscode-divider>
-				<p>众所周知，dota2的项目路径分为game和content目录。而这两个目录分别处于不同的文件夹下。为了更好的进行项目管理，比如使用git进行版本管理，就需要使两个文件夹处于一个目录下会比较方便。同时本插件对于一个正确配置的项目有更好的支持。
+				<p>As you may know, a Dota 2 project has separate game and content directories in different folders. For better project management (e.g., using Git for version control), it is convenient to have both folders under one directory. This extension also provides better support for a correctly configured project.
 				</p>
-				<h1>如何进行项目配置</h1>
+				<h1>How to Configure the Project</h1>
 				<vscode-divider></vscode-divider>
-				<h3>方法一</h3>
-				<p>使用符号链接(symlinks)<vscode-link
+				<h3>Method 1</h3>
+				<p>Use symbolic links (symlinks). <vscode-link
 						href="https://moddota.com/tools/setting-up-for-collaboration/#how-to-make-your-dota-2-symlinks">
-						参考该说明</vscode-link>或者自行搜索mklink关键字</p>
-				<h3>方法二</h3>
-				<p>使用软件<vscode-link href="https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html">Link
-						Shell Extension</vscode-link>（下载链接在网页最下面。如果不能运行请安装依赖包，依赖包在下载链接旁边）</p>
+						See this guide</vscode-link> or search for the mklink command.</p>
+				<h3>Method 2</h3>
+				<p>Use the software <vscode-link href="https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html">Link
+						Shell Extension</vscode-link> (download link at the bottom of the page; install the prerequisite package if it doesn't run — the link is next to the download).</p>
 				<img width="764" height="162" src="../../images/welcome/link.png" />
-				<p>首先在你满意的位置创建一个文件夹用于放置项目</p>
+				<p>First, create a folder at your preferred location for the project.</p>
 				<img width="652" height="350" src="../../images/welcome/link_4.png" />
-				<p>然后去dota2的game目录下右键项目目录选择【选择源链接点】</p>
+				<p>Then go to the Dota 2 game directory, right-click your project folder, and select "Pick Link Source".</p>
 				<img width="457" height="182" src="../../images/welcome/link_2.png" />
-				<p>回到刚刚创建的game目录下右键选择创建为目录连接点</p>
+				<p>Go back to the game directory you just created, right-click, and select "Drop As Junction".</p>
 				<img width="629" height="651" src="../../images/welcome/link_3.png" />
-				<p>对content进行同样操作后就能得到一个game与content共存的文件夹</p>
-				<h1>注意事项</h1>
+				<p>Repeat the same steps for the content directory to get a folder with both game and content.</p>
+				<h1>Notes</h1>
 				<vscode-divider></vscode-divider>
-				<p>如果不想进行项目配置，比如你没有版本管理，只是单纯使用例如vscode工作区将两个文件夹拉进来。那么也可以在设置找到Addon_path，手动配置项目的game和content路径。该设置最好设置在工作区设置中。
+				<p>If you don't want to set up the project structure (e.g., you don't use version control and simply added both folders to a VS Code workspace), you can manually configure the game and content paths in Settings under Addon_path. It's best to set this in workspace settings.
 				</p>
 			</section>
 		</vscode-panel-view>
 	</vscode-panels>
 	</div>
+	<script>
+	(function() {
+		if (document.documentElement.lang !== 'en') return;
+
+		// Main heading
+		document.querySelector('body > h1').textContent = 'Dota 2 Modding Tools Manual';
+
+		// Tab labels
+		const tabs = {
+			'tab-1': 'Icon Browser',
+			'tab-2': 'Cosmetics Browser',
+			'tab-3': 'Sound Browser',
+			'tab-4': 'API Docs',
+			'tab-5': 'Project Setup'
+		};
+		for (const [id, text] of Object.entries(tabs)) {
+			const el = document.getElementById(id);
+			if (el) el.textContent = text;
+		}
+
+		// Helper: replace text content of matching elements within a view
+		function translateView(viewId, translations) {
+			const view = document.getElementById(viewId);
+			if (!view) return;
+			const elements = view.querySelectorAll('h1, h3, p, li');
+			elements.forEach(el => {
+				const trimmed = el.textContent.trim();
+				// Check for exact match first
+				if (translations[trimmed]) {
+					// Preserve child elements for inline tags
+					if (el.children.length === 0) {
+						el.textContent = translations[trimmed];
+					} else {
+						el.innerHTML = translations[trimmed];
+					}
+				} else {
+					// Check for partial/starts-with match
+					for (const [cn, en] of Object.entries(translations)) {
+						if (trimmed.startsWith(cn.substring(0, 6)) && trimmed.includes(cn.substring(0, 4))) {
+							if (el.children.length === 0) {
+								el.textContent = en;
+							} else {
+								el.innerHTML = en;
+							}
+							break;
+						}
+					}
+				}
+			});
+		}
+
+		// View 1: Icon Browser
+		translateView('view-1', {
+			'\u5982\u4f55\u6253\u5f00': 'How to Open',
+			'\u4f7f\u7528': 'Usage',
+			'\u6ce8\u610f\u4e8b\u9879': 'Notes',
+			'\u70b9\u51fb\u5982\u56fe\u6240\u793a\u7684\u6309\u94ae\u6216\u4f7f\u7528\u7ec4\u5408\u952e Ctrl+Shift+P \u641c\u7d22\u6307\u4ee4 Dota2\u56fe\u6807 \u6253\u5f00\u6280\u80fd\u9009\u62e9\u7a97\u53e3':
+				'Click the button shown below or use <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P</vscode-tag> and search for <vscode-tag>Dota2 Icons</vscode-tag> to open the icon picker',
+			'\u70b9\u51fb\u56fe\u6807\u5373\u53ef\u590d\u5236\u56fe\u6807\u540d\u76f4\u63a5\u590d\u5236\u5230kv\u4e2d\u5373\u53ef\u4f7f\u7528\uff0c\u53f3\u952e\u70b9\u51fb\u56fe\u6807\u53ef\u6d4f\u89c8\u56fe\u6807\u539f\u6587\u4ef6\uff0c\u4f46\u662f\u6ce8\u610f\u4e0d\u8981\u4fee\u6539\u8be5\u6587\u4ef6\u5939\u4e2d\u7684\u6587\u4ef6\uff0c\u4f1a\u5f71\u54cd\u63d2\u4ef6\u529f\u80fd\u3002\u641c\u7d22\u529f\u80fd\u652f\u6301\u7a7a\u683c\u5206\u5272\u548c\u6b63\u5219\uff0c\u641c\u7d22\u6846\u5de6\u4fa7\u53ef\u4ee5\u9009\u62e9\u82f1\u96c4\u5934\u50cf\u8f85\u52a9\u641c\u7d22\u3002':
+				'Click an icon to copy its name for use in KV files. Right-click to browse the source file (do not modify files in that folder). Search supports space-separated terms and regex. Use the hero portrait on the left to filter by hero.',
+			'\u5982\u679c\u63d2\u4ef6\u6b63\u786e\u83b7\u53d6\u5230game\u76ee\u5f55\u4e0econtent\u76ee\u5f55\uff0c\u5219\u9879\u76ee\u4e2d\u7684\u81ea\u5b9a\u4e49\u56fe\u6807\u4f1a\u663e\u793a\u5728\u5b98\u65b9\u56fe\u6807\u4e4b\u540e\uff0c\u5173\u4e8e\u76ee\u5f55\u83b7\u53d6\u8bf7\u53c2\u8003\u9879\u76ee\u914d\u7f6e\u3002':
+				'If the extension correctly detects the game and content directories, custom icons from your project will appear after the official icons. See Project Setup for directory configuration.'
+		});
+
+		// View 2: Cosmetics Browser
+		translateView('view-2', {
+			'\u5982\u4f55\u6253\u5f00': 'How to Open',
+			'\u4f7f\u7528': 'Usage',
+			'\u70b9\u51fb\u5982\u56fe\u6240\u793a\u7684\u6309\u94ae\u6216\u4f7f\u7528\u7ec4\u5408\u952e Ctrl+Shift+P \u641c\u7d22\u6307\u4ee4 Dota2\u9970\u54c1\u67e5\u8be2\u5de5\u5177 \u6253\u5f00\u7a97\u53e3':
+				'Click the button shown below or use <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P</vscode-tag> and search for <vscode-tag>Dota2 Cosmetics Browser</vscode-tag> to open the window',
+			'\u641c\u7d22\u5957\u88c5\u7684\u6280\u5de7\uff0c\u5148\u641c\u7d22\u5355\u4e2a\u9970\u54c1\uff0c\u7136\u540e\u590d\u5236\u5957\u88c5id\u8fdb\u884c\u641c\u7d22\u3002':
+				'Tip for searching sets: first search for a single cosmetic item, then copy the set ID to search.',
+			'\u76f4\u63a5\u641c\u7d22\u82f1\u96c4\u540d\u5b57\u4f1a\u5c55\u793a\u8be5\u82f1\u96c4\u7684\u6240\u6709\u9970\u54c1\uff08\u6682\u65f6\u53ea\u652f\u6301\u82f1\u96c4\u5185\u90e8\u540d\u79f0\uff09':
+				'Searching a hero name directly will show all cosmetics for that hero (currently only supports internal hero names).'
+		});
+		// Translate the paragraphs in view-2 that contain complex inline content
+		const view2 = document.getElementById('view-2');
+		if (view2) {
+			const allP = view2.querySelectorAll('p');
+			allP.forEach(p => {
+				const text = p.textContent.trim();
+				if (text.includes('\u4e3a\u4e00\u4e2a\u5355\u4f4d\u914d\u7f6e\u9970\u54c1')) {
+					p.textContent = 'When configuring cosmetics for a unit, you typically need to unpack items_game.txt to find the cosmetic ID, or use the DOTAUIEconSetPreview UI tag which requires courier cosmetic IDs. Paste the model path into the search box to get the relevant info.';
+				}
+				if (text.startsWith('1.')) {
+					p.textContent = '1. Copy the cosmetic model path';
+				}
+				if (text.startsWith('2.')) {
+					p.textContent = '2. Paste into the search box';
+				}
+			});
+		}
+
+		// View 3: Sound Browser
+		translateView('view-3', {
+			'\u5982\u4f55\u6253\u5f00': 'How to Open',
+			'\u4f7f\u7528': 'Usage',
+			'\u70b9\u51fb\u5982\u56fe\u6240\u793a\u7684\u6309\u94ae\u6216\u4f7f\u7528\u7ec4\u5408\u952e Ctrl+Shift+P \u641c\u7d22\u6307\u4ee4 vsnd\u8f6c\u6362 \u6253\u5f00\u9009\u62e9\u754c\u9762':
+				'Click the button shown below or use <vscode-tag>Ctrl</vscode-tag>+<vscode-tag>Shift</vscode-tag>+<vscode-tag>P</vscode-tag> and search for <vscode-tag>vsnd picker</vscode-tag> to open the selector',
+			'\u5728dota2\u7684\u8d44\u6e90\u7ba1\u7406\u5668\u4e2d\u627e\u5230\u5fc3\u4eea\u7684\u97f3\u6548\u6587\u4ef6\uff0c\u590d\u5236\u5176\u8def\u5f84\u7c98\u8d34\u81f3\u641c\u7d22\u6846\u4e2d\u3002\u9009\u62e9\u540e\u4f1a\u81ea\u52a8\u5199\u5165\u5f53\u524d\u6587\u672c\u7f16\u8f91\u5668\u7684\u5149\u6807\u4f4d\u7f6e\u3002':
+				'Find the desired sound file in the Dota 2 resource browser, copy its path and paste it into the search box. The selected sound will be automatically inserted at the cursor position in the current text editor.'
+		});
+
+		// View 4: API Docs
+		translateView('view-4', {
+			'\u5982\u4f55\u6253\u5f00': 'How to Open',
+			'\u5982\u4f55\u4f7f\u7528': 'How to Use',
+			'\u6ce8\u610f\u4e8b\u9879': 'Notes',
+			'\u627e\u5230\u5de6\u4fa7\u4e66\u4e00\u6837\u7684\u6309\u94ae':
+				'Find the book-like icon on the left sidebar.',
+			'\u70b9\u51fb\u6811\u72b6\u56fe\u4e2d\u7684\u51fd\u6570\u53ef\u67e5\u770b\u8be6\u7ec6\u4fe1\u606f\u3002':
+				'Click a function in the tree view to see its details.',
+			'\u53ef\u4ee5\u70b9\u51fb\u5217\u8868\u67e5\u770b\u8be5\u7c7b\u4e0b\u7684\u6240\u6709\u51fd\u6570':
+				'Click a class in the list to view all its functions.',
+			'\u70b9\u51fb\u7f16\u8f91\u53ef\u4ee5\u4fee\u6539\u5176\u4fe1\u606f\uff0c\u5305\u62ec\u63cf\u8ff0\uff0c\u53c2\u6570\u7684\u7c7b\u578b\u540d\u5b57\u63cf\u8ff0\uff0c\u8fd4\u56de\u503c\uff0c\u8303\u4f8b\u7b49\u3002':
+				'Click edit to modify its info, including description, parameter types/names/descriptions, return values, examples, etc.',
+			'lua api\u7684\u66f4\u65b0\u65e5\u5fd7\uff0c\u53ef\u4ee5\u67e5\u770b\u4e0d\u540c\u65f6\u671fapi\u7684\u53d8\u5316\u3002':
+				'Lua API changelog — view API changes across different periods.'
+		});
+		const view4 = document.getElementById('view-4');
+		if (view4) {
+			const allP = view4.querySelectorAll('p');
+			allP.forEach(p => {
+				const text = p.textContent.trim();
+				if (text.includes('\u5176\u4f59\u529f\u80fd\u5982')) {
+					p.innerHTML = 'Other features like <vscode-tag>Search</vscode-tag> and <vscode-tag>Favorites</vscode-tag> can be explored on your own.';
+				}
+			});
+			const allLi = view4.querySelectorAll('li');
+			const liTranslations = [
+				'\u76ee\u524d\u7f16\u8f91\u7b14\u8bb0\u529f\u80fd\u53ea\u652f\u6301lua\u548ccss',
+				'Currently the note editing feature only supports Lua and CSS. Changes are stored in the database — please be careful when editing others\' contributions. You can correct errors though.',
+				'\u7f16\u8f91\u7b14\u8bb0\u529f\u80fd\u7684\u63cf\u8ff0\u90e8\u5206\u8bf7\u4e0d\u8981\u4f7f\u7528\u6362\u884c',
+				'Do not use line breaks in the description field of note editing — they conflict with other content and will be automatically removed before upload.',
+				'\u5982\u679c\u4f7f\u7528\u63d2\u4ef6\u7684lua\u4ee3\u7801\u8865\u5168\u529f\u80fd',
+				'If you use the extension\'s Lua code completion, notes will also update in the completion hints.',
+				'\u5982\u679c\u4f7f\u7528\u4e86lua\u89e3\u6790\u63d2\u4ef6',
+				'If you use a Lua parser plugin like EmmyLua, you can use the command <vscode-tag>Generate EmmyLua API docs</vscode-tag> to generate a definition file in your project. Each generation uses the latest notes.',
+				'\u5bf9\u4e8e\u4e0d\u60f3\u770b\u5230\u7684\u6587\u6863',
+				'Documents you don\'t want to see can be disabled in settings.'
+			];
+			allLi.forEach(li => {
+				const text = li.textContent.trim();
+				for (let i = 0; i < liTranslations.length; i += 2) {
+					if (text.includes(liTranslations[i])) {
+						if (li.children.length > 0 && li.querySelector('vscode-tag')) {
+							li.innerHTML = liTranslations[i + 1];
+						} else {
+							li.textContent = liTranslations[i + 1];
+						}
+						break;
+					}
+				}
+			});
+		}
+
+		// View 5: Project Setup
+		translateView('view-5', {
+			'\u4e3a\u4ec0\u4e48\u8981\u8fdb\u884c\u9879\u76ee\u914d\u7f6e': 'Why Configure the Project',
+			'\u5982\u4f55\u8fdb\u884c\u9879\u76ee\u914d\u7f6e': 'How to Configure the Project',
+			'\u6ce8\u610f\u4e8b\u9879': 'Notes',
+			'\u65b9\u6cd5\u4e00': 'Method 1',
+			'\u65b9\u6cd5\u4e8c': 'Method 2'
+		});
+		const view5 = document.getElementById('view-5');
+		if (view5) {
+			const allP = view5.querySelectorAll('p');
+			allP.forEach(p => {
+				const text = p.textContent.trim();
+				if (text.includes('\u4f17\u6240\u5468\u77e5')) {
+					p.textContent = 'As you may know, a Dota 2 project has separate game and content directories in different folders. For better project management (e.g., using Git for version control), it is convenient to have both folders under one directory. This extension also provides better support for a correctly configured project.';
+				}
+				if (text.includes('\u4f7f\u7528\u7b26\u53f7\u94fe\u63a5')) {
+					p.innerHTML = 'Use symbolic links (symlinks). <vscode-link href="https://moddota.com/tools/setting-up-for-collaboration/#how-to-make-your-dota-2-symlinks">See this guide</vscode-link> or search for the mklink command.';
+				}
+				if (text.includes('\u4f7f\u7528\u8f6f\u4ef6')) {
+					p.innerHTML = 'Use the software <vscode-link href="https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html">Link Shell Extension</vscode-link> (download link at the bottom of the page; install the prerequisite package if it doesn\'t run — the link is next to the download).';
+				}
+				if (text.includes('\u6ee1\u610f\u7684\u4f4d\u7f6e\u521b\u5efa')) {
+					p.textContent = 'First, create a folder at your preferred location for the project.';
+				}
+				if (text.includes('game\u76ee\u5f55\u4e0b\u53f3\u952e')) {
+					p.textContent = 'Then go to the Dota 2 game directory, right-click your project folder, and select "Pick Link Source".';
+				}
+				if (text.includes('\u521b\u5efa\u7684game\u76ee\u5f55\u4e0b\u53f3\u952e')) {
+					p.textContent = 'Go back to the game directory you just created, right-click, and select "Drop As Junction".';
+				}
+				if (text.includes('\u5bf9content\u8fdb\u884c\u540c\u6837\u64cd\u4f5c')) {
+					p.textContent = 'Repeat the same steps for the content directory to get a folder with both game and content.';
+				}
+				if (text.includes('\u4e0d\u60f3\u8fdb\u884c\u9879\u76ee\u914d\u7f6e')) {
+					p.textContent = 'If you don\'t want to set up the project structure (e.g., you don\'t use version control and simply added both folders to a VS Code workspace), you can manually configure the game and content paths in Settings under Addon_path. It\'s best to set this in workspace settings.';
+				}
+			});
+		}
+	})();
+	</script>
 </body>
 
 </html>

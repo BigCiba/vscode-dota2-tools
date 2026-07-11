@@ -39,7 +39,7 @@
 			}
 			"radius"					
 			{
-				"value"		"375"
+				"value"		"400"
 				"affected_by_aoe_increase"	"1"
 			}
 			"damage"					
@@ -194,7 +194,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL | DOTA_ABILITY_BEHAVIOR_IGNORE_INVISIBLE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL | DOTA_ABILITY_BEHAVIOR_IGNORE_INVISIBLE | DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE"
 		"AbilitySound"					"Hero_Brewmaster.Brawler.Crit"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		
@@ -227,7 +227,7 @@
 			}
 			"bonus_armor"				
 			{
-				"value"					"2 4 6 8"
+				"value"					"3 5 7 9"
 				"special_bonus_unique_brewmaster_drunken_brawler_stance_bonus"	"+50%"
 			}
 
@@ -265,11 +265,11 @@
 			"brewed_up_duration"			
 			{
 				"value"													"5"
-				"special_bonus_unique_brewmaster_brewed_up_duration"	"+1"
+				"special_bonus_unique_brewmaster_brewed_up_duration"	"+2"
 			}
 			"brewed_up_duration_extend"		
 			{	
-				"value"						"1"
+				"value"													"2"
 				"special_bonus_unique_brewmaster_brewed_up_duration"	"+1"
 			}
 			"brewed_up_bonus"				"150"
@@ -304,7 +304,7 @@
 	//=================================================================================================================
 	"brewmaster_liquid_courage"
 	{
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_FORCE_KEYBIND | DOTA_ABILITY_BEHAVIOR_FORCE_NO_INNATE_UI | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_NONE"	
 		"MaxLevel"						"1"
 		"Innate"						"1"
@@ -318,12 +318,12 @@
 			"max_health_threshold"			"20"		// When the effect is at full power
 			"status_resist"			
 			{
-				"value"					"10.5"
+				"value"					"10"
 				"hero_levelup"			"+0.5"
 			}
 
 			"min_speed"					"10"	
-			"max_speed"					"25"
+			"max_speed"					"30"
 			"speed_toggle_time"			"1"
 
 			"drink_duration"					
@@ -359,7 +359,7 @@
 			"max_hp_regen"
 			{
 				"value"						"0"
-				"special_bonus_shard"		"+2"
+				"special_bonus_shard"		"+2.5"
 			}
 		}		
 	}
@@ -400,7 +400,7 @@
 
 			"duration"					
 			{
-				"value"			"16 20 24"
+				"value"			"16 20 24 24"
 				//"special_bonus_unique_brewmaster_primal_split_duration"				"+4"
 			}
 			
@@ -587,7 +587,7 @@
 			}
 			"duration"
 			{
-				"value" "1.6 1.6 1.6 2.0"
+				"value" "1.6 1.6 1.6 1.8"
 			}
 			"speed"
 			{
@@ -650,6 +650,7 @@
 		{
 			"magic_resist"			"60"
 			"status_resist"			"80"
+			"slow_resist"			"80"
 		}
 	}
 
@@ -734,7 +735,7 @@
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_5"
 		"AbilityValues"
 		{
-			"duration_hero"  "3 4 5 6"
+			"duration_hero"  "3 3.75 4.5 5.25"
 			"duration_unit"  "16 16 16 16"
 			"landing_damage"			"75 75 75 100"
 		}

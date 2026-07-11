@@ -6,12 +6,12 @@ import * as fs from 'fs';
 import { writeKeyValue } from '../utils/kvUtils';
 
 /**
- * 解析vmap的实体信息
+ * Parse entity info from a vmap
  * @param context
  */
 export async function parseMapEntities(context: vscode.ExtensionContext) {
 	const gameDir = getGameDir();
-	const mapPath: string = gameDir.replace("game\\dota_rogue", "design\\工具\\Decompiler-windows\\maps\\chapter");
+	const mapPath: string = gameDir.replace("game\\dota_rogue", "design\\tools\\Decompiler-windows\\maps\\chapter");
 	let jsonObj: any = {};
 	await readFolder(mapPath);
 	async function readFolder(folderName: string) {

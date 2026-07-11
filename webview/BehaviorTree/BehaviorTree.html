@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>行为树编辑器</title>
+    <title>Behavior Tree Editor</title>
     <link rel="stylesheet" href="{{CODICON_CSS_URI}}">
     <link rel="stylesheet" href="BehaviorTree.css">
     <link rel="stylesheet" href="BehaviorTree-template.css">
@@ -18,39 +18,39 @@
     <div id="app">
         <div class="toolbar">
             <div class="toolbar-group">
-                <button id="saveBtn" class="btn btn-primary" title="保存 (Ctrl+S)">
-                    <i class="codicon codicon-save"></i> 保存
+                <button id="saveBtn" class="btn btn-primary" title="Save (Ctrl+S)">
+                    <i class="codicon codicon-save"></i> Save
                 </button>
-                <button id="addNodeBtn" class="btn" title="添加节点">
-                    <i class="codicon codicon-add"></i> 添加节点
+                <button id="addNodeBtn" class="btn" title="Add Node">
+                    <i class="codicon codicon-add"></i> Add Node
                 </button>
-                <button id="addFromTemplateBtn" class="btn" title="从模板添加节点">
-                    <i class="codicon codicon-file-code"></i> 模板
+                <button id="addFromTemplateBtn" class="btn" title="Add Node from Template">
+                    <i class="codicon codicon-file-code"></i> Template
                 </button>
-                <button id="deleteNodeBtn" class="btn btn-danger" title="删除选中节点 (Delete)">
-                    <i class="codicon codicon-trash"></i> 删除
+                <button id="deleteNodeBtn" class="btn btn-danger" title="Delete Selected (Delete)">
+                    <i class="codicon codicon-trash"></i> Delete
                 </button>
             </div>
             <div class="toolbar-group">
-                <button id="zoomInBtn" class="btn" title="放大">
+                <button id="zoomInBtn" class="btn" title="Zoom In">
                     <i class="codicon codicon-zoom-in"></i>
                 </button>
-                <button id="zoomOutBtn" class="btn" title="缩小">
+                <button id="zoomOutBtn" class="btn" title="Zoom Out">
                     <i class="codicon codicon-zoom-out"></i>
                 </button>
-                <button id="fitBtn" class="btn" title="适应画布">
-                    <i class="codicon codicon-screen-normal"></i> 适应
+                <button id="fitBtn" class="btn" title="Fit Canvas">
+                    <i class="codicon codicon-screen-normal"></i> Fit
                 </button>
             </div>
             <div class="toolbar-group">
                 <label class="tree-name-label">
-                    树名称: 
-                    <input type="text" id="treeNameInput" class="tree-name-input" placeholder="行为树名称">
+                    Tree Name:
+                    <input type="text" id="treeNameInput" class="tree-name-input" placeholder="Behavior tree name">
                 </label>
             </div>
             <div class="toolbar-group" style="margin-left: auto;">
-                <button id="openTextBtn" class="btn" title="用文本编辑器打开（拆分右侧）">
-                    <i class="codicon codicon-go-to-file"></i> 文本模式
+                <button id="openTextBtn" class="btn" title="Open in Text Editor (Split Right)">
+                    <i class="codicon codicon-go-to-file"></i> Text Mode
                 </button>
             </div>
         </div>
@@ -62,75 +62,75 @@
 
             <div class="properties-panel" id="propertiesPanel">
                 <div class="panel-header">
-                    <h3>属性面板</h3>
+                    <h3>Properties</h3>
                     <button id="closePanelBtn" class="close-btn">×</button>
                 </div>
                 <div class="panel-content" id="propertiesContent">
-                    <p class="empty-state">请选择一个节点</p>
+                    <p class="empty-state">Please select a node</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 添加节点对话框 -->
+    <!-- Add Node Dialog -->
     <div id="addNodeDialog" class="dialog" style="display: none;">
         <div class="dialog-content">
             <div class="dialog-header">
-                <h3>添加节点</h3>
+                <h3>Add Node</h3>
                 <button class="close-btn" onclick="closeAddNodeDialog()">×</button>
             </div>
             <div class="dialog-body">
                 <div class="form-group">
-                    <label>节点类型:</label>
+                    <label>Node Type:</label>
                     <select id="nodeTypeSelect">
-                        <option value="Sequence">Sequence (序列)</option>
-                        <option value="Selector">Selector (选择器)</option>
-                        <option value="Parallel">Parallel (并行)</option>
-                        <option value="Condition">Condition (条件)</option>
-                        <option value="Action">Action (动作)</option>
-                        <option value="Decorator">Decorator (装饰器)</option>
+                        <option value="Sequence">Sequence</option>
+                        <option value="Selector">Selector</option>
+                        <option value="Parallel">Parallel</option>
+                        <option value="Condition">Condition</option>
+                        <option value="Action">Action</option>
+                        <option value="Decorator">Decorator</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>英文标识符 (Key):</label>
-                    <input type="text" id="nodeKeyInput" placeholder="例如: Heal, Attack, CheckHealth">
+                    <label>Identifier (Key):</label>
+                    <input type="text" id="nodeKeyInput" placeholder="e.g.: Heal, Attack, CheckHealth">
                 </div>
                 <div class="form-group">
-                    <label>中文名称 (Name):</label>
-                    <input type="text" id="nodeNameInput" placeholder="例如: 治疗, 攻击, 检查生命值">
+                    <label>Display Name (Name):</label>
+                    <input type="text" id="nodeNameInput" placeholder="e.g.: Heal, Attack, Check Health">
                 </div>
                 <div class="form-group">
-                    <label>描述 (可选):</label>
-                    <textarea id="nodeDescInput" placeholder="请输入节点描述" rows="3"></textarea>
+                    <label>Description (optional):</label>
+                    <textarea id="nodeDescInput" placeholder="Enter node description" rows="3"></textarea>
                 </div>
             </div>
             <div class="dialog-footer">
-                <button class="btn" onclick="closeAddNodeDialog()">取消</button>
-                <button class="btn btn-primary" onclick="confirmAddNode()">添加</button>
+                <button class="btn" onclick="closeAddNodeDialog()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmAddNode()">Add</button>
             </div>
         </div>
     </div>
 
-    <!-- 模板选择对话框 -->
+    <!-- Template Selection Dialog -->
     <div id="templateDialog" class="dialog" style="display: none;">
         <div class="dialog-content">
             <div class="dialog-header">
-                <h3>选择模板</h3>
+                <h3>Select Template</h3>
                 <button class="close-btn" onclick="closeTemplateDialog()">×</button>
             </div>
             <div class="dialog-body">
-                <!-- 搜索和筛选栏 -->
+                <!-- Search and Filter Bar -->
                 <div class="template-filter-bar">
                     <div class="template-search-box">
                         <span class="codicon codicon-search"></span>
-                        <input type="text" id="templateSearchInput" placeholder="搜索模板（名称、描述、类型、键名）" oninput="editor.filterTemplates()">
-                        <button class="clear-search-btn" onclick="editor.clearTemplateSearch()" title="清除搜索">
+                        <input type="text" id="templateSearchInput" placeholder="Search templates (name, description, type, key)" oninput="editor.filterTemplates()">
+                        <button class="clear-search-btn" onclick="editor.clearTemplateSearch()" title="Clear Search">
                             <span class="codicon codicon-close"></span>
                         </button>
                     </div>
                     <div class="template-type-filters">
                         <button class="type-filter-btn active" data-type="all" onclick="editor.toggleTemplateType('all')">
-                            <span class="codicon codicon-filter"></span> 全部
+                            <span class="codicon codicon-filter"></span> All
                         </button>
                         <button class="type-filter-btn" data-type="Sequence" onclick="editor.toggleTemplateType('Sequence')">
                             <span class="type-badge" style="background-color: #2196F3;"></span> Sequence
@@ -152,75 +152,79 @@
                         </button>
                     </div>
                     <div class="template-sort-bar">
-                        <label>排序:</label>
+                        <label>Sort:</label>
                         <select id="templateSortSelect" onchange="editor.sortTemplates()">
-                            <option value="name-asc">名称 A-Z</option>
-                            <option value="name-desc">名称 Z-A</option>
-                            <option value="type-asc">类型 A-Z</option>
-                            <option value="date-desc" selected>最新创建</option>
-                            <option value="date-asc">最早创建</option>
+                            <option value="name-asc">Name A-Z</option>
+                            <option value="name-desc">Name Z-A</option>
+                            <option value="type-asc">Type A-Z</option>
+                            <option value="date-desc" selected>Newest</option>
+                            <option value="date-asc">Oldest</option>
                         </select>
                     </div>
                 </div>
-                <!-- 模板列表 -->
+                <!-- Template List -->
                 <div id="templateList" class="template-list">
-                    <p class="empty-state">正在加载模板...</p>
+                    <p class="empty-state">Loading templates...</p>
                 </div>
             </div>
             <div class="dialog-footer">
-                <button class="btn" onclick="closeTemplateDialog()">取消</button>
+                <button class="btn" onclick="closeTemplateDialog()">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- 保存模板对话框 -->
+    <!-- Save Template Dialog -->
     <div id="saveTemplateDialog" class="dialog" style="display: none;">
         <div class="dialog-content">
             <div class="dialog-header">
-                <h3>保存为模板</h3>
+                <h3>Save as Template</h3>
                 <button class="close-btn" onclick="closeSaveTemplateDialog()">×</button>
             </div>
             <div class="dialog-body">
                 <div class="form-group">
-                    <label>模板名称:</label>
-                    <input type="text" id="templateNameInput" placeholder="例如: 治疗技能">
+                    <label>Template Name:</label>
+                    <input type="text" id="templateNameInput" placeholder="e.g.: Heal Ability">
                 </div>
                 <div class="form-group">
-                    <label>模板描述 (可选):</label>
-                    <textarea id="templateDescInput" rows="3" placeholder="请输入模板描述"></textarea>
+                    <label>Template Description (optional):</label>
+                    <textarea id="templateDescInput" rows="3" placeholder="Enter template description"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="templateIncludeChildren" class="vscode-checkbox" checked>
                         <span class="checkbox-indicator"></span>
-                        <span class="checkbox-text">包含子节点</span>
+                        <span class="checkbox-text">Include Children</span>
                     </label>
                 </div>
             </div>
             <div class="dialog-footer">
-                <button class="btn" onclick="closeSaveTemplateDialog()">取消</button>
-                <button class="btn btn-primary" onclick="confirmSaveTemplate()">保存</button>
+                <button class="btn" onclick="closeSaveTemplateDialog()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmSaveTemplate()">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- 确认删除对话框 -->
+    <!-- Confirm Dialog -->
     <div id="confirmDialog" class="dialog" style="display: none;">
         <div class="dialog-content" style="min-width: 300px;">
             <div class="dialog-header">
-                <h3>确认操作</h3>
+                <h3>Confirm</h3>
                 <button class="close-btn" onclick="closeConfirmDialog()">×</button>
             </div>
             <div class="dialog-body">
-                <p id="confirmMessage">确定要执行此操作吗？</p>
+                <p id="confirmMessage">Are you sure?</p>
             </div>
             <div class="dialog-footer">
-                <button class="btn" onclick="closeConfirmDialog()">取消</button>
-                <button class="btn btn-danger" onclick="confirmAction()">确定</button>
+                <button class="btn" onclick="closeConfirmDialog()">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmAction()">OK</button>
             </div>
         </div>
     </div>
 
+    <!-- All UI text is now in English by default; no i18n override script needed -->
+    <script>
+    // Intentionally left empty - HTML content is already in English
+    </script>
     <script src="BehaviorTree.js"></script>
 </body>
 </html>

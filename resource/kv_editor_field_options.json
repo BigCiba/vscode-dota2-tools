@@ -1500,5 +1500,195 @@
 		],
 		"multiple": false,
 		"separator": "|"
+	},
+	"ItemDroppable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemSellable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemPurchasable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemKillable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemPermanent": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemIsNeutralDrop": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemDisassemblable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemRequiresCharges": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemCombinable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemStackable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemRecipe": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemIsNeutralActiveDrop": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"AllowedInBackpack": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"IsTempestDoubleClonable": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"SpeciallyBannedFromNeutralSlot": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemContributesToNetWorthWhenDropped": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemIsNeutralPassiveDrop": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"OnCastbar": {
+		"inputType": "checkbox",
+		"folderTypeOnly": [
+			"ability",
+			"custom"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemCost": {
+		"inputType": "number",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"MaxUpgradeLevel": {
+		"inputType": "spinner",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
+	},
+	"ItemBaseLevel": {
+		"inputType": "spinner",
+		"folderTypeOnly": [
+			"item"
+		],
+		"options": [],
+		"multiple": false,
+		"separator": ","
 	}
 }

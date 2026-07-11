@@ -16,7 +16,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.15"
-		"AbilityCastRange"				"400 500 600 700"
+		"AbilityCastRange"				"575 650 725 800"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -31,18 +31,18 @@
 		{
 				"AbilityCooldown"				
 				{	
-					"value"				"20 17 14 11"
+					"value"				"19 16 13 10"
 					"special_bonus_unique_pangolier_4"	"-2"
 				}
-				"dash_range"			"400 500 600 700"
+				"dash_range"			"575 650 725 800"
 				"range"					
 				{
-					"value"			"700"
+					"value"			"850"
 					"special_bonus_unique_pangolier"	"+200"
 				}
 				"damage"				
 				{
-					"value"		"30 60 90 120"
+					"value"		"35 65 95 125"
 					"CalculateSpellDamageTooltip"	"0"
 				}
 				"attack_damage"
@@ -67,7 +67,7 @@
 					"value"			"3"				
 				}
 				"procs_onhit_effects"			"1"
-				"slow_duration"		"0.4"
+				"slow_duration"		"0.6"
 				"slow_percent"		"100"
 
 				"damage_penalty"	"25"	// If updating this, change scepter_damage_outgoing_tooltip in shield_crash
@@ -110,7 +110,7 @@
 		{
 			"damage"
 			{
-				"value"					"50 100 150 200"
+				"value"					"60 120 180 240"
 				"CalculateSpellDamageTooltip"	"1"
 
 			}
@@ -134,7 +134,7 @@
 			}
 			"AbilityCooldown"				
 			{
-				"value"													"16 13 10 7"
+				"value"													"15 12 9 6"
 				"special_bonus_unique_pangolier_shield_crash_cooldown"	"-1.5"
 			}
 			"min_damage_increase_pct"				
@@ -205,7 +205,7 @@
 			"attack_slow"			"40 80 120 160"
 			"armor"			
 			{
-				"value"					"3 5 7 9"
+				"value"					"2 4 6 8"
 				"special_bonus_unique_pangolier_luckyshot_armor"			"+3"
 			}
 		}
@@ -246,7 +246,7 @@
 
 		// Damage.
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"75 150 225"
+		"AbilityDamage"					"100 200 300"
 
         "precache"
 		{
@@ -260,7 +260,7 @@
 			"damage_pct"				"100"
 			"AbilityCooldown"				
 			{	
-				"value"			"90 85 80"
+				"value"			"100 90 80"
 				"special_bonus_unique_pangolier_5"	"-15"
 			}
 			"cast_time_tooltip"		"1.2"
@@ -292,7 +292,7 @@
 				"affected_by_aoe_increase"	"1"		
 			}			
 			"bounce_duration"		"0.4"
-			"stun_duration"			"0.8 1.0 1.2"
+			"stun_duration"			"1.2"
 			"knockback_radius"		
 			{
 				"value"			"150"
@@ -300,12 +300,12 @@
 			}			
 			"duration"				
 			{
-				"value"		"9 10 11"
+				"value"		"10 11 12"
 				"special_bonus_unique_pangolier_6"	"+2"
 				"special_bonus_facet_pangolier_thunderbolt"	"-1"
 			}
 			"jump_recover_time"		"0.25"
-			"magic_resistance"				"60"				
+			"magic_resistance"				"80"				
 		}
 	}
 
@@ -316,7 +316,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_FORCE_NO_INNATE_UI | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"MaxLevel"						"1"
 		"Innate"						"1"
 		"IsBreakable"					"1"
@@ -328,7 +328,7 @@
 				"value"		"1200"
 				"affected_by_aoe_increase"	"1"
 			}
-			"chance_reduce"				"-40"			
+			"chance_reduce"				"-50"			
 		}
 	}
 
@@ -412,7 +412,7 @@
 				"duration"				"2.25"
 				"jump_recover_time"		"0.25"
 				"rollup_bounce_duration"				"0.75"
-				"magic_resistance"				"60"
+				"magic_resistance"				"80"
 		}
 	}
 

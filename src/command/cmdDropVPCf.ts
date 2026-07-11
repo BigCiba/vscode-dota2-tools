@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { getContentDir } from '../module/addonInfo';
 import { DropHeroString } from '../Class/DropString';
 
-/** 轮回谷生成英雄掉落卡片的vtex和vpcf */
+/** Samsara Valley: generate the vtex and vpcf for hero drop cards */
 export function dropVPCf(context: vscode.ExtensionContext) {
 	const contetDir = getContentDir();
 	let sTgaPath = (contetDir + "/materials/items/").replace(/\\/g, "/");
@@ -17,7 +17,7 @@ export function dropVPCf(context: vscode.ExtensionContext) {
 			let sVTEXFileName = `${sVTEXPath}${sShortFileName}.vtex`;
 			let sVPCFFileName = `${sVPCFPath}dropped_item_${sHeroName}.vpcf`;
 			let oHeroString = new DropHeroString(sHeroName);
-			// 已存在就不生成
+			// Do not generate if it already exists
 			if (!fs.existsSync(sVTEXFileName)) {
 				fs.writeFileSync(sVTEXFileName, oHeroString.strDropVtex);
 			}

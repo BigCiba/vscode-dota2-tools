@@ -8,7 +8,7 @@ import { getRootPath } from '../utils/getRootPath';
 import { readKeyValueWithBase } from '../utils/kvUtils';
 import { getPathInfo } from '../utils/pathUtils';
 
-/** 关联kv的脚本路径 */
+/** Script paths associated with kv */
 let scriptFiles: Table = {};
 let defJump: vscode.Disposable;
 let eventID: number;
@@ -17,7 +17,7 @@ const tsConfigName = "dota2-tools.A6.Kv to lua generate typescript";
 let enableConfig: boolean | undefined;
 let tsConfig: boolean | undefined;
 
-/** 扩展名 */
+/** File extension */
 let extensionName = ".lua";
 
 export async function kv2luaInit(context: vscode.ExtensionContext) {
@@ -46,14 +46,14 @@ export async function kv2luaInit(context: vscode.ExtensionContext) {
 		// const word = document.getText(document.getWordRangeAtPosition(position));
 		const line: vscode.TextLine = document.lineAt(position);
 
-		// console.log('====== 进入 provideDefinition 方法 ======');
-		// console.log('fileName: ' + fileName); // 当前文件完整路径
-		// console.log('workDir: ' + workDir); // 当前文件所在目录
-		// console.log('word: ' + word); // 当前光标所在单词
-		// console.log('line: ' + line.text); // 当前光标所在行
+		// console.log('====== Entering the provideDefinition method ======');
+		// console.log('fileName: ' + fileName); // Full path of the current file
+		// console.log('workDir: ' + workDir); // Directory of the current file
+		// console.log('word: ' + word); // Word under the current cursor
+		// console.log('line: ' + line.text); // Line where the current cursor is
 		// console.log();
 
-		// 只处理package.json文件
+		// Only process package.json files
 		if (/.*\.kv/.test(fileName) || /.*\.txt/.test(fileName)) {
 			const json = document.getText();
 			// console.log(new RegExp(`"ScriptFile".*"${word}"`).test(json));
@@ -93,7 +93,7 @@ export async function kv2luaInit(context: vscode.ExtensionContext) {
 }
 
 
-/** 更新关联表 */
+/** Update the association table */
 export async function refreshScriptFiles() {
 	const gameDir = getGameDir();
 	const scriptDir = tsConfig ? getContentDir() : getGameDir();
@@ -120,7 +120,7 @@ export function getScriptFiles() {
 	return scriptFiles;
 }
 
-/** 自动生成的技能物品lua文件模板 */
+/** Template for auto-generated ability/item lua files */
 function getLuaScriptSnippet(filename: string, luaPath: string, context?: vscode.ExtensionContext, snippetPath?: string): string {
 	try {
 		const templateConfig: Table = vscode.workspace.getConfiguration().get('dota2-tools.LuaTemplateFiles') as Table;
@@ -143,7 +143,7 @@ function getLuaScriptSnippet(filename: string, luaPath: string, context?: vscode
 	return '';
 }
 
-/** 是否开启设置 */
+/** Whether the setting is enabled */
 function getConfiguration(configName: string) {
 	let config = vscode.workspace.getConfiguration().get<boolean>(configName);
 	return config;

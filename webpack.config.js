@@ -3,6 +3,7 @@
 'use strict';
 
 const path = require('path');
+const webpack = require('webpack');
 
 //@ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
@@ -34,7 +35,9 @@ const extensionConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
+            loader: 'ts-loader',
+            // Unique instance so it does not share state with the webview bundle's loader.
+            options: { instance: 'extension' }
           }
         ]
       }
@@ -45,4 +48,64 @@ const extensionConfig = {
     level: "log", // enables logging required for problem matchers
   },
 };
-module.exports = [extensionConfig];
+
+// React webview bundle for the unified sidebar (the "API" tab). Runs in the webview
+// (browser context), reuses the ModDota site's API components, and imports the API
+// data directly from the sibling @moddota/dota-data repo via a resolve alias.
+/** @type WebpackConfig */
+const webviewConfig = {
+  target: 'web',
+  mode: 'none',
+  // Minify the bundle so the webview reloads/parses it faster when switching back to the
+  // API tab (cuts the ~3.6 MB dev bundle to roughly a third), reducing tab-switch lag.
+  optimization: {
+    minimize: true,
+  },
+
+  entry: './src/webview-api/index.tsx',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'sidebar.js',
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.json'],
+    alias: {
+      // The site's data scope files import from "@moddota/dota-data/...". Point that
+      // at the local sibling build (files/ + lib/) so current local data is bundled.
+      '@moddota/dota-data': path.resolve(__dirname, '../../dota/dota-data'),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              // Distinct instance so this transpile-only config does not collide with the
+              // extension bundle's ts-loader (which type-checks against the strict root tsconfig).
+              instance: 'webviewSidebar',
+              configFile: path.resolve(__dirname, 'tsconfig.webview.json'),
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  plugins: [
+    // React and its deps read process.env.NODE_ENV; webpack mode 'none' does not define it,
+    // so without this the bundle throws "process is not defined" in the webview (blank page).
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  ],
+  devtool: 'nosources-source-map',
+  infrastructureLogging: {
+    level: "log",
+  },
+};
+
+module.exports = [extensionConfig, webviewConfig];

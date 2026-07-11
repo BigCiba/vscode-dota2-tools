@@ -11,17 +11,17 @@ import { readFunction } from '../utils/readFunction';
 import { getDotaApiNoteClass } from './apiNote';
 
 /**
- * 更新步骤：
- * 1. 解包items_game.txt到resource文件夹
- * 2. 复制控制台cl_panorama_script_help_2到resource同名文件中
- * 3. 复制控制台dump_panorama_css_properties到resource同名文件中
- * 4. 复制控制台dump_panorama_events到resource同名文件中
- * 5. PanelList.md是手写文档
- * 6. 解包soundevents，手动改路径解析
- * 7. 复制最新的api用来生成changelog
+ * Update steps:
+ * 1. Extract items_game.txt into the resource folder
+ * 2. Copy the console output cl_panorama_script_help_2 into the resource file of the same name
+ * 3. Copy the console output dump_panorama_css_properties into the resource file of the same name
+ * 4. Copy the console output dump_panorama_events into the resource file of the same name
+ * 5. PanelList.md is a hand-written document
+ * 6. Extract soundevents and adjust the path parsing manually
+ * 7. Copy the latest api to generate the changelog
  */
 
-/** 将items_game.txt的套装信息解析出来 */
+/** Parse the item set information out of items_game.txt */
 export function itemsGameParse(context: vscode.ExtensionContext) {
 	let sFilePath: string = path.join(context.extensionPath, "resource/items_game.txt");
 	let tItemsData = readKeyValue2(fs.readFileSync(sFilePath, 'utf-8'), true, false).items_game.items;
@@ -33,10 +33,10 @@ export function itemsGameParse(context: vscode.ExtensionContext) {
 	fs.writeFileSync(path.join(context.extensionPath, "resource/items_game.json"), JSON.stringify(tItemsData));
 }
 
-/** 将官方打印的api替换成md格式和obj */
+/** Convert the official API output into md format and an object */
 export function parsePanoramaAPI(context: vscode.ExtensionContext) {
 	let cl_panorama_script_help_2: string = fs.readFileSync(path.join(context.extensionPath, 'resource', 'cl_panorama_script_help_2.txt'), 'utf-8');
-	// 处理成md格式
+	// Convert to md format
 	cl_panorama_script_help_2 = cl_panorama_script_help_2.replace(/=== (.*) ===/g, (m, $1) => {
 		return '# ' + $1;
 	});
@@ -48,7 +48,7 @@ export function parsePanoramaAPI(context: vscode.ExtensionContext) {
 	});
 	cl_panorama_script_help_2 = cl_panorama_script_help_2.replace(/\|\}\r\n/g, '');
 	fs.writeFileSync(path.join(context.extensionPath, 'resource', 'cl_panorama_script_help_2.md'), cl_panorama_script_help_2);
-	// 以下处理成object
+	// Below: convert to an object
 	cl_panorama_script_help_2 = cl_panorama_script_help_2.replace(/<code>(.*)<\/code>/g, (m, $1) => { return $1; });
 	interface ApiInfo {
 		[key: string]: string;
@@ -75,10 +75,10 @@ export function parsePanoramaAPI(context: vscode.ExtensionContext) {
 	fs.writeFileSync(path.join(context.extensionPath, 'resource', 'cl_panorama_script_help_2.json'), JSON.stringify(api));
 }
 
-/** 将官方打印的css文档处理成md和obj */
+/** Convert the official CSS document output into md and an object */
 export function parseCssDocument(context: vscode.ExtensionContext) {
 	let dump_panorama_css_properties: string = fs.readFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_css_properties.txt'), 'utf-8');
-	// 处理成md格式
+	// Convert to md format
 	dump_panorama_css_properties = dump_panorama_css_properties.replace(/=== (.*) ===/g, (m, $1) => { return `# ${$1}`; });
 	dump_panorama_css_properties = dump_panorama_css_properties.replace(/<br>/g, os.EOL);
 	dump_panorama_css_properties = dump_panorama_css_properties.replace(/<b>(.*)<\/b>/g, (m, $1) => {
@@ -87,7 +87,7 @@ export function parseCssDocument(context: vscode.ExtensionContext) {
 	dump_panorama_css_properties = dump_panorama_css_properties.replace(/<pre>/g, '```' + os.EOL);
 	dump_panorama_css_properties = dump_panorama_css_properties.replace(/<\/pre>/g, os.EOL + '```');
 	fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_css_properties.md'), dump_panorama_css_properties);
-	// 以下处理成object
+	// Below: convert to an object
 	// dump_panorama_css_properties = dump_panorama_css_properties.replace(/&lt;/g, '<');
 	// dump_panorama_css_properties = dump_panorama_css_properties.replace(/&gt;/g, '>');
 	let row = dump_panorama_css_properties.split(os.EOL);
@@ -122,7 +122,7 @@ export function parseCssDocument(context: vscode.ExtensionContext) {
 			}
 		}
 	});
-	// 去除首尾以及多余换行
+	// Remove leading/trailing and extra line breaks
 	for (const key in CSS) {
 		const element = CSS[key];
 		if (element.description !== undefined) {
@@ -135,10 +135,10 @@ export function parseCssDocument(context: vscode.ExtensionContext) {
 	fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_css_properties.json'), JSON.stringify(CSS));
 }
 
-/** 将官方打印的event文档处理成md */
+/** Convert the official event document output into md */
 export function parseEventDocument(context: vscode.ExtensionContext) {
 	let dump_panorama_events: string = fs.readFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_events.txt'), 'utf-8');
-	// 处理成md格式
+	// Convert to md format
 	dump_panorama_events = dump_panorama_events.replace(/\{\| class="wikitable"\r\n! (.*)\r\n! (.*)\r\n! (.*)/g, (m, $1, $2, $3) => { return `${$1}|${$2}|${$2}${os.EOL}--|--|--`; });
 	dump_panorama_events = dump_panorama_events.replace(/\|-.*\r\n\| (.*)\r\n\| (.*)\r\n\| (.*)/g, (m, $1, $2, $3) => {
 		return `${$1}|${$2}|${$3}`;
@@ -147,7 +147,7 @@ export function parseEventDocument(context: vscode.ExtensionContext) {
 	fs.writeFileSync(path.join(context.extensionPath, 'resource', 'dump_panorama_events.md'), dump_panorama_events);
 }
 
-/** 读取PanelList */
+/** Read PanelList */
 export function parsePanelList(context: vscode.ExtensionContext) {
 	let PanelList: string = fs.readFileSync(path.join(context.extensionPath, 'resource', 'PanelList.md'), 'utf-8');
 	let Panel: any = {};
@@ -170,7 +170,7 @@ export function parsePanelList(context: vscode.ExtensionContext) {
 	fs.writeFileSync(path.join(context.extensionPath, 'resource', 'PanelList.json'), JSON.stringify(Panel));
 }
 
-/** 生成音效json */
+/** Generate the sound effects json */
 export async function vsndGenerator(context: vscode.ExtensionContext) {
 	const sound_path: string = 'D:/Dota Addons/dota2 tracking/root/soundevents';
 
@@ -243,7 +243,7 @@ export async function vsndGenerator(context: vscode.ExtensionContext) {
 	}
 }
 
-/** 将官方打印的api替换成md格式和obj */
+/** Convert the official API output into md format and an object */
 export function parseLuaAPI(context: vscode.ExtensionContext) {
 	const dotaApiNote = getDotaApiNoteClass();
 	const classList = dotaApiNote.getClassList();
@@ -254,7 +254,7 @@ export function parseLuaAPI(context: vscode.ExtensionContext) {
 	}));
 }
 
-/** 生成lua api变更历史 */
+/** Generate the lua api change history */
 export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 	let serverChangelogPath = path.join(context.extensionPath, 'resource', 'lua_server_api_changelog');
 	let serverFolders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(serverChangelogPath));
@@ -262,7 +262,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 	let clientChangelogPath = path.join(context.extensionPath, 'resource', 'lua_client_api_changelog');
 	let clientFolders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(clientChangelogPath));
 	let clientChangelogs: any = {};
-	// 读取server api
+	// Read the server api
 	for (let i: number = 0; i < serverFolders.length; i++) {
 		const [name, is_directory] = serverFolders[i];
 		if (name === undefined) {
@@ -271,11 +271,11 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 		if (Number(is_directory) === vscode.FileType.File) {
 			const dota_script_help2 = fs.readFileSync(path.join(serverChangelogPath, name), 'utf-8');
 			const rows = dota_script_help2.split(os.EOL);
-			// 读取服务器API
+			// Read the server API
 			let class_list: { [k: string]: any; } = {};
 			let enum_list: { [k: string]: any; } = {};
 			for (let i = 0; i < rows.length; i++) {
-				// 函数
+				// Function
 				let option = rows[i].match(/---\[\[.*\]\]/g);
 				if (option !== null && option.length > 0) {
 					let [fun_info, new_line] = readFunction(i, rows);
@@ -285,7 +285,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 					class_list[fun_info.class].push(fun_info);
 					i = new_line;
 				}
-				// 常数
+				// Constants
 				if (rows[i].search('--- Enum ') !== -1) {
 					let enum_name = rows[i].substr(9, rows[i].length);
 					if (enum_list[enum_name] === undefined) {
@@ -314,11 +314,11 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 		if (Number(is_directory) === vscode.FileType.File) {
 			const dota_script_help2 = fs.readFileSync(path.join(clientChangelogPath, name), 'utf-8');
 			const rows = dota_script_help2.split(os.EOL);
-			// 读取客户端API
+			// Read the client API
 			let class_list: { [k: string]: any; } = {};
 			let enum_list: { [k: string]: any; } = {};
 			for (let i = 0; i < rows.length; i++) {
-				// 函数
+				// Function
 				let option = rows[i].match(/---\[\[.*\]\]/g);
 				if (option !== null && option.length > 0) {
 					let [fun_info, new_line] = readFunction(i, rows);
@@ -328,7 +328,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 					class_list[fun_info.class].push(fun_info);
 					i = new_line;
 				}
-				// 常数
+				// Constants
 				if (rows[i].search('--- Enum ') !== -1) {
 					let enum_name = rows[i].substr(9, rows[i].length);
 					if (enum_list[enum_name] === undefined) {
@@ -348,8 +348,8 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 			};
 		}
 	}
-	// 比对
-	let markdown = "# DOTA2 API 更新日志\n以下日期是插件更新日志的时间。\n";
+	// Compare
+	let markdown = "# DOTA2 API Changelog\nThe dates below are the times of the plugin's changelog entries.\n";
 	let serverKeys = Object.keys(serverChangelogs);
 	for (let index = serverKeys.length - 1; index >= 0; index--) {
 		if (index > 0) {
@@ -357,7 +357,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 			const changelog_old = serverChangelogs[serverKeys[index - 1]];
 			const changelog_new = serverChangelogs[serverKeys[index]];
 			const classList = Array.from(new Set(Object.keys(changelog_new.class_list ?? {}).concat(Object.keys(changelog_old.class_list ?? {}))));
-			// 比对function
+			// Compare functions
 			for (const className of classList) {
 				const funcList_old = changelog_old.class_list[className];
 				const funcList_new = changelog_new.class_list[className];
@@ -369,7 +369,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 							for (const funInfo_old of funcList_old) {
 								if (funInfo_old.function == funInfo_new.function) {
 									find = true;
-									// 返回值
+									// Return value
 									if (funInfo_old.return != funInfo_new.return) {
 										markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
 									} else {
@@ -382,7 +382,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 								}
 							}
 						}
-						// 新增
+						// Added
 						if (find == false) {
 							markdown += `- ✨ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ${funInfo_new.description}\n`;
 						}
@@ -399,14 +399,14 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 								}
 							}
 						}
-						// 移除
+						// Removed
 						if (find == false) {
 							markdown += `- ❌ API: <font color='#00D6AA'>${funInfo_old.class == "Global" ? "" : funInfo_old.class}</font> ${formatLuaFunction(funInfo_old)}\n`;
 						}
 					}
 				}
 			}
-			// 比对常数
+			// Compare constants
 			for (const enumType in changelog_new.enum_list) {
 				const enumList_old = changelog_old.enum_list[enumType];
 				const enumList_new = changelog_new.enum_list[enumType];
@@ -420,7 +420,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 							}
 						}
 					}
-					// 新增
+					// Added
 					if (find == false) {
 						markdown += `- ✨ Enum: <font color='#00D6AA'>${enumType}</font> <font color='#9cdcfe'>${enumInfo_new.name}</font> <font color='#dcdcaa'>${enumType == "modifierfunction" ? enumInfo_new.function : ""}</font>\n`;
 					}
@@ -436,14 +436,14 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 								}
 							}
 						}
-						// 移除
+						// Removed
 						if (find == false) {
 							markdown += `- ❌ Enum: <font color='#00D6AA'>${enumType}</font> ~~<font color='#9cdcfe'>${enumInfo_old.name}</font> <font color='#dcdcaa'>${enumType == "modifierfunction" ? enumInfo_old.function : ""}</font>~~\n`;
 						}
 					}
 				}
 			}
-			//结尾添加标记
+			// Add a marker at the end
 			markdown += `${serverKeys[index]}_Lua_Client\n`;
 		}
 	}
@@ -454,7 +454,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 			const changelog_old = clientChangelogs[clientKeys[index - 1]];
 			const changelog_new = clientChangelogs[clientKeys[index]];
 			const classList = Array.from(new Set(Object.keys(changelog_new.class_list ?? {}).concat(Object.keys(changelog_old.class_list ?? {}))));
-			// 比对function
+			// Compare functions
 			for (const className of classList) {
 				const funcList_old = changelog_old.class_list[className];
 				const funcList_new = changelog_new.class_list[className];
@@ -466,7 +466,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 							for (const funInfo_old of funcList_old) {
 								if (funInfo_old.function == funInfo_new.function) {
 									find = true;
-									// 返回值
+									// Return value
 									if (funInfo_old.return != funInfo_new.return) {
 										client_markdown += `- 🖊️ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ~~${formatLuaFunction(funInfo_old)}~~\n`;
 									} else {
@@ -479,7 +479,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 								}
 							}
 						}
-						// 新增
+						// Added
 						if (find == false) {
 							client_markdown += `- ✨ API: <font color='#00D6AA'>${funInfo_new.class == "Global" ? "" : funInfo_new.class}</font> ${formatLuaFunction(funInfo_new)} ${funInfo_new.description}\n`;
 						}
@@ -496,14 +496,14 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 								}
 							}
 						}
-						// 移除
+						// Removed
 						if (find == false) {
 							client_markdown += `- ❌ API: <font color='#00D6AA'>${funInfo_old.class == "Global" ? "" : funInfo_old.class}</font> ${formatLuaFunction(funInfo_old)}\n`;
 						}
 					}
 				}
 			}
-			// 比对常数
+			// Compare constants
 			for (const enumType in changelog_new.enum_list) {
 				const enumList_old = changelog_old.enum_list[enumType];
 				const enumList_new = changelog_new.enum_list[enumType];
@@ -517,7 +517,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 							}
 						}
 					}
-					// 新增
+					// Added
 					if (find == false) {
 						client_markdown += `- ✨ Enum: <font color='#00D6AA'>${enumType}</font> <font color='#9cdcfe'>${enumInfo_new.name}</font> <font color='#dcdcaa'>${enumType == "modifierfunction" ? enumInfo_new.function : ""}</font>\n`;
 					}
@@ -533,7 +533,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 								}
 							}
 						}
-						// 移除
+						// Removed
 						if (find == false) {
 							client_markdown += `- ❌ Enum: <font color='#00D6AA'>${enumType}</font> ~~<font color='#9cdcfe'>${enumInfo_old.name}</font> <font color='#dcdcaa'>${enumType == "modifierfunction" ? enumInfo_old.function : ""}</font>~~\n`;
 						}
@@ -563,7 +563,7 @@ export async function parseLuaAPIChangelog(context: vscode.ExtensionContext) {
 	}
 }
 
-/** 将items_game.txt的套装信息解析出来 */
+/** Parse the item set information out of items_game.txt */
 export function liteItemsGameParse(context: vscode.ExtensionContext) {
 	fs.writeFileSync(path.join(context.extensionPath, "resource/rogue_wearable.json"), JSON.stringify(getLiteItemsGame(context)));
 }

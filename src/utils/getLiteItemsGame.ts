@@ -40,7 +40,7 @@ export function getLiteItemsGame(context: vscode.ExtensionContext) {
 			});
 			element.portraits = newPortraits;
 		}
-		// 遍历控制点信息
+		// Iterate over control point info
 		if (element.visuals) {
 			for (const asset_modifier in element.visuals) {
 				let assetData = element.visuals[asset_modifier];

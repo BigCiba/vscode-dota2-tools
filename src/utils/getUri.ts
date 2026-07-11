@@ -1,7 +1,7 @@
 import { Uri, Webview } from "vscode";
 
 /**
- * 获取Webview使用的Uri
+ * Get the Uri used by the Webview
  * @param webview 
  * @param extensionUri 
  * @param pathList 

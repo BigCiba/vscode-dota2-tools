@@ -6,7 +6,7 @@ import { getPathInfo } from '../utils/pathUtils';
 let gameDir: string;
 let contentDir: string;
 
-/** 项目目录功能模块 */
+/** Project directory feature module */
 export async function addonInfoInit(context: vscode.ExtensionContext) {
 	const folders: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
 	if (folders !== undefined) {
@@ -23,7 +23,7 @@ export async function addonInfoInit(context: vscode.ExtensionContext) {
 					}
 				}
 				if (gameDir === undefined) {
-					// 读取目录
+					// Read directory
 					let pathList: string[] | false = await findFile(folder.uri.fsPath, 'addoninfo.txt', 50, ["game"], ["content"], true);
 					if (pathList !== false) {
 						[gameDir] = pathList;
@@ -43,17 +43,17 @@ export async function addonInfoInit(context: vscode.ExtensionContext) {
 	}
 }
 
-/** 获取game目录 */
+/** Get the game directory */
 export function getGameDir() {
 	return gameDir;
 }
 
-/** 获取content目录 */
+/** Get the content directory */
 export function getContentDir() {
 	return contentDir;
 }
 
-/** 是否有game目录，没有进行提示 */
+/** Whether a game directory exists; prompt if it does not */
 export function isValidFolder() {
 	if (gameDir === undefined) {
 		return false;

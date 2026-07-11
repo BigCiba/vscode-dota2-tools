@@ -14,7 +14,7 @@ export async function openKV(context: vscode.ExtensionContext) {
 		const position = textEditor.selection.start;
 		let scriptFiles = getScriptFiles();
 		let word = document.getText(document.getWordRangeAtPosition(position));
-		// 如果是modifier则搜寻技能名（必须同一文件）
+		// If it's a modifier, search for the ability name (must be in the same file)
 		if (scriptFiles[word] === undefined) {
 			let kvString = fs.readFileSync(fileName, 'utf-8');
 			const rows: string[] = kvString.split(os.EOL);
@@ -52,7 +52,7 @@ export async function openKV(context: vscode.ExtensionContext) {
 				}
 			}
 		}
-		// 还是空尝试更新关系表
+		// Still empty: try refreshing the relation table
 		if (scriptFiles[word] === undefined) {
 			await refreshScriptFiles();
 		}

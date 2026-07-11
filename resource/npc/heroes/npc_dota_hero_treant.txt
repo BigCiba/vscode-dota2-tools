@@ -9,7 +9,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES | DOTA_ABILITY_BEHAVIOR_FORCE_KEYBIND | DOTA_ABILITY_BEHAVIOR_FORCE_NO_INNATE_UI"
 		"FightRecapLevel"				"2"
 		"MaxLevel"						"1"
 		"AbilitySound"					"Hero_Treant.NaturesGuise.On"
@@ -38,9 +38,9 @@
 
 			"AbilityCooldown"
 			{
-				"value"							"50"
-				"hero_levelup"					"-3"
-				"levelup_interval"				"2"				
+				"value"							"36"
+				"hero_levelup"					"-1"
+				"levelup_interval"				"1"				
 			}
 			
 			"shard_root_time"					"0"
@@ -200,11 +200,11 @@
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"30 25 20 15"
+		"AbilityCooldown"				"24 21 18 15"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"40 45 50 55"
+		"AbilityManaCost"				"65 70 75 80"
 
 		"AbilityValues"
 		{
@@ -222,7 +222,7 @@
 
 			"damage_block_base"
 			{
-				"value"								"100"
+				"value"								"60 80 100 120"
 				"special_bonus_unique_treant_13"	"+20"				
 			}
 
@@ -231,7 +231,7 @@
 				"special_bonus_shard"				"0"
 			}
 
-			"damage_block_loss"						"35 30 25 20"
+			"damage_block_loss"						"20"
 			"damage_block_threshold"				"20"
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_3"
@@ -288,7 +288,7 @@
 			"AbilityCooldown"				
 			{
 				"value"						"110 100 90"
-				"special_bonus_scepter"		"-30"
+				"special_bonus_scepter"		"-25"
 			}
 
 			"undispellable"
@@ -347,8 +347,8 @@
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCharges"				"3"
-		"AbilityChargeRestoreTime"		"55.0"
+		"AbilityCharges"				"2"
+		"AbilityChargeRestoreTime"		"135.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -365,7 +365,7 @@
 			}
 
 			"hits_to_kill"					"2"
-			"duration"						"300"
+			"duration"						"360"
 			"max_eyes"						"0"
 		}
 	}

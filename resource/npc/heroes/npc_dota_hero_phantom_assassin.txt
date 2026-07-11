@@ -9,8 +9,9 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES | DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
 		"MaxLevel"						"1"
 		"FightRecapLevel"				"1"
@@ -61,6 +62,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"AbilitySound"					"Hero_PhantomAssassin.Dagger.Cast"
+       
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -81,7 +83,7 @@
 			"AbilityCooldown"				
 			{
 				"value"				"6"
-				"special_bonus_unique_phantom_assassin_7"	"-1.5"
+				"special_bonus_unique_phantom_assassin_7"	"-2.0"
 
 			}
 			"move_slow"					"-50"
@@ -103,12 +105,12 @@
 
 			"dagger_recast_time"
 			{
-				"special_bonus_facet_phantom_assassin_sweet_release"	"6"
+				"special_bonus_shard"	"0"
 			}
 
 			"dagger_secondary_reduce"
 			{
-				"special_bonus_facet_phantom_assassin_sweet_release" "50"
+				"special_bonus_shard" "0"
 			}
 
 			"extra_daggers"
@@ -161,7 +163,7 @@
 			"duration"				
 			{
 				"value"						"2.5"
-				"special_bonus_unique_phantom_assassin_4"		"+0.5"
+				"special_bonus_unique_phantom_assassin_4"		"+0.6"
 			}
 			"AbilityCastRange"
 			{
@@ -211,10 +213,9 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
-        "HasShardUpgrade" 		 	   "1"
-		"MaxLevel"						"4"
 		"Innate"						"1"
-		"DependentOnAbility"			"phantom_assassin_coup_de_grace"
+		"HasShardUpgrade" 		 	    "1"
+		"MaxLevel"						"1"
 
 
 
@@ -224,7 +225,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"625 550 475 400"
+		"AbilityCastRange"				"500"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -239,26 +240,27 @@
 		"AbilityValues"
 		{
 			
-			"duration"			"30"
-			"radius"				"625 550 475 400"
-			"fade_duration"			"0.4 0.6 0.8 1.0"
+			"duration"				"30"
+			"radius"				"500"
+			"fade_duration"			"0.8"
 			"break_on_attack"							"0"
 			"manacost_reduction_during_blur_pct"
 			{
 				"value"									"0"
-				"special_bonus_facet_phantom_assassin_veiled_one"	"30"
 			}
 			"buff_duration_after_break"
 			{
 				"value"									"0"
-				"special_bonus_facet_phantom_assassin_veiled_one"	"+5"
 			}
 			"manacost_reduction_after_blur_pct"
 			{
 				"value"									"0"
-				"special_bonus_facet_phantom_assassin_veiled_one"	"100"
 			}
-			"active_movespeed_bonus"				"6 9 12 15"
+			"active_movespeed_bonus"
+			{
+				"value"								"9.5"
+				"hero_levelup"						"+0.5"
+			}
 			"immediate_cast"
 			{
 				"special_bonus_shard"				"0"
@@ -273,7 +275,7 @@
 			}
 			"AbilityCooldown"				
 			{
-				"value"					"45"
+				"value"						"45"
 				"special_bonus_shard"		"-10"
 			}
 

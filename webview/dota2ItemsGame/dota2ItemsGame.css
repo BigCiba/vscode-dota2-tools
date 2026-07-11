@@ -1,8 +1,220 @@
-.search {
+.search-bar {
 	width: 100%;
 	margin-top: 14px;
 	margin-bottom: 10px;
 }
+.search-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.hint-text {
+	font-size: 11px;
+	color: var(--vscode-descriptionForeground, #888);
+	margin-top: 4px;
+	padding-left: 2px;
+	font-style: italic;
+}
+#back-btn {
+	flex-shrink: 0;
+}
 #filter {
+	flex: 1;
 	width: 100%;
+}
+/* View toggle buttons */
+.view-toggle {
+	flex-shrink: 0;
+	opacity: 0.5;
+}
+.view-toggle.active {
+	opacity: 1;
+	color: var(--vscode-focusBorder, #007fd4);
+}
+.item-header {
+	text-align: center;
+	margin: 12px 0;
+}
+.item-preview {
+	max-width: 256px;
+	max-height: 256px;
+	border-radius: 4px;
+	border: 1px solid var(--vscode-widget-border, #444);
+}
+.item-props {
+	margin-bottom: 16px;
+}
+/* List icons - sized to fit within table rows */
+.list-icon {
+	width: 64px;
+	height: 64px;
+	object-fit: contain;
+	vertical-align: middle;
+	display: block;
+}
+/* Rows with icons get taller; rows without stay normal */
+vscode-data-grid-cell.icon-cell {
+	min-height: 72px;
+	padding: 4px;
+}
+vscode-data-grid-cell {
+	word-break: break-all;
+	display: flex;
+	align-items: center;
+}
+.clickable-row {
+	cursor: pointer;
+}
+.clickable-row:hover {
+	background: var(--vscode-list-hoverBackground, rgba(255,255,255,0.05));
+}
+h2 {
+	margin-top: 20px;
+	margin-bottom: 8px;
+	border-bottom: 1px solid var(--vscode-widget-border, #444);
+	padding-bottom: 4px;
+}
+.bundle-header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.bundle-header h2 {
+	margin-bottom: 0;
+	border-bottom: none;
+	padding-bottom: 0;
+}
+.bundle-copy-btn {
+	flex-shrink: 0;
+	font-size: 11px;
+}
+
+/* ---- Grid / card view ---- */
+.grid-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: 12px;
+	padding: 4px;
+}
+.grid-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 8px 4px;
+	border-radius: 6px;
+	border: 1px solid var(--vscode-widget-border, #333);
+	background: var(--vscode-editor-background);
+	cursor: pointer;
+	transition: background 0.15s;
+	overflow: hidden;
+}
+.grid-card:hover {
+	background: var(--vscode-list-hoverBackground, rgba(255,255,255,0.06));
+	border-color: var(--vscode-focusBorder, #007fd4);
+}
+.grid-icon {
+	width: 128px;
+	height: 128px;
+	object-fit: contain;
+}
+.grid-icon-placeholder {
+	width: 128px;
+	height: 128px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--vscode-descriptionForeground, #888);
+	font-size: 12px;
+	border: 1px dashed var(--vscode-widget-border, #444);
+	border-radius: 4px;
+}
+.grid-label {
+	margin-top: 6px;
+	font-size: 12px;
+	text-align: center;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--vscode-foreground);
+}
+.grid-id {
+	font-size: 10px;
+	color: var(--vscode-descriptionForeground, #888);
+	margin-top: 2px;
+}
+
+/* ---- KV block selection mode ---- */
+.kv-selection-bar {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	margin-bottom: 8px;
+	background: var(--vscode-editor-background);
+	border: 1px solid var(--vscode-focusBorder, #007fd4);
+	border-radius: 4px;
+}
+.kv-selection-bar .kv-count {
+	flex: 1;
+	font-size: 13px;
+}
+.selected-row {
+	background: var(--vscode-list-activeSelectionBackground, rgba(0,120,212,0.15)) !important;
+	outline: 1px solid var(--vscode-focusBorder, #007fd4);
+}
+.kv-preview {
+	margin-top: 8px;
+	padding: 8px;
+	background: var(--vscode-textCodeBlock-background, #1e1e1e);
+	border: 1px solid var(--vscode-widget-border, #444);
+	border-radius: 4px;
+	font-family: var(--vscode-editor-font-family, monospace);
+	font-size: 12px;
+	white-space: pre;
+	overflow-x: auto;
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+/* ---- Copy buttons (models / particles / paths) ---- */
+.copy-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 4px;
+	padding: 1px 3px;
+	border: none;
+	border-radius: 3px;
+	background: transparent;
+	color: var(--vscode-descriptionForeground, #888);
+	cursor: pointer;
+	vertical-align: middle;
+	flex-shrink: 0;
+}
+.copy-btn:hover {
+	background: var(--vscode-toolbar-hoverBackground, rgba(255, 255, 255, 0.1));
+	color: var(--vscode-foreground);
+}
+.copy-btn.copied {
+	color: var(--vscode-testing-iconPassed, #4caf50);
+}
+.copy-btn .codicon {
+	font-size: 13px;
+}
+
+/* ---- Asset-modifiers table: fit columns to value width; long headers ellipsis + tooltip ---- */
+.visuals-grid vscode-data-grid-cell[cell-type="columnheader"] {
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 11px;
+	cursor: help;
+}
+.visuals-grid vscode-data-grid-cell {
+	overflow-wrap: anywhere;
 }

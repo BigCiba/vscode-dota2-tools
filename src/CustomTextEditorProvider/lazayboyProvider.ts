@@ -11,13 +11,13 @@ export class lazayboyProvider implements CustomReadonlyEditorProvider {
 		return new NoUseDocument(uri);
 	}
 	async resolveCustomEditor(document: NoUseDocument, webviewPanel: WebviewPanel) {
-		// 直接关闭面板
+		// Close the panel directly
 		exec(`"${document.uri.fsPath}"`, (error, stdout, stderr) => {
 			webviewPanel.dispose();
 		});
 		webviewPanel.webview.html = `
 		<html>
-			<body>使用外部软件打开文件中</body>
+			<body>Opening file with external software</body>
 		</html>`;
 	}
 }

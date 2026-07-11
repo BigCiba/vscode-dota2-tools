@@ -4,9 +4,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { writeKeyValue } from '../utils/kvUtils';
 import { getGameDir } from '../module/addonInfo';
+import { localize } from '../utils/localize';
 
 /**
- * 导出所有饰品的肖像配置信息
+ * Export the portrait configuration info of all wearables
  * @export
  */
 export function exportWearablePortraits(context: vscode.ExtensionContext) {
@@ -23,7 +24,7 @@ export function exportWearablePortraits(context: vscode.ExtensionContext) {
 	}
 
 	const inputBox = vscode.window.createInputBox();
-	inputBox.placeholder = '请输入输出文件路径';
+	inputBox.placeholder = localize('msg_enter_output_path');
 	if (gameDir) {
 		inputBox.value = path.join(gameDir, "\\scripts\\npc\\portraits_custom.txt");
 	}

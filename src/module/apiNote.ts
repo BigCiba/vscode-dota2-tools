@@ -1,25 +1,19 @@
 import * as vscode from 'vscode';
 import { DotaApiNote } from '../Class/DotaApiNote';
 import { getCssCompletion, getLuaCompletion } from './completion';
-import { getLuaApiTree } from './treeApi';
 
 let dotaApiNote: DotaApiNote;
 
-/** 实例化dota2笔记功能模块 */
+/** Instantiate the dota2 notes feature module */
 export async function apiNoteInit(context: vscode.ExtensionContext) {
 	dotaApiNote = new DotaApiNote(context);
 	dotaApiNote.init(() => {
-		console.log("[apiNoteInit]: 更新lua树状图");
-		let luaAPITree = getLuaApiTree();
-		if (luaAPITree) {
-			luaAPITree.refreshRawData();
-		}
-		console.log("[apiNoteInit]: 更新lua代码补全");
+		console.log("[apiNoteInit]: Update lua code completion");
 		let luaCompletion = getLuaCompletion();
 		if (luaCompletion) {
 			luaCompletion.refreshDocument();
 		}
-		console.log("[apiNoteInit]: 更新css代码补全");
+		console.log("[apiNoteInit]: Update css code completion");
 		let cssCompletion = getCssCompletion();
 		if (cssCompletion) {
 			cssCompletion.refreshDocument();

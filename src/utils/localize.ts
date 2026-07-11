@@ -10,9 +10,10 @@ enum LangEnum {
 	english = "en"
 };
 export async function localizeInit(context: vscode.ExtensionContext) {
+	const englishData = JSON.parse(await readFile(vscode.Uri.joinPath(context.extensionUri, "package.nls.json")));
 	langData = {
-		[LangEnum.schinese]: JSON.parse(await readFile(vscode.Uri.joinPath(context.extensionUri, "package.nls.zh-cn.json"))),
-		[LangEnum.english]: JSON.parse(await readFile(vscode.Uri.joinPath(context.extensionUri, "package.nls.json")))
+		[LangEnum.schinese]: englishData,
+		[LangEnum.english]: englishData
 	};
 	reverseLangData = {
 		[LangEnum.schinese]: { ...langData[LangEnum.schinese] },
@@ -30,33 +31,37 @@ export async function localizeInit(context: vscode.ExtensionContext) {
 	}
 }
 /**
- * 获取本地化文本
+ * Get localized text
  */
-export function localize(text: string, dialogVariables?: Table, language?: "zh-cn" | "en") {
+export function localize(text: string, dialogVariables?: Table | string[], language?: "zh-cn" | "en") {
 	if (langData === undefined || text === undefined) {
 		return text;
 	}
-	let langType = language ?? vscode.env.language === "zh-cn" ? "zh-cn" : "en";
+	let langType = language ?? (vscode.env.language === "zh-cn" ? "zh-cn" : "en");
 	let langInfo = langData[langType];
-	if (langInfo[text] !== undefined) {
-		return langInfo[text];
-	}
+	let result = langInfo[text] !== undefined ? langInfo[text] : text;
 	if (dialogVariables) {
-		for (const key in dialogVariables) {
-			const value = dialogVariables[key];
-			text.replace(/\${' + key + '}/g, value);
+		if (Array.isArray(dialogVariables)) {
+			for (let i = 0; i < dialogVariables.length; i++) {
+				result = result.replace(new RegExp('\\$\\{' + i + '\\}', 'g'), dialogVariables[i]);
+			}
+		} else {
+			for (const key in dialogVariables) {
+				const value = dialogVariables[key];
+				result = result.replace(new RegExp('\\$\\{' + key + '\\}', 'g'), value);
+			}
 		}
 	}
-	return text;
+	return result;
 }
 /**
- * 逆向获取本地化文本
+ * Reverse-lookup localized text
  */
 export function reverseLocalize(text: string, dialogVariables?: Table, language?: "zh-cn" | "en") {
 	if (reverseLangData === undefined || text === undefined) {
 		return text;
 	}
-	let langType = language ?? vscode.env.language === "zh-cn" ? "zh-cn" : "en";
+	let langType = language ?? (vscode.env.language === "zh-cn" ? "zh-cn" : "en");
 	let langInfo = reverseLangData[langType];
 	if (langInfo[text] !== undefined) {
 		return langInfo[text];
@@ -69,24 +74,24 @@ export function reverseLocalize(text: string, dialogVariables?: Table, language?
 	}
 	return text;
 }
-/** 是否拥有本地化 */
+/** Whether localization exists */
 export function hasLocalize(text: string, language?: "zh-cn" | "en") {
 	if (langData === undefined) {
 		return false;
 	}
-	let langType = language ?? vscode.env.language === "zh-cn" ? "zh-cn" : "en";
+	let langType = language ?? (vscode.env.language === "zh-cn" ? "zh-cn" : "en");
 	let langInfo = langData[langType];
 	if (langInfo[text] !== undefined) {
 		return true;
 	}
 	return false;
 }
-/** 逆向查找是否拥有本地化 */
+/** Reverse-lookup whether localization exists */
 export function hasReverseLocalize(text: string, language?: "zh-cn" | "en") {
 	if (reverseLangData === undefined) {
 		return false;
 	}
-	let langType = language ?? vscode.env.language === "zh-cn" ? "zh-cn" : "en";
+	let langType = language ?? (vscode.env.language === "zh-cn" ? "zh-cn" : "en");
 	let langInfo = reverseLangData[langType];
 	if (langInfo[text] !== undefined) {
 		return true;

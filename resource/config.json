@@ -1,13 +1,13 @@
 {
-	"title": "Dota2 文档",
-	"description": "Dota2 API文档",
+	"title": "Dota2 Documentation",
+	"description": "Dota2 API Documentation",
 	"themeConfig": {
 		"nextLinks": false,
 		"prevLinks": false,
 		"nav": [
 			{
 				"text": "Overview",
-				"ariaLabel": "常用",
+				"ariaLabel": "Favorites",
 				"items": [
 					{
 						"text": "BaseAbility",

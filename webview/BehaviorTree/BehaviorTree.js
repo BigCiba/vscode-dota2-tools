@@ -4,7 +4,87 @@ console.log('BehaviorTree.js is loading...');
 const vscode = acquireVsCodeApi();
 console.log('VS Code API acquired:', vscode);
 
-// 节点类型配置 (使用 Codicon Unicode 字符)
+// i18n
+const _lang = document.documentElement.lang;
+const _i18n = {
+	'en': {
+		nodeType: 'Node Type:',
+		identifierKey: 'Identifier (Key):',
+		displayNameLabel: 'Display Name (Name):',
+		descriptionLabel: 'Description:',
+		placeholderKey: 'e.g.: Heal, Attack',
+		placeholderName: 'e.g.: Heal, Attack',
+		placeholderParamName: 'Parameter name',
+		placeholderParamValue: 'Parameter value',
+		paramsHeading: 'Parameters (Params)',
+		addParam: 'Add Parameter',
+		deleteParam: 'Delete parameter',
+		noParams: 'No parameters',
+		customProperties: 'Custom Properties',
+		saveAsTemplate: 'Save as Template',
+		selectNode: 'Please select a node',
+		selectParentOr: 'Please select a parent node first, or double-click the root to add a child',
+		rootNode: 'Root',
+		rootCreated: 'Root node created',
+		cannotDeleteRoot: 'Cannot delete the root node',
+		selectNodeToCopy: 'Please select a node to copy first',
+		nodeCopied: 'Node copied: ',
+		clipboardEmpty: 'Clipboard is empty. Copy a node first.',
+		selectParent: 'Please select a parent node first',
+		nodePasted: 'Node pasted: ',
+		noTemplates: 'No templates yet. Select a node and click "Save as Template" to create one.',
+		noDescription: 'No description',
+		keyLabel: 'Key: ',
+		nodeCount: ' node(s)',
+		useTemplate: 'Use',
+		noMatchingTemplates: 'No matching templates',
+		enterTemplateName: 'Please enter a template name',
+		templateNotFound: 'Template not found',
+		confirmDeleteTemplate: 'Are you sure you want to delete template ',
+		enterIdentifier: 'Please enter an identifier (Key)',
+		enterDisplayName: 'Please enter a display name (Name)',
+	},
+	'zh-cn': {
+		nodeType: 'Node Type:',
+		identifierKey: 'Identifier (Key):',
+		displayNameLabel: 'Display Name (Name):',
+		descriptionLabel: 'Description:',
+		placeholderKey: 'e.g.: Heal, Attack',
+		placeholderName: 'e.g.: Heal, Attack',
+		placeholderParamName: 'Parameter name',
+		placeholderParamValue: 'Parameter value',
+		paramsHeading: 'Parameters (Params)',
+		addParam: 'Add Parameter',
+		deleteParam: 'Delete parameter',
+		noParams: 'No parameters',
+		customProperties: 'Custom Properties',
+		saveAsTemplate: 'Save as Template',
+		selectNode: 'Please select a node',
+		selectParentOr: 'Please select a parent node first, or double-click the root to add a child',
+		rootNode: 'Root',
+		rootCreated: 'Root node created',
+		cannotDeleteRoot: 'Cannot delete the root node',
+		selectNodeToCopy: 'Please select a node to copy first',
+		nodeCopied: 'Node copied: ',
+		clipboardEmpty: 'Clipboard is empty. Copy a node first.',
+		selectParent: 'Please select a parent node first',
+		nodePasted: 'Node pasted: ',
+		noTemplates: 'No templates yet. Select a node and click "Save as Template" to create one.',
+		noDescription: 'No description',
+		keyLabel: 'Key: ',
+		nodeCount: ' node(s)',
+		useTemplate: 'Use',
+		noMatchingTemplates: 'No matching templates',
+		enterTemplateName: 'Please enter a template name',
+		templateNotFound: 'Template not found',
+		confirmDeleteTemplate: 'Are you sure you want to delete template ',
+		enterIdentifier: 'Please enter an identifier (Key)',
+		enterDisplayName: 'Please enter a display name (Name)',
+	}
+};
+function _t(key) { return (_i18n[_lang] && _i18n[_lang][key]) || _i18n['en'][key] || key; }
+
+// Node type config (using Codicon Unicode characters)
 const NODE_TYPES = {
 	Root: { color: '#9C27B0', icon: '\uEA68', label: 'Root' },        // codicon-root-folder
 	Sequence: { color: '#2196F3', icon: '\uEBFE', label: 'Sequence' },  // codicon-arrow-right
@@ -15,7 +95,7 @@ const NODE_TYPES = {
 	Decorator: { color: '#E91E63', icon: '\uEBCF', label: 'Decorator' } // codicon-symbol-color
 };
 
-// 画布配置
+// Canvas config
 const CANVAS_CONFIG = {
 	NODE_WIDTH: 160,
 	NODE_HEIGHT: 80,
@@ -37,7 +117,7 @@ class BehaviorTreeEditor {
 		this.hoveredNode = null;
 		this.parentToAdd = null;
 
-		// 画布状态
+		// Canvas state
 		this.offset = { x: 0, y: 0 };
 		this.zoom = 1;
 		this.isDragging = false;
@@ -45,18 +125,18 @@ class BehaviorTreeEditor {
 		this.isNodeDragging = false;
 		this.draggedNode = null;
 
-		// 历史记录（撤销/恢复）
+		// History (undo/redo)
 		this.history = [];
 		this.historyIndex = -1;
 		this.maxHistorySize = 50;
 		this.isUndoRedoing = false;
 
-		// 模板数据
+		// Template data
 		this.templates = [];
 		this.currentTypeFilter = 'all';
 		this.currentSearchText = '';
 
-		// 剪贴板
+		// Clipboard
 		this.clipboard = null;
 
 		this.initCanvas();
@@ -77,7 +157,7 @@ class BehaviorTreeEditor {
 	}
 
 	initEventListeners() {
-		// 工具栏按钮
+		// Toolbar buttons
 		document.getElementById('saveBtn').addEventListener('click', () => this.save());
 		document.getElementById('addNodeBtn').addEventListener('click', () => this.openAddNodeDialog());
 		document.getElementById('addFromTemplateBtn').addEventListener('click', () => this.openTemplateDialog());
@@ -88,7 +168,7 @@ class BehaviorTreeEditor {
 		document.getElementById('closePanelBtn').addEventListener('click', () => this.closePropertiesPanel());
 		document.getElementById('openTextBtn').addEventListener('click', () => this.openInTextEditor());
 
-		// 树名称输入
+		// Tree name input
 		document.getElementById('treeNameInput').addEventListener('input', (e) => {
 			if (this.treeData) {
 				this.treeData.name = e.target.value;
@@ -99,7 +179,7 @@ class BehaviorTreeEditor {
 			this.saveToHistory();
 		});
 
-		// 画布交互
+		// Canvas interaction
 		this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
 		this.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
 		this.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
@@ -107,9 +187,9 @@ class BehaviorTreeEditor {
 		this.canvas.addEventListener('click', (e) => this.onClick(e));
 		this.canvas.addEventListener('dblclick', (e) => this.onDoubleClick(e));
 
-		// 键盘快捷键
+		// Keyboard shortcuts
 		document.addEventListener('keydown', (e) => {
-			// 检查是否在输入框中
+			// Check whether focus is in an input field
 			const activeElement = document.activeElement;
 			const isInInput = activeElement && (
 				activeElement.tagName === 'INPUT' ||
@@ -123,7 +203,7 @@ class BehaviorTreeEditor {
 				this.save();
 			} else if (e.ctrlKey && e.key === 'z') {
 				if (isInInput) {
-					// 输入框中使用浏览器原生撤销
+					// In input fields, use the browser's native undo
 					e.preventDefault();
 					document.execCommand('undo');
 				} else {
@@ -132,7 +212,7 @@ class BehaviorTreeEditor {
 				}
 			} else if (e.ctrlKey && e.key === 'y') {
 				if (isInInput) {
-					// 输入框中使用浏览器原生恢复
+					// In input fields, use the browser's native redo
 					e.preventDefault();
 					document.execCommand('redo');
 				} else {
@@ -158,19 +238,19 @@ class BehaviorTreeEditor {
 	updateData(data) {
 		console.log('updateData received:', data);
 
-		// 记住当前选中节点的ID
+		// Remember the ID of the currently selected node
 		const selectedNodeId = this.selectedNode ? this.selectedNode.id : null;
 
 		this.treeData = data;
 		document.getElementById('treeNameInput').value = data.name || '';
 
-		// 如果没有位置信息，自动布局
+		// If there is no position info, run auto layout
 		if (!this.hasPositionInfo(data.root)) {
 			console.log('No position info, running autoLayout');
 			this.autoLayout();
 		}
 
-		// 如果之前有选中的节点，在新树中找到对应的节点并重新选中
+		// If a node was previously selected, find the matching node in the new tree and reselect it
 		if (selectedNodeId) {
 			const newSelectedNode = this.findNodeById(data.root, selectedNodeId);
 			if (newSelectedNode) {
@@ -181,7 +261,7 @@ class BehaviorTreeEditor {
 			}
 		}
 
-		// 初次加载后保存到历史
+		// Save to history after the initial load
 		if (this.history.length === 0) {
 			this.saveToHistory();
 		}
@@ -219,7 +299,7 @@ class BehaviorTreeEditor {
 		const root = this.treeData.root;
 		const bounds = this.calculateSubtreeBounds(root);
 
-		// 居中根节点
+		// Center the root node
 		const centerX = this.canvas.width / 2 / this.zoom - this.offset.x / this.zoom;
 		const centerY = 100;
 
@@ -306,7 +386,7 @@ class BehaviorTreeEditor {
 			ctx.beginPath();
 			ctx.moveTo(startX, startY);
 
-			// 贝塞尔曲线连接
+			// Bezier curve connection
 			const controlY = (startY + endY) / 2;
 			ctx.bezierCurveTo(startX, controlY, endX, controlY, endX, endY);
 			ctx.stroke();
@@ -326,7 +406,7 @@ class BehaviorTreeEditor {
 		const w = CANVAS_CONFIG.NODE_WIDTH;
 		const h = CANVAS_CONFIG.NODE_HEIGHT;
 
-		// 选中或悬停效果
+		// Selected or hovered effect
 		if (node === this.selectedNode) {
 			ctx.strokeStyle = '#FFD700';
 			ctx.lineWidth = 3;
@@ -337,7 +417,7 @@ class BehaviorTreeEditor {
 			ctx.strokeRect(x - 1, y - 1, w + 2, h + 2);
 		}
 
-		// 绘制节点背景
+		// Draw the node background
 		ctx.fillStyle = config.color;
 		ctx.strokeStyle = '#333';
 		ctx.lineWidth = 2;
@@ -346,23 +426,23 @@ class BehaviorTreeEditor {
 		ctx.fill();
 		ctx.stroke();
 
-		// 绘制节点类型图标 (Codicon)
+		// Draw the node type icon (Codicon)
 		ctx.font = '20px codicon';
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
 		ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
 		ctx.fillText(config.icon, node.x, node.y - 15);
 
-		// 绘制节点名称
+		// Draw the node name
 		ctx.font = 'bold 13px sans-serif';
 		ctx.fillText(node.name, node.x, node.y + 10);
 
-		// 绘制节点类型
+		// Draw the node type
 		ctx.font = '11px sans-serif';
 		ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
 		ctx.fillText(config.label, node.x, node.y + 25);
 
-		// 递归绘制子节点
+		// Recursively draw child nodes
 		if (node.children) {
 			for (const child of node.children) {
 				this.renderNode(child);
@@ -452,7 +532,7 @@ class BehaviorTreeEditor {
 	}
 
 	onMouseUp(e) {
-		// 如果正在拖拽节点，保存历史
+		// If a node is being dragged, save history
 		if (this.isNodeDragging && this.draggedNode) {
 			this.saveToHistory();
 		}
@@ -473,7 +553,7 @@ class BehaviorTreeEditor {
 		const delta = e.deltaY > 0 ? -CANVAS_CONFIG.ZOOM_STEP : CANVAS_CONFIG.ZOOM_STEP;
 		this.zoom = Math.max(CANVAS_CONFIG.MIN_ZOOM, Math.min(CANVAS_CONFIG.MAX_ZOOM, this.zoom + delta));
 
-		// 以鼠标位置为中心缩放
+		// Zoom centered on the mouse position
 		const zoomRatio = this.zoom / oldZoom;
 		this.offset.x = mouseX - (mouseX - this.offset.x) * zoomRatio;
 		this.offset.y = mouseY - (mouseY - this.offset.y) * zoomRatio;
@@ -506,7 +586,7 @@ class BehaviorTreeEditor {
 
 		let html = `
             <div class="form-group">
-                <label>节点类型:</label>
+                <label>${_t('nodeType')}</label>
                 <select id="propType">
                     ${Object.keys(NODE_TYPES).map(type =>
 			`<option value="${type}" ${type === node.type ? 'selected' : ''}>${NODE_TYPES[type].label}</option>`
@@ -514,26 +594,26 @@ class BehaviorTreeEditor {
                 </select>
             </div>
             <div class="form-group">
-                <label>英文标识符 (Key):</label>
-                <input type="text" id="propKey" value="${node.key || ''}" placeholder="例如: Heal, Attack">
+                <label>${_t('identifierKey')}</label>
+                <input type="text" id="propKey" value="${node.key || ''}" placeholder="${_t('placeholderKey')}">
             </div>
             <div class="form-group">
-                <label>中文名称 (Name):</label>
-                <input type="text" id="propName" value="${node.name || ''}" placeholder="例如: 治疗, 攻击">
+                <label>${_t('displayNameLabel')}</label>
+                <input type="text" id="propName" value="${node.name || ''}" placeholder="${_t('placeholderName')}">
             </div>
             <div class="form-group">
-                <label>描述:</label>
+                <label>${_t('descriptionLabel')}</label>
                 <textarea id="propDesc" rows="3">${node.description || ''}</textarea>
             </div>
         `;
 
-		// 显示 Params 参数
+		// Show the Params parameters
 		if (node.Params || node.params) {
 			const params = node.Params || node.params;
 			html += '<hr style="margin: 16px 0; border-color: var(--border-color);">';
 			html += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">';
-			html += '<h4 style="margin: 0;">参数 (Params)</h4>';
-			html += '<button id="addParamBtn" class="btn-small" style="padding: 4px 8px; font-size: 12px;"><i class="codicon codicon-add"></i> 添加参数</button>';
+			html += '<h4 style="margin: 0;">' + _t('paramsHeading') + '</h4>';
+			html += '<button id="addParamBtn" class="btn-small" style="padding: 4px 8px; font-size: 12px;"><i class="codicon codicon-add"></i> ' + _t('addParam') + '</button>';
 			html += '</div>';
 			html += '<div id="paramsContainer">';
 
@@ -541,9 +621,9 @@ class BehaviorTreeEditor {
 				for (const [key, value] of Object.entries(params)) {
 					html += `
 						<div class="param-item">
-							<input type="text" class="param-key" value="${key}" data-old-key="${key}" placeholder="参数名">
-							<input type="text" class="param-value" value="${value || ''}" data-param-key="${key}" placeholder="参数值">
-							<button class="delete-param-btn" data-param-key="${key}" title="删除参数">
+							<input type="text" class="param-key" value="${key}" data-old-key="${key}" placeholder="${_t('placeholderParamName')}">
+							<input type="text" class="param-value" value="${value || ''}" data-param-key="${key}" placeholder="${_t('placeholderParamValue')}">
+							<button class="delete-param-btn" data-param-key="${key}" title="${_t('deleteParam')}">
 								<i class="codicon codicon-trash"></i>
 							</button>
 						</div>
@@ -552,23 +632,23 @@ class BehaviorTreeEditor {
 			}
 			html += '</div>';
 		} else {
-			// 没有 Params，显示添加按钮
+			// No Params, show the add button
 			html += '<hr style="margin: 16px 0; border-color: var(--border-color);">';
 			html += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">';
-			html += '<h4 style="margin: 0;">参数 (Params)</h4>';
-			html += '<button id="addParamBtn" class="btn-small" style="padding: 4px 8px; font-size: 12px;"><i class="codicon codicon-add"></i> 添加参数</button>';
+			html += '<h4 style="margin: 0;">' + _t('paramsHeading') + '</h4>';
+			html += '<button id="addParamBtn" class="btn-small" style="padding: 4px 8px; font-size: 12px;"><i class="codicon codicon-add"></i> ' + _t('addParam') + '</button>';
 			html += '</div>';
-			html += '<div id="paramsContainer"><p style="color: var(--vscode-descriptionForeground); font-size: 12px;">暂无参数</p></div>';
+			html += '<div id="paramsContainer"><p style="color: var(--vscode-descriptionForeground); font-size: 12px;">' + _t('noParams') + '</p></div>';
 		}
 
-		// 显示其他自定义属性
+		// Show other custom properties
 		const customProps = Object.keys(node).filter(key =>
 			!['id', 'key', 'type', 'name', 'description', 'children', 'x', 'y', 'Params', 'params', 'Index'].includes(key)
 		);
 
 		if (customProps.length > 0) {
 			html += '<hr style="margin: 16px 0; border-color: var(--border-color);">';
-			html += '<h4 style="margin-bottom: 12px;">自定义属性</h4>';
+			html += '<h4 style="margin-bottom: 12px;">' + _t('customProperties') + '</h4>';
 
 			for (const key of customProps) {
 				html += `
@@ -580,13 +660,13 @@ class BehaviorTreeEditor {
 			}
 		}
 
-		// 添加保存为模板按钮
+		// Add the "Save as Template" button
 		html += '<hr style="margin: 16px 0; border-color: var(--border-color);">';
-		html += '<button id="saveAsTemplateBtn" class="btn" style="width: 100%;"><i class="codicon codicon-save"></i> 保存为模板</button>';
+		html += '<button id="saveAsTemplateBtn" class="btn" style="width: 100%;"><i class="codicon codicon-save"></i> ' + _t('saveAsTemplate') + '</button>';
 
 		panel.innerHTML = html;
 
-		// 绑定事件
+		// Bind events
 		document.getElementById('propType').addEventListener('change', (e) => {
 			this.saveToHistory();
 			node.type = e.target.value;
@@ -619,7 +699,7 @@ class BehaviorTreeEditor {
 			this.saveToHistory();
 		});
 
-		// 添加参数按钮
+		// Add parameter button
 		const addParamBtn = document.getElementById('addParamBtn');
 		if (addParamBtn) {
 			addParamBtn.addEventListener('click', () => {
@@ -627,7 +707,7 @@ class BehaviorTreeEditor {
 			});
 		}
 
-		// 参数输入框事件
+		// Parameter input field events
 		document.querySelectorAll('.param-key').forEach((input) => {
 			const oldKey = input.getAttribute('data-old-key');
 
@@ -639,14 +719,14 @@ class BehaviorTreeEditor {
 					if (!node.Params && !node.params) {
 						node.Params = {};
 					}
-					// 使用 Params 或 params（根据已有的字段）
+					// Use Params or params (based on the existing field)
 					const paramsObj = node.Params || node.params;
 					const value = paramsObj[oldKey];
 					delete paramsObj[oldKey];
 					paramsObj[newKey] = value;
-					// 更新 data-old-key 属性
+					// Update the data-old-key attribute
 					e.target.setAttribute('data-old-key', newKey);
-					// 更新对应的 value 输入框的 data-param-key
+					// Update the data-param-key of the corresponding value input
 					const valueInput = e.target.parentElement.querySelector('.param-value');
 					if (valueInput) {
 						valueInput.setAttribute('data-param-key', newKey);
@@ -655,7 +735,7 @@ class BehaviorTreeEditor {
 			});
 		});
 
-		// 参数值输入框事件
+		// Parameter value input field events
 		document.querySelectorAll('.param-value').forEach((input) => {
 			input.addEventListener('input', (e) => {
 				if (!node.Params && !node.params) {
@@ -673,7 +753,7 @@ class BehaviorTreeEditor {
 			});
 		});
 
-		// 删除参数按钮
+		// Delete parameter button
 		document.querySelectorAll('.delete-param-btn').forEach(btn => {
 			btn.addEventListener('click', (e) => {
 				const key = btn.getAttribute('data-param-key');
@@ -688,7 +768,7 @@ class BehaviorTreeEditor {
 			});
 		});
 
-		// 保存为模板按钮
+		// "Save as Template" button
 		const saveAsTemplateBtn = document.getElementById('saveAsTemplateBtn');
 		console.log('Looking for saveAsTemplateBtn:', saveAsTemplateBtn);
 		if (saveAsTemplateBtn) {
@@ -705,12 +785,12 @@ class BehaviorTreeEditor {
 		this.saveToHistory();
 
 		if (!node.Params && !node.params) {
-			// 使用 Params（大写P）作为默认
+			// Use Params (capital P) as the default
 			node.Params = {};
 		}
 		const paramsObj = node.Params || node.params;
 
-		// 生成新参数名
+		// Generate a new parameter name
 		let newKey = 'NewParam';
 		let counter = 1;
 		while (paramsObj[newKey]) {
@@ -729,7 +809,7 @@ class BehaviorTreeEditor {
 		if (paramsObj && paramsObj[key] !== undefined) {
 			delete paramsObj[key];
 
-			// 如果 Params 为空对象，可以选择保留或删除
+			// If Params is an empty object, you can choose to keep or remove it
 			if (Object.keys(paramsObj).length === 0) {
 				if (node.Params) delete node.Params;
 				if (node.params) delete node.params;
@@ -741,12 +821,12 @@ class BehaviorTreeEditor {
 
 	closePropertiesPanel() {
 		this.selectedNode = null;
-		document.getElementById('propertiesContent').innerHTML = '<p class="empty-state">请选择一个节点</p>';
+		document.getElementById('propertiesContent').innerHTML = '<p class="empty-state">' + _t('selectNode') + '</p>';
 		this.render();
 	}
 
 	openAddNodeDialog() {
-		// 如果没有树数据或没有根节点，创建根节点
+		// If there is no tree data or no root node, create the root node
 		if (!this.treeData || !this.treeData.root) {
 			this.createRootNode();
 			return;
@@ -755,7 +835,7 @@ class BehaviorTreeEditor {
 		if (!this.selectedNode) {
 			vscode.postMessage({
 				type: 'error',
-				message: '请先选择一个父节点，或双击根节点添加子节点'
+				message: _t('selectParentOr')
 			});
 			return;
 		}
@@ -769,17 +849,17 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 创建根节点
+	 * Create the root node
 	 */
 	createRootNode() {
-		// 保存历史快照
+		// Save a history snapshot
 		this.saveToHistory();
 
 		const rootNode = {
 			id: 'Root',
 			key: 'Root',
 			type: 'Root',
-			name: '根节点',
+			name: _t('rootNode'),
 			description: '',
 			children: [],
 			x: this.canvas.width / 2,
@@ -796,14 +876,14 @@ class BehaviorTreeEditor {
 			this.treeData.root = rootNode;
 		}
 
-		// 选中根节点
+		// Select the root node
 		this.selectedNode = rootNode;
 		this.showNodeProperties(rootNode);
 		this.render();
 
 		vscode.postMessage({
 			type: 'info',
-			message: '已创建根节点'
+			message: _t('rootCreated')
 		});
 	}
 
@@ -816,23 +896,23 @@ class BehaviorTreeEditor {
 		});
 	}
 
-	// 保存当前状态到历史记录
+	// Save the current state to history
 	saveToHistory() {
 		if (this.isUndoRedoing) return;
 		if (!this.treeData) return;
 
-		// 深拷贝当前树数据
+		// Deep-copy the current tree data
 		const snapshot = JSON.parse(JSON.stringify(this.treeData));
 
-		// 如果不在最后一个状态，删除后面的历史
+		// If not at the last state, remove the history that follows
 		if (this.historyIndex < this.history.length - 1) {
 			this.history = this.history.slice(0, this.historyIndex + 1);
 		}
 
-		// 添加新快照
+		// Add the new snapshot
 		this.history.push(snapshot);
 
-		// 限制历史记录大小
+		// Limit the history size
 		if (this.history.length > this.maxHistorySize) {
 			this.history.shift();
 		} else {
@@ -842,7 +922,7 @@ class BehaviorTreeEditor {
 		console.log(`History saved. Index: ${this.historyIndex}, Total: ${this.history.length}`);
 	}
 
-	// 撤销
+	// Undo
 	undo() {
 		if (this.historyIndex <= 0) {
 			console.log('No more undo steps');
@@ -854,7 +934,7 @@ class BehaviorTreeEditor {
 		console.log(`Undo. Index: ${this.historyIndex}`);
 	}
 
-	// 恢复
+	// Redo
 	redo() {
 		if (this.historyIndex >= this.history.length - 1) {
 			console.log('No more redo steps');
@@ -866,7 +946,7 @@ class BehaviorTreeEditor {
 		console.log(`Redo. Index: ${this.historyIndex}`);
 	}
 
-	// 从历史记录恢复状态
+	// Restore state from history
 	restoreFromHistory() {
 		if (this.historyIndex < 0 || this.historyIndex >= this.history.length) {
 			return;
@@ -874,16 +954,16 @@ class BehaviorTreeEditor {
 
 		this.isUndoRedoing = true;
 
-		// 深拷贝历史快照
+		// Deep-copy the history snapshot
 		const snapshot = JSON.parse(JSON.stringify(this.history[this.historyIndex]));
 
-		// 记住当前选中节点的ID
+		// Remember the ID of the currently selected node
 		const selectedNodeId = this.selectedNode ? this.selectedNode.id : null;
 
 		this.treeData = snapshot;
 		document.getElementById('treeNameInput').value = snapshot.name || '';
 
-		// 尝试恢复选中节点
+		// Try to restore the selected node
 		if (selectedNodeId) {
 			const newSelectedNode = this.findNodeById(snapshot.root, selectedNodeId);
 			if (newSelectedNode) {
@@ -908,15 +988,15 @@ class BehaviorTreeEditor {
 		if (!this.selectedNode || this.selectedNode === this.treeData.root) {
 			vscode.postMessage({
 				type: 'error',
-				message: '不能删除根节点'
+				message: _t('cannotDeleteRoot')
 			});
 			return;
 		}
 
-		// 保存历史快照
+		// Save a history snapshot
 		this.saveToHistory();
 
-		// 从父节点中移除
+		// Remove from the parent node
 		const removeFromParent = (parent) => {
 			if (!parent.children) return false;
 
@@ -939,34 +1019,34 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 复制选中的节点
+	 * Copy the selected node
 	 */
 	copyNode() {
 		if (!this.selectedNode) {
 			vscode.postMessage({
 				type: 'info',
-				message: '请先选择要复制的节点'
+				message: _t('selectNodeToCopy')
 			});
 			return;
 		}
 
-		// 深拷贝节点（包含所有子节点）
+		// Deep-copy the node (including all child nodes)
 		this.clipboard = this.deepCopyNode(this.selectedNode);
 
 		vscode.postMessage({
 			type: 'info',
-			message: `已复制节点: ${this.selectedNode.name}`
+			message: _t('nodeCopied') + this.selectedNode.name
 		});
 	}
 
 	/**
-	 * 粘贴节点到选中节点下
+	 * Paste the node under the selected node
 	 */
 	pasteNode() {
 		if (!this.clipboard) {
 			vscode.postMessage({
 				type: 'info',
-				message: '剪贴板为空，请先复制节点'
+				message: _t('clipboardEmpty')
 			});
 			return;
 		}
@@ -974,41 +1054,41 @@ class BehaviorTreeEditor {
 		if (!this.selectedNode) {
 			vscode.postMessage({
 				type: 'error',
-				message: '请先选择一个父节点'
+				message: _t('selectParent')
 			});
 			return;
 		}
 
-		// 保存历史快照
+		// Save a history snapshot
 		this.saveToHistory();
 
-		// 深拷贝剪贴板内容（避免引用问题）
+		// Deep-copy the clipboard contents (to avoid reference issues)
 		const newNode = this.deepCopyNode(this.clipboard);
 
-		// 重新分配ID
+		// Reassign IDs
 		this.reassignNodeIds(newNode);
 
-		// 添加到选中节点的子节点
+		// Add to the selected node's children
 		if (!this.selectedNode.children) {
 			this.selectedNode.children = [];
 		}
 		this.selectedNode.children.push(newNode);
 
-		// 自动布局并渲染
+		// Auto layout and render
 		this.autoLayout();
 		this.render();
 
 		vscode.postMessage({
 			type: 'info',
-			message: `已粘贴节点: ${newNode.name}`
+			message: _t('nodePasted') + newNode.name
 		});
 	}
 
 	/**
-	 * 深拷贝节点（递归）
+	 * Deep-copy the node (recursive)
 	 */
 	deepCopyNode(node) {
-		// 复制节点属性，但排除位置信息
+		// Copy node properties, but exclude position info
 		const copy = {};
 		for (const key in node) {
 			if (key !== 'x' && key !== 'y' && key !== 'children') {
@@ -1016,7 +1096,7 @@ class BehaviorTreeEditor {
 			}
 		}
 
-		// 深拷贝子节点
+		// Deep-copy child nodes
 		if (node.children && node.children.length > 0) {
 			copy.children = node.children.map(child => this.deepCopyNode(child));
 		}
@@ -1025,7 +1105,7 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 重新分配节点ID（递归）
+	 * Reassign node IDs (recursive)
 	 */
 	reassignNodeIds(node) {
 		node.id = this.generateId();
@@ -1038,7 +1118,7 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 生成唯一ID
+	 * Generate a unique ID
 	 */
 	generateId() {
 		return 'node_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -1061,40 +1141,40 @@ class BehaviorTreeEditor {
 		this.render();
 	}
 
-	// ========== 模板相关方法 ==========
+	// ========== Template-related methods ==========
 
 	/**
-	 * 打开模板选择对话框
+	 * Open the template selection dialog
 	 */
 	openTemplateDialog() {
 		if (!this.selectedNode) {
 			vscode.postMessage({
 				type: 'error',
-				message: '请先选择一个父节点'
+				message: _t('selectParent')
 			});
 			return;
 		}
 
 		this.parentToAdd = this.selectedNode;
 
-		// 请求获取模板列表
+		// Request the template list
 		vscode.postMessage({ type: 'getTemplates' });
 
 		document.getElementById('templateDialog').style.display = 'flex';
 	}
 
 	/**
-	 * 更新模板列表显示
+	 * Update the template list display
 	 */
 	updateTemplateList() {
 		const listContainer = document.getElementById('templateList');
 
 		if (this.templates.length === 0) {
-			listContainer.innerHTML = '<p class="empty-state">暂无模板，可以在选中节点后点击"保存为模板"创建</p>';
+			listContainer.innerHTML = '<p class="empty-state">' + _t('noTemplates') + '</p>';
 			return;
 		}
 
-		// 获取排序后的模板
+		// Get the sorted templates
 		const sortedTemplates = this.getSortedTemplates();
 
 		let html = '';
@@ -1110,18 +1190,18 @@ class BehaviorTreeEditor {
 					 data-key="${template.node.key}">
 					<div class="template-info">
 						<div class="template-name">${template.name}</div>
-						<div class="template-desc">${template.description || '无描述'}</div>
+						<div class="template-desc">${template.description || _t('noDescription')}</div>
 						<div class="template-meta">
 							<span class="type-badge-inline" style="background-color: ${typeColor};">${typeLabel}</span>
 							<span class="meta-divider">|</span>
-							<span>键名: ${template.node.key}</span>
+							<span>${_t('keyLabel')}${template.node.key}</span>
 							<span class="meta-divider">|</span>
-							<span>${childCount} 个节点</span>
+							<span>${childCount}${_t('nodeCount')}</span>
 						</div>
 					</div>
 					<div class="template-actions">
 						<button class="btn btn-primary btn-small" onclick="editor.addNodeFromTemplate('${template.name}')">
-							<i class="codicon codicon-add"></i> 使用
+							<i class="codicon codicon-add"></i> ${_t('useTemplate')}
 						</button>
 						<button class="btn btn-danger btn-small" onclick="editor.deleteTemplate('${template.name}')">
 							<i class="codicon codicon-trash"></i>
@@ -1133,12 +1213,12 @@ class BehaviorTreeEditor {
 
 		listContainer.innerHTML = html;
 
-		// 应用当前过滤
+		// Apply the current filter
 		this.filterTemplates();
 	}
 
 	/**
-	 * 统计模板节点数量（递归计算）
+	 * Count the template's node count (computed recursively)
 	 */
 	countTemplateNodes(node) {
 		let count = 1;
@@ -1151,7 +1231,7 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 获取排序后的模板列表
+	 * Get the sorted template list
 	 */
 	getSortedTemplates() {
 		const select = document.getElementById('templateSortSelect');
@@ -1182,19 +1262,19 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 排序模板（重新渲染）
+	 * Sort templates (re-render)
 	 */
 	sortTemplates() {
 		this.updateTemplateList();
 	}
 
 	/**
-	 * 切换类型筛选
+	 * Toggle the type filter
 	 */
 	toggleTemplateType(type) {
 		this.currentTypeFilter = type;
 
-		// 更新按钮激活状态
+		// Update the button active state
 		const buttons = document.querySelectorAll('.type-filter-btn');
 		buttons.forEach(btn => {
 			if (btn.getAttribute('data-type') === type) {
@@ -1208,7 +1288,7 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 实时过滤模板
+	 * Filter templates in real time
 	 */
 	filterTemplates() {
 		const searchInput = document.getElementById('templateSearchInput');
@@ -1224,10 +1304,10 @@ class BehaviorTreeEditor {
 			const itemDesc = item.getAttribute('data-desc').toLowerCase();
 			const itemKey = item.getAttribute('data-key').toLowerCase();
 
-			// 类型筛选
+			// Type filter
 			let typeMatch = this.currentTypeFilter === 'all' || itemType === this.currentTypeFilter;
 
-			// 搜索文本匹配（多字段：名称、描述、键名、类型）
+			// Search text matching (multiple fields: name, description, key, type)
 			let textMatch = true;
 			if (searchText !== '') {
 				const keywords = searchText.split(' ').filter(k => k !== '');
@@ -1239,7 +1319,7 @@ class BehaviorTreeEditor {
 				);
 			}
 
-			// 显示/隐藏
+			// Show/hide
 			if (typeMatch && textMatch) {
 				item.style.display = '';
 				visibleCount++;
@@ -1248,7 +1328,7 @@ class BehaviorTreeEditor {
 			}
 		});
 
-		// 显示空状态提示
+		// Show the empty state message
 		const listContainer = document.getElementById('templateList');
 		const existingEmpty = listContainer.querySelector('.filter-empty-state');
 
@@ -1256,7 +1336,7 @@ class BehaviorTreeEditor {
 			if (!existingEmpty) {
 				const emptyMsg = document.createElement('p');
 				emptyMsg.className = 'filter-empty-state empty-state';
-				emptyMsg.textContent = '没有匹配的模板';
+				emptyMsg.textContent = _t('noMatchingTemplates');
 				listContainer.appendChild(emptyMsg);
 			}
 		} else if (existingEmpty) {
@@ -1265,7 +1345,7 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 清除搜索
+	 * Clear the search
 	 */
 	clearTemplateSearch() {
 		const searchInput = document.getElementById('templateSearchInput');
@@ -1276,15 +1356,15 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 保存节点为模板
+	 * Save the node as a template
 	 */
 	saveNodeAsTemplate(node) {
 		console.log('saveNodeAsTemplate called with node:', node);
 
-		// 保存当前节点引用供对话框使用
+		// Save the current node reference for the dialog to use
 		this.nodeToSaveAsTemplate = node;
 
-		// 打开保存模板对话框
+		// Open the save template dialog
 		document.getElementById('saveTemplateDialog').style.display = 'flex';
 		document.getElementById('templateNameInput').value = node.name || '';
 		document.getElementById('templateDescInput').value = node.description || '';
@@ -1292,7 +1372,7 @@ class BehaviorTreeEditor {
 	}
 
 	/**
-	 * 确认保存模板
+	 * Confirm saving the template
 	 */
 	confirmSaveTemplate() {
 		const node = this.nodeToSaveAsTemplate;
@@ -1303,22 +1383,22 @@ class BehaviorTreeEditor {
 		const includeChildren = document.getElementById('templateIncludeChildren').checked;
 
 		if (!templateName) {
-			vscode.postMessage({ type: 'error', message: '请输入模板名称' });
+			vscode.postMessage({ type: 'error', message: _t('enterTemplateName') });
 			return;
 		}
 
-		// 复制节点数据（深拷贝，移除位置和ID信息）
+		// Copy the node data (deep copy, removing position and ID info)
 		const nodeCopy = JSON.parse(JSON.stringify(node));
 		delete nodeCopy.id;
 		delete nodeCopy.x;
 		delete nodeCopy.y;
 
-		// 如果不包含子节点，删除 children
+		// If not including child nodes, delete children
 		if (!includeChildren) {
 			delete nodeCopy.children;
 		}
 
-		// 递归移除子节点的ID和位置
+		// Recursively remove child nodes' IDs and positions
 		const removeIds = (n) => {
 			delete n.id;
 			delete n.x;
@@ -1338,34 +1418,34 @@ class BehaviorTreeEditor {
 
 		console.log('Sending saveTemplate message:', template);
 
-		// 发送到后端保存
+		// Send to the backend to save
 		vscode.postMessage({
 			type: 'saveTemplate',
 			template: template
 		});
 
-		// 关闭对话框
+		// Close the dialog
 		closeSaveTemplateDialog();
 		this.nodeToSaveAsTemplate = null;
 	}
 
 	/**
-	 * 从模板添加节点
+	 * Add a node from a template
 	 */
 	addNodeFromTemplate(templateName) {
 		const template = this.templates.find(t => t.name === templateName);
 		if (!template) {
-			vscode.postMessage({ type: 'error', message: '模板不存在' });
+			vscode.postMessage({ type: 'error', message: _t('templateNotFound') });
 			return;
 		}
 
-		// 保存历史快照
+		// Save a history snapshot
 		this.saveToHistory();
 
-		// 深拷贝模板节点
+		// Deep-copy the template node
 		const newNode = JSON.parse(JSON.stringify(template.node));
 
-		// 生成新的ID和位置
+		// Generate new IDs and positions
 		const generateIds = (node, parentId) => {
 			node.id = parentId ? `${parentId}_${node.key}` : node.key;
 			if (node.children) {
@@ -1375,38 +1455,38 @@ class BehaviorTreeEditor {
 
 		generateIds(newNode, this.parentToAdd.id);
 
-		// 设置位置
+		// Set the position
 		newNode.x = this.parentToAdd.x;
 		newNode.y = this.parentToAdd.y + CANVAS_CONFIG.VERTICAL_SPACING;
 
-		// 添加到父节点
+		// Add to the parent node
 		if (!this.parentToAdd.children) {
 			this.parentToAdd.children = [];
 		}
 		this.parentToAdd.children.push(newNode);
 
-		// 重新布局和渲染
+		// Re-layout and render
 		this.autoLayout();
 		this.render();
 
-		// 关闭对话框
+		// Close the dialog
 		closeTemplateDialog();
 	}
 
 	/**
-	 * 删除模板
+	 * Delete a template
 	 */
 	deleteTemplate(templateName) {
-		// 保存要删除的模板名
+		// Save the name of the template to delete
 		this.templateToDelete = templateName;
 
-		// 显示确认对话框
-		document.getElementById('confirmMessage').textContent = `确定要删除模板 "${templateName}" 吗？`;
+		// Show the confirmation dialog
+		document.getElementById('confirmMessage').textContent = _t('confirmDeleteTemplate') + `"${templateName}"?`;
 		document.getElementById('confirmDialog').style.display = 'flex';
 	}
 
 	/**
-	 * 确认删除操作
+	 * Confirm the delete operation
 	 */
 	confirmDeleteTemplate() {
 		if (!this.templateToDelete) return;
@@ -1421,10 +1501,10 @@ class BehaviorTreeEditor {
 	}
 }
 
-// 全局函数
+// Global functions
 let editor = null;
 
-// 立即初始化编辑器
+// Initialize the editor immediately
 document.addEventListener('DOMContentLoaded', () => {
 	console.log('DOM loaded, initializing editor...');
 	editor = new BehaviorTreeEditor();
@@ -1443,16 +1523,16 @@ function confirmAddNode() {
 	const description = document.getElementById('nodeDescInput').value.trim();
 
 	if (!key) {
-		vscode.postMessage({ type: 'error', message: '请输入英文标识符 (Key)' });
+		vscode.postMessage({ type: 'error', message: _t('enterIdentifier') });
 		return;
 	}
 
 	if (!name) {
-		vscode.postMessage({ type: 'error', message: '请输入中文名称 (Name)' });
+		vscode.postMessage({ type: 'error', message: _t('enterDisplayName') });
 		return;
 	}
 
-	// 保存历史快照
+	// Save a history snapshot
 	editor.saveToHistory();
 
 	const newNode = {
@@ -1476,7 +1556,7 @@ function confirmAddNode() {
 	closeAddNodeDialog();
 }
 
-// 监听来自扩展的消息
+// Listen for messages from the extension
 window.addEventListener('message', (event) => {
 	const message = event.data;
 	console.log('Message received from extension:', message);
@@ -1495,7 +1575,7 @@ window.addEventListener('message', (event) => {
 	}
 });
 
-// 模板对话框相关函数
+// Template dialog related functions
 function closeTemplateDialog() {
 	document.getElementById('templateDialog').style.display = 'none';
 }

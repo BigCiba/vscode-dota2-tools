@@ -5,9 +5,10 @@ import * as path from 'path';
 import { writeKeyValue } from '../utils/kvUtils';
 import { getGameDir } from '../module/addonInfo';
 import { dirExists } from '../utils/pathUtils';
+import { localize } from '../utils/localize';
 
 /**
- * 导出所有饰品的信息到指定文件夹
+ * Export the info of all wearables to the specified folder
  * @export
  */
 export function exportWearable(context: vscode.ExtensionContext) {
@@ -17,21 +18,21 @@ export function exportWearable(context: vscode.ExtensionContext) {
 	const quickPick = vscode.window.createQuickPick();
 	quickPick.canSelectMany = false;
 	quickPick.ignoreFocusOut = true;
-	quickPick.placeholder = '选择输出版本';
+	quickPick.placeholder = localize('msg_select_output_version');
 	quickPick.items = [
 		{
-			label: "只输出英雄相关的版本"
+			label: localize('msg_hero_related_only')
 		},
 		{
-			label: "输出完整版本"
+			label: localize('msg_full_version')
 		}
 	];
 	quickPick.show();
 	quickPick.onDidChangeSelection((t) => {
 		quickPick.value = t[0].label;
-		if (quickPick.value == "只输出英雄相关的版本") {
+		if (quickPick.value == localize('msg_hero_related_only')) {
 			const inputBox = vscode.window.createInputBox();
-			inputBox.placeholder = '请输入输出文件路径';
+			inputBox.placeholder = localize('msg_enter_output_path');
 			if (gameDir) {
 				inputBox.value = path.join(gameDir, "\\scripts\\npc\\items_game.kv");
 			}
@@ -56,7 +57,7 @@ export function exportWearable(context: vscode.ExtensionContext) {
 			});
 		} else {
 			const inputBox = vscode.window.createInputBox();
-			inputBox.placeholder = '请输入输出文件路径';
+			inputBox.placeholder = localize('msg_enter_output_path');
 			if (gameDir) {
 				inputBox.value = path.join(gameDir, "\\scripts\\npc\\items_game.kv");
 			}

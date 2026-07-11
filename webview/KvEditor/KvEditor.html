@@ -17,16 +17,19 @@
 					<p id="kv-file-meta" class="kv-subtitle"></p>
 				</div>
 				<div class="kv-header-actions">
-					<button id="kv-toggle-localized-mode" class="kv-header-button" type="button" title="切换本地化模式">
+					<button id="kv-toggle-vertical-mode" class="kv-header-button" type="button" title="Toggle Vertical Mode">
+						<span class="codicon codicon-split-horizontal"></span>
+					</button>
+					<button id="kv-toggle-localized-mode" class="kv-header-button" type="button" title="Toggle Localized Mode">
 						<span class="codicon codicon-globe"></span>
 					</button>
-					<button id="kv-toggle-compact-mode" class="kv-header-button" type="button" title="切换精简模式">
+					<button id="kv-toggle-compact-mode" class="kv-header-button" type="button" title="Toggle Compact Mode">
 						<span class="codicon codicon-list-tree"></span>
 					</button>
-					<button id="kv-localization-settings" class="kv-header-button" type="button" title="本地化设置">
+					<button id="kv-localization-settings" class="kv-header-button" type="button" title="Localization Settings">
 						<span class="codicon codicon-settings-gear"></span>
 					</button>
-					<button id="kv-open-text-editor" class="kv-header-button" type="button" title="用文本编辑器打开">
+					<button id="kv-open-text-editor" class="kv-header-button" type="button" title="Open in Text Editor">
 						<span class="codicon codicon-go-to-file"></span>
 					</button>
 				</div>
@@ -34,10 +37,17 @@
 		</header>
 		<section class="kv-formula-bar">
 			<input id="kv-editor-address" class="kv-formula-address" type="text" value="" readonly>
-			<button id="kv-formula-help" class="kv-formula-help-button" type="button" title="公式使用指南">
+			<button id="kv-formula-help" class="kv-formula-help-button" type="button" title="Formula Guide">
 				<span class="codicon codicon-question"></span>
 			</button>
 			<input id="kv-editor-value" class="kv-formula-value" type="text" disabled>
+		</section>
+		<section class="kv-search-bar">
+			<span class="codicon codicon-search kv-search-icon"></span>
+			<input id="kv-search-input" class="kv-search-input" type="text" placeholder="Search...">
+			<button id="kv-search-clear" class="kv-search-clear" type="button" hidden>
+				<span class="codicon codicon-close"></span>
+			</button>
 		</section>
 		<section id="kv-empty" class="kv-empty" hidden></section>
 		<section id="kv-error" class="kv-empty" hidden></section>

@@ -3,11 +3,11 @@ import { ENUM_STATUS_BAR_MESSAGE_TIMEOUT } from '../enum';
 import { localize } from '../utils/localize';
 
 let statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -1);
-/** 最多信息条数 */
+/** Maximum number of messages */
 const MAX_MESSAGE_COUNT = 20;
-/** 信息列表 */
+/** Message list */
 let messageList: { [k: number]: string; } = [];
-/** 信息索引 */
+/** Message index */
 let messageIndex = 0;
 let output: vscode.OutputChannel;
 let showOutput = false;
@@ -15,7 +15,7 @@ export enum StatusBarState {
 	ALL_DONE = "$(check-all)",
 	LOADING = "$(loading~spin)",
 }
-// 通知栏
+// Notification bar
 export async function statusBarItemInit(context: vscode.ExtensionContext) {
 	statusBarItem.text = '$(loading~spin) ' + localize("pluginNameLite");
 	context.subscriptions.push(statusBarItem);
@@ -37,6 +37,9 @@ export async function statusBarItemInit(context: vscode.ExtensionContext) {
 export function getStatusBarItem() {
 	return statusBarItem;
 }
+export function getOutputChannel() {
+	return output;
+}
 export function showStatusBarMessage(text: string, hideAfterTimeout: number = ENUM_STATUS_BAR_MESSAGE_TIMEOUT) {
 	recordMessage(text);
 	if (hideAfterTimeout === -1) {
@@ -48,7 +51,7 @@ export function showStatusBarMessage(text: string, hideAfterTimeout: number = EN
 	return messageIndex - 1;
 }
 
-/** 更新文本 */
+/** Update text */
 export function refreshStatusBarMessage(index: number, text: string, hideAfterTimeout: number = ENUM_STATUS_BAR_MESSAGE_TIMEOUT) {
 	if (messageList[index]) {
 		messageList[index] = text;
@@ -58,7 +61,7 @@ export function refreshStatusBarMessage(index: number, text: string, hideAfterTi
 	vscode.window.setStatusBarMessage(text, hideAfterTimeout * 1000);
 }
 
-/** 记录信息 */
+/** Record a message */
 function recordMessage(text: string) {
 	messageList[messageIndex] = text;
 	messageIndex++;
@@ -69,7 +72,7 @@ function recordMessage(text: string) {
 	}
 	statusBarItem.tooltip = new vscode.MarkdownString(tooltip);
 }
-/** 改变状态 */
+/** Change state */
 export function changeStatusBarState(state: StatusBarState) {
 	statusBarItem.text = state + " " + localize("pluginNameLite");
 }

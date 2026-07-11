@@ -6,7 +6,7 @@ import { readKeyValue2, writeKeyValue } from '../utils/kvUtils';
 import { getContentDir, getGameDir } from '../module/addonInfo';
 
 /**
- * 根据饰品文件创建对应的dota2物品kv
+ * Create the corresponding dota2 item kv based on the wearable file
  * @export
  */
 export function createWearableItems(context: vscode.ExtensionContext) {

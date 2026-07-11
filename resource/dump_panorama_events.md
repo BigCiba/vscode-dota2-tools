@@ -1,16 +1,16 @@
 Event|Panel Event|Panel Event
 --|--|--
 <code>AddStyle(panoramasymbol class)</code>|Yes|Add a CSS class to a panel.
-<code>AddStyleAfterDelay(panoramasymbol class, float pre-delay)</code>|Yes|Add a CSS class to a panel after a specified delay. 
+<code>AddStyleAfterDelay(panoramasymbol class, float preDelay)</code>|Yes|Add a CSS class to a panel after a specified delay.
 <code>AddStyleToEachChild(panoramasymbol class)</code>|Yes|Add a CSS class to all children of this panel.
-<code>AddTimedStyle(panoramasymbol class, float duration, float pre-delay)</code>|Yes|Add a class for a specified duration, with optional pre-delay; clears existing timers when called with same class. 
+<code>AddTimedStyle(panoramasymbol class, float duration, float preDelay)</code>|Yes|Add a class for a specified duration, with optional pre-delay; clears existing timers when called with same class.
 <code>AsyncEvent(float delay, event eventToFire)</code>|No|Fire another event after a delay (in seconds).
-<code>DOTADisplayDashboardTip(string string, string optional string)</code>|No|Tip to display, panel to attach to (default 'DefaultTipAttachment')
+<code>DOTADisplayDashboardTip(string string, string optional)</code>|No|Tip to display, panel to attach to (default 'DefaultTipAttachment')
 <code>DOTAHideAbilityTooltip()</code>|Yes|Hide the ability tooltip
 <code>DOTAHideBuffTooltip()</code>|Yes|Hide the buff tooltip
 <code>DOTAHideDroppedItemTooltip()</code>|Yes|Hide the dropped item tooltip
 <code>DOTAHideEconItemTooltip()</code>|Yes|Hide the econ item tooltip.
-<code>DOTAHideProfileCardBattleCupTooltip()</code>|Yes|Hide the profile card / battle cup tooltip.
+<code>DOTAHideFacetTooltip()</code>|Yes|Hides the variant tooltip
 <code>DOTAHideProfileCardTooltip()</code>|Yes|Hide the profile card tooltip.
 <code>DOTAHideRankTierTooltip()</code>|Yes|Hide the rank tier tooltip.
 <code>DOTAHideRuneTooltip()</code>|Yes|Hide the rune tooltip
@@ -22,30 +22,33 @@ Event|Panel Event|Panel Event
 <code>DOTALiveStreamVideoLive(bool isLive)</code>|Yes|Notify change in stream state (we detected the stream going live)
 <code>DOTALiveStreamVideoPlaying(bool isShowingVideo)</code>|Yes|Notify change in video state (is it pointing at a live stream page or not)
 <code>DOTAShowAbilityInventoryItemTooltip(int32 entityIndex, int32 inventorySlot)</code>|Yes|Show tooltip for an item in the entityIndex NPC's inventory.
-<code>DOTAShowAbilityShopItemTooltip(string abilityName, string guideName, int32 entityIndex)</code>|Yes|Show tooltip for an item in the entityIndex NPC's shop.
+<code>DOTAShowAbilityLevelUpTooltipForEntityIndex(string abilityName, int32 entityIndex)</code>|Yes|Show a tooltip describing what will happen when an ability levels. Current level information comes from the entity specified by the entityIndex.
+<code>DOTAShowAbilityShopItemTooltip(string abilityName, string guideName, int32 entityIndex, AbilityID_t parentId)</code>|Yes|Show tooltip for an item in the entityIndex NPC's shop.
 <code>DOTAShowAbilityTooltip(string abilityName)</code>|Yes|Show an ability tooltip.
 <code>DOTAShowAbilityTooltipForEntityIndex(string abilityName, int32 entityIndex)</code>|Yes|Show an ability tooltip. Level information comes from the entity specified by the entityIndex.
-<code>DOTAShowAbilityTooltipForGuide(string abilityName, string guideName)</code>|Yes|Show an ability tooltip annotated with a particular guide's info.
-<code>DOTAShowAbilityTooltipForHero(string abilityName, int32 heroid, bool)</code>|Yes|Show an ability tooltip for the specified hero.
-<code>DOTAShowAbilityTooltipForLevel(string abilityName, int32)</code>|Yes|Show an ability tooltip for a specific level.
-<code>DOTAShowBuffTooltip(int32 entityIndex, int32 buffSerial, bool bOnEnemy)</code>|Yes|Show a buff tooltip for the specified entityIndex + buff serial.
-<code>DOTAShowEconItemTooltip(class item_definition_index_t itemDef, class style_index_t styleIndex, int32 heroID)</code>|Yes|Show the econ item tooltip for a given item, style, and hero. Use 0 for the default style, and -1 for the default hero.
-<code>DOTAShowProfileCardBattleCupTooltip(uint64 steamID)</code>|Yes|Show the battle cup portion of the user's profile card, if it exists
-<code>DOTAShowProfileCardTooltip(uint64 steamID, bool useProName)</code>|Yes|Show a user's profile card. Use pro name determines whether to use their professional team name if applicable.
-<code>DOTAShowRankTierTooltip(uint64 steamID)</code>|Yes|Show the rank tier tooltip for a user
-<code>DOTAShowRuneTooltip(int32 X, int32 Y, int32 RuneType)</code>|Yes|Show a rune tooltip in the X Y location for the rune type
+<code>DOTAShowAbilityTooltipForFacet(string abilityName, CUtlStringToken facetName, bool showVideo)</code>|Yes|Show an ability tooltip for a specific facet.
+<code>DOTAShowAbilityTooltipForGuide(string abilityName, string guideName, HeroID_t arg3, bool arg4)</code>|Yes|Show an ability tooltip annotated with a particular guide's info.
+<code>DOTAShowAbilityTooltipForHero(string abilityName, HeroID_t heroid, HeroFacetID_t heroVariant, bool arg4, bool arg5)</code>|Yes|Show an ability tooltip for the specified hero.
+<code>DOTAShowAbilityTooltipForLevel(string level, int32 arg2)</code>|Yes|Show an ability tooltip for a specific level.
+<code>DOTAShowBuffTooltip(int32 entityIndex, int32 buffSerial, bool onEnemy)</code>|Yes|Show a buff tooltip for the specified entityIndex + buff serial.
+<code>DOTAShowEconItemTooltip(item_definition_index_t itemDef, style_index_t styleIndex, HeroID_t heroId)</code>|Yes|Show the econ item tooltip for a given item, style, and hero. Use 0 for the default style, and 0 for the default hero.
+<code>DOTAShowFacetTooltip(HeroFacetKey_t facetKey)</code>|Yes|Shows a variant tooltip for the given hero facet key
+<code>DOTAShowProfileCardTooltip(uint64 steamId, bool useProName)</code>|Yes|Show a user's profile card. Use pro name determines whether to use their professional team name if applicable.
+<code>DOTAShowProfileCardTooltipForPartyMember(uint64 steamId, bool useProName)</code>|Yes|Show a user's profile card including their hero ban choices. Use pro name determines whether to use their professional team name if applicable.
+<code>DOTAShowRankTierTooltip(uint64 steamId)</code>|Yes|Show the rank tier tooltip for a user
+<code>DOTAShowRuneTooltip(int32 x, int32 y, int32 runeType)</code>|Yes|Show a rune tooltip in the X Y location for the rune type
 <code>DOTAShowTextTooltip(string text)</code>|Yes|Show a tooltip with the given text.
 <code>DOTAShowTextTooltipStyled(string text, panoramasymbol style)</code>|Yes|Show a tooltip with the given text. Also apply a CSS class named "style" to allow custom styling.
-<code>DOTAShowTI10EventGameTooltip(struct TI10EventGameTooltipInfo_t const * __ptr64 X)</code>|Yes|Show a ti10 event game tooltip
+<code>DOTAShowTI10EventGameTooltip(struct ti10EventGameTooltipInfoT)</code>|Yes|Show a ti10 event game tooltip
 <code>DOTAShowTitleImageTextTooltip(string title, string imagePath, string text)</code>|Yes|Show a tooltip with the given title, image, and text.
 <code>DOTAShowTitleImageTextTooltipStyled(string title, string imagePath, string text, panoramasymbol style)</code>|Yes|Show a tooltip with the given title, image, and text. Also apply a CSS class named "style" to allow custom styling.
 <code>DOTAShowTitleTextTooltip(string title, string text)</code>|Yes|Show a tooltip with the given title and text.
 <code>DOTAShowTitleTextTooltipStyled(string title, string text, panoramasymbol style)</code>|Yes|Show a tooltip with the given title and text. Also apply a CSS class named "style" to allow custom styling.
 <code>DropInputFocus()</code>|Yes|Drop focus entirely from the window containing this panel.
 <code>IfHasClassEvent(panoramasymbol class, event eventToFire)</code>|Yes|Fire another event if this panel has a given class.
-<code>IfHoverOtherEvent(string otherPanelID, event eventToFire)</code>|Yes|Fire another event if currently hovering over a panel with the given ID.
+<code>IfHoverOtherEvent(string otherPanelId, event eventToFire)</code>|Yes|Fire another event if currently hovering over a panel with the given ID.
 <code>IfNotHasClassEvent(panoramasymbol class, event eventToFire)</code>|Yes|Fire another event if this panel does not have a given class.
-<code>IfNotHoverOtherEvent(string otherPanelID, event eventToFire)</code>|Yes|Fire another event if not currently hovering over a panel with the given ID.
+<code>IfNotHoverOtherEvent(string otherPanelId, event eventToFire)</code>|Yes|Fire another event if not currently hovering over a panel with the given ID.
 <code>MovePanelDown(int32 repeatCount)</code>|Yes|Move down from the panel. By default, this will change the focus position, but other panel types may implement this differently.
 <code>MovePanelLeft(int32 repeatCount)</code>|Yes|Move left from the panel. By default, this will change the focus position, but other panel types may implement this differently.
 <code>MovePanelRight(int32 repeatCount)</code>|Yes|Move right from the panel. By default, this will change the focus position, but other panel types may implement this differently.
@@ -59,7 +62,7 @@ Event|Panel Event|Panel Event
 <code>PageRight()</code>|No|Scroll the panel right by one page.
 <code>PageUp()</code>|No|Scroll the panel up by one page.
 <code>RemoveStyle(panoramasymbol class)</code>|Yes|Remove a CSS class from a panel.
-<code>RemoveStyleAfterDelay(panoramasymbol class, float pre-delay)</code>|Yes|Remove a CSS class from a panel after a specified delay. 
+<code>RemoveStyleAfterDelay(panoramasymbol class, float preDelay)</code>|Yes|Remove a CSS class from a panel after a specified delay.
 <code>RemoveStyleFromEachChild(panoramasymbol class)</code>|Yes|Remove a CSS class from all children of this panel.
 <code>ScrollDown()</code>|No|Scroll the panel down by one line.
 <code>ScrollLeft()</code>|No|Scroll the panel left by one line.
@@ -79,3 +82,10 @@ Event|Panel Event|Panel Event
 <code>TogglePanelSelected()</code>|Yes|Toggle whether this panel is :selected.
 <code>ToggleStyle(panoramasymbol class)</code>|Yes|Toggle whether a panel has the given CSS class.
 <code>TriggerStyle(panoramasymbol class)</code>|Yes|Remove then immediately add back a CSS class from a panel. Useful to re-trigger events like animations or sound effects.
+<code>DismissAllContextMenus()</code>|No|
+<code>BrowserGoToURL(string url)</code>|No|
+<code>ExternalBrowserGoToURL(string url)</code>|No|
+<code>UIHideCustomLayoutTooltip(string name)</code>|Yes|
+<code>UIShowCustomLayoutParametersTooltip(string name, string layoutPath, string parameters)</code>|Yes|
+<code>DOTAHUDGameDisconnect()</code>|No|
+<code>DOTAShowMatchDetails(int32 matchId)</code>|No|

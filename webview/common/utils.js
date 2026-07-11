@@ -4,14 +4,14 @@ const KeyCode = { Escape: 'Escape', Backquote: 'Backquote', Digit1: 'Digit1', Di
 
 const LOCALIZE = {
 	"zh-cn": {
-		"Function Description": "描述",
-		"Description": "描述",
-		"Parameters": "参数",
-		"Type": "类型",
-		"Name": "名",
-		"Example": "范例",
-		"Return": "返回值",
-		"Concise Description": "简洁描述",
+		"Function Description": "Function Description",
+		"Description": "Description",
+		"Parameters": "Parameters",
+		"Type": "Type",
+		"Name": "Name",
+		"Example": "Example",
+		"Return": "Return",
+		"Concise Description": "Concise Description",
 	},
 	"en": {
 		"Function Description": "Function Description",
@@ -20,7 +20,7 @@ const LOCALIZE = {
 		"Type": "Type",
 		"Name": "Name",
 		"Example": "Example",
-		"Return": "返回值",
+		"Return": "Return",
 		"Concise Description": "Concise Description",
 	}
 };
@@ -105,17 +105,17 @@ HTMLElement.prototype.selectOption = function (selectIndex) {
 };
 
 HTMLElement.prototype.createInputSelectList = function (list, option) {
-	// 渲染选项
+	// Render options
 	function updataOption(self, dropdownElement, list, callback) {
 		dropdownElement.innerHTML = "";
 		for (let index = 0; index < list.length; index++) {
 			const value = list[index];
 			let optionElement = dropdownElement.createChild('a', { className: 'dropdown-option', text: value });
-			// 选择默认选项
+			// Select the default option
 			if (index == selectIndex) {
 				optionElement.classList.add('selected');
 			}
-			// 点击更新当前选择
+			// Update the current selection on click
 			optionElement.addEventListener('click', () => {
 				selectIndex = dropdownElement.selectOption(index);
 				inputElement.value = optionElement.innerText;
@@ -131,7 +131,7 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 				ClickEvent.UnBind(inputElement);
 				self.classList.remove('selected');
 			});
-			// 鼠标更新选项
+			// Update the option on mouse hover
 			optionElement.addEventListener('mouseover', () => {
 				selectIndex = dropdownElement.selectOption(index);
 			});
@@ -144,7 +144,7 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 	let callback = option.callback;
 	let className = option.className;
 	let inputElement = this.createChild('input', { title: defaultValue, value: defaultValue, placeholder: placeholder, className: className });
-	// 创建选项
+	// Create options
 	let dropdownElement = this.createChild('div', { className: 'dropdown-content' });
 	updataOption(this, dropdownElement, this.list, callback);
 
@@ -156,11 +156,11 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 			}
 		}
 	});
-	// focus的时候激活
+	// Activate on focus
 	inputElement.addEventListener('mousedown', () => {
 		if (this.classList.contains('selected') == false) {
 			this.classList.add('selected');
-			// 绑定上下键
+			// Bind the up/down arrow keys
 			KeyEvent.Bind(inputElement, KeyCode.ArrowUp, () => {
 				if (selectIndex > 0) {
 					selectIndex = dropdownElement.selectOption(selectIndex - 1);
@@ -194,7 +194,7 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 				KeyEvent.UnBind(inputElement, KeyCode.Escape);
 				ClickEvent.UnBind(inputElement);
 			});
-			// 绑定鼠标点击区域外事件
+			// Bind a click-outside event
 			setTimeout(() => {
 				ClickEvent.Bind(inputElement, (element) => {
 					if (element.classList.contains('dropdown-option') == false) {
@@ -212,7 +212,7 @@ HTMLElement.prototype.createInputSelectList = function (list, option) {
 	return inputElement;
 };
 
-// 点击其他位置关闭
+// Close when clicking elsewhere
 document.onmousedown = function (event) {
 	for (const element in ClickEvent.eventList) {
 		let callback = ClickEvent.eventList[element];

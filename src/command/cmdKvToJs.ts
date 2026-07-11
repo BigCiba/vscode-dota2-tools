@@ -8,9 +8,10 @@ import { getRootPath } from "../utils/getRootPath";
 import { isNumber } from '../utils/isNumber';
 import { getKeyValueObjectByIndex, overrideKeyValue, readKeyValue2, readKeyValueWithBase, replaceKeyValue } from '../utils/kvUtils';
 import { localize } from '../utils/localize';
+import { getResourcePath } from '../utils/releaseData';
 import { getPathInfo } from '../utils/pathUtils';
 
-/** kv转js */
+/** Convert KV to JS */
 export async function kvToJs(context: vscode.ExtensionContext) {
 	const gameDir = getGameDir();
 	const contentDir = getContentDir();
@@ -18,7 +19,7 @@ export async function kvToJs(context: vscode.ExtensionContext) {
 		// vscode.window.showErrorMessage(localize("content_folder_no_found"));
 		return;
 	}
-	// 消息
+	// Message
 	changeStatusBarState(StatusBarState.LOADING);
 
 	const config = vscode.workspace.getConfiguration().get('dota2-tools.KV to Js Config');
@@ -41,7 +42,7 @@ export async function kvToJs(context: vscode.ExtensionContext) {
 	for (const sKVName in kvFiles) {
 		await generateJS(context, kvJsConfig, sKVName);
 	}
-	// 生成KV文件名列表
+	// Generate the KV file name list
 	let sKVListPath = kvJsConfig.configs?.KvListPath;
 	if (sKVListPath) {
 		let sFileData = "module.exports = [\n";
@@ -54,10 +55,10 @@ export async function kvToJs(context: vscode.ExtensionContext) {
 	}
 
 	changeStatusBarState(StatusBarState.ALL_DONE);
-	showStatusBarMessage("JS文件生成完毕");
+	showStatusBarMessage(localize('msg_js_gen_complete'));
 }
 
-/** 生成js文件 */
+/** Generate the JS file */
 export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: Table, sKVName: string) {
 	const gameDir = getGameDir();
 	const contentDir = getContentDir();
@@ -73,19 +74,19 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 	}
 	let kv = getKeyValueObjectByIndex(await readKeyValueWithBase(sTotalPath.replace(/\\/g, "/")));
 	try {
-		// 特殊处理
-		if (stringToAny(configs.OverrideAbilities) === true && sPath.search("npc_abilities_custom") !== -1) { // 技能合并
-			let npcAbilitiesKv = getKeyValueObjectByIndex(await readKeyValueWithBase(path.join(context.extensionPath + '/resource/npc/npc_abilities.txt')));
-			// 读取v蛇拆分的英雄技能
-			const heroAbilitiesFolder = context.extensionPath + '/resource/npc/heroes';
+		// Special handling
+		if (stringToAny(configs.OverrideAbilities) === true && sPath.search("npc_abilities_custom") !== -1) { // Ability merge
+			let npcAbilitiesKv = getKeyValueObjectByIndex(await readKeyValueWithBase(getResourcePath(context, 'resource', 'npc', 'npc_abilities.txt')));
+			// Read hero abilities split out by VSnake
+			const heroAbilitiesFolder = getResourcePath(context, 'resource', 'npc', 'heroes');
 			const files = fs.readdirSync(heroAbilitiesFolder);
-			// 遍历每个文件和文件夹
+			// Iterate over each file and folder
 			files.forEach(async file => {
 				console.log(file);
 
-				// 构建完整的文件路径
+				// Build the full file path
 				const filePath = path.join(heroAbilitiesFolder, file);
-				// 检查当前路径是文件还是文件夹
+				// Check whether the current path is a file or a folder
 				if (!fs.statSync(filePath).isDirectory()) {
 					const heroAbilitiesKv = await readKeyValueWithBase(filePath);
 					kv = overrideKeyValue(kv, heroAbilitiesKv.DOTAAbilities);
@@ -93,19 +94,19 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 			});
 			let npcAbilitiesOverrideKv = getKeyValueObjectByIndex(await readKeyValueWithBase((gameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
 			kv = overrideKeyValue(replaceKeyValue(npcAbilitiesKv, npcAbilitiesOverrideKv), kv);
-		} else if (stringToAny(configs.OverrideUnits) === true && sPath.search("npc_units_custom") !== -1) { // 单位合并
-			let npcUnitsKv = getKeyValueObjectByIndex(await readKeyValueWithBase((context.extensionPath + '/resource/npc/npc_units.txt').replace(/\\/g, "/")));
+		} else if (stringToAny(configs.OverrideUnits) === true && sPath.search("npc_units_custom") !== -1) { // Unit merge
+			let npcUnitsKv = getKeyValueObjectByIndex(await readKeyValueWithBase(getResourcePath(context, 'resource', 'npc', 'npc_units.txt').replace(/\\/g, "/")));
 			kv = overrideKeyValue(npcUnitsKv, kv);
-		} else if (stringToAny(configs.OverrideHeroes) === true && sPath.search("npc_heroes_custom") !== -1) { // 英雄合并
-			let npcHeroesKv = getKeyValueObjectByIndex(await readKeyValueWithBase((context.extensionPath + '/resource/npc/npc_heroes.txt').replace(/\\/g, "/")));
+		} else if (stringToAny(configs.OverrideHeroes) === true && sPath.search("npc_heroes_custom") !== -1) { // Hero merge
+			let npcHeroesKv = getKeyValueObjectByIndex(await readKeyValueWithBase(getResourcePath(context, 'resource', 'npc', 'npc_heroes.txt').replace(/\\/g, "/")));
 			kv = overrideKeyValue(npcHeroesKv, kv);
-		} else if (stringToAny(configs.OverrideItems) === true && sPath.search("npc_items_custom") !== -1) { // 物品合并
-			let itemsKv = getKeyValueObjectByIndex(await readKeyValueWithBase((context.extensionPath + '/resource/npc/items.txt').replace(/\\/g, "/")));
+		} else if (stringToAny(configs.OverrideItems) === true && sPath.search("npc_items_custom") !== -1) { // Item merge
+			let itemsKv = getKeyValueObjectByIndex(await readKeyValueWithBase(getResourcePath(context, 'resource', 'npc', 'items.txt').replace(/\\/g, "/")));
 			let npcAbilitiesOverrideKv = getKeyValueObjectByIndex(await readKeyValueWithBase((gameDir + '/scripts/npc/npc_abilities_override.txt').replace(/\\/g, "/")));
 			kv = overrideKeyValue(replaceKeyValue(itemsKv, npcAbilitiesOverrideKv), kv);
 		}
 	} catch (error) {
-		showStatusBarMessage("[warning]：官方的KV可能存在格式问题");
+		showStatusBarMessage(localize('msg_kv_format_warning'));
 	}
 
 	let js = obj2Str(kv);
@@ -114,12 +115,12 @@ export async function generateJS(context: vscode.ExtensionContext, kvJsConfig: T
 	// fs.writeFileSync(jsPath, fileData);
 	fs.writeFile(jsPath, fileData, (err) => {
 		if (err) {
-			showStatusBarMessage(`[写入失败]：${sKVName}，原因：${err.message}`);
+			showStatusBarMessage(localize('msg_write_failed', [sKVName, err.message]));
 		} else {
-			showStatusBarMessage(`[生成js]：${sKVName}`);
+			showStatusBarMessage(localize('msg_generate_js', [sKVName]));
 		}
 	});
-	// 生成定义文件
+	// Generate the declaration file
 	if (configs.DeclarePath && kvJsConfig.DeclareConfig) {
 		let DeclarePathAbs: string = configs.DeclarePath;
 		if (DeclarePathAbs.startsWith("$Root")) {
@@ -154,7 +155,7 @@ function GetKVDeclare(kv: Table, depth = 1) {
 			if (typeof v == "object") {
 				declare[k] = "any";
 			} else if (isNumber(v)) {
-				// 有一个不是number的，大概率是string
+				// If one isn't a number, it's most likely a string
 				if (declare[k] == undefined) {
 					declare[k] = "number";
 				}
@@ -191,8 +192,8 @@ function stringToAny(str: string): any {
 	}
 	return str;
 }
-// 把js的obj转成字符串
-// obj:要转的数据对象 
+// Convert the JS obj into a string
+// obj: the data object to convert
 function obj2Str(obj: any, depth = 1, bracketLeft: string = "{", bracketRight: string = "}", sSeparator: string = ": "): string {
 	let ret = bracketLeft + "\n";
 
@@ -213,7 +214,7 @@ function obj2Str(obj: any, depth = 1, bracketLeft: string = "{", bracketRight: s
 		ret += os.EOL;
 	}
 	if (ret[ret.length - 1] === ",") {
-		ret = ret.slice(0, -1);// 去掉最后一个逗号
+		ret = ret.slice(0, -1);// Remove the last comma
 	}
 	for (let index = 0; index < depth - 1; index++) {
 		ret += "\t";

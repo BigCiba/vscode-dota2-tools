@@ -3,7 +3,7 @@ import * as os from 'os';
 import { isNumber } from "./isNumber";
 import { getPathInfo } from "./pathUtils";
 
-// 读取kv2格式为object(兼容kv3)
+// Read kv2 format into object (compatible with kv3)
 export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bOverride: boolean = true): any {
 	if (bRemoveComment === true) {
 		kvdata = removeComment(kvdata);
@@ -17,8 +17,10 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 		if (substr === '"') {
 			let key: any;
 			let value: any;
-			[key, value, i] = readKeyValue(i);
-			// 如果有重复值
+			const result = readKeyValue(i);
+			if (!result) { continue; }
+			[key, value, i] = result;
+			// If there is a duplicate value
 			if (kvObj[key] === undefined || bOverride === true) {
 				kvObj[key] = value;
 			} else {
@@ -33,25 +35,25 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 		}
 	}
 	return kvObj;
-	// 读取一对键对
+	// Read a key-value pair
 	function readKeyValue(startIndex: number): any {
 		let key: string = '';
 		let value: any;
 		let state = 'NONE';
 		for (let i = startIndex; i < kvdata.length; i++) {
 			let substr = kvdata[i];
-			// 读取key
+			// Read key
 			if (substr === '"' && state === 'NONE') {
 				[key, i] = getContent(i);
 				state = 'VALUE';
 				continue;
 			}
-			// 读取value
+			// Read value
 			if (substr === '"' && state === 'VALUE') {
 				[value, i] = getContent(i);
 				return [key, value, i];
 			}
-			// 读取table
+			// Read table
 			if (substr === '{' && state === 'VALUE') {
 				[value, i] = getTable(i);
 				return [key, value, i];
@@ -68,7 +70,7 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 				state = 'READ';
 				continue;
 			}
-			// 插入kv3
+			// Insert kv3
 			if (substr === '<' && kvdata.substr(i, 8) === '<!-- kv3' && state === 'READ') {
 				let [block, newIndex] = getKv3Block(i);
 				kv = readKeyValue3(block);
@@ -78,7 +80,9 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 			if (substr === '"' && state === 'READ') {
 				let key: any;
 				let value: any;
-				[key, value, i] = readKeyValue(i);// 如果有重复值
+				const result = readKeyValue(i);
+				if (!result) { continue; }
+				[key, value, i] = result;
 				if (kv[key] === undefined || bOverride === true) {
 					kv[key] = value;
 				} else {
@@ -92,13 +96,13 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 			}
 		}
 	}
-	// 获取引号里的内容
+	// Get the content inside the quotes
 	function getContent(startIndex: number): any {
 		let content: string = '';
 		let state = 'NONE';
 		for (let i = startIndex; i < kvdata.length; i++) {
 			let substr = kvdata[i];
-			// 跳过转义符
+			// Skip escape characters
 			if (substr === '\\' && kvdata[i + 1] === '"') {
 				content += '"';
 				i++;
@@ -117,7 +121,7 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 			}
 		}
 	}
-	// 获得kv3块
+	// Get kv3 block
 	function getKv3Block(startIndex: number): any {
 		let block = '';
 		let left = 0;
@@ -172,7 +176,7 @@ export function readKeyValue2(kvdata: string, bRemoveComment: boolean = true, bO
 		}
 	}
 }
-// 读取kv3格式为object
+// Read kv3 format into object
 export function readKeyValue3(kvdata: string): Table {
 	kvdata = kvdata.replace(/<!-- kv3.*-->/, '').replace(/\t/g, '').replace(/\s+/g, '').replace(/\r\n/g, '');
 	// kvdata = kvdata.replace(/\t/g,'').replace(/\r\n/g,'');
@@ -187,7 +191,7 @@ export function readKeyValue3(kvdata: string): Table {
 		}
 	}
 	return kvObj;
-	// 读取一对中括号里面的内容
+	// Read the content inside a pair of brackets
 	function readTable(startIndex: number): any {
 		let kv: any = {};
 		let key: string = '';
@@ -232,7 +236,7 @@ export function readKeyValue3(kvdata: string): Table {
 					state = 'STRING';
 					continue;
 				} else if (substr === '{') {
-					// 读表
+					// Read table
 					let [obj, newLine] = readTable(i);
 					kv[key] = obj;
 					key = '';
@@ -241,7 +245,7 @@ export function readKeyValue3(kvdata: string): Table {
 					state = 'KEY';
 					continue;
 				} else if (substr === '[') {
-					// 读数组
+					// Read array
 					let [obj, newLine] = readArray(i);
 					kv[key] = obj;
 					key = '';
@@ -280,7 +284,7 @@ export function readKeyValue3(kvdata: string): Table {
 			}
 		}
 	}
-	// 读数组
+	// Read array
 	function readArray(startIndex: number): any {
 		let arr: any = [];
 		let state = 'NONE';
@@ -334,9 +338,9 @@ export function readKeyValue3(kvdata: string): Table {
 		}
 	}
 }
-// 读取kv2格式为object（#base）
+// Read kv2 format into object (#base)
 export async function readKeyValueWithBase(fullPath: string) {
-	// 获取名字
+	// Get the name
 	let fileName: string = fullPath.split('/').pop() || '';
 	let path = fullPath.split(fileName)[0];
 
@@ -349,9 +353,9 @@ export async function readKeyValueWithBase(fullPath: string) {
 		const lineText: string = rows[i];
 		if (lineText.search(/#base ".*"/) !== -1) {
 			let basePath = lineText.split('"')[1];
-			// 找不到文件则跳过
+			// Skip if the file is not found
 			if (await getPathInfo(path + basePath) === false) {
-				// vscode.window.showErrorMessage("文件缺失：" + path + basePath);
+				// vscode.window.showErrorMessage("File missing: " + path + basePath);
 				continue;
 			}
 			let kv = readKeyValue2(fs.readFileSync(path + basePath, 'utf-8'));
@@ -366,15 +370,15 @@ export async function readKeyValueWithBase(fullPath: string) {
 	}
 	return kvdata;
 }
-// 读取kv2格式为object（#base）包含路径信息
+// Read kv2 format into object (#base), including path info
 export async function readKeyValueWithBaseIncludePath(fullPath: string) {
 	let result: any = {};
-	// 获取名字
+	// Get the name
 	let fileName: string = fullPath.split('/').pop() || '';
 	let path = fullPath.split(fileName)[0];
 
 	let kvdata = readKeyValue2(fs.readFileSync(fullPath, 'utf-8'));
-	// 用路径索引
+	// Index by path
 	result[fullPath] = kvdata;
 	// let kvtable = kvdata[Object.keys(kvdata)[0]];
 	let kvString = fs.readFileSync(fullPath, 'utf-8');
@@ -384,13 +388,13 @@ export async function readKeyValueWithBaseIncludePath(fullPath: string) {
 		const lineText: string = rows[i];
 		if (lineText.search(/#base ".*"/) !== -1) {
 			let basePath = lineText.split('"')[1];
-			// 找不到文件则跳过
+			// Skip if the file is not found
 			if (await getPathInfo(path + basePath) === false) {
-				// vscode.window.showErrorMessage("文件缺失：" + path + basePath);
+				// vscode.window.showErrorMessage("File missing: " + path + basePath);
 				continue;
 			}
 			let kv = readKeyValue2(fs.readFileSync(path + basePath, 'utf-8'));
-			// 用路径索引
+			// Index by path
 			result[path + basePath] = kv;
 			let table = kv[Object.keys(kv)[0]];
 			for (const key in table) {
@@ -405,16 +409,16 @@ export async function readKeyValueWithBaseIncludePath(fullPath: string) {
 }
 export function removeComment(data: string): string {
 	let newData = '';
-	const rows: string[] = data.split(os.EOL);
+	const rows: string[] = data.split(/\r?\n/);
 	for (let i = 0; i < rows.length; i++) {
 		const lineText: string = rows[i];
-		let state = 0;// 用于处理引号内的//注释
+		let state = 0;// Used to handle // comments inside quotes
 		for (let char = 0; char < lineText.length; char++) {
 			const substr = lineText[char];
 			if (substr === '"') {
 				state = (state === 0) ? 1 : 0;
 			}
-			//引号里的// 不处理
+			//Do not process // inside quotes
 			if (state !== 1 && substr === '/' && lineText[char + 1] === '/') {
 				break;
 			} else {
@@ -425,14 +429,14 @@ export function removeComment(data: string): string {
 	}
 	return newData;
 }
-// 获取从ReadKeyValue2、ReadKeyValue3、ReadKeyValueWithBase得到的对象里的第index个对象，用于去掉外层，使其与DOTA2读取的KV结构一致
+// Get the index-th object inside the object obtained from ReadKeyValue2, ReadKeyValue3, or ReadKeyValueWithBase; used to strip the outer layer so it matches the KV structure read by DOTA2
 export function getKeyValueObjectByIndex(obj: Table, index: number = 0) {
 	if (typeof (obj) !== "object") {
 		return;
 	}
 	return obj[Object.keys(obj)[index]];
 }
-// 对象覆盖
+// Object override
 export function overrideKeyValue(mainObj: Table, obj: Table): object {
 	if (typeof (mainObj) !== "object") {
 		return obj;
@@ -453,7 +457,7 @@ export function overrideKeyValue(mainObj: Table, obj: Table): object {
 	return mainObj;
 }
 
-// 对象替换
+// Object replace
 export function replaceKeyValue(mainObj: Table, obj: Table): object {
 	if (typeof (mainObj) !== "object") {
 		return obj;
@@ -476,13 +480,13 @@ export function replaceKeyValue(mainObj: Table, obj: Table): object {
 	return mainObj;
 }
 
-// 写入kv
+// Write kv
 export function writeKeyValue(obj: any, depth: number = 0, tab: number = 12) {
 	var str: string = '';
 	if (obj === null || obj === undefined) {
 		return str;
 	}
-	// 添加制表符
+	// Add tab characters
 	function addDepthTab(depth: number, addString: string): string {
 		var tab: string = '';
 		for (let d = 0; d < depth; d++) {
@@ -491,7 +495,7 @@ export function writeKeyValue(obj: any, depth: number = 0, tab: number = 12) {
 		tab += addString;
 		return tab;
 	}
-	// 添加key与value之间制表符
+	// Add tab characters between key and value
 	function addIntervalTab(depth: number, key: string, nTab: number = 12): string {
 		var tab: string = '';
 		for (let d = 0; d < nTab - Math.floor((depth * 4 + key.length + 2) / 4); d++) {
@@ -509,7 +513,7 @@ export function writeKeyValue(obj: any, depth: number = 0, tab: number = 12) {
 			str += addIntervalTab(depth, key, tab);
 			str += '"' + value + '"' + os.EOL;
 		} else if (key === "precache" && typeof (value) === 'object') {
-			// 特殊处理precache表
+			// Special handling for the precache table
 			str += addDepthTab(depth, '"' + key + '"' + os.EOL);
 			str += addDepthTab(depth, '{' + os.EOL);
 			for (const precacheType in value) {
@@ -522,16 +526,27 @@ export function writeKeyValue(obj: any, depth: number = 0, tab: number = 12) {
 			}
 			str += addDepthTab(depth, '}' + os.EOL);
 		} else {
+			// Write _comment as // comment line before the block
+			if (typeof value === 'object' && value !== null && '_comment' in value && typeof value['_comment'] === 'string' && value['_comment'].trim()) {
+				str += addDepthTab(depth, '// ' + value['_comment'].trim() + os.EOL);
+			}
 			str += addDepthTab(depth, '"' + key + '"' + os.EOL);
 			str += addDepthTab(depth, '{' + os.EOL);
-			str += writeKeyValue(value, depth + 1);
+			// Filter out _comment from inner content
+			const innerObj: any = {};
+			for (const innerKey in value) {
+				if (innerKey !== '_comment') {
+					innerObj[innerKey] = value[innerKey];
+				}
+			}
+			str += writeKeyValue(innerObj, depth + 1);
 			str += addDepthTab(depth, '}' + os.EOL);
 		}
 	}
 	return str;
 }
 
-/** 获取kv的#base路径列表 */
+/** Get the list of #base paths for the kv */
 export async function getBaseInfo(fullPath: string) {
 	let kvString = fs.readFileSync(fullPath, 'utf-8');
 	let result: string[] = [];

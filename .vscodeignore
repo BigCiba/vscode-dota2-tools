@@ -14,6 +14,12 @@ vsc-extension-quickstart.md
 resource/lua_client_api_changelog
 resource/lua_server_api_changelog
 resource/items_game.txt
+images/spellicons/**
+images/items/**
+images/heroes_icon/**
+images/econ_items/**
+.vpk_extract_tmp/**
+CLAUDE.md
 
 !node_modules/@vscode/codicons
 !node_modules/@vscode/webview-ui-toolkit

@@ -15,7 +15,7 @@ let fileWatcher: fs.FSWatcher | undefined;
 const configName = "dota2-tools.A3.listener";
 let config: boolean | undefined;
 
-/** 监听文本变更自动合并 */
+/** Watch for text changes and merge automatically */
 export function listenerLocalizationInit(context: vscode.ExtensionContext) {
 	config = getConfiguration();
 	if (getConfiguration()) {
@@ -35,11 +35,11 @@ export function listenerLocalizationInit(context: vscode.ExtensionContext) {
 		});
 	}
 }
-/** 开始监听 */
+/** Start watching */
 async function startWatch(context: vscode.ExtensionContext) {
 	if (fileWatcher === undefined) {
 		if (isValidFolder()) {
-			console.log("[监听目录]: 合并文本");
+			console.log("[Watching directory]: Merge text");
 			let setting = getPathConfiguration("dota2-tools.A5.localization_path");
 			if (setting && await getPathInfo(setting) !== false) {
 				fileWatcher = watch(setting, { recursive: true, filter: /\.txt$/ }, function (evt, name) {
@@ -63,15 +63,15 @@ async function startWatch(context: vscode.ExtensionContext) {
 		}
 	}
 }
-/** 停止监听 */
+/** Stop watching */
 export function stopWatch() {
 	if (fileWatcher) {
-		console.log("[停止监听目录]: 合并文本");
+		console.log("[Stopped watching directory]: Merge text");
 		fileWatcher.close();
 		fileWatcher = undefined;
 	}
 }
-/** 是否开启监听 */
+/** Whether watching is enabled */
 function getConfiguration() {
 	let listenerConfig: ListenerConfig | undefined = vscode.workspace.getConfiguration().get(configName);
 	if (listenerConfig) {

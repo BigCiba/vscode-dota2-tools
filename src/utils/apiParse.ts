@@ -2,18 +2,18 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as os from 'os';
 import { readFunction } from './readFunction';
 import { readEnum } from './readEnum';
 import { getGameDir } from '../module/addonInfo';
+import { getResourcePath } from './releaseData';
 
 export function apiParse(context: vscode.ExtensionContext, apiNote: Table) {
 	let praseFile = function (sDotaScriptHelp: string): any[] {
-		const rows = sDotaScriptHelp.split(os.EOL);
+		const rows = sDotaScriptHelp.split('\n');
 		let classList: { [key: string]: LuaFunction[]; } = {};
 		let enumList: { [key: string]: LuaEnum[]; } = {};
 		for (let i = 0; i < rows.length; i++) {
-			// 函数
+			// Function
 			let option = rows[i].match(/---\[\[.*\]\]/g);
 			if (option !== null && option.length > 0) {
 				let [funInfo, newLine] = readFunction(i, rows);
@@ -38,7 +38,7 @@ export function apiParse(context: vscode.ExtensionContext, apiNote: Table) {
 				classList[funInfo.class].push(funInfo);
 				i = newLine;
 			}
-			// 常数
+			// Constant
 			if (rows[i].search('--- Enum ') !== -1) {
 				let enum_name = rows[i].substr(9, rows[i].length);
 				if (enumList[enum_name] === undefined) {
@@ -62,7 +62,7 @@ export function apiParse(context: vscode.ExtensionContext, apiNote: Table) {
 				i = new_line;
 			}
 		}
-		// 将api_note中的自定义函数加入
+		// Add the custom functions from api_note
 		for (const className in apiNote) {
 			if (classList[className] === undefined) {
 				if (typeof (apiNote[className]) === 'object' && apiNote[className].type === 'custom_note') {
@@ -83,7 +83,7 @@ export function apiParse(context: vscode.ExtensionContext, apiNote: Table) {
 				}
 			}
 		}
-		// 将api_note中的自定义常数加入
+		// Add the custom constants from api_note
 		for (const enumType in apiNote) {
 			if (enumList[enumType] === undefined) {
 				if (typeof (apiNote[enumType]) === 'object' && apiNote[enumType].type === 'custom_note_enum') {
@@ -120,7 +120,7 @@ export function apiParse(context: vscode.ExtensionContext, apiNote: Table) {
 				}
 			}
 		}
-		// 补充client api
+		// Supplement client api
 		for (const class_name in class_list_cl) {
 			const fun_list = class_list_cl[class_name];
 			for (let i = 0; i < fun_list.length; i++) {
@@ -142,7 +142,7 @@ export function apiParse(context: vscode.ExtensionContext, apiNote: Table) {
 				}
 			}
 		}
-		//重新排序
+		//Re-sort
 		for (const class_name in class_list) {
 			let fun_list = class_list[class_name];
 			let sort_func_list: any[] = [];
@@ -163,13 +163,13 @@ export function apiParse(context: vscode.ExtensionContext, apiNote: Table) {
 			class_list[class_name] = sort_func_list;
 		}
 	};
-	let sHelp: string = path.join(context.extensionPath, "resource/dota_script_help2.lua");
-	let sHelpClient: string = path.join(context.extensionPath, "resource/dota_cl_script_help2.lua");
+	let sHelp: string = getResourcePath(context, 'resource', 'dota_script_help2.lua');
+	let sHelpClient: string = getResourcePath(context, 'resource', 'dota_cl_script_help2.lua');
 	let [class_list, enum_list] = praseFile(fs.readFileSync(sHelp, 'utf-8'));
 	let [class_list_cl, enum_list_cl] = praseFile(fs.readFileSync(sHelpClient, 'utf-8'));
 	Combine(class_list, class_list_cl);
 
-	// modifier function 对应
+	// modifier function mapping
 	let modifierfunctionPath: string | undefined = vscode.workspace.getConfiguration().get('dota2-tools.modifierfunction path');
 	if (modifierfunctionPath !== undefined && modifierfunctionPath !== '') {
 		let modifierfunction = 'return {\n';

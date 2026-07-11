@@ -41,9 +41,6 @@ declare interface CssProperty {
 declare interface ListenerConfig {
 	localization: boolean;
 	kv2js: boolean;
-	ability_excel: boolean;
-	unit_excel: boolean;
-	cloud_sheet: boolean;
 }
 
 declare interface ModuleListConfig {
@@ -59,125 +56,122 @@ declare interface ModuleListConfig {
 	js_completion: boolean;
 	css_completion: boolean;
 	kv_lua_associated: boolean;
-	translate: boolean;
-	sheet_cloud: boolean;
 	dota2kv: boolean;
-	error_logs: boolean;
 }
 
 
 interface AccessTokenResponseData {
-	/** 错误码，非 0 取值表示失败 */
+	/** Error code; a non-zero value indicates failure */
 	code: number,
-	/** 错误描述 */
+	/** Error description */
 	msg: string,
-	/** 租户访问凭证 */
+	/** Tenant access token */
 	tenant_access_token: string,
-	/** 过期时间，单位为秒 */
+	/** Expiration time, in seconds */
 	expire: number;
 }
 interface DocumentFile {
-	/** 创建时间戳 */
+	/** Creation timestamp */
 	created_time: string,
-	/** 修改时间戳 */
+	/** Modification timestamp */
 	modified_time: string,
-	/** 文件名  */
+	/** File name  */
 	name: string,
-	/** 所有者ID */
+	/** Owner ID */
 	owner_id: string,
-	/** 父文件夹标识 */
+	/** Parent folder token */
 	parent_token: string,
 	shortcut_info: {
-		/** 快捷方式指向的原文件token */
+		/** The original file token the shortcut points to */
 		target_token: string,
-		/** 快捷方式指向的原文件类型 */
+		/** The original file type the shortcut points to */
 		target_type: string;
 	},
-	/** 文件标识 */
+	/** File token */
 	token: string,
-	/** 文件类型 */
+	/** File type */
 	type: "sheet" | "folder",
-	/** 在浏览器中查看的链接 */
+	/** Link to view in the browser */
 	url: string;
 }
 interface DocumentListResponseData {
-	/** 错误码，非 0 取值表示失败 */
+	/** Error code; a non-zero value indicates failure */
 	code: number,
-	/** 错误描述 */
+	/** Error description */
 	msg: string,
 	data: {
-		/** 文件夹清单列表 */
+		/** List of files in the folder */
 		files: DocumentFile[];
 	},
 }
 interface SheetInfoResponseData {
-	/** 错误码，非 0 取值表示失败 */
+	/** Error code; a non-zero value indicates failure */
 	code: number,
-	/** 错误描述 */
+	/** Error description */
 	msg: string,
 	data: {
-		/** 工作表列表 */
+		/** List of worksheets */
 		sheets: {
-			/** 工作表id */
+			/** Worksheet id */
 			sheet_id: string,
-			/** 工作表标题 */
+			/** Worksheet title */
 			title: string,
-			/** 工作表索引位置，索引从 0 开始计数。 */
+			/** Worksheet index position; index starts counting from 0. */
 			index: string,
-			/** 工作表类型 */
+			/** Worksheet type */
 			resource_type: "sheet",
-			/** 工作表是否被隐藏 */
+			/** Whether the worksheet is hidden */
 			hidden: boolean;
-			/** 单元格属性 */
+			/** Cell properties */
 			grid_properties: {
-				/** 冻结的行数量 */
+				/** Number of frozen rows */
 				frozen_row_count: number,
-				/** 冻结的列数量 */
+				/** Number of frozen columns */
 				frozen_column_count: number,
-				/** 工作表的行数 */
+				/** Number of rows in the worksheet */
 				row_count: number,
-				/** 工作表的列数量 */
+				/** Number of columns in the worksheet */
 				column_count: number,
 			};
 		}[];
 	};
 }
 interface SheetMetaInfoResponseData {
-	/** 错误码，非 0 取值表示失败 */
+	/** Error code; a non-zero value indicates failure */
 	code: number,
-	/** 错误描述 */
+	/** Error description */
 	msg: string,
 	data: {
-		/** 工作表列表 */
+		/** List of worksheets */
 		sheets: {
-			/** 工作表id */
+			/** Worksheet id */
 			sheetId: string,
-			/** 工作表标题 */
+			/** Worksheet title */
 			title: string,
-			/** 工作表索引位置，索引从 0 开始计数。 */
+			/** Worksheet index position; index starts counting from 0. */
 			index: string,
 		}[];
 	};
 }
 interface SheetDataResponseData {
-	/** 错误码，非 0 取值表示失败 */
+	/** Error code; a non-zero value indicates failure */
 	code: number,
-	/** 错误描述 */
+	/** Error description */
 	msg: string,
 	data: {
-		/** sheet 的版本号 */
+		/** Version number of the sheet */
 		revision: number,
-		/** spreadsheet 的 token */
+		/** Token of the spreadsheet */
 		spreadsheetToken: string,
-		/** 值与范围 */
+		/** Values and range */
 		valueRange: {
-			/** 插入维度 */
+			/** Insertion dimension */
 			majorDimension: string,
-			/** 返回数据的范围，为空时表示查询范围没有数据 */
+			/** Range of the returned data; empty means the queried range has no data */
 			range: string,
-			/** sheet 的版本号 */
+			/** Version number of the sheet */
 			revision: number,
-			/** 查询得到的值 */
+			/** Values obtained from the query */
 			values: string[][];
 		};
 	};
@@ -200,9 +194,9 @@ interface MetaDataResponseData {
 }
 
 interface CreateFolderResponseData {
-	/** 错误码，非 0 取值表示失败 */
+	/** Error code; a non-zero value indicates failure */
 	code: number,
-	/** 错误描述 */
+	/** Error description */
 	msg: string,
 	data: {
 		token: string,
@@ -210,9 +204,9 @@ interface CreateFolderResponseData {
 	};
 }
 interface CopyFileResponseData {
-	/** 错误码，非 0 取值表示失败 */
+	/** Error code; a non-zero value indicates failure */
 	code: number,
-	/** 错误描述 */
+	/** Error description */
 	msg: string,
 	data: {
 		file: {

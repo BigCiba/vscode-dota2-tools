@@ -1,14 +1,8 @@
 import * as vscode from "vscode";
-import { stopWatch as stopWatch1 } from "./listenerAbilityExcel";
-import { stopWatch as stopWatch2 } from "./listenerKV2JS";
 import { stopWatch as stopWatch3 } from "./listenerLocalization";
-import { stopWatch as stopWatch4 } from "./listenerUnitExcel";
 
 export async function StopAllListener() {
-	stopWatch1();
-	stopWatch2();
 	stopWatch3();
-	stopWatch4();
 }
 
 const configName = "dota2-tools.A3.listener";

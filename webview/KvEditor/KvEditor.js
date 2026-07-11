@@ -1,77 +1,413 @@
 const vscode = acquireVsCodeApi();
 
+window.addEventListener('error', function(event) {
+	console.error('[KvEditor] UNCAUGHT ERROR:', event.message, 'at', event.filename, 'line', event.lineno, 'col', event.colno, event.error?.stack);
+});
+window.addEventListener('unhandledrejection', function(event) {
+	console.error('[KvEditor] UNHANDLED REJECTION:', event.reason);
+});
+
+// i18n
+const _lang = document.documentElement.lang;
+const _i18n = {
+	'en': {
+		compactModeOn: 'Compact mode is ON, click to disable',
+		compactModeOff: 'Compact mode is OFF, click to enable',
+		localizedModeOn: 'Localization mode is ON, showing descriptions',
+		localizedModeOff: 'Localization mode is OFF, showing raw text',
+		folderAbility: 'Ability', folderItem: 'Item', folderUnit: 'Unit', folderCustom: 'Custom',
+		formulaHelp: 'Formula examples:\n1. baseNumber + offset → generates 1,2,3,4 sequence\n2. `Row_${rowNumber}` → outputs Row_1, Row_2 labels\n3. offset % 2 === 0 ? "A" : "B" → alternately fills A/B\n4. direction === 1 ? baseNumber + offset : baseNumber - offset → increment down, decrement up',
+		selectCellToEdit: 'Select a cell to edit',
+		pleaseSelectDropdown: 'Please select from dropdown',
+		search: 'Search', searchName: 'Search {0}', noMatchingResults: 'No matching results',
+		enterColumnName: 'Enter column name', formulaPlaceholder: 'e.g.: =row.id.toLowerCase()',
+		localizedDisplayName: 'Localized display name (optional)',
+		tooltipDescription: 'Description shown on hover (optional)',
+		enterKeywords: 'Enter keywords (space-separated)',
+		pathFormat: 'Path format: {localization_path}/{language}/{kv_path}.vdf',
+		formulaExprPlaceholder: 'e.g.: base + offset * 2',
+		enterScriptPath: 'Enter script path',
+		dragToFill: 'Drag to quick fill',
+		fillOptions: 'Fill Options', dirDown: 'Down', dirUp: 'Up',
+		fillNRows: 'Fill {0} {1} rows',
+		fillSequence: 'Sequence', fillCopy: 'Copy', fillLinear: 'Linear Fill',
+		fillGeometric: 'Geometric Fill', fillFormula: 'Formula Fill',
+		stepLabel: 'Step', ratioLabel: 'Ratio',
+		formulaExprLabel: 'Expression (available: base, baseNumber, offset, rowIndex, rowNumber, direction)',
+		cancel: 'Cancel', fill: 'Fill',
+		unknownFillMode: 'Unknown fill mode',
+		noFillableCells: 'No fillable cells currently',
+		cannotDetermineColumn: 'Cannot determine fill column',
+		selectFillRange: 'Please select the range to fill',
+		nonEditableCells: 'Target area contains non-editable cells',
+		fillModeNoDropdown: 'This fill mode does not support dropdown fields',
+		missingRowId: 'Target row is missing a unique identifier; cannot write.',
+		noFillableCellsDot: 'No fillable cells.',
+		noWritableFormula: 'No writable formula was generated.',
+		copyValueNotInDropdown: 'The value to copy does not exist in the target dropdown list',
+		notFormulaSequence: 'Current cell is not a formula; cannot use sequence fill.',
+		cannotDetermineBaseRow: 'Cannot determine the base row for the formula.',
+		noLinearFill: 'Current cell does not support linear fill',
+		notValidNumber: 'Current cell value is not a valid number',
+		enterValidStep: 'Please enter a valid step value',
+		noGeometricFill: 'Current cell does not support geometric fill',
+		enterValidRatio: 'Please enter a valid ratio',
+		noFormulaFill: 'Current cell does not support formula fill',
+		enterFormulaExpr: 'Please enter a formula expression',
+		formulaParseFailed: 'Formula parsing failed: ',
+		formulaExecFailed: 'Formula execution failed: ',
+		idColumnEmpty: '[kv-editor] The id column value cannot be empty',
+		ignoreFormulaWrite: '[kv-editor] Ignoring formula write for unlocatable row',
+		notSelected: 'Not selected',
+		empty: '(empty)', noEntries: 'No entries',
+		doubleClickAbilityValues: 'Double-click to edit AbilityValues',
+		dragColumn: 'Drag column {0}',
+		columnFormula: 'Column formula: {0}',
+		editDropdownOptions: 'Edit {0} dropdown options',
+		dragReorder: 'Drag to reorder',
+		projectResources: 'Project Resources', extensionResources: 'Extension Resources',
+		selectIcon: 'Select Icon',
+		scriptDirNotConfigured: 'Script directory not configured',
+		openScriptFile: 'Open script file ({0})',
+		loadTimeout: 'Loading timed out', loadFailed: 'Failed to load',
+		loadingIcons: 'Loading icons…',
+		abilityIcons: 'Ability Icons', itemIcons: 'Item Icons',
+		heroFilter: 'Hero Filter', heroes: 'Heroes',
+		toggleDisplayMode: 'Toggle display mode',
+		all: 'All',
+		strength: 'Strength', agility: 'Agility', intelligence: 'Intelligence',
+		universal: 'Universal', other: 'Other',
+		currentFilter: 'Current filter: {0}',
+		switchToImageText: 'Switch to image+text mode',
+		switchToImageOnly: 'Switch to image-only mode',
+		noMatchingIcons: 'No matching icons found.',
+		extensionIcons: 'Extension Icons', projectIcons: 'Project Icons',
+		close: 'Close', customPrefix: 'Custom: ',
+		insertColumnLeft: 'Insert Column Left', insertColumnRight: 'Insert Column Right',
+		columnName: 'Column Name', insert: 'Insert',
+		columnNameEmpty: 'Column name cannot be empty',
+		columnNameExists: 'Column name already exists',
+		columnNameInvalid: 'Column name can only contain letters, numbers, and underscores, and cannot start with a digit',
+		confirmDeleteColumn: 'Confirm Delete Column',
+		confirmDeleteColumnMsg: 'Are you sure you want to delete column "{0}"? This cannot be undone.',
+		delete: 'Delete',
+		setFormulaForColumn: 'Set formula for column "{0}"',
+		formula: 'Formula',
+		formulaColumnNote: 'Note: Column formula applies to all cells without an individual formula',
+		save: 'Save',
+		addDescForColumn: 'Add description for column "{0}"',
+		displayLabel: 'Display Label', tooltipDescLabel: 'Tooltip Description',
+		applyCurrentFileOnly: 'Apply to current file only',
+		savedToFile: 'Saved to current file',
+		savedToWorkspace: 'Saved to workspace default config',
+		unfreezeColumn: 'Unfreeze Column', freezeColumn: 'Freeze Column',
+		removeColumnFormula: 'Remove Column Formula', addColumnFormula: 'Add Column Formula',
+		addDescription: 'Add Description', deleteColumn: 'Delete Column',
+		confirmDeleteRow: 'Confirm Delete Row',
+		confirmDeleteRowMsg: 'Are you sure you want to delete row "{0}"? This cannot be undone.',
+		insertRowAbove: 'Insert Row Above', insertRowBelow: 'Insert Row Below',
+		copyRow: 'Copy Row', pasteRow: 'Paste Row', deleteRow: 'Delete Row',
+		autoFill: 'Auto Fill',
+		copiedNRows: 'Copied {0} row(s)', pastedNRows: 'Pasted {0} row(s)',
+		baseValue: 'Base Value', levelIncrement: 'Level Increment', levelCount: 'Level Count',
+		preview: 'Preview: ', apply: 'Apply',
+		abilityValuesClose: 'Close', abilityValuesAddEntry: 'Add Entry',
+		abilityValuesSave: 'Save',
+		noAbilityValues: 'No AbilityValues entries yet. Please add one.',
+		entryKey: 'Entry Key', descriptionLocalized: 'Description (localized)',
+		baseValueLabel: 'Base Value',
+		autoFillAbility: 'Auto Fill (Base + Increment × Level)',
+		addModifier: 'Add Modifier', deleteEntry: 'Delete Entry',
+		modifierKey: 'Modifier Key', modifierValue: 'Modifier Value',
+		deleteModifier: 'Delete',
+		entryKeyEmpty: 'Entry #{0} key cannot be empty.',
+		entryKeyDuplicate: 'Duplicate entry key "{0}".',
+		modifierKeyEmpty: 'Modifier #{0} key in entry "{1}" cannot be empty.',
+		validationErrors: 'There are validation errors.',
+		dropdownOptions: 'Dropdown Options', addOption: 'Add Option',
+		allowMultiSelect: 'Allow multiple selection',
+		separatorLabel: 'Separator:',
+		noDropdownOptions: 'No dropdown options yet. Click "Add Option" to start.',
+		clickSelectColor: 'Click to select color',
+		optionValue: 'Option Value', displayText: 'Display text (optional)',
+		tooltipDescOption: 'Tooltip description (optional)',
+		moveUp: 'Move Up', moveDown: 'Move Down',
+		optionValueEmpty: 'Option value at row #{0} cannot be empty.',
+		optionValueDuplicate: 'Duplicate option value "{0}".',
+		pathType: 'Path type: {0}', rootKey: 'Root key: {0}', unknown: 'Unknown',
+		localizationSettings: 'Localization Settings',
+		bindLocFile: 'Bind localization file',
+		autoUpdateLoc: 'Auto-update localization on file open',
+		language: 'Language', locFilePath: 'Localization file path',
+		locExportMappings: 'Localization export mappings',
+		locColumn: 'Localization Column', locRule: 'Localization Rule', actions: 'Actions',
+		noMappingRules: 'No mapping rules yet. Click the button below to add one.',
+		addMapping: ' Add Mapping',
+		debugUndoRedo: '[KV-Editor Debug] setupUndoRedo received undo/redo:',
+		debugDialogOpen: '[KV-Editor Debug] setupUndoRedo: dialog is open, is current input inside dialog:',
+		debugMainDisabled: '[KV-Editor Debug] setupUndoRedo: main input undo/redo disabled while dialog is open',
+		debugInputCtrlZ: '[KV-Editor Debug] Input received Ctrl+Z/Y:',
+	},
+	'zh-cn': {
+		compactModeOn: 'Compact mode is ON, click to disable',
+		compactModeOff: 'Compact mode is OFF, click to enable',
+		localizedModeOn: 'Localization mode is ON, showing descriptions',
+		localizedModeOff: 'Localization mode is OFF, showing raw text',
+		folderAbility: 'Ability', folderItem: 'Item', folderUnit: 'Unit', folderCustom: 'Custom',
+		formulaHelp: 'Formula examples:\n1. baseNumber + offset → generates 1,2,3,4 sequence\n2. `Row_${rowNumber}` → outputs Row_1, Row_2 labels\n3. offset % 2 === 0 ? "A" : "B" → alternately fills A/B\n4. direction === 1 ? baseNumber + offset : baseNumber - offset → increment down, decrement up',
+		selectCellToEdit: 'Select a cell to edit',
+		pleaseSelectDropdown: 'Please select from dropdown',
+		search: 'Search', searchName: 'Search {0}', noMatchingResults: 'No matching results',
+		enterColumnName: 'Enter column name', formulaPlaceholder: 'e.g.: =row.id.toLowerCase()',
+		localizedDisplayName: 'Localized display name (optional)',
+		tooltipDescription: 'Description shown on hover (optional)',
+		enterKeywords: 'Enter keywords (space-separated)',
+		pathFormat: 'Path format: {localization_path}/{language}/{kv_path}.vdf',
+		formulaExprPlaceholder: 'e.g.: base + offset * 2',
+		enterScriptPath: 'Enter script path',
+		dragToFill: 'Drag to quick fill',
+		fillOptions: 'Fill Options', dirDown: 'Down', dirUp: 'Up',
+		fillNRows: 'Fill {0} {1} rows',
+		fillSequence: 'Sequence', fillCopy: 'Copy', fillLinear: 'Linear Fill',
+		fillGeometric: 'Geometric Fill', fillFormula: 'Formula Fill',
+		stepLabel: 'Step', ratioLabel: 'Ratio',
+		formulaExprLabel: 'Expression (available: base, baseNumber, offset, rowIndex, rowNumber, direction)',
+		cancel: 'Cancel', fill: 'Fill',
+		unknownFillMode: 'Unknown fill mode',
+		noFillableCells: 'No fillable cells currently',
+		cannotDetermineColumn: 'Cannot determine fill column',
+		selectFillRange: 'Please select the range to fill',
+		nonEditableCells: 'Target area contains non-editable cells',
+		fillModeNoDropdown: 'This fill mode does not support dropdown fields',
+		missingRowId: 'Target row is missing a unique identifier; cannot write.',
+		noFillableCellsDot: 'No fillable cells.',
+		noWritableFormula: 'No writable formula was generated.',
+		copyValueNotInDropdown: 'The value to copy does not exist in the target dropdown list',
+		notFormulaSequence: 'Current cell is not a formula; cannot use sequence fill.',
+		cannotDetermineBaseRow: 'Cannot determine the base row for the formula.',
+		noLinearFill: 'Current cell does not support linear fill',
+		notValidNumber: 'Current cell value is not a valid number',
+		enterValidStep: 'Please enter a valid step value',
+		noGeometricFill: 'Current cell does not support geometric fill',
+		enterValidRatio: 'Please enter a valid ratio',
+		noFormulaFill: 'Current cell does not support formula fill',
+		enterFormulaExpr: 'Please enter a formula expression',
+		formulaParseFailed: 'Formula parsing failed: ',
+		formulaExecFailed: 'Formula execution failed: ',
+		idColumnEmpty: '[kv-editor] The id column value cannot be empty',
+		ignoreFormulaWrite: '[kv-editor] Ignoring formula write for unlocatable row',
+		notSelected: 'Not selected',
+		empty: '(empty)', noEntries: 'No entries',
+		doubleClickAbilityValues: 'Double-click to edit AbilityValues',
+		dragColumn: 'Drag column {0}',
+		columnFormula: 'Column formula: {0}',
+		editDropdownOptions: 'Edit {0} dropdown options',
+		dragReorder: 'Drag to reorder',
+		projectResources: 'Project Resources', extensionResources: 'Extension Resources',
+		selectIcon: 'Select Icon',
+		scriptDirNotConfigured: 'Script directory not configured',
+		openScriptFile: 'Open script file ({0})',
+		loadTimeout: 'Loading timed out', loadFailed: 'Failed to load',
+		loadingIcons: 'Loading icons…',
+		abilityIcons: 'Ability Icons', itemIcons: 'Item Icons',
+		heroFilter: 'Hero Filter', heroes: 'Heroes',
+		toggleDisplayMode: 'Toggle display mode',
+		all: 'All',
+		strength: 'Strength', agility: 'Agility', intelligence: 'Intelligence',
+		universal: 'Universal', other: 'Other',
+		currentFilter: 'Current filter: {0}',
+		switchToImageText: 'Switch to image+text mode',
+		switchToImageOnly: 'Switch to image-only mode',
+		noMatchingIcons: 'No matching icons found.',
+		extensionIcons: 'Extension Icons', projectIcons: 'Project Icons',
+		close: 'Close', customPrefix: 'Custom: ',
+		insertColumnLeft: 'Insert Column Left', insertColumnRight: 'Insert Column Right',
+		columnName: 'Column Name', insert: 'Insert',
+		columnNameEmpty: 'Column name cannot be empty',
+		columnNameExists: 'Column name already exists',
+		columnNameInvalid: 'Column name can only contain letters, numbers, and underscores, and cannot start with a digit',
+		confirmDeleteColumn: 'Confirm Delete Column',
+		confirmDeleteColumnMsg: 'Are you sure you want to delete column "{0}"? This cannot be undone.',
+		delete: 'Delete',
+		setFormulaForColumn: 'Set formula for column "{0}"',
+		formula: 'Formula',
+		formulaColumnNote: 'Note: Column formula applies to all cells without an individual formula',
+		save: 'Save',
+		addDescForColumn: 'Add description for column "{0}"',
+		displayLabel: 'Display Label', tooltipDescLabel: 'Tooltip Description',
+		applyCurrentFileOnly: 'Apply to current file only',
+		savedToFile: 'Saved to current file',
+		savedToWorkspace: 'Saved to workspace default config',
+		unfreezeColumn: 'Unfreeze Column', freezeColumn: 'Freeze Column',
+		removeColumnFormula: 'Remove Column Formula', addColumnFormula: 'Add Column Formula',
+		addDescription: 'Add Description', deleteColumn: 'Delete Column',
+		confirmDeleteRow: 'Confirm Delete Row',
+		confirmDeleteRowMsg: 'Are you sure you want to delete row "{0}"? This cannot be undone.',
+		insertRowAbove: 'Insert Row Above', insertRowBelow: 'Insert Row Below',
+		copyRow: 'Copy Row', pasteRow: 'Paste Row', deleteRow: 'Delete Row',
+		autoFill: 'Auto Fill',
+		copiedNRows: 'Copied {0} row(s)', pastedNRows: 'Pasted {0} row(s)',
+		baseValue: 'Base Value', levelIncrement: 'Level Increment', levelCount: 'Level Count',
+		preview: 'Preview: ', apply: 'Apply',
+		abilityValuesClose: 'Close', abilityValuesAddEntry: 'Add Entry',
+		abilityValuesSave: 'Save',
+		noAbilityValues: 'No AbilityValues entries yet. Please add one.',
+		entryKey: 'Entry Key', descriptionLocalized: 'Description (localized)',
+		baseValueLabel: 'Base Value',
+		autoFillAbility: 'Auto Fill (Base + Increment × Level)',
+		addModifier: 'Add Modifier', deleteEntry: 'Delete Entry',
+		modifierKey: 'Modifier Key', modifierValue: 'Modifier Value',
+		deleteModifier: 'Delete',
+		entryKeyEmpty: 'Entry #{0} key cannot be empty.',
+		entryKeyDuplicate: 'Duplicate entry key "{0}".',
+		modifierKeyEmpty: 'Modifier #{0} key in entry "{1}" cannot be empty.',
+		validationErrors: 'There are validation errors.',
+		dropdownOptions: 'Dropdown Options', addOption: 'Add Option',
+		allowMultiSelect: 'Allow multiple selection',
+		separatorLabel: 'Separator:',
+		noDropdownOptions: 'No dropdown options yet. Click "Add Option" to start.',
+		clickSelectColor: 'Click to select color',
+		optionValue: 'Option Value', displayText: 'Display text (optional)',
+		tooltipDescOption: 'Tooltip description (optional)',
+		moveUp: 'Move Up', moveDown: 'Move Down',
+		optionValueEmpty: 'Option value at row #{0} cannot be empty.',
+		optionValueDuplicate: 'Duplicate option value "{0}".',
+		pathType: 'Path type: {0}', rootKey: 'Root key: {0}', unknown: 'Unknown',
+		localizationSettings: 'Localization Settings',
+		bindLocFile: 'Bind localization file',
+		autoUpdateLoc: 'Auto-update localization on file open',
+		language: 'Language', locFilePath: 'Localization file path',
+		locExportMappings: 'Localization export mappings',
+		locColumn: 'Localization Column', locRule: 'Localization Rule', actions: 'Actions',
+		noMappingRules: 'No mapping rules yet. Click the button below to add one.',
+		addMapping: ' Add Mapping',
+		debugUndoRedo: '[KV-Editor Debug] setupUndoRedo received undo/redo:',
+		debugDialogOpen: '[KV-Editor Debug] setupUndoRedo: dialog is open, is current input inside dialog:',
+		debugMainDisabled: '[KV-Editor Debug] setupUndoRedo: main input undo/redo disabled while dialog is open',
+		debugInputCtrlZ: '[KV-Editor Debug] Input received Ctrl+Z/Y:',
+	}
+};
+function _t(key) { return (_i18n[_lang] && _i18n[_lang][key]) || _i18n['en'][key] || key; }
+function _tf(key, ...args) { let s = _t(key); args.forEach((a, i) => { s = s.replace(`{${i}}`, a); }); return s; }
+
 const fileNameEl = document.getElementById('kv-file-name');
 const fileMetaEl = document.getElementById('kv-file-meta');
 const openTextEditorBtn = document.getElementById('kv-open-text-editor');
 const localizationSettingsBtn = document.getElementById('kv-localization-settings');
 const toggleCompactModeBtn = document.getElementById('kv-toggle-compact-mode');
 const toggleLocalizedModeBtn = document.getElementById('kv-toggle-localized-mode');
+const toggleVerticalModeBtn = document.getElementById('kv-toggle-vertical-mode');
+let verticalMode = true;
 const tableSection = document.getElementById('kv-table');
+if (tableSection) {
+	tableSection.addEventListener('wheel', (event) => {
+		const dy = event.deltaY;
+		const dx = event.deltaX;
+		if (event.shiftKey) {
+			// Shift+wheel: vertical scroll (browser may swap deltaY→deltaX)
+			const delta = Math.abs(dy) > Math.abs(dx) ? dy : dx;
+			if (delta) {
+				event.preventDefault();
+				tableSection.scrollTop += delta;
+			}
+		} else if (Math.abs(dy) > Math.abs(dx)) {
+			// Normal wheel: horizontal scroll
+			event.preventDefault();
+			tableSection.scrollLeft += dy;
+		}
+	}, { passive: false });
+}
 const emptySection = document.getElementById('kv-empty');
 const errorSection = document.getElementById('kv-error');
 const formulaAddressInput = document.getElementById('kv-editor-address');
 const formulaValueInput = document.getElementById('kv-editor-value');
 const formulaHelpBtn = document.getElementById('kv-formula-help');
+const searchInput = document.getElementById('kv-search-input');
+const searchClearBtn = document.getElementById('kv-search-clear');
+
+if (searchInput) {
+	let searchDebounce = null;
+	searchInput.addEventListener('input', () => {
+		clearTimeout(searchDebounce);
+		searchDebounce = setTimeout(() => {
+			tableSearchFilter = searchInput.value.trim().toLowerCase();
+			if (searchClearBtn) searchClearBtn.hidden = !tableSearchFilter;
+			if (latestPayload) {
+				renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
+			}
+		}, 200);
+	});
+	searchInput.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') {
+			searchInput.value = '';
+			tableSearchFilter = '';
+			if (searchClearBtn) searchClearBtn.hidden = true;
+			if (latestPayload) {
+				renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
+			}
+		}
+	});
+}
+if (searchClearBtn) {
+	searchClearBtn.addEventListener('click', () => {
+		if (searchInput) searchInput.value = '';
+		tableSearchFilter = '';
+		searchClearBtn.hidden = true;
+		if (latestPayload) {
+			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
+		}
+	});
+}
 
 if (emptySection) {
 	emptySection.textContent = 'Loading KV data...';
 }
 setSectionVisibility({ showTable: false, showEmpty: true, showError: false });
 
-// 绑定公式帮助按钮
 if (formulaHelpBtn) {
 	formulaHelpBtn.addEventListener('click', () => {
 		vscode.postMessage({ type: 'openFormulaHelp' });
 	});
 }
 
-// 绑定"用文本编辑器打开"按钮事件
 if (openTextEditorBtn) {
 	openTextEditorBtn.addEventListener('click', () => {
 		vscode.postMessage({ type: 'openTextEditor' });
 	});
 }
 
-// 绑定本地化设置按钮
 if (localizationSettingsBtn) {
 	localizationSettingsBtn.addEventListener('click', () => {
 		openLocalizationSettingsDialog();
 	});
 }
 
-// 本地化设置状态
 let localizationSettings = {
 	enabled: false,
 	language: 'schinese',
 	filePath: '',
-	autoUpdateOnOpen: false, // 打开文件时自动更新本地化
+	autoUpdateOnOpen: false,
 	mappings: [] // { columnName: string, rule: string }[]
 };
 
-// 精简模式状态管理
 let compactMode = false;
 
-// 本地化模式状态管理
 let localizedMode = false;
 
-// 对话框打开状态管理
 let isDialogOpen = false;
 
-// 列描述配置
 let columnDescriptions = {};
 
-// 冻结列管理
 const frozenColumns = new Set();
 
-// 绑定精简模式切换按钮
 if (toggleCompactModeBtn) {
 	const updateButtonState = () => {
 		if (compactMode) {
 			toggleCompactModeBtn.classList.add('active');
-			toggleCompactModeBtn.title = '精简模式已开启，点击关闭';
+			toggleCompactModeBtn.title = _t('compactModeOn');
 		} else {
 			toggleCompactModeBtn.classList.remove('active');
-			toggleCompactModeBtn.title = '精简模式已关闭，点击开启';
+			toggleCompactModeBtn.title = _t('compactModeOff');
 		}
 	};
 	updateButtonState();
@@ -80,28 +416,46 @@ if (toggleCompactModeBtn) {
 		compactMode = !compactMode;
 		updateButtonState();
 
-		// 保存到后端
 		vscode.postMessage({
 			type: 'saveCompactMode',
 			payload: { compactMode }
 		});
 
-		// 立即重新渲染表格
 		if (latestPayload) {
 			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
 		}
 	});
 }
 
-// 绑定本地化模式切换按钮
+// Vertical mode toggle
+if (toggleVerticalModeBtn) {
+	if (verticalMode) {
+		toggleVerticalModeBtn.classList.add('active');
+		toggleVerticalModeBtn.title = 'Vertical mode ON';
+	}
+	toggleVerticalModeBtn.addEventListener('click', () => {
+		verticalMode = !verticalMode;
+		if (verticalMode) {
+			toggleVerticalModeBtn.classList.add('active');
+			toggleVerticalModeBtn.title = 'Vertical mode ON';
+		} else {
+			toggleVerticalModeBtn.classList.remove('active');
+			toggleVerticalModeBtn.title = 'Vertical mode OFF';
+		}
+		if (latestPayload) {
+			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
+		}
+	});
+}
+
 if (toggleLocalizedModeBtn) {
 	const updateButtonState = () => {
 		if (localizedMode) {
 			toggleLocalizedModeBtn.classList.add('active');
-			toggleLocalizedModeBtn.title = '本地化模式已开启，显示描述';
+			toggleLocalizedModeBtn.title = _t('localizedModeOn');
 		} else {
 			toggleLocalizedModeBtn.classList.remove('active');
-			toggleLocalizedModeBtn.title = '本地化模式已关闭，显示原文';
+			toggleLocalizedModeBtn.title = _t('localizedModeOff');
 		}
 	};
 	updateButtonState();
@@ -110,13 +464,11 @@ if (toggleLocalizedModeBtn) {
 		localizedMode = !localizedMode;
 		updateButtonState();
 
-		// 保存到后端
 		vscode.postMessage({
 			type: 'saveLocalizedMode',
 			payload: { localizedMode }
 		});
 
-		// 立即重新渲染表格
 		if (latestPayload) {
 			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
 		}
@@ -128,21 +480,212 @@ const ROW_NUMBER_COLUMN_KEY = '__rowNumber';
 const ROW_NUMBER_MIN_WIDTH = 32;
 
 const FOLDER_TYPE_LABELS = {
-	ability: '技能',
-	item: '物品',
-	unit: '单位',
-	custom: '自定义'
+	ability: _t('folderAbility'),
+	item: _t('folderItem'),
+	unit: _t('folderUnit'),
+	custom: _t('folderCustom')
 };
 
-const FORMULA_TOOLTIP_HELP = [
-	'公式示例:',
-	'1. baseNumber + offset → 生成 1,2,3,4 序列',
-	'2. `Row_${rowNumber}` → 输出 Row_1, Row_2 等标签',
-	'3. offset % 2 === 0 ? "A" : "B" → 交替填充 A/B',
-	'4. direction === 1 ? baseNumber + offset : baseNumber - offset → 向下递增、向上递减'
-].join('\n');
+const FORMULA_TOOLTIP_HELP = _t('formulaHelp');
 
 let latestPayload = undefined;
+let tableSearchFilter = '';
+let pendingScrollRight = false;
+
+const ABILITY_PROPERTIES = [
+	'BaseClass', 'ScriptFile', 'AbilityTextureName', 'AbilitySound',
+	'AbilityCastAnimation', 'AbilityCastGestureSlot', 'AbilityType', 'AbilityBehavior',
+	'AbilityUnitDamageType', 'SpellImmunityType', 'AbilityUnitTargetTeam',
+	'AbilityUnitTargetType', 'AbilityUnitTargetFlags', 'SpellDispellableType',
+	'HasScepterUpgrade', 'HasShardUpgrade', 'IsShardUpgrade', 'IsGrantedByShard',
+	'IsGrantedByScepter', 'LinkedAbility', 'LinkedShardAbility',
+	'AbilityDraftScepterAbility', 'AbilityDraftShardAbility',
+	'OnCastbar', 'OnLearnbar', 'FightRecapLevel',
+	'MaxLevel', 'RequiredLevel', 'LevelsBetweenUpgrades',
+	'AbilityDamage', 'AbilityCooldown', 'AbilityCharges', 'AbilityChargeRestoreTime',
+	'AbilityCastRange', 'AbilityCastRangeBuffer', 'AbilityCastPoint',
+	'AbilityManaCost', 'AbilityHealthCost', 'AbilityChannelTime', 'AbilityDuration',
+	'AbilitySharedCooldown', 'AbilityOvershootCastRange',
+	'HotKeyOverride', 'DisplayAdditionalHeroes', 'AbilityChannelAnimation',
+	'AnimationIgnoresModelScale', 'IsCastableWhileHidden', 'AnimationPlaybackRate',
+	'IsBreakable', 'Innate', 'SpecialBonusIntrinsicModifier',
+	'AbilityModifierSupportValue', 'AbilityModifierSupportBonus',
+	'AbilitySpecial', 'AbilityValues', 'precache',
+];
+
+const ITEM_PROPERTIES = [
+	'BaseClass', 'ScriptFile', 'AbilityTextureName', 'AbilityBehavior',
+	'AbilityUnitDamageType', 'SpellImmunityType', 'AbilityUnitTargetTeam',
+	'AbilityUnitTargetType', 'AbilityUnitTargetFlags',
+	'AbilityCastRange', 'AbilityCastPoint', 'AbilityCooldown', 'AbilityManaCost',
+	'AbilityChannelTime', 'AbilityDuration', 'AbilityDamage',
+	'MaxLevel', 'AbilityCharges', 'AbilityChargeRestoreTime',
+	'ItemCost', 'ItemShopTags', 'ItemQuality', 'ItemAliases',
+	'ItemPurchasable', 'ItemSellable', 'ItemInitiallySellable', 'ItemDroppable',
+	'ItemKillable', 'ItemStackable', 'ItemStackableMax', 'ItemPermanent',
+	'ItemCombinable', 'ItemDisassemblable', 'ItemDisassembleRule',
+	'ItemRecipe', 'ItemRequiresCharges', 'ItemInitialCharges', 'ItemHideCharges',
+	'ItemIsNeutralDrop', 'ItemIsNeutralActiveDrop', 'ItemIsNeutralPassiveDrop',
+	'ItemContributesToNetWorthWhenDropped', 'AllowedInBackpack',
+	'IsTempestDoubleClonable', 'SpeciallyBannedFromNeutralSlot',
+	'ItemShareability', 'ItemDeclarations', 'ItemSupport',
+	'ItemStockMax', 'ItemStockInitial', 'ItemStockTime', 'ItemInitialStockTime',
+	'BonusDelayedStockCount', 'ItemInitialStockTimeTurbo',
+	'SideShop', 'SecretShop', 'GlobalShop', 'ItemGloballyCombinable',
+	'MaxUpgradeLevel', 'ItemBaseLevel', 'UpgradesItems', 'UpgradeRecipe',
+	'ItemResult', 'ItemRequirements',
+	'ShouldBeSuggested', 'ShouldBeInitiallySuggested',
+	'Model', 'Effect', 'UIPickupSound', 'UIDropSound', 'WorldDropSound',
+	'ItemAlertable', 'ItemDisplayCharges', 'ItemCastOnPickup',
+	'ItemCanBeConsumed', 'AutoPickup', 'ItemLevelByGameTime',
+	'HasScepterUpgrade', 'HasShardUpgrade',
+	'AbilitySpecial', 'AbilityValues', 'precache',
+];
+
+const GENERIC_ABILITY_TEMPLATE = {
+	_comment: '',
+	BaseClass: 'ability_lua',
+	ScriptFile: '',
+	AbilityTextureName: '',
+	AbilityBehavior: 'DOTA_ABILITY_BEHAVIOR_NO_TARGET',
+	AbilityUnitTargetTeam: '',
+	AbilityUnitTargetType: '',
+	AbilityCastAnimation: 'ACT_DOTA_CAST_ABILITY_1',
+	AbilityCastRange: '0',
+	AbilityCastPoint: '0.2',
+	AbilityCooldown: '10',
+	AbilityManaCost: '100',
+	MaxLevel: '4',
+};
+
+const GENERIC_ITEM_TEMPLATE = {
+	_comment: '',
+	BaseClass: 'item_lua',
+	ScriptFile: '',
+	AbilityTextureName: '',
+	AbilityBehavior: 'DOTA_ABILITY_BEHAVIOR_NO_TARGET',
+	ItemCost: '0',
+	ItemDroppable: '1',
+	ItemSellable: '1',
+	ItemPurchasable: '1',
+	ItemKillable: '1',
+	ItemStackable: '0',
+	ItemPermanent: '1',
+	MaxLevel: '1',
+	AbilityCooldown: '0',
+	AbilityManaCost: '0',
+};
+
+function updateCreateButtons(folderType, rows) {
+	let group = document.querySelector('.kv-header-create-group');
+	if (group) {
+		group.remove();
+	}
+	if (!folderType) return;
+	const headerActions = document.querySelector('.kv-header-actions');
+	if (!headerActions) return;
+
+	group = document.createElement('div');
+	group.className = 'kv-header-create-group';
+
+	if (folderType === 'ability' || folderType === 'custom') {
+		const btn = document.createElement('button');
+		btn.type = 'button';
+		btn.className = 'kv-header-create-btn';
+		const icon = document.createElement('span');
+		icon.className = 'codicon codicon-add';
+		btn.appendChild(icon);
+		btn.appendChild(document.createTextNode(' Ability'));
+		btn.title = 'Add generic ability';
+		btn.addEventListener('click', () => {
+			const totalRows = Array.isArray(rows) ? rows.length : 0;
+			pendingScrollRight = true;
+			vscode.postMessage({
+				type: 'bulkInsertRows',
+				payload: {
+					insertAfterIndex: totalRows - 1,
+					rows: [{ id: 'new_ability', values: { ...GENERIC_ABILITY_TEMPLATE } }]
+				}
+			});
+		});
+		group.appendChild(btn);
+	}
+
+	if (folderType === 'item' || folderType === 'custom') {
+		const btn = document.createElement('button');
+		btn.type = 'button';
+		btn.className = 'kv-header-create-btn';
+		const icon = document.createElement('span');
+		icon.className = 'codicon codicon-add';
+		btn.appendChild(icon);
+		btn.appendChild(document.createTextNode(' Item'));
+		btn.title = 'Add generic item';
+		btn.addEventListener('click', () => {
+			const totalRows = Array.isArray(rows) ? rows.length : 0;
+			pendingScrollRight = true;
+			vscode.postMessage({
+				type: 'bulkInsertRows',
+				payload: {
+					insertAfterIndex: totalRows - 1,
+					rows: [{ id: 'new_item', values: { ...GENERIC_ITEM_TEMPLATE } }]
+				}
+			});
+		});
+		group.appendChild(btn);
+	}
+
+	// Add Property button
+	const addPropBtn = document.createElement('button');
+	addPropBtn.type = 'button';
+	addPropBtn.className = 'kv-header-create-btn';
+	const addPropIcon = document.createElement('span');
+	addPropIcon.className = 'codicon codicon-symbol-property';
+	addPropBtn.appendChild(addPropIcon);
+	addPropBtn.appendChild(document.createTextNode(' Property'));
+	addPropBtn.title = 'Add property from list';
+	addPropBtn.addEventListener('click', () => openAddPropertyDropdown());
+	group.appendChild(addPropBtn);
+
+	headerActions.insertBefore(group, headerActions.firstChild);
+}
+const COLLAPSIBLE_COLUMNS = new Set(['AbilityBehavior', 'AbilityUnitTargetTeam', 'AbilityUnitTargetType', 'AbilityUnitTargetFlags']);
+
+function wrapCollapsibleCell(td, displayValue) {
+	const summary = document.createElement('div');
+	summary.className = 'kv-collapsible-summary';
+	const expandIcon = document.createElement('span');
+	expandIcon.className = 'codicon codicon-chevron-right kv-collapsible-expand-icon';
+	summary.appendChild(expandIcon);
+	const values = (displayValue || '').split('|').map(v => v.trim()).filter(Boolean);
+	const countBadge = document.createElement('span');
+	countBadge.className = 'kv-collapsible-count';
+	countBadge.textContent = String(values.length);
+	summary.appendChild(countBadge);
+	const label = document.createElement('span');
+	label.className = 'kv-collapsible-label';
+	label.textContent = values.join(', ');
+	label.title = values.join(', ');
+	summary.appendChild(label);
+
+	// Hide existing content
+	const children = Array.from(td.childNodes);
+	const wrapper = document.createElement('div');
+	wrapper.className = 'kv-collapsible-content';
+	wrapper.hidden = true;
+	children.forEach(c => wrapper.appendChild(c));
+	td.appendChild(summary);
+	td.appendChild(wrapper);
+
+	summary.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const collapsed = wrapper.hidden;
+		wrapper.hidden = !collapsed;
+		expandIcon.className = collapsed
+			? 'codicon codicon-chevron-down kv-collapsible-expand-icon'
+			: 'codicon codicon-chevron-right kv-collapsible-expand-icon';
+	});
+}
+
 let activeCell = undefined;
 const columnWidths = Object.create(null);
 let currentDocumentKey = undefined;
@@ -153,9 +696,42 @@ let selectedTd = undefined;
 let suppressFormulaCommit = false;
 let columnOptionConfig = Object.create(null);
 
+const COLUMN_INPUT_TYPES = {
+	ItemDroppable: 'checkbox',
+	ItemSellable: 'checkbox',
+	ItemPurchasable: 'checkbox',
+	ItemKillable: 'checkbox',
+	ItemPermanent: 'checkbox',
+	ItemIsNeutralDrop: 'checkbox',
+	ItemDisassemblable: 'checkbox',
+	ItemRequiresCharges: 'checkbox',
+	ItemCombinable: 'checkbox',
+	ItemStackable: 'checkbox',
+	ItemRecipe: 'checkbox',
+	ItemIsNeutralActiveDrop: 'checkbox',
+	AllowedInBackpack: 'checkbox',
+	IsTempestDoubleClonable: 'checkbox',
+	SpeciallyBannedFromNeutralSlot: 'checkbox',
+	ItemContributesToNetWorthWhenDropped: 'checkbox',
+	ItemIsNeutralPassiveDrop: 'checkbox',
+	OnCastbar: 'checkbox',
+	Innate: 'checkbox',
+	IsBreakable: 'checkbox',
+	HasShardUpgrade: 'checkbox',
+	HasScepterUpgrade: 'checkbox',
+	IsCastableWhileHidden: 'checkbox',
+	ItemCost: 'number',
+	MaxUpgradeLevel: 'spinner',
+	ItemBaseLevel: 'spinner',
+};
+
+function getColumnInputType(column) {
+	return COLUMN_INPUT_TYPES[column] || null;
+}
+
 const modifiedColumns = new Set();
 const originalColumnWidths = Object.create(null);
-const savedColumnWidths = new Set(); // 记录哪些列的宽度是从配置文件加载的
+const savedColumnWidths = new Set();
 let columnOptionsEditorState = null;
 let resizeState = null;
 let openMultiSelectContext = null;
@@ -174,16 +750,12 @@ let fillPopupState = null;
 let columnDragState = null;
 let autofillPopupState = null;
 
-// AbilityValues 描述数据缓存 - 从 payload 接收
-// 格式: { rowId: { key: description } }
 let abilityValuesDescriptions = {};
 
-// 行选择状态管理
-let selectedRows = new Set(); // 存储选中的行索引
-let lastSelectedRowIndex = null; // 用于 Shift 多选
-let copiedRowsData = null; // 存储复制的行数据
+let selectedRows = new Set();
+let lastSelectedRowIndex = null;
+let copiedRowsData = null;
 
-// 状态版本机制 - 防止过期消息导致数据不一致
 let payloadVersion = 0;
 let pendingEditVersion = 0;
 let isEditInProgress = false;
@@ -192,9 +764,8 @@ const FORMULA_ERROR_VALUE = '#ERROR!';
 const FORMULA_CYCLE_VALUE = '#CYCLE!';
 
 const formulaDefinitions = new Map();
-const columnFormulas = new Map(); // 列公式定义，键为 columnKey，值为公式字符串
+const columnFormulas = new Map();
 
-// 预定义的颜色选项
 const DEFAULT_COLORS = [
 	'#4A90E2', '#50C878', '#F5A623', '#E24A4A', '#9B59B6',
 	'#1ABC9C', '#E67E22', '#3498DB', '#E91E63', '#9C27B0',
@@ -204,7 +775,6 @@ const DEFAULT_COLORS = [
 
 let colorPickerPopup = null;
 
-// 自动分配颜色
 function getAutoColor(index) {
 	return DEFAULT_COLORS[index % DEFAULT_COLORS.length];
 }
@@ -216,7 +786,6 @@ const COLUMN_WIDTH_SAVE_DEBOUNCE_MS = 600;
 
 let columnWidthSaveHandle = null;
 
-// 编辑锁辅助函数 - 防止公式计算期间数据被覆盖
 function beginEdit() {
 	pendingEditVersion++;
 	isEditInProgress = true;
@@ -233,7 +802,6 @@ function isEditStale(editVersion) {
 	return editVersion !== pendingEditVersion || payloadVersion > editVersion;
 }
 
-// 页面关闭前强制保存列宽，防止防抖丢失
 window.addEventListener('beforeunload', () => {
 	if (columnWidthSaveHandle) {
 		clearTimeout(columnWidthSaveHandle);
@@ -245,13 +813,10 @@ window.addEventListener('beforeunload', () => {
 document.addEventListener('mousemove', handleColumnResize);
 document.addEventListener('mouseup', stopColumnResize);
 
-// 阻止撤销/重做操作传播到VS Code
 document.addEventListener('keydown', (event) => {
 	const isUndoRedo = (event.ctrlKey || event.metaKey) && (event.key?.toLowerCase() === 'z' || event.key?.toLowerCase() === 'y');
 
 	if (isUndoRedo) {
-		// 当焦点在可编辑元素上时，阻止事件传播到VS Code
-		// 这样可以让输入框/文本域使用自己的撤销功能，而不是触发VS Code的文档撤销
 		const activeElement = document.activeElement;
 		const isEditableElement = activeElement instanceof HTMLInputElement ||
 			activeElement instanceof HTMLTextAreaElement ||
@@ -264,7 +829,6 @@ document.addEventListener('keydown', (event) => {
 	}
 }, true);
 
-// 行复制粘贴优先于单元格复制粘贴
 document.addEventListener('keydown', handleRowClipboardShortcuts);
 document.addEventListener('keydown', handleClipboardShortcuts);
 document.addEventListener('keydown', handleEscapeClearSelection);
@@ -301,7 +865,6 @@ if (formulaValueInput) {
 	});
 }
 
-// 根据给定状态切换表格、空白提示和错误提示的显示
 function setSectionVisibility({ showTable, showEmpty, showError }) {
 	if (tableSection) {
 		tableSection.hidden = !showTable;
@@ -364,7 +927,6 @@ function getFormulaDefinition(column, rowId, rowIndex) {
 	const idKey = makeFormulaDefinitionKey(column, rowId, undefined);
 	const indexKey = makeFormulaDefinitionKey(column, undefined, rowIndex);
 
-	// 优先查找单元格公式
 	if (idKey && formulaDefinitions.has(idKey)) {
 		return formulaDefinitions.get(idKey);
 	}
@@ -372,7 +934,6 @@ function getFormulaDefinition(column, rowId, rowIndex) {
 		return formulaDefinitions.get(indexKey);
 	}
 
-	// 如果没有单元格公式，查找列公式
 	if (column && columnFormulas.has(column)) {
 		const formula = columnFormulas.get(column);
 		return {
@@ -380,7 +941,7 @@ function getFormulaDefinition(column, rowId, rowIndex) {
 			rowId,
 			rowIndex: Number.isFinite(rowIndex) ? rowIndex : undefined,
 			formula,
-			isColumnFormula: true // 标记为列公式
+			isColumnFormula: true
 		};
 	}
 
@@ -392,7 +953,6 @@ function updateFormulaDefinitionsOnIdRename(oldId, newId) {
 		return;
 	}
 
-	// 收集所有需要更新的公式定义
 	const updates = [];
 	formulaDefinitions.forEach((definition, key) => {
 		if (definition.rowId === oldId) {
@@ -406,7 +966,6 @@ function updateFormulaDefinitionsOnIdRename(oldId, newId) {
 		}
 	});
 
-	// 删除旧键，添加新键
 	updates.forEach(({ oldKey, definition }) => {
 		formulaDefinitions.delete(oldKey);
 		const newKey = makeFormulaDefinitionKey(definition.column, definition.rowId, definition.rowIndex);
@@ -493,7 +1052,6 @@ function recalculateFormulas(options = {}) {
 	const { emitUpdates = false } = options;
 	const rows = latestPayload.rows;
 	const columns = latestPayload.columns;
-	// 检查是否有任何公式需要计算（单元格公式或列公式）
 	if (!formulaDefinitions.size && !columnFormulas.size) {
 		clearComputedFormulaEntries();
 		updatePayloadFormulasSnapshot();
@@ -511,7 +1069,6 @@ function recalculateFormulas(options = {}) {
 	});
 	const positionDefinitions = new Map();
 
-	// 处理单元格公式
 	formulaDefinitions.forEach((definition) => {
 		if (!definition || typeof definition.column !== 'string' || typeof definition.formula !== 'string') {
 			return;
@@ -542,11 +1099,9 @@ function recalculateFormulas(options = {}) {
 		});
 	});
 
-	// 处理列公式：为每一行生成公式定义
 	columnFormulas.forEach((formula, columnKey) => {
 		rows.forEach((row, rowIndex) => {
 			const key = makeComputedFormulaKey(columnKey, rowIndex);
-			// 如果该位置没有单元格公式，则使用列公式
 			if (!positionDefinitions.has(key)) {
 				positionDefinitions.set(key, {
 					column: columnKey,
@@ -570,7 +1125,6 @@ function recalculateFormulas(options = {}) {
 		if (!row) {
 			return '';
 		}
-		// id 列存储在 row.id 中，不在 row.values 中
 		if (columnKey === 'id') {
 			return row.id ?? '';
 		}
@@ -641,29 +1195,24 @@ function recalculateFormulas(options = {}) {
 			value,
 			error: evaluation.error,
 		});
-		// 比较公式计算结果与文件中的实际值
 		const targetRow = rows[definition.rowIndex];
 		const currentValueInFile = targetRow?.values?.[definition.column];
 		const normalizedCurrentValue = currentValueInFile === undefined || currentValueInFile === null
 			? ''
 			: String(currentValueInFile);
-		// 只有当计算结果与文件中的值不一致时才需要更新
 		if (normalizedCurrentValue !== value) {
 			const row = rows[definition.rowIndex];
 			if (row && row.id) {
 				pendingEdits.push({ id: row.id, key: definition.column, value });
 			}
 		}
-		// 更新内存中的值（仅在非编辑状态下）
 		if (targetRow && targetRow.values && !isEditInProgress) {
 			targetRow.values[definition.column] = value;
 		}
 	});
-	// 使用编辑版本防止竞态条件
 	if (emitUpdates && pendingEdits.length && !isEditInProgress) {
 		const editVersion = beginEdit();
 		dispatchBulkEdit(pendingEdits);
-		// 延迟结束编辑状态，等待后端响应
 		setTimeout(() => endEdit(editVersion), 100);
 	}
 	updatePayloadFormulasSnapshot();
@@ -962,7 +1511,6 @@ function refreshFormulaResultsForTable() {
 	});
 }
 
-// 清空当前选中单元格及其公式编辑器状态
 function clearSelection() {
 	closeMultiSelectDropdown();
 	closeFillPopup();
@@ -981,11 +1529,10 @@ function clearSelection() {
 	if (formulaValueInput) {
 		formulaValueInput.value = '';
 		formulaValueInput.disabled = true;
-		formulaValueInput.placeholder = '选择单元格以编辑';
+		formulaValueInput.placeholder = _t('selectCellToEdit');
 	}
 }
 
-// 选中指定单元格并同步公式栏信息
 function selectCell(td, context) {
 	closeRowContextMenu();
 	closeColumnContextMenu();
@@ -1040,7 +1587,7 @@ function selectCell(td, context) {
 	if (formulaValueInput) {
 		const disableFormulaInput = !context.editable || Boolean(context.usesDropdown);
 		formulaValueInput.disabled = disableFormulaInput;
-		formulaValueInput.placeholder = disableFormulaInput && context.editable ? '请通过下拉选择' : '';
+		formulaValueInput.placeholder = disableFormulaInput && context.editable ? _t('pleaseSelectDropdown') : '';
 		if (formulaDefinition && formulaDefinition.formula) {
 			formulaValueInput.value = formulaDefinition.formula;
 		} else {
@@ -1061,20 +1608,12 @@ function isEditableElement(element) {
 }
 
 /**
- * 设置对话框打开状态
- * 统一管理所有对话框/弹窗/编辑器的打开状态
- * 当对话框打开时，主界面的单元格操作（撤销恢复、复制粘贴、方向键导航等）将被禁用
  */
 function setDialogOpenState(isOpen) {
 	isDialogOpen = isOpen;
 }
 
 /**
- * 创建带有状态管理的对话框容器
- * @param {Object} options - 配置选项
- * @param {string} options.className - 对话框容器的CSS类名
- * @param {Function} options.onClose - 关闭对话框时的回调函数
- * @returns {HTMLElement} 对话框容器元素
  */
 function createManagedDialog(options = {}) {
 	const { className = 'kv-dialog-overlay', onClose } = options;
@@ -1082,13 +1621,10 @@ function createManagedDialog(options = {}) {
 	const overlay = document.createElement('div');
 	overlay.className = className;
 
-	// 设置对话框打开状态
 	setDialogOpenState(true);
 
-	// 创建原始的移除函数引用
 	const originalRemove = overlay.remove.bind(overlay);
 
-	// 重写remove方法以自动更新状态
 	overlay.remove = function () {
 		setDialogOpenState(false);
 		if (onClose) {
@@ -1097,7 +1633,6 @@ function createManagedDialog(options = {}) {
 		originalRemove();
 	};
 
-	// 监听ESC键关闭
 	const handleEsc = (event) => {
 		if (event.key === 'Escape') {
 			event.stopPropagation();
@@ -1107,7 +1642,6 @@ function createManagedDialog(options = {}) {
 	};
 	document.addEventListener('keydown', handleEsc, true);
 
-	// 确保在移除时清理事件监听
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
 			for (const node of mutation.removedNodes) {
@@ -1127,7 +1661,6 @@ function createManagedDialog(options = {}) {
 	if (overlay.parentElement) {
 		observer.observe(overlay.parentElement, { childList: true });
 	} else {
-		// 延迟观察，等待元素被添加到DOM
 		setTimeout(() => {
 			if (overlay.parentElement) {
 				observer.observe(overlay.parentElement, { childList: true });
@@ -1166,7 +1699,6 @@ function copySelectedCell() {
 		return;
 	}
 	let text = '';
-	// 获取单元格的公式定义（如果有）
 	const formula = getFormulaDefinition(selectedCell.column, selectedCell.rowId, selectedCell.rowIndex);
 	if (selectedCell.dataType === 'abilityValues') {
 		const entries = cloneAbilityValuesEntries(selectedCell.abilityEntries || []);
@@ -1263,23 +1795,19 @@ function pasteToSelectedCell() {
 	if (clipboardData.type === 'abilityValues') {
 		return;
 	}
-	// 处理公式：如果复制的数据包含公式，则调整行引用并保存
 	if (clipboardData.formula && typeof clipboardData.formula === 'string') {
 		const sourceRow = clipboardData.sourceRowIndex;
 		const targetRow = selectedCell.rowIndex;
 		if (Number.isFinite(sourceRow) && Number.isFinite(targetRow)) {
 			const rowOffset = targetRow - sourceRow;
 			const adjustedFormula = offsetFormulaReferences(clipboardData.formula, rowOffset);
-			// 设置公式定义
 			setFormulaDefinition(selectedCell.column, selectedCell.rowId, selectedCell.rowIndex, adjustedFormula);
-			// 保存公式到后端
 			postSaveFormulaMessage({
 				column: selectedCell.column,
 				rowId: selectedCell.rowId,
 				rowIndex: selectedCell.rowIndex,
 				formula: adjustedFormula
 			});
-			// 重新计算公式
 			recalculateFormulas({ emitUpdates: true });
 			return;
 		}
@@ -1300,7 +1828,6 @@ function pasteToSelectedCell() {
 }
 
 function handleClipboardShortcuts(event) {
-	// 对话框打开时禁用单元格复制粘贴
 	if (isDialogOpen) {
 		return;
 	}
@@ -1323,9 +1850,7 @@ function handleClipboardShortcuts(event) {
 	}
 }
 
-// 处理行级别的复制粘贴快捷键
 function handleRowClipboardShortcuts(event) {
-	// 对话框打开时禁用行复制粘贴
 	if (isDialogOpen) {
 		return;
 	}
@@ -1336,22 +1861,18 @@ function handleRowClipboardShortcuts(event) {
 		return;
 	}
 
-	// 如果有选中的单元格，优先使用单元格复制粘贴
 	if (selectedCell) {
 		return;
 	}
 
-	// 复制需要有选中的行
 	if (isCopy && selectedRows.size === 0) {
 		return;
 	}
 
-	// 粘贴需要有复制的数据
 	if (isPaste && !copiedRowsData) {
 		return;
 	}
 
-	// 确保不在可编辑元素中
 	if (isEditableElement(document.activeElement)) {
 		return;
 	}
@@ -1366,20 +1887,16 @@ function handleRowClipboardShortcuts(event) {
 	}
 }
 
-// 切换行选择状态
 function toggleRowSelection(rowIndex, multiSelect = false, rangeSelect = false) {
-	// 清除单元格选择（行选择和单元格选择互斥）
 	if (selectedCell) {
 		clearSelection();
 	}
 
 	if (!multiSelect && !rangeSelect) {
-		// 单选：清除其他选择
 		clearRowSelection();
 		selectedRows.add(rowIndex);
 		lastSelectedRowIndex = rowIndex;
 	} else if (multiSelect) {
-		// Ctrl 多选：切换当前行
 		if (selectedRows.has(rowIndex)) {
 			selectedRows.delete(rowIndex);
 		} else {
@@ -1387,7 +1904,6 @@ function toggleRowSelection(rowIndex, multiSelect = false, rangeSelect = false) 
 		}
 		lastSelectedRowIndex = rowIndex;
 	} else if (rangeSelect && lastSelectedRowIndex !== null) {
-		// Shift 范围选择
 		const start = Math.min(lastSelectedRowIndex, rowIndex);
 		const end = Math.max(lastSelectedRowIndex, rowIndex);
 		for (let i = start; i <= end; i++) {
@@ -1398,14 +1914,12 @@ function toggleRowSelection(rowIndex, multiSelect = false, rangeSelect = false) 
 	updateRowSelectionVisuals();
 }
 
-// 清除行选择
 function clearRowSelection() {
 	selectedRows.clear();
 	lastSelectedRowIndex = null;
 	updateRowSelectionVisuals();
 }
 
-// 更新行选择的视觉效果
 function updateRowSelectionVisuals() {
 	if (!tableSection) {
 		return;
@@ -1421,7 +1935,6 @@ function updateRowSelectionVisuals() {
 	});
 }
 
-// 复制选中的行
 function copySelectedRows() {
 	if (!latestPayload || !Array.isArray(latestPayload.rows) || selectedRows.size === 0) {
 		return;
@@ -1433,28 +1946,23 @@ function copySelectedRows() {
 	for (const rowIndex of sortedIndices) {
 		if (rowIndex >= 0 && rowIndex < latestPayload.rows.length) {
 			const row = latestPayload.rows[rowIndex];
-			// 深拷贝行数据
 			const rowCopy = {
 				id: row.id,
 				values: { ...row.values },
 				rowIndex: rowIndex,
 			};
 
-			// 复制完整的原始对象（包含嵌套结构）
 			if (row.rawObject) {
 				rowCopy.rawObject = JSON.parse(JSON.stringify(row.rawObject));
 			}
 
-			// 复制 abilityValues 如果存在
 			if (row.abilityValues) {
 				rowCopy.abilityValues = cloneAbilityValuesEntries(row.abilityValues);
 			}
 
-			// 收集该行所有列的公式
 			const formulas = {};
 			if (latestPayload.columns && Array.isArray(latestPayload.columns)) {
 				for (const column of latestPayload.columns) {
-					// columns 是字符串数组,不是对象数组
 					const columnKey = typeof column === 'string' ? column : column.key;
 					const formula = getFormulaDefinition(columnKey, row.id, rowIndex);
 					if (formula && formula.formula) {
@@ -1471,20 +1979,17 @@ function copySelectedRows() {
 	if (rowsToCopy.length > 0) {
 		copiedRowsData = rowsToCopy;
 
-		// 可选：显示提示信息
 		if (tableSection) {
-			showTemporaryMessage(`已复制 ${rowsToCopy.length} 行`, 1000);
+			showTemporaryMessage(_tf('copiedNRows', rowsToCopy.length), 1000);
 		}
 	}
 }
 
-// 粘贴行
 function pasteRows() {
 	if (!copiedRowsData || copiedRowsData.length === 0) {
 		return;
 	}
 
-	// 确定插入位置：如果有选中的行，在最后一个选中行之后插入；否则在表格末尾插入
 	let insertAfterIndex = -1;
 	if (selectedRows.size > 0) {
 		insertAfterIndex = Math.max(...Array.from(selectedRows));
@@ -1492,26 +1997,21 @@ function pasteRows() {
 		insertAfterIndex = latestPayload.rows.length - 1;
 	}
 
-	// 计算基准偏移量：使用第一行的偏移作为所有行的基准
-	// 这确保了复制组内的相对引用关系保持不变
 	const firstSourceRowIndex = copiedRowsData[0]?.rowIndex ?? 0;
 	const firstTargetRowIndex = insertAfterIndex + 1;
 	const baseOffset = firstTargetRowIndex - firstSourceRowIndex;
 
-	// 调整公式行引用
 	const rowsWithAdjustedFormulas = copiedRowsData.map((rowData, index) => {
 		const adjustedRow = {
 			id: rowData.id,
 			values: rowData.values,
 		};
-		// 传递完整的原始对象（包含嵌套结构）
 		if (rowData.rawObject) {
 			adjustedRow.rawObject = rowData.rawObject;
 		}
 		if (rowData.abilityValues) {
 			adjustedRow.abilityValues = rowData.abilityValues;
 		}
-		// 如果有公式，使用统一的基准偏移量调整行引用
 		if (rowData.formulas && typeof rowData.formulas === 'object') {
 			const adjustedFormulas = {};
 			for (const [column, formula] of Object.entries(rowData.formulas)) {
@@ -1526,7 +2026,6 @@ function pasteRows() {
 		return adjustedRow;
 	});
 
-	// 发送批量插入请求
 	vscode.postMessage({
 		type: 'bulkInsertRows',
 		payload: {
@@ -1535,13 +2034,11 @@ function pasteRows() {
 		},
 	});
 
-	// 显示提示信息
 	if (tableSection) {
-		showTemporaryMessage(`已粘贴 ${copiedRowsData.length} 行`, 1000);
+		showTemporaryMessage(_tf('pastedNRows', copiedRowsData.length), 1000);
 	}
 }
 
-// 显示临时提示消息
 function showTemporaryMessage(message, duration = 2000) {
 	const existingMessage = document.querySelector('.kv-temp-message');
 	if (existingMessage) {
@@ -1573,9 +2070,7 @@ function showTemporaryMessage(message, duration = 2000) {
 	}, duration);
 }
 
-// 处理 Escape 键清除行选择
 function handleEscapeClearSelection(event) {
-	// 对话框打开时禁用此功能
 	if (isDialogOpen) {
 		return;
 	}
@@ -1585,17 +2080,13 @@ function handleEscapeClearSelection(event) {
 	}
 }
 
-// 处理方向键导航和空格键进入编辑状态
 function handleCellNavigation(event) {
-	// 对话框打开时禁用单元格导航
 	if (isDialogOpen) {
 		return;
 	}
-	// 如果正在编辑状态，不处理导航
 	if (isEditableElement(document.activeElement)) {
 		return;
 	}
-	// 如果没有选中单元格，不处理
 	if (!selectedCellKey || !latestPayload || !Array.isArray(latestPayload.columns) || !Array.isArray(latestPayload.rows)) {
 		return;
 	}
@@ -1611,7 +2102,6 @@ function handleCellNavigation(event) {
 		return;
 	}
 
-	// 处理空格键进入编辑状态
 	if (key === ' ') {
 		event.preventDefault();
 		if (selectedCell && selectedCell.editable && selectedCell.element) {
@@ -1625,7 +2115,6 @@ function handleCellNavigation(event) {
 		return;
 	}
 
-	// 处理方向键导航
 	let newRowIndex = currentRowIndex;
 	let newColumnIndex = currentColumnIndex;
 
@@ -1643,23 +2132,20 @@ function handleCellNavigation(event) {
 			newColumnIndex = Math.min(columns.length - 1, currentColumnIndex + 1);
 			break;
 		default:
-			return; // 不是方向键，不处理
+			return;
 	}
 
-	// 如果位置没有变化，不处理
 	if (newRowIndex === currentRowIndex && newColumnIndex === currentColumnIndex) {
 		return;
 	}
 
 	event.preventDefault();
 
-	// 找到目标单元格并选中
 	const newColumn = columns[newColumnIndex];
 	const selector = `td[data-column="${newColumn}"][data-row-index="${newRowIndex}"]`;
 	const targetTd = tableSection?.querySelector(selector);
 
 	if (targetTd) {
-		// 直接构建 context 并调用 selectCell，而不是使用 click() 来避免自动进入编辑状态
 		const rowId = targetTd.dataset.rowId ?? '';
 		const isAbilityColumn = newColumn === 'AbilityValues';
 		const editable = newColumn !== ROW_NUMBER_COLUMN_KEY && !isAbilityColumn;
@@ -1677,7 +2163,6 @@ function handleCellNavigation(event) {
 		const abilityEntries = isAbilityColumn ? parseAbilityEntriesFromCell(targetTd) : undefined;
 		const hasAbilityField = isAbilityColumn ? targetTd.dataset.hasAbilityField === 'true' : false;
 
-		// 获取列字母和列名
 		const columnLetter = getColumnLetter(newColumnIndex);
 		const columnName = latestPayload.columnLabels?.[newColumn] ?? newColumn;
 
@@ -1697,12 +2182,10 @@ function handleCellNavigation(event) {
 			hasAbilityField
 		});
 
-		// 确保单元格可见
 		targetTd.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 	}
 }
 
-// 注意：handleClipboardShortcuts 已在上方定义，此处不再重复
 
 function startFillDrag(event) {
 	if (event.button !== 0) {
@@ -1747,23 +2230,19 @@ function handleFillDragMove(event) {
 		fillHandleState.moved = true;
 	}
 
-	// 自动滚动逻辑
 	if (tableSection) {
 		const tableRect = tableSection.getBoundingClientRect();
-		const scrollThreshold = 50; // 距离边缘多少像素开始滚动
-		const scrollSpeed = 50; // 每次滚动的像素数
+		const scrollThreshold = 50;
+		const scrollSpeed = 50;
 
-		// 鼠标距离表格顶部和底部的距离
 		const distanceFromTop = event.clientY - tableRect.top;
 		const distanceFromBottom = tableRect.bottom - event.clientY;
 
-		// 向上滚动：距离顶部小于阈值（包括超出顶部边缘）
 		if (distanceFromTop < scrollThreshold) {
 			const normalizedDistance = Math.max(0, distanceFromTop);
 			const scrollAmount = Math.max(1, scrollSpeed * (1 - normalizedDistance / scrollThreshold));
 			tableSection.scrollTop = Math.max(0, tableSection.scrollTop - scrollAmount);
 		}
-		// 向下滚动：距离底部小于阈值（包括超出底部边缘）
 		else if (distanceFromBottom < scrollThreshold) {
 			const normalizedDistance = Math.max(0, distanceFromBottom);
 			const scrollAmount = Math.max(1, scrollSpeed * (1 - normalizedDistance / scrollThreshold));
@@ -1824,7 +2303,6 @@ function handleFillDragEnd(event) {
 	openFillPopup();
 }
 
-// 还原公式栏内容到单元格初始值
 function revertFormulaValue() {
 	if (!selectedCell || !selectedCell.element) {
 		return;
@@ -1840,7 +2318,6 @@ function revertFormulaValue() {
 	}
 }
 
-// 将公式栏的修改写回选中单元格
 function commitFormulaValue() {
 	if (!selectedCell || !selectedCell.editable || !selectedCell.element || !formulaValueInput) {
 		return;
@@ -1852,18 +2329,13 @@ function commitFormulaValue() {
 	const trimmedValue = newValue.trim();
 	const isFormula = trimmedValue.startsWith('=');
 
-	// 对于公式，需要特殊处理以避免显示公式文本
 	if (isFormula) {
 		const previousFormula = selectedCell.element.dataset.formulaValue ?? '';
-		// 如果公式没有变化，无需处理
 		if (previousFormula === trimmedValue) {
 			return;
 		}
-		// 临时设置公式文本以便 handleElementChange 检测
 		setElementValue(selectedCell.element, trimmedValue, selectedCell.fieldConfig);
 		handleElementChange(selectedCell.element, selectedCell.fieldConfig);
-		// handleElementChange 会调用 refreshFormulaResultsForTable 更新显示
-		// 但为了避免 focus 事件读取到公式文本，立即恢复显示计算结果
 		if (selectedCell.rowIndex !== undefined && selectedCell.column) {
 			const computed = getComputedFormulaEntry(selectedCell.column, selectedCell.rowIndex);
 			if (computed && typeof computed.value === 'string') {
@@ -1871,7 +2343,6 @@ function commitFormulaValue() {
 			}
 		}
 	} else {
-		// 普通值的处理
 		const current = readElementValue(selectedCell.element, selectedCell.fieldConfig);
 		const initial = selectedCell.element.dataset.initialValue ?? '';
 		if (current === newValue && initial === newValue) {
@@ -1882,37 +2353,31 @@ function commitFormulaValue() {
 	}
 }
 
-// 获取字段配置中定义的分隔符
-// 为输入框添加撤销/重做支持
 function setupUndoRedo(input, maxHistory = 50) {
 	if (!input || !(input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement)) {
 		return;
 	}
 
-	// 初始化撤销历史
 	if (!input.dataset.undoHistory) {
 		input.dataset.undoHistory = JSON.stringify([input.value || '']);
 		input.dataset.undoIndex = '0';
 	}
 
-	// 处理撤销/重做快捷键
 	const handleKeyDown = (event) => {
 		const isUndo = event.key === 'z' && (event.ctrlKey || event.metaKey) && !event.shiftKey;
 		const isRedo = (event.key === 'z' && (event.ctrlKey || event.metaKey) && event.shiftKey) ||
 			(event.key === 'y' && (event.ctrlKey || event.metaKey));
 
 		if (isUndo || isRedo) {
-			console.log('[KV-Editor Debug] setupUndoRedo收到撤销/恢复:', isUndo ? 'undo' : 'redo', 'isDialogOpen:', isDialogOpen, 'target:', event.target, 'input:', input);
+			console.log(_t('debugUndoRedo'), isUndo ? 'undo' : 'redo', 'isDialogOpen:', isDialogOpen, 'target:', event.target, 'input:', input);
 
-			// 检查当前输入框是否在对话框内
-			// 如果对话框打开，但当前输入框不在对话框内（即在主界面），则禁用撤销恢复
 			if (isDialogOpen) {
 				const isInDialog = input.closest('.kv-quickpick, .kv-fill-popup, .kv-ability-editor-overlay, .kv-autofill-popup, .kv-column-insert-dialog-overlay, .kv-column-options-overlay, .kv-color-picker-overlay');
-				console.log('[KV-Editor Debug] setupUndoRedo: 对话框已打开, 当前输入框是否在对话框内:', !!isInDialog, 'input:', input);
+				console.log(_t('debugDialogOpen'), !!isInDialog, 'input:', input);
 
 				if (!isInDialog) {
-					console.log('[KV-Editor Debug] setupUndoRedo: 主界面输入框在对话框打开时禁用撤销恢复');
-					return; // 主界面的输入框在对话框打开时不处理撤销恢复
+					console.log(_t('debugMainDisabled'));
+					return;
 				}
 			}
 
@@ -1924,33 +2389,26 @@ function setupUndoRedo(input, maxHistory = 50) {
 				index--;
 				input.dataset.undoIndex = String(index);
 				input.value = history[index] || '';
-				// 触发 change 事件以同步状态
 				const changeEvent = new Event('change', { bubbles: true });
 				input.dispatchEvent(changeEvent);
 			} else if (isRedo && index < history.length - 1) {
 				index++;
 				input.dataset.undoIndex = String(index);
 				input.value = history[index] || '';
-				// 触发 change 事件以同步状态
 				const changeEvent = new Event('change', { bubbles: true });
 				input.dispatchEvent(changeEvent);
 			}
 		}
 	};
 
-	// 保存撤销历史
 	const handleInput = () => {
 		const history = JSON.parse(input.dataset.undoHistory || '[]');
 		let index = parseInt(input.dataset.undoIndex || '0');
 		const currentValue = input.value;
 
-		// 如果当前值与历史中的值不同，则添加到历史
 		if (history[index] !== currentValue) {
-			// 删除当前索引之后的所有历史
 			history.splice(index + 1);
-			// 添加新值
 			history.push(currentValue);
-			// 限制历史记录数量
 			if (history.length > maxHistory) {
 				history.shift();
 			} else {
@@ -1963,10 +2421,9 @@ function setupUndoRedo(input, maxHistory = 50) {
 
 	input.addEventListener('keydown', handleKeyDown);
 
-	// 调试：额外监听以查看所有keydown事件
 	input.addEventListener('keydown', (event) => {
 		if ((event.ctrlKey || event.metaKey) && (event.key === 'z' || event.key === 'y')) {
-			console.log('[KV-Editor Debug] 输入框收到Ctrl+Z/Y:', {
+			console.log(_t('debugInputCtrlZ'), {
 				inputClass: input.className,
 				inputDataset: input.dataset,
 				isDialogOpen,
@@ -1980,15 +2437,6 @@ function setupUndoRedo(input, maxHistory = 50) {
 }
 
 /**
- * 创建输入框的统一接口
- * @param {Object} options - 配置选项
- * @param {string} options.type - 输入框类型 (text, number, search, color 等)
- * @param {string} options.className - CSS 类名
- * @param {string} options.placeholder - 占位符文本
- * @param {string} options.value - 初始值
- * @param {boolean} options.enableUndoRedo - 是否启用撤销/重做功能 (默认 true，仅对 text/number/search 类型)
- * @param {number} options.maxHistory - 最大历史记录数 (默认 50)
- * @param {Object} options.attributes - 其他 HTML 属性 (如 min, max, step, required 等)
  * @returns {HTMLInputElement}
  */
 function createInput(options = {}) {
@@ -2014,10 +2462,8 @@ function createInput(options = {}) {
 		input.value = value;
 	}
 
-	// 应用其他属性
 	Object.keys(attributes).forEach(key => {
 		if (key === 'dataset') {
-			// 特殊处理 dataset
 			Object.keys(attributes.dataset || {}).forEach(dataKey => {
 				input.dataset[dataKey] = attributes.dataset[dataKey];
 			});
@@ -2026,7 +2472,6 @@ function createInput(options = {}) {
 		}
 	});
 
-	// 对文本类输入框自动启用撤销/重做功能
 	const textInputTypes = ['text', 'number', 'search'];
 	if (enableUndoRedo && textInputTypes.includes(type)) {
 		setupUndoRedo(input, maxHistory);
@@ -2036,14 +2481,6 @@ function createInput(options = {}) {
 }
 
 /**
- * 创建文本域的统一接口
- * @param {Object} options - 配置选项
- * @param {string} options.className - CSS 类名
- * @param {string} options.placeholder - 占位符文本
- * @param {string} options.value - 初始值
- * @param {boolean} options.enableUndoRedo - 是否启用撤销/重做功能 (默认 true)
- * @param {number} options.maxHistory - 最大历史记录数 (默认 50)
- * @param {Object} options.attributes - 其他 HTML 属性 (如 rows, cols 等)
  * @returns {HTMLTextAreaElement}
  */
 function createTextarea(options = {}) {
@@ -2067,10 +2504,8 @@ function createTextarea(options = {}) {
 		textarea.value = value;
 	}
 
-	// 应用其他属性
 	Object.keys(attributes).forEach(key => {
 		if (key === 'dataset') {
-			// 特殊处理 dataset
 			Object.keys(attributes.dataset || {}).forEach(dataKey => {
 				textarea.dataset[dataKey] = attributes.dataset[dataKey];
 			});
@@ -2079,7 +2514,6 @@ function createTextarea(options = {}) {
 		}
 	});
 
-	// 自动启用撤销/重做功能
 	if (enableUndoRedo) {
 		setupUndoRedo(textarea, maxHistory);
 	}
@@ -2092,7 +2526,6 @@ function getFieldSeparator(fieldConfig) {
 	return typeof separator === 'string' && separator.length > 0 ? separator : ',';
 }
 
-// 将多选字段的原始文本拆分为值列表
 function splitMultiValue(value, fieldConfig) {
 	const separator = getFieldSeparator(fieldConfig);
 	if (!value || typeof value !== 'string') {
@@ -2104,7 +2537,6 @@ function splitMultiValue(value, fieldConfig) {
 		.filter((entry) => entry.length > 0);
 }
 
-// 从输入控件读取当前值
 function readElementValue(element, fieldConfig) {
 	if (!element) {
 		return '';
@@ -2117,7 +2549,6 @@ function readElementValue(element, fieldConfig) {
 	return element.value ?? '';
 }
 
-// 将指定值写入输入控件
 function setElementValue(element, value, fieldConfig) {
 	if (!element) {
 		return;
@@ -2160,7 +2591,7 @@ function refreshFillHandle() {
 	if (!fillHandleElement) {
 		fillHandleElement = document.createElement('div');
 		fillHandleElement.className = 'kv-cell-fill-handle';
-		fillHandleElement.title = '拖动以快速填充';
+		fillHandleElement.title = _t('dragToFill');
 		fillHandleElement.addEventListener('mousedown', (event) => startFillDrag(event));
 	}
 	const host = selectedTd;
@@ -2242,7 +2673,6 @@ function closeFillPopup(options = {}) {
 	}
 	const { element, keyHandler, outsideHandler, scrollHandler, resizeHandler } = fillPopupState;
 
-	// 移除element会自动触发setDialogOpenState(false)
 	if (element && element.parentElement) {
 		element.parentElement.removeChild(element);
 	}
@@ -2302,11 +2732,9 @@ function openFillPopup() {
 	}
 	closeFillPopup({ clearPreview: false });
 
-	// 使用统一的对话框管理
 	const popup = createManagedDialog({
 		className: 'kv-fill-popup',
 		onClose: () => {
-			// 清理填充状态
 			fillPopupState = null;
 			fillHandleState = null;
 			clearFillPreview();
@@ -2315,11 +2743,11 @@ function openFillPopup() {
 	});
 
 	popup.setAttribute('role', 'dialog');
-	popup.setAttribute('aria-label', '填充选项');
+	popup.setAttribute('aria-label', _t('fillOptions'));
 	const title = document.createElement('div');
 	title.className = 'kv-fill-popup-title';
 	const direction = currentRow > startRow ? 1 : -1;
-	title.textContent = `填充 ${direction > 0 ? '向下' : '向上'} ${targetRows.length} 行`;
+	title.textContent = _tf('fillNRows', direction > 0 ? _t('dirDown') : _t('dirUp'), targetRows.length);
 	popup.appendChild(title);
 	const form = document.createElement('form');
 	form.className = 'kv-fill-popup-form';
@@ -2329,14 +2757,14 @@ function openFillPopup() {
 	const hasBaseFormula = baseFormula.length > 0;
 	const modes = hasBaseFormula
 		? [
-			{ value: 'formulaSequence', label: '序列' },
-			{ value: 'copy', label: '复制' },
+			{ value: 'formulaSequence', label: _t('fillSequence') },
+			{ value: 'copy', label: _t('fillCopy') },
 		]
 		: [
-			{ value: 'copy', label: '复制' },
-			{ value: 'arithmetic', label: '等差填充' },
-			{ value: 'geometric', label: '等比填充' },
-			{ value: 'formula', label: '公式填充' }
+			{ value: 'copy', label: _t('fillCopy') },
+			{ value: 'arithmetic', label: _t('fillLinear') },
+			{ value: 'geometric', label: _t('fillGeometric') },
+			{ value: 'formula', label: _t('fillFormula') }
 		];
 	const modeInputs = [];
 	modes.forEach((mode, index) => {
@@ -2369,7 +2797,7 @@ function openFillPopup() {
 	arithmeticWrapper.className = 'kv-fill-popup-field';
 	arithmeticWrapper.hidden = true;
 	const arithmeticLabel = document.createElement('label');
-	arithmeticLabel.textContent = '步长';
+	arithmeticLabel.textContent = _t('stepLabel');
 	const arithmeticInput = createInput({
 		type: 'number',
 		value: String(FILL_DEFAULT_STEP),
@@ -2382,7 +2810,7 @@ function openFillPopup() {
 	geometricWrapper.className = 'kv-fill-popup-field';
 	geometricWrapper.hidden = true;
 	const geometricLabel = document.createElement('label');
-	geometricLabel.textContent = '比率';
+	geometricLabel.textContent = _t('ratioLabel');
 	const geometricInput = createInput({
 		type: 'number',
 		value: String(FILL_DEFAULT_RATIO),
@@ -2395,10 +2823,10 @@ function openFillPopup() {
 	formulaWrapper.className = 'kv-fill-popup-field';
 	formulaWrapper.hidden = true;
 	const formulaLabel = document.createElement('label');
-	formulaLabel.textContent = '表达式 (可用: base, baseNumber, offset, rowIndex, rowNumber, direction)';
+	formulaLabel.textContent = _t('formulaExprLabel');
 	const formulaInput = createInput({
 		type: 'text',
-		placeholder: '例如: base + offset * 2'
+		placeholder: _t('formulaExprPlaceholder')
 	});
 	formulaWrapper.appendChild(formulaLabel);
 	formulaWrapper.appendChild(formulaInput);
@@ -2412,12 +2840,12 @@ function openFillPopup() {
 	const cancelButton = document.createElement('button');
 	cancelButton.type = 'button';
 	cancelButton.className = 'kv-button kv-button-secondary';
-	cancelButton.textContent = '取消';
+	cancelButton.textContent = _t('cancel');
 	actions.appendChild(cancelButton);
 	const applyButton = document.createElement('button');
 	applyButton.type = 'submit';
 	applyButton.className = 'kv-button kv-button-primary';
-	applyButton.textContent = '填充';
+	applyButton.textContent = _t('fill');
 	actions.appendChild(applyButton);
 	form.appendChild(actions);
 	popup.appendChild(form);
@@ -2564,7 +2992,7 @@ function handleFillApply() {
 			result = performFormulaFill();
 			break;
 		default:
-			result = { success: false, message: '未知填充模式' };
+			result = { success: false, message: _t('unknownFillMode') };
 			break;
 	}
 	if (result?.success) {
@@ -2576,30 +3004,30 @@ function handleFillApply() {
 
 function prepareFillOperation({ allowDropdown }) {
 	if (!fillPopupState || !selectedCell) {
-		return { success: false, message: '当前没有可填充的单元格' };
+		return { success: false, message: _t('noFillableCells') };
 	}
 	const columnKey = fillPopupState.column;
 	if (!columnKey) {
-		return { success: false, message: '无法确定填充列' };
+		return { success: false, message: _t('cannotDetermineColumn') };
 	}
 	const baseValueRaw = selectedCell.element
 		? readElementValue(selectedCell.element, selectedCell.fieldConfig)
 		: (selectedCell.value ?? '');
 	const targetRows = Array.isArray(fillPopupState.targetRows) ? fillPopupState.targetRows.slice() : [];
 	if (!targetRows.length) {
-		return { success: false, message: '请选择需要填充的范围' };
+		return { success: false, message: _t('selectFillRange') };
 	}
 	const contexts = [];
 	for (const rowIndex of targetRows) {
 		const context = getEditableCellContext(rowIndex, columnKey);
 		if (!context) {
-			return { success: false, message: '目标区域包含不可编辑的单元格' };
+			return { success: false, message: _t('nonEditableCells') };
 		}
 		if (context.usesDropdown && !allowDropdown) {
-			return { success: false, message: '该填充模式不支持下拉字段' };
+			return { success: false, message: _t('fillModeNoDropdown') };
 		}
 		if (!context.id) {
-			return { success: false, message: '目标行缺少唯一标识，无法写入。' };
+			return { success: false, message: _t('missingRowId') };
 		}
 		contexts.push(context);
 	}
@@ -2638,7 +3066,7 @@ function offsetFormulaReferences(formula, rowOffset) {
 
 function applyFormulaDefinitionsToContexts(columnKey, contexts, formulaFactory) {
 	if (!Array.isArray(contexts) || !contexts.length) {
-		return { success: false, message: '没有可填充的单元格。' };
+		return { success: false, message: _t('noFillableCellsDot') };
 	}
 	const updates = [];
 	contexts.forEach((context, index) => {
@@ -2664,7 +3092,7 @@ function applyFormulaDefinitionsToContexts(columnKey, contexts, formulaFactory) 
 		updates.push({ column: columnKey, rowId, rowIndex: targetRowIndex, formula: trimmed });
 	});
 	if (!updates.length) {
-		return { success: false, message: '未生成可写入的公式。' };
+		return { success: false, message: _t('noWritableFormula') };
 	}
 	updatePayloadFormulasSnapshot();
 	recalculateFormulas({ emitUpdates: true });
@@ -2756,7 +3184,7 @@ function performCopyFill() {
 	}
 	for (const context of contexts) {
 		if (context.usesDropdown && !isValueAvailableInSelect(context.element, baseValueRaw)) {
-			return { success: false, message: '目标下拉列表中不存在要复制的值' };
+			return { success: false, message: _t('copyValueNotInDropdown') };
 		}
 	}
 	const edits = [];
@@ -2771,7 +3199,7 @@ function performCopyFill() {
 function performFormulaSequenceFill() {
 	const baseFormula = getSelectedCellFormulaValue();
 	if (!baseFormula) {
-		return { success: false, message: '当前单元格不是公式，无法使用序列填充。' };
+		return { success: false, message: _t('notFormulaSequence') };
 	}
 	const prepared = prepareFillOperation({ allowDropdown: false });
 	if (!prepared.success) {
@@ -2779,7 +3207,7 @@ function performFormulaSequenceFill() {
 	}
 	const baseRowIndex = Number.isFinite(selectedCell?.rowIndex) ? Number(selectedCell.rowIndex) : undefined;
 	if (baseRowIndex === undefined) {
-		return { success: false, message: '无法确定公式的基准行。' };
+		return { success: false, message: _t('cannotDetermineBaseRow') };
 	}
 	const { contexts, column } = prepared;
 	const result = applyFormulaDefinitionsToContexts(column, contexts, (context) => {
@@ -2795,7 +3223,7 @@ function performFormulaSequenceFill() {
 
 function performArithmeticFill() {
 	if (selectedCell?.usesDropdown) {
-		return { success: false, message: '当前单元格不支持等差填充' };
+		return { success: false, message: _t('noLinearFill') };
 	}
 	const prepared = prepareFillOperation({ allowDropdown: false });
 	if (!prepared.success) {
@@ -2804,12 +3232,12 @@ function performArithmeticFill() {
 	const { baseValueRaw, contexts, column } = prepared;
 	const baseNumber = Number(baseValueRaw);
 	if (!Number.isFinite(baseNumber)) {
-		return { success: false, message: '当前单元格的值不是有效的数字' };
+		return { success: false, message: _t('notValidNumber') };
 	}
 	const stepInput = fillPopupState?.arithmeticInput;
 	const stepValue = stepInput ? Number(stepInput.value) : NaN;
 	if (!Number.isFinite(stepValue)) {
-		return { success: false, message: '请输入有效的步长' };
+		return { success: false, message: _t('enterValidStep') };
 	}
 	const direction = fillPopupState?.direction ?? 1;
 	const edits = [];
@@ -2826,7 +3254,7 @@ function performArithmeticFill() {
 
 function performGeometricFill() {
 	if (selectedCell?.usesDropdown) {
-		return { success: false, message: '当前单元格不支持等比填充' };
+		return { success: false, message: _t('noGeometricFill') };
 	}
 	const prepared = prepareFillOperation({ allowDropdown: false });
 	if (!prepared.success) {
@@ -2835,12 +3263,12 @@ function performGeometricFill() {
 	const { baseValueRaw, contexts, column } = prepared;
 	const baseNumber = Number(baseValueRaw);
 	if (!Number.isFinite(baseNumber)) {
-		return { success: false, message: '当前单元格的值不是有效的数字' };
+		return { success: false, message: _t('notValidNumber') };
 	}
 	const ratioInput = fillPopupState?.geometricInput;
 	const ratioValue = ratioInput ? Number(ratioInput.value) : NaN;
 	if (!Number.isFinite(ratioValue) || ratioValue === 0) {
-		return { success: false, message: '请输入有效的比率' };
+		return { success: false, message: _t('enterValidRatio') };
 	}
 	const direction = fillPopupState?.direction ?? 1;
 	const edits = [];
@@ -2858,7 +3286,7 @@ function performGeometricFill() {
 
 function performFormulaFill() {
 	if (selectedCell?.usesDropdown) {
-		return { success: false, message: '当前单元格不支持公式填充' };
+		return { success: false, message: _t('noFormulaFill') };
 	}
 	const prepared = prepareFillOperation({ allowDropdown: false });
 	if (!prepared.success) {
@@ -2867,13 +3295,13 @@ function performFormulaFill() {
 	const { baseValueRaw, contexts, column } = prepared;
 	const expression = (fillPopupState?.formulaInput?.value ?? '').trim();
 	if (!expression) {
-		return { success: false, message: '请输入公式表达式' };
+		return { success: false, message: _t('enterFormulaExpr') };
 	}
 	let evaluator;
 	try {
 		evaluator = new Function('base', 'baseNumber', 'offset', 'rowIndex', 'rowNumber', 'direction', 'rowId', 'toNumber', `return (${expression});`);
 	} catch (error) {
-		return { success: false, message: `公式解析失败: ${error.message}` };
+		return { success: false, message: _t('formulaParseFailed') + error.message };
 	}
 	const baseNumber = Number(baseValueRaw);
 	const direction = fillPopupState?.direction ?? 1;
@@ -2895,7 +3323,7 @@ function performFormulaFill() {
 				(value) => Number(value)
 			);
 		} catch (error) {
-			return { success: false, message: `公式执行失败: ${error.message}` };
+			return { success: false, message: _t('formulaExecFailed') + error.message };
 		}
 		const finalValue = formatFormulaResult(resultValue, baseValueRaw);
 		applyValueToContext(context, finalValue, column, edits);
@@ -2936,7 +3364,6 @@ function resolveRowIndex(rowId, fallbackIndex) {
 	return undefined;
 }
 
-// 处理单元格数据变动并通知扩展端
 function handleElementChange(element, fieldConfig) {
 	if (!element) {
 		return;
@@ -2952,7 +3379,6 @@ function handleElementChange(element, fieldConfig) {
 	const currentValue = currentValueRaw === undefined || currentValueRaw === null ? '' : String(currentValueRaw);
 	const trimmedValue = currentValue.trim();
 
-	// 特殊处理 id 列的修改
 	if (columnKey === 'id') {
 		const oldId = element.dataset.initialValue ?? '';
 		const newId = trimmedValue;
@@ -2960,15 +3386,13 @@ function handleElementChange(element, fieldConfig) {
 			return;
 		}
 		if (!oldId || !newId) {
-			console.warn('[kv-editor] id 列的值不能为空', { oldId, newId });
-			// 恢复原值
+			console.warn(_t('idColumnEmpty'), { oldId, newId });
 			setElementValue(element, oldId, fieldConfig);
 			return;
 		}
 		element.dataset.initialValue = newId;
 		element.title = newId;
 
-		// 先更新 latestPayload 中的 id，确保 recalculateFormulas 使用新的 id
 		if (latestPayload && Array.isArray(latestPayload.rows)) {
 			const row = latestPayload.rows.find(r => r && r.id === oldId);
 			if (row) {
@@ -2976,14 +3400,12 @@ function handleElementChange(element, fieldConfig) {
 			}
 		}
 
-		// 更新该行所有 td 元素的 data-row-id 和 data-id 属性
 		if (tableSection && Number.isFinite(rowIndex)) {
 			const cells = tableSection.querySelectorAll(`td[data-row-index="${rowIndex}"]`);
 			cells.forEach(td => {
 				if (td.dataset.rowId === oldId) {
 					td.dataset.rowId = newId;
 				}
-				// 同时更新子元素（input/select）的 data-id
 				const input = td.querySelector('input, select, textarea');
 				if (input && input.dataset.id === oldId) {
 					input.dataset.id = newId;
@@ -2991,21 +3413,17 @@ function handleElementChange(element, fieldConfig) {
 			});
 		}
 
-		// 更新所有引用该 rowId 的公式定义
 		updateFormulaDefinitionsOnIdRename(oldId, newId);
 
-		// 发送 renameId 消息
 		vscode.postMessage({
 			type: 'renameId',
 			payload: { oldId, newId }
 		});
 
-		// 更新选中单元格的状态
 		if (selectedCell && selectedCell.element === element) {
 			selectedCell.value = newId;
 		}
 
-		// 重新计算公式并刷新表格显示
 		updatePayloadFormulasSnapshot();
 		recalculateFormulas({ emitUpdates: true });
 		refreshFormulaResultsForTable();
@@ -3020,7 +3438,7 @@ function handleElementChange(element, fieldConfig) {
 			return;
 		}
 		if (!Number.isFinite(rowIndex) || rowIndex === undefined || rowIndex < 0) {
-			console.warn('[kv-editor] 忽略无法定位行的公式写入', { column: columnKey, id });
+			console.warn(_t('ignoreFormulaWrite'), { column: columnKey, id });
 			return;
 		}
 		element.dataset.formulaValue = trimmedValue;
@@ -3067,19 +3485,15 @@ function handleElementChange(element, fieldConfig) {
 	refreshFormulaResultsForTable();
 }
 
-// 获取多选项的显示文案
 function getOptionLabel(fieldConfig, value) {
 	const option = fieldConfig?.options?.find((option) => option.value === value);
 	if (!option) return value;
-	// 根据本地化模式调整显示：localedMode 为 true 则显示 label，否则显示 value（并在需要时显示 label 作为辅文）
 	if (typeof localizedMode !== 'undefined' && localizedMode) {
 		return option.label || option.value;
 	}
-	// 非本地化模式时优先显示原文
 	return option.value;
 }
 
-// 渲染下拉选择的标签展示
 const optionColorCache = new Map();
 
 function getOptionColor(option, index) {
@@ -3105,7 +3519,7 @@ function updateSelectDisplay(select, display, fieldConfig) {
 	if (!values.length) {
 		const placeholder = document.createElement('span');
 		placeholder.className = 'kv-select-placeholder';
-		placeholder.textContent = '未选择';
+		placeholder.textContent = _t('notSelected');
 		display.appendChild(placeholder);
 		return;
 	}
@@ -3114,31 +3528,22 @@ function updateSelectDisplay(select, display, fieldConfig) {
 		const tag = document.createElement('span');
 		tag.className = 'kv-select-tag';
 
-		// 获取选项配置
 		const option = fieldConfig?.options?.find((opt) => opt.value === value);
 
-		// 整个标签填充颜色（无显式颜色时生成稳定色相）
 		tag.style.backgroundColor = getOptionColor(option, index);
 		tag.style.color = '#fff';
 		tag.style.textShadow = '0 1px 2px rgba(0,0,0,0.3)';
 
-		// 添加文本内容
-		// 适配本地化显示：当 localizedMode 为 false 时，在必要时显示 "value (label)"
 		if (localizedMode) {
 			tag.textContent = option?.label || option?.value || value;
 		} else {
-			if (option && option.label && option.label !== option.value) {
-				tag.textContent = `${option.value} (${option.label})`;
-			} else {
-				tag.textContent = option?.value || value;
-			}
+			tag.textContent = option?.value || value;
 		}
 
 		display.appendChild(tag);
 	});
 }
 
-// 根据当前值刷新下拉浮层的选中状态
 function updateMultiSelectOverlaySelection() {
 	if (!openMultiSelectContext) {
 		return;
@@ -3157,7 +3562,6 @@ function updateMultiSelectOverlaySelection() {
 	});
 }
 
-// 切换浮层中某个选项的勾选状态
 function toggleMultiSelectOption(value) {
 	if (!openMultiSelectContext) {
 		return;
@@ -3195,7 +3599,6 @@ function toggleMultiSelectOption(value) {
 	}
 }
 
-// 关闭下拉浮层并清理监听
 function closeMultiSelectDropdown(options) {
 	if (!openMultiSelectContext) {
 		return;
@@ -3203,7 +3606,6 @@ function closeMultiSelectDropdown(options) {
 	const preservePending = Boolean(options?.preservePending);
 	const { overlay, outsideHandler, keyHandler, scrollHandler, resizeHandler, searchInput, searchHandlers } = openMultiSelectContext;
 
-	// 移除overlay会自动触发setDialogOpenState(false)
 	overlay.remove();
 
 	document.removeEventListener('mousedown', outsideHandler, true);
@@ -3226,7 +3628,6 @@ function closeMultiSelectDropdown(options) {
 	}
 }
 
-// 打开下拉浮层并绑定事件
 function openMultiSelectDropdown(context) {
 	if (!tableSection || !context || !context.fieldConfig) {
 		return;
@@ -3241,11 +3642,9 @@ function openMultiSelectDropdown(context) {
 		closeMultiSelectDropdown();
 	}
 
-	// 使用统一的对话框管理
 	const overlay = createManagedDialog({
 		className: 'kv-quickpick',
 		onClose: () => {
-			// 清理context
 			openMultiSelectContext = null;
 			pendingMultiSelectReopen = null;
 		}
@@ -3257,7 +3656,7 @@ function openMultiSelectDropdown(context) {
 	const searchInput = createInput({
 		type: 'search',
 		className: 'kv-quickpick-search',
-		placeholder: `搜索${placeholderName}`.trim() || '搜索'
+		placeholder: _tf('searchName', placeholderName).trim() || _t('search')
 	});
 	searchWrapper.appendChild(searchInput);
 	overlay.appendChild(searchWrapper);
@@ -3266,7 +3665,7 @@ function openMultiSelectDropdown(context) {
 	overlay.appendChild(list);
 	const emptyIndicator = document.createElement('div');
 	emptyIndicator.className = 'kv-quickpick-empty';
-	emptyIndicator.textContent = '无匹配结果';
+	emptyIndicator.textContent = _t('noMatchingResults');
 	emptyIndicator.hidden = true;
 	overlay.appendChild(emptyIndicator);
 	tableSection.appendChild(overlay);
@@ -3281,24 +3680,19 @@ function openMultiSelectDropdown(context) {
 		textWrapper.className = 'kv-quickpick-text';
 		const hasCustomLabel = option.label && option.label !== option.value;
 
-		// 根据本地化模式决定显示内容：
-		// localizedMode === true -> 显示 label/description 为主，原文为辅
-		// localizedMode === false -> 显示 value 为主，label 为辅（如果存在）
 		let primaryText;
 		let detailText;
 		if (localizedMode) {
 			primaryText = option.label || option.value;
-			// 优先显示 description 作为细节，否则显示原文（当 label 与 value 不同时）
 			detailText = option.description || (option.label && option.label !== option.value ? option.value : undefined);
 		} else {
 			primaryText = option.value;
-			detailText = (option.label && option.label !== option.value) ? option.label : (option.description || undefined);
+			detailText = option.description || undefined;
 		}
 
 		const labelEl = document.createElement('div');
 		labelEl.className = 'kv-quickpick-label';
 
-		// 主文本使用颜色标签样式（像单元格标签一样）
 		const color = getOptionColor(option, index);
 		if (color) {
 			const colorTag = document.createElement('span');
@@ -3511,7 +3905,6 @@ function openMultiSelectDropdown(context) {
 	state.focusSearch();
 }
 
-// 计算列的最小宽度
 function getMinColumnWidth(column) {
 	if (column === ROW_NUMBER_COLUMN_KEY) {
 		return ROW_NUMBER_MIN_WIDTH;
@@ -3522,7 +3915,6 @@ function getMinColumnWidth(column) {
 	return COLUMN_MIN_WIDTH;
 }
 
-// 获取列的当前宽度（含初次估算）
 function getColumnWidth(column, headerText) {
 	if (columnWidths[column]) {
 		return columnWidths[column];
@@ -3539,7 +3931,6 @@ function getColumnWidth(column, headerText) {
 	return estimated;
 }
 
-// 将列索引转换为字母标记
 function getColumnLetter(index) {
 	let dividend = index + 1;
 	let columnName = '';
@@ -3551,7 +3942,6 @@ function getColumnLetter(index) {
 	return columnName;
 }
 
-// 根据列宽重算整表宽度
 function refreshTableWidth() {
 	if (!tableSection) {
 		return;
@@ -3571,7 +3961,6 @@ function refreshTableWidth() {
 		const width = columnWidths[column] ?? getColumnWidth(column, headerLabel);
 		totalWidth += width;
 	});
-	// 表格宽度只根据列的总宽度设置，不强制撑满容器
 	table.style.minWidth = `${totalWidth}px`;
 	table.style.width = `${totalWidth}px`;
 }
@@ -3595,7 +3984,6 @@ function cancelColumnWidthSave() {
 	columnWidthSaveHandle = null;
 }
 
-// 立即刷新保存列宽（用于页面关闭前）
 function flushColumnWidthSave() {
 	if (!latestPayload || !modifiedColumns.size) {
 		return;
@@ -3652,7 +4040,6 @@ function scheduleColumnWidthSave() {
 		const widthsPayload = {};
 		const columnsToRemoveFromSaved = new Set();
 
-		// 处理修改过的列
 		modifiedColumns.forEach((column) => {
 			const width = columnWidths[column];
 			if (typeof width !== 'number' || !Number.isFinite(width)) {
@@ -3664,48 +4051,36 @@ function scheduleColumnWidthSave() {
 				return;
 			}
 			widthsPayload[column] = normalized;
-			// 如果这个列曾经被保存过，现在又被修改了，需要更新保存记录
 			savedColumnWidths.add(column);
 		});
 
-		// 检查曾经保存过但现在可能需要删除的列
-		// 如果一个列曾经被保存，但现在的宽度已经恢复到系统计算的初始值（而不是保存的值），则需要删除
 		if (!latestPayload.columns) {
 			latestPayload.columns = [];
 		}
 		savedColumnWidths.forEach((column) => {
-			// 如果这个列已经在 widthsPayload 中，说明它被重新修改了，不需要检查删除
 			if (widthsPayload[column] !== undefined) {
 				return;
 			}
-			// 检查该列是否仍存在于当前表格中
 			if (!latestPayload.columns.includes(column)) {
-				// 列已经不存在了，标记为需要从保存记录中删除
 				columnsToRemoveFromSaved.add(column);
 				return;
 			}
-			// 获取当前列宽
 			const currentWidth = columnWidths[column];
 			if (!Number.isFinite(currentWidth)) {
 				return;
 			}
-			// 获取该列的系统默认宽度（不考虑保存的值）
 			const headerLabel = column;
 			const labelLength = Math.max((headerLabel ?? '').length, 4);
 			const systemDefaultWidth = column === 'AbilityValues'
 				? Math.max(COLUMN_MIN_WIDTH, 220)
 				: Math.max(COLUMN_MIN_WIDTH, labelLength * 12);
-			// 如果当前宽度等于系统默认宽度，说明用户已经将列宽恢复到初始状态
-			// 此时应该删除配置文件中的保存值
 			if (Math.round(currentWidth) === Math.round(systemDefaultWidth)) {
 				columnsToRemoveFromSaved.add(column);
 			}
 		});
 
-		// 从 savedColumnWidths 中移除标记为删除的列
 		columnsToRemoveFromSaved.forEach((column) => {
 			savedColumnWidths.delete(column);
-			// 将这些列的宽度设为 null，后端会识别并删除配置
 			widthsPayload[column] = null;
 		});
 
@@ -3720,7 +4095,6 @@ function scheduleColumnWidthSave() {
 		});
 		Object.entries(widthsPayload).forEach(([column, value]) => {
 			if (value === null) {
-				// 删除该列的记录
 				delete originalColumnWidths[column];
 			} else {
 				originalColumnWidths[column] = value;
@@ -3730,7 +4104,6 @@ function scheduleColumnWidthSave() {
 	}, COLUMN_WIDTH_SAVE_DEBOUNCE_MS);
 }
 
-// 更新指定列的宽度并刷新布局
 function updateColumnWidth(column, width) {
 	const adjusted = Math.max(getMinColumnWidth(column), width);
 	columnWidths[column] = adjusted;
@@ -3745,7 +4118,6 @@ function updateColumnWidth(column, width) {
 	scheduleColumnWidthSave();
 }
 
-// 开始列宽拖拽操作
 function startColumnResize(event, column) {
 	if (!tableSection) {
 		return;
@@ -3763,7 +4135,6 @@ function startColumnResize(event, column) {
 	document.body.classList.add('kv-resizing');
 }
 
-// 拖拽过程中实时调整列宽
 function handleColumnResize(event) {
 	if (!resizeState) {
 		return;
@@ -3773,7 +4144,6 @@ function handleColumnResize(event) {
 	updateColumnWidth(resizeState.column, newWidth);
 }
 
-// 结束列宽拖拽并清理状态
 function stopColumnResize() {
 	if (!resizeState) {
 		return;
@@ -3783,7 +4153,6 @@ function stopColumnResize() {
 	scheduleColumnWidthSave();
 }
 
-// 重新聚焦此前活跃的输入控件
 function restoreActiveCell() {
 	if (!activeCell) {
 		return;
@@ -3791,9 +4160,11 @@ function restoreActiveCell() {
 	const selector = `[data-id="${activeCell.id}"][data-key="${activeCell.key}"]`;
 	const focusTarget = tableSection?.querySelector(selector);
 	if (focusTarget instanceof HTMLInputElement) {
-		const length = focusTarget.value.length;
 		focusTarget.focus();
-		focusTarget.setSelectionRange(length, length);
+		if (focusTarget.type !== 'number' && focusTarget.type !== 'checkbox') {
+			const length = focusTarget.value.length;
+			focusTarget.setSelectionRange(length, length);
+		}
 	} else if (focusTarget instanceof HTMLSelectElement) {
 		const styles = window.getComputedStyle(focusTarget);
 		if (styles.display !== 'none' && styles.visibility !== 'hidden') {
@@ -3802,7 +4173,6 @@ function restoreActiveCell() {
 	}
 }
 
-// 渲染后恢复之前的单元格选中状态
 function restoreSelection(columnLabels, columnLetters, columnOptions) {
 	if (!selectedCellKey) {
 		return;
@@ -3817,7 +4187,6 @@ function restoreSelection(columnLabels, columnLetters, columnOptions) {
 	const columnName = columnLabels.get(selectedCellKey.column) ?? selectedCellKey.column;
 	const columnLetter = columnLetters.get(selectedCellKey.column) ?? selectedCellKey.column;
 	const isAbilityColumn = selectedCellKey.column === 'AbilityValues';
-	// id 列现在也可以编辑了
 	const editable = selectedCellKey.column !== ROW_NUMBER_COLUMN_KEY && !isAbilityColumn;
 	const fieldConfig = columnOptions[selectedCellKey.column];
 	const usesDropdown = Boolean(fieldConfig?.options?.length);
@@ -3882,7 +4251,6 @@ function populateAbilityValuesCell(td, entries, hasAbilityField) {
 		delete td.dataset.abilityEntries;
 	}
 
-	// 精简模式：显示为纯文本单行
 	if (compactMode) {
 		const compactText = sanitizedEntries.map(entry => {
 			const parts = [`${entry.key}: ${entry.value}`];
@@ -3894,17 +4262,35 @@ function populateAbilityValuesCell(td, entries, hasAbilityField) {
 
 		const compactDiv = document.createElement('div');
 		compactDiv.className = 'kv-ability-values-compact';
-		compactDiv.textContent = compactText || (hasAbilityField ? '(空)' : '');
+		compactDiv.textContent = compactText || (hasAbilityField ? _t('empty') : '');
 		compactDiv.title = compactText;
 		td.appendChild(compactDiv);
 		return { entries: sanitizedEntries, displayValue: compactText };
 	}
 
-	// 详细模式：原有的多行显示逻辑
 	const list = document.createElement('div');
 	list.className = 'kv-ability-values-list';
 	const displayLines = [];
 	if (sanitizedEntries.length) {
+		// Collapsed summary
+		const summary = document.createElement('div');
+		summary.className = 'kv-ability-values-summary';
+		const summaryText = sanitizedEntries.map(e => e.key).join(', ');
+		const countBadge = document.createElement('span');
+		countBadge.className = 'kv-ability-values-count';
+		countBadge.textContent = String(sanitizedEntries.length);
+		const summaryLabel = document.createElement('span');
+		summaryLabel.className = 'kv-ability-values-summary-text';
+		summaryLabel.textContent = summaryText;
+		summaryLabel.title = summaryText;
+		const expandIcon = document.createElement('span');
+		expandIcon.className = 'codicon codicon-chevron-right kv-ability-values-expand-icon';
+		summary.appendChild(expandIcon);
+		summary.appendChild(countBadge);
+		summary.appendChild(summaryLabel);
+		td.appendChild(summary);
+
+		list.hidden = true;
 		sanitizedEntries.forEach((entry) => {
 			const block = document.createElement('div');
 			block.className = 'kv-ability-values-block';
@@ -3941,10 +4327,20 @@ function populateAbilityValuesCell(td, entries, hasAbilityField) {
 			list.appendChild(block);
 		});
 		td.appendChild(list);
+
+		summary.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const collapsed = list.hidden;
+			list.hidden = !collapsed;
+			expandIcon.className = collapsed
+				? 'codicon codicon-chevron-down kv-ability-values-expand-icon'
+				: 'codicon codicon-chevron-right kv-ability-values-expand-icon';
+			td.classList.toggle('kv-ability-values-expanded', collapsed);
+		});
 	} else if (hasAbilityField) {
 		const placeholder = document.createElement('div');
 		placeholder.className = 'kv-ability-values-empty';
-		placeholder.textContent = '无条目';
+		placeholder.textContent = _t('noEntries');
 		td.appendChild(placeholder);
 	} else {
 		td.classList.add('kv-ability-values-cell-empty');
@@ -3953,10 +4349,10 @@ function populateAbilityValuesCell(td, entries, hasAbilityField) {
 	const displayValue = displayLines.length
 		? displayLines.join('\n')
 		: hasAbilityField
-			? '无条目'
+			? _t('noEntries')
 			: '—';
 	td.dataset.displayValue = displayValue;
-	td.title = '双击编辑 AbilityValues';
+	td.title = _t('doubleClickAbilityValues');
 	return { entries: sanitizedEntries, displayValue };
 }
 
@@ -3982,21 +4378,18 @@ function normalizeAbilityEntriesForPayload(entries) {
 }
 
 // ============================================================================
-// 虚拟滚动配置
 // ============================================================================
-const VIRTUAL_SCROLL_THRESHOLD = 200; // 超过此行数启用虚拟滚动
-const VIRTUAL_SCROLL_BUFFER = 10;     // 可视区域外的缓冲行数
-const ROW_HEIGHT_ESTIMATE = 32;       // 估算行高（像素）
+const VIRTUAL_SCROLL_THRESHOLD = 200;
+const VIRTUAL_SCROLL_BUFFER = 10;
+const ROW_HEIGHT_ESTIMATE = 32;
 
 let virtualScrollState = null;
 let scrollRAFHandle = null;
 
-// 检查是否应启用虚拟滚动
 function shouldUseVirtualScroll(rowCount) {
 	return rowCount > VIRTUAL_SCROLL_THRESHOLD;
 }
 
-// 计算可见行范围
 function calculateVisibleRowRange(scrollTop, containerHeight, totalRows) {
 	const startRow = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT_ESTIMATE) - VIRTUAL_SCROLL_BUFFER);
 	const visibleCount = Math.ceil(containerHeight / ROW_HEIGHT_ESTIMATE) + 2 * VIRTUAL_SCROLL_BUFFER;
@@ -4005,7 +4398,6 @@ function calculateVisibleRowRange(scrollTop, containerHeight, totalRows) {
 }
 
 // ============================================================================
-// 渲染性能优化
 // ============================================================================
 
 const RENDER_DEBOUNCE_MS = 16; // ~60fps
@@ -4013,7 +4405,6 @@ let pendingRenderHandle = null;
 let lastRenderTime = 0;
 
 /**
- * 防抖渲染 - 合并短时间内的多次渲染请求
  */
 function scheduleRender(columns, rows, columnOptions) {
 	if (pendingRenderHandle) {
@@ -4024,21 +4415,18 @@ function scheduleRender(columns, rows, columnOptions) {
 	const timeSinceLastRender = now - lastRenderTime;
 
 	if (timeSinceLastRender < RENDER_DEBOUNCE_MS) {
-		// 使用 RAF 延迟渲染
 		pendingRenderHandle = requestAnimationFrame(() => {
 			pendingRenderHandle = null;
 			lastRenderTime = performance.now();
 			renderTable(columns, rows, columnOptions);
 		});
 	} else {
-		// 立即渲染
 		lastRenderTime = now;
 		renderTable(columns, rows, columnOptions);
 	}
 }
 
 /**
- * 使用 DocumentFragment 批量创建 DOM 元素以提升性能
  */
 function createRowsBatch(rows, startIndex, endIndex, context) {
 	const fragment = document.createDocumentFragment();
@@ -4052,24 +4440,19 @@ function createRowsBatch(rows, startIndex, endIndex, context) {
 }
 
 /**
- * 创建单个表格行元素（占位符 - 将在后续重构中实现完整版本）
- * 当前直接返回 null，实际创建逻辑仍在 renderTable 中
  */
 function createTableRowElement(row, rowIndex, context) {
-	// TODO: 将 renderTable 中的行创建逻辑迁移到此函数
-	// 当前返回 null，保持向后兼容
 	return null;
 }
 
 // ============================================================================
-// 表格渲染辅助函数（模块化拆分）
 // ============================================================================
 
 /**
- * 创建表格渲染上下文，包含所有共享状态
  */
 function createRenderContext(columns, rows, columnOptions) {
-	const displayColumns = [ROW_NUMBER_COLUMN_KEY, ...columns];
+	const safeColumns = Array.isArray(columns) ? columns : [];
+	const displayColumns = [ROW_NUMBER_COLUMN_KEY, ...safeColumns];
 	const columnLabels = new Map();
 	const columnLetters = new Map();
 
@@ -4083,7 +4466,6 @@ function createRenderContext(columns, rows, columnOptions) {
 		columnLabels.set(column, headerLabel);
 	}
 
-	// 计算冻结列信息
 	const frozenColumnsInOrder = displayColumns.filter(
 		col => frozenColumns.has(col) && col !== ROW_NUMBER_COLUMN_KEY
 	);
@@ -4106,7 +4488,6 @@ function createRenderContext(columns, rows, columnOptions) {
 }
 
 /**
- * 计算冻结列的 left 偏移量
  */
 function calculateFrozenColumnLeft(column, context) {
 	const { frozenColumnsInOrder, columnLabels } = context;
@@ -4123,7 +4504,6 @@ function calculateFrozenColumnLeft(column, context) {
 }
 
 /**
- * 应用冻结列样式到元素
  */
 function applyFrozenColumnStyle(element, column, context) {
 	if (!frozenColumns.has(column) || column === ROW_NUMBER_COLUMN_KEY) {
@@ -4137,8 +4517,6 @@ function applyFrozenColumnStyle(element, column, context) {
 }
 
 /**
- * 创建表格的 colgroup 元素
- * @param {RenderContext} ctx - 渲染上下文
  * @returns {HTMLTableColElement}
  */
 function createColgroup(ctx) {
@@ -4161,10 +4539,6 @@ function createColgroup(ctx) {
 }
 
 /**
- * 创建单个表头单元格
- * @param {string} column - 列标识
- * @param {number} columnIndex - 列索引
- * @param {RenderContext} ctx - 渲染上下文
  * @returns {HTMLTableCellElement}
  */
 function createHeaderCell(column, columnIndex, ctx) {
@@ -4177,7 +4551,6 @@ function createHeaderCell(column, columnIndex, ctx) {
 	th.style.width = `${getColumnWidth(column, headerLabel)}px`;
 	th.style.minWidth = `${getMinColumnWidth(column)}px`;
 
-	// 应用冻结列样式
 	applyFrozenColumnStyle(th, column, ctx);
 
 	if (column === ROW_NUMBER_COLUMN_KEY) {
@@ -4186,7 +4559,6 @@ function createHeaderCell(column, columnIndex, ctx) {
 		const wrapper = document.createElement('div');
 		wrapper.className = 'kv-column-header';
 
-		// 创建列字母拖拽按钮
 		const letterButton = document.createElement('button');
 		letterButton.type = 'button';
 		letterButton.className = 'kv-column-letter';
@@ -4201,7 +4573,7 @@ function createHeaderCell(column, columnIndex, ctx) {
 
 		if (columnIndex > 0) {
 			letterButton.setAttribute('draggable', 'true');
-			letterButton.setAttribute('aria-label', `拖动列 ${headerLabel}`);
+			letterButton.setAttribute('aria-label', _tf('dragColumn', headerLabel));
 			letterButton.addEventListener('dragstart', (event) => handleColumnDragStart(event, column, columnIndex, letterButton));
 			letterButton.addEventListener('dragend', (event) => handleColumnDragEnd(event, letterButton));
 			letterButton.addEventListener('mousedown', (event) => event.stopPropagation());
@@ -4215,7 +4587,6 @@ function createHeaderCell(column, columnIndex, ctx) {
 			letterButton.addEventListener('click', (event) => event.preventDefault());
 		}
 
-		// 创建列名元素
 		const nameEl = document.createElement('span');
 		nameEl.className = 'kv-column-name';
 		const columnDesc = columnDescriptions[column];
@@ -4226,7 +4597,6 @@ function createHeaderCell(column, columnIndex, ctx) {
 
 		wrapper.appendChild(letterButton);
 
-		// 创建标题行（包含列名和选项按钮）
 		const titleRow = document.createElement('div');
 		titleRow.className = 'kv-column-header-title-row';
 		titleRow.appendChild(nameEl);
@@ -4236,15 +4606,15 @@ function createHeaderCell(column, columnIndex, ctx) {
 			formulaIndicator = document.createElement('span');
 			formulaIndicator.className = 'kv-column-formula-indicator';
 			formulaIndicator.textContent = 'ƒ';
-			formulaIndicator.title = `列公式: ${columnFormulas.get(column)}`;
+			formulaIndicator.title = _tf('columnFormula', columnFormulas.get(column));
 		}
 
 		const columnFieldConfig = columnOptions?.[column];
 		const optionsButton = document.createElement('button');
 		optionsButton.type = 'button';
 		optionsButton.className = 'kv-column-options-button';
-		optionsButton.title = `编辑 ${headerLabel} 下拉选项`;
-		optionsButton.setAttribute('aria-label', `编辑 ${headerLabel} 下拉选项`);
+		optionsButton.title = _tf('editDropdownOptions', headerLabel);
+		optionsButton.setAttribute('aria-label', _tf('editDropdownOptions', headerLabel));
 		optionsButton.innerHTML = '<span class="codicon codicon-fold-down"></span>';
 		optionsButton.addEventListener('mousedown', (event) => event.stopPropagation());
 		optionsButton.addEventListener('click', (event) => {
@@ -4267,7 +4637,6 @@ function createHeaderCell(column, columnIndex, ctx) {
 		}
 		th.appendChild(wrapper);
 
-		// 为列标题添加右键菜单（允许 id 列）
 		if (columnIndex >= 0) {
 			th.addEventListener('contextmenu', (event) => {
 				openColumnContextMenu(event, {
@@ -4281,14 +4650,12 @@ function createHeaderCell(column, columnIndex, ctx) {
 		}
 	}
 
-	// 添加拖放事件监听器
 	if (columnIndex >= 0) {
 		th.addEventListener('dragover', (event) => handleColumnDragOver(event, th, column, columnIndex));
 		th.addEventListener('dragleave', (event) => handleColumnDragLeave(event, th));
 		th.addEventListener('drop', (event) => handleColumnDrop(event, column));
 	}
 
-	// 添加列宽调整器
 	const resizer = document.createElement('div');
 	resizer.className = 'kv-resizer';
 	resizer.addEventListener('mousedown', (event) => startColumnResize(event, column));
@@ -4298,9 +4665,6 @@ function createHeaderCell(column, columnIndex, ctx) {
 }
 
 /**
- * 创建表头 thead 元素
- * @param {string[]} columns - 原始列数组
- * @param {RenderContext} ctx - 渲染上下文
  * @returns {HTMLTableSectionElement}
  */
 function createTableHeader(columns, ctx) {
@@ -4318,12 +4682,37 @@ function createTableHeader(columns, ctx) {
 	return thead;
 }
 
-// 渲染主表格结构和单元格控件
+function applySearchFilter(rows) {
+	if (!tableSearchFilter) return rows;
+	const q = tableSearchFilter;
+	return rows.filter(row => {
+		if ((row.id || '').toLowerCase().includes(q)) return true;
+		if (row.values) {
+			for (const val of Object.values(row.values)) {
+				if (typeof val === 'string' && val.toLowerCase().includes(q)) return true;
+			}
+		}
+		return false;
+	});
+}
+
 function renderTable(columns, rows, columnOptions) {
 	if (!tableSection) {
 		return;
 	}
-	// 保存当前滚动位置
+	tableSection.classList.remove('kv-table-vertical');
+
+	const filteredRows = applySearchFilter(rows);
+
+	if (verticalMode && Array.isArray(columns) && Array.isArray(filteredRows) && filteredRows.length > 0) {
+		return renderVerticalTable(columns, filteredRows, columnOptions);
+	}
+	return renderTableInner(columns, filteredRows, columnOptions);
+}
+
+function renderVerticalTable(columns, rows, columnOptions) {
+	if (!tableSection) return;
+
 	const scrollLeft = tableSection.scrollLeft;
 	const scrollTop = tableSection.scrollTop;
 
@@ -4345,11 +4734,710 @@ function renderTable(columns, rows, columnOptions) {
 	}
 	closeMultiSelectDropdown({ preservePending });
 
-	// 使用渲染上下文统一管理共享状态
+	const ctx = createRenderContext(columns, rows, columnOptions);
+	const { texturePreviewMap, scriptSupport, columnLabels, columnLetters } = ctx;
+
+	// Reorder: id first, then BaseClass, AbilityBehavior, AbilityTextureName, then rest
+	const priorityOrder = ['_comment', 'id', 'BaseClass', 'ScriptFile', 'AbilityTextureName', 'AbilityBehavior', 'AbilityUnitTargetTeam', 'AbilityUnitTargetType', 'AbilityUnitTargetFlags', 'AbilityCooldown', 'AbilityManaCost', 'AbilityCastRange', 'AbilityCastPoint', 'AbilityValues'];
+	const otherProps = columns.filter(c => !priorityOrder.includes(c));
+	const props = [...priorityOrder.filter(p => columns.includes(p)), ...otherProps];
+
+	tableSection.innerHTML = '';
+	const table = document.createElement('table');
+	table.style.tableLayout = 'fixed';
+
+	// colgroup: first col = row number, second = property name (auto-fit), then one col per entry
+	const maxPropLength = Math.max(...props.map(p => p.length), 8);
+	const propNameWidth = Math.max(120, maxPropLength * 8 + 16);
+	const colgroup = document.createElement('colgroup');
+	const propCol = document.createElement('col');
+	propCol.style.width = '50px';
+	colgroup.appendChild(propCol);
+	const propNameCol = document.createElement('col');
+	propNameCol.style.width = `${propNameWidth}px`;
+	colgroup.appendChild(propNameCol);
+	for (const row of rows) {
+		const col = document.createElement('col');
+		col.style.width = '200px';
+		colgroup.appendChild(col);
+	}
+	table.appendChild(colgroup);
+
+	// thead: # | Property | Entry 1 | Entry 2 | ...
+	const thead = document.createElement('thead');
+	const headRow = document.createElement('tr');
+	const thNum = document.createElement('th');
+	thNum.textContent = '#';
+	thNum.classList.add('kv-col-header');
+	headRow.appendChild(thNum);
+	const thProp = document.createElement('th');
+	thProp.textContent = 'Property';
+	thProp.classList.add('kv-col-header');
+	headRow.appendChild(thProp);
+	rows.forEach((entry, i) => {
+		const th = document.createElement('th');
+		th.classList.add('kv-col-header', 'kv-entry-header');
+		const span = document.createElement('span');
+		span.textContent = `Entry ${i + 1}`;
+		th.appendChild(span);
+		const deleteBtn = document.createElement('button');
+		deleteBtn.type = 'button';
+		deleteBtn.className = 'kv-entry-delete-btn';
+		deleteBtn.title = `Delete ${entry.id || `Entry ${i + 1}`}`;
+		const deleteIcon = document.createElement('span');
+		deleteIcon.className = 'codicon codicon-trash';
+		deleteBtn.appendChild(deleteIcon);
+		deleteBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const name = entry.id || `Entry ${i + 1}`;
+			if (confirm(`Delete "${name}"?`)) {
+				vscode.postMessage({
+					type: 'deleteRow',
+					payload: { rowId: entry.id, rowIndex: i }
+				});
+			}
+		});
+		th.appendChild(deleteBtn);
+		headRow.appendChild(th);
+	});
+	thead.appendChild(headRow);
+	table.appendChild(thead);
+
+	// tbody: one row per property
+	const tbody = document.createElement('tbody');
+	props.forEach((prop, propIndex) => {
+		const tr = document.createElement('tr');
+		tr.classList.add('kv-row');
+		// Row number
+		const tdNum = document.createElement('td');
+		tdNum.classList.add('kv-row-index');
+		tdNum.textContent = String(propIndex + 1);
+		tr.appendChild(tdNum);
+		// Property name
+		const tdProp = document.createElement('td');
+		tdProp.classList.add('kv-col-header');
+		tdProp.style.fontWeight = '500';
+		tdProp.textContent = prop;
+		tdProp.title = prop;
+		tr.appendChild(tdProp);
+
+		// Cell for each entry — render same as horizontal
+		rows.forEach((row, rowIndex) => {
+			const td = document.createElement('td');
+			const column = prop;
+			td.dataset.column = column;
+			td.dataset.rowId = row.id ?? '';
+			td.dataset.rowIndex = String(rowIndex);
+
+			const columnLetter = ctx.columnLetters?.get(column) ?? column;
+			const columnName = ctx.columnLabels?.get(column) ?? column;
+			const fieldConfig = columnOptions?.[column];
+			const usesDropdown = Boolean(fieldConfig?.options?.length);
+
+			if (column === 'id') {
+				td.classList.add('kv-cell-id');
+				const idValue = row.id ?? '';
+				const input = createInput({
+					type: 'text',
+					value: idValue,
+					attributes: {
+						dataset: {
+							id: idValue,
+							key: 'id',
+							rowIndex: String(rowIndex),
+							initialValue: idValue
+						}
+					}
+				});
+				input.title = idValue;
+				input.style.fontWeight = '600';
+				input.addEventListener('change', () => handleElementChange(input, undefined));
+				input.addEventListener('focus', () => {
+					activeCell = { id: idValue, key: 'id' };
+					selectCell(td, {
+						column: 'id', columnLetter, columnName,
+						rowId: idValue, rowIndex,
+						editable: true, element: input,
+						value: input.value
+					});
+				});
+				input.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter') { event.preventDefault(); input.blur(); }
+					else if (event.key === 'Escape') { event.preventDefault(); setElementValue(input, input.dataset.initialValue ?? '', undefined); input.blur(); }
+				});
+				// Show texture preview if available
+				const preview = ctx.texturePreviewMap?.[idValue];
+				if (preview && preview.uri) {
+					const img = document.createElement('img');
+					img.src = preview.uri;
+					img.style.width = '20px';
+					img.style.height = '20px';
+					img.style.verticalAlign = 'middle';
+					img.style.marginRight = '4px';
+					img.style.borderRadius = '3px';
+					td.appendChild(img);
+				}
+				td.appendChild(input);
+				tr.appendChild(td);
+				return;
+			}
+
+			if (column === '_comment') {
+				td.classList.add('kv-cell-comment');
+				const commentValue = row.values?.['_comment'] ?? '';
+				const input = createInput({
+					type: 'text',
+					value: commentValue,
+					attributes: {
+						placeholder: '// comment...',
+						dataset: {
+							id: row.id ?? '',
+							key: '_comment',
+							rowIndex: String(rowIndex),
+							initialValue: commentValue
+						}
+					}
+				});
+				input.addEventListener('change', () => handleElementChange(input, undefined));
+				input.addEventListener('focus', () => {
+					activeCell = { id: row.id ?? '', key: '_comment' };
+					selectCell(td, {
+						column: '_comment', columnLetter, columnName,
+						rowId: row.id ?? '', rowIndex,
+						editable: true, element: input,
+						value: input.value
+					});
+				});
+				input.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter') { event.preventDefault(); input.blur(); }
+					else if (event.key === 'Escape') { event.preventDefault(); setElementValue(input, input.dataset.initialValue ?? '', undefined); input.blur(); }
+				});
+				td.appendChild(input);
+				tr.appendChild(td);
+				return;
+			}
+
+			const rawValue = row.values?.[column];
+			const displayValue = getCellDisplayValue(rowIndex, row.id ?? '', column, rawValue);
+			const formulaDefinition = getFormulaDefinition(column, row.id ?? '', rowIndex);
+			const computedEntry = getComputedFormulaEntry(column, rowIndex);
+			const _colInputType = getColumnInputType(column);
+
+			if (_colInputType === 'checkbox') {
+				td.classList.add('kv-cell-checkbox');
+				const checkbox = document.createElement('input');
+				checkbox.type = 'checkbox';
+				checkbox.className = 'kv-checkbox-input';
+				checkbox.checked = displayValue === '1';
+				checkbox.dataset.id = row.id ?? '';
+				checkbox.dataset.key = column;
+				checkbox.dataset.rowIndex = String(rowIndex);
+				checkbox.addEventListener('change', () => {
+					const newValue = checkbox.checked ? '1' : '0';
+					vscode.postMessage({ type: 'edit', payload: { id: row.id, key: column, value: newValue } });
+				});
+				td.addEventListener('click', (event) => {
+					if (event.target !== checkbox) {
+						checkbox.checked = !checkbox.checked;
+						checkbox.dispatchEvent(new Event('change'));
+					}
+				});
+				td.appendChild(checkbox);
+			} else if (_colInputType === 'number') {
+				const input = createInput({
+					type: 'text',
+					value: displayValue,
+					attributes: {
+						dataset: {
+							id: row.id ?? '',
+							key: column,
+							rowIndex: String(rowIndex),
+							initialValue: displayValue
+						}
+					}
+				});
+				input.className = 'kv-cell-input kv-cell-number';
+				input.addEventListener('input', () => {
+					input.value = input.value.replace(/[^0-9\-]/g, '');
+				});
+				input.addEventListener('change', () => {
+					handleElementChange(input, undefined);
+				});
+				input.addEventListener('focus', () => {
+					activeCell = { id: row.id ?? '', key: column };
+					selectCell(td, {
+						column, columnLetter, columnName,
+						rowId: row.id ?? '', rowIndex,
+						editable: true, element: input,
+						value: input.value
+					});
+				});
+				input.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter') { event.preventDefault(); input.blur(); }
+					else if (event.key === 'Escape') { event.preventDefault(); setElementValue(input, input.dataset.initialValue ?? '', undefined); input.blur(); }
+				});
+				td.appendChild(input);
+			} else if (_colInputType === 'spinner') {
+				td.classList.add('kv-cell-spinner');
+				const wrapper = document.createElement('div');
+				wrapper.className = 'kv-spinner-wrapper';
+				const minusBtn = document.createElement('button');
+				minusBtn.type = 'button';
+				minusBtn.className = 'kv-spinner-btn kv-spinner-minus';
+				minusBtn.textContent = '\u2212';
+				const display = document.createElement('span');
+				display.className = 'kv-spinner-value';
+				display.textContent = displayValue || '0';
+				const plusBtn = document.createElement('button');
+				plusBtn.type = 'button';
+				plusBtn.className = 'kv-spinner-btn kv-spinner-plus';
+				plusBtn.textContent = '+';
+				const updateSpinner = (delta) => {
+					const current = parseInt(display.textContent || '0', 10) || 0;
+					const next = Math.max(0, current + delta);
+					display.textContent = String(next);
+					vscode.postMessage({ type: 'edit', payload: { id: row.id, key: column, value: String(next) } });
+				};
+				minusBtn.addEventListener('click', (e) => { e.stopPropagation(); updateSpinner(-1); });
+				plusBtn.addEventListener('click', (e) => { e.stopPropagation(); updateSpinner(1); });
+				wrapper.appendChild(minusBtn);
+				wrapper.appendChild(display);
+				wrapper.appendChild(plusBtn);
+				td.appendChild(wrapper);
+			} else if (column === 'AbilityValues') {
+				applyFormulaDecorations(td, undefined, undefined);
+				td.classList.add('kv-ability-values-cell');
+				td.tabIndex = 0;
+				const hasAbilityField = row.values && Object.prototype.hasOwnProperty.call(row.values, column);
+				const populated = populateAbilityValuesCell(td, row.abilityValues, hasAbilityField);
+				const getAbilityContext = () => {
+					const entries = parseAbilityEntriesFromCell(td);
+					const hasField = td.dataset.hasAbilityField === 'true';
+					const display = td.dataset.displayValue ?? populated.displayValue;
+					return { entries, hasField, display };
+				};
+				const setSelection = () => {
+					const abilityContext = getAbilityContext();
+					selectCell(td, {
+						column,
+						columnLetter,
+						columnName,
+						rowId: row.id ?? '',
+						rowIndex,
+						editable: false,
+						element: null,
+						fieldConfig: undefined,
+						usesDropdown: false,
+						value: abilityContext.display,
+						dataType: 'abilityValues',
+						abilityEntries: abilityContext.entries,
+						hasAbilityField: abilityContext.hasField,
+					});
+				};
+				td.addEventListener('click', setSelection);
+				td.addEventListener('focus', setSelection);
+				td.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter' || event.key === ' ') {
+						event.preventDefault();
+						setSelection();
+						if (event.key === 'Enter' && !event.shiftKey) {
+							const context = getAbilityContext();
+							openAbilityValuesEditor({
+								rowId: row.id ?? '',
+								column,
+								columnName,
+								entries: context.entries,
+							});
+						}
+					}
+				});
+				td.addEventListener('dblclick', () => {
+					const context = getAbilityContext();
+					openAbilityValuesEditor({
+						rowId: row.id ?? '',
+						column,
+						columnName,
+						entries: context.entries,
+					});
+				});
+			} else if (usesDropdown) {
+				const select = document.createElement('select');
+				select.dataset.id = row.id ?? '';
+				select.dataset.key = column;
+				select.dataset.rowIndex = String(rowIndex);
+				const isMultiSelect = Boolean(fieldConfig?.multiple);
+				if (isMultiSelect) {
+					select.multiple = true;
+				}
+				fieldConfig?.options.forEach((option) => {
+					const optionEl = document.createElement('option');
+					optionEl.value = option.value;
+					optionEl.textContent = option.label;
+					select.appendChild(optionEl);
+				});
+				setElementValue(select, displayValue, fieldConfig);
+				const initialValue = readElementValue(select, fieldConfig);
+				select.dataset.initialValue = initialValue;
+				if (formulaDefinition) {
+					select.dataset.formulaValue = formulaDefinition.formula;
+				} else {
+					delete select.dataset.formulaValue;
+				}
+				select.title = initialValue;
+				const container = document.createElement('div');
+				container.className = 'kv-select-cell';
+				const display = document.createElement('div');
+				display.className = 'kv-select-display';
+				container.appendChild(display);
+				container.appendChild(select);
+				select.classList.add('kv-select-hidden');
+				updateSelectDisplay(select, display, fieldConfig);
+				td.appendChild(container);
+				applyFormulaDecorations(td, formulaDefinition, computedEntry);
+				td.dataset.displayValue = readElementValue(select, fieldConfig);
+				if (isMultiSelect) {
+					const updateSelection = () => {
+						const currentValue = readElementValue(select, fieldConfig);
+						activeCell = { id: row.id ?? '', key: column };
+						selectCell(td, {
+							column,
+							columnLetter,
+							columnName,
+							rowId: row.id ?? '',
+							rowIndex,
+							editable: true,
+							element: select,
+							fieldConfig,
+							usesDropdown: true,
+							value: currentValue
+						});
+					};
+					select.addEventListener('change', () => {
+						handleElementChange(select, fieldConfig);
+						updateSelectDisplay(select, display, fieldConfig);
+					});
+					td.addEventListener('click', () => {
+						updateSelection();
+					});
+					td.addEventListener('dblclick', () => {
+						updateSelection();
+						openMultiSelectDropdown({ td, select, display, fieldConfig, columnName });
+					});
+				} else {
+					const updateSelection = () => {
+						const currentValue = readElementValue(select, fieldConfig);
+						activeCell = { id: row.id ?? '', key: column };
+						selectCell(td, {
+							column,
+							columnLetter,
+							columnName,
+							rowId: row.id ?? '',
+							rowIndex,
+							editable: true,
+							element: select,
+							fieldConfig,
+							usesDropdown: true,
+							value: currentValue
+						});
+					};
+					select.addEventListener('change', () => {
+						handleElementChange(select, fieldConfig);
+						updateSelectDisplay(select, display, fieldConfig);
+					});
+					td.addEventListener('click', () => {
+						updateSelection();
+					});
+					td.addEventListener('dblclick', () => {
+						updateSelection();
+						openMultiSelectDropdown({ td, select, display, fieldConfig, columnName });
+					});
+				}
+				if (COLLAPSIBLE_COLUMNS.has(column)) {
+					wrapCollapsibleCell(td, displayValue);
+				}
+			} else {
+				const input = createInput({
+					type: 'text',
+					value: displayValue,
+					attributes: {
+						dataset: {
+							id: row.id ?? '',
+							key: column,
+							rowIndex: String(rowIndex),
+							initialValue: displayValue
+						}
+					}
+				});
+
+				if (formulaDefinition) {
+					input.dataset.formulaValue = formulaDefinition.formula;
+				} else {
+					delete input.dataset.formulaValue;
+				}
+				input.title = input.value;
+				const previewInfo = column === 'AbilityTextureName' && row.id ? texturePreviewMap[row.id] : undefined;
+				const isScriptColumn = column === 'ScriptFile';
+				const enableScriptAction = isScriptColumn && Boolean(scriptSupport?.applicable);
+				let inlineWrapper = null;
+				let hostElement = input;
+				const ensureInlineWrapper = () => {
+					if (!inlineWrapper) {
+						inlineWrapper = document.createElement('div');
+						inlineWrapper.className = 'kv-cell-inline';
+						input.classList.add('kv-cell-inline-input');
+						inlineWrapper.appendChild(input);
+						hostElement = inlineWrapper;
+					}
+					return inlineWrapper;
+				};
+				if (column === 'AbilityTextureName') {
+					const wrapper = ensureInlineWrapper();
+					const preview = document.createElement('div');
+					preview.className = 'kv-cell-preview kv-cell-preview-button';
+					preview.tabIndex = 0;
+
+					if (previewInfo && previewInfo.uri) {
+						preview.dataset.type = previewInfo.kind === 'item' ? 'item' : 'spell';
+						preview.dataset.source = previewInfo.source || '';
+						const img = document.createElement('img');
+						img.src = previewInfo.uri;
+						img.alt = `${row.id ?? ''} icon`;
+						img.draggable = false;
+						if (previewInfo.fileName) {
+							const tooltipParts = [previewInfo.fileName];
+							if (previewInfo.source) {
+								tooltipParts.push(previewInfo.source === 'addon' ? _t('projectResources') : _t('extensionResources'));
+							}
+							img.title = tooltipParts.join(' · ');
+						}
+						preview.appendChild(img);
+					} else {
+						preview.classList.add('kv-cell-preview-placeholder');
+						const icon = document.createElement('span');
+						icon.className = 'codicon codicon-file-media';
+						icon.title = _t('selectIcon');
+						preview.appendChild(icon);
+					}
+
+					const openMenu = (event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						openTextureMenu({
+							input,
+							folderType: latestPayload?.folderType ?? 'custom',
+							currentValue: input.value ?? '',
+							preferredKind: previewInfo?.kind ?? 'spell',
+							rowId: row.id ?? '',
+							column,
+						});
+					};
+					preview.addEventListener('click', openMenu);
+					preview.addEventListener('keydown', (event) => {
+						if (event.key === 'Enter' || event.key === ' ') {
+							openMenu(event);
+						}
+					});
+					wrapper.appendChild(preview);
+				}
+				let scriptButton = null;
+				let updateScriptButtonState;
+				if (enableScriptAction) {
+					const wrapper = ensureInlineWrapper();
+					const button = document.createElement('button');
+					button.type = 'button';
+					button.className = 'kv-cell-action kv-cell-action-script';
+					const icon = document.createElement('span');
+					icon.className = 'codicon codicon-go-to-file';
+					button.appendChild(icon);
+					const extensionLabel = scriptSupport.useTypescript ? '.ts' : '.lua';
+					button.addEventListener('click', (event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						requestOpenScriptFile(input.value ?? '');
+					});
+					button.addEventListener('keydown', (event) => {
+						if (event.key === 'Enter' || event.key === ' ') {
+							event.preventDefault();
+							event.stopPropagation();
+							requestOpenScriptFile(input.value ?? '');
+						}
+					});
+					wrapper.appendChild(button);
+					scriptButton = button;
+					updateScriptButtonState = () => {
+						if (!scriptButton) {
+							return;
+						}
+						const hasValue = Boolean((input.value || '').trim());
+						if (!scriptSupport.baseReady) {
+							scriptButton.disabled = true;
+							scriptButton.title = _t('scriptDirNotConfigured');
+						} else if (!hasValue) {
+							scriptButton.disabled = true;
+							scriptButton.title = _t('enterScriptPath');
+						} else {
+							scriptButton.disabled = false;
+							scriptButton.title = _tf('openScriptFile', extensionLabel);
+						}
+					};
+					updateScriptButtonState();
+					input.addEventListener('input', updateScriptButtonState);
+				}
+				applyFormulaDecorations(td, formulaDefinition, computedEntry);
+				td.dataset.displayValue = input.value ?? '';
+				const updateSelection = () => {
+					selectCell(td, {
+						column,
+						columnLetter,
+						columnName,
+						rowId: row.id ?? '',
+						rowIndex,
+						editable: true,
+						element: input,
+						fieldConfig: undefined,
+						usesDropdown: false,
+						value: input.value
+					});
+				};
+				input.addEventListener('focus', () => {
+					activeCell = { id: row.id ?? '', key: column };
+					const formulaDef = getFormulaDefinition(column, row.id ?? '', rowIndex);
+					if (formulaDef && formulaDef.formula) {
+						const currentValue = input.value ?? '';
+						if (!currentValue.startsWith('=')) {
+							setElementValue(input, formulaDef.formula, undefined);
+						}
+					}
+					updateSelection();
+				});
+				input.addEventListener('blur', () => {
+					activeCell = undefined;
+					setTimeout(() => {
+						const formulaDef = getFormulaDefinition(column, row.id ?? '', rowIndex);
+						if (formulaDef && formulaDef.formula) {
+							const currentValue = input.value ?? '';
+							if (currentValue.trim() === formulaDef.formula.trim()) {
+								const computed = getComputedFormulaEntry(column, rowIndex);
+								if (computed && typeof computed.value === 'string') {
+									setElementValue(input, computed.value, undefined);
+									input.dataset.initialValue = computed.value;
+								}
+							}
+						}
+					}, 0);
+				});
+				input.addEventListener('change', () => {
+					handleElementChange(input, undefined);
+					if (updateScriptButtonState) {
+						updateScriptButtonState();
+					}
+				});
+				input.addEventListener('mousedown', (event) => {
+					if (document.activeElement === input) {
+						return;
+					}
+					if (document.activeElement instanceof HTMLElement && document.activeElement !== input) {
+						document.activeElement.blur();
+					}
+					if (event.detail === 1) {
+						event.preventDefault();
+						updateSelection();
+					}
+				});
+				input.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter') {
+						event.preventDefault();
+						event.currentTarget?.blur();
+					} else if (event.key === 'Escape') {
+						event.preventDefault();
+						const original = input.dataset.initialValue ?? '';
+						setElementValue(input, original, undefined);
+						input.blur();
+					}
+				});
+				td.appendChild(hostElement);
+				td.addEventListener('click', (event) => {
+					if (event.target instanceof HTMLInputElement) {
+						return;
+					}
+					if (document.activeElement instanceof HTMLElement) {
+						document.activeElement.blur();
+					}
+					updateSelection();
+				});
+				td.addEventListener('dblclick', () => {
+					input.focus();
+					input.select();
+				});
+			}
+
+			tr.appendChild(td);
+		});
+		tbody.appendChild(tr);
+	});
+	table.appendChild(tbody);
+	tableSection.innerHTML = '';
+	tableSection.appendChild(table);
+	refreshTableWidth();
+	updateRowSelectionVisuals();
+	restoreSelection(columnLabels, columnLetters, columnOptions);
+	restoreActiveCell();
+	if (pendingMultiSelectReopen) {
+		const { column, rowIndex, rowId } = pendingMultiSelectReopen;
+		let td = null;
+		if (column !== undefined && rowIndex !== undefined && rowIndex !== '') {
+			const selector = `td[data-column="${column}"][data-row-index="${rowIndex}"]`;
+			td = tableSection.querySelector(selector);
+		}
+		if (!td && column !== undefined && rowId) {
+			const safeRowId = typeof CSS !== 'undefined' && typeof CSS.escape === 'function' ? CSS.escape(rowId) : rowId.replace(/"/g, '\\"');
+			const selector = `td[data-column="${column}"][data-row-id="${safeRowId}"]`;
+			td = tableSection.querySelector(selector);
+		}
+		const fieldConfig = columnOptions?.[column];
+		const select = td?.querySelector('select');
+		const display = td?.querySelector('.kv-select-display');
+		if (td && select && display && fieldConfig?.multiple) {
+			const columnName = columnLabels.get(column) ?? column;
+			openMultiSelectDropdown({ td, select, display, fieldConfig, columnName });
+		}
+		pendingMultiSelectReopen = null;
+	}
+
+	if (tableSection) {
+		tableSection.scrollLeft = scrollLeft;
+		tableSection.scrollTop = scrollTop;
+	}
+}
+
+function renderTableInner(columns, rows, columnOptions) {
+	if (!tableSection) {
+		return;
+	}
+	const scrollLeft = tableSection.scrollLeft;
+	const scrollTop = tableSection.scrollTop;
+
+	cleanupColumnDragState();
+	closeRowContextMenu();
+	let preservePending = Boolean(pendingMultiSelectReopen);
+	if (!preservePending && openMultiSelectContext && openMultiSelectContext.isMulti) {
+		const reopenColumn = openMultiSelectContext.select?.dataset.key ?? '';
+		const reopenRowId = openMultiSelectContext.select?.dataset.id ?? '';
+		const reopenRowIndex = openMultiSelectContext.td?.dataset.rowIndex ?? '';
+		if (reopenColumn && reopenRowId) {
+			pendingMultiSelectReopen = {
+				column: reopenColumn,
+				rowId: reopenRowId,
+				rowIndex: reopenRowIndex
+			};
+			preservePending = true;
+		}
+	}
+	closeMultiSelectDropdown({ preservePending });
+
 	const ctx = createRenderContext(columns, rows, columnOptions);
 	const { displayColumns, columnLabels, columnLetters, texturePreviewMap, scriptSupport } = ctx;
 
-	// 创建表格结构（使用辅助函数）
 	const table = document.createElement('table');
 	const colgroup = createColgroup(ctx);
 	table.appendChild(colgroup);
@@ -4360,7 +5448,6 @@ function renderTable(columns, rows, columnOptions) {
 	tbody.addEventListener('dragleave', (event) => handleRowContainerDragLeave(event, tbody));
 	tbody.addEventListener('drop', (event) => handleRowContainerDrop(event, tbody));
 
-	// 使用 DocumentFragment 批量构建行，减少 DOM 重排
 	const fragment = document.createDocumentFragment();
 	rows.forEach((row, rowIndex) => {
 		const tr = document.createElement('tr');
@@ -4374,7 +5461,6 @@ function renderTable(columns, rows, columnOptions) {
 			td.dataset.rowIndex = String(rowIndex);
 			td.style.width = `${getColumnWidth(column, columnLabels.get(column) ?? column)}px`;
 
-			// 应用冻结列样式（使用辅助函数）
 			applyFrozenColumnStyle(td, column, ctx);
 			const columnLetter = columnLetters.get(column) ?? column;
 			const columnName = columnLabels.get(column) ?? column;
@@ -4387,7 +5473,7 @@ function renderTable(columns, rows, columnOptions) {
 					const dragBtn = document.createElement('button');
 					dragBtn.type = 'button';
 					dragBtn.className = 'kv-row-drag-btn';
-					dragBtn.setAttribute('aria-label', '拖动调整顺序');
+					dragBtn.setAttribute('aria-label', _t('dragReorder'));
 					const icon = document.createElement('span');
 					icon.className = 'codicon codicon-gripper';
 					dragBtn.appendChild(icon);
@@ -4403,7 +5489,6 @@ function renderTable(columns, rows, columnOptions) {
 				indexLabel.textContent = String(rowIndex + 1);
 				td.appendChild(indexLabel);
 				td.addEventListener('click', (event) => {
-					// 点击行号进行行选择
 					event.preventDefault();
 					event.stopPropagation();
 					toggleRowSelection(rowIndex, event.ctrlKey || event.metaKey, event.shiftKey);
@@ -4418,7 +5503,6 @@ function renderTable(columns, rows, columnOptions) {
 				});
 			} else if (column === 'id') {
 				td.classList.add('kv-cell-id');
-				// 改为可编辑的 input 元素
 				const displayValue = getCellDisplayValue(rowIndex, row.id ?? '', column, row.id ?? '');
 				const formulaDefinition = getFormulaDefinition(column, row.id ?? '', rowIndex);
 				const computedEntry = getComputedFormulaEntry(column, rowIndex);
@@ -4480,11 +5564,8 @@ function renderTable(columns, rows, columnOptions) {
 						usesDropdown: false,
 						value: displayValue
 					});
-					// 点击只选中单元格，不自动进入编辑状态
-					// 用户可以通过空格键或双击进入编辑状态
 				});
 				td.addEventListener('dblclick', () => {
-					// 双击进入编辑状态
 					input.focus();
 					input.select();
 				});
@@ -4493,7 +5574,90 @@ function renderTable(columns, rows, columnOptions) {
 				const displayValue = getCellDisplayValue(rowIndex, row.id ?? '', column, rawValue);
 				const formulaDefinition = getFormulaDefinition(column, row.id ?? '', rowIndex);
 				const computedEntry = getComputedFormulaEntry(column, rowIndex);
-				if (column === 'AbilityValues') {
+				const _colInputType = getColumnInputType(column);
+
+				if (_colInputType === 'checkbox') {
+					td.classList.add('kv-cell-checkbox');
+					const checkbox = document.createElement('input');
+					checkbox.type = 'checkbox';
+					checkbox.className = 'kv-checkbox-input';
+					checkbox.checked = displayValue === '1';
+					checkbox.dataset.id = row.id ?? '';
+					checkbox.dataset.key = column;
+					checkbox.dataset.rowIndex = String(rowIndex);
+					checkbox.addEventListener('change', () => {
+						const newValue = checkbox.checked ? '1' : '0';
+						vscode.postMessage({ type: 'edit', payload: { id: row.id, key: column, value: newValue } });
+					});
+					td.addEventListener('click', (event) => {
+						if (event.target !== checkbox) {
+							checkbox.checked = !checkbox.checked;
+							checkbox.dispatchEvent(new Event('change'));
+						}
+					});
+					td.appendChild(checkbox);
+				} else if (_colInputType === 'number') {
+					const input = createInput({
+						type: 'text',
+						value: displayValue,
+						attributes: {
+							dataset: {
+								id: row.id ?? '',
+								key: column,
+								rowIndex: String(rowIndex),
+								initialValue: displayValue
+							}
+						}
+					});
+					input.className = 'kv-cell-input kv-cell-number';
+					input.addEventListener('input', () => {
+						input.value = input.value.replace(/[^0-9\-]/g, '');
+					});
+					input.addEventListener('change', () => {
+						handleElementChange(input, undefined);
+					});
+					input.addEventListener('focus', () => {
+						activeCell = { id: row.id ?? '', key: column };
+						selectCell(td, {
+							column, columnLetter, columnName,
+							rowId: row.id ?? '', rowIndex,
+							editable: true, element: input,
+							value: input.value
+						});
+					});
+					input.addEventListener('keydown', (event) => {
+						if (event.key === 'Enter') { event.preventDefault(); input.blur(); }
+						else if (event.key === 'Escape') { event.preventDefault(); setElementValue(input, input.dataset.initialValue ?? '', undefined); input.blur(); }
+					});
+					td.appendChild(input);
+				} else if (_colInputType === 'spinner') {
+					td.classList.add('kv-cell-spinner');
+					const wrapper = document.createElement('div');
+					wrapper.className = 'kv-spinner-wrapper';
+					const minusBtn = document.createElement('button');
+					minusBtn.type = 'button';
+					minusBtn.className = 'kv-spinner-btn kv-spinner-minus';
+					minusBtn.textContent = '\u2212';
+					const display = document.createElement('span');
+					display.className = 'kv-spinner-value';
+					display.textContent = displayValue || '0';
+					const plusBtn = document.createElement('button');
+					plusBtn.type = 'button';
+					plusBtn.className = 'kv-spinner-btn kv-spinner-plus';
+					plusBtn.textContent = '+';
+					const updateSpinner = (delta) => {
+						const current = parseInt(display.textContent || '0', 10) || 0;
+						const next = Math.max(0, current + delta);
+						display.textContent = String(next);
+						vscode.postMessage({ type: 'edit', payload: { id: row.id, key: column, value: String(next) } });
+					};
+					minusBtn.addEventListener('click', (e) => { e.stopPropagation(); updateSpinner(-1); });
+					plusBtn.addEventListener('click', (e) => { e.stopPropagation(); updateSpinner(1); });
+					wrapper.appendChild(minusBtn);
+					wrapper.appendChild(display);
+					wrapper.appendChild(plusBtn);
+					td.appendChild(wrapper);
+				} else if (column === 'AbilityValues') {
 					applyFormulaDecorations(td, undefined, undefined);
 					td.classList.add('kv-ability-values-cell');
 					td.tabIndex = 0;
@@ -4641,6 +5805,9 @@ function renderTable(columns, rows, columnOptions) {
 							openMultiSelectDropdown({ td, select, display, fieldConfig, columnName });
 						});
 					}
+					if (COLLAPSIBLE_COLUMNS.has(column)) {
+						wrapCollapsibleCell(td, displayValue);
+					}
 				} else {
 					const input = createInput({
 						type: 'text',
@@ -4676,7 +5843,6 @@ function renderTable(columns, rows, columnOptions) {
 						}
 						return inlineWrapper;
 					};
-					// AbilityTextureName 列始终显示图标选择按钮（即使没有有效的图标预览）
 					if (column === 'AbilityTextureName') {
 						const wrapper = ensureInlineWrapper();
 						const preview = document.createElement('div');
@@ -4684,7 +5850,6 @@ function renderTable(columns, rows, columnOptions) {
 						preview.tabIndex = 0;
 
 						if (previewInfo && previewInfo.uri) {
-							// 有有效的图标预览
 							preview.dataset.type = previewInfo.kind === 'item' ? 'item' : 'spell';
 							preview.dataset.source = previewInfo.source || '';
 							const img = document.createElement('img');
@@ -4694,17 +5859,16 @@ function renderTable(columns, rows, columnOptions) {
 							if (previewInfo.fileName) {
 								const tooltipParts = [previewInfo.fileName];
 								if (previewInfo.source) {
-									tooltipParts.push(previewInfo.source === 'addon' ? '项目资源' : '插件资源');
+									tooltipParts.push(previewInfo.source === 'addon' ? _t('projectResources') : _t('extensionResources'));
 								}
 								img.title = tooltipParts.join(' · ');
 							}
 							preview.appendChild(img);
 						} else {
-							// 没有有效的图标预览，显示占位图标
 							preview.classList.add('kv-cell-preview-placeholder');
 							const icon = document.createElement('span');
 							icon.className = 'codicon codicon-file-media';
-							icon.title = '选择图标';
+							icon.title = _t('selectIcon');
 							preview.appendChild(icon);
 						}
 
@@ -4760,13 +5924,13 @@ function renderTable(columns, rows, columnOptions) {
 							const hasValue = Boolean((input.value || '').trim());
 							if (!scriptSupport.baseReady) {
 								scriptButton.disabled = true;
-								scriptButton.title = '未配置脚本目录';
+								scriptButton.title = _t('scriptDirNotConfigured');
 							} else if (!hasValue) {
 								scriptButton.disabled = true;
-								scriptButton.title = '请输入脚本路径';
+								scriptButton.title = _t('enterScriptPath');
 							} else {
 								scriptButton.disabled = false;
-								scriptButton.title = `打开脚本文件 (${extensionLabel})`;
+								scriptButton.title = _tf('openScriptFile', extensionLabel);
 							}
 						};
 						updateScriptButtonState();
@@ -4790,11 +5954,9 @@ function renderTable(columns, rows, columnOptions) {
 					};
 					input.addEventListener('focus', () => {
 						activeCell = { id: row.id ?? '', key: column };
-						// 如果是公式单元格，focus 时显示公式以便编辑
 						const formulaDef = getFormulaDefinition(column, row.id ?? '', rowIndex);
 						if (formulaDef && formulaDef.formula) {
 							const currentValue = input.value ?? '';
-							// 如果当前显示的是计算结果（不是公式），则切换到公式
 							if (!currentValue.startsWith('=')) {
 								setElementValue(input, formulaDef.formula, undefined);
 							}
@@ -4803,13 +5965,10 @@ function renderTable(columns, rows, columnOptions) {
 					});
 					input.addEventListener('blur', () => {
 						activeCell = undefined;
-						// 延迟执行以确保 change 事件先处理
 						setTimeout(() => {
-							// 如果是公式单元格且当前显示的是公式文本（未修改），恢复显示计算结果
 							const formulaDef = getFormulaDefinition(column, row.id ?? '', rowIndex);
 							if (formulaDef && formulaDef.formula) {
 								const currentValue = input.value ?? '';
-								// 只有当前值等于公式定义时才恢复（说明用户没有修改）
 								if (currentValue.trim() === formulaDef.formula.trim()) {
 									const computed = getComputedFormulaEntry(column, rowIndex);
 									if (computed && typeof computed.value === 'string') {
@@ -4827,15 +5986,12 @@ function renderTable(columns, rows, columnOptions) {
 						}
 					});
 					input.addEventListener('mousedown', (event) => {
-						// 如果 input 已经有焦点（正在编辑），允许浏览器处理点击（更新光标位置）
 						if (document.activeElement === input) {
 							return;
 						}
-						// 点击其他单元格时，先让当前焦点元素失焦
 						if (document.activeElement instanceof HTMLElement && document.activeElement !== input) {
 							document.activeElement.blur();
 						}
-						// 只在首次点击（获取焦点）时阻止默认行为并更新选中状态
 						if (event.detail === 1) {
 							event.preventDefault();
 							updateSelection();
@@ -4857,14 +6013,12 @@ function renderTable(columns, rows, columnOptions) {
 						if (event.target instanceof HTMLInputElement) {
 							return;
 						}
-						// 点击 td（非 input 区域）时，先让当前焦点元素失焦
 						if (document.activeElement instanceof HTMLElement) {
 							document.activeElement.blur();
 						}
 						updateSelection();
 					});
 					td.addEventListener('dblclick', () => {
-						// focus 事件会自动处理公式显示
 						input.focus();
 						input.select();
 					});
@@ -4880,14 +6034,13 @@ function renderTable(columns, rows, columnOptions) {
 		}
 		fragment.appendChild(tr);
 	});
-	// 批量将所有行添加到 tbody（单次 DOM 操作）
 	tbody.appendChild(fragment);
 	table.appendChild(thead);
 	table.appendChild(tbody);
 	tableSection.innerHTML = '';
 	tableSection.appendChild(table);
 	refreshTableWidth();
-	updateRowSelectionVisuals(); // 恢复行选择的视觉状态
+	updateRowSelectionVisuals();
 	restoreSelection(columnLabels, columnLetters, columnOptions);
 	restoreActiveCell();
 	if (pendingMultiSelectReopen) {
@@ -4912,7 +6065,6 @@ function renderTable(columns, rows, columnOptions) {
 		pendingMultiSelectReopen = null;
 	}
 
-	// 恢复滚动位置
 	if (tableSection) {
 		tableSection.scrollLeft = scrollLeft;
 		tableSection.scrollTop = scrollTop;
@@ -5064,7 +6216,6 @@ function requestColumnInsertion(position, referenceKey, referenceIndex) {
 		return;
 	}
 
-	// 使用统一的对话框管理
 	const dialog = createManagedDialog({
 		className: 'kv-column-insert-dialog-overlay'
 	});
@@ -5074,17 +6225,17 @@ function requestColumnInsertion(position, referenceKey, referenceIndex) {
 
 	const title = document.createElement('div');
 	title.className = 'kv-column-insert-dialog-title';
-	title.textContent = position === 'before' ? '向左插入列' : '向右插入列';
+	title.textContent = position === 'before' ? _t('insertColumnLeft') : _t('insertColumnRight');
 	form.appendChild(title);
 
 	const label = document.createElement('label');
-	label.textContent = '列名';
+	label.textContent = _t('columnName');
 	label.className = 'kv-column-insert-dialog-label';
 
 	const input = createInput({
 		type: 'text',
 		className: 'kv-column-insert-dialog-input',
-		placeholder: '请输入列名',
+		placeholder: _t('enterColumnName'),
 		attributes: { required: true }
 	});
 
@@ -5102,13 +6253,13 @@ function requestColumnInsertion(position, referenceKey, referenceIndex) {
 	const cancelBtn = document.createElement('button');
 	cancelBtn.type = 'button';
 	cancelBtn.className = 'kv-button kv-button-secondary';
-	cancelBtn.textContent = '取消';
+	cancelBtn.textContent = _t('cancel');
 	actions.appendChild(cancelBtn);
 
 	const submitBtn = document.createElement('button');
 	submitBtn.type = 'submit';
 	submitBtn.className = 'kv-button kv-button-primary';
-	submitBtn.textContent = '插入';
+	submitBtn.textContent = _t('insert');
 	actions.appendChild(submitBtn);
 
 	form.appendChild(actions);
@@ -5134,20 +6285,18 @@ function requestColumnInsertion(position, referenceKey, referenceIndex) {
 		event.preventDefault();
 		const columnName = input.value.trim();
 		if (!columnName) {
-			showError('列名不能为空');
+			showError(_t('columnNameEmpty'));
 			return;
 		}
 
-		// 检查列名是否已存在
 		const existingColumns = latestPayload?.columns || [];
 		if (existingColumns.includes(columnName) || columnName === 'id') {
-			showError('列名已存在');
+			showError(_t('columnNameExists'));
 			return;
 		}
 
-		// 检查列名是否合法（不能包含特殊字符）
 		if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(columnName)) {
-			showError('列名只能包含字母、数字和下划线，且不能以数字开头');
+			showError(_t('columnNameInvalid'));
 			return;
 		}
 
@@ -5196,17 +6345,130 @@ function requestColumnInsertion(position, referenceKey, referenceIndex) {
 	});
 }
 
+function openAddPropertyDropdown() {
+	const existing = document.querySelector('.kv-add-property-overlay');
+	if (existing) existing.remove();
+
+	const folderType = latestPayload?.folderType || 'custom';
+	let allProps;
+	if (folderType === 'item') {
+		allProps = ITEM_PROPERTIES;
+	} else if (folderType === 'ability') {
+		allProps = ABILITY_PROPERTIES;
+	} else {
+		allProps = [...new Set([...ABILITY_PROPERTIES, ...ITEM_PROPERTIES])];
+	}
+	const existingColumns = latestPayload?.columns || [];
+	const available = allProps.filter(p => !existingColumns.includes(p));
+
+	const overlay = document.createElement('div');
+	overlay.className = 'kv-add-property-overlay';
+
+	const panel = document.createElement('div');
+	panel.className = 'kv-add-property-panel';
+
+	const searchInput = createInput({
+		type: 'text',
+		className: 'kv-add-property-search',
+		placeholder: 'Search property...',
+	});
+	panel.appendChild(searchInput);
+
+	const list = document.createElement('div');
+	list.className = 'kv-add-property-list';
+
+	const renderItems = (filter) => {
+		list.innerHTML = '';
+		const filtered = filter
+			? available.filter(p => p.toLowerCase().includes(filter.toLowerCase()))
+			: available;
+		if (filtered.length === 0) {
+			const empty = document.createElement('div');
+			empty.className = 'kv-add-property-empty';
+			empty.textContent = 'No properties found';
+			list.appendChild(empty);
+			return;
+		}
+		for (const prop of filtered) {
+			const item = document.createElement('div');
+			item.className = 'kv-add-property-item';
+			item.textContent = prop;
+			item.addEventListener('click', () => {
+				const cols = latestPayload?.columns || [];
+				const lastCol = cols.length > 0 ? cols[cols.length - 1] : 'id';
+				const lastIndex = cols.indexOf(lastCol);
+				vscode.postMessage({
+					type: 'insertColumn',
+					payload: {
+						referenceKey: lastCol,
+						referenceIndex: lastIndex,
+						position: 'after',
+						columnName: prop,
+					},
+				});
+				overlay.remove();
+			});
+			list.appendChild(item);
+		}
+	};
+
+	const addCustomProperty = (name) => {
+		const trimmed = name.trim();
+		if (!trimmed) return;
+		if (existingColumns.includes(trimmed)) return;
+		const cols = latestPayload?.columns || [];
+		const lastCol = cols.length > 0 ? cols[cols.length - 1] : 'id';
+		const lastIndex = cols.indexOf(lastCol);
+		vscode.postMessage({
+			type: 'insertColumn',
+			payload: {
+				referenceKey: lastCol,
+				referenceIndex: lastIndex,
+				position: 'after',
+				columnName: trimmed,
+			},
+		});
+		overlay.remove();
+	};
+
+	renderItems('');
+	searchInput.addEventListener('input', () => renderItems(searchInput.value));
+	searchInput.addEventListener('keydown', (event) => {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			const val = searchInput.value.trim();
+			// If typed text matches exactly one item, add it; otherwise add as custom
+			const filtered = available.filter(p => p.toLowerCase().includes(val.toLowerCase()));
+			if (filtered.length === 1) {
+				addCustomProperty(filtered[0]);
+			} else if (val && !existingColumns.includes(val)) {
+				addCustomProperty(val);
+			}
+		}
+	});
+
+	panel.appendChild(list);
+	overlay.appendChild(panel);
+
+	overlay.addEventListener('click', (event) => { if (event.target === overlay) overlay.remove(); });
+	const keyHandler = (event) => { if (event.key === 'Escape') { event.preventDefault(); overlay.remove(); } };
+	document.addEventListener('keydown', keyHandler, true);
+	const originalRemove = overlay.remove;
+	overlay.remove = function () { document.removeEventListener('keydown', keyHandler, true); originalRemove.call(this); };
+
+	document.body.appendChild(overlay);
+	requestAnimationFrame(() => searchInput.focus());
+}
+
 function requestColumnDeletion(columnKey) {
 	if (!columnKey || typeof columnKey !== 'string') {
 		return;
 	}
 
-	// id 列不能删除
 	if (columnKey === 'id') {
 		return;
 	}
 
-	// 使用统一的对话框管理
 	const dialog = createManagedDialog({
 		className: 'kv-column-insert-dialog-overlay'
 	});
@@ -5216,12 +6478,12 @@ function requestColumnDeletion(columnKey) {
 
 	const title = document.createElement('div');
 	title.className = 'kv-column-insert-dialog-title';
-	title.textContent = '确认删除列';
+	title.textContent = _t('confirmDeleteColumn');
 	form.appendChild(title);
 
 	const message = document.createElement('div');
 	message.className = 'kv-column-delete-message';
-	message.textContent = `确定要删除列 "${columnKey}" 吗？此操作不可恢复。`;
+	message.textContent = _tf('confirmDeleteColumnMsg', columnKey);
 	form.appendChild(message);
 
 	const actions = document.createElement('div');
@@ -5230,13 +6492,13 @@ function requestColumnDeletion(columnKey) {
 	const cancelBtn = document.createElement('button');
 	cancelBtn.type = 'button';
 	cancelBtn.className = 'kv-button kv-button-secondary';
-	cancelBtn.textContent = '取消';
+	cancelBtn.textContent = _t('cancel');
 	actions.appendChild(cancelBtn);
 
 	const submitBtn = document.createElement('button');
 	submitBtn.type = 'submit';
 	submitBtn.className = 'kv-button kv-button-primary kv-button-danger';
-	submitBtn.textContent = '删除';
+	submitBtn.textContent = _t('delete');
 	actions.appendChild(submitBtn);
 
 	form.appendChild(actions);
@@ -5305,17 +6567,17 @@ function requestColumnFormula(columnKey, columnName) {
 
 	const title = document.createElement('div');
 	title.className = 'kv-column-insert-dialog-title';
-	title.textContent = `为列 "${columnName}" 设置公式`;
+	title.textContent = _tf('setFormulaForColumn', columnName);
 	form.appendChild(title);
 
 	const formulaWrapper = document.createElement('label');
-	formulaWrapper.textContent = '公式';
+	formulaWrapper.textContent = _t('formula');
 	formulaWrapper.className = 'kv-column-insert-dialog-label';
 
 	const formulaInput = createInput({
 		type: 'text',
 		className: 'kv-column-insert-dialog-input',
-		placeholder: '例如：=row.id.toLowerCase()',
+		placeholder: _t('formulaPlaceholder'),
 		value: currentFormula
 	});
 
@@ -5324,7 +6586,7 @@ function requestColumnFormula(columnKey, columnName) {
 
 	const hint = document.createElement('div');
 	hint.className = 'kv-column-insert-dialog-hint';
-	hint.textContent = '提示：列公式会应用到所有没有单独设置公式的单元格';
+	hint.textContent = _t('formulaColumnNote');
 	form.appendChild(hint);
 
 	const actions = document.createElement('div');
@@ -5333,13 +6595,13 @@ function requestColumnFormula(columnKey, columnName) {
 	const cancelBtn = document.createElement('button');
 	cancelBtn.type = 'button';
 	cancelBtn.className = 'kv-button kv-button-secondary';
-	cancelBtn.textContent = '取消';
+	cancelBtn.textContent = _t('cancel');
 	actions.appendChild(cancelBtn);
 
 	const submitBtn = document.createElement('button');
 	submitBtn.type = 'submit';
 	submitBtn.className = 'kv-button kv-button-primary';
-	submitBtn.textContent = '保存';
+	submitBtn.textContent = _t('save');
 	actions.appendChild(submitBtn);
 
 	form.appendChild(actions);
@@ -5357,18 +6619,15 @@ function requestColumnFormula(columnKey, columnName) {
 		const formula = formulaInput.value.trim();
 		setColumnFormula(columnKey, formula);
 
-		// 发送消息保存列公式
 		vscode.postMessage({
 			type: 'saveColumnFormula',
 			payload: { columnKey, formula }
 		});
 
-		// 重新计算公式
 		updatePayloadFormulasSnapshot();
 		recalculateFormulas({ emitUpdates: true });
 		refreshFormulaResultsForTable();
 
-		// 刷新列 header 显示
 		if (latestPayload) {
 			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
 		}
@@ -5392,7 +6651,6 @@ function requestColumnDescription(columnKey, columnName) {
 
 	const currentDesc = columnDescriptions[columnKey] || {};
 
-	// 使用统一的对话框管理
 	const dialog = createManagedDialog({
 		className: 'kv-column-insert-dialog-overlay'
 	});
@@ -5402,32 +6660,30 @@ function requestColumnDescription(columnKey, columnName) {
 
 	const title = document.createElement('div');
 	title.className = 'kv-column-insert-dialog-title';
-	title.textContent = `为列 "${columnName}" 添加描述`;
+	title.textContent = _tf('addDescForColumn', columnName);
 	form.appendChild(title);
 
-	// 标签输入
 	const labelWrapper = document.createElement('label');
-	labelWrapper.textContent = '显示标签';
+	labelWrapper.textContent = _t('displayLabel');
 	labelWrapper.className = 'kv-column-insert-dialog-label';
 
 	const labelInput = createInput({
 		type: 'text',
 		className: 'kv-column-insert-dialog-input',
-		placeholder: '本地化显示名称（可选）',
+		placeholder: _t('localizedDisplayName'),
 		value: currentDesc.label || ''
 	});
 
 	labelWrapper.appendChild(labelInput);
 	form.appendChild(labelWrapper);
 
-	// 描述输入
 	const descWrapper = document.createElement('label');
-	descWrapper.textContent = 'Tooltip 描述';
+	descWrapper.textContent = _t('tooltipDescLabel');
 	descWrapper.className = 'kv-column-insert-dialog-label';
 
 	const descInput = createTextarea({
 		className: 'kv-column-insert-dialog-input kv-column-insert-dialog-textarea',
-		placeholder: '鼠标悬停时显示的描述（可选）',
+		placeholder: _t('tooltipDescription'),
 		value: currentDesc.description || '',
 		attributes: { rows: 3 }
 	});
@@ -5435,20 +6691,19 @@ function requestColumnDescription(columnKey, columnName) {
 	descWrapper.appendChild(descInput);
 	form.appendChild(descWrapper);
 
-	// 应用范围（默认：仅在当前文件生效）
 	const scopeWrapper = document.createElement('label');
 	scopeWrapper.className = 'kv-column-insert-dialog-label kv-checkbox-wrapper';
 	const scopeCheckbox = document.createElement('input');
 	scopeCheckbox.type = 'checkbox';
 	scopeCheckbox.className = 'kv-checkbox-input';
-	scopeCheckbox.checked = true; // 默认仅在当前文件生效
+	scopeCheckbox.checked = true;
 	scopeWrapper.appendChild(scopeCheckbox);
 	const checkIndicator = document.createElement('span');
 	checkIndicator.className = 'kv-checkbox-indicator codicon codicon-check';
 	scopeWrapper.appendChild(checkIndicator);
 	const scopeText = document.createElement('span');
 	scopeText.className = 'kv-checkbox-label';
-	scopeText.textContent = '仅在当前文件生效';
+	scopeText.textContent = _t('applyCurrentFileOnly');
 	scopeWrapper.appendChild(scopeText);
 	form.appendChild(scopeWrapper);
 
@@ -5458,13 +6713,13 @@ function requestColumnDescription(columnKey, columnName) {
 	const cancelBtn = document.createElement('button');
 	cancelBtn.type = 'button';
 	cancelBtn.className = 'kv-button kv-button-secondary';
-	cancelBtn.textContent = '取消';
+	cancelBtn.textContent = _t('cancel');
 	actions.appendChild(cancelBtn);
 
 	const submitBtn = document.createElement('button');
 	submitBtn.type = 'submit';
 	submitBtn.className = 'kv-button kv-button-primary';
-	submitBtn.textContent = '保存';
+	submitBtn.textContent = _t('save');
 	actions.appendChild(submitBtn);
 
 	form.appendChild(actions);
@@ -5482,7 +6737,6 @@ function requestColumnDescription(columnKey, columnName) {
 		const label = labelInput.value.trim();
 		const description = descInput.value.trim();
 
-		// 如果都为空，删除描述
 		if (!label && !description) {
 			delete columnDescriptions[columnKey];
 		} else {
@@ -5492,7 +6746,6 @@ function requestColumnDescription(columnKey, columnName) {
 			};
 		}
 
-		// 保存到后端（scope: 'file' 或 'global'）并在对话框内显示保存结果
 		submitBtn.disabled = true;
 		vscode.postMessage({
 			type: 'saveColumnDescription',
@@ -5504,20 +6757,17 @@ function requestColumnDescription(columnKey, columnName) {
 			}
 		});
 
-		// 显示保存提示
 		const statusEl = document.createElement('div');
 		statusEl.className = 'kv-column-save-status';
-		statusEl.textContent = scopeCheckbox.checked ? '已保存到当前文件' : '已保存到工作区默认配置';
+		statusEl.textContent = scopeCheckbox.checked ? _t('savedToFile') : _t('savedToWorkspace');
 		statusEl.style.marginTop = '8px';
 		statusEl.style.color = '#3c763d';
 		actions.appendChild(statusEl);
 
-		// 立即局部刷新表格（payload 最终会由扩展端返回并触发完整刷新）
 		if (latestPayload) {
 			renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
 		}
 
-		// 0.9s 后关闭对话框
 		setTimeout(() => {
 			closeDialog();
 		}, 900);
@@ -5567,7 +6817,6 @@ function openColumnContextMenu(invocationEvent, context) {
 		return;
 	}
 
-	// 不允许在行号列上右键
 	if (columnKey === ROW_NUMBER_COLUMN_KEY) {
 		return;
 	}
@@ -5597,9 +6846,8 @@ function openColumnContextMenu(invocationEvent, context) {
 		return button;
 	};
 
-	// 插入列
 	const insertLeft = createMenuButton({
-		label: '向左插入列',
+		label: _t('insertColumnLeft'),
 		disabled: isIdColumn,
 		onClick: () => {
 			requestColumnInsertion('before', columnKey, columnIndex);
@@ -5607,7 +6855,7 @@ function openColumnContextMenu(invocationEvent, context) {
 		},
 	});
 	const insertRight = createMenuButton({
-		label: '向右插入列',
+		label: _t('insertColumnRight'),
 		onClick: () => {
 			requestColumnInsertion('after', columnKey, columnIndex);
 			closeColumnContextMenu();
@@ -5616,15 +6864,13 @@ function openColumnContextMenu(invocationEvent, context) {
 	menu.appendChild(insertLeft);
 	menu.appendChild(insertRight);
 
-	// 分隔线
 	const separator1 = document.createElement('div');
 	separator1.className = 'kv-context-menu-separator';
 	menu.appendChild(separator1);
 
-	// 冻结/取消冻结
 	const isFrozen = frozenColumns.has(columnKey);
 	const freezeButton = createMenuButton({
-		label: isFrozen ? '取消冻结列' : '冻结列',
+		label: isFrozen ? _t('unfreezeColumn') : _t('freezeColumn'),
 		onClick: () => {
 			let frozenColumnKey = null;
 			if (isFrozen) {
@@ -5658,28 +6904,23 @@ function openColumnContextMenu(invocationEvent, context) {
 	separator2.className = 'kv-context-menu-separator';
 	menu.appendChild(separator2);
 
-	// 列公式
 	const hasColumnFormula = columnFormulas.has(columnKey);
 	const formulaButton = createMenuButton({
-		label: hasColumnFormula ? '取消列公式' : '添加列公式',
+		label: hasColumnFormula ? _t('removeColumnFormula') : _t('addColumnFormula'),
 		onClick: () => {
 			if (hasColumnFormula) {
-				// 取消列公式
 				setColumnFormula(columnKey, '');
 				vscode.postMessage({
 					type: 'saveColumnFormula',
 					payload: { columnKey, formula: '' }
 				});
-				// 重新计算公式
 				updatePayloadFormulasSnapshot();
 				recalculateFormulas({ emitUpdates: true });
 				refreshFormulaResultsForTable();
-				// 刷新列 header 显示
 				if (latestPayload) {
 					renderTable(latestPayload.columns, latestPayload.rows, columnOptionConfig);
 				}
 			} else {
-				// 添加列公式
 				requestColumnFormula(columnKey, resolvedContext.columnName || columnKey);
 			}
 			closeColumnContextMenu();
@@ -5687,9 +6928,8 @@ function openColumnContextMenu(invocationEvent, context) {
 	});
 	menu.appendChild(formulaButton);
 
-	// 描述
 	const descButton = createMenuButton({
-		label: '添加描述',
+		label: _t('addDescription'),
 		onClick: () => {
 			requestColumnDescription(columnKey, resolvedContext.columnName || columnKey);
 			closeColumnContextMenu();
@@ -5697,13 +6937,12 @@ function openColumnContextMenu(invocationEvent, context) {
 	});
 	menu.appendChild(descButton);
 
-	// 删除列
 	const separator3 = document.createElement('div');
 	separator3.className = 'kv-context-menu-separator';
 	menu.appendChild(separator3);
 
 	const deleteButton = createMenuButton({
-		label: '删除列',
+		label: _t('deleteColumn'),
 		danger: true,
 		disabled: isIdColumn,
 		onClick: () => {
@@ -5796,7 +7035,6 @@ function requestRowDeletion(rowId, rowIndex) {
 		return;
 	}
 
-	// 使用统一的对话框管理
 	const dialog = createManagedDialog({
 		className: 'kv-column-insert-dialog-overlay'
 	});
@@ -5806,12 +7044,12 @@ function requestRowDeletion(rowId, rowIndex) {
 
 	const title = document.createElement('div');
 	title.className = 'kv-column-insert-dialog-title';
-	title.textContent = '确认删除行';
+	title.textContent = _t('confirmDeleteRow');
 	form.appendChild(title);
 
 	const message = document.createElement('div');
 	message.className = 'kv-column-delete-message';
-	message.textContent = `确定要删除行 "${normalizedRowId}" 吗？此操作不可恢复。`;
+	message.textContent = _tf('confirmDeleteRowMsg', normalizedRowId);
 	form.appendChild(message);
 
 	const actions = document.createElement('div');
@@ -5820,13 +7058,13 @@ function requestRowDeletion(rowId, rowIndex) {
 	const cancelBtn = document.createElement('button');
 	cancelBtn.type = 'button';
 	cancelBtn.className = 'kv-button kv-button-secondary';
-	cancelBtn.textContent = '取消';
+	cancelBtn.textContent = _t('cancel');
 	actions.appendChild(cancelBtn);
 
 	const submitBtn = document.createElement('button');
 	submitBtn.type = 'submit';
 	submitBtn.className = 'kv-button kv-button-primary kv-button-danger';
-	submitBtn.textContent = '删除';
+	submitBtn.textContent = _t('delete');
 	actions.appendChild(submitBtn);
 
 	form.appendChild(actions);
@@ -5899,8 +7137,8 @@ function openRowContextMenu(invocationEvent, context) {
 	menu.className = 'kv-row-context-menu';
 	menu.setAttribute('role', 'menu');
 	const options = [
-		{ label: '向上插入一行', position: 'before' },
-		{ label: '向下插入一行', position: 'after' }
+		{ label: _t('insertRowAbove'), position: 'before' },
+		{ label: _t('insertRowBelow'), position: 'after' }
 	];
 	options.forEach((option) => {
 		const button = document.createElement('button');
@@ -5914,18 +7152,15 @@ function openRowContextMenu(invocationEvent, context) {
 		menu.appendChild(button);
 	});
 
-	// 添加分隔线
 	const separator1 = document.createElement('div');
 	separator1.className = 'kv-context-menu-separator';
 	menu.appendChild(separator1);
 
-	// 添加复制行选项
 	const copyButton = document.createElement('button');
 	copyButton.type = 'button';
 	copyButton.className = 'kv-row-context-menu-item';
-	copyButton.textContent = '复制行';
+	copyButton.textContent = _t('copyRow');
 	copyButton.addEventListener('click', () => {
-		// 先清除现有选择，选中当前行，然后复制
 		selectedRows.clear();
 		selectedRows.add(normalizedIndex);
 		lastSelectedRowIndex = normalizedIndex;
@@ -5935,11 +7170,10 @@ function openRowContextMenu(invocationEvent, context) {
 	});
 	menu.appendChild(copyButton);
 
-	// 添加粘贴行选项
 	const pasteButton = document.createElement('button');
 	pasteButton.type = 'button';
 	pasteButton.className = 'kv-row-context-menu-item';
-	pasteButton.textContent = '粘贴行';
+	pasteButton.textContent = _t('pasteRow');
 	pasteButton.disabled = !copiedRowsData || copiedRowsData.length === 0;
 	pasteButton.addEventListener('click', () => {
 		if (copiedRowsData && copiedRowsData.length > 0) {
@@ -5949,16 +7183,14 @@ function openRowContextMenu(invocationEvent, context) {
 	});
 	menu.appendChild(pasteButton);
 
-	// 添加分隔线
 	const separator2 = document.createElement('div');
 	separator2.className = 'kv-context-menu-separator';
 	menu.appendChild(separator2);
 
-	// 添加删除行选项
 	const deleteButton = document.createElement('button');
 	deleteButton.type = 'button';
 	deleteButton.className = 'kv-row-context-menu-item kv-context-menu-item-danger';
-	deleteButton.textContent = '删除行';
+	deleteButton.textContent = _t('deleteRow');
 	deleteButton.addEventListener('click', () => {
 		requestRowDeletion(rowId, normalizedIndex);
 		closeRowContextMenu();
@@ -6086,25 +7318,22 @@ function openAutofillPopup(context) {
 	const currentValue = context.input.value || '';
 	const baseValue = parseFloat(currentValue) || 0;
 
-	// 使用统一的对话框管理
 	const popup = createManagedDialog({
 		className: 'kv-autofill-popup',
 		onClose: () => {
-			// 清理自动填充状态
 			autofillPopupState = null;
 		}
 	});
 
 	const title = document.createElement('div');
 	title.className = 'kv-autofill-popup-title';
-	title.textContent = '自动填充';
+	title.textContent = _t('autoFill');
 	popup.appendChild(title);
 
-	// 基础值
 	const baseField = document.createElement('div');
 	baseField.className = 'kv-autofill-popup-field';
 	const baseLabel = document.createElement('label');
-	baseLabel.textContent = '基础值';
+	baseLabel.textContent = _t('baseValue');
 	const baseInput = createInput({
 		type: 'number',
 		value: String(baseValue),
@@ -6114,11 +7343,10 @@ function openAutofillPopup(context) {
 	baseField.appendChild(baseInput);
 	popup.appendChild(baseField);
 
-	// 升级间隔
 	const stepField = document.createElement('div');
 	stepField.className = 'kv-autofill-popup-field';
 	const stepLabel = document.createElement('label');
-	stepLabel.textContent = '升级间隔';
+	stepLabel.textContent = _t('levelIncrement');
 	const stepInput = createInput({
 		type: 'number',
 		value: '1',
@@ -6128,11 +7356,10 @@ function openAutofillPopup(context) {
 	stepField.appendChild(stepInput);
 	popup.appendChild(stepField);
 
-	// 等级数
 	const levelsField = document.createElement('div');
 	levelsField.className = 'kv-autofill-popup-field';
 	const levelsLabel = document.createElement('label');
-	levelsLabel.textContent = '等级数';
+	levelsLabel.textContent = _t('levelCount');
 	const levelsInput = createInput({
 		type: 'number',
 		value: '4',
@@ -6142,16 +7369,14 @@ function openAutofillPopup(context) {
 	levelsField.appendChild(levelsInput);
 	popup.appendChild(levelsField);
 
-	// 预览
 	const preview = document.createElement('div');
 	preview.className = 'kv-autofill-popup-preview';
-	preview.textContent = '预览: ';
+	preview.textContent = _t('preview');
 	popup.appendChild(preview);
 
-	// 更新预览
 	const updatePreview = () => {
 		const values = buildAutofillValues(baseInput.value, stepInput.value, levelsInput.value);
-		preview.textContent = '预览: ' + values.join(' ');
+		preview.textContent = _t('preview') + values.join(' ');
 	};
 
 	baseInput.addEventListener('input', updatePreview);
@@ -6159,25 +7384,23 @@ function openAutofillPopup(context) {
 	levelsInput.addEventListener('input', updatePreview);
 	updatePreview();
 
-	// 按钮
 	const actions = document.createElement('div');
 	actions.className = 'kv-autofill-popup-actions';
 
 	const cancelButton = document.createElement('button');
 	cancelButton.type = 'button';
 	cancelButton.className = 'kv-button kv-button-secondary';
-	cancelButton.textContent = '取消';
+	cancelButton.textContent = _t('cancel');
 	actions.appendChild(cancelButton);
 
 	const applyButton = document.createElement('button');
 	applyButton.type = 'button';
 	applyButton.className = 'kv-button kv-button-primary';
-	applyButton.textContent = '应用';
+	applyButton.textContent = _t('apply');
 	actions.appendChild(applyButton);
 
 	popup.appendChild(actions);
 
-	// 事件处理
 	const keyHandler = (event) => {
 		if (event.key === 'Escape') {
 			event.preventDefault();
@@ -6198,7 +7421,6 @@ function openAutofillPopup(context) {
 		const values = buildAutofillValues(baseInput.value, stepInput.value, levelsInput.value);
 		context.input.value = values.join(' ');
 
-		// 触发 input 事件以保存撤销历史
 		const inputEvent = new Event('input', { bubbles: true });
 		context.input.dispatchEvent(inputEvent);
 
@@ -6210,7 +7432,6 @@ function openAutofillPopup(context) {
 
 	document.body.appendChild(popup);
 
-	// 定位弹窗
 	const inputRect = context.input.getBoundingClientRect();
 	popup.style.top = `${inputRect.bottom + 4}px`;
 	popup.style.left = `${inputRect.left}px`;
@@ -6222,7 +7443,6 @@ function openAutofillPopup(context) {
 		targetInput: context.input,
 	};
 
-	// 聚焦到步长输入框
 	requestAnimationFrame(() => stepInput.focus());
 }
 
@@ -6234,11 +7454,9 @@ function openAbilityValuesEditor(context) {
 	closeAbilityValuesEditor();
 	const entries = cloneAbilityValuesEntries(context.entries || []);
 
-	// 使用统一的对话框管理
 	const overlay = createManagedDialog({
 		className: 'kv-ability-editor-overlay',
 		onClose: () => {
-			// 清理编辑器状态
 			abilityValuesEditorState = null;
 		}
 	});
@@ -6262,7 +7480,7 @@ function openAbilityValuesEditor(context) {
 	const closeButton = document.createElement('button');
 	closeButton.type = 'button';
 	closeButton.className = 'kv-button kv-button-icon kv-ability-editor-close';
-	closeButton.title = '关闭';
+	closeButton.title = _t('close');
 	closeButton.innerHTML = '<span class="codicon codicon-close"></span>';
 	header.appendChild(closeButton);
 	dialog.appendChild(header);
@@ -6280,7 +7498,7 @@ function openAbilityValuesEditor(context) {
 	addEntryButton.type = 'button';
 	addEntryButton.className = 'kv-button kv-button-secondary';
 	addEntryButton.dataset.role = 'add-entry';
-	addEntryButton.textContent = '新增条目';
+	addEntryButton.textContent = _t('abilityValuesAddEntry');
 	footerLeft.appendChild(addEntryButton);
 	footer.appendChild(footerLeft);
 	const footerRight = document.createElement('div');
@@ -6293,13 +7511,13 @@ function openAbilityValuesEditor(context) {
 	cancelButton.type = 'button';
 	cancelButton.className = 'kv-button kv-button-secondary';
 	cancelButton.dataset.role = 'cancel';
-	cancelButton.textContent = '取消';
+	cancelButton.textContent = _t('cancel');
 	footerRight.appendChild(cancelButton);
 	const saveButton = document.createElement('button');
 	saveButton.type = 'button';
 	saveButton.className = 'kv-button kv-button-primary';
 	saveButton.dataset.role = 'apply';
-	saveButton.textContent = '保存';
+	saveButton.textContent = _t('save');
 	footerRight.appendChild(saveButton);
 	footer.appendChild(footerRight);
 	dialog.appendChild(footer);
@@ -6362,7 +7580,7 @@ function renderAbilityValuesEditorEntries() {
 	if (!entries.length) {
 		const empty = document.createElement('div');
 		empty.className = 'kv-ability-editor-empty';
-		empty.textContent = '暂无 AbilityValues 条目，请添加。';
+		empty.textContent = _t('noAbilityValues');
 		entriesContainer.appendChild(empty);
 		return;
 	}
@@ -6373,15 +7591,13 @@ function renderAbilityValuesEditorEntries() {
 		const mainRow = document.createElement('div');
 		mainRow.className = 'kv-ability-editor-entry-row kv-ability-editor-entry-main-row';
 
-		// 检查是否启用了 AbilityValues 本地化映射
 		const hasAbilityValuesLocalization = localizationSettings.enabled &&
 			localizationSettings.mappings.some(m => m.columnName === 'AbilityValues');
 
-		// 基础键输入框
 		const keyInput = createInput({
 			type: 'text',
 			className: 'kv-ability-editor-input kv-ability-editor-key-input',
-			placeholder: '条目键',
+			placeholder: _t('entryKey'),
 			value: entry.key,
 			attributes: {
 				dataset: {
@@ -6392,7 +7608,6 @@ function renderAbilityValuesEditorEntries() {
 		});
 		mainRow.appendChild(keyInput);
 
-		// 如果启用了 AbilityValues 本地化，添加描述输入框
 		if (hasAbilityValuesLocalization && abilityValuesEditorState) {
 			const rowId = abilityValuesEditorState.rowId;
 			console.log('[renderAbilityValuesEditor] rowId:', rowId, 'entry.key:', entry.key);
@@ -6405,7 +7620,7 @@ function renderAbilityValuesEditorEntries() {
 			const descriptionInput = createInput({
 				type: 'text',
 				className: 'kv-ability-editor-input kv-ability-editor-description-input',
-				placeholder: '描述(本地化)',
+				placeholder: _t('descriptionLocalized'),
 				value: description,
 				attributes: {
 					dataset: {
@@ -6417,13 +7632,12 @@ function renderAbilityValuesEditorEntries() {
 			mainRow.appendChild(descriptionInput);
 		}
 
-		// 基础值输入框组（包含内嵌的 autofill 按钮）
 		const valueWrapper = document.createElement('div');
 		valueWrapper.className = 'kv-ability-editor-value-wrapper';
 		const valueInput = createInput({
 			type: 'text',
 			className: 'kv-ability-editor-input kv-ability-editor-value-input',
-			placeholder: '基础值',
+			placeholder: _t('baseValue'),
 			value: entry.value,
 			attributes: {
 				dataset: {
@@ -6436,7 +7650,7 @@ function renderAbilityValuesEditorEntries() {
 		const autofillButton = document.createElement('button');
 		autofillButton.type = 'button';
 		autofillButton.className = 'kv-button kv-button-tertiary kv-ability-editor-autofill-btn';
-		autofillButton.title = '自动填充 (基础值 + 升级间隔 × 等级)';
+		autofillButton.title = _t('autoFillAbility');
 		autofillButton.innerHTML = '<span class="codicon codicon-wand"></span>';
 		autofillButton.addEventListener('click', () => {
 			openAutofillPopup({ input: valueInput });
@@ -6444,28 +7658,25 @@ function renderAbilityValuesEditorEntries() {
 		valueWrapper.appendChild(autofillButton);
 		mainRow.appendChild(valueWrapper);
 
-		// 新增修饰按钮（移到主行）
 		const addModifierButton = document.createElement('button');
 		addModifierButton.type = 'button';
 		addModifierButton.className = 'kv-button kv-button-tertiary kv-ability-editor-add-modifier';
 		addModifierButton.dataset.role = 'add-modifier';
 		addModifierButton.dataset.entryIndex = String(entryIndex);
-		addModifierButton.title = '新增修饰';
+		addModifierButton.title = _t('addModifier');
 		addModifierButton.innerHTML = '<span class="codicon codicon-add"></span>';
 		mainRow.appendChild(addModifierButton);
 
-		// 删除条目按钮
 		const removeEntryButton = document.createElement('button');
 		removeEntryButton.type = 'button';
 		removeEntryButton.className = 'kv-button kv-button-tertiary kv-ability-editor-remove-entry';
 		removeEntryButton.dataset.role = 'remove-entry';
 		removeEntryButton.dataset.entryIndex = String(entryIndex);
-		removeEntryButton.title = '删除条目';
+		removeEntryButton.title = _t('deleteEntry');
 		removeEntryButton.innerHTML = '<span class="codicon codicon-trash"></span>';
 		mainRow.appendChild(removeEntryButton);
 		entryEl.appendChild(mainRow);
 
-		// 修饰键值容器
 		const modifiersContainer = document.createElement('div');
 		modifiersContainer.className = 'kv-ability-editor-modifiers';
 		entry.modifiers.forEach((modifier, modifierIndex) => {
@@ -6474,11 +7685,11 @@ function renderAbilityValuesEditorEntries() {
 			modifierRow.dataset.entryIndex = String(entryIndex);
 			modifierRow.dataset.modifierIndex = String(modifierIndex);
 
-			// 修饰键输入框
+			const isPredefined = Boolean(getPredefinedModifierDef(modifier.key));
 			const modifierKeyInput = createInput({
 				type: 'text',
 				className: 'kv-ability-editor-input kv-ability-editor-modifier-key',
-				placeholder: '修饰键',
+				placeholder: _t('modifierKey'),
 				value: modifier.key,
 				attributes: {
 					dataset: {
@@ -6488,48 +7699,109 @@ function renderAbilityValuesEditorEntries() {
 					}
 				}
 			});
+			if (isPredefined) {
+				modifierKeyInput.readOnly = true;
+				modifierKeyInput.style.opacity = '0.7';
+			}
 			modifierRow.appendChild(modifierKeyInput);
 
-			// 修饰值输入框组（包含内嵌的 autofill 按钮）
 			const modifierValueWrapper = document.createElement('div');
 			modifierValueWrapper.className = 'kv-ability-editor-value-wrapper';
-			const modifierValueInput = createInput({
-				type: 'text',
-				className: 'kv-ability-editor-input kv-ability-editor-modifier-value',
-				placeholder: '修饰值',
-				value: modifier.value,
-				attributes: {
-					dataset: {
-						role: 'modifier-value',
-						entryIndex: String(entryIndex),
-						modifierIndex: String(modifierIndex)
+			const modDef = getPredefinedModifierDef(modifier.key);
+			if (modDef?.valueType === 'checkbox') {
+				const checkbox = document.createElement('input');
+				checkbox.type = 'checkbox';
+				checkbox.className = 'kv-checkbox-input kv-modifier-checkbox';
+				checkbox.checked = modifier.value === '1';
+				checkbox.dataset.role = 'modifier-value';
+				checkbox.dataset.entryIndex = String(entryIndex);
+				checkbox.dataset.modifierIndex = String(modifierIndex);
+				checkbox.addEventListener('change', () => {
+					modifier.value = checkbox.checked ? '1' : '0';
+				});
+				modifierValueWrapper.appendChild(checkbox);
+			} else if (modDef?.valueType === 'select' && modDef.options) {
+				const select = document.createElement('select');
+				select.className = 'kv-ability-editor-input kv-ability-editor-modifier-value';
+				select.dataset.role = 'modifier-value';
+				select.dataset.entryIndex = String(entryIndex);
+				select.dataset.modifierIndex = String(modifierIndex);
+				modDef.options.forEach(opt => {
+					const option = document.createElement('option');
+					option.value = opt;
+					option.textContent = opt;
+					if (opt === modifier.value) option.selected = true;
+					select.appendChild(option);
+				});
+				select.addEventListener('change', () => {
+					modifier.value = select.value;
+				});
+				modifierValueWrapper.appendChild(select);
+			} else if (modDef?.valueType === 'spinner') {
+				const spinWrap = document.createElement('div');
+				spinWrap.className = 'kv-spinner-wrapper kv-modifier-spinner';
+				const minusBtn = document.createElement('button');
+				minusBtn.type = 'button';
+				minusBtn.className = 'kv-spinner-btn kv-spinner-minus';
+				minusBtn.textContent = '\u2212';
+				const display = document.createElement('span');
+				display.className = 'kv-spinner-value';
+				display.dataset.role = 'modifier-value';
+				display.dataset.entryIndex = String(entryIndex);
+				display.dataset.modifierIndex = String(modifierIndex);
+				display.textContent = modifier.value || '0';
+				const plusBtn = document.createElement('button');
+				plusBtn.type = 'button';
+				plusBtn.className = 'kv-spinner-btn kv-spinner-plus';
+				plusBtn.textContent = '+';
+				const updateVal = (delta) => {
+					const n = Math.max(0, (parseInt(display.textContent || '0', 10) || 0) + delta);
+					display.textContent = String(n);
+					modifier.value = String(n);
+				};
+				minusBtn.addEventListener('click', (e) => { e.stopPropagation(); updateVal(-1); });
+				plusBtn.addEventListener('click', (e) => { e.stopPropagation(); updateVal(1); });
+				spinWrap.appendChild(minusBtn);
+				spinWrap.appendChild(display);
+				spinWrap.appendChild(plusBtn);
+				modifierValueWrapper.appendChild(spinWrap);
+			} else {
+				const modifierValueInput = createInput({
+					type: 'text',
+					className: 'kv-ability-editor-input kv-ability-editor-modifier-value',
+					placeholder: _t('modifierValue'),
+					value: modifier.value,
+					attributes: {
+						dataset: {
+							role: 'modifier-value',
+							entryIndex: String(entryIndex),
+							modifierIndex: String(modifierIndex)
+						}
 					}
-				}
-			});
-			modifierValueWrapper.appendChild(modifierValueInput);
-			const modifierAutofillButton = document.createElement('button');
-			modifierAutofillButton.type = 'button';
-			modifierAutofillButton.className = 'kv-button kv-button-tertiary kv-ability-editor-autofill-btn';
-			modifierAutofillButton.title = '自动填充 (基础值 + 升级间隔 × 等级)';
-			modifierAutofillButton.innerHTML = '<span class="codicon codicon-wand"></span>';
-			modifierAutofillButton.addEventListener('click', () => {
-				openAutofillPopup({ input: modifierValueInput });
-			});
-			modifierValueWrapper.appendChild(modifierAutofillButton);
+				});
+				modifierValueWrapper.appendChild(modifierValueInput);
+				const modifierAutofillButton = document.createElement('button');
+				modifierAutofillButton.type = 'button';
+				modifierAutofillButton.className = 'kv-button kv-button-tertiary kv-ability-editor-autofill-btn';
+				modifierAutofillButton.title = _t('autoFillAbility');
+				modifierAutofillButton.innerHTML = '<span class="codicon codicon-wand"></span>';
+				modifierAutofillButton.addEventListener('click', () => {
+					openAutofillPopup({ input: modifierValueInput });
+				});
+				modifierValueWrapper.appendChild(modifierAutofillButton);
+			}
 			modifierRow.appendChild(modifierValueWrapper);
 
-			// 删除修饰按钮
 			const removeModifierButton = document.createElement('button');
 			removeModifierButton.type = 'button';
 			removeModifierButton.className = 'kv-button kv-button-tertiary kv-ability-editor-remove-modifier';
 			removeModifierButton.dataset.role = 'remove-modifier';
 			removeModifierButton.dataset.entryIndex = String(entryIndex);
 			removeModifierButton.dataset.modifierIndex = String(modifierIndex);
-			removeModifierButton.title = '删除';
+			removeModifierButton.title = _t('delete');
 			removeModifierButton.innerHTML = '<span class="codicon codicon-trash"></span>';
 			modifierRow.appendChild(removeModifierButton);
 			modifiersContainer.appendChild(modifierRow);
-			// 仅当存在修饰项时再渲染容器，避免空容器带来的 gap
 		});
 		if (modifiersContainer.childElementCount > 0) {
 			entryEl.appendChild(modifiersContainer);
@@ -6611,6 +7883,89 @@ function handleAbilityValuesEditorInput(event) {
 	}
 }
 
+const DAMAGE_TYPE_OPTIONS = ['DAMAGE_TYPE_NONE', 'DAMAGE_TYPE_PHYSICAL', 'DAMAGE_TYPE_MAGICAL', 'DAMAGE_TYPE_PURE'];
+
+const PREDEFINED_MODIFIERS = [
+	{ key: 'affected_by_aoe_increase', defaultValue: '1', label: 'affected_by_aoe_increase', valueType: 'text' },
+	{ key: 'CalculateSpellDamageTooltip', defaultValue: '0', label: 'CalculateSpellDamageTooltip', valueType: 'checkbox' },
+	{ key: 'DamageTypeTooltip', defaultValue: 'DAMAGE_TYPE_NONE', label: 'DamageTypeTooltip', valueType: 'select', options: DAMAGE_TYPE_OPTIONS },
+	{ key: 'display_type', defaultValue: '', label: 'display_type', valueType: 'text' },
+	{ key: 'hero_levelup', defaultValue: '0', label: 'hero_levelup', valueType: 'spinner' },
+	{ key: 'levelup_interval', defaultValue: '0', label: 'levelup_interval', valueType: 'spinner' },
+];
+
+function getPredefinedModifierDef(key) {
+	return PREDEFINED_MODIFIERS.find(m => m.key === key);
+}
+
+function openModifierPickerMenu(anchorEl, entry, entryIndex) {
+	const existing = document.querySelector('.kv-modifier-picker-menu');
+	if (existing) existing.remove();
+
+	const menu = document.createElement('div');
+	menu.className = 'kv-modifier-picker-menu';
+
+	const existingKeys = new Set(entry.modifiers.map(m => m.key));
+
+	PREDEFINED_MODIFIERS.forEach(mod => {
+		const item = document.createElement('button');
+		item.type = 'button';
+		item.className = 'kv-modifier-picker-item';
+		item.textContent = mod.label;
+		if (existingKeys.has(mod.key)) {
+			item.disabled = true;
+			item.classList.add('kv-modifier-picker-disabled');
+		}
+		item.addEventListener('click', () => {
+			menu.remove();
+			removeOutsideHandler();
+			entry.modifiers.push({ key: mod.key, value: mod.defaultValue });
+			entry.type = 'object';
+			renderAbilityValuesEditorEntries();
+			resetAbilityValuesEditorError();
+		});
+		menu.appendChild(item);
+	});
+
+	const separator = document.createElement('div');
+	separator.className = 'kv-modifier-picker-separator';
+	menu.appendChild(separator);
+
+	const customItem = document.createElement('button');
+	customItem.type = 'button';
+	customItem.className = 'kv-modifier-picker-item';
+	customItem.textContent = 'Custom...';
+	customItem.addEventListener('click', () => {
+		menu.remove();
+		removeOutsideHandler();
+		entry.modifiers.push({ key: '', value: '' });
+		entry.type = 'object';
+		renderAbilityValuesEditorEntries();
+		focusAbilityValuesEditorInput('modifier-key', entryIndex, entry.modifiers.length - 1);
+		resetAbilityValuesEditorError();
+	});
+	menu.appendChild(customItem);
+
+	const rect = anchorEl.getBoundingClientRect();
+	menu.style.position = 'fixed';
+	menu.style.left = rect.left + 'px';
+	menu.style.top = rect.bottom + 2 + 'px';
+	document.body.appendChild(menu);
+
+	const outsideHandler = (e) => {
+		if (!menu.contains(e.target)) {
+			menu.remove();
+			removeOutsideHandler();
+		}
+	};
+	const removeOutsideHandler = () => {
+		document.removeEventListener('mousedown', outsideHandler, true);
+	};
+	setTimeout(() => {
+		document.addEventListener('mousedown', outsideHandler, true);
+	}, 0);
+}
+
 function handleAbilityValuesEditorClick(event) {
 	if (!abilityValuesEditorState) {
 		return;
@@ -6636,12 +7991,7 @@ function handleAbilityValuesEditorClick(event) {
 	}
 	if (role === 'add-modifier' && entry) {
 		event.preventDefault();
-		const modifier = { key: '', value: '' };
-		entry.modifiers.push(modifier);
-		entry.type = 'object';
-		renderAbilityValuesEditorEntries();
-		focusAbilityValuesEditorInput('modifier-key', entryIndex, entry.modifiers.length - 1);
-		resetAbilityValuesEditorError();
+		openModifierPickerMenu(target, entry, entryIndex);
 		return;
 	}
 	if (role === 'remove-modifier' && entry) {
@@ -6665,17 +8015,17 @@ function validateAbilityValuesEntries(entries) {
 		const entry = entries[i];
 		const trimmedKey = (entry.key || '').trim();
 		if (!trimmedKey) {
-			return { valid: false, message: `第 ${i + 1} 个条目的键不能为空。` };
+			return { valid: false, message: _tf('entryKeyEmpty', i + 1) };
 		}
 		if (seenKeys.has(trimmedKey)) {
-			return { valid: false, message: `条目键 "${trimmedKey}" 重复。` };
+			return { valid: false, message: _tf('entryKeyDuplicate', trimmedKey) };
 		}
 		seenKeys.add(trimmedKey);
 		for (let j = 0; j < entry.modifiers.length; j += 1) {
 			const modifier = entry.modifiers[j];
 			const modifierKey = (modifier.key || '').trim();
 			if (!modifierKey) {
-				return { valid: false, message: `条目 "${trimmedKey}" 的第 ${j + 1} 个修饰键不能为空。` };
+				return { valid: false, message: _tf('modifierKeyEmpty', j + 1, trimmedKey) };
 			}
 		}
 	}
@@ -6695,7 +8045,7 @@ function submitAbilityValuesEditor() {
 	const validation = validateAbilityValuesEntries(entries);
 	if (!validation.valid) {
 		if (errorEl) {
-			errorEl.textContent = validation.message || '存在未通过校验的内容。';
+			errorEl.textContent = validation.message || _t('validationErrors');
 			errorEl.hidden = false;
 		}
 		return;
@@ -6709,7 +8059,6 @@ function submitAbilityValuesEditor() {
 		},
 	});
 
-	// 如果启用了 AbilityValues 本地化，收集并保存描述
 	const hasAbilityValuesLocalization = localizationSettings.enabled &&
 		localizationSettings.mappings.some(m => m.columnName === 'AbilityValues');
 
@@ -6728,7 +8077,6 @@ function submitAbilityValuesEditor() {
 			}
 		});
 
-		// 发送描述到后端
 		vscode.postMessage({
 			type: 'saveAbilityValuesDescriptions',
 			payload: {
@@ -6747,11 +8095,9 @@ function openColumnOptionsEditor(context) {
 	}
 	closeColumnOptionsEditor();
 
-	// 使用统一的对话框管理
 	const overlay = createManagedDialog({
 		className: 'kv-column-options-overlay',
 		onClose: () => {
-			// 清理列选项编辑器状态
 			columnOptionsEditorState = null;
 		}
 	});
@@ -6767,13 +8113,13 @@ function openColumnOptionsEditor(context) {
 	if (context.columnName) {
 		titleParts.push(context.columnName);
 	}
-	titleParts.push('下拉选项');
+	titleParts.push(_t('dropdownOptions'));
 	title.textContent = titleParts.join(' · ');
 	header.appendChild(title);
 	const closeButton = document.createElement('button');
 	closeButton.type = 'button';
 	closeButton.className = 'kv-button kv-button-icon kv-column-options-close';
-	closeButton.title = '关闭';
+	closeButton.title = _t('close');
 	closeButton.innerHTML = '<span class="codicon codicon-close"></span>';
 	header.appendChild(closeButton);
 	dialog.appendChild(header);
@@ -6790,28 +8136,26 @@ function openColumnOptionsEditor(context) {
 	const addButton = document.createElement('button');
 	addButton.type = 'button';
 	addButton.className = 'kv-button kv-button-secondary';
-	addButton.textContent = '新增选项';
+	addButton.textContent = _t('addOption');
 	footerLeft.appendChild(addButton);
 
-	// 添加"仅在当前文件生效"复选框（VS Code 风格）
 	const scopeCheckboxWrapper = document.createElement('label');
 	scopeCheckboxWrapper.className = 'kv-checkbox-wrapper';
 	scopeCheckboxWrapper.style.cssText = 'margin-left: 16px;';
 	const scopeCheckbox = document.createElement('input');
 	scopeCheckbox.type = 'checkbox';
 	scopeCheckbox.className = 'kv-checkbox-input';
-	scopeCheckbox.checked = true; // 默认勾选
+	scopeCheckbox.checked = true;
 	scopeCheckboxWrapper.appendChild(scopeCheckbox);
 	const checkIndicator = document.createElement('span');
 	checkIndicator.className = 'kv-checkbox-indicator codicon codicon-check';
 	scopeCheckboxWrapper.appendChild(checkIndicator);
 	const scopeLabel = document.createElement('span');
 	scopeLabel.className = 'kv-checkbox-label';
-	scopeLabel.textContent = '仅在当前文件生效';
+	scopeLabel.textContent = _t('applyCurrentFileOnly');
 	scopeCheckboxWrapper.appendChild(scopeLabel);
 	footerLeft.appendChild(scopeCheckboxWrapper);
 
-	// 添加"允许多选"复选框
 	const multiSelectWrapper = document.createElement('label');
 	multiSelectWrapper.className = 'kv-checkbox-wrapper';
 	multiSelectWrapper.style.cssText = 'margin-left: 16px;';
@@ -6825,17 +8169,16 @@ function openColumnOptionsEditor(context) {
 	multiSelectWrapper.appendChild(multiSelectIndicator);
 	const multiSelectLabel = document.createElement('span');
 	multiSelectLabel.className = 'kv-checkbox-label';
-	multiSelectLabel.textContent = '允许多选';
+	multiSelectLabel.textContent = _t('allowMultiSelect');
 	multiSelectWrapper.appendChild(multiSelectLabel);
 	footerLeft.appendChild(multiSelectWrapper);
 
-	// 添加"分隔符"输入框
 	const separatorWrapper = document.createElement('div');
 	separatorWrapper.className = 'kv-separator-wrapper';
 	separatorWrapper.style.cssText = 'margin-left: 16px; display: inline-flex; align-items: center; gap: 4px;';
 	const separatorLabel = document.createElement('span');
 	separatorLabel.className = 'kv-separator-label';
-	separatorLabel.textContent = '分隔符:';
+	separatorLabel.textContent = _t('separatorLabel');
 	separatorLabel.style.cssText = 'font-size: 12px; color: var(--vscode-descriptionForeground);';
 	separatorWrapper.appendChild(separatorLabel);
 	const separatorInput = createInput({
@@ -6860,12 +8203,12 @@ function openColumnOptionsEditor(context) {
 	const cancelButton = document.createElement('button');
 	cancelButton.type = 'button';
 	cancelButton.className = 'kv-button kv-button-secondary';
-	cancelButton.textContent = '取消';
+	cancelButton.textContent = _t('cancel');
 	footerRight.appendChild(cancelButton);
 	const saveButton = document.createElement('button');
 	saveButton.type = 'button';
 	saveButton.className = 'kv-button kv-button-primary';
-	saveButton.textContent = '保存';
+	saveButton.textContent = _t('save');
 	footerRight.appendChild(saveButton);
 	footer.appendChild(footerRight);
 	dialog.appendChild(footer);
@@ -6955,7 +8298,7 @@ function setColumnOptionsEditorError(message) {
 	if (!columnOptionsEditorState?.errorEl) {
 		return;
 	}
-	columnOptionsEditorState.errorEl.textContent = message || '存在未通过校验的内容。';
+	columnOptionsEditorState.errorEl.textContent = message || _t('validationErrors');
 	columnOptionsEditorState.errorEl.hidden = false;
 }
 
@@ -6968,7 +8311,7 @@ function renderColumnOptionsEditorOptions() {
 	if (!options.length) {
 		const empty = document.createElement('div');
 		empty.className = 'kv-column-options-empty';
-		empty.textContent = '暂无下拉选项，点击“新增选项”开始添加。';
+		empty.textContent = _t('noDropdownOptions');
 		listContainer.appendChild(empty);
 		return;
 	}
@@ -6977,19 +8320,18 @@ function renderColumnOptionsEditorOptions() {
 		row.className = 'kv-column-options-row';
 		row.dataset.index = String(index);
 
-		// 颜色选择器
 		const colorPicker = document.createElement('div');
 		colorPicker.className = 'kv-option-color-picker';
 		colorPicker.dataset.role = 'color';
 		colorPicker.dataset.index = String(index);
 		colorPicker.style.backgroundColor = getOptionColor(option, index);
-		colorPicker.title = '点击选择颜色';
+		colorPicker.title = _t('clickSelectColor');
 		row.appendChild(colorPicker);
 
 		const valueInput = createInput({
 			type: 'text',
 			className: 'kv-ability-editor-input kv-column-options-input',
-			placeholder: '选项值',
+			placeholder: _t('optionValue'),
 			value: option.value,
 			attributes: {
 				dataset: {
@@ -7002,7 +8344,7 @@ function renderColumnOptionsEditorOptions() {
 		const labelInput = createInput({
 			type: 'text',
 			className: 'kv-ability-editor-input kv-column-options-input',
-			placeholder: '显示文本（可选）',
+			placeholder: _t('displayText'),
 			value: option.labelIsFallback ? '' : (option.label || ''),
 			attributes: {
 				dataset: {
@@ -7016,7 +8358,7 @@ function renderColumnOptionsEditorOptions() {
 		const descriptionInput = createInput({
 			type: 'text',
 			className: 'kv-ability-editor-input kv-column-options-input',
-			placeholder: 'Tooltip 描述（可选）',
+			placeholder: _t('tooltipDescOption'),
 			value: option.description || '',
 			attributes: {
 				dataset: {
@@ -7034,7 +8376,7 @@ function renderColumnOptionsEditorOptions() {
 		moveUpButton.dataset.role = 'move-up';
 		moveUpButton.dataset.index = String(index);
 		moveUpButton.innerHTML = '<span class="codicon codicon-arrow-up"></span>';
-		moveUpButton.title = '上移';
+		moveUpButton.title = _t('moveUp');
 		moveUpButton.disabled = index === 0;
 		actions.appendChild(moveUpButton);
 		const moveDownButton = document.createElement('button');
@@ -7043,7 +8385,7 @@ function renderColumnOptionsEditorOptions() {
 		moveDownButton.dataset.role = 'move-down';
 		moveDownButton.dataset.index = String(index);
 		moveDownButton.innerHTML = '<span class="codicon codicon-arrow-down"></span>';
-		moveDownButton.title = '下移';
+		moveDownButton.title = _t('moveDown');
 		moveDownButton.disabled = index === options.length - 1;
 		actions.appendChild(moveDownButton);
 		const removeButton = document.createElement('button');
@@ -7052,7 +8394,7 @@ function renderColumnOptionsEditorOptions() {
 		removeButton.dataset.role = 'remove';
 		removeButton.dataset.index = String(index);
 		removeButton.innerHTML = '<span class="codicon codicon-trash"></span>';
-		removeButton.title = '删除';
+		removeButton.title = _t('delete');
 		actions.appendChild(removeButton);
 		row.appendChild(actions);
 		listContainer.appendChild(row);
@@ -7099,11 +8441,9 @@ function openColorPicker(targetElement, optionIndex) {
 		closeColorPicker();
 	}
 
-	// 使用统一的对话框管理
 	const overlay = createManagedDialog({
 		className: 'kv-color-picker-overlay',
 		onClose: () => {
-			// 清理颜色选择器状态
 			colorPickerPopup = null;
 		}
 	});
@@ -7111,7 +8451,6 @@ function openColorPicker(targetElement, optionIndex) {
 	const popup = document.createElement('div');
 	popup.className = 'kv-color-picker-popup';
 
-	// 预定义颜色网格
 	const grid = document.createElement('div');
 	grid.className = 'kv-color-picker-grid';
 	DEFAULT_COLORS.forEach(color => {
@@ -7131,11 +8470,10 @@ function openColorPicker(targetElement, optionIndex) {
 	});
 	popup.appendChild(grid);
 
-	// 自定义颜色输入
 	const customWrapper = document.createElement('div');
 	customWrapper.className = 'kv-color-picker-custom';
 	const customLabel = document.createElement('label');
-	customLabel.textContent = '自定义: ';
+	customLabel.textContent = _t('customPrefix');
 	const customInput = document.createElement('input');
 	customInput.type = 'color';
 	customInput.value = columnOptionsEditorState?.options[optionIndex]?.color || DEFAULT_COLORS[0];
@@ -7155,7 +8493,6 @@ function openColorPicker(targetElement, optionIndex) {
 
 	colorPickerPopup = { overlay, popup, targetElement };
 
-	// 定位弹窗
 	const rect = targetElement.getBoundingClientRect();
 	popup.style.left = `${rect.left}px`;
 	popup.style.top = `${rect.bottom + 5}px`;
@@ -7179,7 +8516,6 @@ function handleColumnOptionsEditorClick(event) {
 		return;
 	}
 
-	// 处理颜色选择器点击
 	const colorPicker = event.target instanceof HTMLElement ? event.target.closest('[data-role="color"]') : null;
 	if (colorPicker) {
 		const index = Number(colorPicker.dataset.index ?? '-1');
@@ -7252,11 +8588,11 @@ function validateColumnOptionsEntries(entries) {
 	for (let i = 0; i < entries.length; i += 1) {
 		const value = (entries[i].value || '').trim();
 		if (!value) {
-			return { valid: false, message: `第 ${i + 1} 行的选项值不能为空。` };
+			return { valid: false, message: _tf('optionValueEmpty', i + 1) };
 		}
 		const key = value.toLowerCase();
 		if (seen.has(key)) {
-			return { valid: false, message: `选项值 "${value}" 重复。` };
+			return { valid: false, message: _tf('optionValueDuplicate', value) };
 		}
 		seen.add(key);
 	}
@@ -7269,7 +8605,7 @@ function submitColumnOptionsEditor() {
 	}
 	resetColumnOptionsEditorError();
 	const { column, folderType, options, scopeCheckbox, multiSelectCheckbox, separatorInput } = columnOptionsEditorState;
-	const isFileScope = scopeCheckbox ? scopeCheckbox.checked : true; // 默认勾选
+	const isFileScope = scopeCheckbox ? scopeCheckbox.checked : true;
 	const isMultiple = multiSelectCheckbox ? multiSelectCheckbox.checked : false;
 	const separator = separatorInput ? (separatorInput.value || '|') : '|';
 	const normalized = options.map((option, index) => {
@@ -7289,7 +8625,7 @@ function submitColumnOptionsEditor() {
 	});
 	const validation = validateColumnOptionsEntries(normalized);
 	if (!validation.valid) {
-		setColumnOptionsEditorError(validation.message || '存在未通过校验的内容。');
+		setColumnOptionsEditorError(validation.message || _t('validationErrors'));
 		return;
 	}
 	const payloadOptions = normalized.map((entry) => {
@@ -7329,7 +8665,7 @@ function requestTextureMenuData(folderType, requestId) {
 	return new Promise((resolve, reject) => {
 		const timeout = setTimeout(() => {
 			pendingTextureMenuRequests.delete(requestId);
-			reject('加载超时');
+			reject(_t('loadTimeout'));
 		}, 15000);
 		pendingTextureMenuRequests.set(requestId, { resolve, reject, timeout });
 		vscode.postMessage({
@@ -7407,7 +8743,7 @@ function handleTextureMenuError(payload) {
 	}
 	clearTimeout(pending.timeout);
 	pendingTextureMenuRequests.delete(payload.requestId);
-	pending.reject(payload.error || '加载失败');
+	pending.reject(payload.error || _t('loadFailed'));
 }
 
 function handleColumnDragStart(event, columnKey, columnIndex, handleElement) {
@@ -7812,7 +9148,7 @@ function openTextureMenu(context) {
 			if (!textureMenuState || textureMenuState.requestId !== requestId) {
 				return;
 			}
-			showTextureMenuError(typeof error === 'string' ? error : '加载失败');
+			showTextureMenuError(typeof error === 'string' ? error : _t('loadFailed'));
 		});
 }
 
@@ -7849,7 +9185,7 @@ function createTextureMenuOverlaySkeleton() {
 	body.className = 'kv-texture-menu-body';
 	const loading = document.createElement('div');
 	loading.className = 'kv-texture-menu-loading';
-	loading.textContent = '加载图标中…';
+	loading.textContent = _t('loadingIcons');
 	body.appendChild(loading);
 	container.appendChild(header);
 	container.appendChild(body);
@@ -7883,8 +9219,8 @@ function populateTextureMenu(data) {
 	headerRow.className = 'kv-texture-menu-search-row';
 	const toggleGroup = document.createElement('div');
 	toggleGroup.className = 'kv-texture-menu-toggle-group';
-	const spellButton = createTextureMenuToggleButton('spell', '技能图标', hasSpellIcons);
-	const itemButton = createTextureMenuToggleButton('item', '物品图标', hasItemIcons);
+	const spellButton = createTextureMenuToggleButton('spell', _t('abilityIcons'), hasSpellIcons);
+	const itemButton = createTextureMenuToggleButton('item', _t('itemIcons'), hasItemIcons);
 	textureMenuState.sourceButtons.set('spell', spellButton);
 	textureMenuState.sourceButtons.set('item', itemButton);
 	toggleGroup.appendChild(spellButton);
@@ -7895,7 +9231,7 @@ function populateTextureMenu(data) {
 	const searchInput = createInput({
 		type: 'search',
 		className: 'kv-texture-menu-search-input',
-		placeholder: '输入关键字（空格分隔）',
+		placeholder: _t('enterKeywords'),
 		value: textureMenuState.searchValue
 	});
 	searchInput.addEventListener('input', () => handleTextureMenuSearchChange(searchInput.value));
@@ -7909,11 +9245,11 @@ function populateTextureMenu(data) {
 	const heroFilterBtn = document.createElement('button');
 	heroFilterBtn.type = 'button';
 	heroFilterBtn.className = 'kv-texture-menu-hero-filter-btn';
-	heroFilterBtn.title = '英雄筛选';
+	heroFilterBtn.title = _t('heroFilter');
 	// small img inside
 	const heroFilterImg = document.createElement('img');
 	heroFilterImg.className = 'kv-texture-menu-hero-filter-img';
-	heroFilterImg.alt = '英雄';
+	heroFilterImg.alt = _t('heroes');
 	heroFilterBtn.appendChild(heroFilterImg);
 	filterWrapper.appendChild(heroFilterBtn);
 
@@ -7921,7 +9257,7 @@ function populateTextureMenu(data) {
 	const displayModeBtn = document.createElement('button');
 	displayModeBtn.type = 'button';
 	displayModeBtn.className = 'kv-texture-menu-displaymode-btn';
-	displayModeBtn.title = '切换显示模式';
+	displayModeBtn.title = _t('toggleDisplayMode');
 	filterWrapper.appendChild(displayModeBtn);
 
 	// dropdown panel container (hidden by default)
@@ -8062,7 +9398,7 @@ function buildHeroFilterButtons(heroFilters) {
 	const clearBtn = document.createElement('button');
 	clearBtn.type = 'button';
 	clearBtn.className = 'kv-texture-menu-hero-clear';
-	clearBtn.textContent = '全部';
+	clearBtn.textContent = _t('all');
 	clearBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
 		selectHeroFilter();
@@ -8101,11 +9437,11 @@ function buildHeroFilterButtons(heroFilters) {
 		sec.appendChild(wrap);
 		dropdown.appendChild(sec);
 	};
-	makeSection('力量', groups.DOTA_ATTRIBUTE_STRENGTH);
-	makeSection('敏捷', groups.DOTA_ATTRIBUTE_AGILITY);
-	makeSection('智力', groups.DOTA_ATTRIBUTE_INTELLECT);
-	makeSection('全才', groups.DOTA_ATTRIBUTE_ALL);
-	makeSection('其他', groups.OTHER);
+	makeSection(_t('strength'), groups.DOTA_ATTRIBUTE_STRENGTH);
+	makeSection(_t('agility'), groups.DOTA_ATTRIBUTE_AGILITY);
+	makeSection(_t('intelligence'), groups.DOTA_ATTRIBUTE_INTELLECT);
+	makeSection(_t('universal'), groups.DOTA_ATTRIBUTE_ALL);
+	makeSection(_t('other'), groups.OTHER);
 	dropdown.hidden = textureMenuState.selectedKind !== 'spell';
 	updateHeroFilterButtonImage();
 	updateHeroFilterSelection();
@@ -8209,13 +9545,13 @@ function updateHeroFilterButtonImage() {
 		textureMenuState.heroFilterImg.src = hero.uri;
 		textureMenuState.heroFilterImg.alt = hero.name;
 		if (textureMenuState.heroFilterBtn) {
-			textureMenuState.heroFilterBtn.title = textureMenuState.activeHeroId ? `当前筛选: ${hero.name}` : '英雄筛选';
+			textureMenuState.heroFilterBtn.title = textureMenuState.activeHeroId ? _tf('currentFilter', hero.name) : _t('heroFilter');
 		}
 	} else {
 		textureMenuState.heroFilterImg.removeAttribute('src');
 		textureMenuState.heroFilterImg.alt = '';
 		if (textureMenuState.heroFilterBtn) {
-			textureMenuState.heroFilterBtn.title = '英雄筛选';
+			textureMenuState.heroFilterBtn.title = _t('heroFilter');
 		}
 	}
 }
@@ -8230,8 +9566,8 @@ function updateDisplayModeButton() {
 	const iconOnly = textureMenuState.displayMode === 'icon';
 	icon.className = `codicon ${iconOnly ? 'codicon-symbol-color' : 'codicon-symbol-text'}`;
 	button.appendChild(icon);
-	button.setAttribute('aria-label', iconOnly ? '切换为图文模式' : '切换为纯图模式');
-	button.title = iconOnly ? '切换为图文模式' : '切换为纯图模式';
+	button.setAttribute('aria-label', iconOnly ? _t('switchToImageText') : _t('switchToImageOnly'));
+	button.title = iconOnly ? _t('switchToImageText') : _t('switchToImageOnly');
 	button.classList.toggle('kv-texture-menu-displaymode-icononly', iconOnly);
 }
 
@@ -8283,7 +9619,6 @@ function matchesTextureMenuKeyword(icon, keyword) {
 		return true;
 	}
 
-	// 对于物品图标，同时匹配带和不带 item_ 前缀的情况
 	if (icon.kind === 'item') {
 		const withPrefix = textureNameLower.startsWith('item_') ? textureNameLower : 'item_' + textureNameLower;
 		const withoutPrefix = textureNameLower.startsWith('item_') ? textureNameLower.substring(5) : textureNameLower;
@@ -8345,13 +9680,13 @@ function renderTextureMenuGrid() {
 	if (!filteredIcons.length) {
 		const empty = document.createElement('div');
 		empty.className = 'kv-texture-menu-empty';
-		empty.textContent = '未找到匹配的图标。';
+		empty.textContent = _t('noMatchingIcons');
 		body.appendChild(empty);
 		return;
 	}
 	const groups = [
-		{ source: 'extension', title: '插件图标' },
-		{ source: 'addon', title: '项目图标' },
+		{ source: 'extension', title: _t('extensionIcons') },
+		{ source: 'addon', title: _t('projectIcons') },
 	];
 	const currentValue = (textureMenuState.context.input.value || '').toLowerCase();
 	const showLabel = textureMenuState.displayMode !== 'icon';
@@ -8387,7 +9722,6 @@ function renderTextureMenuGrid() {
 				button.setAttribute('aria-label', icon.label || icon.textureName);
 			}
 			button.title = `${icon.textureName}\n${icon.relativePath}`;
-			// 比较时考虑物品图标的 item_ 前缀
 			let iconValueForComparison = icon.textureName.toLowerCase();
 			if (icon.kind === 'item' && !iconValueForComparison.startsWith('item_')) {
 				iconValueForComparison = 'item_' + iconValueForComparison;
@@ -8408,7 +9742,6 @@ function handleTextureSelection(icon) {
 		return;
 	}
 	const input = textureMenuState.context.input;
-	// 对于物品图标，确保有 item_ 前缀
 	let newValue = icon.textureName;
 	if (icon.kind === 'item' && !newValue.startsWith('item_')) {
 		newValue = 'item_' + newValue;
@@ -8434,12 +9767,12 @@ function showTextureMenuError(message) {
 	textureMenuState.body.innerHTML = '';
 	const errorBox = document.createElement('div');
 	errorBox.className = 'kv-texture-menu-error';
-	errorBox.textContent = message || '加载失败';
+	errorBox.textContent = message || _t('loadFailed');
 	textureMenuState.body.appendChild(errorBox);
 	const closeButton = document.createElement('button');
 	closeButton.type = 'button';
 	closeButton.className = 'kv-texture-menu-close-button-inline';
-	closeButton.textContent = '关闭';
+	closeButton.textContent = _t('close');
 	closeButton.addEventListener('click', () => closeTextureMenu());
 	textureMenuState.body.appendChild(closeButton);
 }
@@ -8463,21 +9796,29 @@ function applyColumnLayout(columns, layout) {
 		const normalized = Math.max(getMinColumnWidth(column), Math.round(saved));
 		columnWidths[column] = normalized;
 		originalColumnWidths[column] = normalized;
-		savedColumnWidths.add(column); // 记录该列是从配置加载的
+		savedColumnWidths.add(column);
 		modifiedColumns.delete(column);
 	}
 }
 
-// 根据扩展端消息刷新整体界面
 function render(payload) {
 	if (!payload) {
 		return;
 	}
-	// 递增版本号，用于检测过期编辑
+	try {
+		return renderInner(payload);
+	} catch (e) {
+		console.error('[KvEditor] RENDER CRASH:', e.message, e.stack);
+		const errEl = document.getElementById('error');
+		if (errEl) {
+			errEl.textContent = 'Render error: ' + e.message + '\n' + e.stack;
+			errEl.style.display = '';
+		}
+	}
+}
+function renderInner(payload) {
 	payloadVersion++;
-	// 如果正在编辑中，跳过本次更新以防止数据覆盖
 	if (isEditInProgress) {
-		// 可选：记录被跳过的更新用于调试
 		console.debug('[KvEditor] Skipping render during edit, version:', payloadVersion);
 		return;
 	}
@@ -8489,12 +9830,10 @@ function render(payload) {
 	}
 	latestPayload = payload;
 
-	// 加载列描述配置
 	if (payload.columnDescriptions && typeof payload.columnDescriptions === 'object') {
 		columnDescriptions = { ...payload.columnDescriptions };
 	}
 
-	// 加载冻结列配置（从保存的最右侧列key恢复整个冻结列集合）
 	if (typeof payload.frozenColumns === 'string' && payload.frozenColumns.length > 0) {
 		frozenColumns.clear();
 		if (payload.columns && Array.isArray(payload.columns)) {
@@ -8509,35 +9848,32 @@ function render(payload) {
 		frozenColumns.clear();
 	}
 
-	// 加载精简模式设置
 	if (typeof payload.compactMode === 'boolean') {
 		compactMode = payload.compactMode;
 		if (toggleCompactModeBtn) {
 			if (compactMode) {
 				toggleCompactModeBtn.classList.add('active');
-				toggleCompactModeBtn.title = '精简模式已开启，点击关闭';
+				toggleCompactModeBtn.title = _t('compactModeOn');
 			} else {
 				toggleCompactModeBtn.classList.remove('active');
-				toggleCompactModeBtn.title = '精简模式已关闭，点击开启';
+				toggleCompactModeBtn.title = _t('compactModeOff');
 			}
 		}
 	}
 
-	// 加载本地化模式设置
 	if (typeof payload.localizedMode === 'boolean') {
 		localizedMode = payload.localizedMode;
 		if (toggleLocalizedModeBtn) {
 			if (localizedMode) {
 				toggleLocalizedModeBtn.classList.add('active');
-				toggleLocalizedModeBtn.title = '本地化模式已开启，显示描述';
+				toggleLocalizedModeBtn.title = _t('localizedModeOn');
 			} else {
 				toggleLocalizedModeBtn.classList.remove('active');
-				toggleLocalizedModeBtn.title = '本地化模式已关闭，显示原文';
+				toggleLocalizedModeBtn.title = _t('localizedModeOff');
 			}
 		}
 	}
 
-	// 加载本地化设置
 	if (payload.localizationSettings && typeof payload.localizationSettings === 'object') {
 		localizationSettings.enabled = Boolean(payload.localizationSettings.enabled);
 		localizationSettings.language = String(payload.localizationSettings.language || 'schinese');
@@ -8548,7 +9884,6 @@ function render(payload) {
 			: [];
 	}
 
-	// 加载 AbilityValues 描述数据
 	if (payload.abilityValuesDescriptions && typeof payload.abilityValuesDescriptions === 'object') {
 		abilityValuesDescriptions = { ...payload.abilityValuesDescriptions };
 		console.log('[render] Loaded abilityValuesDescriptions:', abilityValuesDescriptions);
@@ -8560,14 +9895,13 @@ function render(payload) {
 	applyFormulaDefinitions(payload.formulas);
 	console.log('[render] Received columnFormulas:', payload.columnFormulas);
 	applyColumnFormulas(payload.columnFormulas);
-	// 初始加载时重新计算公式，如果发现值不一致则同步到文件
 	recalculateFormulas({ emitUpdates: true });
 	const metaParts = [];
 	if (payload.folderType) {
-		metaParts.push(`路径类型: ${formatFolderType(payload.folderType)}`);
+		metaParts.push(_tf('pathType', formatFolderType(payload.folderType)));
 	}
 	if (payload.header) {
-		metaParts.push(`根键: ${payload.header}`);
+		metaParts.push(_tf('rootKey', payload.header));
 	}
 	if (fileNameEl) {
 		fileNameEl.textContent = payload.fileName || 'KV File';
@@ -8575,7 +9909,9 @@ function render(payload) {
 	if (fileMetaEl) {
 		fileMetaEl.textContent = metaParts.join(' · ');
 	}
+	updateCreateButtons(payload.folderType, payload.rows);
 	if (payload.error) {
+		console.error('[KvEditor] payload.error:', payload.error);
 		if (errorSection) {
 			errorSection.textContent = payload.error;
 		}
@@ -8599,16 +9935,32 @@ function render(payload) {
 		return;
 	}
 	applyColumnLayout(payload.columns, payload.columnLayout);
-	renderTable(payload.columns, payload.rows, columnOptionConfig);
+	try {
+		renderTable(payload.columns, payload.rows, columnOptionConfig);
+	} catch (renderErr) {
+		console.error('[KvEditor] renderTable error:', renderErr, renderErr.stack);
+		if (errorSection) {
+			errorSection.textContent = 'Render error: ' + renderErr.message;
+		}
+		setSectionVisibility({ showTable: false, showEmpty: false, showError: true });
+		return;
+	}
 	if (emptySection) {
 		emptySection.textContent = '';
 	}
 	setSectionVisibility({ showTable: true, showEmpty: false, showError: false });
+
+	if (pendingScrollRight && tableSection) {
+		pendingScrollRight = false;
+		requestAnimationFrame(() => {
+			tableSection.scrollLeft = tableSection.scrollWidth;
+		});
+	}
 }
 
 function formatFolderType(folderType) {
 	if (!folderType) {
-		return '未知';
+		return _t('unknown');
 	}
 	return FOLDER_TYPE_LABELS[folderType] || folderType;
 }
@@ -8637,7 +9989,6 @@ window.addEventListener('message', (event) => {
 });
 
 function handleLocalizationPathResponse(payload) {
-	// 更新路径输入框
 	const pathInput = document.querySelector('.kv-localization-settings-overlay .kv-input[type="text"]');
 	if (pathInput && payload && typeof payload.path === 'string') {
 		pathInput.value = payload.path;
@@ -8646,11 +9997,9 @@ function handleLocalizationPathResponse(payload) {
 }
 
 function openLocalizationSettingsDialog() {
-	// 使用统一的对话框管理
 	const overlay = createManagedDialog({
 		className: 'kv-localization-settings-overlay',
 		onClose: () => {
-			// 清理状态
 		}
 	});
 
@@ -8658,27 +10007,24 @@ function openLocalizationSettingsDialog() {
 	dialog.className = 'kv-modal kv-modal-lg';
 	overlay.appendChild(dialog);
 
-	// 标题栏
 	const header = document.createElement('div');
 	header.className = 'kv-modal-header';
 	const title = document.createElement('h3');
 	title.className = 'kv-modal-title';
-	title.textContent = '本地化设置';
+	title.textContent = _t('localizationSettings');
 	header.appendChild(title);
 	const closeButton = document.createElement('button');
 	closeButton.type = 'button';
 	closeButton.className = 'kv-button kv-button-icon';
-	closeButton.title = '关闭';
+	closeButton.title = _t('close');
 	closeButton.innerHTML = '<span class="codicon codicon-close"></span>';
 	closeButton.style.marginLeft = 'auto';
 	header.appendChild(closeButton);
 	dialog.appendChild(header);
 
-	// 内容区域
 	const body = document.createElement('div');
 	body.className = 'kv-modal-body';
 
-	// Toggle: 是否绑定本地化文件
 	const enabledField = document.createElement('div');
 	enabledField.className = 'kv-form-group';
 	const enabledLabel = document.createElement('label');
@@ -8691,14 +10037,13 @@ function openLocalizationSettingsDialog() {
 	enabledIndicator.className = 'kv-checkbox-indicator codicon codicon-check';
 	const enabledText = document.createElement('span');
 	enabledText.className = 'kv-checkbox-label';
-	enabledText.textContent = '绑定本地化文件';
+	enabledText.textContent = _t('bindLocFile');
 	enabledLabel.appendChild(enabledCheckbox);
 	enabledLabel.appendChild(enabledIndicator);
 	enabledLabel.appendChild(enabledText);
 	enabledField.appendChild(enabledLabel);
 	body.appendChild(enabledField);
 
-	// Toggle: 打开文件时自动更新
 	const autoUpdateField = document.createElement('div');
 	autoUpdateField.className = 'kv-form-group';
 	const autoUpdateLabel = document.createElement('label');
@@ -8711,19 +10056,18 @@ function openLocalizationSettingsDialog() {
 	autoUpdateIndicator.className = 'kv-checkbox-indicator codicon codicon-check';
 	const autoUpdateText = document.createElement('span');
 	autoUpdateText.className = 'kv-checkbox-label';
-	autoUpdateText.textContent = '打开文件时自动更新本地化';
+	autoUpdateText.textContent = _t('autoUpdateLoc');
 	autoUpdateLabel.appendChild(autoUpdateCheckbox);
 	autoUpdateLabel.appendChild(autoUpdateIndicator);
 	autoUpdateLabel.appendChild(autoUpdateText);
 	autoUpdateField.appendChild(autoUpdateLabel);
 	body.appendChild(autoUpdateField);
 
-	// 下拉选项：语言
 	const languageField = document.createElement('div');
 	languageField.className = 'kv-form-group';
 	const languageLabel = document.createElement('label');
 	languageLabel.className = 'kv-form-label';
-	languageLabel.textContent = '语言';
+	languageLabel.textContent = _t('language');
 	languageField.appendChild(languageLabel);
 	const languageSelect = document.createElement('select');
 	languageSelect.className = 'kv-input';
@@ -8744,17 +10088,16 @@ function openLocalizationSettingsDialog() {
 	languageField.appendChild(languageSelect);
 	body.appendChild(languageField);
 
-	// 输入框：本地化文件路径
 	const pathField = document.createElement('div');
 	pathField.className = 'kv-form-group';
 	const pathLabel = document.createElement('label');
 	pathLabel.className = 'kv-form-label';
-	pathLabel.textContent = '本地化文件路径';
+	pathLabel.textContent = _t('locFilePath');
 	pathField.appendChild(pathLabel);
 	const pathInput = createInput({
 		type: 'text',
 		className: 'kv-input',
-		placeholder: '路径格式: {localization_path}/{language}/{kv_path}.vdf',
+		placeholder: _t('pathFormat'),
 		value: localizationSettings.filePath,
 		attributes: {
 			readonly: true
@@ -8763,29 +10106,26 @@ function openLocalizationSettingsDialog() {
 	pathField.appendChild(pathInput);
 	body.appendChild(pathField);
 
-	// 映射表格：本地化列名 -> 本地化规则
 	const mappingsField = document.createElement('div');
 	mappingsField.className = 'kv-form-group';
 	const mappingsLabel = document.createElement('label');
 	mappingsLabel.className = 'kv-form-label';
-	mappingsLabel.textContent = '本地化导出映射';
+	mappingsLabel.textContent = _t('locExportMappings');
 	mappingsField.appendChild(mappingsLabel);
 
-	// 表格容器
 	const tableWrapper = document.createElement('div');
 	tableWrapper.className = 'kv-localization-mappings-table-wrapper';
 	const table = document.createElement('table');
 	table.className = 'kv-localization-mappings-table';
 
-	// 表头
 	const thead = document.createElement('thead');
 	const headerRow = document.createElement('tr');
 	const colNameHeader = document.createElement('th');
-	colNameHeader.textContent = '本地化列名';
+	colNameHeader.textContent = _t('locColumn');
 	const ruleHeader = document.createElement('th');
-	ruleHeader.textContent = '本地化规则';
+	ruleHeader.textContent = _t('locRule');
 	const actionHeader = document.createElement('th');
-	actionHeader.textContent = '操作';
+	actionHeader.textContent = _t('actions');
 	actionHeader.style.width = '60px';
 	headerRow.appendChild(colNameHeader);
 	headerRow.appendChild(ruleHeader);
@@ -8793,20 +10133,17 @@ function openLocalizationSettingsDialog() {
 	thead.appendChild(headerRow);
 	table.appendChild(thead);
 
-	// 表体
 	const tbody = document.createElement('tbody');
 	table.appendChild(tbody);
 	tableWrapper.appendChild(table);
 	mappingsField.appendChild(tableWrapper);
 
-	// 渲染映射行
 	const renderMappingRows = () => {
 		tbody.innerHTML = '';
 		const currentMappings = localizationSettings.mappings || [];
 		currentMappings.forEach((mapping, index) => {
 			const row = document.createElement('tr');
 
-			// 列名输入
 			const colNameCell = document.createElement('td');
 			const colNameInput = createInput({
 				type: 'text',
@@ -8820,7 +10157,6 @@ function openLocalizationSettingsDialog() {
 			colNameCell.appendChild(colNameInput);
 			row.appendChild(colNameCell);
 
-			// 规则输入
 			const ruleCell = document.createElement('td');
 			const ruleInput = createInput({
 				type: 'text',
@@ -8834,13 +10170,12 @@ function openLocalizationSettingsDialog() {
 			ruleCell.appendChild(ruleInput);
 			row.appendChild(ruleCell);
 
-			// 删除按钮
 			const actionCell = document.createElement('td');
 			const deleteBtn = document.createElement('button');
 			deleteBtn.type = 'button';
 			deleteBtn.className = 'kv-button kv-button-icon';
 			deleteBtn.innerHTML = '<span class="codicon codicon-trash"></span>';
-			deleteBtn.title = '删除';
+			deleteBtn.title = _t('delete');
 			deleteBtn.addEventListener('click', () => {
 				localizationSettings.mappings.splice(index, 1);
 				renderMappingRows();
@@ -8851,13 +10186,12 @@ function openLocalizationSettingsDialog() {
 			tbody.appendChild(row);
 		});
 
-		// 空状态提示
 		if (currentMappings.length === 0) {
 			const emptyRow = document.createElement('tr');
 			const emptyCell = document.createElement('td');
 			emptyCell.colSpan = 3;
 			emptyCell.className = 'kv-localization-mappings-empty';
-			emptyCell.textContent = '暂无映射规则，点击下方按钮添加';
+			emptyCell.textContent = _t('noMappingRules');
 			emptyRow.appendChild(emptyCell);
 			tbody.appendChild(emptyRow);
 		}
@@ -8865,19 +10199,17 @@ function openLocalizationSettingsDialog() {
 
 	renderMappingRows();
 
-	// 添加按钮
 	const addMappingBtn = document.createElement('button');
 	addMappingBtn.type = 'button';
 	addMappingBtn.className = 'kv-button kv-button-secondary';
 	addMappingBtn.style.marginTop = '8px';
-	addMappingBtn.innerHTML = '<span class="codicon codicon-add"></span> 添加映射';
+	addMappingBtn.innerHTML = '<span class="codicon codicon-add"></span>' + _t('addMapping');
 	addMappingBtn.addEventListener('click', () => {
 		if (!localizationSettings.mappings) {
 			localizationSettings.mappings = [];
 		}
 		localizationSettings.mappings.push({ columnName: '', rule: '' });
 		renderMappingRows();
-		// 聚焦到新添加行的第一个输入框
 		requestAnimationFrame(() => {
 			const rows = tbody.querySelectorAll('tr');
 			if (rows.length > 0) {
@@ -8893,24 +10225,21 @@ function openLocalizationSettingsDialog() {
 
 	dialog.appendChild(body);
 
-	// 底部按钮
 	const footer = document.createElement('div');
 	footer.className = 'kv-modal-footer';
 	const cancelButton = document.createElement('button');
 	cancelButton.type = 'button';
 	cancelButton.className = 'kv-button kv-button-secondary';
-	cancelButton.textContent = '取消';
+	cancelButton.textContent = _t('cancel');
 	footer.appendChild(cancelButton);
 	const saveButton = document.createElement('button');
 	saveButton.type = 'button';
 	saveButton.className = 'kv-button kv-button-primary';
-	saveButton.textContent = '保存';
+	saveButton.textContent = _t('save');
 	footer.appendChild(saveButton);
 	dialog.appendChild(footer);
 
-	// 更新路径预览函数
 	const updatePathPreview = () => {
-		// 发送消息到后端请求计算路径
 		vscode.postMessage({
 			type: 'requestLocalizationPath',
 			payload: {
@@ -8919,7 +10248,6 @@ function openLocalizationSettingsDialog() {
 		});
 	};
 
-	// 事件处理
 	languageSelect.addEventListener('change', updatePathPreview);
 
 	closeButton.addEventListener('click', () => {
@@ -8936,7 +10264,6 @@ function openLocalizationSettingsDialog() {
 		localizationSettings.language = languageSelect.value;
 		localizationSettings.filePath = pathInput.value;
 
-		// 发送设置到后端
 		vscode.postMessage({
 			type: 'saveLocalizationSettings',
 			payload: localizationSettings
@@ -8963,10 +10290,8 @@ function openLocalizationSettingsDialog() {
 
 	document.body.appendChild(overlay);
 
-	// 初始化时请求路径
 	updatePathPreview();
 
-	// 聚焦到第一个输入
 	requestAnimationFrame(() => enabledCheckbox.focus());
 }
 

@@ -5,16 +5,29 @@ import { getContentDir, getGameDir } from '../module/addonInfo';
 import { findKvEntryForUri, KvEditorEntry, KvFolderType, readKvEditorSettings } from '../module/kvEditorConfig';
 import { getWebviewContent } from '../utils/getWebViewContent';
 import { readKeyValue2, writeKeyValue } from '../utils/kvUtils';
+import { localize } from '../utils/localize';
+import { getResourcePath } from '../utils/releaseData';
 
 export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
+	private static _instance: kvEditorProvider | undefined;
+
 	public static register(context: vscode.ExtensionContext): vscode.Disposable {
-		return vscode.window.registerCustomEditorProvider(kvEditorProvider.viewType, new kvEditorProvider(context), {
+		const instance = new kvEditorProvider(context);
+		kvEditorProvider._instance = instance;
+		return vscode.window.registerCustomEditorProvider(kvEditorProvider.viewType, instance, {
 			webviewOptions: {
 				retainContextWhenHidden: true,
 				enableFindWidget: true,
 			}
 		});
+	}
+
+	public static clearImageCaches(): void {
+		if (kvEditorProvider._instance) {
+			kvEditorProvider._instance.heroFilterCache = undefined;
+			kvEditorProvider._instance.textureMenuCache.clear();
+		}
 	}
 
 	private static readonly viewType = 'dota2tools.kv';
@@ -31,8 +44,8 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	private readonly columnOptionConfig: KvEditorColumnOptionMap;
 	private readonly textureMenuCache = new Map<string, TextureMenuRawIcon[]>();
 	private readonly localizationCache = new Map<string, LocalizationCacheEntry>();
-	private readonly localizationSettingsCache = new Map<string, any>(); // 存储每个文档的本地化设置
-	private readonly abilityValuesDescriptionCache = new Map<string, Map<string, Map<string, string>>>(); // 存储 AbilityValues 描述: documentKey -> rowId -> key -> description
+	private readonly localizationSettingsCache = new Map<string, any>(); // Stores localization settings for each document
+	private readonly abilityValuesDescriptionCache = new Map<string, Map<string, Map<string, string>>>(); // Stores AbilityValues descriptions: documentKey -> rowId -> key -> description
 	private readonly userSettingsCache = new Map<string, { settings: KvEditorUserSettings; mtimeMs: number; }>();
 	private readonly columnOptionOverridesCache = new Map<string, { overrides: KvEditorColumnOptionsFile; mtimeMs: number; }>();
 	private readonly fileWatchers = new Map<string, vscode.FileSystemWatcher>();
@@ -82,7 +95,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 		const saveDocumentSubscription = vscode.workspace.onDidSaveTextDocument((savedDocument) => {
 			if (savedDocument.uri.toString() === document.uri.toString()) {
-				// 在保存后自动导出本地化文件
+				// Automatically export the localization file after saving
 				this.exportLocalizationOnSave(savedDocument).catch((error: unknown) => {
 					console.error('Auto export localization failed:', error);
 				});
@@ -101,7 +114,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				} else {
 					updateWebview();
 				}
-				// 检查是否需要自动更新本地化，如果导入了描述则刷新前端
+				// Check whether localization needs to be auto-updated; if descriptions were imported, refresh the frontend
 				this.checkAndAutoUpdateLocalization(document, updateWebview).catch((error: unknown) => {
 					console.error('Auto update localization failed:', error);
 				});
@@ -304,23 +317,33 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 
 	private buildPayload(document: vscode.TextDocument, webview: vscode.Webview): KvEditorPayload {
+	  try {
+		console.log('[buildPayload] step 1: getWorkspaceFolder');
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+		console.log('[buildPayload] step 2: getDocumentSettingsKey');
 		const documentKey = workspaceFolder ? this.getDocumentSettingsKey(document.uri, workspaceFolder) : undefined;
+		console.log('[buildPayload] step 3: readKvEditorSettings');
 		const settings = readKvEditorSettings();
 		const entry = settings ? findKvEntryForUri(document.uri, settings) : undefined;
 		const folderType: KvFolderType = entry?.type ?? 'custom';
+		console.log('[buildPayload] step 4: parseKv');
 		const parsed = this.parseKv(document.getText());
+		console.log('[buildPayload] step 5: enrichRows');
 		this.enrichRowsWithLocalization(parsed.rows, folderType, document.uri.fsPath, entry);
+		console.log('[buildPayload] step 6: loadColumnLayout');
 		const columnLayout = this.loadColumnLayout(document);
+		console.log('[buildPayload] step 7: getResolvedColumnOptions');
 		const columnOptions = this.getResolvedColumnOptions(folderType, workspaceFolder, document.uri);
+		console.log('[buildPayload] step 8: formulas');
 		const formulas = workspaceFolder && documentKey
 			? this.buildFormulaPayload(workspaceFolder, documentKey, parsed.rows, document.uri)
 			: [];
 		const columnFormulas = workspaceFolder && documentKey
 			? this.buildColumnFormulaPayload(workspaceFolder, documentKey)
 			: undefined;
+		console.log('[buildPayload] step 9: user settings, workspaceFolder=', !!workspaceFolder, 'documentKey=', documentKey);
 
-		// 加载精简模式设置
+		// Load compact mode settings
 		let compactMode: boolean | undefined;
 		let localizedMode: boolean | undefined;
 		let frozenColumns: string | undefined;
@@ -328,8 +351,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		let localizationSettings: { enabled: boolean; language: string; filePath: string; autoUpdateOnOpen: boolean; mappings: Array<{ columnName: string; rule: string; }>; } | undefined;
 		let abilityValuesDescriptions: Record<string, Record<string, string>> | undefined; // rowId -> key -> description
 		if (workspaceFolder && documentKey) {
+			console.log('[buildPayload] step 9a: getUserSettings');
 			const userSettings = this.getUserSettings(workspaceFolder);
+			console.log('[buildPayload] step 9b: files=', typeof userSettings.files, Object.keys(userSettings.files ?? {}).length);
 			const fileSettings = userSettings.files[documentKey];
+			console.log('[buildPayload] step 9c: fileSettings=', typeof fileSettings);
 			if (fileSettings && typeof fileSettings.compactMode === 'boolean') {
 				compactMode = fileSettings.compactMode;
 			}
@@ -340,15 +366,15 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				frozenColumns = fileSettings.frozenColumns;
 			}
 
-			// 加载本地化设置
+			console.log('[buildPayload] step 9d: getColumnOptionOverrides');
 			const columnOptionOverrides = this.getColumnOptionOverrides(workspaceFolder);
 			if (columnOptionOverrides.localizationSettings && columnOptionOverrides.localizationSettings[documentKey]) {
 				localizationSettings = columnOptionOverrides.localizationSettings[documentKey];
-				// 更新缓存
+				// Update the cache
 				this.localizationSettingsCache.set(documentKey, localizationSettings);
 			}
 
-			// 加载 AbilityValues 描述
+			// Load AbilityValues descriptions
 			const docDescriptions = this.abilityValuesDescriptionCache.get(documentKey);
 			if (docDescriptions && docDescriptions.size > 0) {
 				abilityValuesDescriptions = {};
@@ -356,6 +382,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					abilityValuesDescriptions![rowId] = Object.fromEntries(keyMap);
 				});
 			}
+			console.log('[buildPayload] step 9e: readColumnLocalizationConfig');
 			const baseDefaults = this.readColumnLocalizationConfig();
 			const workspaceDefaults = columnOptionOverrides.columnDescriptions ?? {};
 			const fileColumnOptions = columnOptionOverrides.files && columnOptionOverrides.files[documentKey];
@@ -369,6 +396,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
+		console.log('[buildPayload] step 10: buildTexturePreviews');
+		const texturePreviews = this.buildTexturePreviews(document, parsed.rows, webview, entry);
+		console.log('[buildPayload] step 11: buildScriptSupport');
+		const scriptSupport = this.buildScriptSupport(folderType);
+		console.log('[buildPayload] step 12: return');
 		return {
 			fileName: path.basename(document.uri.fsPath),
 			documentKey,
@@ -379,8 +411,8 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			error: parsed.error,
 			columnOptions,
 			columnLayout,
-			texturePreviews: this.buildTexturePreviews(document, parsed.rows, webview, entry),
-			scriptSupport: this.buildScriptSupport(folderType),
+			texturePreviews,
+			scriptSupport,
 			formulas,
 			columnFormulas,
 			compactMode,
@@ -390,6 +422,24 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			localizationSettings,
 			abilityValuesDescriptions,
 		};
+	  } catch (err) {
+		const errMsg = err instanceof Error ? err.stack ?? err.message : String(err);
+		console.error('[kvEditorProvider] buildPayload error:', errMsg);
+		vscode.window.showErrorMessage('[KV Editor] buildPayload: ' + (err instanceof Error ? err.message : String(err)));
+		return {
+			fileName: path.basename(document.uri.fsPath),
+			documentKey: undefined,
+			folderType: 'custom',
+			header: '',
+			columns: [],
+			rows: [],
+			error: err instanceof Error ? err.stack ?? err.message : String(err),
+			columnOptions: {},
+			texturePreviews: {},
+			scriptSupport: undefined as any,
+			formulas: [],
+		};
+	  }
 	}
 
 	private readColumnOptionConfig(): KvEditorColumnOptionMap {
@@ -452,7 +502,15 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 		const obj = raw as Record<string, unknown>;
 		const options = this.parseOptionEntries(obj.options);
-		if (!options.length) {
+		const inputTypeRaw = obj.inputType;
+		const inputType = typeof inputTypeRaw === 'string' && ['checkbox', 'number', 'spinner'].includes(inputTypeRaw)
+			? inputTypeRaw as 'checkbox' | 'number' | 'spinner'
+			: undefined;
+		const folderTypeOnlyRaw = obj.folderTypeOnly;
+		const folderTypeOnly = Array.isArray(folderTypeOnlyRaw)
+			? folderTypeOnlyRaw.filter((v): v is KvFolderType => typeof v === 'string' && ['ability', 'item', 'unit', 'custom'].includes(v))
+			: undefined;
+		if (!options.length && !inputType) {
 			return undefined;
 		}
 		const multiple = Boolean(obj.multiple);
@@ -477,7 +535,14 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				overrides = undefined;
 			}
 		}
-		return { options, multiple, separator, overrides };
+		const result: KvEditorColumnOptionSource = { options, multiple, separator, overrides };
+		if (inputType) {
+			result.inputType = inputType;
+		}
+		if (folderTypeOnly?.length) {
+			result.folderTypeOnly = folderTypeOnly;
+		}
+		return result;
 	}
 
 	private parseOptionEntries(raw: unknown): KvEditorColumnOption[] {
@@ -554,6 +619,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	): KvEditorColumnOptionResolvedMap {
 		const resolved: KvEditorColumnOptionResolvedMap = {};
 		for (const [column, config] of Object.entries(this.columnOptionConfig)) {
+			if (config.folderTypeOnly?.length && !config.folderTypeOnly.includes(folderType)) {
+				continue;
+			}
 			const override = config.overrides?.[folderType];
 			const optionsSource = override?.options ?? config.options;
 			const multiple = override?.multiple ?? config.multiple;
@@ -562,12 +630,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				options: optionsSource.map((option) => ({ ...option })),
 				multiple,
 				separator,
+				...(config.inputType ? { inputType: config.inputType } : {}),
 			};
 		}
 		if (workspaceFolder) {
 			const overrides = this.getColumnOptionOverrides(workspaceFolder);
 
-			// 先应用全局（folderType）级别的覆盖
+			// First apply the global (folderType) level overrides
 			for (const [column, folderMap] of Object.entries(overrides.columns)) {
 				const overrideOptions = this.getColumnOverrideOptionsForFolder(folderMap, folderType);
 				if (!overrideOptions?.length) {
@@ -585,14 +654,14 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				}
 			}
 
-			// 应用全局级别的 multiple 和 separator 设置
+			// Apply the global level multiple and separator settings
 			if (overrides.columnSettings) {
 				for (const [column, scopeMap] of Object.entries(overrides.columnSettings)) {
 					const existing = resolved[column];
 					if (!existing) {
 						continue;
 					}
-					// 先尝试 folderType 对应的 scope，再 fallback 到 default
+					// First try the scope for the folderType, then fall back to default
 					const settings = scopeMap[folderType] ?? scopeMap['default'];
 					if (settings) {
 						if (typeof settings.multiple === 'boolean') {
@@ -605,7 +674,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				}
 			}
 
-			// 再应用文件级别的覆盖（优先级最高）
+			// Then apply the file level overrides (highest priority)
 			if (documentUri && overrides.files) {
 				const documentKey = this.getDocumentSettingsKey(documentUri, workspaceFolder);
 				const fileConfig = documentKey ? overrides.files[documentKey] : undefined;
@@ -630,7 +699,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 应用文件级别的 multiple 和 separator 设置（最高优先级）
+				// Apply the file level multiple and separator settings (highest priority)
 				if (fileColumnSettings) {
 					for (const [column, settings] of Object.entries(fileColumnSettings)) {
 						const existing = resolved[column];
@@ -642,7 +711,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 								existing.separator = settings.separator;
 							}
 						} else {
-							// 如果列不存在，创建一个空的配置
+							// If the column does not exist, create an empty configuration
 							resolved[column] = {
 								options: [],
 								multiple: settings.multiple ?? false,
@@ -659,10 +728,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	private buildScriptSupport(folderType: KvFolderType): KvEditorScriptSupport {
 		const useTypescript = Boolean(vscode.workspace.getConfiguration().get('dota2-tools.A6.Kv to lua generate typescript'));
 		const baseDir = useTypescript ? getContentDir() : getGameDir();
-		const applicable = folderType === 'ability' || folderType === 'item';
 		return {
-			applicable,
-			baseReady: applicable ? Boolean(baseDir) : false,
+			applicable: true,
+			baseReady: true,
 			useTypescript,
 		};
 	}
@@ -699,7 +767,20 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	private detectFolderType(uri: vscode.Uri): KvFolderType {
 		const settings = readKvEditorSettings();
 		const entry = settings ? findKvEntryForUri(uri, settings) : undefined;
-		return entry?.type ?? 'custom';
+		if (entry?.type) {
+			return entry.type;
+		}
+		const fileName = path.basename(uri.fsPath).toLowerCase();
+		if (fileName.includes('item')) {
+			return 'item';
+		}
+		if (fileName.includes('abili')) {
+			return 'ability';
+		}
+		if (fileName.includes('unit') || fileName.includes('hero')) {
+			return 'unit';
+		}
+		return 'custom';
 	}
 
 	private async buildTextureMenuResponse(
@@ -851,9 +932,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				attribute: hero.attribute,
 			}));
 		}
-		// prefer icons subfolder for small avatars
-		const iconsSub = path.join(this.extensionImagesRoot, 'heroes_icon', 'icons');
-		const heroesDir = this.pathExists(iconsSub) ? iconsSub : path.join(this.extensionImagesRoot, 'heroes_icon');
+		const heroesDir = path.join(this.extensionImagesRoot, 'heroes_icon');
 		if (!this.pathExists(heroesDir)) {
 			this.heroFilterCache = [];
 			return [];
@@ -862,7 +941,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		// build attribute map from resource/npc/npc_heroes.txt
 		const attributeMap: Record<string, string | undefined> = {};
 		try {
-			const heroesTxt = this.context.asAbsolutePath(path.join('resource', 'npc', 'npc_heroes.txt'));
+			const heroesTxt = getResourcePath(this.context, 'resource', 'npc', 'npc_heroes.txt');
 			if (this.pathExists(heroesTxt)) {
 				const raw = await fs.promises.readFile(heroesTxt, 'utf8');
 				const attrRegex = /"(npc_dota_hero_[a-z0-9_]+)"[\s\S]*?"AttributePrimary"\s+"(DOTA_ATTRIBUTE_[A-Z]+)"/gi;
@@ -927,8 +1006,30 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			.join(' ');
 	}
 
+	private extractEntryComments(text: string): Map<string, string> {
+		const comments = new Map<string, string>();
+		const lines = text.split(/\r?\n/);
+		let pendingComment = '';
+		for (const line of lines) {
+			const trimmed = line.trim();
+			if (trimmed.startsWith('//')) {
+				pendingComment = trimmed.slice(2).trim();
+			} else if (trimmed.startsWith('"') && pendingComment) {
+				const match = trimmed.match(/^"([^"]+)"/);
+				if (match) {
+					comments.set(match[1], pendingComment);
+				}
+				pendingComment = '';
+			} else if (trimmed && !trimmed.startsWith('{') && !trimmed.startsWith('}')) {
+				pendingComment = '';
+			}
+		}
+		return comments;
+	}
+
 	private parseKv(text: string): ParsedKvTable {
 		try {
+			const entryComments = this.extractEntryComments(text);
 			const kvObject = readKeyValue2(text ?? '');
 			const header = Object.keys(kvObject)[0] ?? '';
 			const block = header ? kvObject[header] : undefined;
@@ -937,11 +1038,19 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 
 			const columnOrder: string[] = [];
+			if (!columnOrder.includes('_comment')) {
+				columnOrder.unshift('_comment');
+			}
 			const rows = Object.entries(block)
 				.filter(([_, value]) => value && typeof value === 'object')
 				.map(([id, value]) => {
 					const entry = value as Record<string, unknown>;
 					const rowValues: Record<string, string> = {};
+					// Populate _comment from parsed comments
+					const comment = entryComments.get(id);
+					if (comment) {
+						rowValues['_comment'] = comment;
+					}
 					let abilityValues: AbilityValuesEntry[] | undefined;
 					for (const [key, field] of Object.entries(entry)) {
 						if (key === 'AbilityValues' && this.isPlainObject(field)) {
@@ -952,11 +1061,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 							rowValues[key] = '';
 							continue;
 						}
-						// 特殊处理 Creature 字段 - 扁平化其子字段
+						// Special handling for the Creature field - flatten its sub-fields
 						if (key === 'Creature' && this.isPlainObject(field)) {
 							const creatureBlock = field as Record<string, unknown>;
 							for (const [creatureKey, creatureValue] of Object.entries(creatureBlock)) {
-								// DisableClumpingBehavior 和 UsesGestureBasedAttackAnimation 是标量
+								// DisableClumpingBehavior and UsesGestureBasedAttackAnimation are scalars
 								if (creatureKey === 'DisableClumpingBehavior' || creatureKey === 'UsesGestureBasedAttackAnimation') {
 									if (!columnOrder.includes(creatureKey)) {
 										columnOrder.push(creatureKey);
@@ -964,7 +1073,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 									rowValues[creatureKey] = this.coerceKvScalar(creatureValue);
 									continue;
 								}
-								// AttachWearables 是嵌套的数字索引对象
+								// AttachWearables is a nested numeric-indexed object
 								if (creatureKey === 'AttachWearables' && this.isPlainObject(creatureValue)) {
 									if (!columnOrder.includes(creatureKey)) {
 										columnOrder.push(creatureKey);
@@ -972,7 +1081,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 									rowValues[creatureKey] = this.parseAttachWearablesField(creatureValue as Record<string, unknown>);
 									continue;
 								}
-								// 其他 Creature 子字段按标量处理
+								// Other Creature sub-fields are treated as scalars
 								if (!this.isPlainObject(creatureValue)) {
 									if (!columnOrder.includes(creatureKey)) {
 										columnOrder.push(creatureKey);
@@ -991,7 +1100,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						}
 						rowValues[key] = this.coerceKvScalar(field);
 					}
-					// 保存完整的原始对象，用于复制粘贴时保留嵌套结构
+					// Save the full original object to preserve the nested structure when copying and pasting
 					const row: ParsedKvRow = { id, values: rowValues, rawObject: entry };
 					if (abilityValues && abilityValues.length) {
 						row.abilityValues = abilityValues;
@@ -1065,12 +1174,12 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 
 	/**
-	 * 解析 AttachWearables 字段，将数字索引的对象数组转换为逗号分隔的 ItemDef 列表
-	 * 例如：{ "1": { "ItemDef": "14878" }, "2": { "ItemDef": "22264" } } => "14878,22264"
+	 * Parse the AttachWearables field, converting the numeric-indexed object array into a comma-separated ItemDef list
+	 * For example: { "1": { "ItemDef": "14878" }, "2": { "ItemDef": "22264" } } => "14878,22264"
 	 */
 	private parseAttachWearablesField(field: Record<string, unknown>): string {
 		const itemDefs: string[] = [];
-		// 按数字键排序
+		// Sort by numeric key
 		const sortedKeys = Object.keys(field).sort((a, b) => {
 			const numA = parseInt(a, 10);
 			const numB = parseInt(b, 10);
@@ -1517,11 +1626,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		if (baseNameSegment && baseNameSegment !== baseNameCore) {
 			variants.add(baseNameSegment.replace(/\.[a-z0-9]+$/i, ''));
 		}
-		if (entryType === 'item') {
-			const trimmed = baseNameCore.replace(/^item_/, '');
-			if (trimmed && trimmed !== baseNameCore) {
-				variants.add(trimmed);
-			}
+		const trimmed = baseNameCore.replace(/^item_/, '');
+		if (trimmed && trimmed !== baseNameCore) {
+			variants.add(trimmed);
 		}
 		return variants;
 	}
@@ -1595,15 +1702,15 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const kvObject = readKeyValue2(originalText ?? '');
 		const header = Object.keys(kvObject)[0];
 		if (!header) {
-			throw new Error('无法解析 KV 根节点，修改未保存。');
+			throw new Error('Failed to parse the KV root node; changes were not saved.');
 		}
 		const block = kvObject[header];
 		if (!block || typeof block !== 'object') {
-			throw new Error('当前 KV 结构不支持 AbilityValues 编辑。');
+			throw new Error('The current KV structure does not support AbilityValues editing.');
 		}
 		const row = (block as Record<string, unknown>)[message.id];
 		if (!row || typeof row !== 'object') {
-			throw new Error(`未找到条目 "${message.id}"，修改未保存。`);
+			throw new Error(`Entry "${message.id}" not found; changes were not saved.`);
 		}
 		const record = row as Record<string, unknown>;
 		if (!normalizedEntries.length) {
@@ -1641,13 +1748,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		edit.replace(document.uri, fullRange, newContent);
 		const applied = await vscode.workspace.applyEdit(edit);
 		if (!applied) {
-			throw new Error('写入 KV 文本失败。');
+			throw new Error('Failed to write the KV text.');
 		}
 		const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 		if (autoSaveMode && autoSaveMode !== 'off') {
 			const saved = await document.save();
 			if (!saved) {
-				throw new Error('保存 KV 文件失败。');
+				throw new Error('Failed to save the KV file.');
 			}
 		}
 	}
@@ -1698,7 +1805,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 
 	/**
-	 * 检查一个键是否属于 Creature 字段的子字段
+	 * Check whether a key belongs to a sub-field of the Creature field
 	 */
 	private isCreatureField(key: string): boolean {
 		return key === 'DisableClumpingBehavior' ||
@@ -1707,9 +1814,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 
 	/**
-	 * 从扁平化的行数据中重建 Creature 结构
-	 * @param row 原始行对象
-	 * @returns 重建后包含 Creature 结构的行对象
+	 * Rebuild the Creature structure from flattened row data
+	 * @param row The original row object
+	 * @returns The rebuilt row object containing the Creature structure
 	 */
 	private rebuildCreatureStructure(row: Record<string, unknown>): Record<string, unknown> {
 		const creatureFields: Record<string, unknown> = {};
@@ -1720,7 +1827,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				hasCreatureFields = true;
 				const value = row[key];
 
-				// AttachWearables 需要从逗号分隔的字符串重建为数字索引对象
+				// AttachWearables needs to be rebuilt from a comma-separated string into a numeric-indexed object
 				if (key === 'AttachWearables') {
 					const itemDefs = String(value).split(',').map(s => s.trim()).filter(s => s.length > 0);
 					if (itemDefs.length > 0) {
@@ -1731,24 +1838,24 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						creatureFields[key] = attachWearables;
 					}
 				} else {
-					// DisableClumpingBehavior 和 UsesGestureBasedAttackAnimation 直接复制
+					// DisableClumpingBehavior and UsesGestureBasedAttackAnimation are copied directly
 					creatureFields[key] = value;
 				}
 			}
 		}
 
-		// 如果有 Creature 相关字段，重建结构
+		// If there are Creature-related fields, rebuild the structure
 		if (hasCreatureFields) {
 			const newRow: Record<string, unknown> = {};
 
-			// 复制非 Creature 字段
+			// Copy non-Creature fields
 			for (const [key, value] of Object.entries(row)) {
 				if (!this.isCreatureField(key)) {
 					newRow[key] = value;
 				}
 			}
 
-			// 添加 Creature 结构
+			// Add the Creature structure
 			if (Object.keys(creatureFields).length > 0) {
 				newRow.Creature = creatureFields;
 			}
@@ -1768,32 +1875,32 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，修改未保存。');
+				throw new Error('Failed to parse the KV root node; changes were not saved.');
 			}
 			const block = kvObject[header];
 			if (!block || typeof block !== 'object') {
-				throw new Error('当前 KV 结构不支持直接编辑。');
+				throw new Error('The current KV structure does not support direct editing.');
 			}
 			const row = (block as Record<string, unknown>)[message.id];
 			if (!row || typeof row !== 'object') {
-				throw new Error(`未找到条目 "${message.id}"，修改未保存。`);
+				throw new Error(`Entry "${message.id}" not found; changes were not saved.`);
 			}
 			const normalizedKey = message.key;
 			const normalizedValue = message.value === undefined || message.value === null ? '' : String(message.value);
 			const record = row as Record<string, unknown>;
 
-			// 如果是编辑 Creature 相关字段，需要特殊处理
+			// If editing Creature-related fields, special handling is needed
 			if (this.isCreatureField(normalizedKey)) {
-				// 确保 Creature 对象存在
+				// Ensure the Creature object exists
 				let creature = record.Creature as Record<string, unknown> | undefined;
 				if (!creature || typeof creature !== 'object') {
 					creature = {};
 					record.Creature = creature;
 				}
 
-				// 更新 Creature 中的字段
+				// Update the field within Creature
 				if (normalizedKey === 'AttachWearables') {
-					// 将逗号分隔的字符串转换为数字索引对象
+					// Convert the comma-separated string to a numeric-index object
 					const itemDefs = normalizedValue.split(',').map(s => s.trim()).filter(s => s.length > 0);
 					if (itemDefs.length > 0) {
 						const attachWearables: Record<string, Record<string, string>> = {};
@@ -1805,7 +1912,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						delete creature[normalizedKey];
 					}
 				} else {
-					// DisableClumpingBehavior 和 UsesGestureBasedAttackAnimation
+					// DisableClumpingBehavior and UsesGestureBasedAttackAnimation
 					if (normalizedValue) {
 						creature[normalizedKey] = normalizedValue;
 					} else {
@@ -1813,12 +1920,12 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 如果 Creature 为空，删除它
+				// If Creature is empty, delete it
 				if (Object.keys(creature).length === 0) {
 					delete record.Creature;
 				}
 			} else {
-				// 普通字段直接更新
+				// Update normal fields directly
 				const previousValue = record[normalizedKey];
 				if ((previousValue === undefined || previousValue === null ? '' : String(previousValue)) === normalizedValue) {
 					return;
@@ -1832,22 +1939,22 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 			const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 
-			// 如果启用了本地化绑定，自动导出本地化文件
+			// If localization binding is enabled, automatically export the localization file
 			const docKey = this.getRelativeDocumentKey(document.uri);
 			const localizationSettings = this.localizationSettingsCache.get(docKey);
 			if (localizationSettings?.enabled && localizationSettings?.mappings?.length > 0) {
 				await this.exportLocalizationFile(document, localizationSettings).catch(err => {
-					console.error('自动导出本地化文件失败:', err);
+					console.error('Failed to auto-export the localization file:', err);
 				});
 			}
 		});
@@ -1865,11 +1972,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，修改未保存。');
+				throw new Error('Failed to parse the KV root node; changes were not saved.');
 			}
 			const block = kvObject[header];
 			if (!block || typeof block !== 'object') {
-				throw new Error('当前 KV 结构不支持直接编辑。');
+				throw new Error('The current KV structure does not support direct editing.');
 			}
 			let mutated = false;
 			for (const edit of edits) {
@@ -1881,18 +1988,18 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				const normalizedValue = edit.value === undefined || edit.value === null ? '' : String(edit.value);
 				const record = row as Record<string, unknown>;
 
-				// 如果是编辑 Creature 相关字段，需要特殊处理
+				// Editing a Creature-related field requires special handling
 				if (this.isCreatureField(normalizedKey)) {
-					// 确保 Creature 对象存在
+					// Ensure the Creature object exists
 					let creature = record.Creature as Record<string, unknown> | undefined;
 					if (!creature || typeof creature !== 'object') {
 						creature = {};
 						record.Creature = creature;
 					}
 
-					// 更新 Creature 中的字段
+					// Update the field within Creature
 					if (normalizedKey === 'AttachWearables') {
-						// 将逗号分隔的字符串转换为数字索引对象
+						// Convert the comma-separated string into a numeric-indexed object
 						const itemDefs = normalizedValue.split(',').map(s => s.trim()).filter(s => s.length > 0);
 						if (itemDefs.length > 0) {
 							const attachWearables: Record<string, Record<string, string>> = {};
@@ -1904,7 +2011,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 							delete creature[normalizedKey];
 						}
 					} else {
-						// DisableClumpingBehavior 和 UsesGestureBasedAttackAnimation
+						// DisableClumpingBehavior and UsesGestureBasedAttackAnimation
 						if (normalizedValue) {
 							creature[normalizedKey] = normalizedValue;
 						} else {
@@ -1912,13 +2019,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						}
 					}
 
-					// 如果 Creature 为空，删除它
+					// If Creature is empty, delete it
 					if (Object.keys(creature).length === 0) {
 						delete record.Creature;
 					}
 					mutated = true;
 				} else {
-					// 普通字段直接更新
+					// Update normal fields directly
 					const previousValue = record[normalizedKey];
 					if ((previousValue === undefined || previousValue === null ? '' : String(previousValue)) === normalizedValue) {
 						continue;
@@ -1936,22 +2043,22 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 			const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 
-			// 如果启用了本地化绑定，自动导出本地化文件
+			// If localization binding is enabled, automatically export the localization file
 			const docKey = this.getRelativeDocumentKey(document.uri);
 			const localizationSettings = this.localizationSettingsCache.get(docKey);
 			if (localizationSettings?.enabled && localizationSettings?.mappings?.length > 0) {
 				await this.exportLocalizationFile(document, localizationSettings).catch(err => {
-					console.error('自动导出本地化文件失败:', err);
+					console.error('Failed to auto-export the localization file:', err);
 				});
 			}
 		});
@@ -1971,22 +2078,22 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，修改未保存。');
+				throw new Error('Failed to parse the KV root node; changes were not saved.');
 			}
 			const block = kvObject[header];
 			if (!block || typeof block !== 'object') {
-				throw new Error('当前 KV 结构不支持直接编辑。');
+				throw new Error('The current KV structure does not support direct editing.');
 			}
 			const blockRecord = block as Record<string, unknown>;
 			const oldRow = blockRecord[oldId];
 			if (!oldRow) {
-				throw new Error(`未找到条目 "${oldId}"，修改未保存。`);
+				throw new Error(`Entry "${oldId}" not found, changes not saved.`);
 			}
 			if (blockRecord[newId] !== undefined) {
-				throw new Error(`条目 "${newId}" 已存在，无法重命名。`);
+				throw new Error(`Entry "${newId}" already exists, cannot rename.`);
 			}
 
-			// 重建对象以保持属性顺序
+			// Rebuild the object to preserve property order
 			const newBlock: Record<string, unknown> = {};
 			for (const key of Object.keys(blockRecord)) {
 				if (key === oldId) {
@@ -2003,17 +2110,17 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 			const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 
-			// 更新公式存储中的 rowId
+			// Update rowId in the formula store
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 			if (workspaceFolder) {
 				const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
@@ -2024,7 +2131,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						const oldRowKey = `id:${oldId}`;
 						const newRowKey = `id:${newId}`;
 
-						// 如果存在旧的行键，将其公式移到新的行键下
+						// If an old row key exists, move its formula under the new row key
 						if (documentFormulas[oldRowKey]) {
 							documentFormulas[newRowKey] = { ...documentFormulas[oldRowKey] };
 							delete documentFormulas[oldRowKey];
@@ -2047,24 +2154,28 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 		const rawScriptPath = typeof payload.scriptPath === 'string' ? payload.scriptPath.trim() : '';
 		if (!rawScriptPath) {
-			void vscode.window.showInformationMessage('当前单元格没有脚本路径。');
+			void vscode.window.showInformationMessage(localize('msg_no_script_path'));
 			return;
 		}
 		const folderType = payload.folderType ?? this.detectFolderType(document.uri);
-		if (folderType !== 'ability' && folderType !== 'item') {
-			void vscode.window.showWarningMessage('当前 KV 类型不支持脚本跳转。');
-			return;
-		}
 		const useTypescript = Boolean(vscode.workspace.getConfiguration().get('dota2-tools.A6.Kv to lua generate typescript'));
-		const baseDir = useTypescript ? getContentDir() : getGameDir();
+		let baseDir = useTypescript ? getContentDir() : getGameDir();
+		// Fallback: derive game dir from document path (look for /game/scripts/npc/)
 		if (!baseDir) {
-			void vscode.window.showWarningMessage('未配置 Dota 2 目录，无法定位脚本文件。');
+			const docPath = document.uri.fsPath.replace(/\\/g, '/');
+			const gameMatch = docPath.match(/^(.+?\/game)\//i);
+			if (gameMatch) {
+				baseDir = gameMatch[1];
+			}
+		}
+		if (!baseDir) {
+			void vscode.window.showWarningMessage(localize('msg_dota2_dir_not_configured'));
 			return;
 		}
 		const extension = useTypescript ? '.ts' : '.lua';
 		let normalized = rawScriptPath.replace(/\\/g, '/').trim();
 		if (!normalized) {
-			void vscode.window.showWarningMessage('无法解析脚本路径。');
+			void vscode.window.showWarningMessage(localize('msg_cannot_resolve_script'));
 			return;
 		}
 		normalized = normalized.replace(/^scripts\/vscripts\//i, '');
@@ -2079,28 +2190,29 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			fileExists = false;
 		}
 
-		// 如果文件不存在，创建该文件
+		// If the file does not exist, create it
 		if (!fileExists) {
+			const createLabel = localize('msg_create');
 			const createFile = await vscode.window.showInformationMessage(
-				`脚本文件不存在，是否创建？\n${candidatePath}`,
-				'创建',
-				'取消'
+				localize('msg_create_script_prompt', [candidatePath]),
+				createLabel,
+				localize('msg_cancel')
 			);
-			if (createFile !== '创建') {
+			if (createFile !== createLabel) {
 				return;
 			}
 
 			try {
-				// 确保目录存在
+				// Ensure the directory exists
 				const dirPath = path.dirname(candidatePath);
 				await fs.promises.mkdir(dirPath, { recursive: true });
 
-				// 生成脚本模板内容
+				// Generate the script template content
 				const scriptContent = this.generateScriptTemplate(normalized, folderType, useTypescript);
 				await fs.promises.writeFile(candidatePath, scriptContent, 'utf8');
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
-				void vscode.window.showErrorMessage(`创建脚本文件失败：${message}`);
+				void vscode.window.showErrorMessage(localize('msg_failed_create_script', [message]));
 				return;
 			}
 		}
@@ -2110,16 +2222,16 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			await vscode.window.showTextDocument(scriptDocument, { preview: false });
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			void vscode.window.showErrorMessage(`无法打开脚本文件：${message}`);
+			void vscode.window.showErrorMessage(localize('msg_cannot_open_script', [message]));
 		}
 	}
 
 	private generateScriptTemplate(scriptPath: string, folderType: KvFolderType, useTypescript: boolean): string {
-		// 从路径中提取文件名（不含扩展名）
+		// Extract the file name from the path (without extension)
 		const filename = path.basename(scriptPath);
 		const luaPath = scriptPath.replace(/\\/g, '/');
 
-		// 尝试读取用户自定义模板
+		// Try to read the user's custom template
 		try {
 			const templateConfig = vscode.workspace.getConfiguration().get('dota2-tools.LuaTemplateFiles') as { ability?: string; item?: string; } | undefined;
 			if (templateConfig) {
@@ -2141,10 +2253,10 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				}
 			}
 		} catch {
-			// 忽略模板读取错误，使用默认模板
+			// Ignore template read errors and use the default template
 		}
 
-		// 使用插件内置的默认模板
+		// Use the extension's built-in default template
 		try {
 			const defaultTemplatePath = path.join(this.context.extensionPath, 'resource', 'lua_template.lua');
 			if (fs.existsSync(defaultTemplatePath)) {
@@ -2154,10 +2266,10 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return snippet;
 			}
 		} catch {
-			// 忽略模板读取错误
+			// Ignore template read errors
 		}
 
-		// 最后的备用模板
+		// Final fallback template
 		if (useTypescript) {
 			return `// ${filename}\n\nexport function ${filename}(): void {\n    // TODO: Implement\n}\n`;
 		}
@@ -2166,13 +2278,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 	private async handleOpenTextEditor(document: vscode.TextDocument): Promise<void> {
 		try {
-			// 关闭当前的自定义编辑器，打开默认的文本编辑器
+			// Close the current custom editor and open the default text editor
 			await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
-			// 用默认编辑器打开文档
+			// Open the document with the default editor
 			await vscode.window.showTextDocument(document, { preview: false });
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			void vscode.window.showErrorMessage(`无法打开文本编辑器：${message}`);
+			void vscode.window.showErrorMessage(localize('msg_cannot_open_editor', [message]));
 		}
 	}
 
@@ -2183,7 +2295,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			await vscode.commands.executeCommand('markdown.showPreview', docUri);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			void vscode.window.showErrorMessage(`无法打开公式帮助文档：${message}`);
+			void vscode.window.showErrorMessage(localize('msg_cannot_open_formula_doc', [message]));
 		}
 	}
 
@@ -2199,34 +2311,34 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 读取配置
+			// Read the configuration
 			const overrides = this.getColumnOptionOverrides(workspaceFolder);
 			const settings = overrides.localizationSettings?.[docKey];
 
-			// 如果启用了本地化且有映射配置，加载 AbilityValues 描述缓存
-			// 这个操作独立于 autoUpdateOnOpen，确保重启后缓存能恢复
+			// If localization is enabled and mapping configs exist, load the AbilityValues description cache
+			// This operation is independent of autoUpdateOnOpen, ensuring the cache can be restored after a restart
 			if (settings && settings.enabled && settings.mappings && settings.mappings.length > 0) {
 				const imported = await this.importAbilityValuesDescriptions(document, settings, docKey);
-				// 如果成功导入了描述，通知前端刷新
+				// If descriptions were imported successfully, notify the frontend to refresh
 				if (imported > 0 && onRefresh) {
 					onRefresh();
 				}
 			}
 
-			// 检查是否启用了自动更新
+			// Check whether auto-update is enabled
 			if (!settings || !settings.enabled || !settings.autoUpdateOnOpen) {
 				return;
 			}
 
-			// 检查是否有映射配置和文件路径
+			// Check whether mapping configs and a file path exist
 			if (!settings.mappings || settings.mappings.length === 0 || !settings.filePath) {
 				return;
 			}
 
-			// 执行自动导入（从VDF更新到KV）
+			// Perform automatic import (update from VDF to KV)
 			await this.importLocalizationFile(document, settings);
 		} catch (error) {
-			// 静默失败，不打扰用户
+			// Fail silently without disturbing the user
 			console.error('Auto update localization error:', error);
 		}
 	}
@@ -2243,24 +2355,24 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 读取配置
+			// Read the configuration
 			const overrides = this.getColumnOptionOverrides(workspaceFolder);
 			const settings = overrides.localizationSettings?.[docKey];
 
-			// 检查是否启用了本地化绑定
+			// Check whether localization binding is enabled
 			if (!settings || !settings.enabled) {
 				return;
 			}
 
-			// 检查是否有映射配置和文件路径
+			// Check whether mapping configs and a file path exist
 			if (!settings.mappings || settings.mappings.length === 0 || !settings.filePath) {
 				return;
 			}
 
-			// 执行导出（从KV导出到VDF）
+			// Perform export (export from KV to VDF)
 			await this.exportLocalizationFile(document, settings, true);
 		} catch (error) {
-			// 静默失败，不打扰用户
+			// Fail silently without disturbing the user
 			console.error('Auto export localization error:', error);
 		}
 	}
@@ -2274,16 +2386,16 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const language = payload?.language || 'schinese';
 			const localizationBasePath = vscode.workspace.getConfiguration().get<string>('dota2-tools.A5.localization_path') || '';
 
-			// 从document.uri获取KV文件的完整路径
+			// Get the full path of the KV file from document.uri
 			const kvFilePath = document.uri.fsPath;
 
-			// 提取scripts/npc之后的相对路径
+			// Extract the relative path after scripts/npc
 			let kvRelativePath = '';
 			const normalizedPath = kvFilePath.replace(/\\/g, '/');
 			const npcMatch = normalizedPath.match(/\/scripts\/npc\/(.+)$/i);
 			if (npcMatch && npcMatch[1]) {
 				kvRelativePath = npcMatch[1];
-				// 移除文件扩展名
+				// Remove the file extension
 				kvRelativePath = kvRelativePath.replace(/\.(txt|kv)$/, '');
 			}
 
@@ -2295,7 +2407,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 构建完整路径
+			// Build the full path
 			const fullPath = localizationBasePath
 				? `${localizationBasePath}/${language}/${kvRelativePath}.vdf`
 				: `{localization_path}/${language}/${kvRelativePath}.vdf`;
@@ -2320,21 +2432,21 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		try {
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 			if (!workspaceFolder) {
-				throw new Error('未找到工作区文件夹');
+				throw new Error('Workspace folder not found');
 			}
 
-			// 读取现有的配置文件
+			// Read the existing configuration file
 			const overrides = this.readColumnOptionOverridesFromDisk(workspaceFolder);
 
-			// 更新localizationSettings
+			// Update localizationSettings
 			if (!overrides.localizationSettings) {
 				overrides.localizationSettings = {};
 			}
 
-			// 使用工作区相对路径作为key，与其他配置保持一致
+			// Use the workspace relative path as the key, consistent with other configs
 			const docKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
 			if (!docKey) {
-				throw new Error('无法获取文档相对路径');
+				throw new Error('Failed to get the document relative path');
 			}
 
 			overrides.localizationSettings[docKey] = {
@@ -2345,13 +2457,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				mappings: Array.isArray(payload?.mappings) ? payload.mappings : []
 			};
 
-			// 写入文件
+			// Write the file
 			this.writeColumnOptionOverrides(workspaceFolder, overrides);
 
-			// 更新缓存
+			// Update the cache
 			this.localizationSettingsCache.set(docKey, overrides.localizationSettings[docKey]);
 
-			// 如果启用了绑定，立即导出一次本地化文件
+			// If binding is enabled, immediately export the localization file once
 			if (payload?.enabled && payload?.mappings && Array.isArray(payload.mappings) && payload?.filePath) {
 				await this.exportLocalizationFile(document, payload);
 			}
@@ -2359,7 +2471,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			console.log('Localization settings saved:', payload);
 		} catch (error) {
 			console.error('Error saving localization settings:', error);
-			vscode.window.showErrorMessage(`保存本地化设置失败: ${error}`);
+			vscode.window.showErrorMessage(localize('msg_failed_save_localization', [String(error)]));
 		}
 	}
 
@@ -2372,28 +2484,28 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 构建实际的文件路径
+			// Build the actual file path
 			const contentDir = getContentDir();
 			if (!contentDir) {
-				throw new Error('未找到content目录');
+				throw new Error('content directory not found');
 			}
 
-			// 从document.uri获取KV文件的相对路径
+			// Get the relative path of the KV file from document.uri
 			const kvFilePath = document.uri.fsPath;
 			const normalizedPath = kvFilePath.replace(/\\/g, '/');
 			const npcMatch = normalizedPath.match(/\/scripts\/npc\/(.+)$/i);
 			if (!npcMatch || !npcMatch[1]) {
-				throw new Error('无法解析KV文件路径');
+				throw new Error('Failed to parse the KV file path');
 			}
 
 			let kvRelativePath = npcMatch[1];
-			// 移除文件扩展名
+			// Remove the file extension
 			kvRelativePath = kvRelativePath.replace(/\.(txt|kv)$/, '');
 
-			// 构建VDF文件路径
+			// Build the VDF file path
 			const vdfPath = path.join(contentDir, 'localization', language, kvRelativePath + '.vdf');
 
-			// 解析KV文件
+			// Parse the KV file
 			const kvText = document.getText();
 			const kvObject = readKeyValue2(kvText);
 			const rootKey = Object.keys(kvObject)[0];
@@ -2406,21 +2518,21 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 构建tokens对象
+			// Build the tokens object
 			const tokens: Record<string, string> = {};
 
-			// 获取 documentKey 和 AbilityValues 描述缓存
+			// Get the documentKey and AbilityValues description cache
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 			const documentKey = workspaceFolder ? this.getDocumentSettingsKey(document.uri, workspaceFolder) : undefined;
 			const docDescriptions = documentKey ? this.abilityValuesDescriptionCache.get(documentKey) : undefined;
 
-			// 遍历KV数据的每一行
+			// Iterate over each row of the KV data
 			for (const [id, rowData] of Object.entries(kvData)) {
 				if (!rowData || typeof rowData !== 'object') {
 					continue;
 				}
 
-				// 对每个映射规则进行处理
+				// Process each mapping rule
 				for (const mapping of mappings) {
 					const columnName = mapping.columnName;
 					const rule = mapping.rule;
@@ -2429,16 +2541,16 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						continue;
 					}
 
-					// 特殊处理 AbilityValues
+					// Special handling for AbilityValues
 					if (columnName === 'AbilityValues') {
 						const abilityValues = (rowData as any)[columnName];
 						if (abilityValues && typeof abilityValues === 'object') {
 							const rowDescriptions = docDescriptions?.get(id);
-							// 遍历 AbilityValues 的每个 key，导出其描述
+							// Iterate over each key of AbilityValues and export its description
 							for (const key of Object.keys(abilityValues)) {
 								const description = rowDescriptions?.get(key);
 								if (description) {
-									// 替换规则中的 ${id} 和 ${key}
+									// Replace ${id} and ${key} in the rule
 									const tokenKey = rule
 										.replace(/\$\{id\}/g, id)
 										.replace(/\$\{key\}/g, key);
@@ -2449,19 +2561,19 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						continue;
 					}
 
-					// 普通列的处理
+					// Handling for normal columns
 					const columnValue = (rowData as any)[columnName];
 					if (columnValue === undefined || columnValue === null) {
 						continue;
 					}
 
-					// 替换规则中的${id}
+					// Replace ${id} in the rule
 					const tokenKey = rule.replace(/\$\{id\}/g, id);
 					tokens[tokenKey] = String(columnValue);
 				}
 			}
 
-			// 构建VDF结构
+			// Build the VDF structure
 			const vdfObject = {
 				lang: {
 					Language: this.getLanguageDisplayName(language),
@@ -2469,24 +2581,24 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				}
 			};
 
-			// 写入VDF文件
+			// Write the VDF file
 			const vdfContent = writeKeyValue(vdfObject, 0);
 
-			// 添加文件头部注释
-			// const fileHeader = '// 此文件由Dota2 KV编辑器自动生成\n// 请勿手动编辑 - 更改将在下次导出时被覆盖\n\n';
+			// Add a file header comment
+			// const fileHeader = '// This file is auto-generated by the Dota2 KV editor\n// Do not edit manually - changes will be overwritten on the next export\n\n';
 			const finalContent = vdfContent;
 
-			// 确保目录存在
+			// Ensure the directory exists
 			const dir = path.dirname(vdfPath);
 			if (!fs.existsSync(dir)) {
 				fs.mkdirSync(dir, { recursive: true });
 			}
 
-			// 写入文件
+			// Write the file
 			fs.writeFileSync(vdfPath, finalContent, 'utf8');
 
 			if (!silent) {
-				vscode.window.showInformationMessage(`本地化文件已导出: ${path.basename(vdfPath)}`);
+				vscode.window.showInformationMessage(localize('msg_localization_exported', [path.basename(vdfPath)]));
 			}
 		} catch (error) {
 			console.error('Error exporting localization file:', error);
@@ -2503,41 +2615,41 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 构建实际的文件路径
+			// Build the actual file path
 			const contentDir = getContentDir();
 			if (!contentDir) {
-				throw new Error('未找到content目录');
+				throw new Error('content directory not found');
 			}
 
-			// 从document.uri获取KV文件的相对路径
+			// Get the relative path of the KV file from document.uri
 			const kvFilePath = document.uri.fsPath;
 			const normalizedPath = kvFilePath.replace(/\\/g, '/');
 			const npcMatch = normalizedPath.match(/\/scripts\/npc\/(.+)$/i);
 			if (!npcMatch || !npcMatch[1]) {
-				throw new Error('无法解析KV文件路径');
+				throw new Error('Failed to parse the KV file path');
 			}
 
 			let kvRelativePath = npcMatch[1];
-			// 移除文件扩展名
+			// Remove the file extension
 			kvRelativePath = kvRelativePath.replace(/\.(txt|kv)$/, '');
 
-			// 构建VDF文件路径
+			// Build the VDF file path
 			const vdfPath = path.join(contentDir, 'localization', language, kvRelativePath + '.vdf');
 
-			// 检查VDF文件是否存在
+			// Check whether the VDF file exists
 			if (!fs.existsSync(vdfPath)) {
-				console.warn(`本地化文件不存在: ${vdfPath}`);
+				console.warn(`Localization file does not exist: ${vdfPath}`);
 				return;
 			}
 
-			// 读取并解析VDF文件
+			// Read and parse the VDF file
 			const tokens = this.loadLocalizationTokens(vdfPath);
 			if (!tokens) {
-				console.warn('无法加载本地化tokens');
+				console.warn('Failed to load localization tokens');
 				return;
 			}
 
-			// 解析KV文件
+			// Parse the KV file
 			const kvText = document.getText();
 			const kvObject = readKeyValue2(kvText);
 			const rootKey = Object.keys(kvObject)[0];
@@ -2552,13 +2664,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 			let hasChanges = false;
 
-			// 遍历KV数据的每一行
+			// Iterate over each row of the KV data
 			for (const [id, rowData] of Object.entries(kvData)) {
 				if (!rowData || typeof rowData !== 'object') {
 					continue;
 				}
 
-				// 对每个映射规则进行处理
+				// Process each mapping rule
 				for (const mapping of mappings) {
 					const columnName = mapping.columnName;
 					const rule = mapping.rule;
@@ -2567,13 +2679,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						continue;
 					}
 
-					// 替换规则中的${id}生成token key
+					// Replace ${id} in the rule to generate the token key
 					const tokenKey = rule.replace(/\$\{id\}/g, id);
 					const tokenValue = tokens.get(tokenKey.toLowerCase());
 
 					if (tokenValue !== undefined) {
 						const currentValue = (rowData as any)[columnName];
-						// 只有当值不同时才更新
+						// Only update when the values differ
 						if (currentValue !== tokenValue) {
 							(rowData as any)[columnName] = tokenValue;
 							hasChanges = true;
@@ -2582,7 +2694,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				}
 			}
 
-			// 如果有修改，写回文件
+			// If there are changes, write back to the file
 			if (hasChanges) {
 				const newKvText = writeKeyValue(kvObject, 0);
 				const edit = new vscode.WorkspaceEdit();
@@ -2604,13 +2716,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const language = settings.language || 'schinese';
 			const mappings = settings.mappings || [];
 
-			// 查找 AbilityValues 的映射规则
+			// Find the mapping rule for AbilityValues
 			const abilityValuesMapping = mappings.find((m: any) => m.columnName === 'AbilityValues');
 			if (!abilityValuesMapping || !abilityValuesMapping.rule) {
 				return 0;
 			}
 
-			// 构建VDF文件路径
+			// Build the VDF file path
 			const contentDir = getContentDir();
 			if (!contentDir) {
 				return 0;
@@ -2631,13 +2743,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return 0;
 			}
 
-			// 读取VDF文件中的 tokens
+			// Read the tokens from the VDF file
 			const tokens = this.loadLocalizationTokens(vdfPath);
 			if (!tokens) {
 				return 0;
 			}
 
-			// 解析KV文件以获取所有行的id和AbilityValues的key
+			// Parse the KV file to get the id of every row and the keys of AbilityValues
 			const kvText = document.getText();
 			const kvObject = readKeyValue2(kvText);
 			const rootKey = Object.keys(kvObject)[0];
@@ -2652,19 +2764,19 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return 0;
 			}
 
-			// 创建或获取文档的描述缓存
+			// Create or get the document's description cache
 			let docDescriptions = this.abilityValuesDescriptionCache.get(documentKey);
 			if (!docDescriptions) {
 				docDescriptions = new Map();
 				this.abilityValuesDescriptionCache.set(documentKey, docDescriptions);
 			}
 
-			// 清空现有描述
+			// Clear existing descriptions
 			docDescriptions.clear();
 
 			let totalDescriptionsFound = 0;
 
-			// 遍历每一行，提取 AbilityValues 的描述
+			// Iterate over each row and extract the AbilityValues descriptions
 			for (const [id, rowData] of Object.entries(kvData)) {
 				if (!rowData || typeof rowData !== 'object') {
 					continue;
@@ -2677,9 +2789,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 				const rowDescriptions = new Map<string, string>();
 
-				// 遍历 AbilityValues 的每个key
+				// Iterate over each key of AbilityValues
 				for (const key of Object.keys(abilityValues)) {
-					// 根据规则生成 token key: ${id} 和 ${key}
+					// Generate the token key from the rule: ${id} and ${key}
 					const tokenKey = abilityValuesMapping.rule
 						.replace(/\$\{id\}/g, id)
 						.replace(/\$\{key\}/g, key);
@@ -2710,29 +2822,29 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		try {
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 			if (!workspaceFolder) {
-				throw new Error('未找到工作区文件夹');
+				throw new Error('Workspace folder not found');
 			}
 
 			const docKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
 			if (!docKey) {
-				throw new Error('无法获取文档相对路径');
+				throw new Error('Failed to get the document relative path');
 			}
 
 			const rowId = payload?.rowId;
 			const descriptions = payload?.descriptions; // Record<string, string>
 
 			if (!rowId || typeof descriptions !== 'object') {
-				throw new Error('无效的payload');
+				throw new Error('Invalid payload');
 			}
 
-			// 获取或创建文档的描述缓存
+			// Get or create the document's description cache
 			let docDescriptions = this.abilityValuesDescriptionCache.get(docKey);
 			if (!docDescriptions) {
 				docDescriptions = new Map();
 				this.abilityValuesDescriptionCache.set(docKey, docDescriptions);
 			}
 
-			// 更新该行的描述
+			// Update this row's descriptions
 			const rowDescriptions = new Map<string, string>();
 			for (const [key, description] of Object.entries(descriptions)) {
 				if (description && typeof description === 'string') {
@@ -2741,7 +2853,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 			docDescriptions.set(rowId, rowDescriptions);
 
-			// 检查是否启用了本地化，如果启用则立即导出
+			// Check whether localization is enabled; if so, export immediately
 			const settings = this.localizationSettingsCache.get(docKey);
 			if (settings?.enabled && settings.autoUpdateOnOpen) {
 				await this.exportLocalizationFile(document, settings, true);
@@ -2750,7 +2862,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			console.log('AbilityValues descriptions saved for row:', rowId);
 		} catch (error) {
 			console.error('Error saving AbilityValues descriptions:', error);
-			vscode.window.showErrorMessage(`保存描述失败: ${error}`);
+			vscode.window.showErrorMessage(localize('msg_failed_save_description', [String(error)]));
 		}
 	}
 
@@ -2773,21 +2885,21 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 
 	/**
-	 * 将文档URI转换为团队协作友好的相对路径格式
-	 * 例如: file:///f:/path/to/game/scripts/npc/items/bless.kv -> ${content}/scripts/npc/items/bless.kv
-	 * 注意：KV文件虽然在game目录下，但为了统一性，统一使用${content}作为基准
+	 * Convert the document URI into a team-collaboration-friendly relative path format
+	 * For example: file:///f:/path/to/game/scripts/npc/items/bless.kv -> ${content}/scripts/npc/items/bless.kv
+	 * Note: although KV files live under the game directory, for consistency they always use ${content} as the base
 	 */
 	private getRelativeDocumentKey(documentUri: vscode.Uri): string {
 		const fsPath = documentUri.fsPath;
 		const normalizedPath = fsPath.replace(/\\/g, '/');
 
-		// 尝试提取scripts/npc之后的路径（优先使用这个，因为更通用）
+		// Try to extract the path after scripts/npc (prefer this since it is more general)
 		const npcMatch = normalizedPath.match(/\/(scripts\/npc\/.+)$/i);
 		if (npcMatch && npcMatch[1]) {
 			return `\${content}/${npcMatch[1]}`;
 		}
 
-		// 尝试匹配content目录
+		// Try to match the content directory
 		const contentDir = getContentDir();
 		if (contentDir) {
 			const normalizedContentDir = contentDir.replace(/\\/g, '/');
@@ -2797,24 +2909,24 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 如果content目录不可用，尝试匹配game目录
+		// If the content directory is unavailable, try to match the game directory
 		const gameDir = getGameDir();
 		if (gameDir) {
 			const normalizedGameDir = gameDir.replace(/\\/g, '/');
 			if (normalizedPath.startsWith(normalizedGameDir)) {
 				const relativePath = normalizedPath.substring(normalizedGameDir.length).replace(/^\//, '');
-				// 即使匹配到game目录，也使用${content}作为前缀，保持一致性
+				// Even when matching the game directory, use ${content} as the prefix for consistency
 				return `\${content}/${relativePath}`;
 			}
 		}
 
-		// 最后回退到使用URI字符串
+		// Finally fall back to using the URI string
 		return documentUri.toString();
 	}
 
 	/**
-	 * 将相对路径转换为实际的文件路径
-	 * 例如: ${content}/scripts/npc/items/bless.kv -> /actual/path/to/content/scripts/npc/items/bless.kv
+	 * Convert a relative path into an actual file path
+	 * For example: ${content}/scripts/npc/items/bless.kv -> /actual/path/to/content/scripts/npc/items/bless.kv
 	 */
 	private resolveRelativeDocumentKey(relativeKey: string): string | undefined {
 		if (relativeKey.startsWith('${content}/')) {
@@ -2850,11 +2962,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const kvObject = readKeyValue2(originalText ?? '');
 		const header = Object.keys(kvObject)[0];
 		if (!header) {
-			throw new Error('无法解析 KV 根节点，未执行排序。');
+			throw new Error('Failed to parse the KV root node; sorting was not performed.');
 		}
 		const blockRaw = kvObject[header];
 		if (!blockRaw || typeof blockRaw !== 'object') {
-			throw new Error('当前 KV 结构不支持行排序。');
+			throw new Error('The current KV structure does not support row sorting.');
 		}
 		const block = blockRaw as Record<string, unknown>;
 		const entries = Object.entries(block);
@@ -2911,13 +3023,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		edit.replace(document.uri, fullRange, newContent);
 		const applied = await vscode.workspace.applyEdit(edit);
 		if (!applied) {
-			throw new Error('写入 KV 文本失败。');
+			throw new Error('Failed to write the KV text.');
 		}
 		const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 		if (autoSaveMode && autoSaveMode !== 'off') {
 			const saved = await document.save();
 			if (!saved) {
-				throw new Error('保存 KV 文件失败。');
+				throw new Error('Failed to save the KV file.');
 			}
 		}
 	}
@@ -2939,11 +3051,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，未执行插入。');
+				throw new Error('Failed to parse the KV root node; insertion was not performed.');
 			}
 			const blockRaw = kvObject[header];
 			if (!blockRaw || typeof blockRaw !== 'object') {
-				throw new Error('当前 KV 结构不支持行插入。');
+				throw new Error('The current KV structure does not support row insertion.');
 			}
 			const block = blockRaw as Record<string, unknown>;
 			const entries = Object.entries(block);
@@ -3001,7 +3113,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 			try {
 				this.shiftFormulaRowIndices(document, insertionRowIndex, 1);
@@ -3012,7 +3124,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 		});
@@ -3024,7 +3136,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			console.log(`[handleBulkInsertRows] 接收到 ${message.rows.length} 行数据`, message.rows);
+			console.log(`[handleBulkInsertRows] Received ${message.rows.length} rows of data`, message.rows);
 
 			const insertAfterIndex = Number(message.insertAfterIndex);
 			if (!Number.isFinite(insertAfterIndex)) {
@@ -3035,11 +3147,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，未执行批量插入。');
+				throw new Error('Failed to parse the KV root node; bulk insertion was not performed.');
 			}
 			const blockRaw = kvObject[header];
 			if (!blockRaw || typeof blockRaw !== 'object') {
-				throw new Error('当前 KV 结构不支持批量插入。');
+				throw new Error('The current KV structure does not support bulk insertion.');
 			}
 			const block = blockRaw as Record<string, unknown>;
 			const entries = Object.entries(block);
@@ -3048,7 +3160,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				.filter((entry) => this.isPlainObject(entry.value));
 			const totalRows = rowEntries.length;
 
-			// 计算插入位置
+			// Calculate the insertion position
 			let insertionEntryIndex = entries.length;
 			let insertionRowIndex = totalRows;
 
@@ -3063,11 +3175,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const newEntries = entries.slice();
 			let insertedCount = 0;
 
-			console.log(`[handleBulkInsertRows] 开始插入 ${message.rows.length} 行，插入位置: ${insertionEntryIndex}`);
+			console.log(`[handleBulkInsertRows] Starting insertion of ${message.rows.length} rows, insertion position: ${insertionEntryIndex}`);
 
-			// 批量插入行
+			// Bulk insert rows
 			for (const rowData of message.rows) {
-				// 生成唯一 key 时需要考虑已插入的行
+				// When generating a unique key, account for already inserted rows
 				const updatedBlock: Record<string, unknown> = {};
 				newEntries.forEach(([key, value]) => {
 					updatedBlock[key] = value;
@@ -3076,31 +3188,31 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				const newRowKey = this.generateUniqueRowKey(updatedBlock);
 				const newRowValue: Record<string, unknown> = {};
 
-				console.log(`[handleBulkInsertRows] 插入第 ${insertedCount + 1} 行，新 key: ${newRowKey}`);
+				console.log(`[handleBulkInsertRows] Inserting row ${insertedCount + 1}, new key: ${newRowKey}`);
 
-				// 优先使用 rawObject 完整复制（保留嵌套结构），否则使用 values
+				// Prefer a full copy via rawObject (preserves nested structure); otherwise use values
 				const usedRawObject = !!(rowData.rawObject && typeof rowData.rawObject === 'object');
 
 				if (usedRawObject) {
-					// 深拷贝原始对象，保留所有嵌套结构（如 AttackRangeActivityModifiers, animation_transitions 等）
+					// Deep-copy the original object, preserving all nested structures (e.g. AttackRangeActivityModifiers, animation_transitions, etc.)
 					for (const [key, value] of Object.entries(rowData.rawObject!)) {
 						if (key === 'AbilityValues') {
-							// AbilityValues 特殊处理，稍后覆盖
+							// AbilityValues is handled specially and overwritten later
 							continue;
 						}
 						if (this.isPlainObject(value)) {
-							// 深拷贝嵌套对象
+							// Deep-copy the nested object
 							newRowValue[key] = JSON.parse(JSON.stringify(value));
 						} else {
 							newRowValue[key] = value;
 						}
 					}
 				} else if (rowData.values && typeof rowData.values === 'object') {
-					// 后备方案：使用扁平化的 values
+					// Fallback: use the flattened values
 					Object.assign(newRowValue, rowData.values);
 				}
 
-				// 处理 AbilityValues
+				// Handle AbilityValues
 				if (rowData.abilityValues && Array.isArray(rowData.abilityValues)) {
 					const abilityValuesBlock: Record<string, unknown> = {};
 					for (const entry of rowData.abilityValues as unknown as AbilityValuesEntry[]) {
@@ -3108,12 +3220,12 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						if (!key) {
 							continue;
 						}
-						// 如果是纯标量且没有修饰符，直接保存值
+						// If it is a pure scalar with no modifiers, save the value directly
 						if (entry.type === 'scalar' && (!entry.modifiers || !entry.modifiers.length)) {
 							abilityValuesBlock[key] = entry.value ?? '';
 							continue;
 						}
-						// 否则保存为对象结构
+						// Otherwise save as an object structure
 						const blockValue: Record<string, string> = {};
 						blockValue.value = entry.value ?? '';
 						for (const modifier of entry.modifiers ?? []) {
@@ -3129,8 +3241,8 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 只有在使用扁平化 values 时才需要重建 Creature 结构
-				// 使用 rawObject 时 Creature 已经是正确的嵌套结构
+				// Only rebuild the Creature structure when using flattened values
+				// When using rawObject, Creature is already the correct nested structure
 				if (!usedRawObject) {
 					const rebuiltRowValue = this.rebuildCreatureStructure(newRowValue);
 					newEntries.splice(insertionEntryIndex + insertedCount, 0, [newRowKey, rebuiltRowValue]);
@@ -3140,9 +3252,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				insertedCount++;
 			}
 
-			console.log(`[handleBulkInsertRows] 完成插入，共插入 ${insertedCount} 行`);
+			console.log(`[handleBulkInsertRows] finished inserting, inserted ${insertedCount} rows`);
 
-			// 收集所有需要保存的公式
+			// Collect all formulas that need saving
 			const formulasToSave: Array<{ column: string; rowId: string; rowIndex: number; formula: string; }> = [];
 			message.rows.forEach((rowData, index) => {
 				if (rowData.formulas && typeof rowData.formulas === 'object') {
@@ -3175,19 +3287,19 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 
-			// 调整公式行索引
+			// Adjust formula row indices
 			try {
 				this.shiftFormulaRowIndices(document, insertionRowIndex, insertedCount);
 			} catch (error) {
 				console.warn('[kvEditorProvider] Failed to shift formula row indices after bulk insertion:', error);
 			}
 
-			// 保存所有公式
+			// Save all formulas
 			if (formulasToSave.length > 0) {
-				console.log(`[handleBulkInsertRows] 保存 ${formulasToSave.length} 个公式`);
+				console.log(`[handleBulkInsertRows] saving ${formulasToSave.length} formulas`);
 				for (const formulaData of formulasToSave) {
 					await this.handleSaveFormula(document, formulaData);
 				}
@@ -3197,7 +3309,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 		});
@@ -3222,20 +3334,20 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，未执行删除。');
+				throw new Error('Cannot parse KV root node; deletion not performed.');
 			}
 			const blockRaw = kvObject[header];
 			if (!blockRaw || typeof blockRaw !== 'object') {
-				throw new Error('当前 KV 结构不支持行删除。');
+				throw new Error('The current KV structure does not support row deletion.');
 			}
 			const block = blockRaw as Record<string, unknown>;
 
-			// 验证行是否存在
+			// Verify the row exists
 			if (!(rowId in block)) {
-				throw new Error(`行 "${rowId}" 不存在。`);
+				throw new Error(`Row "${rowId}" does not exist.`);
 			}
 
-			// 删除指定行
+			// Delete the specified row
 			const newBlock: Record<string, unknown> = {};
 			for (const [key, value] of Object.entries(block)) {
 				if (key !== rowId) {
@@ -3250,10 +3362,10 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 
-			// 更新公式的行索引（删除行后，后面的行索引需要减1）
+			// Update formula row indices (after deleting a row, subsequent row indices decrease by 1)
 			try {
 				this.shiftFormulaRowIndices(document, rowIndex, -1);
 			} catch (error) {
@@ -3264,7 +3376,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 		});
@@ -3294,27 +3406,27 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，未执行插入。');
+				throw new Error('Failed to parse the KV root node; insertion was not performed.');
 			}
 			const blockRaw = kvObject[header];
 			if (!blockRaw || typeof blockRaw !== 'object') {
-				throw new Error('当前 KV 结构不支持列插入。');
+				throw new Error('The current KV structure does not support column insertion.');
 			}
 			const block = blockRaw as Record<string, unknown>;
 			const entries = Object.entries(block);
 
-			// 验证列名是否已存在
+			// Verify whether the column name already exists
 			const parsed = this.parseKv(originalText);
 			if (parsed.columns.includes(columnName) || columnName === 'id') {
-				throw new Error(`列名 "${columnName}" 已存在。`);
+				throw new Error(`Column name "${columnName}" already exists.`);
 			}
 
-			// 验证列名是否合法
+			// Verify the column name is valid
 			if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(columnName)) {
-				throw new Error('列名只能包含字母、数字和下划线，且不能以数字开头。');
+				throw new Error('Column names may contain only letters, digits, and underscores, and cannot start with a digit.');
 			}
 
-			// 在每一行的指定位置插入新列
+			// Insert the new column at the specified position in each row
 			const updatedBlock: Record<string, unknown> = {};
 			for (const [rowKey, rowValue] of entries) {
 				if (!this.isPlainObject(rowValue)) {
@@ -3325,17 +3437,17 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				const rowRecord = rowValue as Record<string, unknown>;
 				const rowEntries = Object.entries(rowRecord);
 
-				// 找到参考列的位置
+				// Find the position of the reference column
 				const referencePosition = rowEntries.findIndex(([key]) => key === referenceKey);
 
 				if (referencePosition === -1) {
-					// 如果找不到参考列，直接添加到末尾
+					// If the reference column is not found, append to the end
 					updatedBlock[rowKey] = {
 						...rowRecord,
 						[columnName]: '',
 					};
 				} else {
-					// 在参考列的指定位置插入新列
+					// Insert the new column at the reference column's position
 					const insertPosition = position === 'before' ? referencePosition : referencePosition + 1;
 					const newRowEntries = rowEntries.slice();
 					newRowEntries.splice(insertPosition, 0, [columnName, '']);
@@ -3355,13 +3467,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 			const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 		});
@@ -3378,31 +3490,31 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// id 列不能删除
+			// The id column cannot be deleted
 			if (columnKey === 'id') {
-				throw new Error('id 列不能删除。');
+				throw new Error('The id column cannot be deleted.');
 			}
 
 			const originalText = document.getText();
 			const kvObject = readKeyValue2(originalText ?? '');
 			const header = Object.keys(kvObject)[0];
 			if (!header) {
-				throw new Error('无法解析 KV 根节点，未执行删除。');
+				throw new Error('Cannot parse KV root node; deletion not performed.');
 			}
 			const blockRaw = kvObject[header];
 			if (!blockRaw || typeof blockRaw !== 'object') {
-				throw new Error('当前 KV 结构不支持列删除。');
+				throw new Error('The current KV structure does not support column deletion.');
 			}
 			const block = blockRaw as Record<string, unknown>;
 			const entries = Object.entries(block);
 
-			// 验证列名是否存在
+			// Verify whether the column name exists
 			const parsed = this.parseKv(originalText);
 			if (!parsed.columns.includes(columnKey)) {
-				throw new Error(`列 "${columnKey}" 不存在。`);
+				throw new Error(`Column "${columnKey}" does not exist.`);
 			}
 
-			// 从每一行中删除指定列
+			// Delete the specified column from each row
 			const updatedBlock: Record<string, unknown> = {};
 			for (const [rowKey, rowValue] of entries) {
 				if (!this.isPlainObject(rowValue)) {
@@ -3413,14 +3525,14 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				const rowRecord = rowValue as Record<string, unknown>;
 				const newRowRecord: Record<string, unknown> = {};
 
-				// 如果是 Creature 相关字段，需要从 Creature 对象中删除
+				// If it is a Creature-related field, delete it from the Creature object
 				if (this.isCreatureField(columnKey)) {
-					// 复制所有非 Creature 字段
+					// Copy all non-Creature fields
 					for (const [key, value] of Object.entries(rowRecord)) {
 						if (key === 'Creature' && this.isPlainObject(value)) {
 							const creature = { ...(value as Record<string, unknown>) };
 							delete creature[columnKey];
-							// 如果 Creature 还有其他字段，保留它；否则删除整个 Creature
+							// If the Creature has other fields, keep it; otherwise delete the entire Creature
 							if (Object.keys(creature).length > 0) {
 								newRowRecord[key] = creature;
 							}
@@ -3429,7 +3541,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						}
 					}
 				} else {
-					// 普通列：复制除了要删除的列之外的所有列
+					// Normal column: copy all columns except the one being deleted
 					for (const [key, value] of Object.entries(rowRecord)) {
 						if (key !== columnKey) {
 							newRowRecord[key] = value;
@@ -3447,13 +3559,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			edit.replace(document.uri, fullRange, newContent);
 			const applied = await vscode.workspace.applyEdit(edit);
 			if (!applied) {
-				throw new Error('写入 KV 文本失败。');
+				throw new Error('Failed to write the KV text.');
 			}
 			const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 			if (autoSaveMode && autoSaveMode !== 'off') {
 				const saved = await document.save();
 				if (!saved) {
-					throw new Error('保存 KV 文件失败。');
+					throw new Error('Failed to save the KV file.');
 				}
 			}
 		});
@@ -3559,11 +3671,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const kvObject = readKeyValue2(originalText ?? '');
 		const header = Object.keys(kvObject)[0];
 		if (!header) {
-			throw new Error('无法解析 KV 根节点，未执行列排序。');
+			throw new Error('Cannot parse KV root node; column sort not performed.');
 		}
 		const blockRaw = kvObject[header];
 		if (!blockRaw || typeof blockRaw !== 'object') {
-			throw new Error('当前 KV 结构不支持列排序。');
+			throw new Error('The current KV structure does not support column sorting.');
 		}
 		const totalColumns = columns.length;
 		let finalTargetIndex = Math.max(1, Math.min(targetIndex, totalColumns - 1));
@@ -3593,13 +3705,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		edit.replace(document.uri, fullRange, newContent);
 		const applied = await vscode.workspace.applyEdit(edit);
 		if (!applied) {
-			throw new Error('写入 KV 文本失败。');
+			throw new Error('Failed to write the KV text.');
 		}
 		const autoSaveMode = vscode.workspace.getConfiguration('files').get<string>('autoSave', 'off');
 		if (autoSaveMode && autoSaveMode !== 'off') {
 			const saved = await document.save();
 			if (!saved) {
-				throw new Error('保存 KV 文件失败。');
+				throw new Error('Failed to save the KV file.');
 			}
 		}
 	}
@@ -3620,7 +3732,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			return;
 		}
 
-		// 分离需要更新和需要删除的列
+		// Separate the columns to update from the columns to delete
 		const widthsToUpdate: Record<string, number> = {};
 		const columnsToDelete: string[] = [];
 
@@ -3630,7 +3742,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					continue;
 				}
 				if (value === null || value === undefined) {
-					// null 或 undefined 表示删除
+					// null or undefined means delete
 					columnsToDelete.push(column);
 				} else {
 					const numeric = typeof value === 'number' ? value : Number(value);
@@ -3646,21 +3758,21 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const existingEntry = settings.files[documentKey];
 		const existingWidths = existingEntry?.columnWidths ? { ...existingEntry.columnWidths } : {};
 
-		// 应用更新
+		// Apply updates
 		Object.assign(existingWidths, widthsToUpdate);
 
-		// 应用删除
+		// Apply deletions
 		columnsToDelete.forEach((column) => {
 			delete existingWidths[column];
 		});
 
-		// 如果没有剩余的列宽配置，删除整个文档条目
+		// If no column-width config remains, delete the entire document entry
 		if (!Object.keys(existingWidths).length) {
 			if (settings.files[documentKey]) {
 				delete settings.files[documentKey];
 			}
 		} else {
-			// 否则更新或创建文档条目
+			// Otherwise update or create the document entry
 			settings.files[documentKey] = existingEntry
 				? { ...existingEntry, columnWidths: existingWidths }
 				: { columnWidths: existingWidths };
@@ -3688,7 +3800,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const settings = this.copyUserSettings(this.getUserSettings(workspaceFolder));
 		const existingEntry = settings.files[documentKey];
 
-		// 更新精简模式设置
+		// Update the lite-mode setting
 		settings.files[documentKey] = existingEntry
 			? { ...existingEntry, compactMode: message.compactMode }
 			: { compactMode: message.compactMode };
@@ -3715,7 +3827,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const settings = this.copyUserSettings(this.getUserSettings(workspaceFolder));
 		const existingEntry = settings.files[documentKey];
 
-		// 更新本地化显示切换设置
+		// Update the localization-display toggle setting
 		settings.files[documentKey] = existingEntry
 			? { ...existingEntry, localizedMode: message.localizedMode }
 			: { localizedMode: message.localizedMode };
@@ -3742,7 +3854,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const settings = this.copyUserSettings(this.getUserSettings(workspaceFolder));
 		const existingEntry = settings.files[documentKey];
 
-		// 更新冻结列设置
+		// Update the frozen-column setting
 		settings.files[documentKey] = existingEntry
 			? { ...existingEntry, frozenColumns: message.frozenColumns || undefined }
 			: { frozenColumns: message.frozenColumns || undefined };
@@ -3763,7 +3875,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 		if (!workspaceFolder) {
-			throw new Error('无法定位工作区，无法保存列描述。');
+			throw new Error('Cannot locate the workspace; column description cannot be saved.');
 		}
 
 		const scope = message.scope === 'file' ? 'file' : 'global';
@@ -3771,7 +3883,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const description = typeof message.description === 'string' && message.description.trim().length ? message.description.trim() : undefined;
 
 		if (scope === 'file') {
-			// per-file setting - 保存到 kv_editor_setting.json
+			// per-file setting - save to kv_editor_setting.json
 			const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
 			if (!documentKey) {
 				return;
@@ -3796,7 +3908,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			overrides.files = Object.keys(files).length ? files : undefined;
 			this.writeColumnOptionOverrides(workspaceFolder, overrides);
 		} else {
-			// global (workspace-level) default - 保存到 kv_editor_setting.json
+			// global (workspace-level) default - save to kv_editor_setting.json
 			const overrides = this.copyColumnOptionOverrides(this.getColumnOptionOverrides(workspaceFolder));
 			const global = overrides.columnDescriptions ? { ...overrides.columnDescriptions } : {};
 			if (label === undefined && description === undefined) {
@@ -3834,14 +3946,14 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const cacheKey = folder.uri.fsPath;
 		const settingsPath = this.getUserSettingsPath(folder);
 
-		// 检查文件修改时间，如果文件已变更则清除缓存
+		// Check the file modification time; clear the cache if the file changed
 		let currentMtime = 0;
 		if (this.pathExists(settingsPath)) {
 			try {
 				const stats = fs.statSync(settingsPath);
 				currentMtime = stats.mtimeMs;
 			} catch (error) {
-				// 文件读取失败，清除缓存
+				// File read failed; clear the cache
 				this.userSettingsCache.delete(cacheKey);
 			}
 		}
@@ -3937,7 +4049,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			fs.mkdirSync(dir, { recursive: true });
 			const serialized = this.serializeUserSettings(settings);
 			fs.writeFileSync(targetPath, `${serialized}\n`, 'utf8');
-			// 获取写入后的文件修改时间
+			// Get the file modification time after writing
 			const stats = fs.statSync(targetPath);
 			this.userSettingsCache.set(folder.uri.fsPath, {
 				settings: this.copyUserSettings(settings),
@@ -3946,7 +4058,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		} catch (error) {
 			console.warn('[kvEditorProvider] Failed to write column width settings:', error);
 			const message = error instanceof Error ? error.message : String(error);
-			throw new Error(`保存列宽失败：${message}`);
+			throw new Error(`Failed to save column width: ${message}`);
 		}
 	}
 
@@ -4076,7 +4188,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 		if (!workspaceFolder) {
-			throw new Error('无法定位工作区，无法保存自定义下拉选项。');
+			throw new Error('Cannot locate the workspace; custom dropdown options cannot be saved.');
 		}
 
 		const sanitizedOptions = this.sanitizeColumnOptionList(message.options);
@@ -4085,15 +4197,15 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const separator = typeof message.separator === 'string' && message.separator.length > 0 ? message.separator : '|';
 
 		if (isFileScope) {
-			// 保存到文件级别配置
+			// Save to file-level config
 			const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
 			if (!documentKey) {
-				throw new Error('无法生成文档配置键，无法保存文件级别选项。');
+				throw new Error('Cannot generate the document config key; file-level options cannot be saved.');
 			}
 
 			const overrides = this.copyColumnOptionOverrides(this.getColumnOptionOverrides(workspaceFolder));
 
-			// 确保 files 对象存在
+			// Ensure the files object exists
 			if (!overrides.files) {
 				overrides.files = {};
 			}
@@ -4104,10 +4216,10 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				overrides.files[documentKey].columnOptions = {};
 			}
 
-			// 保存或删除选项
+			// Save or delete the option
 			if (!sanitizedOptions.length) {
 				delete overrides.files[documentKey].columnOptions![columnKey];
-				// 清理空对象
+				// Clean up empty objects
 				if (Object.keys(overrides.files[documentKey].columnOptions!).length === 0) {
 					delete overrides.files[documentKey].columnOptions;
 				}
@@ -4115,25 +4227,25 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				overrides.files[documentKey].columnOptions![columnKey] = sanitizedOptions;
 			}
 
-			// 保存 multiple 和 separator 设置
+			// Save the multiple and separator settings
 			if (!overrides.files[documentKey].columnSettings) {
 				overrides.files[documentKey].columnSettings = {};
 			}
 			overrides.files[documentKey].columnSettings![columnKey] = { multiple, separator };
 
-			// 清理空的 columnSettings
+			// Clean up empty columnSettings
 			if (Object.keys(overrides.files[documentKey].columnSettings!).length === 0) {
 				delete overrides.files[documentKey].columnSettings;
 			}
 
-			// 清理空的文件配置
+			// Clean up empty file config
 			if (Object.keys(overrides.files[documentKey]).length === 0) {
 				delete overrides.files[documentKey];
 			}
 
 			this.writeColumnOptionOverrides(workspaceFolder, overrides);
 		} else {
-			// 保存到全局（folderType）级别配置
+			// Save to global (folderType) level config
 			const scope = this.resolveColumnOptionsScope(message.folderType);
 			const overrides = this.copyColumnOptionOverrides(this.getColumnOptionOverrides(workspaceFolder));
 			const columnOverrides = overrides.columns[columnKey] ?? {};
@@ -4152,7 +4264,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				delete overrides.columns[columnKey];
 			}
 
-			// 保存全局级别的 multiple 和 separator 设置
+			// Save global-level multiple and separator settings
 			if (!overrides.columnSettings) {
 				overrides.columnSettings = {};
 			}
@@ -4161,7 +4273,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 			overrides.columnSettings[columnKey][scope] = { multiple, separator };
 
-			// 清理空的设置（只有在两个字段都未定义时才删除）
+			// Clean up empty settings (delete only when both fields are undefined)
 			const scopeSettings = overrides.columnSettings[columnKey][scope];
 			if (scopeSettings && typeof scopeSettings.multiple !== 'boolean' && !scopeSettings.separator) {
 				delete overrides.columnSettings[columnKey][scope];
@@ -4190,7 +4302,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 		if (!workspaceFolder) {
-			throw new Error('无法定位工作区，无法保存公式。');
+			throw new Error('Cannot locate the workspace; formula cannot be saved.');
 		}
 		const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
 		if (!documentKey) {
@@ -4242,7 +4354,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 		if (!workspaceFolder) {
-			throw new Error('无法定位工作区，无法保存列公式。');
+			throw new Error('Cannot locate the workspace; column formula cannot be saved.');
 		}
 		const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
 		if (!documentKey) {
@@ -4275,14 +4387,14 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const cacheKey = folder.uri.fsPath;
 		const overridesPath = this.getColumnOptionOverridesPath(folder);
 
-		// 检查文件修改时间，如果文件已变更则清除缓存
+		// Check the file modification time; clear the cache if the file changed
 		let currentMtime = 0;
 		if (this.pathExists(overridesPath)) {
 			try {
 				const stats = fs.statSync(overridesPath);
 				currentMtime = stats.mtimeMs;
 			} catch (error) {
-				// 文件读取失败，清除缓存
+				// File read failed; clear the cache
 				this.columnOptionOverridesCache.delete(cacheKey);
 			}
 		}
@@ -4413,7 +4525,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 处理 files 字段（文件级别的列选项）
+		// Handle the files field (file-level column options)
 		const filesSection = container.files;
 		if (filesSection && typeof filesSection === 'object' && !Array.isArray(filesSection)) {
 			const files: Record<string, KvEditorFileColumnOptions> = {};
@@ -4424,7 +4536,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				const fileOptions: KvEditorFileColumnOptions = {};
 				const configObj = fileConfig as Record<string, unknown>;
 
-				// 处理 columnOptions
+				// Handle columnOptions
 				if (configObj.columnOptions && typeof configObj.columnOptions === 'object') {
 					const columnOptions: Record<string, KvEditorColumnOption[]> = {};
 					for (const [columnKey, options] of Object.entries(configObj.columnOptions as Record<string, unknown>)) {
@@ -4441,7 +4553,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 处理 columnSettings（多选和分隔符配置）
+				// Handle columnSettings (multi-select and separator config)
 				if (configObj.columnSettings && typeof configObj.columnSettings === 'object') {
 					const columnSettings: Record<string, KvEditorColumnMultiSelectSettings> = {};
 					for (const [columnKey, settings] of Object.entries(configObj.columnSettings as Record<string, unknown>)) {
@@ -4465,7 +4577,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 处理 columnDescriptions（文件级别的列描述）
+				// Handle columnDescriptions (file-level column descriptions)
 				if (configObj.columnDescriptions && typeof configObj.columnDescriptions === 'object') {
 					const columnDescriptions = this.sanitizeColumnDescriptionMap(configObj.columnDescriptions);
 					if (columnDescriptions && Object.keys(columnDescriptions).length) {
@@ -4482,7 +4594,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 处理全局 columnSettings（多选和分隔符配置）
+		// Handle global columnSettings (multi-select and separator config)
 		const columnSettingsSection = container.columnSettings;
 		if (columnSettingsSection && typeof columnSettingsSection === 'object') {
 			const columnSettings: Record<string, Partial<Record<KvEditorColumnOptionsScope, KvEditorColumnMultiSelectSettings>>> = {};
@@ -4517,7 +4629,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 解析localizationSettings
+		// Parse localizationSettings
 		const localizationSettingsSection = container.localizationSettings;
 		if (localizationSettingsSection && typeof localizationSettingsSection === 'object') {
 			const localizationSettings: Record<string, { enabled: boolean; language: string; filePath: string; autoUpdateOnOpen: boolean; mappings: Array<{ columnName: string; rule: string; }>; }> = {};
@@ -4593,7 +4705,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 复制全局 columnSettings
+		// Copy global columnSettings
 		let columnSettings: Record<string, Partial<Record<KvEditorColumnOptionsScope, KvEditorColumnMultiSelectSettings>>> | undefined;
 		if (source.columnSettings && typeof source.columnSettings === 'object') {
 			columnSettings = {};
@@ -4619,14 +4731,14 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 						copiedFile.columnOptions[columnKey] = options.map((option) => ({ ...option }));
 					}
 				}
-				// 复制文件级别 columnSettings
+				// Copy file-level columnSettings
 				if (fileConfig.columnSettings) {
 					copiedFile.columnSettings = {};
 					for (const [columnKey, settings] of Object.entries(fileConfig.columnSettings)) {
 						copiedFile.columnSettings[columnKey] = { ...settings };
 					}
 				}
-				// 复制文件级别 columnDescriptions
+				// Copy file-level columnDescriptions
 				if (fileConfig.columnDescriptions) {
 					copiedFile.columnDescriptions = {};
 					for (const [columnKey, desc] of Object.entries(fileConfig.columnDescriptions)) {
@@ -4639,7 +4751,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 复制本地化设置
+		// Copy localization settings
 		let localizationSettings: Record<string, { enabled: boolean; language: string; filePath: string; autoUpdateOnOpen: boolean; mappings: Array<{ columnName: string; rule: string; }>; }> | undefined;
 		if (source.localizationSettings && typeof source.localizationSettings === 'object') {
 			localizationSettings = {};
@@ -4683,7 +4795,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			fs.mkdirSync(dir, { recursive: true });
 			const serialized = this.serializeColumnOptionOverrides(overrides);
 			fs.writeFileSync(targetPath, `${serialized}\n`, 'utf8');
-			// 获取写入后的文件修改时间
+			// Get the file modification time after writing
 			const stats = fs.statSync(targetPath);
 			this.columnOptionOverridesCache.set(folder.uri.fsPath, {
 				overrides: this.copyColumnOptionOverrides(overrides),
@@ -4692,7 +4804,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		} catch (error) {
 			console.warn('[kvEditorProvider] Failed to write column option overrides:', error);
 			const message = error instanceof Error ? error.message : String(error);
-			throw new Error(`保存下拉选项失败：${message}`);
+			throw new Error(`Failed to save dropdown options: ${message}`);
 		}
 	}
 
@@ -4795,7 +4907,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 序列化localizationSettings
+		// Serialize localizationSettings
 		if (overrides.localizationSettings && typeof overrides.localizationSettings === 'object') {
 			const localizationOutput: Record<string, any> = {};
 			const docKeys = Object.keys(overrides.localizationSettings).sort((a, b) => a.localeCompare(b));
@@ -4816,7 +4928,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 序列化全局 columnSettings 字段
+		// Serialize the global columnSettings field
 		if (overrides.columnSettings && typeof overrides.columnSettings === 'object') {
 			const columnSettingsOutput: Record<string, Record<string, KvEditorColumnMultiSelectSettings>> = {};
 			const columnKeys = Object.keys(overrides.columnSettings).sort((a, b) => a.localeCompare(b));
@@ -4849,7 +4961,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 		}
 
-		// 序列化 files 字段
+		// Serialize the files field
 		if (overrides.files && typeof overrides.files === 'object') {
 			const documentKeys = Object.keys(overrides.files).sort((a, b) => a.localeCompare(b));
 			const filesOutput: Record<string, Record<string, unknown>> = {};
@@ -4886,7 +4998,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 序列化文件级别 columnSettings
+				// Serialize file-level columnSettings
 				if (fileConfig.columnSettings) {
 					const columnKeys = Object.keys(fileConfig.columnSettings).sort((a, b) => a.localeCompare(b));
 					const columnSettingsOutput: Record<string, KvEditorColumnMultiSelectSettings> = {};
@@ -4908,7 +5020,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 序列化文件级别 columnDescriptions
+				// Serialize file-level columnDescriptions
 				if (fileConfig.columnDescriptions) {
 					const columnKeys = Object.keys(fileConfig.columnDescriptions).sort((a, b) => a.localeCompare(b));
 					const columnDescriptionsOutput: Record<string, { label?: string; description?: string; }> = {};
@@ -5296,7 +5408,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 
 	/**
-	 * 设置配置文件监听器，当配置文件变化时清除缓存
+	 * Set up the config-file watcher; clear the cache when the config file changes
 	 */
 	private setupConfigFileWatchers(): void {
 		const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -5307,12 +5419,12 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		for (const folder of workspaceFolders) {
 			const watcherKey = folder.uri.fsPath;
 
-			// 避免重复创建监听器
+			// Avoid creating duplicate watchers
 			if (this.fileWatchers.has(watcherKey)) {
 				continue;
 			}
 
-			// 监听 .vscode 目录下的配置文件
+			// Watch config files under the .vscode directory
 			const pattern = new vscode.RelativePattern(
 				folder,
 				'.vscode/{kv_editor_setting.json,kv_editor_user_setting.json}'
@@ -5320,7 +5432,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 			const watcher = vscode.workspace.createFileSystemWatcher(pattern);
 
-			// 文件创建、修改、删除时都清除缓存
+			// Clear the cache on file create, modify, and delete
 			const clearCache = (uri: vscode.Uri) => {
 				const fileName = path.basename(uri.fsPath);
 
@@ -5338,10 +5450,10 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			this.fileWatchers.set(watcherKey, watcher);
 		}
 
-		// 监听工作区文件夹变化
+		// Watch for workspace folder changes
 		this.context.subscriptions.push(
 			vscode.workspace.onDidChangeWorkspaceFolders((event) => {
-				// 移除已删除的工作区的监听器
+				// Remove watchers for removed workspaces
 				for (const removed of event.removed) {
 					const watcher = this.fileWatchers.get(removed.uri.fsPath);
 					if (watcher) {
@@ -5352,14 +5464,14 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 				}
 
-				// 为新添加的工作区创建监听器
+				// Create watchers for newly added workspaces
 				for (const added of event.added) {
 					this.setupConfigFileWatchers();
 				}
 			})
 		);
 
-		// 注册清理函数
+		// Register the cleanup function
 		this.context.subscriptions.push({
 			dispose: () => {
 				for (const watcher of this.fileWatchers.values()) {
@@ -5406,7 +5518,7 @@ interface ParsedKvRow {
 	values: Record<string, string>;
 	abilityValues?: AbilityValuesEntry[];
 	localization?: ParsedKvRowLocalization;
-	rawObject?: Record<string, unknown>; // 保存完整的原始对象，用于复制粘贴保留嵌套结构
+	rawObject?: Record<string, unknown>; // Store the complete raw object, used to preserve nested structure on copy/paste
 }
 
 interface ParsedKvRowLocalization {
@@ -5475,7 +5587,7 @@ interface KvEditorBulkInsertRowsMessage {
 	rows: Array<{
 		id: string;
 		values: Record<string, string>;
-		rawObject?: Record<string, unknown>; // 完整的原始对象，用于保留嵌套结构
+		rawObject?: Record<string, unknown>; // The complete raw object, used to preserve nested structure
 		abilityValues?: Array<Record<string, unknown>>;
 		formulas?: Record<string, string>;
 	}>;
@@ -5520,6 +5632,7 @@ interface KvEditorColumnOptionConfig {
 	options: KvEditorColumnOption[];
 	multiple: boolean;
 	separator: string;
+	inputType?: 'checkbox' | 'number' | 'spinner';
 }
 
 interface KvEditorColumnOptionOverride {
@@ -5530,6 +5643,7 @@ interface KvEditorColumnOptionOverride {
 
 interface KvEditorColumnOptionSource extends KvEditorColumnOptionConfig {
 	overrides?: Partial<Record<KvFolderType, KvEditorColumnOptionOverride>>;
+	folderTypeOnly?: KvFolderType[];
 }
 
 type KvEditorColumnOptionResolvedMap = Record<string, KvEditorColumnOptionConfig>;

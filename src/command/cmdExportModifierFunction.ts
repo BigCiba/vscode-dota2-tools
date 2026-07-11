@@ -3,9 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getGameDir } from '../module/addonInfo';
 import { getDotaApiNoteClass } from '../module/apiNote';
+import { localize } from '../utils/localize';
 
 /**
- * 音效选择
+ * Sound effect selection
  * @param context 
  */
 export async function exportModifierFunction(context: vscode.ExtensionContext) {
@@ -25,7 +26,7 @@ export async function exportModifierFunction(context: vscode.ExtensionContext) {
 	result += "\n}\nreturn _ModifierFuncs";
 
 	const inputBox = vscode.window.createInputBox();
-	inputBox.placeholder = '请输入输出文件路径';
+	inputBox.placeholder = localize('msg_enter_output_path');
 	if (gameDir) {
 		inputBox.value = path.join(gameDir, "\\scripts\\vscripts\\modifiers\\eom_modifier\\modifierfunction.lua");
 	}

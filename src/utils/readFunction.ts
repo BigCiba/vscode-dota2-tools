@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { localize } from './localize';
 
 export function readFunction(line: number, rows: any): any {
 	let funInfo: { [k: string]: any; } = {};
@@ -19,7 +20,7 @@ export function readFunction(line: number, rows: any): any {
 			paramList[arr[2]] = {
 				type: arr[3],
 				params_name: arr[2],
-				description: 'No Description Set'
+				description: localize('msg_no_description_set')
 			};
 		} else if (text.search('function') !== -1) {
 			funInfo.function = text.split('(')[0].split('function ')[1];

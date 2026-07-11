@@ -61,14 +61,14 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 		this.document.enum_list = this.dotaApiNote.getEnumList();
 		let apiNote = getDotaApiNoteClass().getApiNote();
 		for (const className in this.document.class_list) {
-			// 补全class
+			// Complete the class
 			let item = new vscode.CompletionItem(className, vscode.CompletionItemKind.Class);
 			item.detail = className;
 			item.documentation = className;
 			item.insertText = className;
 			this.snippets.push(item);
 			this.snippetsNoParams.push(item);
-			// 补全class全局访问变量
+			// Complete the class's global access variable
 			let variable = apiNote[className]?.variable;
 			if (variable && variable !== undefined) {
 				let item = new vscode.CompletionItem(variable, vscode.CompletionItemKind.Class);
@@ -78,7 +78,7 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 				this.snippets.push(item);
 				this.snippetsNoParams.push(item);
 			}
-			// 补全函数
+			// Complete functions
 			for (const funInfo of this.document.class_list[className]) {
 				let item = new vscode.CompletionItem(funInfo.function || "", vscode.CompletionItemKind.Function);
 				item.detail = funInfo.description;
@@ -92,7 +92,7 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 				this.snippetsNoParams.push(itemNoParams);
 			}
 		}
-		// 补全常数
+		// Complete constants
 		for (const enumType in this.document.enum_list) {
 			for (const enumInfo of this.document.enum_list[enumType]) {
 				let item = new vscode.CompletionItem(enumInfo.name || "", vscode.CompletionItemKind.Enum);
@@ -102,7 +102,7 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 				item.insertText = enumInfo.name;
 				this.snippets.push(item);
 				this.snippetsNoParams.push(item);
-				// 将modifierfunction的function也加入
+				// Also add the modifierfunction's function
 				if (enumInfo.function) {
 					let item = new vscode.CompletionItem(enumInfo.function, vscode.CompletionItemKind.Function);
 					item.detail = enumInfo.function;
@@ -141,7 +141,7 @@ export class LuaCompletionItemProvider implements vscode.CompletionItemProvider 
 		return new vscode.MarkdownString(detail);
 	}
 	/**
-	 * 获取补全
+	 * Get the completion
 	 * @param {LuaFunction} funInfo
 	 * @return {*} 
 	 * @memberof LuaCompletionItemProvider

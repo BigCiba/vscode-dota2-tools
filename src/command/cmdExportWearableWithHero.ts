@@ -4,9 +4,10 @@ import * as path from 'path';
 import { writeKeyValue } from '../utils/kvUtils';
 import { getGameDir } from '../module/addonInfo';
 import { dirExists } from '../utils/pathUtils';
+import { localize } from '../utils/localize';
 
 /**
- * 导出所有饰品的信息到指定文件夹，按英雄拆分
+ * Export the info of all wearables to the specified folder, split by hero
  * @export
  */
 export function exportWearableWithHero(context: vscode.ExtensionContext) {
@@ -14,7 +15,7 @@ export function exportWearableWithHero(context: vscode.ExtensionContext) {
 	let itemsGame = JSON.parse(fs.readFileSync(path.join(context.extensionPath, "resource/rogue_wearable.json"), 'utf-8'));
 
 	const inputBox = vscode.window.createInputBox();
-	inputBox.placeholder = '请输入输出文件路径';
+	inputBox.placeholder = localize('msg_enter_output_path');
 	if (gameDir) {
 		inputBox.value = path.join(gameDir, "\\scripts\\npc\\items_game");
 	}

@@ -1,156 +1,156 @@
 {
 	"BaseClass": {
-		"label": "基类"
+		"label": "Base Class"
 	},
 	"ScriptFile": {
-		"label": "脚本"
+		"label": "Script"
 	},
 	"AbilityValues": {
-		"label": "技能数值"
+		"label": "Ability Values"
 	},
 	"Model": {
-		"label": "模型"
+		"label": "Model"
 	},
 	"AbilityTextureName": {
-		"label": "技能图标"
+		"label": "Ability Icon"
 	},
 	"MaxLevel": {
-		"label": "最大等级"
+		"label": "Max Level"
 	},
 	"RequiredLevel": {
-		"label": "需求等级"
+		"label": "Required Level"
 	},
 	"LevelsBetweenUpgrades": {
-		"label": "升级间隔等级"
+		"label": "Levels Between Upgrades"
 	},
 	"AbilityType": {
-		"label": "技能类型"
+		"label": "Ability Type"
 	},
 	"AbilityBehavior": {
-		"label": "技能行为"
+		"label": "Ability Behavior"
 	},
 	"AbilityCooldown": {
-		"label": "冷却时间"
+		"label": "Cooldown"
 	},
 	"AbilityUnitTargetTeam": {
-		"label": "目标队伍"
+		"label": "Target Team"
 	},
 	"AbilityUnitTargetType": {
-		"label": "目标类型"
+		"label": "Target Type"
 	},
 	"AbilityUnitTargetFlags": {
-		"label": "目标标记"
+		"label": "Target Flags"
 	},
 	"AbilityUnitDamageType": {
-		"label": "伤害类型"
+		"label": "Damage Type"
 	},
 	"AbilityManaCost": {
-		"label": "魔法消耗"
+		"label": "Mana Cost"
 	},
 	"AbilityCastRange": {
-		"label": "施法距离"
+		"label": "Cast Range"
 	},
 	"AbilityCastRangeBuffer": {
-		"label": "施法距离缓冲"
+		"label": "Cast Range Buffer"
 	},
 	"AbilityChannelTime": {
-		"label": "持续施法时间"
+		"label": "Channel Time"
 	},
 	"AbilityChannelledManaCostPerSecond": {
-		"label": "持续施法每秒魔法消耗"
+		"label": "Channel Mana Cost Per Second"
 	},
 	"AbilityDuration": {
-		"label": "持续时间"
+		"label": "Duration"
 	},
 	"AoERadius": {
-		"label": "范围半径"
+		"label": "AoE Radius"
 	},
 	"AbilityCastAnimation": {
-		"label": "施法动作"
+		"label": "Cast Animation"
 	},
 	"AnimationPlaybackRate": {
-		"label": "动作播放速率"
+		"label": "Animation Playback Rate"
 	},
 	"AnimationIgnoresModelScale": {
-		"label": "动作忽略模型缩放"
+		"label": "Animation Ignores Model Scale"
 	},
 	"AbilityCastPoint": {
-		"label": "施法前摇"
+		"label": "Cast Point"
 	},
 	"AbilitySharedCooldown": {
-		"label": "共享冷却"
+		"label": "Shared Cooldown"
 	},
 	"ItemKillable": {
-		"label": "可被摧毁"
+		"label": "Killable"
 	},
 	"ItemSellable": {
-		"label": "可出售"
+		"label": "Sellable"
 	},
 	"ItemPurchasable": {
-		"label": "可购买"
+		"label": "Purchasable"
 	},
 	"ItemDroppable": {
-		"label": "可丢下"
+		"label": "Droppable"
 	},
 	"ItemStackable": {
-		"label": "可堆叠"
+		"label": "Stackable"
 	},
 	"ItemShareability": {
-		"label": "共享性"
+		"label": "Shareability"
 	},
 	"ItemPermanent": {
-		"label": "永久物品"
+		"label": "Permanent Item"
 	},
 	"ItemInitialCharges": {
-		"label": "初始数量"
+		"label": "Initial Charges"
 	},
 	"ItemCombinable": {
-		"label": "可合成"
+		"label": "Combinable"
 	},
 	"ItemRecipe": {
-		"label": "合成配方"
+		"label": "Recipe"
 	},
 	"ItemStockMax": {
-		"label": "最大库存"
+		"label": "Max Stock"
 	},
 	"ItemStockTime": {
-		"label": "库存恢复时间"
+		"label": "Stock Replenish Time"
 	},
 	"ItemStockInitial": {
-		"label": "初始库存"
+		"label": "Initial Stock"
 	},
 	"MaxUpgradeLevel": {
-		"label": "最大升级等级"
+		"label": "Max Upgrade Level"
 	},
 	"ItemBaseLevel": {
-		"label": "基础等级"
+		"label": "Base Level"
 	},
 	"ItemResult": {
-		"label": "合成结果"
+		"label": "Recipe Result"
 	},
 	"ItemRequirements": {
-		"label": "合成需求"
+		"label": "Recipe Requirements"
 	},
 	"ItemDisassembleRule": {
-		"label": "拆分规则"
+		"label": "Disassemble Rule"
 	},
 	"CastOnPickup": {
-		"label": "拾取时使用"
+		"label": "Cast On Pickup"
 	},
 	"ItemDisplayCharges": {
-		"label": "显示数量"
+		"label": "Display Charges"
 	},
 	"ItemRequiresCharges": {
-		"label": "需要数量",
-		"description": "主动技能需要充能才能使用 - 骨灰"
+		"label": "Requires Charges",
+		"description": "Active ability requires charges to use - Bloodstone"
 	},
 	"ItemDisassemblable": {
-		"label": "可拆分"
+		"label": "Disassemblable"
 	},
 	"ItemDeclaresPurchase": {
-		"label": "声明购买"
+		"label": "Declares Purchase"
 	},
 	"SpellImmunityType": {
-		"label": "技能免疫类型"
+		"label": "Spell Immunity Type"
 	}
 }

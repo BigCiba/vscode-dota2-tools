@@ -19,7 +19,7 @@ export async function generateVPDI(context: ExtensionContext) {
 		return;
 	}
 	let sImageFolders: string[] = [];
-	// 允许字符串适配旧版本的配置
+	// Allow a string to support the legacy configuration format
 	if (typeof VPDIConfig.ImagePath === "string") {
 		sImageFolders = [VPDIConfig.ImagePath];
 	} else {
@@ -30,7 +30,7 @@ export async function generateVPDI(context: ExtensionContext) {
 	for (let i = 0; i < sImageFolders.length; i++) {
 		const sImageFolder = sImageFolders[i];
 		if (await getPathInfo(sImageFolder) === false) {
-			showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("path_no_found") + sImageFolder);
+			showStatusBarMessage(`[${localize("generateVPDI")}]:` + localize("path_no_found") + sImageFolder);
 			return;
 		}
 	}
@@ -65,7 +65,7 @@ export async function generateVPDI(context: ExtensionContext) {
 			"Explicit Files": Explicit_Files
 		}
 	}));
-	showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("generateFinish"));
+	showStatusBarMessage(`[${localize("generateVPDI")}]:` + localize("generateFinish"));
 	changeStatusBarState(StatusBarState.ALL_DONE);
 }
 
@@ -76,7 +76,7 @@ export async function generateRecentVPDI(context: ExtensionContext) {
 		return;
 	}
 	let sImageFolders: string[] = [];
-	// 允许字符串适配旧版本的配置
+	// Allow a string to support the legacy configuration format
 	if (typeof VPDIConfig.ImagePath === "string") {
 		sImageFolders = [VPDIConfig.ImagePath];
 	} else {
@@ -87,7 +87,7 @@ export async function generateRecentVPDI(context: ExtensionContext) {
 	for (let i = 0; i < sImageFolders.length; i++) {
 		const sImageFolder = sImageFolders[i];
 		if (await getPathInfo(sImageFolder) === false) {
-			showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("path_no_found") + sImageFolder);
+			showStatusBarMessage(`[${localize("generateVPDI")}]:` + localize("path_no_found") + sImageFolder);
 			return;
 		}
 	}
@@ -127,6 +127,6 @@ export async function generateRecentVPDI(context: ExtensionContext) {
 			"Explicit Files": Explicit_Files
 		}
 	}));
-	showStatusBarMessage(`[${localize("generateVPDI")}]：` + localize("generateFinish"));
+	showStatusBarMessage(`[${localize("generateVPDI")}]:` + localize("generateFinish"));
 	changeStatusBarState(StatusBarState.ALL_DONE);
 }

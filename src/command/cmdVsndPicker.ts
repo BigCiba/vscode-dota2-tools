@@ -1,12 +1,52 @@
 import * as vscode from 'vscode';
 import { readFile } from '../utils/readFile';
+import { showStatusBarMessage } from '../module/statusBar';
+import { localize } from '../utils/localize';
 
 let vsnd: vscode.QuickPickItem[];
+
+/** Return the sound list (used by the unified sidebar's Music tab). Each entry: label=sound file, description=soundevent name */
+export async function getSoundList(context: vscode.ExtensionContext): Promise<{ label: string; description?: string; }[]> {
+	if (vsnd === undefined) {
+		await vsndPickerInit(context);
+	}
+	return vsnd.map((item) => ({ label: item.label, description: item.description }));
+}
+
+/** Insert the soundevent name into the current editor (or copy it to the clipboard), matching the QuickPick version's behavior */
+function insertSoundEvent(text: string) {
+	const editor = vscode.window.activeTextEditor;
+	if (editor) {
+		editor.edit((editBuilder) => {
+			const selection = editor.selection;
+			if (selection.start.isEqual(selection.end)) {
+				editBuilder.insert(selection.start, text);
+			} else {
+				editBuilder.replace(new vscode.Range(selection.start, selection.end), text);
+			}
+		});
+	} else {
+		vscode.env.clipboard.writeText(text);
+		showStatusBarMessage(localize('msg_copied_clipboard') || text);
+	}
+}
+
+/** Bind the Music tab's message handling to the unified sidebar webview and return a list of Disposables */
+export function attachMusic(webview: vscode.Webview, context: vscode.ExtensionContext): vscode.Disposable[] {
+	getSoundList(context).then((list) => webview.postMessage({ type: 'sound_list', data: list }));
+	return [
+		webview.onDidReceiveMessage((message: { type: string; text: string; }) => {
+			if (message.type === 'insert_sound' && message.text) {
+				insertSoundEvent(message.text);
+			}
+		}),
+	];
+}
 
 export async function vsndPickerInit(context: vscode.ExtensionContext) {
 	vsnd = [];
 	let soundevents = JSON.parse(await readFile(vscode.Uri.joinPath(context.extensionUri, "resource/soundevents.json")));
-	// 添加选项
+	// Add options
 	for (const key in soundevents) {
 		const element = soundevents[key];
 		for (let i = 0; i < element.length; i++) {
@@ -19,11 +59,11 @@ export async function vsndPickerInit(context: vscode.ExtensionContext) {
 	}
 }
 /**
- * 音效选择
+ * Sound picker
  * @param context 
  */
 export async function vsndPicker(context: vscode.ExtensionContext) {
-	// 避免没有数据
+	// Avoid the case where there is no data
 	if (vsnd === undefined) {
 		await vsndPickerInit(context);
 	}

@@ -4,17 +4,29 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Texture Selector</title>
+	<title>Items Game Browser</title>
 	<link href="dota2ItemsGame.css" rel="stylesheet" />
 	<script src="dota2ItemsGame.js"></script>
 </head>
 
 <body>
-	<div class="search">
-		<vscode-text-field id="filter" type="text" placeholder="输入饰品编号或者模型路径或英雄名，已支持中文英雄名" oninput="onInput(event)">
-			<span slot="end" class="codicon codicon-clear-all" role="button" title="清除搜索结果"
-				onclick="onClear(event)"></span>
-		</vscode-text-field>
+	<div class="search-bar">
+		<div class="search-row">
+			<vscode-button id="back-btn" appearance="icon" title="Back" onclick="onBack()" disabled>
+				<span class="codicon codicon-arrow-left"></span>
+			</vscode-button>
+			<vscode-text-field id="filter" type="text" placeholder="" oninput="onInput(event)">
+				<span slot="end" class="codicon codicon-clear-all" role="button" title=""
+					onclick="onClear(event)"></span>
+			</vscode-text-field>
+			<vscode-button id="view-list-btn" appearance="icon" title="List view" onclick="setViewMode('list')" class="view-toggle">
+				<span class="codicon codicon-list-flat"></span>
+			</vscode-button>
+			<vscode-button id="view-grid-btn" appearance="icon" title="Grid view" onclick="setViewMode('grid')" class="view-toggle active">
+				<span class="codicon codicon-symbol-color"></span>
+			</vscode-button>
+		</div>
+		<div id="hint-text" class="hint-text">Tip: right-click items in the list/grid to select them and generate an AttachWearables KV block.</div>
 	</div>
 	<article id="markdown-body">
 	</article>

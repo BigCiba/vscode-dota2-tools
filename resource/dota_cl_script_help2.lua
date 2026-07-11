@@ -1,324 +1,346 @@
----[[ AngleDiff  Returns the number of degrees difference between two yaw angles ]]
+---[[ AngleDiff  Returns the number of degrees difference between two yaw angles. ]]
 -- @return float
--- @param float_1 float
--- @param float_2 float
-function AngleDiff( float_1, float_2 ) end
+-- @param arg1 float
+-- @param arg2 float
+function AngleDiff( arg1, arg2 ) end
 
----[[ AnglesToVector  Generate a vector given a QAngles ]]
+---[[ AnglesToVector  Generate a vector given a QAngles. ]]
 -- @return Vector
--- @param QAngle_1 QAngle
-function AnglesToVector( QAngle_1 ) end
+-- @param arg1 QAngle
+function AnglesToVector( arg1 ) end
 
----[[ AppendToLogFile  AppendToLogFile is deprecated. Print to the console for logging instead. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
-function AppendToLogFile( string_1, string_2 ) end
+---[[ AppendToLogFile   ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+function AppendToLogFile( arg1, arg2 ) end
 
----[[ AxisAngleToQuaternion  (vector,float) constructs a quaternion representing a rotation by angle around the specified vector axis ]]
+---[[ AxisAngleToQuaternion  Constructs a quaternion representing a rotation by angle around the specified vector axis. ]]
 -- @return Quaternion
--- @param Vector_1 Vector
--- @param float_2 float
-function AxisAngleToQuaternion( Vector_1, float_2 ) end
+-- @param arg1 Vector
+-- @param arg2 float
+function AxisAngleToQuaternion( arg1, arg2 ) end
 
 ---[[ CalcClosestPointOnEntityOBB  Compute the closest point on the OBB of an entity. ]]
 -- @return Vector
--- @param handle_1 handle
--- @param Vector_2 Vector
-function CalcClosestPointOnEntityOBB( handle_1, Vector_2 ) end
+-- @param arg1 handle
+-- @param arg2 Vector
+function CalcClosestPointOnEntityOBB( arg1, arg2 ) end
 
 ---[[ CalcDistanceBetweenEntityOBB  Compute the distance between two entity OBB. A negative return value indicates an input error. A return value of zero indicates that the OBBs are overlapping. ]]
 -- @return float
--- @param handle_1 handle
--- @param handle_2 handle
-function CalcDistanceBetweenEntityOBB( handle_1, handle_2 ) end
+-- @param arg1 handle
+-- @param arg2 handle
+function CalcDistanceBetweenEntityOBB( arg1, arg2 ) end
 
 ---[[ CalcDistanceToLineSegment2D   ]]
 -- @return float
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param Vector_3 Vector
-function CalcDistanceToLineSegment2D( Vector_1, Vector_2, Vector_3 ) end
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 Vector
+function CalcDistanceToLineSegment2D( arg1, arg2, arg3 ) end
 
----[[ CancelEntityIOEvents  Create all I/O events for a particular entity ]]
--- @return void
--- @param ehandle_1 ehandle
-function CancelEntityIOEvents( ehandle_1 ) end
+---[[ CancelEntityIOEvents  Create all I/O events for a particular entity. ]]
+-- @return nil
+-- @param arg1 ehandle
+function CancelEntityIOEvents( arg1 ) end
 
----[[ CreateEffect  Pass table - Inputs: entity, effect ]]
+---[[ CreateEffect  Pass table - Inputs: entity, effect. ]]
 -- @return bool
--- @param handle_1 handle
-function CreateEffect( handle_1 ) end
+-- @param arg1 handle
+function CreateEffect( arg1 ) end
 
 ---[[ CreateHTTPRequest  Create an HTTP request. ]]
--- @return handle
--- @param string_1 string
--- @param string_2 string
-function CreateHTTPRequest( string_1, string_2 ) end
+-- @return CScriptHTTPRequest
+-- @param method string
+-- @param url string
+function CreateHTTPRequest( method, url ) end
 
 ---[[ CreateHTTPRequestScriptVM  Create an HTTP request. ]]
--- @return handle
--- @param string_1 string
--- @param string_2 string
-function CreateHTTPRequestScriptVM( string_1, string_2 ) end
+-- @return CScriptHTTPRequest
+-- @param method string
+-- @param url string
+function CreateHTTPRequestScriptVM( method, url ) end
 
----[[ CreateUniformRandomStream  ( iSeed ) - Creates a separate random number stream. ]]
--- @return handle
--- @param int_1 int
-function CreateUniformRandomStream( int_1 ) end
+---[[ CreateUniformRandomStream  Creates a separate random number stream. ]]
+-- @return CScriptUniformRandomStream
+-- @param seed int
+function CreateUniformRandomStream( seed ) end
 
----[[ CrossVectors  (vector,vector) cross product between two vectors ]]
+---[[ CrossVectors  Cross product between two vectors. ]]
 -- @return Vector
--- @param Vector_1 Vector
--- @param Vector_2 Vector
-function CrossVectors( Vector_1, Vector_2 ) end
+-- @param arg1 Vector
+-- @param arg2 Vector
+function CrossVectors( arg1, arg2 ) end
 
----[[ DebugBreak  Breaks in the debugger ]]
--- @return void
+---[[ cvar_getf  Gets the value of the given cvar, as a float. ]]
+-- @return float
+-- @param arg1 string
+function cvar_getf( arg1 ) end
+
+---[[ cvar_setf  Sets the value of the given cvar, as a float. ]]
+-- @return bool
+-- @param arg1 string
+-- @param arg2 float
+function cvar_setf( arg1, arg2 ) end
+
+---[[ DebugBreak  Breaks in the debugger. ]]
+-- @return nil
 function DebugBreak(  ) end
 
----[[ DebugDrawBox  Draw a debug overlay box (origin, mins, maxs, forward, r, g, b, a, duration ) ]]
--- @return void
--- @param <unknown>_1 <unknown>
--- @param Vector_2 Vector
--- @param Vector_3 Vector
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param float_8 float
-function DebugDrawBox( <unknown>_1, Vector_2, Vector_3, int_4, int_5, int_6, int_7, float_8 ) end
+---[[ DebugDrawBox  Draw a debug overlay box. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 Vector
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 float
+function DebugDrawBox( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
 
----[[ DebugDrawBoxDirection  Draw a debug forward box (cent, min, max, forward, vRgb, a, duration) ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param Vector_3 Vector
--- @param Vector_4 Vector
--- @param Vector_5 Vector
--- @param float_6 float
--- @param float_7 float
-function DebugDrawBoxDirection( Vector_1, Vector_2, Vector_3, Vector_4, Vector_5, float_6, float_7 ) end
+---[[ DebugDrawBoxDirection  Draw a debug forward box. ]]
+-- @return nil
+-- @param cent Vector
+-- @param min Vector
+-- @param max Vector
+-- @param forward Vector
+-- @param rgb Vector
+-- @param a float
+-- @param duration float
+function DebugDrawBoxDirection( cent, min, max, forward, rgb, a, duration ) end
 
----[[ DebugDrawCircle  Draw a debug circle (center, vRgb, a, rad, ztest, duration) ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
--- @param float_4 float
--- @param bool_5 bool
--- @param float_6 float
-function DebugDrawCircle( Vector_1, Vector_2, float_3, float_4, bool_5, float_6 ) end
+---[[ DebugDrawCircle  Draw a debug circle. ]]
+-- @return nil
+-- @param center Vector
+-- @param rgb Vector
+-- @param a float
+-- @param rad float
+-- @param ztest bool
+-- @param duration float
+function DebugDrawCircle( center, rgb, a, rad, ztest, duration ) end
 
----[[ DebugDrawClear  Try to clear all the debug overlay info ]]
--- @return void
+---[[ DebugDrawClear  Try to clear all the debug overlay info. ]]
+-- @return nil
 function DebugDrawClear(  ) end
 
----[[ DebugDrawLine  Draw a debug overlay line (origin, target, r, g, b, ztest, duration) ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param bool_6 bool
--- @param float_7 float
-function DebugDrawLine( Vector_1, Vector_2, int_3, int_4, int_5, bool_6, float_7 ) end
+---[[ DebugDrawLine  Draw a debug overlay line. ]]
+-- @return nil
+-- @param origin Vector
+-- @param target Vector
+-- @param r int
+-- @param g int
+-- @param b int
+-- @param ztest bool
+-- @param duration float
+function DebugDrawLine( origin, target, r, g, b, ztest, duration ) end
 
----[[ DebugDrawLine_vCol  Draw a debug line using color vec (start, end, vRgb, a, ztest, duration) ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param Vector_3 Vector
--- @param bool_4 bool
--- @param float_5 float
-function DebugDrawLine_vCol( Vector_1, Vector_2, Vector_3, bool_4, float_5 ) end
+---[[ DebugDrawLine_vCol  Draw a debug line using color vec. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 Vector
+-- @param arg4 bool
+-- @param arg5 float
+function DebugDrawLine_vCol( arg1, arg2, arg3, arg4, arg5 ) end
 
----[[ DebugDrawScreenTextLine  Draw text with a line offset (x, y, lineOffset, text, r, g, b, a, duration) ]]
--- @return void
--- @param float_1 float
--- @param float_2 float
--- @param int_3 int
--- @param string_4 string
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param float_9 float
-function DebugDrawScreenTextLine( float_1, float_2, int_3, string_4, int_5, int_6, int_7, int_8, float_9 ) end
+---[[ DebugDrawScreenTextLine  Draw text with a line offset. ]]
+-- @return nil
+-- @param x float
+-- @param y float
+-- @param lineOffset int
+-- @param text string
+-- @param r int
+-- @param g int
+-- @param b int
+-- @param a int
+-- @param duration float
+function DebugDrawScreenTextLine( x, y, lineOffset, text, r, g, b, a, duration ) end
 
----[[ DebugDrawSphere  Draw a debug sphere (center, vRgb, a, rad, ztest, duration) ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
--- @param float_4 float
--- @param bool_5 bool
--- @param float_6 float
-function DebugDrawSphere( Vector_1, Vector_2, float_3, float_4, bool_5, float_6 ) end
+---[[ DebugDrawSphere  Draw a debug sphere. ]]
+-- @return nil
+-- @param center Vector
+-- @param rgb Vector
+-- @param a float
+-- @param rad float
+-- @param ztest bool
+-- @param duration float
+function DebugDrawSphere( center, rgb, a, rad, ztest, duration ) end
 
----[[ DebugDrawText  Draw text in 3d (origin, text, bViewCheck, duration) ]]
--- @return void
--- @param <unknown>_1 <unknown>
--- @param string_2 string
--- @param bool_3 bool
--- @param float_4 float
-function DebugDrawText( <unknown>_1, string_2, bool_3, float_4 ) end
+---[[ DebugDrawText  Draw text in 3d. ]]
+-- @return nil
+-- @param origin Vector
+-- @param text string
+-- @param viewCheck bool
+-- @param duration float
+function DebugDrawText( origin, text, viewCheck, duration ) end
 
----[[ DebugScreenTextPretty  Draw pretty debug text (x, y, lineOffset, text, r, g, b, a, duration, font, size, bBold) ]]
--- @return void
--- @param float_1 float
--- @param float_2 float
--- @param int_3 int
--- @param string_4 string
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param float_9 float
--- @param string_10 string
--- @param int_11 int
--- @param bool_12 bool
-function DebugScreenTextPretty( float_1, float_2, int_3, string_4, int_5, int_6, int_7, int_8, float_9, string_10, int_11, bool_12 ) end
+---[[ DebugScreenTextPretty  Draw pretty debug text. ]]
+-- @return nil
+-- @param x float
+-- @param y float
+-- @param lineOffset int
+-- @param text string
+-- @param r int
+-- @param g int
+-- @param b int
+-- @param a int
+-- @param duration float
+-- @param font string
+-- @param size int
+-- @param bold bool
+function DebugScreenTextPretty( x, y, lineOffset, text, r, g, b, a, duration, font, size, bold ) end
 
----[[ DoIncludeScript  Execute a script (internal) ]]
+---[[ DeepPrintTable  Print out a table (and subtables) to the console. ]]
+-- @return nil
+-- @param table table
+function DeepPrintTable( table ) end
+
+---[[ DoIncludeScript  Execute a script (internal). ]]
 -- @return bool
--- @param string_1 string
--- @param handle_2 handle
-function DoIncludeScript( string_1, handle_2 ) end
+-- @param arg1 string
+-- @param arg2 handle
+function DoIncludeScript( arg1, arg2 ) end
 
----[[ DoScriptAssert  #ScriptAssert:Asserts the passed in value. Prints out a message and brings up the assert dialog. ]]
--- @return void
--- @param bool_1 bool
--- @param string_2 string
-function DoScriptAssert( bool_1, string_2 ) end
+---[[ DoScriptAssert  Asserts the passed in value. Prints out a message and brings up the assert dialog. ]]
+-- @return nil
+-- @param arg1 bool
+-- @param arg2 string
+function DoScriptAssert( arg1, arg2 ) end
 
----[[ DoUniqueString  #UniqueString:Generate a string guaranteed to be unique across the life of the script VM, with an optional root string. Useful for adding data to tables when not sure what keys are already in use in that table. ]]
+---[[ DoUniqueString  Generate a string guaranteed to be unique across the life of the script VM, with an optional root string. Useful for adding data to tables when not sure what keys are already in use in that table. ]]
 -- @return string
--- @param string_1 string
-function DoUniqueString( string_1 ) end
+-- @param seed string
+function DoUniqueString( seed ) end
 
----[[ EmitSoundOn  Play named sound on Entity ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function EmitSoundOn( string_1, handle_2 ) end
+---[[ Dynamic_Wrap  A function to re-lookup a function by name every time. ]]
+-- @return unknown
+-- @param context table
+-- @param name string
+function Dynamic_Wrap( context, name ) end
 
----[[ EmitSoundOnClient  Play named sound only on the client for the passed in player ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function EmitSoundOnClient( string_1, handle_2 ) end
+---[[ EmitSoundOn  Play named sound on Entity. ]]
+-- @return nil
+-- @param soundName string
+-- @param entity CBaseEntity
+function EmitSoundOn( soundName, entity ) end
+
+---[[ EmitSoundOnClient  Play named sound only on the client for the passed in player. ]]
+-- @return nil
+-- @param soundName string
+-- @param arg2 handle
+function EmitSoundOnClient( soundName, arg2 ) end
 
 ---[[ EntIndexToHScript  Turn an entity index integer to an HScript representing that entity's script instance. ]]
--- @return handle
--- @param int_1 int
-function EntIndexToHScript( int_1 ) end
+-- @return CBaseEntity
+-- @param entityIndex EntityIndex
+function EntIndexToHScript( entityIndex ) end
 
----[[ ExponentialDecay  Smooth curve decreasing slower as it approaches zero ]]
+---[[ ExponentialDecay  Smooth curve decreasing slower as it approaches zero. ]]
 -- @return float
--- @param float_1 float
--- @param float_2 float
--- @param float_3 float
-function ExponentialDecay( float_1, float_2, float_3 ) end
+-- @param arg1 float
+-- @param arg2 float
+-- @param arg3 float
+function ExponentialDecay( arg1, arg2, arg3 ) end
 
----[[ FireEntityIOInputNameOnly  Fire Entity's Action Input w/no data ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param string_2 string
-function FireEntityIOInputNameOnly( ehandle_1, string_2 ) end
+---[[ FireEntityIOInputNameOnly  Fire Entity's Action Input w/no data. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 string
+function FireEntityIOInputNameOnly( arg1, arg2 ) end
 
----[[ FireEntityIOInputString  Fire Entity's Action Input with passed String - you own the memory ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param string_2 string
--- @param string_3 string
-function FireEntityIOInputString( ehandle_1, string_2, string_3 ) end
+---[[ FireEntityIOInputString  Fire Entity's Action Input with passed String - you own the memory. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 string
+-- @param arg3 string
+function FireEntityIOInputString( arg1, arg2, arg3 ) end
 
----[[ FireEntityIOInputVec  Fire Entity's Action Input with passed Vector - you own the memory ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param string_2 string
--- @param Vector_3 Vector
-function FireEntityIOInputVec( ehandle_1, string_2, Vector_3 ) end
+---[[ FireEntityIOInputVec  Fire Entity's Action Input with passed Vector - you own the memory. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 string
+-- @param arg3 Vector
+function FireEntityIOInputVec( arg1, arg2, arg3 ) end
 
 ---[[ FireGameEvent  Fire a game event. ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function FireGameEvent( string_1, handle_2 ) end
+-- @return nil
+-- @param eventName string
+-- @param eventData table
+function FireGameEvent( eventName, eventData ) end
 
 ---[[ FireGameEventLocal  Fire a game event without broadcasting to the client. ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function FireGameEventLocal( string_1, handle_2 ) end
+-- @return nil
+-- @param eventName string
+-- @param eventData table
+function FireGameEventLocal( eventName, eventData ) end
 
----[[ FrameTime  Get the time spent on the server in the last frame ]]
+---[[ FrameTime  Get the time spent on the server in the last frame. ]]
 -- @return float
 function FrameTime(  ) end
 
 ---[[ GetAbilityKeyValuesByName  Get ability data by ability name. ]]
 -- @return table
--- @param string_1 string
-function GetAbilityKeyValuesByName( string_1 ) end
+-- @param arg1 string
+function GetAbilityKeyValuesByName( arg1 ) end
 
----[[ GetAbilityTextureNameForAbility  Gets the ability texture name for an ability ]]
+---[[ GetAbilityTextureNameForAbility  Gets the ability texture name for an ability. ]]
 -- @return string
--- @param string_1 string
-function GetAbilityTextureNameForAbility( string_1 ) end
+-- @param abilityName string
+function GetAbilityTextureNameForAbility( abilityName ) end
 
----[[ GetActiveSpawnGroupHandle  Returns the currently active spawn group handle ]]
--- @return int
+---[[ GetActiveSpawnGroupHandle  Returns the currently active spawn group handle. ]]
+-- @return SpawnGroupHandle
 function GetActiveSpawnGroupHandle(  ) end
 
----[[ GetFrameCount  Returns the engines current frame count ]]
+---[[ GetFrameCount  Returns the engines current frame count. ]]
 -- @return int
 function GetFrameCount(  ) end
 
 ---[[ GetListenServerHost  Get the local player on a listen server. ]]
--- @return handle
+-- @return CDOTAPlayerController
 function GetListenServerHost(  ) end
 
 ---[[ GetLocalPlayerID  Get the local player ID. ]]
--- @return int
+-- @return PlayerID
 function GetLocalPlayerID(  ) end
 
 ---[[ GetLocalPlayerTeam  Get the local player team. ]]
--- @return int
--- @param int_1 int
-function GetLocalPlayerTeam( int_1 ) end
+-- @return DOTATeam_t
+-- @param arg1 int
+function GetLocalPlayerTeam( arg1 ) end
 
 ---[[ GetMapName  Get the name of the map. ]]
 -- @return string
 function GetMapName(  ) end
 
----[[ GetMaxOutputDelay  Get the longest delay for all events attached to an output ]]
+---[[ GetMaxOutputDelay  Get the longest delay for all events attached to an output. ]]
 -- @return float
--- @param ehandle_1 ehandle
--- @param string_2 string
-function GetMaxOutputDelay( ehandle_1, string_2 ) end
+-- @param arg1 ehandle
+-- @param arg2 string
+function GetMaxOutputDelay( arg1, arg2 ) end
 
 ---[[ GetPhysAngularVelocity  Get Angular Velocity for VPHYS or normal object. Returns a vector of the axis of rotation, multiplied by the degrees of rotation per second. ]]
 -- @return Vector
--- @param handle_1 handle
-function GetPhysAngularVelocity( handle_1 ) end
+-- @param arg1 handle
+function GetPhysAngularVelocity( arg1 ) end
 
----[[ GetPhysVelocity  Get Velocity for VPHYS or normal object ]]
+---[[ GetPhysVelocity  Get Velocity for VPHYS or normal object. ]]
 -- @return Vector
--- @param handle_1 handle
-function GetPhysVelocity( handle_1 ) end
+-- @param arg1 handle
+function GetPhysVelocity( arg1 ) end
 
 ---[[ GetUnitKeyValuesByName  Get unit data by ability name. ]]
 -- @return table
--- @param string_1 string
-function GetUnitKeyValuesByName( string_1 ) end
+-- @param arg1 string
+function GetUnitKeyValuesByName( arg1 ) end
 
----[[ InitLogFile  InitLogFile is deprecated. Print to the console for logging instead. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
-function InitLogFile( string_1, string_2 ) end
+---[[ InitLogFile   ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+function InitLogFile( arg1, arg2 ) end
 
 ---[[ IsClient  Returns true if this is lua running from the client.dll. ]]
 -- @return bool
@@ -328,11 +350,11 @@ function IsClient(  ) end
 -- @return bool
 function IsDedicatedServer(  ) end
 
----[[ IsDotaAltPressed  Returns true if whatever alt is remapped to is pressed ]]
+---[[ IsDotaAltPressed  Returns true if whatever alt is remapped to is pressed. ]]
 -- @return bool
 function IsDotaAltPressed(  ) end
 
----[[ IsDotaCtrlPressed  Returns true if whatever ctrl is remapped to is pressed ]]
+---[[ IsDotaCtrlPressed  Returns true if whatever ctrl is remapped to is pressed. ]]
 -- @return bool
 function IsDotaCtrlPressed(  ) end
 
@@ -342,609 +364,4459 @@ function IsInToolsMode(  ) end
 
 ---[[ IsMarkedForDeletion  Returns true if the entity is valid and marked for deletion. ]]
 -- @return bool
--- @param handle_1 handle
-function IsMarkedForDeletion( handle_1 ) end
+-- @param entity CBaseEntity
+function IsMarkedForDeletion( entity ) end
 
 ---[[ IsServer  Returns true if this is lua running from the server.dll. ]]
 -- @return bool
 function IsServer(  ) end
 
----[[ IsValidEntity  Checks to see if the given hScript is a valid entity ]]
+---[[ IsValidEntity  Checks to see if the given hScript is a valid entity. ]]
 -- @return bool
--- @param handle_1 handle
-function IsValidEntity( handle_1 ) end
+-- @param entity table
+function IsValidEntity( entity ) end
 
----[[ LerpVectors  (vector,vector,float) lerp between two vectors by a float factor returning new vector ]]
+---[[ LerpVectors  Lerp between two vectors by a float factor returning new vector. ]]
 -- @return Vector
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
-function LerpVectors( Vector_1, Vector_2, float_3 ) end
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 float
+function LerpVectors( arg1, arg2, arg3 ) end
 
----[[ LinkLuaModifier  Link a lua-defined modifier with the associated class ( className, fileName, LuaModifierType). ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
--- @param int_3 int
-function LinkLuaModifier( string_1, string_2, int_3 ) end
+---[[ LinkLuaModifier  Link a lua-defined modifier with the associated class. ]]
+-- @return nil
+-- @param className string
+-- @param filePath string
+-- @param luaModifierType LuaModifierType
+function LinkLuaModifier( className, filePath, luaModifierType ) end
 
 ---[[ ListenToGameEvent  Register as a listener for a game event from script. ]]
--- @return int
--- @param string_1 string
--- @param handle_2 handle
--- @param handle_3 handle
-function ListenToGameEvent( string_1, handle_2, handle_3 ) end
+-- @return EventListenerID
+-- @param eventName string
+-- @param listener [object Object]
+-- @param context table
+function ListenToGameEvent( eventName, listener, context ) end
 
----[[ LoadKeyValues  Creates a table from the specified keyvalues text file ]]
+---[[ LoadKeyValues  Creates a table from the specified keyvalues text file. ]]
 -- @return table
--- @param string_1 string
-function LoadKeyValues( string_1 ) end
+-- @param filePath string
+function LoadKeyValues( filePath ) end
 
----[[ LoadKeyValuesFromString  Creates a table from the specified keyvalues string ]]
+---[[ LoadKeyValuesFromString  Creates a table from the specified keyvalues string. ]]
 -- @return table
--- @param string_1 string
-function LoadKeyValuesFromString( string_1 ) end
+-- @param kvString string
+function LoadKeyValuesFromString( kvString ) end
 
----[[ LocalTime  Get the current local time ]]
--- @return table
+---[[ LocalTime  Get the current local time. ]]
+-- @return LocalTime
 function LocalTime(  ) end
 
----[[ MakeStringToken  Checks to see if the given hScript is a valid entity ]]
+---[[ MakeStringToken  Checks to see if the given hScript is a valid entity. ]]
 -- @return int
--- @param string_1 string
-function MakeStringToken( string_1 ) end
+-- @param arg1 string
+function MakeStringToken( arg1 ) end
 
----[[ ManuallyTriggerSpawnGroupCompletion  Triggers the creation of entities in a manually-completed spawn group ]]
--- @return void
--- @param int_1 int
-function ManuallyTriggerSpawnGroupCompletion( int_1 ) end
+---[[ ManuallyTriggerSpawnGroupCompletion  Triggers the creation of entities in a manually-completed spawn group. ]]
+-- @return nil
+-- @param handle SpawnGroupHandle
+function ManuallyTriggerSpawnGroupCompletion( handle ) end
 
----[[ Msg  Print a message ]]
--- @return void
--- @param string_1 string
-function Msg( string_1 ) end
+---[[ Msg  Print a message. ]]
+-- @return nil
+-- @param message string
+function Msg( message ) end
 
----[[ Plat_FloatTime  Get the current float time from the engine ]]
+---[[ Plat_FloatTime  Get the current float time from the engine. ]]
 -- @return float
 function Plat_FloatTime(  ) end
 
 ---[[ PlayerInstanceFromIndex  Get a script instance of a player by index. ]]
--- @return handle
--- @param int_1 int
-function PlayerInstanceFromIndex( int_1 ) end
+-- @return CDOTAPlayerController
+-- @param entityIndex EntityIndex
+function PlayerInstanceFromIndex( entityIndex ) end
 
----[[ PrecacheEntityFromTable  Precache an entity from KeyValues in table ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
--- @param handle_3 handle
-function PrecacheEntityFromTable( string_1, handle_2, handle_3 ) end
+---[[ PrecacheEntityFromTable  Precache an entity from KeyValues in table. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+-- @param context CScriptPrecacheContext
+function PrecacheEntityFromTable( arg1, arg2, context ) end
 
----[[ PrecacheEntityListFromTable  Precache a list of entity KeyValues tables ]]
--- @return void
--- @param handle_1 handle
--- @param handle_2 handle
-function PrecacheEntityListFromTable( handle_1, handle_2 ) end
+---[[ PrecacheEntityListFromTable  Precache a list of entity KeyValues tables. ]]
+-- @return nil
+-- @param arg1 handle
+-- @param context CScriptPrecacheContext
+function PrecacheEntityListFromTable( arg1, context ) end
 
----[[ PrintLinkedConsoleMessage  Print a console message with a linked console command ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
-function PrintLinkedConsoleMessage( string_1, string_2 ) end
+---[[ PrintLinkedConsoleMessage  Print a console message with a linked console command. ]]
+-- @return nil
+-- @param message string
+-- @param tooltip string
+function PrintLinkedConsoleMessage( message, tooltip ) end
 
----[[ QSlerp  (from angle, to angle, time) - Spherical lerp of angle from->to based on time ]]
+---[[ QSlerp  Spherical lerp of angle from->to based on time. ]]
 -- @return QAngle
--- @param QAngle_1 QAngle
--- @param QAngle_2 QAngle
--- @param float_3 float
-function QSlerp( QAngle_1, QAngle_2, float_3 ) end
+-- @param from_angle QAngle
+-- @param to_angle QAngle
+-- @param time float
+function QSlerp( from_angle, to_angle, time ) end
 
----[[ RandomFloatWrapper  Generate a random floating point number within a range, inclusive ]]
+---[[ RandomFloatWrapper  Generate a random floating point number within a range, inclusive. ]]
 -- @return float
--- @param float_1 float
--- @param float_2 float
-function RandomFloatWrapper( float_1, float_2 ) end
+-- @param arg1 float
+-- @param arg2 float
+function RandomFloatWrapper( arg1, arg2 ) end
 
----[[ RandomInt  Get a random int within a range ]]
+---[[ RandomInt  Get a random int within a range. ]]
 -- @return int
--- @param int_1 int
--- @param int_2 int
-function RandomInt( int_1, int_2 ) end
+-- @param min int
+-- @param max int
+function RandomInt( min, max ) end
 
----[[ RegisterSpawnGroupFilterProxy  Create a C proxy for a script-based spawn group filter ]]
--- @return void
--- @param string_1 string
-function RegisterSpawnGroupFilterProxy( string_1 ) end
+---[[ RegisterSpawnGroupFilterProxy  Create a C proxy for a script-based spawn group filter. ]]
+-- @return nil
+-- @param arg1 string
+function RegisterSpawnGroupFilterProxy( arg1 ) end
 
----[[ ReloadMOTD  Reloads the MotD file ]]
--- @return void
+---[[ ReloadMOTD  Reloads the MotD file. ]]
+-- @return nil
 function ReloadMOTD(  ) end
 
----[[ RemoveSpawnGroupFilterProxy  Remove the C proxy for a script-based spawn group filter ]]
--- @return void
--- @param string_1 string
-function RemoveSpawnGroupFilterProxy( string_1 ) end
+---[[ RemoveSpawnGroupFilterProxy  Remove the C proxy for a script-based spawn group filter. ]]
+-- @return nil
+-- @param arg1 string
+function RemoveSpawnGroupFilterProxy( arg1 ) end
 
 ---[[ RotateOrientation  Rotate a QAngle by another QAngle. ]]
 -- @return QAngle
--- @param QAngle_1 QAngle
--- @param QAngle_2 QAngle
-function RotateOrientation( QAngle_1, QAngle_2 ) end
+-- @param arg1 QAngle
+-- @param arg2 QAngle
+function RotateOrientation( arg1, arg2 ) end
 
 ---[[ RotatePosition  Rotate a Vector around a point. ]]
 -- @return Vector
--- @param Vector_1 Vector
--- @param QAngle_2 QAngle
--- @param Vector_3 Vector
-function RotatePosition( Vector_1, QAngle_2, Vector_3 ) end
+-- @param arg1 Vector
+-- @param arg2 QAngle
+-- @param arg3 Vector
+function RotatePosition( arg1, arg2, arg3 ) end
 
----[[ RotateQuaternionByAxisAngle  (quaternion,vector,float) rotates a quaternion by the specified angle around the specified vector axis ]]
+---[[ RotateQuaternionByAxisAngle  Rotates a quaternion by the specified angle around the specified vector axis. ]]
 -- @return Quaternion
--- @param Quaternion_1 Quaternion
--- @param Vector_2 Vector
--- @param float_3 float
-function RotateQuaternionByAxisAngle( Quaternion_1, Vector_2, float_3 ) end
+-- @param arg1 Quaternion
+-- @param arg2 Vector
+-- @param arg3 float
+function RotateQuaternionByAxisAngle( arg1, arg2, arg3 ) end
 
 ---[[ RotationDelta  Find the delta between two QAngles. ]]
 -- @return QAngle
--- @param QAngle_1 QAngle
--- @param QAngle_2 QAngle
-function RotationDelta( QAngle_1, QAngle_2 ) end
+-- @param arg1 QAngle
+-- @param arg2 QAngle
+function RotationDelta( arg1, arg2 ) end
 
----[[ RotationDeltaAsAngularVelocity  converts delta QAngle to an angular velocity Vector ]]
+---[[ RotationDeltaAsAngularVelocity  Converts delta QAngle to an angular velocity Vector. ]]
 -- @return Vector
--- @param QAngle_1 QAngle
--- @param QAngle_2 QAngle
-function RotationDeltaAsAngularVelocity( QAngle_1, QAngle_2 ) end
+-- @param arg1 QAngle
+-- @param arg2 QAngle
+function RotationDeltaAsAngularVelocity( arg1, arg2 ) end
 
----[[ ScreenShake  Start a screenshake with the following parameters. vecCenter, flAmplitude, flFrequency, flDuration, flRadius, eCommand( SHAKE_START = 0, SHAKE_STOP = 1 ), bAirShake ]]
--- @return void
--- @param Vector_1 Vector
--- @param float_2 float
--- @param float_3 float
--- @param float_4 float
--- @param float_5 float
--- @param int_6 int
--- @param bool_7 bool
-function ScreenShake( Vector_1, float_2, float_3, float_4, float_5, int_6, bool_7 ) end
+---[[ ScreenShake  Start a screenshake. ]]
+-- @return nil
+-- @param center Vector
+-- @param amplitude float
+-- @param frequency float
+-- @param duration float
+-- @param radius float
+-- @param command [object Object]
+-- @param airShake bool
+function ScreenShake( center, amplitude, frequency, duration, radius, command, airShake ) end
 
----[[ Script_RandomFloat  Get a random float within a range ]]
+---[[ Script_RandomFloat  Get a random float within a range. ]]
 -- @return float
--- @param float_1 float
--- @param float_2 float
-function Script_RandomFloat( float_1, float_2 ) end
+-- @param arg1 float
+-- @param arg2 float
+function Script_RandomFloat( arg1, arg2 ) end
 
----[[ SendToConsole  Send a string to the console as a client command ]]
--- @return void
--- @param string_1 string
-function SendToConsole( string_1 ) end
+---[[ SendToConsole  Send a string to the console as a client command. ]]
+-- @return nil
+-- @param arg1 string
+function SendToConsole( arg1 ) end
 
----[[ SetOpvarFloatAll  Sets an opvar value for all players ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
--- @param string_3 string
--- @param float_4 float
-function SetOpvarFloatAll( string_1, string_2, string_3, float_4 ) end
+---[[ SetOpvarFloatAll  Sets an opvar value for all players. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+-- @param arg3 string
+-- @param arg4 float
+function SetOpvarFloatAll( arg1, arg2, arg3, arg4 ) end
 
----[[ SetOpvarFloatPlayer  Sets an opvar value for a single player ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
--- @param string_3 string
--- @param float_4 float
--- @param handle_5 handle
-function SetOpvarFloatPlayer( string_1, string_2, string_3, float_4, handle_5 ) end
+---[[ SetOpvarFloatPlayer  Sets an opvar value for a single player. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+-- @param arg3 string
+-- @param arg4 float
+-- @param arg5 handle
+function SetOpvarFloatPlayer( arg1, arg2, arg3, arg4, arg5 ) end
 
 ---[[ SetPhysAngularVelocity  Set Angular Velocity for VPHYS or normal object, from a vector of the axis of rotation, multiplied by the degrees of rotation per second. ]]
--- @return void
--- @param handle_1 handle
--- @param Vector_2 Vector
-function SetPhysAngularVelocity( handle_1, Vector_2 ) end
+-- @return nil
+-- @param arg1 handle
+-- @param arg2 Vector
+function SetPhysAngularVelocity( arg1, arg2 ) end
 
 ---[[ SetQuestName  Set the current quest name. ]]
--- @return void
--- @param string_1 string
-function SetQuestName( string_1 ) end
+-- @return nil
+-- @param arg1 string
+function SetQuestName( arg1 ) end
 
 ---[[ SetQuestPhase  Set the current quest phase. ]]
--- @return void
--- @param int_1 int
-function SetQuestPhase( int_1 ) end
+-- @return nil
+-- @param arg1 int
+function SetQuestPhase( arg1 ) end
 
----[[ SetRenderingEnabled  Set rendering on/off for an ehandle ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param bool_2 bool
-function SetRenderingEnabled( ehandle_1, bool_2 ) end
+---[[ SetRenderingEnabled  Set rendering on/off for an ehandle. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 bool
+function SetRenderingEnabled( arg1, arg2 ) end
 
----[[ SpawnEntityFromTableAsynchronous  Asynchronously spawns a single entity from a table ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
--- @param handle_3 handle
--- @param handle_4 handle
-function SpawnEntityFromTableAsynchronous( string_1, handle_2, handle_3, handle_4 ) end
+---[[ SpawnEntityFromTableAsynchronous  Asynchronously spawns a single entity from a table. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+-- @param arg3 handle
+-- @param arg4 handle
+function SpawnEntityFromTableAsynchronous( arg1, arg2, arg3, arg4 ) end
 
----[[ SpawnEntityFromTableSynchronous  Synchronously spawns a single entity from a table ]]
--- @return handle
--- @param string_1 string
--- @param handle_2 handle
-function SpawnEntityFromTableSynchronous( string_1, handle_2 ) end
+---[[ SpawnEntityFromTableSynchronous  Synchronously spawns a single entity from a table. ]]
+-- @return CBaseEntity
+-- @param baseclass string
+-- @param data table
+function SpawnEntityFromTableSynchronous( baseclass, data ) end
 
 ---[[ SpawnEntityGroupFromTable  Hierarchically spawn an entity group from a set of spawn tables. ]]
 -- @return bool
--- @param handle_1 handle
--- @param bool_2 bool
--- @param handle_3 handle
-function SpawnEntityGroupFromTable( handle_1, bool_2, handle_3 ) end
+-- @param arg1 handle
+-- @param arg2 bool
+-- @param arg3 handle
+function SpawnEntityGroupFromTable( arg1, arg2, arg3 ) end
 
----[[ SpawnEntityListFromTableAsynchronous  Asynchronously spawn an entity group from a list of spawn tables. A callback will be triggered when the spawning is complete ]]
+---[[ SpawnEntityListFromTableAsynchronous  Asynchronously spawn an entity group from a list of spawn tables. A callback will be triggered when the spawning is complete. ]]
 -- @return int
--- @param handle_1 handle
--- @param handle_2 handle
-function SpawnEntityListFromTableAsynchronous( handle_1, handle_2 ) end
+-- @param arg1 handle
+-- @param arg2 handle
+function SpawnEntityListFromTableAsynchronous( arg1, arg2 ) end
 
 ---[[ SpawnEntityListFromTableSynchronous  Synchronously spawn an entity group from a list of spawn tables. ]]
 -- @return handle
--- @param handle_1 handle
-function SpawnEntityListFromTableSynchronous( handle_1 ) end
+-- @param arg1 handle
+function SpawnEntityListFromTableSynchronous( arg1 ) end
 
----[[ SplineQuaternions  (quaternion,quaternion,float) very basic interpolation of v0 to v1 over t on [0,1] ]]
+---[[ SplineQuaternions  Very basic interpolation of v0 to v1 over t on [0,1]. ]]
 -- @return Quaternion
--- @param Quaternion_1 Quaternion
--- @param Quaternion_2 Quaternion
--- @param float_3 float
-function SplineQuaternions( Quaternion_1, Quaternion_2, float_3 ) end
+-- @param arg1 Quaternion
+-- @param arg2 Quaternion
+-- @param arg3 float
+function SplineQuaternions( arg1, arg2, arg3 ) end
 
----[[ SplineVectors  (vector,vector,float) very basic interpolation of v0 to v1 over t on [0,1] ]]
+---[[ SplineVectors  Very basic interpolation of v0 to v1 over t on [0,1]. ]]
 -- @return Vector
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
-function SplineVectors( Vector_1, Vector_2, float_3 ) end
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 float
+function SplineVectors( arg1, arg2, arg3 ) end
 
----[[ StartSoundEvent  Start a sound event ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function StartSoundEvent( string_1, handle_2 ) end
+---[[ StartSoundEvent  Start a sound event. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+function StartSoundEvent( arg1, arg2 ) end
 
----[[ StartSoundEventFromPosition  Start a sound event from position ]]
--- @return void
--- @param string_1 string
--- @param Vector_2 Vector
-function StartSoundEventFromPosition( string_1, Vector_2 ) end
+---[[ StartSoundEventFromPosition  Start a sound event from position. ]]
+-- @return nil
+-- @param soundName string
+-- @param position Vector
+function StartSoundEventFromPosition( soundName, position ) end
 
----[[ StartSoundEventFromPositionReliable  Start a sound event from position with reliable delivery ]]
--- @return void
--- @param string_1 string
--- @param Vector_2 Vector
-function StartSoundEventFromPositionReliable( string_1, Vector_2 ) end
+---[[ StartSoundEventFromPositionReliable  Start a sound event from position with reliable delivery. ]]
+-- @return nil
+-- @param soundName string
+-- @param position Vector
+function StartSoundEventFromPositionReliable( soundName, position ) end
 
----[[ StartSoundEventFromPositionUnreliable  Start a sound event from position with optional delivery ]]
--- @return void
--- @param string_1 string
--- @param Vector_2 Vector
-function StartSoundEventFromPositionUnreliable( string_1, Vector_2 ) end
+---[[ StartSoundEventFromPositionUnreliable  Start a sound event from position with optional delivery. ]]
+-- @return nil
+-- @param soundName string
+-- @param position Vector
+function StartSoundEventFromPositionUnreliable( soundName, position ) end
 
----[[ StartSoundEventReliable  Start a sound event with reliable delivery ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function StartSoundEventReliable( string_1, handle_2 ) end
+---[[ StartSoundEventReliable  Start a sound event with reliable delivery. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+function StartSoundEventReliable( arg1, arg2 ) end
 
----[[ StartSoundEventUnreliable  Start a sound event with optional delivery ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function StartSoundEventUnreliable( string_1, handle_2 ) end
+---[[ StartSoundEventUnreliable  Start a sound event with optional delivery. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+function StartSoundEventUnreliable( arg1, arg2 ) end
 
----[[ StopEffect  Pass entity and effect name ]]
--- @return void
--- @param handle_1 handle
--- @param string_2 string
-function StopEffect( handle_1, string_2 ) end
+---[[ StopEffect  Pass entity and effect name. ]]
+-- @return nil
+-- @param arg1 handle
+-- @param arg2 string
+function StopEffect( arg1, arg2 ) end
 
 ---[[ StopListeningToAllGameEvents  Stop listening to all game events within a specific context. ]]
--- @return void
--- @param handle_1 handle
-function StopListeningToAllGameEvents( handle_1 ) end
+-- @return nil
+-- @param arg1 handle
+function StopListeningToAllGameEvents( arg1 ) end
 
 ---[[ StopListeningToGameEvent  Stop listening to a particular game event. ]]
 -- @return bool
--- @param int_1 int
-function StopListeningToGameEvent( int_1 ) end
+-- @param listenerId EventListenerID
+function StopListeningToGameEvent( listenerId ) end
 
----[[ StopSoundEvent  Stops a sound event with optional delivery ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function StopSoundEvent( string_1, handle_2 ) end
+---[[ StopSoundEvent  Stops a sound event with optional delivery. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+function StopSoundEvent( arg1, arg2 ) end
 
----[[ StopSoundOn  Stop named sound on Entity ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
-function StopSoundOn( string_1, handle_2 ) end
+---[[ StopSoundOn  Stop named sound on Entity. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+function StopSoundOn( arg1, arg2 ) end
 
----[[ Time  Get the current server time ]]
+---[[ Time  Get the current server time. ]]
 -- @return float
 function Time(  ) end
 
----[[ TraceCollideable  Pass table - Inputs: start, end, ent, (optional mins, maxs) -- outputs: pos, fraction, hit, startsolid, normal ]]
+---[[ TraceCollideable   ]]
 -- @return bool
--- @param handle_1 handle
-function TraceCollideable( handle_1 ) end
+-- @param query TraceCollideableInputs
+function TraceCollideable( query ) end
 
----[[ TraceHull  Pass table - Inputs: start, end, min, max, mask, ignore  -- outputs: pos, fraction, hit, enthit, startsolid ]]
+---[[ TraceHull   ]]
 -- @return bool
--- @param handle_1 handle
-function TraceHull( handle_1 ) end
+-- @param query TraceHullInputs
+function TraceHull( query ) end
 
----[[ TraceLine  Pass table - Inputs: startpos, endpos, mask, ignore  -- outputs: pos, fraction, hit, enthit, startsolid ]]
+---[[ TraceLine   ]]
 -- @return bool
--- @param handle_1 handle
-function TraceLine( handle_1 ) end
+-- @param query TraceLineInputs
+function TraceLine( query ) end
 
----[[ UTIL_Remove  Removes the specified entity ]]
--- @return void
--- @param handle_1 handle
-function UTIL_Remove( handle_1 ) end
+---[[ UnitFilter  Check if a unit passes a set of filters. ]]
+-- @return UnitFilterResult
+-- @param npc CDOTA_BaseNPC
+-- @param teamFilter DOTA_UNIT_TARGET_TEAM
+-- @param typeFilter DOTA_UNIT_TARGET_TYPE
+-- @param flagFilter DOTA_UNIT_TARGET_FLAGS
+-- @param team DOTATeam_t
+function UnitFilter( npc, teamFilter, typeFilter, flagFilter, team ) end
 
----[[ UTIL_RemoveImmediate  Immediately removes the specified entity ]]
--- @return void
--- @param handle_1 handle
-function UTIL_RemoveImmediate( handle_1 ) end
+---[[ UnloadSpawnGroup  Unload a spawn group by name. ]]
+-- @return nil
+-- @param arg1 string
+function UnloadSpawnGroup( arg1 ) end
 
----[[ UnitFilter  Check if a unit passes a set of filters. (hNPC, nTargetTeam, nTargetType, nTargetFlags, nTeam ]]
--- @return int
--- @param handle_1 handle
--- @param int_2 int
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
-function UnitFilter( handle_1, int_2, int_3, int_4, int_5 ) end
-
----[[ UnloadSpawnGroup  Unload a spawn group by name ]]
--- @return void
--- @param string_1 string
-function UnloadSpawnGroup( string_1 ) end
-
----[[ UnloadSpawnGroupByHandle  Unload a spawn group by handle ]]
--- @return void
--- @param int_1 int
-function UnloadSpawnGroupByHandle( int_1 ) end
+---[[ UnloadSpawnGroupByHandle  Unload a spawn group by handle. ]]
+-- @return nil
+-- @param handle SpawnGroupHandle
+function UnloadSpawnGroupByHandle( handle ) end
 
 ---[[ UserIDToControllerHScript  Turn a userid integer (typically, fields named 'userid' in game events) to an HScript representing the associated player controller's script instance. ]]
 -- @return handle
--- @param int_1 int
-function UserIDToControllerHScript( int_1 ) end
+-- @param arg1 int
+function UserIDToControllerHScript( arg1 ) end
+
+---[[ UTIL_Remove  Removes the specified entity. ]]
+-- @return nil
+-- @param entity CBaseEntity
+function UTIL_Remove( entity ) end
+
+---[[ UTIL_RemoveImmediate  Immediately removes the specified entity. ]]
+-- @return nil
+-- @param entity CBaseEntity
+function UTIL_RemoveImmediate( entity ) end
 
 ---[[ VectorToAngles  Get Qangles (with no roll) for a Vector. ]]
 -- @return QAngle
--- @param Vector_1 Vector
-function VectorToAngles( Vector_1 ) end
+-- @param arg1 Vector
+function VectorToAngles( arg1 ) end
 
----[[ Warning  Print a warning ]]
--- @return void
--- @param string_1 string
-function Warning( string_1 ) end
+---[[ Warning  Print a warning. ]]
+-- @return nil
+-- @param message string
+function Warning( message ) end
 
----[[ cvar_getf  Gets the value of the given cvar, as a float. ]]
--- @return float
--- @param string_1 string
-function cvar_getf( string_1 ) end
+---[[ GetAbsOrigin   ]]
+-- @return Vector
+function C_BaseEntity:GetAbsOrigin(  ) end
 
----[[ cvar_setf  Sets the value of the given cvar, as a float. ]]
+---[[ GetHealth  Get the health of this entity. ]]
+-- @return int
+function C_BaseEntity:GetHealth(  ) end
+
+---[[ GetMaxHealth  Get the maximum health of this entity. ]]
+-- @return int
+function C_BaseEntity:GetMaxHealth(  ) end
+
+---[[ GetTeamNumber  Get the team number of this entity. ]]
+-- @return DOTATeam_t
+function C_BaseEntity:GetTeamNumber(  ) end
+
+---[[ IsBaseNPC  Is this entity an CDOTA_BaseNPC? ]]
 -- @return bool
--- @param string_1 string
--- @param float_2 float
-function cvar_setf( string_1, float_2 ) end
+function C_BaseEntity:IsBaseNPC(  ) end
 
+---[[ IsInstance   ]]
+-- @return bool
+-- @param classOrClassName string
+function C_BaseEntity:IsInstance( classOrClassName ) end
+
+---[[ SetContextThink  Set a think function on this entity. ]]
+-- @return nil
+-- @param contextName string
+-- @param thinkFunc [object Object]
+-- @param interval float
+function C_BaseEntity:SetContextThink( contextName, thinkFunc, interval ) end
+
+---[[ SetThink  Set a think function on this entity. Uses `CBaseEntity:SetContextThink` internally.
+Note: optional parameters can be given in any order. ]]
+-- @return nil
+-- @param functionName [object Object]
+-- @param context table
+-- @param contextName string
+-- @param initialDelay float
+function C_BaseEntity:SetThink( functionName, context, contextName, initialDelay ) end
+
+---[[ StopThink  Stops thinker created with `CBaseEntity.SetThink`.
+Alias for `CBaseEntity:SetContextThink(contextName, nil, 0)`. ]]
+-- @return nil
+-- @param contextName string
+function C_BaseEntity:StopThink( contextName ) end
+
+---[[ GetRenderAlpha  Get the alpha modulation of this entity. ]]
+-- @return int
+function C_BaseModelEntity:GetRenderAlpha(  ) end
+
+---[[ AddImpulseAtPosition  Apply an impulse at a worldspace position to the physics. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+function CBodyComponent:AddImpulseAtPosition( arg1, arg2 ) end
+
+---[[ AddVelocity  Add linear and angular velocity to the physics object. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+function CBodyComponent:AddVelocity( arg1, arg2 ) end
+
+---[[ DetachFromParent  Detach from its parent. ]]
+-- @return nil
+function CBodyComponent:DetachFromParent(  ) end
+
+---[[ IsAttachedToParent  Is attached to parent. ]]
+-- @return bool
+function CBodyComponent:IsAttachedToParent(  ) end
+
+---[[ SetAngularVelocity   ]]
+-- @return nil
+-- @param arg1 Vector
+function CBodyComponent:SetAngularVelocity( arg1 ) end
+
+---[[ SetMaterialGroup   ]]
+-- @return nil
+-- @param arg1 string
+function CBodyComponent:SetMaterialGroup( arg1 ) end
+
+---[[ SetVelocity   ]]
+-- @return nil
+-- @param arg1 Vector
+function CBodyComponent:SetVelocity( arg1 ) end
+
+---[[ GetTableValue   ]]
+-- @return table
+-- @param tableName string
+-- @param keyName string
+function CCustomNetTableManager:GetTableValue( tableName, keyName ) end
+
+---[[ Axis  Draws an axis. Specify origin + orientation in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 QAngle
+-- @param arg3 float
+-- @param arg4 bool
+-- @param arg5 float
+function CDebugOverlayScriptHelper:Axis( arg1, arg2, arg3, arg4, arg5 ) end
+
+---[[ Box  Draws a world-space axis-aligned box. Specify bounds in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 bool
+-- @param arg8 float
+function CDebugOverlayScriptHelper:Box( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
+
+---[[ BoxAngles  Draws an oriented box at the origin. Specify bounds in local space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 Vector
+-- @param arg4 QAngle
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 bool
+-- @param arg10 float
+function CDebugOverlayScriptHelper:BoxAngles( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ Capsule  Draws a capsule. Specify base in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 QAngle
+-- @param arg3 float
+-- @param arg4 float
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 bool
+-- @param arg10 float
+function CDebugOverlayScriptHelper:Capsule( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ Circle  Draws a circle. Specify center in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 QAngle
+-- @param arg3 float
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 bool
+-- @param arg9 float
+function CDebugOverlayScriptHelper:Circle( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 ) end
+
+---[[ CircleScreenOriented  Draws a circle oriented to the screen. Specify center in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 float
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 bool
+-- @param arg8 float
+function CDebugOverlayScriptHelper:CircleScreenOriented( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
+
+---[[ Cone  Draws a wireframe cone. Specify endpoint and direction in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 float
+-- @param arg4 float
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 bool
+-- @param arg10 float
+function CDebugOverlayScriptHelper:Cone( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ Cross  Draws a screen-aligned cross. Specify origin in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 float
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 bool
+-- @param arg8 float
+function CDebugOverlayScriptHelper:Cross( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
+
+---[[ Cross3D  Draws a world-aligned cross. Specify origin in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 float
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 bool
+-- @param arg8 float
+function CDebugOverlayScriptHelper:Cross3D( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
+
+---[[ Cross3DOriented  Draws an oriented cross. Specify origin in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 QAngle
+-- @param arg3 float
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 bool
+-- @param arg9 float
+function CDebugOverlayScriptHelper:Cross3DOriented( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 ) end
+
+---[[ DrawTickMarkedLine  Draws a dashed line. Specify endpoints in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 float
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 bool
+-- @param arg10 float
+function CDebugOverlayScriptHelper:DrawTickMarkedLine( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ EntityAttachments  Draws the attachments of the entity. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 float
+-- @param arg3 float
+function CDebugOverlayScriptHelper:EntityAttachments( arg1, arg2, arg3 ) end
+
+---[[ EntityAxis  Draws the axis of the entity origin. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 float
+-- @param arg3 bool
+-- @param arg4 float
+function CDebugOverlayScriptHelper:EntityAxis( arg1, arg2, arg3, arg4 ) end
+
+---[[ EntityBounds  Draws bounds of an entity. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 int
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 bool
+-- @param arg7 float
+function CDebugOverlayScriptHelper:EntityBounds( arg1, arg2, arg3, arg4, arg5, arg6, arg7 ) end
+
+---[[ EntitySkeleton  Draws the skeleton of the entity. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 float
+function CDebugOverlayScriptHelper:EntitySkeleton( arg1, arg2 ) end
+
+---[[ EntityText  Draws text on an entity. ]]
+-- @return nil
+-- @param arg1 ehandle
+-- @param arg2 int
+-- @param arg3 string
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 float
+function CDebugOverlayScriptHelper:EntityText( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
+
+---[[ FilledRect2D  Draws a screen-space filled 2D rectangle. Coordinates are in pixels. ]]
+-- @return nil
+-- @param arg1 Vector2D
+-- @param arg2 Vector2D
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 float
+function CDebugOverlayScriptHelper:FilledRect2D( arg1, arg2, arg3, arg4, arg5, arg6, arg7 ) end
+
+---[[ HorzArrow  Draws a horizontal arrow. Specify endpoints in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 float
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 bool
+-- @param arg9 float
+function CDebugOverlayScriptHelper:HorzArrow( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 ) end
+
+---[[ Line  Draws a line between two points. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 bool
+-- @param arg8 float
+function CDebugOverlayScriptHelper:Line( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
+
+---[[ Line2D  Draws a line between two points in screenspace. ]]
+-- @return nil
+-- @param arg1 Vector2D
+-- @param arg2 Vector2D
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 float
+function CDebugOverlayScriptHelper:Line2D( arg1, arg2, arg3, arg4, arg5, arg6, arg7 ) end
+
+---[[ PopDebugOverlayScope  Pops the identifier used to group overlays. Overlays marked with this identifier can be deleted in a big batch. ]]
+-- @return nil
+function CDebugOverlayScriptHelper:PopDebugOverlayScope(  ) end
+
+---[[ PushAndClearDebugOverlayScope  Pushes an identifier used to group overlays. Deletes all existing overlays using this overlay id. ]]
+-- @return nil
+-- @param arg1 string
+function CDebugOverlayScriptHelper:PushAndClearDebugOverlayScope( arg1 ) end
+
+---[[ PushDebugOverlayScope  Pushes an identifier used to group overlays. Overlays marked with this identifier can be deleted in a big batch. ]]
+-- @return nil
+-- @param arg1 string
+function CDebugOverlayScriptHelper:PushDebugOverlayScope( arg1 ) end
+
+---[[ RemoveAllInScope  Removes all overlays marked with a specific identifier, regardless of their lifetime. ]]
+-- @return nil
+-- @param arg1 string
+function CDebugOverlayScriptHelper:RemoveAllInScope( arg1 ) end
+
+---[[ SolidCone  Draws a solid cone. Specify endpoint and direction in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 float
+-- @param arg4 float
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 bool
+-- @param arg10 float
+function CDebugOverlayScriptHelper:SolidCone( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ Sphere  Draws a wireframe sphere. Specify center in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 float
+-- @param arg3 int
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 bool
+-- @param arg8 float
+function CDebugOverlayScriptHelper:Sphere( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 ) end
+
+---[[ SweptBox  Draws a swept box. Specify endpoints in world space and the bounds in local space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 Vector
+-- @param arg4 Vector
+-- @param arg5 QAngle
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 int
+-- @param arg10 float
+function CDebugOverlayScriptHelper:SweptBox( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ Text  Draws 2D text. Specify origin in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 int
+-- @param arg3 string
+-- @param arg4 float
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 float
+function CDebugOverlayScriptHelper:Text( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 ) end
+
+---[[ Texture  Draws a screen-space texture. Coordinates are in pixels. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 Vector2D
+-- @param arg3 Vector2D
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 Vector2D
+-- @param arg9 Vector2D
+-- @param arg10 float
+function CDebugOverlayScriptHelper:Texture( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ Triangle  Draws a filled triangle. Specify vertices in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 Vector
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 bool
+-- @param arg9 float
+function CDebugOverlayScriptHelper:Triangle( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 ) end
+
+---[[ VectorText3D  Draws 3D text. Specify origin + orientation in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 QAngle
+-- @param arg3 string
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 bool
+-- @param arg9 float
+function CDebugOverlayScriptHelper:VectorText3D( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 ) end
+
+---[[ VertArrow  Draws a vertical arrow. Specify endpoints in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 Vector
+-- @param arg3 float
+-- @param arg4 int
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 bool
+-- @param arg9 float
+function CDebugOverlayScriptHelper:VertArrow( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 ) end
+
+---[[ YawArrow  Draws a arrow associated with a specific yaw. Specify endpoints in world space. ]]
+-- @return nil
+-- @param arg1 Vector
+-- @param arg2 float
+-- @param arg3 float
+-- @param arg4 float
+-- @param arg5 int
+-- @param arg6 int
+-- @param arg7 int
+-- @param arg8 int
+-- @param arg9 bool
+-- @param arg10 float
+function CDebugOverlayScriptHelper:YawArrow( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 ) end
+
+---[[ CastFilterResult  Determine whether an issued command with no target is valid. ]]
+-- @return UnitFilterResult
+function C_DOTA_Ability_Lua:CastFilterResult(  ) end
+
+---[[ CastFilterResultLocation  Determine whether an issued command on a location is valid. ]]
+-- @return UnitFilterResult
+-- @param location Vector
+function C_DOTA_Ability_Lua:CastFilterResultLocation( location ) end
+
+---[[ CastFilterResultTarget  Determine whether an issued command on a target is valid. ]]
+-- @return UnitFilterResult
+-- @param target CDOTA_BaseNPC
+function C_DOTA_Ability_Lua:CastFilterResultTarget( target ) end
+
+---[[ GetAbilityChargeRestoreTime   ]]
+-- @return float
+-- @param level int
+function C_DOTA_Ability_Lua:GetAbilityChargeRestoreTime( level ) end
+
+---[[ GetAbilityTextureName  Allows code overriding of the ability texture shown in the HUD. ]]
+-- @return string
+function C_DOTA_Ability_Lua:GetAbilityTextureName(  ) end
+
+---[[ GetAOERadius  Controls the size of the AOE casting cursor. ]]
+-- @return float
+function C_DOTA_Ability_Lua:GetAOERadius(  ) end
+
+---[[ GetBehavior  Return cast behavior type of this ability. ]]
+-- @return DOTA_ABILITY_BEHAVIOR
+function C_DOTA_Ability_Lua:GetBehavior(  ) end
+
+---[[ GetCastPoint  Return cast point of this ability. ]]
+-- @return float
+function C_DOTA_Ability_Lua:GetCastPoint(  ) end
+
+---[[ GetCastRange  Return cast range of this ability. ]]
+-- @return int
+-- @param location Vector
+-- @param target CDOTA_BaseNPC
+function C_DOTA_Ability_Lua:GetCastRange( location, target ) end
+
+---[[ GetCastRangeBonus   ]]
+-- @return int
+-- @param target handle
+-- @param pseudoCastRange int
+function C_DOTA_Ability_Lua:GetCastRangeBonus( target, pseudoCastRange ) end
+
+---[[ GetChannelledHealthCostPerSecond  Return health cost per second of channeling at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Ability_Lua:GetChannelledHealthCostPerSecond( level ) end
+
+---[[ GetChannelledManaCostPerSecond  Return mana cost at the given level per second while channeling (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Ability_Lua:GetChannelledManaCostPerSecond( level ) end
+
+---[[ GetChannelStartTime  Return the channel start time of this ability. ]]
+-- @return float
+function C_DOTA_Ability_Lua:GetChannelStartTime(  ) end
+
+---[[ GetChannelTime  Return the channel time of this ability. ]]
+-- @return float
+function C_DOTA_Ability_Lua:GetChannelTime(  ) end
+
+---[[ GetCooldown  Return cooldown of this ability. ]]
+-- @return float
+-- @param level int
+function C_DOTA_Ability_Lua:GetCooldown( level ) end
+
+---[[ GetCustomCastError  Return the error string of a failed command with no target. ]]
+-- @return string
+function C_DOTA_Ability_Lua:GetCustomCastError(  ) end
+
+---[[ GetCustomCastErrorLocation  Return the error string of a failed command on a location. ]]
+-- @return string
+-- @param location Vector
+function C_DOTA_Ability_Lua:GetCustomCastErrorLocation( location ) end
+
+---[[ GetCustomCastErrorTarget  Return the error string of a failed command on a target. ]]
+-- @return string
+-- @param target CDOTA_BaseNPC
+function C_DOTA_Ability_Lua:GetCustomCastErrorTarget( target ) end
+
+---[[ GetCustomHudErrorMessage  (DOTA_INVALID_ORDERS nReason) Return the error string of a failed order. ]]
+-- @return string
+-- @param reason int
+function C_DOTA_Ability_Lua:GetCustomHudErrorMessage( reason ) end
+
+---[[ GetEffectiveCastRange  Return cast range of this ability, accounting for modifiers. ]]
+-- @return int
+-- @param location Vector
+-- @param target handle
+function C_DOTA_Ability_Lua:GetEffectiveCastRange( location, target ) end
+
+---[[ GetGoldCost  Return gold cost at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Ability_Lua:GetGoldCost( level ) end
+
+---[[ GetHealthCost  Return health cost at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Ability_Lua:GetHealthCost( level ) end
+
+---[[ GetManaCost  Return mana cost at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Ability_Lua:GetManaCost( level ) end
+
+---[[ IsAttributeBonus  Is this ability an Attribute Bonus. ]]
+-- @return bool
+function C_DOTA_Ability_Lua:IsAttributeBonus(  ) end
+
+---[[ IsHiddenAbilityCastable  Returns true if this ability can be used when not on the action panel. ]]
+-- @return bool
+function C_DOTA_Ability_Lua:IsHiddenAbilityCastable(  ) end
+
+---[[ Init  Called first when ability entity is created. ]]
+-- @return nil
+function C_DOTA_Ability_Lua:Init(  ) end
+
+---[[ Spawn  Called when ability entity is created, after Init. ]]
+-- @return nil
+function C_DOTA_Ability_Lua:Spawn(  ) end
+
+---[[ FindAbilityByName  Retrieve an ability by name from the unit. ]]
+-- @return CDOTABaseAbility
+-- @param abilityName string
+function C_DOTA_BaseNPC:FindAbilityByName( abilityName ) end
+
+---[[ GetAbilityCount   ]]
+-- @return int
+function C_DOTA_BaseNPC:GetAbilityCount(  ) end
+
+---[[ GetAttackSpeed   ]]
+-- @return float
+-- @param ignoreTempAttackSpeed bool
+function C_DOTA_BaseNPC:GetAttackSpeed( ignoreTempAttackSpeed ) end
+
+---[[ GetAttacksPerSecond   ]]
+-- @return float
+-- @param ignoreTempAttackSpeed bool
+function C_DOTA_BaseNPC:GetAttacksPerSecond( ignoreTempAttackSpeed ) end
+
+---[[ GetBaseAttackTime   ]]
+-- @return float
+function C_DOTA_BaseNPC:GetBaseAttackTime(  ) end
+
+---[[ GetBaseMagicalResistanceValue  Returns base magical armor value. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetBaseMagicalResistanceValue(  ) end
+
+---[[ GetBaseMoveSpeed   ]]
+-- @return float
+function C_DOTA_BaseNPC:GetBaseMoveSpeed(  ) end
+
+---[[ GetCastRangeBonus   ]]
+-- @return float
+function C_DOTA_BaseNPC:GetCastRangeBonus(  ) end
+
+---[[ GetCollisionPadding  Returns the size of the collision padding around the hull. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetCollisionPadding(  ) end
+
+---[[ GetCooldownReduction   ]]
+-- @return float
+function C_DOTA_BaseNPC:GetCooldownReduction(  ) end
+
+---[[ GetCurrentVisionRange  Gets the current vision range. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetCurrentVisionRange(  ) end
+
+---[[ GetDamageMax  Get the maximum attack damage of this unit. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetDamageMax(  ) end
+
+---[[ GetDamageMin  Get the minimum attack damage of this unit. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetDamageMin(  ) end
+
+---[[ GetDayTimeVisionRange  Returns the vision range after modifiers. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetDayTimeVisionRange(  ) end
+
+---[[ GetHasteFactor   ]]
+-- @return float
+function C_DOTA_BaseNPC:GetHasteFactor(  ) end
+
+---[[ GetHealthPercent  Get the current health percent of the unit. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetHealthPercent(  ) end
+
+---[[ GetHullRadius  Get the collision hull radius of this NPC. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetHullRadius(  ) end
+
+---[[ GetIdealSpeed  Returns speed after all modifiers. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetIdealSpeed(  ) end
+
+---[[ GetIdealSpeedNoSlows  Returns speed after all modifiers, but excluding those that reduce speed. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetIdealSpeedNoSlows(  ) end
+
+---[[ GetIncreasedAttackSpeed   ]]
+-- @return float
+-- @param ignoreTempAttackSpeed bool
+function C_DOTA_BaseNPC:GetIncreasedAttackSpeed( ignoreTempAttackSpeed ) end
+
+---[[ GetLevel  Returns the level of this unit. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetLevel(  ) end
+
+---[[ GetMana  Get the mana on this unit. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetMana(  ) end
+
+---[[ GetManaRegen   ]]
+-- @return float
+function C_DOTA_BaseNPC:GetManaRegen(  ) end
+
+---[[ GetMaxMana  Get the maximum mana of this unit. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetMaxMana(  ) end
+
+---[[ GetModelRadius   ]]
+-- @return float
+function C_DOTA_BaseNPC:GetModelRadius(  ) end
+
+---[[ GetModifierStackCount  Gets the stack count of a given modifier. ]]
+-- @return int
+-- @param modifierName string
+-- @param caster CDOTA_BaseNPC
+function C_DOTA_BaseNPC:GetModifierStackCount( modifierName, caster ) end
+
+---[[ GetMoveSpeedModifier   ]]
+-- @return float
+-- @param baseSpeed float
+-- @param returnUnslowed bool
+function C_DOTA_BaseNPC:GetMoveSpeedModifier( baseSpeed, returnUnslowed ) end
+
+---[[ GetNightTimeVisionRange  Returns the vision range after modifiers. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetNightTimeVisionRange(  ) end
+
+---[[ GetOpposingTeamNumber   ]]
+-- @return DOTATeam_t
+function C_DOTA_BaseNPC:GetOpposingTeamNumber(  ) end
+
+---[[ GetPaddedCollisionRadius  Get the collision hull radius (including padding) of this NPC. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetPaddedCollisionRadius(  ) end
+
+---[[ GetPhysicalArmorBaseValue  Returns base physical armor value. ]]
+-- @return float
+function C_DOTA_BaseNPC:GetPhysicalArmorBaseValue(  ) end
+
+---[[ GetPhysicalArmorValue  Returns current physical armor value. ]]
+-- @return float
+-- @param ignoreBase bool
+function C_DOTA_BaseNPC:GetPhysicalArmorValue( ignoreBase ) end
+
+---[[ GetPlayerOwnerID  Get the owner player ID for this unit. ]]
+-- @return PlayerID
+function C_DOTA_BaseNPC:GetPlayerOwnerID(  ) end
+
+---[[ GetSecondsPerAttack   ]]
+-- @return float
+-- @param ignoreTempAttackSpeed bool
+function C_DOTA_BaseNPC:GetSecondsPerAttack( ignoreTempAttackSpeed ) end
+
+---[[ GetTotalPurchasedUpgradeGoldCost  Get how much gold has been spent on ability upgrades. ]]
+-- @return int
+function C_DOTA_BaseNPC:GetTotalPurchasedUpgradeGoldCost(  ) end
+
+---[[ GetUnitLabel   ]]
+-- @return string
+function C_DOTA_BaseNPC:GetUnitLabel(  ) end
+
+---[[ GetUnitLocToken  Get the localization token for this unit's name. ]]
+-- @return string
+function C_DOTA_BaseNPC:GetUnitLocToken(  ) end
+
+---[[ GetUnitName  Get the name of this unit. ]]
+-- @return string
+function C_DOTA_BaseNPC:GetUnitName(  ) end
+
+---[[ HasAttackCapability   ]]
+-- @return bool
+function C_DOTA_BaseNPC:HasAttackCapability(  ) end
+
+---[[ HasFlyingVision   ]]
+-- @return bool
+function C_DOTA_BaseNPC:HasFlyingVision(  ) end
+
+---[[ HasFlyMovementCapability   ]]
+-- @return bool
+function C_DOTA_BaseNPC:HasFlyMovementCapability(  ) end
+
+---[[ HasGroundMovementCapability   ]]
+-- @return bool
+function C_DOTA_BaseNPC:HasGroundMovementCapability(  ) end
+
+---[[ HasItemInInventory  See whether this unit has an item by name. ]]
+-- @return bool
+-- @param itemName string
+function C_DOTA_BaseNPC:HasItemInInventory( itemName ) end
+
+---[[ HasModifier  Sees if this unit has a given modifier. ]]
+-- @return bool
+-- @param scriptName string
+function C_DOTA_BaseNPC:HasModifier( scriptName ) end
+
+---[[ HasMovementCapability   ]]
+-- @return bool
+function C_DOTA_BaseNPC:HasMovementCapability(  ) end
+
+---[[ HasScepter   ]]
+-- @return bool
+function C_DOTA_BaseNPC:HasScepter(  ) end
+
+---[[ IsAncient  Is this unit an Ancient? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsAncient(  ) end
+
+---[[ IsAttackImmune   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsAttackImmune(  ) end
+
+---[[ IsBarracks  Is this unit a Barracks? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsBarracks(  ) end
+
+---[[ IsBlind   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsBlind(  ) end
+
+---[[ IsBoss  Is this unit a boss? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsBoss(  ) end
+
+---[[ IsBuilding  Is this unit a building? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsBuilding(  ) end
+
+---[[ IsCommandRestricted   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsCommandRestricted(  ) end
+
+---[[ IsConsideredHero  Is this unit a considered a hero for targeting purposes? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsConsideredHero(  ) end
+
+---[[ IsControllableByAnyPlayer  Is this unit controlled by any non-bot player? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsControllableByAnyPlayer(  ) end
+
+---[[ IsCourier  Is this unit a courier? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsCourier(  ) end
+
+---[[ IsCreature  Is this a Creature type NPC? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsCreature(  ) end
+
+---[[ IsCreep  Is this unit a creep? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsCreep(  ) end
+
+---[[ IsCreepHero  Is this unit a creep hero? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsCreepHero(  ) end
+
+---[[ IsDebuffImmune   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsDebuffImmune(  ) end
+
+---[[ IsDisarmed   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsDisarmed(  ) end
+
+---[[ IsDominated   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsDominated(  ) end
+
+---[[ IsEvadeDisabled   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsEvadeDisabled(  ) end
+
+---[[ IsFeared   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsFeared(  ) end
+
+---[[ IsFort  Is this unit an Ancient? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsFort(  ) end
+
+---[[ IsFrozen   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsFrozen(  ) end
+
+---[[ IsHero  Is this a hero or hero illusion? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsHero(  ) end
+
+---[[ IsHexed   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsHexed(  ) end
+
+---[[ IsIllusion   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsIllusion(  ) end
+
+---[[ IsInventoryEnabled  Does this unit have an inventory. ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsInventoryEnabled(  ) end
+
+---[[ IsInvisible   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsInvisible(  ) end
+
+---[[ IsInvulnerable   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsInvulnerable(  ) end
+
+---[[ IsLowAttackPriority   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsLowAttackPriority(  ) end
+
+---[[ IsMagicImmune   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsMagicImmune(  ) end
+
+---[[ IsMoving  Is this unit moving? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsMoving(  ) end
+
+---[[ IsMuted   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsMuted(  ) end
+
+---[[ IsNeutralUnitType  Is this a neutral? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsNeutralUnitType(  ) end
+
+---[[ IsNightmared   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsNightmared(  ) end
+
+---[[ IsOther  Is this unit a ward-type unit? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsOther(  ) end
+
+---[[ IsOutOfGame   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsOutOfGame(  ) end
+
+---[[ IsOwnedByAnyPlayer  Is this unit owned by any non-bot player? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsOwnedByAnyPlayer(  ) end
+
+---[[ IsPhantom  Is this a phantom unit? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsPhantom(  ) end
+
+---[[ IsRangedAttacker  Is this unit a ranged attacker? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsRangedAttacker(  ) end
+
+---[[ IsRealHero  Is this a real hero? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsRealHero(  ) end
+
+---[[ IsRooted   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsRooted(  ) end
+
+---[[ IsSilenced   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsSilenced(  ) end
+
+---[[ IsSpeciallyDeniable   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsSpeciallyDeniable(  ) end
+
+---[[ IsSpeciallyUndeniable   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsSpeciallyUndeniable(  ) end
+
+---[[ IsStrongIllusion   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsStrongIllusion(  ) end
+
+---[[ IsStunned   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsStunned(  ) end
+
+---[[ IsSummoned  Is this unit summoned? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsSummoned(  ) end
+
+---[[ IsTaunted   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsTaunted(  ) end
+
+---[[ IsTower  Is this a tower? ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsTower(  ) end
+
+---[[ IsUnselectable   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsUnselectable(  ) end
+
+---[[ IsUntargetable   ]]
+-- @return bool
+function C_DOTA_BaseNPC:IsUntargetable(  ) end
+
+---[[ IsUntargetableFrom   ]]
+-- @return bool
+-- @param targettingSource handle
+function C_DOTA_BaseNPC:IsUntargetableFrom( targettingSource ) end
+
+---[[ NoHealthBar   ]]
+-- @return bool
+function C_DOTA_BaseNPC:NoHealthBar(  ) end
+
+---[[ NoTeamMoveTo   ]]
+-- @return bool
+function C_DOTA_BaseNPC:NoTeamMoveTo(  ) end
+
+---[[ NoTeamSelect   ]]
+-- @return bool
+function C_DOTA_BaseNPC:NoTeamSelect(  ) end
+
+---[[ NotOnMinimap   ]]
+-- @return bool
+function C_DOTA_BaseNPC:NotOnMinimap(  ) end
+
+---[[ NotOnMinimapForEnemies   ]]
+-- @return bool
+function C_DOTA_BaseNPC:NotOnMinimapForEnemies(  ) end
+
+---[[ NoUnitCollision   ]]
+-- @return bool
+function C_DOTA_BaseNPC:NoUnitCollision(  ) end
+
+---[[ PassivesDisabled   ]]
+-- @return bool
+function C_DOTA_BaseNPC:PassivesDisabled(  ) end
+
+---[[ ProvidesVision   ]]
+-- @return bool
+function C_DOTA_BaseNPC:ProvidesVision(  ) end
+
+---[[ Script_GetAttackRange  Gets this unit's attack range after all modifiers. ]]
+-- @return float
+function C_DOTA_BaseNPC:Script_GetAttackRange(  ) end
+
+---[[ Script_GetMagicalArmorValue  Returns current magical armor value. ]]
+-- @return float
+-- @param inflictor handle
+function C_DOTA_BaseNPC:Script_GetMagicalArmorValue( inflictor ) end
+
+---[[ Script_IsDeniable   ]]
+-- @return bool
+function C_DOTA_BaseNPC:Script_IsDeniable(  ) end
+
+---[[ UnitCanRespawn  Can the unit respawn? ]]
+-- @return bool
+function C_DOTA_BaseNPC:UnitCanRespawn(  ) end
+
+---[[ GetAgility   ]]
+-- @return float
+function C_DOTA_BaseNPC_Hero:GetAgility(  ) end
+
+---[[ GetHeroFacetID   ]]
+-- @return uint
+function C_DOTA_BaseNPC_Hero:GetHeroFacetID(  ) end
+
+---[[ GetIntellect   ]]
+-- @return float
+-- @param skipNoConsume bool
+function C_DOTA_BaseNPC_Hero:GetIntellect( skipNoConsume ) end
+
+---[[ GetStrength   ]]
+-- @return float
+function C_DOTA_BaseNPC_Hero:GetStrength(  ) end
+
+---[[ AddParticle   ]]
+-- @return nil
+-- @param index int
+-- @param destroyImmediately bool
+-- @param statusEffect bool
+-- @param priority int
+-- @param heroEffect bool
+-- @param overheadEffect bool
+function CDOTA_Buff:AddParticle( index, destroyImmediately, statusEffect, priority, heroEffect, overheadEffect ) end
+
+---[[ CheckStateToTable   ]]
+-- @return nil
+-- @param table handle
+function CDOTA_Buff:CheckStateToTable( table ) end
+
+---[[ DecrementStackCount  Decrease this modifier's stack count by 1. ]]
+-- @return nil
+function CDOTA_Buff:DecrementStackCount(  ) end
+
+---[[ Destroy  Run all associated destroy functions, then remove the modifier. ]]
+-- @return nil
+function CDOTA_Buff:Destroy(  ) end
+
+---[[ DestroyOnExpire   ]]
+-- @return bool
+function CDOTA_Buff:DestroyOnExpire(  ) end
+
+---[[ ForceRefresh  Run all associated refresh functions on this modifier as if it was re-applied. ]]
+-- @return nil
+function CDOTA_Buff:ForceRefresh(  ) end
+
+---[[ GetAbility  Get the ability that generated the modifier. ]]
+-- @return CDOTABaseAbility
+function CDOTA_Buff:GetAbility(  ) end
+
+---[[ GetAuraDuration  Returns aura stickiness (default 0.5). ]]
+-- @return float
+function CDOTA_Buff:GetAuraDuration(  ) end
+
+---[[ GetAuraOwner  Returns the owner of the aura modifier, that applied this modifier. Always `nil` on the client. ]]
+-- @return CDOTA_BaseNPC
+function CDOTA_Buff:GetAuraOwner(  ) end
+
+---[[ GetCaster  Get the owner of the ability responsible for the modifier. ]]
+-- @return CDOTA_BaseNPC
+function CDOTA_Buff:GetCaster(  ) end
+
+---[[ GetClass   ]]
+-- @return string
+function CDOTA_Buff:GetClass(  ) end
+
+---[[ GetCreationTime   ]]
+-- @return float
+function CDOTA_Buff:GetCreationTime(  ) end
+
+---[[ GetDieTime   ]]
+-- @return float
+function CDOTA_Buff:GetDieTime(  ) end
+
+---[[ GetDuration   ]]
+-- @return float
+function CDOTA_Buff:GetDuration(  ) end
+
+---[[ GetElapsedTime   ]]
+-- @return float
+function CDOTA_Buff:GetElapsedTime(  ) end
+
+---[[ GetLastAppliedTime   ]]
+-- @return float
+function CDOTA_Buff:GetLastAppliedTime(  ) end
+
+---[[ GetName   ]]
+-- @return string
+function CDOTA_Buff:GetName(  ) end
+
+---[[ GetParent  Get the unit the modifier is parented to. ]]
+-- @return CDOTA_BaseNPC
+function CDOTA_Buff:GetParent(  ) end
+
+---[[ GetRemainingTime   ]]
+-- @return float
+function CDOTA_Buff:GetRemainingTime(  ) end
+
+---[[ GetSerialNumber   ]]
+-- @return int
+function CDOTA_Buff:GetSerialNumber(  ) end
+
+---[[ GetStackCount   ]]
+-- @return int
+function CDOTA_Buff:GetStackCount(  ) end
+
+---[[ HasFunction   ]]
+-- @return bool
+-- @param function modifierfunction
+function CDOTA_Buff:HasFunction( function ) end
+
+---[[ IncrementStackCount  Increase this modifier's stack count by 1. ]]
+-- @return nil
+function CDOTA_Buff:IncrementStackCount(  ) end
+
+---[[ IsDebuff   ]]
+-- @return bool
+function CDOTA_Buff:IsDebuff(  ) end
+
+---[[ IsHexDebuff   ]]
+-- @return bool
+function CDOTA_Buff:IsHexDebuff(  ) end
+
+---[[ IsNull  Has underlying C++ entity object been deleted? ]]
+-- @return bool
+function CDOTA_Buff:IsNull(  ) end
+
+---[[ IsStunDebuff   ]]
+-- @return bool
+function CDOTA_Buff:IsStunDebuff(  ) end
+
+---[[ SetDuration   ]]
+-- @return nil
+-- @param duration float
+-- @param informClient bool
+function CDOTA_Buff:SetDuration( duration, informClient ) end
+
+---[[ SetOverheadEffectOffset   ]]
+-- @return bool
+-- @param offset float
+function CDOTA_Buff:SetOverheadEffectOffset( offset ) end
+
+---[[ SetStackCount   ]]
+-- @return nil
+-- @param count int
+function CDOTA_Buff:SetStackCount( count ) end
+
+---[[ StartIntervalThink  Start this modifier's think function (OnIntervalThink) with the given interval (float).  To stop, call with -1. ]]
+-- @return nil
+-- @param interval float
+function CDOTA_Buff:StartIntervalThink( interval ) end
+
+---[[ CanOnlyPlayerHeroPickup   ]]
+-- @return bool
+function C_DOTA_Item:CanOnlyPlayerHeroPickup(  ) end
+
+---[[ GetCurrentCharges  Get the number of charges this item currently has. ]]
+-- @return int
+function C_DOTA_Item:GetCurrentCharges(  ) end
+
+---[[ GetInitialCharges  Get the initial number of charges this item has. ]]
+-- @return int
+function C_DOTA_Item:GetInitialCharges(  ) end
+
+---[[ GetItemSlot   ]]
+-- @return [object Object]
+function C_DOTA_Item:GetItemSlot(  ) end
+
+---[[ GetSecondaryCharges  Get the number of secondary charges this item currently has. ]]
+-- @return int
+function C_DOTA_Item:GetSecondaryCharges(  ) end
+
+---[[ GetShareability   ]]
+-- @return EShareAbility
+function C_DOTA_Item:GetShareability(  ) end
+
+---[[ IsAlertableItem   ]]
+-- @return bool
+function C_DOTA_Item:IsAlertableItem(  ) end
+
+---[[ IsCastOnPickup   ]]
+-- @return bool
+function C_DOTA_Item:IsCastOnPickup(  ) end
+
+---[[ IsDisassemblable   ]]
+-- @return bool
+function C_DOTA_Item:IsDisassemblable(  ) end
+
+---[[ IsDroppable   ]]
+-- @return bool
+function C_DOTA_Item:IsDroppable(  ) end
+
+---[[ IsInBackpack   ]]
+-- @return bool
+function C_DOTA_Item:IsInBackpack(  ) end
+
+---[[ IsItem   ]]
+-- @return bool
+function C_DOTA_Item:IsItem(  ) end
+
+---[[ IsKillable   ]]
+-- @return bool
+function C_DOTA_Item:IsKillable(  ) end
+
+---[[ IsMuted   ]]
+-- @return bool
+function C_DOTA_Item:IsMuted(  ) end
+
+---[[ IsPermanent  Is this a permanent item? ]]
+-- @return bool
+function C_DOTA_Item:IsPermanent(  ) end
+
+---[[ IsPurchasable   ]]
+-- @return bool
+function C_DOTA_Item:IsPurchasable(  ) end
+
+---[[ IsRecipe   ]]
+-- @return bool
+function C_DOTA_Item:IsRecipe(  ) end
+
+---[[ IsRecipeGenerated   ]]
+-- @return bool
+function C_DOTA_Item:IsRecipeGenerated(  ) end
+
+---[[ IsSellable   ]]
+-- @return bool
+function C_DOTA_Item:IsSellable(  ) end
+
+---[[ IsStackable   ]]
+-- @return bool
+function C_DOTA_Item:IsStackable(  ) end
+
+---[[ RequiresCharges   ]]
+-- @return bool
+function C_DOTA_Item:RequiresCharges(  ) end
+
+---[[ CastFilterResult  Determine whether an issued command with no target is valid. ]]
+-- @return UnitFilterResult
+function C_DOTA_Item_Lua:CastFilterResult(  ) end
+
+---[[ CastFilterResultLocation  Determine whether an issued command on a location is valid. ]]
+-- @return UnitFilterResult
+-- @param location Vector
+function C_DOTA_Item_Lua:CastFilterResultLocation( location ) end
+
+---[[ CastFilterResultTarget  Determine whether an issued command on a target is valid. ]]
+-- @return UnitFilterResult
+-- @param target CDOTA_BaseNPC
+function C_DOTA_Item_Lua:CastFilterResultTarget( target ) end
+
+---[[ GetAbilityTextureName  Allows code overriding of the item texture shown in the HUD. ]]
+-- @return string
+function C_DOTA_Item_Lua:GetAbilityTextureName(  ) end
+
+---[[ GetAOERadius  Controls the size of the AOE casting cursor. ]]
+-- @return float
+function C_DOTA_Item_Lua:GetAOERadius(  ) end
+
+---[[ GetBehavior  Return cast behavior type of this ability. ]]
+-- @return DOTA_ABILITY_BEHAVIOR
+function C_DOTA_Item_Lua:GetBehavior(  ) end
+
+---[[ GetCastRange  Return cast range of this ability. ]]
+-- @return int
+-- @param location Vector
+-- @param target CDOTA_BaseNPC
+function C_DOTA_Item_Lua:GetCastRange( location, target ) end
+
+---[[ GetChannelledHealthCostPerSecond  Return health cost per second of channeling at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Item_Lua:GetChannelledHealthCostPerSecond( level ) end
+
+---[[ GetChannelledManaCostPerSecond  Return mana cost at the given level per second while channeling (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Item_Lua:GetChannelledManaCostPerSecond( level ) end
+
+---[[ GetChannelStartTime  Return the channel start time of this ability. ]]
+-- @return float
+function C_DOTA_Item_Lua:GetChannelStartTime(  ) end
+
+---[[ GetChannelTime  Return the channel time of this ability. ]]
+-- @return float
+function C_DOTA_Item_Lua:GetChannelTime(  ) end
+
+---[[ GetCooldown  Return cooldown of this ability. ]]
+-- @return float
+-- @param level int
+function C_DOTA_Item_Lua:GetCooldown( level ) end
+
+---[[ GetCustomCastError  Return the error string of a failed command with no target. ]]
+-- @return string
+function C_DOTA_Item_Lua:GetCustomCastError(  ) end
+
+---[[ GetCustomCastErrorLocation  Return the error string of a failed command on a location. ]]
+-- @return string
+-- @param location Vector
+function C_DOTA_Item_Lua:GetCustomCastErrorLocation( location ) end
+
+---[[ GetCustomCastErrorTarget  Return the error string of a failed command on a target. ]]
+-- @return string
+-- @param target CDOTA_BaseNPC
+function C_DOTA_Item_Lua:GetCustomCastErrorTarget( target ) end
+
+---[[ GetCustomHudErrorMessage  (DOTA_INVALID_ORDERS nReason) Return the error string of a failed order. ]]
+-- @return string
+-- @param reason int
+function C_DOTA_Item_Lua:GetCustomHudErrorMessage( reason ) end
+
+---[[ GetEffectiveCastRange  Return cast range of this ability, taking modifiers into account. ]]
+-- @return int
+-- @param location Vector
+-- @param target handle
+function C_DOTA_Item_Lua:GetEffectiveCastRange( location, target ) end
+
+---[[ GetGoldCost  Return gold cost at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Item_Lua:GetGoldCost( level ) end
+
+---[[ GetHealthCost  Return health cost at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Item_Lua:GetHealthCost( level ) end
+
+---[[ GetManaCost  Return mana cost at the given level (-1 is current). ]]
+-- @return int
+-- @param level int
+function C_DOTA_Item_Lua:GetManaCost( level ) end
+
+---[[ IsMuted  Returns whether this item is muted or not. ]]
+-- @return bool
+function C_DOTA_Item_Lua:IsMuted(  ) end
+
+---[[ Spawn  Called when ability entity is created, after Init. ]]
+-- @return nil
+function C_DOTA_Item_Lua:Spawn(  ) end
+
+---[[ AllowIllusionDuplicate  True/false if this modifier is active on illusions. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:AllowIllusionDuplicate(  ) end
+
+---[[ CanParentBeAutoAttacked   ]]
+-- @return bool
+function CDOTA_Modifier_Lua:CanParentBeAutoAttacked(  ) end
+
+---[[ DestroyOnExpire  True/false if this buff is removed when the duration expires. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:DestroyOnExpire(  ) end
+
+---[[ GetAttributes  Return the types of attributes applied to this modifier. ]]
+-- @return DOTAModifierAttribute_t
+function CDOTA_Modifier_Lua:GetAttributes(  ) end
+
+---[[ GetAuraDuration  Returns aura stickiness. ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetAuraDuration(  ) end
+
+---[[ GetAuraEntityReject  Return true/false if this entity should receive the aura under specific conditions. ]]
+-- @return bool
+-- @param entity CDOTA_BaseNPC
+function CDOTA_Modifier_Lua:GetAuraEntityReject( entity ) end
+
+---[[ GetAuraRadius  Return the range around the parent this aura tries to apply its buff. ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetAuraRadius(  ) end
+
+---[[ GetAuraSearchFlags  Return the unit flags this aura respects when placing buffs. ]]
+-- @return DOTA_UNIT_TARGET_FLAGS
+function CDOTA_Modifier_Lua:GetAuraSearchFlags(  ) end
+
+---[[ GetAuraSearchTeam  Return the teams this aura applies its buff to. ]]
+-- @return DOTA_UNIT_TARGET_TEAM
+function CDOTA_Modifier_Lua:GetAuraSearchTeam(  ) end
+
+---[[ GetAuraSearchType  Return the unit classifications this aura applies its buff to. ]]
+-- @return DOTA_UNIT_TARGET_TYPE
+function CDOTA_Modifier_Lua:GetAuraSearchType(  ) end
+
+---[[ GetCritDamage  A Modifier that listens to MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE has to have a GetCritDamage implementation so we can know when to evaluate it. Value should be in 'times the original value format' e.g: 1.5 not 150. ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetCritDamage(  ) end
+
+---[[ GetEffectAttachType  Return the attach type of the particle system from GetEffectName. ]]
+-- @return ParticleAttachment_t
+function CDOTA_Modifier_Lua:GetEffectAttachType(  ) end
+
+---[[ GetEffectName  Return the name of the particle system that is created while this modifier is active. ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetEffectName(  ) end
+
+---[[ GetHeroEffectName  Return the name of the hero effect particle system that is created while this modifier is active. ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetHeroEffectName(  ) end
+
+---[[ GetModifierAura  The name of the secondary modifier that will be applied by this modifier (if it is an aura). ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetModifierAura(  ) end
+
+---[[ GetPriority  Return the priority order this modifier will be applied over others. ]]
+-- @return modifierpriority
+function CDOTA_Modifier_Lua:GetPriority(  ) end
+
+---[[ GetStatusEffectName  Return the name of the status effect particle system that is created while this modifier is active. ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetStatusEffectName(  ) end
+
+---[[ GetTexture  Return the name of the buff icon to be shown for this modifier. ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetTexture(  ) end
+
+---[[ HeroEffectPriority  Relationship of this hero effect with those from other buffs (higher is more likely to be shown). ]]
+-- @return modifierpriority
+function CDOTA_Modifier_Lua:HeroEffectPriority(  ) end
+
+---[[ IsAura  True/false if this modifier is an aura. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsAura(  ) end
+
+---[[ IsAuraActiveOnDeath  True/false if this aura provides buffs when the parent is dead. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsAuraActiveOnDeath(  ) end
+
+---[[ IsDebuff  True/false if this modifier should be displayed as a debuff. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsDebuff(  ) end
+
+---[[ IsHidden  True/false if this modifier should be displayed on the buff bar. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsHidden(  ) end
+
+---[[ IsPermanent   ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsPermanent(  ) end
+
+---[[ IsPurgable  True/false if this modifier can be purged. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsPurgable(  ) end
+
+---[[ IsPurgeException  True/false if this modifier can be purged by strong dispels. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsPurgeException(  ) end
+
+---[[ IsStunDebuff  True/false if this modifier is considered a stun for purge reasons. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:IsStunDebuff(  ) end
+
+---[[ OnCreated  Runs when the modifier is created. ]]
+-- @return nil
+-- @param params table
+function CDOTA_Modifier_Lua:OnCreated( params ) end
+
+---[[ OnDestroy  Runs when the modifier is destroyed (after unit loses modifier). ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnDestroy(  ) end
+
+---[[ OnIntervalThink  Runs when the think interval occurs. ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnIntervalThink(  ) end
+
+---[[ OnRefresh  Runs when the modifier is refreshed. ]]
+-- @return nil
+-- @param params table
+function CDOTA_Modifier_Lua:OnRefresh( params ) end
+
+---[[ OnRemoved  Runs when the modifier is destroyed (before unit loses modifier). ]]
+-- @return nil
+-- @param death bool
+function CDOTA_Modifier_Lua:OnRemoved( death ) end
+
+---[[ OnStackCountChanged  Runs when stack count changes (param is old count). ]]
+-- @return nil
+-- @param stackCount int
+function CDOTA_Modifier_Lua:OnStackCountChanged( stackCount ) end
+
+---[[ RemoveOnDeath  True/false if this modifier is removed when the parent dies. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:RemoveOnDeath(  ) end
+
+---[[ SetHasCustomTransmitterData   ]]
+-- @return nil
+-- @param hasCustomData bool
+function CDOTA_Modifier_Lua:SetHasCustomTransmitterData( hasCustomData ) end
+
+---[[ ShouldUseOverheadOffset  Apply the overhead offset to the attached effect. ]]
+-- @return bool
+function CDOTA_Modifier_Lua:ShouldUseOverheadOffset(  ) end
+
+---[[ StatusEffectPriority  Relationship of this status effect with those from other buffs (higher is more likely to be shown). ]]
+-- @return modifierpriority
+function CDOTA_Modifier_Lua:StatusEffectPriority(  ) end
+
+---[[ BotAttackScoreBonus   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:BotAttackScoreBonus(  ) end
+
+---[[ CheckState  Return a map of enabled/disabled states. ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:CheckState(  ) end
+
+---[[ DeclareFunctions  Return a list of modifier functions this modifier implements. ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:DeclareFunctions(  ) end
+
+---[[ GetAbsoluteNoDamageMagical   ]]
+-- @return [object Object]
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetAbsoluteNoDamageMagical( event ) end
+
+---[[ GetAbsoluteNoDamagePhysical   ]]
+-- @return [object Object]
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetAbsoluteNoDamagePhysical( event ) end
+
+---[[ GetAbsoluteNoDamagePure   ]]
+-- @return [object Object]
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetAbsoluteNoDamagePure( event ) end
+
+---[[ GetAbsorbSpell   ]]
+-- @return [object Object]
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetAbsorbSpell( event ) end
+
+---[[ GetActivityTranslationModifiers   ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetActivityTranslationModifiers(  ) end
+
+---[[ GetAllowEtherealAttack   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetAllowEtherealAttack(  ) end
+
+---[[ GetAlwaysAllowAttack   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetAlwaysAllowAttack(  ) end
+
+---[[ GetAlwaysAutoAttackWhileHoldPosition   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetAlwaysAutoAttackWhileHoldPosition(  ) end
+
+---[[ GetAttackSound   ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetAttackSound(  ) end
+
+---[[ GetBaseAttackPostBonus   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetBaseAttackPostBonus(  ) end
+
+---[[ GetBonusDayVision   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetBonusDayVision(  ) end
+
+---[[ GetBonusDayVisionPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetBonusDayVisionPercentage(  ) end
+
+---[[ GetBonusNightVision   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetBonusNightVision(  ) end
+
+---[[ GetBonusNightVisionUnique   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetBonusNightVisionUnique(  ) end
+
+---[[ GetBonusVisionPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetBonusVisionPercentage(  ) end
+
+---[[ GetBuffAmplification   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetBuffAmplification(  ) end
+
+---[[ GetConvertAttackPhysicalToPure   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetConvertAttackPhysicalToPure(  ) end
+
+---[[ GetCriticalStrikeBonus   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetCriticalStrikeBonus(  ) end
+
+---[[ GetDisableAutoAttack   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetDisableAutoAttack(  ) end
+
+---[[ GetDisableHealing   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetDisableHealing(  ) end
+
+---[[ GetDisableManaGain   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetDisableManaGain(  ) end
+
+---[[ GetFixedDayVision   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetFixedDayVision(  ) end
+
+---[[ GetFixedNightVision   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetFixedNightVision(  ) end
+
+---[[ GetForceDrawOnMinimap   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetForceDrawOnMinimap(  ) end
+
+---[[ GetIsIllusion   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetIsIllusion(  ) end
+
+---[[ GetMagicalArmorPiercingPercentageTarget   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetMagicalArmorPiercingPercentageTarget(  ) end
+
+---[[ GetMinHealth   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetMinHealth(  ) end
+
+---[[ GetMinMana   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetMinMana(  ) end
+
+---[[ GetModifierAbilityLayout   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAbilityLayout(  ) end
+
+---[[ GetModifierAbilityPoints   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAbilityPoints(  ) end
+
+---[[ GetModifierAdditionalNutralItemDrops   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAdditionalNutralItemDrops(  ) end
+
+---[[ GetModifierAoEBonusConstant   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAoEBonusConstant(  ) end
+
+---[[ GetModifierAoEBonusConstantStacking   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAoEBonusConstantStacking(  ) end
+
+---[[ GetModifierAoEBonusPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAoEBonusPercentage(  ) end
+
+---[[ GetModifierAttackHeightBonus   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAttackHeightBonus(  ) end
+
+---[[ GetModifierAttackPointConstant   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackPointConstant(  ) end
+
+---[[ GetModifierAttackRangeBonus   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackRangeBonus(  ) end
+
+---[[ GetModifierAttackRangeBonusPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackRangeBonusPercentage(  ) end
+
+---[[ GetModifierAttackRangeBonusUnique   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackRangeBonusUnique(  ) end
+
+---[[ GetModifierAttackRangeOverride   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackRangeOverride(  ) end
+
+---[[ GetModifierAttackSpeed_Limit   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAttackSpeed_Limit(  ) end
+
+---[[ GetModifierAttackSpeedAbsoluteMax   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAttackSpeedAbsoluteMax(  ) end
+
+---[[ GetModifierAttackSpeedBaseOverride   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackSpeedBaseOverride(  ) end
+
+---[[ GetModifierAttackSpeedBonus_Constant   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackSpeedBonus_Constant(  ) end
+
+---[[ GetModifierAttackSpeedPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackSpeedPercentage(  ) end
+
+---[[ GetModifierAttackSpeedReductionPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierAttackSpeedReductionPercentage(  ) end
+
+---[[ GetModifierAvoidAttackProcs   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierAvoidAttackProcs(  ) end
+
+---[[ GetModifierAvoidDamage   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierAvoidDamage( event ) end
+
+---[[ GetModifierAvoidDamageAfterReductions   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierAvoidDamageAfterReductions( event ) end
+
+---[[ GetModifierAvoidSpell   ]]
+-- @return [object Object]
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierAvoidSpell( event ) end
+
+---[[ GetModifierBaseArmorPerAgiBonusPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBaseArmorPerAgiBonusPercentage(  ) end
+
+---[[ GetModifierBaseAttack_BonusDamage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBaseAttack_BonusDamage(  ) end
+
+---[[ GetModifierBaseAttackSpeedPerAgiBonusPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBaseAttackSpeedPerAgiBonusPercentage(  ) end
+
+---[[ GetModifierBaseAttackTimeConstant   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBaseAttackTimeConstant(  ) end
+
+---[[ GetModifierBaseAttackTimeConstant_Adjust   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBaseAttackTimeConstant_Adjust(  ) end
+
+---[[ GetModifierBaseAttackTimePercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBaseAttackTimePercentage(  ) end
+
+---[[ GetModifierBaseDamageOutgoing_Percentage   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierBaseDamageOutgoing_Percentage( event ) end
+
+---[[ GetModifierBaseDamageOutgoing_PercentageUnique   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierBaseDamageOutgoing_PercentageUnique( event ) end
+
+---[[ GetModifierBaseHpRegenPerStrBonusPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBaseHpRegenPerStrBonusPercentage(  ) end
+
+---[[ GetModifierBaseMagicResistPerIntBonusPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBaseMagicResistPerIntBonusPercentage(  ) end
+
+---[[ GetModifierBaseManaRegenPerIntBonusPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBaseManaRegenPerIntBonusPercentage(  ) end
+
+---[[ GetModifierBaseRegen   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBaseRegen(  ) end
+
+---[[ GetModifierBecomeAgility   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBecomeAgility(  ) end
+
+---[[ GetModifierBecomeIntelligence   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBecomeIntelligence(  ) end
+
+---[[ GetModifierBecomeStrength   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBecomeStrength(  ) end
+
+---[[ GetModifierBecomeUniversal   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierBecomeUniversal(  ) end
+
+---[[ GetModifierBonusDamageOutgoing_Percentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBonusDamageOutgoing_Percentage(  ) end
+
+---[[ GetModifierBonusLotusHeal   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBonusLotusHeal(  ) end
+
+---[[ GetModifierBonusStats_Agility   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBonusStats_Agility(  ) end
+
+---[[ GetModifierBonusStats_Agility_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBonusStats_Agility_Percentage(  ) end
+
+---[[ GetModifierBonusStats_Intellect   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBonusStats_Intellect(  ) end
+
+---[[ GetModifierBonusStats_Intellect_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBonusStats_Intellect_Percentage(  ) end
+
+---[[ GetModifierBonusStats_Strength   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBonusStats_Strength(  ) end
+
+---[[ GetModifierBonusStats_Strength_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierBonusStats_Strength_Percentage(  ) end
+
+---[[ GetModifierBonusUphillMissChance   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBonusUphillMissChance(  ) end
+
+---[[ GetModifierBuybackPenaltyPercent   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierBuybackPenaltyPercent(  ) end
+
+---[[ GetModifierCanAttackTrees   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierCanAttackTrees(  ) end
+
+---[[ GetModifierCastRangeBonus   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierCastRangeBonus( event ) end
+
+---[[ GetModifierCastRangeBonusPercentage   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierCastRangeBonusPercentage( event ) end
+
+---[[ GetModifierCastRangeBonusStacking   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierCastRangeBonusStacking( event ) end
+
+---[[ GetModifierCastRangeBonusTarget   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierCastRangeBonusTarget( event ) end
+
+---[[ GetModifierChangeAbilityValue   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierChangeAbilityValue(  ) end
+
+---[[ GetModifierConstantDeathGoldCost   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierConstantDeathGoldCost(  ) end
+
+---[[ GetModifierConstantHealthRegen   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierConstantHealthRegen(  ) end
+
+---[[ GetModifierConstantManaRegen   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierConstantManaRegen(  ) end
+
+---[[ GetModifierConstantManaRegenUnique   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierConstantManaRegenUnique(  ) end
+
+---[[ GetModifierConstantRespawnTime   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierConstantRespawnTime(  ) end
+
+---[[ GetModifierConvertManaCostToHealthCost   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierConvertManaCostToHealthCost(  ) end
+
+---[[ GetModifierCooldownReduction_Constant   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierCooldownReduction_Constant( event ) end
+
+---[[ GetModifierCreateBonusIllusionChance   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierCreateBonusIllusionChance(  ) end
+
+---[[ GetModifierCreateBonusIllusionCount   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierCreateBonusIllusionCount(  ) end
+
+---[[ GetModifierCreepDenyPercent   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierCreepDenyPercent(  ) end
+
+---[[ GetModifierDamageOutgoing_Percentage   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierDamageOutgoing_Percentage( event ) end
+
+---[[ GetModifierDamageOutgoing_Percentage_Illusion   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierDamageOutgoing_Percentage_Illusion( event ) end
+
+---[[ GetModifierDamageOutgoing_Percentage_Illusion_Amplify   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierDamageOutgoing_Percentage_Illusion_Amplify(  ) end
+
+---[[ GetModifierDamageOutgoing_PercentageMultiplicative   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierDamageOutgoing_PercentageMultiplicative(  ) end
+
+---[[ GetModifierDisableTurning   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierDisableTurning(  ) end
+
+---[[ GetModifierDisassembleAnything   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierDisassembleAnything(  ) end
+
+---[[ GetModifierDodgeProjectile   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierDodgeProjectile(  ) end
+
+---[[ GetModifierEvasion_Constant   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierEvasion_Constant( event ) end
+
+---[[ GetModifierExtraHealthBonus   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierExtraHealthBonus(  ) end
+
+---[[ GetModifierExtraHealthPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierExtraHealthPercentage(  ) end
+
+---[[ GetModifierExtraManaBonus   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierExtraManaBonus(  ) end
+
+---[[ GetModifierExtraManaBonusPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierExtraManaBonusPercentage(  ) end
+
+---[[ GetModifierExtraManaPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierExtraManaPercentage(  ) end
+
+---[[ GetModifierExtraStrengthBonus   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierExtraStrengthBonus(  ) end
+
+---[[ GetModifierFixedAttackRate   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierFixedAttackRate(  ) end
+
+---[[ GetModifierFixedManaRegen   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierFixedManaRegen(  ) end
+
+---[[ GetModifierForceMaxHealth   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierForceMaxHealth(  ) end
+
+---[[ GetModifierForceMaxMana   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierForceMaxMana(  ) end
+
+---[[ GetModifierFoWTeam   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierFoWTeam(  ) end
+
+---[[ GetModifierHasBonusNeutralItemChoice   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierHasBonusNeutralItemChoice(  ) end
+
+---[[ GetModifierHealAmplify_PercentageSource   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierHealAmplify_PercentageSource(  ) end
+
+---[[ GetModifierHealAmplify_PercentageTarget   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierHealAmplify_PercentageTarget(  ) end
+
+---[[ GetModifierHealthBarPips  Return value is a count of pips. ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierHealthBarPips( event ) end
+
+---[[ GetModifierHealthBonus   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierHealthBonus(  ) end
+
+---[[ GetModifierHealthcostReduction_Constant   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierHealthcostReduction_Constant(  ) end
+
+---[[ GetModifierHealthRegenPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierHealthRegenPercentage(  ) end
+
+---[[ GetModifierHealthRegenPercentageUnique   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierHealthRegenPercentageUnique(  ) end
+
+---[[ GetModifierHeroFacetOverride   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierHeroFacetOverride(  ) end
+
+---[[ GetModifierHeroLevelScale   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierHeroLevelScale(  ) end
+
+---[[ GetModifierHPRegenAmplify_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierHPRegenAmplify_Percentage(  ) end
+
+---[[ GetModifierHPRegenMultiplierPreAmplification   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierHPRegenMultiplierPreAmplification(  ) end
+
+---[[ GetModifierIgnoreCastAngle   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierIgnoreCastAngle(  ) end
+
+---[[ GetModifierIgnoreCooldown   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierIgnoreCooldown(  ) end
+
+---[[ GetModifierIgnoreMovespeedLimit   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierIgnoreMovespeedLimit(  ) end
+
+---[[ GetModifierIgnorePhysicalArmor   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierIgnorePhysicalArmor( event ) end
+
+---[[ GetModifierIllusionLabel   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierIllusionLabel(  ) end
+
+---[[ GetModifierIncomingDamage_Percentage   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierIncomingDamage_Percentage( event ) end
+
+---[[ GetModifierIncomingDamageConstant  This property controls 'universal' shield, if defined both on client and server. Return value on client should be current shield health, as a positive integer, on server - amount of damage blocked. ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierIncomingDamageConstant( event ) end
+
+---[[ GetModifierIncomingPhysicalDamage_Percentage   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierIncomingPhysicalDamage_Percentage( event ) end
+
+---[[ GetModifierIncomingPhysicalDamageConstant  This property controls 'physical' shield, if defined both on client and server. Return value on client should be current shield health, as a positive integer, on server - amount of damage blocked. ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierIncomingPhysicalDamageConstant( event ) end
+
+---[[ GetModifierIncomingSpellDamageConstant  This property controls 'spell' shield, if defined both on client and server. Return value on client should be current shield health, as a positive integer, on server - amount of damage blocked. ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierIncomingSpellDamageConstant( event ) end
+
+---[[ GetModifierInnateDamageBlockPctOverride   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierInnateDamageBlockPctOverride(  ) end
+
+---[[ GetModifierIntellectNone   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierIntellectNone(  ) end
+
+---[[ GetModifierInventorySlotRestricted   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierInventorySlotRestricted(  ) end
+
+---[[ GetModifierInvisibilityAttackBehaviorException   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierInvisibilityAttackBehaviorException(  ) end
+
+---[[ GetModifierInvisibilityLevel   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierInvisibilityLevel(  ) end
+
+---[[ GetModifierIsPackRat   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierIsPackRat(  ) end
+
+---[[ GetModifierItemSellbackCost   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierItemSellbackCost(  ) end
+
+---[[ GetModifierKillStreakBonusGoldPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierKillStreakBonusGoldPercentage(  ) end
+
+---[[ GetModifierKnockbackAmplification_Percentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierKnockbackAmplification_Percentage(  ) end
+
+---[[ GetModifierLifestealRegenAmplify_Percentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierLifestealRegenAmplify_Percentage(  ) end
+
+---[[ GetModifierMagical_ConstantBlock   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierMagical_ConstantBlock( event ) end
+
+---[[ GetModifierMagicalResistanceBaseReduction   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMagicalResistanceBaseReduction(  ) end
+
+---[[ GetModifierMagicalResistanceBonus   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierMagicalResistanceBonus( event ) end
+
+---[[ GetModifierMagicalResistanceBonusIllusions   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMagicalResistanceBonusIllusions(  ) end
+
+---[[ GetModifierMagicalResistanceBonusUnique   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMagicalResistanceBonusUnique(  ) end
+
+---[[ GetModifierMagicalResistanceDecrepifyUnique   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierMagicalResistanceDecrepifyUnique( event ) end
+
+---[[ GetModifierMagicalResistanceDirectModification   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierMagicalResistanceDirectModification( event ) end
+
+---[[ GetModifierManaBonus   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierManaBonus(  ) end
+
+---[[ GetModifierManacostReduction_Constant   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierManacostReduction_Constant( event ) end
+
+---[[ GetModifierManaDrainAmplify_Percentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierManaDrainAmplify_Percentage(  ) end
+
+---[[ GetModifierMaxAttackRange   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMaxAttackRange(  ) end
+
+---[[ GetModifierMinPhysicalArmor   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMinPhysicalArmor(  ) end
+
+---[[ GetModifierMiss_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMiss_Percentage(  ) end
+
+---[[ GetModifierMiss_Percentage_Target   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMiss_Percentage_Target(  ) end
+
+---[[ GetModifierModelChange   ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetModifierModelChange(  ) end
+
+---[[ GetModifierModelScale   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierModelScale(  ) end
+
+---[[ GetModifierModelScaleAnimateTime   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierModelScaleAnimateTime(  ) end
+
+---[[ GetModifierModelScaleConstant   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierModelScaleConstant(  ) end
+
+---[[ GetModifierModelScaleUseInOutEase   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierModelScaleUseInOutEase(  ) end
+
+---[[ GetModifierMoveSpeed_Absolute   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeed_Absolute(  ) end
+
+---[[ GetModifierMoveSpeed_AbsoluteMax   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMoveSpeed_AbsoluteMax(  ) end
+
+---[[ GetModifierMoveSpeed_AbsoluteMin   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeed_AbsoluteMin(  ) end
+
+---[[ GetModifierMoveSpeed_Limit   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeed_Limit(  ) end
+
+---[[ GetModifierMoveSpeed_MaxOverride   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMoveSpeed_MaxOverride(  ) end
+
+---[[ GetModifierMoveSpeed_MinOverride   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMoveSpeed_MinOverride(  ) end
+
+---[[ GetModifierMoveSpeedBonus_Constant   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedBonus_Constant(  ) end
+
+---[[ GetModifierMoveSpeedBonus_Constant_Unique   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedBonus_Constant_Unique(  ) end
+
+---[[ GetModifierMoveSpeedBonus_Constant_Unique_2   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedBonus_Constant_Unique_2(  ) end
+
+---[[ GetModifierMoveSpeedBonus_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedBonus_Percentage(  ) end
+
+---[[ GetModifierMoveSpeedBonus_Percentage_Unique   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedBonus_Percentage_Unique(  ) end
+
+---[[ GetModifierMoveSpeedBonus_Special_Boots   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedBonus_Special_Boots(  ) end
+
+---[[ GetModifierMoveSpeedBonus_Special_Boots_2   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedBonus_Special_Boots_2(  ) end
+
+---[[ GetModifierMoveSpeedMax_BonusConstant   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedMax_BonusConstant(  ) end
+
+---[[ GetModifierMoveSpeedOverride   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedOverride(  ) end
+
+---[[ GetModifierMoveSpeedPostMultiplierBonus_Constant    ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedPostMultiplierBonus_Constant (  ) end
+
+---[[ GetModifierMoveSpeedReductionPercentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMoveSpeedReductionPercentage(  ) end
+
+---[[ GetModifierMPRegenAmplify_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMPRegenAmplify_Percentage(  ) end
+
+---[[ GetModifierMPRegenAmplify_Percentage_Unique   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierMPRegenAmplify_Percentage_Unique(  ) end
+
+---[[ GetModifierMPRestoreAmplify_Percentage  Total amplify value is clamped to 0. ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierMPRestoreAmplify_Percentage(  ) end
+
+---[[ GetModifierNegativeEvasion_Constant   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierNegativeEvasion_Constant(  ) end
+
+---[[ GetModifierNeutralEnhancementOptions   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierNeutralEnhancementOptions(  ) end
+
+---[[ GetModifierNeutralTrinketOptions   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierNeutralTrinketOptions(  ) end
+
+---[[ GetModifierNoFreeTPScrollOnDeath   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierNoFreeTPScrollOnDeath(  ) end
+
+---[[ GetModifierNoVisionOfAttacker   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierNoVisionOfAttacker(  ) end
+
+---[[ GetModifierOverrideAbilitySpecial   ]]
+-- @return [object Object]
+-- @param event ModifierOverrideAbilitySpecialEvent
+function CDOTA_Modifier_Lua:GetModifierOverrideAbilitySpecial( event ) end
+
+---[[ GetModifierOverrideAbilitySpecialValue   ]]
+-- @return float
+-- @param event ModifierOverrideAbilitySpecialEvent
+function CDOTA_Modifier_Lua:GetModifierOverrideAbilitySpecialValue( event ) end
+
+---[[ GetModifierOverrideAttackDamage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierOverrideAttackDamage(  ) end
+
+---[[ GetModifierOverrideBaseDamage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierOverrideBaseDamage(  ) end
+
+---[[ GetModifierOverrideCreepBounty   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierOverrideCreepBounty(  ) end
+
+---[[ GetModifierOverrideUntargetableFrom   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierOverrideUntargetableFrom(  ) end
+
+---[[ GetModifierOverrideUntargetableTo   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierOverrideUntargetableTo(  ) end
+
+---[[ GetModifierPercentageAttackAnimTime   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPercentageAttackAnimTime(  ) end
+
+---[[ GetModifierPercentageCasttime   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierPercentageCasttime( event ) end
+
+---[[ GetModifierPercentageConvertExpToGold   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPercentageConvertExpToGold(  ) end
+
+---[[ GetModifierPercentageCooldown   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierPercentageCooldown( event ) end
+
+---[[ GetModifierPercentageCooldownOngoing   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierPercentageCooldownOngoing( event ) end
+
+---[[ GetModifierPercentageCooldownStacking   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierPercentageCooldownStacking( event ) end
+
+---[[ GetModifierPercentageDeathGoldCost   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPercentageDeathGoldCost(  ) end
+
+---[[ GetModifierPercentageExpRateBoost   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPercentageExpRateBoost(  ) end
+
+---[[ GetModifierPercentageGoldRateBoost   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPercentageGoldRateBoost(  ) end
+
+---[[ GetModifierPercentageHealthcost   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierPercentageHealthcost( event ) end
+
+---[[ GetModifierPercentageHealthcostStacking   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierPercentageHealthcostStacking( event ) end
+
+---[[ GetModifierPercentageKillAssistGoldBoost   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPercentageKillAssistGoldBoost(  ) end
+
+---[[ GetModifierPercentageManacost   ]]
+-- @return float
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetModifierPercentageManacost( event ) end
+
+---[[ GetModifierPercentageManacostStacking   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPercentageManacostStacking(  ) end
+
+---[[ GetModifierPercentageRespawnTime   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPercentageRespawnTime(  ) end
+
+---[[ GetModifierPersistentInvisibility   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPersistentInvisibility(  ) end
+
+---[[ GetModifierPhysical_ConstantBlock   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPhysical_ConstantBlock( event ) end
+
+---[[ GetModifierPhysical_ConstantBlockBonus   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPhysical_ConstantBlockBonus(  ) end
+
+---[[ GetModifierPhysical_ConstantBlockSpecial   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPhysical_ConstantBlockSpecial(  ) end
+
+---[[ GetModifierPhysical_ConstantBlockUnavoidablePreArmor   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPhysical_ConstantBlockUnavoidablePreArmor( event ) end
+
+---[[ GetModifierPhysicalArmorBase_Percentage  Values above 100% are ignored. ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPhysicalArmorBase_Percentage(  ) end
+
+---[[ GetModifierPhysicalArmorBonus   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPhysicalArmorBonus( event ) end
+
+---[[ GetModifierPhysicalArmorBonusPost   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPhysicalArmorBonusPost(  ) end
+
+---[[ GetModifierPhysicalArmorBonusUnique   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPhysicalArmorBonusUnique( event ) end
+
+---[[ GetModifierPhysicalArmorBonusUniqueActive   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPhysicalArmorBonusUniqueActive( event ) end
+
+---[[ GetModifierPhysicalArmorTotal_Percentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPhysicalArmorTotal_Percentage(  ) end
+
+---[[ GetModifierPhysicalDamageOutgoing_Percentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPhysicalDamageOutgoing_Percentage(  ) end
+
+---[[ GetModifierPreAttack   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPreAttack( event ) end
+
+---[[ GetModifierPreAttack_BonusDamage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPreAttack_BonusDamage(  ) end
+
+---[[ GetModifierPreAttack_BonusDamage_Proc   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPreAttack_BonusDamage_Proc(  ) end
+
+---[[ GetModifierPreAttack_BonusDamage_Target   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPreAttack_BonusDamage_Target(  ) end
+
+---[[ GetModifierPreAttack_BonusDamagePostCrit   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPreAttack_BonusDamagePostCrit( event ) end
+
+---[[ GetModifierPreAttack_CriticalStrike   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierPreAttack_CriticalStrike( event ) end
+
+---[[ GetModifierPreAttack_DeadlyBlow   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPreAttack_DeadlyBlow(  ) end
+
+---[[ GetModifierPreAttack_Target_CriticalStrike   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierPreAttack_Target_CriticalStrike(  ) end
+
+---[[ GetModifierPrereduceIncomingDamage_Mult   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPrereduceIncomingDamage_Mult(  ) end
+
+---[[ GetModifierPreserveNeutralItemPassives   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPreserveNeutralItemPassives(  ) end
+
+---[[ GetModifierProcAttack_BonusDamage_Magical   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierProcAttack_BonusDamage_Magical( event ) end
+
+---[[ GetModifierProcAttack_BonusDamage_Magical_Target   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierProcAttack_BonusDamage_Magical_Target(  ) end
+
+---[[ GetModifierProcAttack_BonusDamage_Physical   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierProcAttack_BonusDamage_Physical( event ) end
+
+---[[ GetModifierProcAttack_BonusDamage_Pure   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierProcAttack_BonusDamage_Pure( event ) end
+
+---[[ GetModifierProcAttack_ConvertPhysicalToMagical   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierProcAttack_ConvertPhysicalToMagical(  ) end
+
+---[[ GetModifierProcAttack_Feedback   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierProcAttack_Feedback( event ) end
+
+---[[ GetModifierProjectileName   ]]
+-- @return string
+function CDOTA_Modifier_Lua:GetModifierProjectileName(  ) end
+
+---[[ GetModifierProjectileSpeed   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierProjectileSpeed(  ) end
+
+---[[ GetModifierProjectileSpeedBonus   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierProjectileSpeedBonus(  ) end
+
+---[[ GetModifierProjectileSpeedBonusPercentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierProjectileSpeedBonusPercentage(  ) end
+
+---[[ GetModifierProjectileSpeedTarget   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierProjectileSpeedTarget(  ) end
+
+---[[ GetModifierProperty_MagicalLifesteal   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierProperty_MagicalLifesteal(  ) end
+
+---[[ GetModifierProperty_PhysicalLifesteal   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierProperty_PhysicalLifesteal(  ) end
+
+---[[ GetModifierPropertyConsumableUseSpeed   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertyConsumableUseSpeed(  ) end
+
+---[[ GetModifierPropertyForbidIllusions   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertyForbidIllusions(  ) end
+
+---[[ GetModifierPropertyHealingAmplificationUnique   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertyHealingAmplificationUnique(  ) end
+
+---[[ GetModifierPropertyManacostOverride   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertyManacostOverride(  ) end
+
+---[[ GetModifierPropertyRestorationAmplification   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertyRestorationAmplification(  ) end
+
+---[[ GetModifierPropertyRestorationAmplificationUnique   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertyRestorationAmplificationUnique(  ) end
+
+---[[ GetModifierPropertySuppressInvalidMoveAttackOrders   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertySuppressInvalidMoveAttackOrders(  ) end
+
+---[[ GetModifierPropertyUpgradeNeutralArtifacts   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropertyUpgradeNeutralArtifacts(  ) end
+
+---[[ GetModifierPropetyFailAttack   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierPropetyFailAttack(  ) end
+
+---[[ GetModifierProvidesFOWVision   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierProvidesFOWVision(  ) end
+
+---[[ GetModifierRadarCooldownReduction   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierRadarCooldownReduction(  ) end
+
+---[[ GetModifierScepter  Applies scepter when this property is active ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierScepter(  ) end
+
+---[[ GetModifierShard  Applies shard when this property is active ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierShard(  ) end
+
+---[[ GetModifierShareXPRune   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierShareXPRune(  ) end
+
+---[[ GetModifierSlowResistance_Stacking   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSlowResistance_Stacking(  ) end
+
+---[[ GEtModifierSlowResistance_Unique   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GEtModifierSlowResistance_Unique(  ) end
+
+---[[ GetModifierSlowResistanceAppliesToAttacks   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSlowResistanceAppliesToAttacks(  ) end
+
+---[[ GetModifierSpellAmplify_Percentage   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierSpellAmplify_Percentage( event ) end
+
+---[[ GetModifierSpellAmplify_PercentageTarget   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSpellAmplify_PercentageTarget(  ) end
+
+---[[ GetModifierSpellAmplify_PercentageUnique   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierSpellAmplify_PercentageUnique(  ) end
+
+---[[ GetModifierSpellLifestealRegenAmplify_Percentage   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSpellLifestealRegenAmplify_Percentage(  ) end
+
+---[[ GetModifierSpellLifestealRegenAmplify_Percentage_Unique   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSpellLifestealRegenAmplify_Percentage_Unique(  ) end
+
+---[[ GetModifierSpellRedirectTarget   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSpellRedirectTarget(  ) end
+
+---[[ GetModifierSpellsRequireHP   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierSpellsRequireHP(  ) end
+
+---[[ GetModifierStackingRespawnTime   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierStackingRespawnTime(  ) end
+
+---[[ GetModifierStatusResistance   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierStatusResistance(  ) end
+
+---[[ GetModifierStatusResistanceCaster   ]]
+-- @return float
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:GetModifierStatusResistanceCaster( event ) end
+
+---[[ GetModifierStatusResistanceStacking   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierStatusResistanceStacking(  ) end
+
+---[[ GetModifierStrongIllusion   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierStrongIllusion(  ) end
+
+---[[ GetModifierSuperIllusion   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierSuperIllusion(  ) end
+
+---[[ GetModifierSuperIllusionWithItems   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSuperIllusionWithItems(  ) end
+
+---[[ GetModifierSuperIllusionWithUltimate   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierSuperIllusionWithUltimate(  ) end
+
+---[[ GetModifierSuppressFullscreenDeathFX   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierSuppressFullscreenDeathFX(  ) end
+
+---[[ GetModifierTempestDouble   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierTempestDouble(  ) end
+
+---[[ GetModifierTickGold_Multiplier   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierTickGold_Multiplier(  ) end
+
+---[[ GetModifierTotal_ConstantBlock   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierTotal_ConstantBlock( event ) end
+
+---[[ GetModifierTotal_ConstantBlockStacking   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierTotal_ConstantBlockStacking(  ) end
+
+---[[ GetModifierTotalDamageOutgoing_Percentage   ]]
+-- @return float
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetModifierTotalDamageOutgoing_Percentage( event ) end
+
+---[[ GetModifierTotalPercentageManaRegen   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierTotalPercentageManaRegen(  ) end
+
+---[[ GetModifierTurnRate_Override   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierTurnRate_Override(  ) end
+
+---[[ GetModifierTurnRate_Percentage   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierTurnRate_Percentage(  ) end
+
+---[[ GetModifierTurnRateConstant   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetModifierTurnRateConstant(  ) end
+
+---[[ GetModifierUnitDisllowUpgrading   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierUnitDisllowUpgrading(  ) end
+
+---[[ GetModifierUnitStatsNeedsRefresh   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetModifierUnitStatsNeedsRefresh(  ) end
+
+---[[ GetModifierXPDuringDeath   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierXPDuringDeath(  ) end
+
+---[[ GetModifierXPFountainCountdownTimeOverride   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModifierXPFountainCountdownTimeOverride(  ) end
+
+---[[ GetModofierPropertyPseudoRandomBonus   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetModofierPropertyPseudoRandomBonus(  ) end
+
+---[[ GetOverrideAnimation   ]]
+-- @return GameActivity_t
+function CDOTA_Modifier_Lua:GetOverrideAnimation(  ) end
+
+---[[ GetOverrideAnimationRate   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetOverrideAnimationRate(  ) end
+
+---[[ GetOverrideAttackMagical   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetOverrideAttackMagical(  ) end
+
+---[[ GetPhysicalArmorPiercingPercentageTarget   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetPhysicalArmorPiercingPercentageTarget(  ) end
+
+---[[ GetPrimaryStatDamageMultiplier   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetPrimaryStatDamageMultiplier(  ) end
+
+---[[ GetRedirectSpell   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetRedirectSpell(  ) end
+
+---[[ GetReflectSpell   ]]
+-- @return [object Object]
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:GetReflectSpell( event ) end
+
+---[[ GetRequiredLevel   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetRequiredLevel(  ) end
+
+---[[ GetSkipAttackRegulator   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetSkipAttackRegulator(  ) end
+
+---[[ GetSuppressAttackProcs   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetSuppressAttackProcs(  ) end
+
+---[[ GetSuppressCleave   ]]
+-- @return [object Object]
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:GetSuppressCleave( event ) end
+
+---[[ GetSuppressCrit   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetSuppressCrit(  ) end
+
+---[[ GetSuppressIncomingCrit   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetSuppressIncomingCrit(  ) end
+
+---[[ GetSuppressTeleport   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:GetSuppressTeleport(  ) end
+
+---[[ GetTierTokenReroll   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetTierTokenReroll(  ) end
+
+---[[ GetTriggerCosmeticAndEndAttack   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetTriggerCosmeticAndEndAttack(  ) end
+
+---[[ GetUnitLifetimeFraction   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetUnitLifetimeFraction(  ) end
+
+---[[ GetVisionDegreeRestriction   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetVisionDegreeRestriction(  ) end
+
+---[[ GetVisualZDelta   ]]
+-- @return float
+function CDOTA_Modifier_Lua:GetVisualZDelta(  ) end
+
+---[[ GetVisualZSpeedBaseOverride   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:GetVisualZSpeedBaseOverride(  ) end
+
+---[[ HasBonusNeutralItemPassive   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:HasBonusNeutralItemPassive(  ) end
+
+---[[ MinAttributeLevel   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:MinAttributeLevel(  ) end
+
+---[[ MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST(  ) end
+
+---[[ OnAbilityEndChannel   ]]
+-- @return nil
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:OnAbilityEndChannel( event ) end
+
+---[[ OnAbilityExecuted   ]]
+-- @return nil
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:OnAbilityExecuted( event ) end
+
+---[[ OnAbilityFullyCast   ]]
+-- @return nil
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:OnAbilityFullyCast( event ) end
+
+---[[ OnAbilityStart   ]]
+-- @return nil
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:OnAbilityStart( event ) end
+
+---[[ OnAbilitySwapped   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnAbilitySwapped(  ) end
+
+---[[ OnAbilityToggled   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnAbilityToggled(  ) end
+
+---[[ OnAssist   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnAssist(  ) end
+
+---[[ OnAttack   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttack( event ) end
+
+---[[ OnAttackAllied  Happens even if attack can't be issued. ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackAllied( event ) end
+
+---[[ OnAttackCancelled   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackCancelled( event ) end
+
+---[[ OnAttacked   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttacked( event ) end
+
+---[[ OnAttackFail   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackFail( event ) end
+
+---[[ OnAttackFinished   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackFinished( event ) end
+
+---[[ OnAttackLanded   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackLanded( event ) end
+
+---[[ OnAttackRecord   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackRecord( event ) end
+
+---[[ OnAttackRecordDestroy   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackRecordDestroy( event ) end
+
+---[[ OnAttackStart   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnAttackStart( event ) end
+
+---[[ OnAttemptProjectileDodge   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnAttemptProjectileDodge(  ) end
+
+---[[ OnBreakInvisibility   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnBreakInvisibility(  ) end
+
+---[[ OnBuildingKilled   ]]
+-- @return nil
+-- @param event ModifierInstanceEvent
+function CDOTA_Modifier_Lua:OnBuildingKilled( event ) end
+
+---[[ OnCleaveAttackLanded   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnCleaveAttackLanded(  ) end
+
+---[[ OnDamageCalculated   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnDamageCalculated( event ) end
+
+---[[ OnDamageHPLoss   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnDamageHPLoss(  ) end
+
+---[[ OnDamagePrevented   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnDamagePrevented(  ) end
+
+---[[ OnDayStarted   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnDayStarted(  ) end
+
+---[[ OnDeath   ]]
+-- @return nil
+-- @param event ModifierInstanceEvent
+function CDOTA_Modifier_Lua:OnDeath( event ) end
+
+---[[ OnDeathCompleted   ]]
+-- @return nil
+-- @param event ModifierInstanceEvent
+function CDOTA_Modifier_Lua:OnDeathCompleted( event ) end
+
+---[[ OnDominated   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnDominated( event ) end
+
+---[[ OnForceProcMagicStick   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnForceProcMagicStick(  ) end
+
+---[[ OnFoWTeamChanged   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnFoWTeamChanged(  ) end
+
+---[[ OnHealReceived   ]]
+-- @return nil
+-- @param event ModifierHealEvent
+function CDOTA_Modifier_Lua:OnHealReceived( event ) end
+
+---[[ OnHealthGained   ]]
+-- @return nil
+-- @param event ModifierHealEvent
+function CDOTA_Modifier_Lua:OnHealthGained( event ) end
+
+---[[ OnHeroBeginDying   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnHeroBeginDying(  ) end
+
+---[[ OnHeroKilled   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnHeroKilled( event ) end
+
+---[[ OnIllusionCreated   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnIllusionCreated(  ) end
+
+---[[ OnKill   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnKill(  ) end
+
+---[[ OnKnockbackAttempted   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnKnockbackAttempted(  ) end
+
+---[[ OnMagicDamageCalculated   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnMagicDamageCalculated(  ) end
+
+---[[ OnManaGained   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnManaGained( event ) end
+
+---[[ OnModelChanged   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnModelChanged( event ) end
+
+---[[ OnModifierAdded   ]]
+-- @return nil
+-- @param event ModifierAddedEvent
+function CDOTA_Modifier_Lua:OnModifierAdded( event ) end
+
+---[[ OnModifierRefreshed   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnModifierRefreshed(  ) end
+
+---[[ OnModifierRemoved   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnModifierRemoved(  ) end
+
+---[[ OnMuteDamageAbilities   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnMuteDamageAbilities(  ) end
+
+---[[ OnNightStarted   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnNightStarted(  ) end
+
+---[[ OnOrder   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnOrder( event ) end
+
+---[[ OnOrderReceived   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnOrderReceived(  ) end
+
+---[[ OnProcessCleave   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnProcessCleave(  ) end
+
+---[[ OnProjectileDodge   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnProjectileDodge( event ) end
+
+---[[ OnProjectileObstructionHit   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnProjectileObstructionHit(  ) end
+
+---[[ OnPureDamageCalculated   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnPureDamageCalculated(  ) end
+
+---[[ OnPurged   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnPurged(  ) end
+
+---[[ OnRespawn   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnRespawn( event ) end
+
+---[[ OnRuneSpawn   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnRuneSpawn(  ) end
+
+---[[ OnScepterUpgradeSelected   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnScepterUpgradeSelected(  ) end
+
+---[[ OnSetLocation   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnSetLocation( event ) end
+
+---[[ OnShardUpgradeSelected   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnShardUpgradeSelected(  ) end
+
+---[[ OnSpellAppliedSuccessfully   ]]
+-- @return nil
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:OnSpellAppliedSuccessfully( event ) end
+
+---[[ OnSpellTargetReady   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnSpellTargetReady(  ) end
+
+---[[ OnSpentHealth   ]]
+-- @return nil
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:OnSpentHealth( event ) end
+
+---[[ OnSpentItemCharge   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnSpentItemCharge(  ) end
+
+---[[ OnSpentMana   ]]
+-- @return nil
+-- @param event ModifierAbilityEvent
+function CDOTA_Modifier_Lua:OnSpentMana( event ) end
+
+---[[ OnStateChanged   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnStateChanged( event ) end
+
+---[[ OnTakeDamage   ]]
+-- @return nil
+-- @param event ModifierInstanceEvent
+function CDOTA_Modifier_Lua:OnTakeDamage( event ) end
+
+---[[ OnTakeDamageKillCredit   ]]
+-- @return nil
+-- @param event ModifierAttackEvent
+function CDOTA_Modifier_Lua:OnTakeDamageKillCredit( event ) end
+
+---[[ OnTakeDamagePostUnavoidableBlock   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnTakeDamagePostUnavoidableBlock(  ) end
+
+---[[ OnTeleported   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnTeleported( event ) end
+
+---[[ OnTeleporting   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnTeleporting( event ) end
+
+---[[ OnTierTokenRerolled   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnTierTokenRerolled(  ) end
+
+---[[ OnTooltip   ]]
+-- @return float
+function CDOTA_Modifier_Lua:OnTooltip(  ) end
+
+---[[ OnTooltip2   ]]
+-- @return float
+function CDOTA_Modifier_Lua:OnTooltip2(  ) end
+
+---[[ OnTreeCutDown   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:OnTreeCutDown(  ) end
+
+---[[ OnUnitMoved   ]]
+-- @return nil
+-- @param event ModifierUnitEvent
+function CDOTA_Modifier_Lua:OnUnitMoved( event ) end
+
+---[[ PreserveParticlesOnModelChanged   ]]
+-- @return [object Object]
+function CDOTA_Modifier_Lua:PreserveParticlesOnModelChanged(  ) end
+
+---[[ ReincarnateSuppressFX   ]]
+-- @return nil
+function CDOTA_Modifier_Lua:ReincarnateSuppressFX(  ) end
+
+---[[ ReincarnateTime   ]]
+-- @return float
+function CDOTA_Modifier_Lua:ReincarnateTime(  ) end
+
+---[[ GetAbilityName  Returns the name of this ability. ]]
+-- @return string
+function C_DOTABaseAbility:GetAbilityName(  ) end
+
+---[[ GetBehavior   ]]
+-- @return DOTA_ABILITY_BEHAVIOR
+function C_DOTABaseAbility:GetBehavior(  ) end
+
+---[[ GetBehaviorInt  Get ability behavior flags as an int for compatability. ]]
+-- @return DOTA_ABILITY_BEHAVIOR
+function C_DOTABaseAbility:GetBehaviorInt(  ) end
+
+---[[ GetCaster  Get the owner of this ability. ]]
+-- @return CDOTA_BaseNPC
+function C_DOTABaseAbility:GetCaster(  ) end
+
+---[[ GetCastPointModifier   ]]
+-- @return float
+function C_DOTABaseAbility:GetCastPointModifier(  ) end
+
+---[[ GetCurrentAbilityCharges  The number of charges remaining on this ability. ]]
+-- @return int
+function C_DOTABaseAbility:GetCurrentAbilityCharges(  ) end
+
+---[[ GetLevel  Get the current level of the ability. ]]
+-- @return int
+function C_DOTABaseAbility:GetLevel(  ) end
+
+---[[ GetLevelSpecialValueFor  Gets a value from this ability's special value block for passed level. ]]
+-- @return float
+-- @param name string
+-- @param level int
+function C_DOTABaseAbility:GetLevelSpecialValueFor( name, level ) end
+
+---[[ GetLevelSpecialValueNoOverride  Gets a value from this ability's special value block for passed level, ignoring MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL. ]]
+-- @return float
+-- @param name string
+-- @param level int
+function C_DOTABaseAbility:GetLevelSpecialValueNoOverride( name, level ) end
+
+---[[ GetSpecialValueFor  Gets a value from this ability's special value block for its current level. ]]
+-- @return float
+-- @param name string
+function C_DOTABaseAbility:GetSpecialValueFor( name ) end
+
+---[[ GetToggleState  Whether or not this ability is toggled. ]]
+-- @return bool
+function C_DOTABaseAbility:GetToggleState(  ) end
+
+---[[ IsItem  Whether or not this ability is an item. ]]
+-- @return bool
+function C_DOTABaseAbility:IsItem(  ) end
+
+---[[ GetHeroDataByName_Script  Get the hero unit. ]]
+-- @return table
+-- @param heroName string
+function CDOTAGameManager:GetHeroDataByName_Script( heroName ) end
+
+---[[ GetHeroIDByName  Get the hero ID given the hero name. ]]
+-- @return int
+-- @param heroName string
+function CDOTAGameManager:GetHeroIDByName( heroName ) end
+
+---[[ GetHeroLocTokenByID  Get the localization token for the given hero ID. ]]
+-- @return string
+-- @param arg1 int
+function CDOTAGameManager:GetHeroLocTokenByID( arg1 ) end
+
+---[[ GetHeroNameByID  Get the hero name given a hero ID. ]]
+-- @return string
+-- @param heroId int
+function CDOTAGameManager:GetHeroNameByID( heroId ) end
+
+---[[ GetHeroNameForUnitName  Get the hero name given a unit name. ]]
+-- @return string
+-- @param unitName string
+function CDOTAGameManager:GetHeroNameForUnitName( unitName ) end
+
+---[[ GetHeroUnitNameByID  Get the hero unit name given the hero ID. ]]
+-- @return string
+-- @param heroId int
+function CDOTAGameManager:GetHeroUnitNameByID( heroId ) end
+
+---[[ GetBannedHeroes  Returns the hero unit names banned in this game, if any. ]]
+-- @return [object Object]
+function CDOTAGameRules:GetBannedHeroes(  ) end
+
+---[[ GetBannedHeroIDs  Returns the hero unit IDs banned in this game, if any. ]]
+-- @return table
+function CDOTAGameRules:GetBannedHeroIDs(  ) end
+
+---[[ GetCustomGameDifficulty  Returns the difficulty level of the custom game mode. ]]
+-- @return int
+function CDOTAGameRules:GetCustomGameDifficulty(  ) end
+
+---[[ GetDifficulty  Returns difficulty level of the custom game mode. ]]
+-- @return int
+function CDOTAGameRules:GetDifficulty(  ) end
+
+---[[ GetDOTATime  Returns the actual DOTA in-game clock time. ]]
+-- @return float
+-- @param includePreGame bool
+-- @param includeNegativeTime bool
+function CDOTAGameRules:GetDOTATime( includePreGame, includeNegativeTime ) end
+
+---[[ GetGameFrameTime  Returns the number of seconds elapsed since the last frame was renderered. This time doesn't count up when the game is paused. ]]
+-- @return float
+function CDOTAGameRules:GetGameFrameTime(  ) end
+
+---[[ GetGameTime  Returns the number of seconds elapsed since map start. This time doesn't count up when the game is paused. ]]
+-- @return float
+function CDOTAGameRules:GetGameTime(  ) end
+
+---[[ GetIetmStockDuration  Get the time it takes to add a new item to stock. ]]
+-- @return float
+-- @param arg1 int
+-- @param arg2 string
+-- @param arg3 int
+function CDOTAGameRules:GetIetmStockDuration( arg1, arg2, arg3 ) end
+
+---[[ GetItemStockCount  Get the stock count of the item. ]]
+-- @return int
+-- @param team DOTATeam_t
+-- @param itemName string
+-- @param playerId PlayerID
+function CDOTAGameRules:GetItemStockCount( team, itemName, playerId ) end
+
+---[[ GetItemStockTime  Get the time an item will be added to stock. ]]
+-- @return float
+-- @param team DOTATeam_t
+-- @param itemName string
+-- @param playerId PlayerID
+function CDOTAGameRules:GetItemStockTime( team, itemName, playerId ) end
+
+---[[ GetNeutralInitialSpawnOffset  Gets the extra offset to initial neutral creep spawn delay. ]]
+-- @return float
+function CDOTAGameRules:GetNeutralInitialSpawnOffset(  ) end
+
+---[[ GetWeatherWindDirection  Get Weather Wind Direction Vector. ]]
+-- @return Vector
+function CDOTAGameRules:GetWeatherWindDirection(  ) end
+
+---[[ IsCheatMode  Are cheats enabled on the server. ]]
+-- @return bool
+function CDOTAGameRules:IsCheatMode(  ) end
+
+---[[ IsDev   ]]
+-- @return bool
+function CDOTAGameRules:IsDev(  ) end
+
+---[[ IsHeroEnabledViaLists  Is the hero not blacklisted, and is it either whitelisted or the whitelist is empty? ]]
+-- @return bool
+-- @param arg1 string
+function CDOTAGameRules:IsHeroEnabledViaLists( arg1 ) end
+
+---[[ ShouldHideBlacklistedHeroes  Are blacklisted heroes hidden, or just dimmed, in hero picking? ]]
+-- @return bool
+function CDOTAGameRules:ShouldHideBlacklistedHeroes(  ) end
+
+---[[ State_Get  Get the current Gamerules state. ]]
+-- @return DOTA_GameState
+function CDOTAGameRules:State_Get(  ) end
+
+---[[ GetActiveAbility   ]]
+-- @return handle
+function C_DOTAPlayerController:GetActiveAbility(  ) end
+
+---[[ GetClickBehaviors   ]]
+-- @return unknown
+function C_DOTAPlayerController:GetClickBehaviors(  ) end
+
+---[[ GetQueryUnit   ]]
+-- @return handle
+function C_DOTAPlayerController:GetQueryUnit(  ) end
+
+---[[ ShouldDisplayInWorldUIElements   ]]
+-- @return bool
+function C_DOTAPlayerController:ShouldDisplayInWorldUIElements(  ) end
+
+---[[ First  Begin an iteration over the list of entities. ]]
+-- @return CBaseEntity
+function CEntities:First(  ) end
+
+---[[ GetLocalPlayer  Get the local player controller (backcompat). ]]
+-- @return CDOTAPlayerController
+function CEntities:GetLocalPlayer(  ) end
+
+---[[ GetLocalPlayerController  Get the local player controller. ]]
+-- @return handle
+function CEntities:GetLocalPlayerController(  ) end
+
+---[[ GetLocalPlayerPawn  Get the local player pawn. ]]
+-- @return handle
+function CEntities:GetLocalPlayerPawn(  ) end
+
+---[[ Next  Continue an iteration over the list of entities, providing reference to a previously found entity. ]]
+-- @return CBaseEntity
+-- @param previous CBaseEntity
+function CEntities:Next( previous ) end
+
+---[[ ConnectOutput  Adds an I/O connection that will call the named function on this entity when the specified output fires. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+function CEntityInstance:ConnectOutput( arg1, arg2 ) end
+
+---[[ Destroy   ]]
+-- @return nil
+function CEntityInstance:Destroy(  ) end
+
+---[[ DisconnectOutput  Removes a connected script function from an I/O event on this entity. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+function CEntityInstance:DisconnectOutput( arg1, arg2 ) end
+
+---[[ DisconnectRedirectedOutput  Removes a connected script function from an I/O event on the passed entity. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+-- @param arg3 handle
+function CEntityInstance:DisconnectRedirectedOutput( arg1, arg2, arg3 ) end
+
+---[[ entindex   ]]
+-- @return EntityIndex
+function CEntityInstance:entindex(  ) end
+
+---[[ FireOutput  Fire an entity output. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 handle
+-- @param arg3 handle
+-- @param arg4 table
+-- @param arg5 float
+function CEntityInstance:FireOutput( arg1, arg2, arg3, arg4, arg5 ) end
+
+---[[ GetClassname   ]]
+-- @return string
+function CEntityInstance:GetClassname(  ) end
+
+---[[ GetDebugName  Get the entity name w/help if not defined (i.e. classname/etc). ]]
+-- @return string
+function CEntityInstance:GetDebugName(  ) end
+
+---[[ GetEntityHandle  Get the entity as an EHANDLE. ]]
+-- @return ehandle
+function CEntityInstance:GetEntityHandle(  ) end
+
+---[[ GetEntityIndex   ]]
+-- @return EntityIndex
+function CEntityInstance:GetEntityIndex(  ) end
+
+---[[ GetIntAttr  Get Integer Attribute. ]]
+-- @return int
+-- @param arg1 string
+function CEntityInstance:GetIntAttr( arg1 ) end
+
+---[[ GetName  Get the entity name. ]]
+-- @return string
+function CEntityInstance:GetName(  ) end
+
+---[[ GetOrCreatePrivateScriptScope  Retrieve, creating if necessary, the private per-instance script-side data associated with an entity. ]]
+-- @return handle
+function CEntityInstance:GetOrCreatePrivateScriptScope(  ) end
+
+---[[ GetOrCreatePublicScriptScope  Retrieve, creating if necessary, the public script-side data associated with an entity. ]]
+-- @return handle
+function CEntityInstance:GetOrCreatePublicScriptScope(  ) end
+
+---[[ GetPrivateScriptScope  Retrieve the private per-instance script-side data associated with an entity. ]]
+-- @return handle
+function CEntityInstance:GetPrivateScriptScope(  ) end
+
+---[[ GetPublicScriptScope  Retrieve the public script-side data associated with an entity. ]]
+-- @return handle
+function CEntityInstance:GetPublicScriptScope(  ) end
+
+---[[ IsNull  Has underlying C++ entity object been deleted? ]]
+-- @return bool
+function CEntityInstance:IsNull(  ) end
+
+---[[ RedirectOutput  Adds an I/O connection that will call the named function on the passed entity when the specified output fires. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+-- @param arg3 handle
+function CEntityInstance:RedirectOutput( arg1, arg2, arg3 ) end
+
+---[[ RemoveSelf  Delete this entity. ]]
+-- @return nil
+function CEntityInstance:RemoveSelf(  ) end
+
+---[[ SetIntAttr  Set Integer Attribute. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 int
+function CEntityInstance:SetIntAttr( arg1, arg2 ) end
+
+---[[ HideWorldLayer  Hides this layer. ]]
+-- @return nil
+function CInfoWorldLayer:HideWorldLayer(  ) end
+
+---[[ ShowWorldLayer  Shows this layer. ]]
+-- @return nil
+function CInfoWorldLayer:ShowWorldLayer(  ) end
+
+---[[ Trigger  Triggers the logic_relay. ]]
+-- @return nil
+-- @param activator CBaseEntity
+-- @param caller CBaseEntity
+function CLogicRelay:Trigger( activator, caller ) end
+
+---[[ AddOutput  Add an output. ]]
+-- @return nil
+-- @param arg1 string
+-- @param arg2 string
+function CNativeOutputs:AddOutput( arg1, arg2 ) end
+
+---[[ Init  Initialize with number of outputs. ]]
+-- @return nil
+-- @param arg1 int
+function CNativeOutputs:Init( arg1 ) end
+
+---[[ GetBool  Returns the convar as a boolean flag. ]]
+-- @return bool
+-- @param name string
+function Convars:GetBool( name ) end
+
+---[[ GetCommandClient  Returns the player who issued this console command. ]]
+-- @return CDOTAPlayerController
+function Convars:GetCommandClient(  ) end
+
+---[[ GetDOTACommandClient  Returns the DOTA player who issued this console command. ]]
+-- @return CDOTAPlayerController
+function Convars:GetDOTACommandClient(  ) end
+
+---[[ GetFloat  Returns the convar as a float. May return null if no such convar. ]]
+-- @return float
+-- @param name string
+function Convars:GetFloat( name ) end
+
+---[[ GetInt  Returns the convar as an int. May return null if no such convar. ]]
+-- @return int
+-- @param name string
+function Convars:GetInt( name ) end
+
+---[[ GetStr  Returns the convar as a string. May return null if no such convar. ]]
+-- @return string
+-- @param name string
+function Convars:GetStr( name ) end
+
+---[[ RegisterCommand  Register a console command. ]]
+-- @return nil
+-- @param name string
+-- @param callback [object Object]
+-- @param helpString string
+-- @param flags ConVarFlags
+function Convars:RegisterCommand( name, callback, helpString, flags ) end
+
+---[[ RegisterConvar  Register a new console variable. ]]
+-- @return nil
+-- @param name string
+-- @param defaultValue string
+-- @param helpString string
+-- @param flags ConVarFlags
+function Convars:RegisterConvar( name, defaultValue, helpString, flags ) end
+
+---[[ SetBool  Sets the value of the convar to the bool. ]]
+-- @return nil
+-- @param name string
+-- @param value bool
+function Convars:SetBool( name, value ) end
+
+---[[ SetFloat  Sets the value of the convar to the float. ]]
+-- @return nil
+-- @param name string
+-- @param value float
+function Convars:SetFloat( name, value ) end
+
+---[[ SetInt  Sets the value of the convar to the int. ]]
+-- @return nil
+-- @param name string
+-- @param value int
+function Convars:SetInt( name, value ) end
+
+---[[ SetStr  Sets the value of the convar to the string. ]]
+-- @return nil
+-- @param name string
+-- @param value string
+function Convars:SetStr( name, value ) end
+
+---[[ DeleteCreatedSpawnGroups  Deletes any spawn groups that this point_template has spawned. Note: The point_template will not be deleted by this. ]]
+-- @return nil
+function CPointTemplate:DeleteCreatedSpawnGroups(  ) end
+
+---[[ ForceSpawn  Spawns all of the entities the point_template is pointing at. ]]
+-- @return nil
+function CPointTemplate:ForceSpawn(  ) end
+
+---[[ GetSpawnedEntities  Get the list of the most recent spawned entities. ]]
+-- @return handle
+function CPointTemplate:GetSpawnedEntities(  ) end
+
+---[[ SetSpawnCallback  Set a callback for when the template spawns entities. The spawned entities will be passed in as an array. ]]
+-- @return nil
+-- @param callbackFunc handle
+-- @param callbackScope handle
+function CPointTemplate:SetSpawnCallback( callbackFunc, callbackScope ) end
+
+---[[ SetMessage  Set the message on this entity. ]]
+-- @return nil
+-- @param message string
+function C_PointWorldText:SetMessage( message ) end
+
+---[[ Send  Send a HTTP request. ]]
+-- @return bool
+-- @param callback [object Object]
+function CScriptHTTPRequest:Send( callback ) end
+
+---[[ SetHTTPRequestAbsoluteTimeoutMS  Set the total timeout on the request. ]]
+-- @return bool
+-- @param milliseconds uint
+function CScriptHTTPRequest:SetHTTPRequestAbsoluteTimeoutMS( milliseconds ) end
+
+---[[ SetHTTPRequestGetOrPostParameter  Set a POST or GET parameter on the request. ]]
+-- @return bool
+-- @param name string
+-- @param value string
+function CScriptHTTPRequest:SetHTTPRequestGetOrPostParameter( name, value ) end
+
+---[[ SetHTTPRequestHeaderValue  Set a header value on the request. ]]
+-- @return bool
+-- @param name string
+-- @param value string
+function CScriptHTTPRequest:SetHTTPRequestHeaderValue( name, value ) end
+
+---[[ SetHTTPRequestNetworkActivityTimeout  Set the network timeout on the request - this timer is reset when any data is received. ]]
+-- @return bool
+-- @param seconds uint
+function CScriptHTTPRequest:SetHTTPRequestNetworkActivityTimeout( seconds ) end
+
+---[[ SetHTTPRequestRawPostBody  Set the literal body of a post - invalid after setting a post parameter. ]]
+-- @return bool
+-- @param contentType string
+-- @param body string
+function CScriptHTTPRequest:SetHTTPRequestRawPostBody( contentType, body ) end
+
+---[[ GetValue  Reads a spawn key. ]]
+-- @return table
+-- @param arg1 string
+function CScriptKeyValues:GetValue( arg1 ) end
+
+---[[ CreateParticle  Creates a new particle effect. ]]
+-- @return ParticleID
+-- @param particleName string
+-- @param particleAttach ParticleAttachment_t
+-- @param owner CBaseEntity
+function CScriptParticleManager:CreateParticle( particleName, particleAttach, owner ) end
+
+---[[ CreateParticleForPlayer  Creates a new particle effect that only plays for the specified player. ]]
+-- @return ParticleID
+-- @param particleName string
+-- @param particleAttach ParticleAttachment_t
+-- @param owner CBaseEntity
+-- @param player CDOTAPlayerController
+function CScriptParticleManager:CreateParticleForPlayer( particleName, particleAttach, owner, player ) end
+
+---[[ CreateParticleForTeam  Creates a new particle effect that only plays for the specified team. ]]
+-- @return ParticleID
+-- @param particleName string
+-- @param particleAttach ParticleAttachment_t
+-- @param owner CBaseEntity
+-- @param team DOTATeam_t
+function CScriptParticleManager:CreateParticleForTeam( particleName, particleAttach, owner, team ) end
+
+---[[ DestroyParticle  Destroy a particle, if bDestroyImmediately destroy it without playing end caps. ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param immediate bool
+function CScriptParticleManager:DestroyParticle( particle, immediate ) end
+
+---[[ GetParticleReplacement   ]]
+-- @return string
+-- @param particleName string
+-- @param hero CDOTA_BaseNPC_Hero
+function CScriptParticleManager:GetParticleReplacement( particleName, hero ) end
+
+---[[ ReleaseParticleIndex  Frees the specified particle index. ]]
+-- @return nil
+-- @param particle ParticleID
+function CScriptParticleManager:ReleaseParticleIndex( particle ) end
+
+---[[ SetParticleAlwaysSimulate   ]]
+-- @return nil
+-- @param particle ParticleID
+function CScriptParticleManager:SetParticleAlwaysSimulate( particle ) end
+
+---[[ SetParticleControl  Set the control point data for a control on a particle effect. ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param controlPoint int
+-- @param value Vector
+function CScriptParticleManager:SetParticleControl( particle, controlPoint, value ) end
+
+---[[ SetParticleControlEnt   ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param controlPoint int
+-- @param unit CBaseEntity
+-- @param particleAttach ParticleAttachment_t
+-- @param attachment string
+-- @param offset Vector
+-- @param lockOrientation bool
+function CScriptParticleManager:SetParticleControlEnt( particle, controlPoint, unit, particleAttach, attachment, offset, lockOrientation ) end
+
+---[[ SetParticleControlFallback   ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param controlPoint int
+-- @param vecPosition Vector
+function CScriptParticleManager:SetParticleControlFallback( particle, controlPoint, vecPosition ) end
+
+---[[ SetParticleControlForward  [OBSOLETE - Use SetParticleControlTransformForward] (int nFXIndex, int nPoint, vForward). ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param controlPoint int
+-- @param arg3 Vector
+function CScriptParticleManager:SetParticleControlForward( particle, controlPoint, arg3 ) end
+
+---[[ SetParticleControlOrientation  [OBSOLETE - Use SetParticleControlTransform] (int nFXIndex, int nPoint, vForward, vRight, vUp) - Set the orientation for a control on a particle effect (NOTE: This is left handed -- bad!!). ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param controlPoint int
+-- @param arg3 Vector
+-- @param arg4 Vector
+-- @param arg5 Vector
+function CScriptParticleManager:SetParticleControlOrientation( particle, controlPoint, arg3, arg4, arg5 ) end
+
+---[[ SetParticleControlOrientationFLU  [OBSOLETE - Use SetParticleControlTransform] (int nFXIndex, int nPoint, Vector vecForward, Vector vecLeft, Vector vecUp) - Set the orientation for a control on a particle effect. ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param controlPoint int
+-- @param arg3 Vector
+-- @param arg4 Vector
+-- @param arg5 Vector
+function CScriptParticleManager:SetParticleControlOrientationFLU( particle, controlPoint, arg3, arg4, arg5 ) end
+
+---[[ SetParticleControlTransform   ]]
+-- @return nil
+-- @param fxIndex int
+-- @param point int
+-- @param origin Vector
+-- @param qAngles QAngle
+function CScriptParticleManager:SetParticleControlTransform( fxIndex, point, origin, qAngles ) end
+
+---[[ SetParticleControlTransformForward   ]]
+-- @return nil
+-- @param fxIndex int
+-- @param point int
+-- @param origin Vector
+-- @param forward Vector
+function CScriptParticleManager:SetParticleControlTransformForward( fxIndex, point, origin, forward ) end
+
+---[[ SetParticleFoWProperties   ]]
+-- @return nil
+-- @param particle ParticleID
+-- @param controlPoint int
+-- @param controlPoint2 int
+-- @param radius float
+function CScriptParticleManager:SetParticleFoWProperties( particle, controlPoint, controlPoint2, radius ) end
+
+---[[ SetParticleShouldCheckFoW   ]]
+-- @return bool
+-- @param particle ParticleID
+-- @param checkFoW bool
+function CScriptParticleManager:SetParticleShouldCheckFoW( particle, checkFoW ) end
+
+---[[ AddResource  Precaches a specific resource. ]]
+-- @return nil
+-- @param resource string
+function CScriptPrecacheContext:AddResource( resource ) end
+
+---[[ GetValue  Reads a spawn key. ]]
+-- @return table
+-- @param key string
+function CScriptPrecacheContext:GetValue( key ) end
+
+---[[ RandomFloat   ]]
+-- @return float
+-- @param minVal float
+-- @param maxVal float
+function CScriptUniformRandomStream:RandomFloat( minVal, maxVal ) end
+
+---[[ RandomFloatExp   ]]
+-- @return float
+-- @param minVal float
+-- @param maxVal float
+-- @param exponent float
+function CScriptUniformRandomStream:RandomFloatExp( minVal, maxVal, exponent ) end
+
+---[[ RandomInt   ]]
+-- @return int
+-- @param minVal int
+-- @param maxVal int
+function CScriptUniformRandomStream:RandomInt( minVal, maxVal ) end
+
+---[[ RollPercentage   ]]
+-- @return bool
+-- @param percentage int
+function CScriptUniformRandomStream:RollPercentage( percentage ) end
+
+---[[ CommandLineCheck  Returns true if the command line param was used, otherwise false. ]]
+-- @return table
+-- @param name string
+function GlobalSys:CommandLineCheck( name ) end
+
+---[[ CommandLineFloat  Returns the command line param as a float. ]]
+-- @return table
+-- @param arg1 string
+-- @param arg2 float
+function GlobalSys:CommandLineFloat( arg1, arg2 ) end
+
+---[[ CommandLineInt  Returns the command line param as an int. ]]
+-- @return table
+-- @param arg1 string
+-- @param arg2 int
+function GlobalSys:CommandLineInt( arg1, arg2 ) end
+
+---[[ CommandLineStr  Returns the command line param as a string. ]]
+-- @return table
+-- @param arg1 string
+-- @param arg2 string
+function GlobalSys:CommandLineStr( arg1, arg2 ) end
+
+---[[ __add  Overloaded +. Adds angles together. ]]
+-- @return QAngle
+-- @param b QAngle
+function QAngle:__add( b ) end
+
+---[[ __eq  Overloaded ==. Tests for Equality. ]]
+-- @return bool
+-- @param b QAngle
+function QAngle:__eq( b ) end
+
+---[[ __tostring  Overloaded .. Converts the QAngles to strings. ]]
+-- @return string
+function QAngle:__tostring(  ) end
+
+---[[ Forward  Returns the forward vector. ]]
+-- @return Vector
+function QAngle:Forward(  ) end
+
+---[[ Left  Returns the left vector. ]]
+-- @return Vector
+function QAngle:Left(  ) end
+
+---[[ Up  Returns the up vector. ]]
+-- @return Vector
+function QAngle:Up(  ) end
+
+---[[ __add  Overloaded +. Adds vectors together. ]]
+-- @return Vector
+-- @param b Vector
+function Vector:__add( b ) end
+
+---[[ __div  Overloaded /. Divides vectors. ]]
+-- @return Vector
+-- @param b Vector
+function Vector:__div( b ) end
+
+---[[ __eq  Overloaded ==. Tests for Equality. ]]
+-- @return bool
+-- @param b Vector
+function Vector:__eq( b ) end
+
+---[[ __len  Overloaded # returns the length of the vector. ]]
+-- @return float
+function Vector:__len(  ) end
+
+---[[ __mul  Overloaded * returns the vectors multiplied together. Can also be used to multiply with scalars. ]]
+-- @return Vector
+-- @param b Vector
+function Vector:__mul( b ) end
+
+---[[ __sub  Overloaded -. Subtracts vectors. ]]
+-- @return Vector
+-- @param b Vector
+function Vector:__sub( b ) end
+
+---[[ __tostring  Overloaded .. Converts vectors to strings. ]]
+-- @return string
+function Vector:__tostring(  ) end
+
+---[[ __unm  Overloaded - operator. Reverses the vector. ]]
+-- @return Vector
+function Vector:__unm(  ) end
+
+---[[ Cross  Cross product of two vectors. ]]
+-- @return Vector
+-- @param b Vector
+function Vector:Cross( b ) end
+
+---[[ Dot  Dot product of two vectors. ]]
+-- @return float
+-- @param b Vector
+function Vector:Dot( b ) end
+
+---[[ Length  Length of the Vector. ]]
+-- @return float
+function Vector:Length(  ) end
+
+---[[ Length2D  Length of the Vector in the XY plane. ]]
+-- @return float
+function Vector:Length2D(  ) end
+
+---[[ Normalized  Returns the vector normalized. ]]
+-- @return Vector
+function Vector:Normalized(  ) end
+
+---[[ Lerp  Linearly interpolates between two vectors.
+This is most commonly used to find a point some fraction of the way along a line between two endpoints.
+Same as `this + (b - this) * t`. ]]
+-- @return Vector
+-- @param b Vector
+-- @param t float
+function Vector:Lerp( b, t ) end
+
+--- Enum Constants
+DOTA_MAX_ABILITIES = 40
+
+--- Enum Constants
+FIND_UNITS_EVERYWHERE = -1
+
+--- Enum Constants
+SPAWN_GROUP_HANDLE_INVALID = 0
 
 --- Enum ABILITY_TYPES
-ABILITY_TYPE_ATTRIBUTES = 2
 ABILITY_TYPE_BASIC = 0
-ABILITY_TYPE_HIDDEN = 3
 ABILITY_TYPE_ULTIMATE = 1
+ABILITY_TYPE_ATTRIBUTES = 2
+ABILITY_TYPE_HIDDEN = 3
 
 --- Enum AbilityLearnResult_t
-ABILITY_CANNOT_BE_UPGRADED_AT_MAX = 2
-ABILITY_CANNOT_BE_UPGRADED_NOT_UPGRADABLE = 1
-ABILITY_CANNOT_BE_UPGRADED_REQUIRES_LEVEL = 3
 ABILITY_CAN_BE_UPGRADED = 0
+ABILITY_CANNOT_BE_UPGRADED_NOT_UPGRADABLE = 1
+ABILITY_CANNOT_BE_UPGRADED_AT_MAX = 2
+ABILITY_CANNOT_BE_UPGRADED_REQUIRES_LEVEL = 3
 ABILITY_NOT_LEARNABLE = 4
 
+--- Enum ActivateType
+ACTIVATE_TYPE_INITIAL_CREATION = 0
+ACTIVATE_TYPE_DATAUPDATE_CREATION = 1
+ACTIVATE_TYPE_ONRESTORE = 2
+
 --- Enum AttributeDerivedStats
-DOTA_ATTRIBUTE_AGILITY_ARMOR = 4
-DOTA_ATTRIBUTE_AGILITY_ATTACK_SPEED = 5
-DOTA_ATTRIBUTE_AGILITY_DAMAGE = 3
-DOTA_ATTRIBUTE_ALL_DAMAGE = 10
-DOTA_ATTRIBUTE_INTELLIGENCE_DAMAGE = 6
-DOTA_ATTRIBUTE_INTELLIGENCE_MAGIC_RESIST = 9
-DOTA_ATTRIBUTE_INTELLIGENCE_MANA = 7
-DOTA_ATTRIBUTE_INTELLIGENCE_MANA_REGEN = 8
 DOTA_ATTRIBUTE_STRENGTH_DAMAGE = 0
 DOTA_ATTRIBUTE_STRENGTH_HP = 1
 DOTA_ATTRIBUTE_STRENGTH_HP_REGEN = 2
+DOTA_ATTRIBUTE_AGILITY_DAMAGE = 3
+DOTA_ATTRIBUTE_AGILITY_ARMOR = 4
+DOTA_ATTRIBUTE_AGILITY_ATTACK_SPEED = 5
+DOTA_ATTRIBUTE_INTELLIGENCE_DAMAGE = 6
+DOTA_ATTRIBUTE_INTELLIGENCE_MANA = 7
+DOTA_ATTRIBUTE_INTELLIGENCE_MANA_REGEN = 8
+DOTA_ATTRIBUTE_INTELLIGENCE_MAGIC_RESIST = 9
+DOTA_ATTRIBUTE_ALL_DAMAGE = 10
 
 --- Enum Attributes
-DOTA_ATTRIBUTE_AGILITY = 1
-DOTA_ATTRIBUTE_ALL = 3
-DOTA_ATTRIBUTE_INTELLECT = 2
 DOTA_ATTRIBUTE_INVALID = -1
-DOTA_ATTRIBUTE_MAX = 4
 DOTA_ATTRIBUTE_STRENGTH = 0
+DOTA_ATTRIBUTE_AGILITY = 1
+DOTA_ATTRIBUTE_INTELLECT = 2
+DOTA_ATTRIBUTE_ALL = 3
+DOTA_ATTRIBUTE_MAX = 4
 
 --- Enum CLICK_BEHAVIORS
+DOTA_CLICK_BEHAVIOR_NONE = 0
+DOTA_CLICK_BEHAVIOR_MOVE = 1
 DOTA_CLICK_BEHAVIOR_ATTACK = 2
 DOTA_CLICK_BEHAVIOR_CAST = 3
-DOTA_CLICK_BEHAVIOR_DRAG = 6
 DOTA_CLICK_BEHAVIOR_DROP_ITEM = 4
 DOTA_CLICK_BEHAVIOR_DROP_SHOP_ITEM = 5
-DOTA_CLICK_BEHAVIOR_LAST = 12
+DOTA_CLICK_BEHAVIOR_DRAG = 6
 DOTA_CLICK_BEHAVIOR_LEARN_ABILITY = 7
-DOTA_CLICK_BEHAVIOR_MOVE = 1
-DOTA_CLICK_BEHAVIOR_NONE = 0
 DOTA_CLICK_BEHAVIOR_PATROL = 8
-DOTA_CLICK_BEHAVIOR_RADAR = 11
-DOTA_CLICK_BEHAVIOR_UNUSED = 10
 DOTA_CLICK_BEHAVIOR_VECTOR_CAST = 9
+DOTA_CLICK_BEHAVIOR_UNUSED = 10
+DOTA_CLICK_BEHAVIOR_RADAR = 11
+DOTA_CLICK_BEHAVIOR_LAST = 12
 
---- Enum DOTAAbilitySpeakTrigger_t
-DOTA_ABILITY_SPEAK_CAST = 1
-DOTA_ABILITY_SPEAK_START_ACTION_PHASE = 0
-
---- Enum DOTACustomCameraEventFlags_t
-k_ECustomCameraEventFlags_FadeIn = 1024
-k_ECustomCameraEventFlags_FadeOut = 512
-k_ECustomCameraEventFlags_LetterboxOff = 4096
-k_ECustomCameraEventFlags_LetterboxOn = 2048
-k_ECustomCameraEventFlags_Lock = 32
-k_ECustomCameraEventFlags_Pitch = 8
-k_ECustomCameraEventFlags_Position = 2
-k_ECustomCameraEventFlags_PositionPlayerHero = 4
-k_ECustomCameraEventFlags_ResetDefault = 128
-k_ECustomCameraEventFlags_SpecificPlayer = 256
-k_ECustomCameraEventFlags_Unlock = 64
-k_ECustomCameraEventFlags_Yaw = 16
-k_ECustomCameraEventFlags_Zoom = 1
-
---- Enum DOTALimits_t
-DOTA_DEFAULT_MAX_TEAM = 5 -- Default number of players per team.
-DOTA_DEFAULT_MAX_TEAM_PLAYERS = 10 -- Default number of non-spectator players supported.
-DOTA_MAX_PLAYERS = 64 -- Max number of players connected to the server including spectators.
-DOTA_MAX_PLAYER_TEAMS = 10 -- Max number of player teams supported.
-DOTA_MAX_SPECTATOR_LOBBY_SIZE = 15 -- Max number of viewers in a spectator lobby.
-DOTA_MAX_SPECTATOR_TEAM_SIZE = 40 -- How many spectators can watch.
-DOTA_MAX_TEAM = 24 -- Max number of players per team.
-DOTA_MAX_TEAM_PLAYERS = 24 -- Max number of non-spectator players supported.
-
---- Enum DOTAModifierAttribute_t
-MODIFIER_ATTRIBUTE_AURA_PRIORITY = 8
-MODIFIER_ATTRIBUTE_DUPLICATED = 32
-MODIFIER_ATTRIBUTE_IGNORE_DODGE = 16
-MODIFIER_ATTRIBUTE_IGNORE_INVULNERABLE = 4
-MODIFIER_ATTRIBUTE_MULTIPLE = 2
-MODIFIER_ATTRIBUTE_NONE = 0
-MODIFIER_ATTRIBUTE_PERMANENT = 1
-
---- Enum DOTASpeechType_t
-DOTA_SPEECH_BAD_TEAM = 7
-DOTA_SPEECH_GOOD_TEAM = 6
-DOTA_SPEECH_RECIPIENT_TYPE_MAX = 10
-DOTA_SPEECH_SPECTATOR = 8
-DOTA_SPEECH_USER_ALL = 5
-DOTA_SPEECH_USER_INVALID = 0
-DOTA_SPEECH_USER_NEARBY = 4
-DOTA_SPEECH_USER_SINGLE = 1
-DOTA_SPEECH_USER_TEAM = 2
-DOTA_SPEECH_USER_TEAM_NEARBY = 3
-DOTA_SPEECH_USER_TEAM_NOSPECTATOR = 9
-
---- Enum DOTATeam_t
-DOTA_TEAM_BADGUYS = 3
-DOTA_TEAM_COUNT = 15
-DOTA_TEAM_CUSTOM_1 = 6
-DOTA_TEAM_CUSTOM_2 = 7
-DOTA_TEAM_CUSTOM_3 = 8
-DOTA_TEAM_CUSTOM_4 = 9
-DOTA_TEAM_CUSTOM_5 = 10
-DOTA_TEAM_CUSTOM_6 = 11
-DOTA_TEAM_CUSTOM_7 = 12
-DOTA_TEAM_CUSTOM_8 = 13
-DOTA_TEAM_CUSTOM_COUNT = 8
-DOTA_TEAM_CUSTOM_MAX = 13
-DOTA_TEAM_CUSTOM_MIN = 6
-DOTA_TEAM_DRAFT_POOL = 14
-DOTA_TEAM_FIRST = 2
-DOTA_TEAM_GOODGUYS = 2
-DOTA_TEAM_NEUTRALS = 4
-DOTA_TEAM_NOTEAM = 5
+--- Enum ConVarFlags
+FCVAR_NONE = 0
+FCVAR_DEVELOPMENTONLY = 2
+FCVAR_HIDDEN = 16
+FCVAR_PROTECTED = 32
+FCVAR_SPONLY = 64
+FCVAR_ARCHIVE = 128
+FCVAR_NOTIFY = 256
+FCVAR_USERINFO = 512
+FCVAR_UNLOGGED = 2048
+FCVAR_REPLICATED = 8192
+FCVAR_CHEAT = 16384
+FCVAR_PER_USER = 32768
+FCVAR_DEMO = 65536
+FCVAR_DONTRECORD = 131072
+FCVAR_VCONSOLE_SET_FOCUS = 134217728
 
 --- Enum DOTA_ABILITY_BEHAVIOR
-DOTA_ABILITY_BEHAVIOR_AFFECTED_BY_MUTE = 0
-DOTA_ABILITY_BEHAVIOR_ALT_CASTABLE = 0
-DOTA_ABILITY_BEHAVIOR_AOE = 32
-DOTA_ABILITY_BEHAVIOR_ATTACK = 131072
-DOTA_ABILITY_BEHAVIOR_AURA = 65536
-DOTA_ABILITY_BEHAVIOR_AUTOCAST = 4096
-DOTA_ABILITY_BEHAVIOR_CAN_SELF_CAST = 0
-DOTA_ABILITY_BEHAVIOR_CHANNELLED = 128
-DOTA_ABILITY_BEHAVIOR_DIRECTIONAL = 1024
-DOTA_ABILITY_BEHAVIOR_DONT_ALERT_TARGET = 16777216
-DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL = 536870912
-DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT = 8388608
-DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES = 0
-DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK = 33554432
-DOTA_ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT = 262144
-DOTA_ABILITY_BEHAVIOR_FORCE_NO_INNATE_UI = 0
-DOTA_ABILITY_BEHAVIOR_FREE_DRAW_TARGETING = 0
-DOTA_ABILITY_BEHAVIOR_HIDDEN = 1
-DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING = 134217728
-DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL = 4194304
-DOTA_ABILITY_BEHAVIOR_IGNORE_INVISIBLE = 0
-DOTA_ABILITY_BEHAVIOR_IGNORE_MUTED = 0
-DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE = 2097152
-DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE = 0
-DOTA_ABILITY_BEHAVIOR_IMMEDIATE = 2048
-DOTA_ABILITY_BEHAVIOR_INNATE_UI = 0
-DOTA_ABILITY_BEHAVIOR_IS_FAKE_ITEM = 0
-DOTA_ABILITY_BEHAVIOR_ITEM = 256
-DOTA_ABILITY_BEHAVIOR_LAST_RESORT_POINT = -2147483648
 DOTA_ABILITY_BEHAVIOR_NONE = 0
-DOTA_ABILITY_BEHAVIOR_NORMAL_WHEN_STOLEN = 67108864
-DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE = 64
-DOTA_ABILITY_BEHAVIOR_NO_TARGET = 4
-DOTA_ABILITY_BEHAVIOR_OPTIONAL_NO_TARGET = 32768
-DOTA_ABILITY_BEHAVIOR_OPTIONAL_POINT = 16384
-DOTA_ABILITY_BEHAVIOR_OPTIONAL_UNIT_TARGET = 8192
-DOTA_ABILITY_BEHAVIOR_OVERSHOOT = 0
+DOTA_ABILITY_BEHAVIOR_HIDDEN = 1
 DOTA_ABILITY_BEHAVIOR_PASSIVE = 2
-DOTA_ABILITY_BEHAVIOR_POINT = 16
-DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES = 524288
-DOTA_ABILITY_BEHAVIOR_RUNE_TARGET = 268435456
-DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES = 0
-DOTA_ABILITY_BEHAVIOR_SKIP_FOR_KEYBINDS = 0
-DOTA_ABILITY_BEHAVIOR_SUPPRESS_ASSOCIATED_CONSUMABLE = 0
-DOTA_ABILITY_BEHAVIOR_TOGGLE = 512
+DOTA_ABILITY_BEHAVIOR_NO_TARGET = 4
 DOTA_ABILITY_BEHAVIOR_UNIT_TARGET = 8
-DOTA_ABILITY_BEHAVIOR_UNLOCKED_BY_EFFECT_INDEX = 0
+DOTA_ABILITY_BEHAVIOR_POINT = 16
+DOTA_ABILITY_BEHAVIOR_AOE = 32
+DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE = 64
+DOTA_ABILITY_BEHAVIOR_CHANNELLED = 128
+DOTA_ABILITY_BEHAVIOR_ITEM = 256
+DOTA_ABILITY_BEHAVIOR_TOGGLE = 512
+DOTA_ABILITY_BEHAVIOR_DIRECTIONAL = 1024
+DOTA_ABILITY_BEHAVIOR_IMMEDIATE = 2048
+DOTA_ABILITY_BEHAVIOR_AUTOCAST = 4096
+DOTA_ABILITY_BEHAVIOR_OPTIONAL_UNIT_TARGET = 8192
+DOTA_ABILITY_BEHAVIOR_OPTIONAL_POINT = 16384
+DOTA_ABILITY_BEHAVIOR_OPTIONAL_NO_TARGET = 32768
+DOTA_ABILITY_BEHAVIOR_AURA = 65536
+DOTA_ABILITY_BEHAVIOR_ATTACK = 131072
+DOTA_ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT = 262144
+DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES = 524288
 DOTA_ABILITY_BEHAVIOR_UNRESTRICTED = 1048576
-DOTA_ABILITY_BEHAVIOR_UNSWAPPABLE = 0
+DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE = 2097152
+DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL = 4194304
+DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT = 8388608
+DOTA_ABILITY_BEHAVIOR_DONT_ALERT_TARGET = 16777216
+DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK = 33554432
+DOTA_ABILITY_BEHAVIOR_NORMAL_WHEN_STOLEN = 67108864
+DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING = 134217728
+DOTA_ABILITY_BEHAVIOR_RUNE_TARGET = 268435456
+DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL = 536870912
 DOTA_ABILITY_BEHAVIOR_VECTOR_TARGETING = 1073741824
+DOTA_ABILITY_BEHAVIOR_LAST_RESORT_POINT = 2147483648
+DOTA_ABILITY_BEHAVIOR_CAN_SELF_CAST = 4294967296
+DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES = 8589934592
+DOTA_ABILITY_BEHAVIOR_UNLOCKED_BY_EFFECT_INDEX = 17179869184
+DOTA_ABILITY_BEHAVIOR_SUPPRESS_ASSOCIATED_CONSUMABLE = 34359738368
+DOTA_ABILITY_BEHAVIOR_FREE_DRAW_TARGETING = 68719476736
+DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE = 137438953472
+DOTA_ABILITY_BEHAVIOR_OVERSHOOT = 274877906944
+DOTA_ABILITY_BEHAVIOR_IGNORE_MUTED = 549755813888
+DOTA_ABILITY_BEHAVIOR_ALT_CASTABLE = 1099511627776
+DOTA_ABILITY_BEHAVIOR_SKIP_FOR_KEYBINDS = 4398046511104
+DOTA_ABILITY_BEHAVIOR_INNATE_UI = 8796093022208
+DOTA_ABILITY_BEHAVIOR_UNSWAPPABLE = 17592186044416
+DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES = 35184372088832
+DOTA_ABILITY_BEHAVIOR_IGNORE_INVISIBLE = 70368744177664
+DOTA_ABILITY_BEHAVIOR_AFFECTED_BY_MUTE = 140737488355328
+DOTA_ABILITY_BEHAVIOR_IS_FAKE_ITEM = 281474976710656
+DOTA_ABILITY_BEHAVIOR_FORCE_NO_INNATE_UI = 562949953421312
+DOTA_ABILITY_BEHAVIOR_FORCE_KEYBIND = 1125899906842624
+DOTA_ABILITY_BEHAVIOR_ITEM_IMBUE = 2251799813685248
 
 --- Enum DOTA_HeroPickState
-DOTA_HEROPICK_STATE_ALL_DRAFT_SELECT = 57
+DOTA_HEROPICK_STATE_NONE = 0
 DOTA_HEROPICK_STATE_AP_SELECT = 1
-DOTA_HEROPICK_STATE_AR_SELECT = 32
-DOTA_HEROPICK_STATE_BD_SELECT = 54
-DOTA_HEROPICK_STATE_CD_BAN1 = 37
-DOTA_HEROPICK_STATE_CD_BAN2 = 38
-DOTA_HEROPICK_STATE_CD_BAN3 = 39
-DOTA_HEROPICK_STATE_CD_BAN4 = 40
-DOTA_HEROPICK_STATE_CD_BAN5 = 41
-DOTA_HEROPICK_STATE_CD_BAN6 = 42
-DOTA_HEROPICK_STATE_CD_CAPTAINPICK = 36
-DOTA_HEROPICK_STATE_CD_INTRO = 35
-DOTA_HEROPICK_STATE_CD_PICK = 53
-DOTA_HEROPICK_STATE_CD_SELECT1 = 43
-DOTA_HEROPICK_STATE_CD_SELECT10 = 52
-DOTA_HEROPICK_STATE_CD_SELECT2 = 44
-DOTA_HEROPICK_STATE_CD_SELECT3 = 45
-DOTA_HEROPICK_STATE_CD_SELECT4 = 46
-DOTA_HEROPICK_STATE_CD_SELECT5 = 47
-DOTA_HEROPICK_STATE_CD_SELECT6 = 48
-DOTA_HEROPICK_STATE_CD_SELECT7 = 49
-DOTA_HEROPICK_STATE_CD_SELECT8 = 50
-DOTA_HEROPICK_STATE_CD_SELECT9 = 51
+DOTA_HEROPICK_STATE_SD_SELECT = 2
+DOTA_HEROPICK_STATE_INTRO_SELECT_UNUSED = 3
+DOTA_HEROPICK_STATE_RD_SELECT_UNUSED = 4
+DOTA_HEROPICK_STATE_CM_INTRO = 5
+DOTA_HEROPICK_STATE_CM_CAPTAINPICK = 6
 DOTA_HEROPICK_STATE_CM_BAN1 = 7
-DOTA_HEROPICK_STATE_CM_BAN10 = 16
-DOTA_HEROPICK_STATE_CM_BAN11 = 17
-DOTA_HEROPICK_STATE_CM_BAN12 = 18
-DOTA_HEROPICK_STATE_CM_BAN13 = 19
-DOTA_HEROPICK_STATE_CM_BAN14 = 20
 DOTA_HEROPICK_STATE_CM_BAN2 = 8
 DOTA_HEROPICK_STATE_CM_BAN3 = 9
 DOTA_HEROPICK_STATE_CM_BAN4 = 10
@@ -953,11 +4825,12 @@ DOTA_HEROPICK_STATE_CM_BAN6 = 12
 DOTA_HEROPICK_STATE_CM_BAN7 = 13
 DOTA_HEROPICK_STATE_CM_BAN8 = 14
 DOTA_HEROPICK_STATE_CM_BAN9 = 15
-DOTA_HEROPICK_STATE_CM_CAPTAINPICK = 6
-DOTA_HEROPICK_STATE_CM_INTRO = 5
-DOTA_HEROPICK_STATE_CM_PICK = 31
+DOTA_HEROPICK_STATE_CM_BAN10 = 16
+DOTA_HEROPICK_STATE_CM_BAN11 = 17
+DOTA_HEROPICK_STATE_CM_BAN12 = 18
+DOTA_HEROPICK_STATE_CM_BAN13 = 19
+DOTA_HEROPICK_STATE_CM_BAN14 = 20
 DOTA_HEROPICK_STATE_CM_SELECT1 = 21
-DOTA_HEROPICK_STATE_CM_SELECT10 = 30
 DOTA_HEROPICK_STATE_CM_SELECT2 = 22
 DOTA_HEROPICK_STATE_CM_SELECT3 = 23
 DOTA_HEROPICK_STATE_CM_SELECT4 = 24
@@ -966,2935 +4839,2384 @@ DOTA_HEROPICK_STATE_CM_SELECT6 = 26
 DOTA_HEROPICK_STATE_CM_SELECT7 = 27
 DOTA_HEROPICK_STATE_CM_SELECT8 = 28
 DOTA_HEROPICK_STATE_CM_SELECT9 = 29
-DOTA_HEROPICK_STATE_COUNT = 62
-DOTA_HEROPICK_STATE_CUSTOM_PICK_RULES = 60
-DOTA_HEROPICK_STATE_FH_SELECT = 34
-DOTA_HEROPICK_STATE_INTRO_SELECT_UNUSED = 3
+DOTA_HEROPICK_STATE_CM_SELECT10 = 30
+DOTA_HEROPICK_STATE_CM_PICK = 31
+DOTA_HEROPICK_STATE_AR_SELECT = 32
 DOTA_HEROPICK_STATE_MO_SELECT = 33
-DOTA_HEROPICK_STATE_NONE = 0
-DOTA_HEROPICK_STATE_RD_SELECT_UNUSED = 4
-DOTA_HEROPICK_STATE_SCENARIO_PICK = 61
-DOTA_HEROPICK_STATE_SD_SELECT = 2
-DOTA_HEROPICK_STATE_SELECT_PENALTY = 59
+DOTA_HEROPICK_STATE_FH_SELECT = 34
+DOTA_HEROPICK_STATE_CD_INTRO = 35
+DOTA_HEROPICK_STATE_CD_CAPTAINPICK = 36
+DOTA_HEROPICK_STATE_CD_BAN1 = 37
+DOTA_HEROPICK_STATE_CD_BAN2 = 38
+DOTA_HEROPICK_STATE_CD_BAN3 = 39
+DOTA_HEROPICK_STATE_CD_BAN4 = 40
+DOTA_HEROPICK_STATE_CD_BAN5 = 41
+DOTA_HEROPICK_STATE_CD_BAN6 = 42
+DOTA_HEROPICK_STATE_CD_SELECT1 = 43
+DOTA_HEROPICK_STATE_CD_SELECT2 = 44
+DOTA_HEROPICK_STATE_CD_SELECT3 = 45
+DOTA_HEROPICK_STATE_CD_SELECT4 = 46
+DOTA_HEROPICK_STATE_CD_SELECT5 = 47
+DOTA_HEROPICK_STATE_CD_SELECT6 = 48
+DOTA_HEROPICK_STATE_CD_SELECT7 = 49
+DOTA_HEROPICK_STATE_CD_SELECT8 = 50
+DOTA_HEROPICK_STATE_CD_SELECT9 = 51
+DOTA_HEROPICK_STATE_CD_SELECT10 = 52
+DOTA_HEROPICK_STATE_CD_PICK = 53
+DOTA_HEROPICK_STATE_BD_SELECT = 54
 DOTA_HERO_PICK_STATE_ABILITY_DRAFT_SELECT = 55
 DOTA_HERO_PICK_STATE_ARDM_SELECT = 56
+DOTA_HEROPICK_STATE_ALL_DRAFT_SELECT = 57
 DOTA_HERO_PICK_STATE_CUSTOMGAME_SELECT = 58
+DOTA_HEROPICK_STATE_SELECT_PENALTY = 59
+DOTA_HEROPICK_STATE_CUSTOM_PICK_RULES = 60
+DOTA_HEROPICK_STATE_SCENARIO_PICK = 61
+DOTA_HEROPICK_STATE_COUNT = 62
 
 --- Enum DOTA_INVALID_ORDERS
-DOTA_INVALID_ORDER_ABILITY_CANT_ALT_CAST = 118
-DOTA_INVALID_ORDER_ABILITY_CANT_AUTO_CAST = 44
-DOTA_INVALID_ORDER_ABILITY_CANT_BE_TOGGLED = 25
-DOTA_INVALID_ORDER_ABILITY_CANT_BE_UPGRADED = 12
-DOTA_INVALID_ORDER_ABILITY_CANT_BE_UPGRADED_AT_MAX = 83
-DOTA_INVALID_ORDER_ABILITY_DISABLED_BY_ROOT = 73
-DOTA_INVALID_ORDER_ABILITY_DISABLED_BY_TETHER = 110
-DOTA_INVALID_ORDER_ABILITY_INACTIVE = 84
-DOTA_INVALID_ORDER_ABILITY_IN_COOLDOWN = 15
-DOTA_INVALID_ORDER_ABILITY_IS_HIDDEN = 60
-DOTA_INVALID_ORDER_ABILITY_NOT_AN_ITEM = 8
-DOTA_INVALID_ORDER_ABILITY_NOT_LEARNED = 16
-DOTA_INVALID_ORDER_ABILITY_NOT_OWNED_BY_UNIT = 11
-DOTA_INVALID_ORDER_ABILITY_NOT_POSITIONED = 101
-DOTA_INVALID_ORDER_ABILITY_NOT_TARGETTED = 102
-DOTA_INVALID_ORDER_ABILITY_NOT_UNLOCKED = 111
-DOTA_INVALID_ORDER_ABILITY_PING_DEAD_ALLY = 116
-DOTA_INVALID_ORDER_ABILITY_REQUIRED = 4
-DOTA_INVALID_ORDER_ABILITY_REQUIRES_TARGET = 103
+DOTA_ORDER_SUCCESS = -1
+DOTA_INVALID_ORDER_NOT_CONTROLLABLE_BY_PLAYER = 0
+DOTA_INVALID_ORDER_UNIT_IS_NOT_NPC = 1
 DOTA_INVALID_ORDER_BAD_ABILITY_ENTITY = 2
-DOTA_INVALID_ORDER_BEYOND_PHYSICAL_ITEM_LIMIT = 115
-DOTA_INVALID_ORDER_CANT_ABILITY_PING_BAD_TEAM = 100
-DOTA_INVALID_ORDER_CANT_ACCEPT_ATTACK_TARGET = 54
-DOTA_INVALID_ORDER_CANT_ATTACK_BUILDINGS = 121
-DOTA_INVALID_ORDER_CANT_BUYBACK_CEASELESS_DIRGE = 120
-DOTA_INVALID_ORDER_CANT_BUYBACK_DISABLED_BY_GAME_MODE = 99
-DOTA_INVALID_ORDER_CANT_BUYBACK_IN_COOLDOWN = 91
-DOTA_INVALID_ORDER_CANT_BUYBACK_NOT_ENOUGH_GOLD = 90
-DOTA_INVALID_ORDER_CANT_BUYBACK_REAPERS_SCYTHE = 98
-DOTA_INVALID_ORDER_CANT_BUYBACK_UNIT_NOT_A_HERO = 88
-DOTA_INVALID_ORDER_CANT_BUYBACK_UNIT_NOT_DEAD = 89
-DOTA_INVALID_ORDER_CANT_CAST_DRAG_REQUIRED = 109
-DOTA_INVALID_ORDER_CANT_CAST_NO_CHARGES = 55
-DOTA_INVALID_ORDER_CANT_CAST_ON_ANCIENT = 50
-DOTA_INVALID_ORDER_CANT_CAST_ON_ATTACK_IMMUNE = 32
-DOTA_INVALID_ORDER_CANT_CAST_ON_BUILDING = 49
-DOTA_INVALID_ORDER_CANT_CAST_ON_CONSIDERED_HERO = 95
-DOTA_INVALID_ORDER_CANT_CAST_ON_COURIER = 59
-DOTA_INVALID_ORDER_CANT_CAST_ON_CREEP = 56
-DOTA_INVALID_ORDER_CANT_CAST_ON_DOMINATED = 79
-DOTA_INVALID_ORDER_CANT_CAST_ON_ENEMY = 30
-DOTA_INVALID_ORDER_CANT_CAST_ON_HERO = 47
-DOTA_INVALID_ORDER_CANT_CAST_ON_MECHANICAL = 53
-DOTA_INVALID_ORDER_CANT_CAST_ON_OTHER = 48
-DOTA_INVALID_ORDER_CANT_CAST_ON_SUMMONED = 76
-DOTA_INVALID_ORDER_CANT_CAST_ON_TEAMMATE = 29
+DOTA_INVALID_ORDER_UNRECOGNIZED_ORDER = 3
+DOTA_INVALID_ORDER_ABILITY_REQUIRED = 4
+DOTA_INVALID_ORDER_NPC_TARGET_REQUIRED = 5
+DOTA_INVALID_ORDER_TARGET_TREE_INDEX_NOT_A_TREE = 6
+DOTA_INVALID_ORDER_TARGET_ENTITY_INDEX_OUT_OF_RANGE = 7
+DOTA_INVALID_ORDER_ABILITY_NOT_AN_ITEM = 8
+DOTA_INVALID_ORDER_PHYSICAL_ITEM_TARGET_REQUIRED = 9
+DOTA_INVALID_ORDER_RUNE_TARGET_REQUIRED = 10
+DOTA_INVALID_ORDER_ABILITY_NOT_OWNED_BY_UNIT = 11
+DOTA_INVALID_ORDER_ABILITY_CANT_BE_UPGRADED = 12
+DOTA_INVALID_ORDER_NO_POINTS_FOR_ABILITY_UPGRADE = 13
+DOTA_INVALID_ORDER_NOT_ENOUGH_MANA = 14
+DOTA_INVALID_ORDER_ABILITY_IN_COOLDOWN = 15
+DOTA_INVALID_ORDER_ABILITY_NOT_LEARNED = 16
 DOTA_INVALID_ORDER_CANT_CAST_PASSIVE_ABILITY = 17
-DOTA_INVALID_ORDER_CANT_CAST_RIVER_PAINT = 107
-DOTA_INVALID_ORDER_CANT_DENY_HEALTH_TOO_HIGH = 65
-DOTA_INVALID_ORDER_CANT_DISASSEMBLE_STASH_OUT_OF_RANGE = 92
-DOTA_INVALID_ORDER_CANT_DRAG_CHANNELING_ITEM = 87
-DOTA_INVALID_ORDER_CANT_EJECT_ITEM_NOT_IN_STASH = 93
-DOTA_INVALID_ORDER_CANT_FOUNTAIN_DROP_UNIT_NOT_DEAD = 112
+DOTA_INVALID_ORDER_PHANTOM_TARGET = 18
+DOTA_INVALID_ORDER_DEAD_TARGET = 19
+DOTA_INVALID_ORDER_UNIT_IS_DEAD = 20
+DOTA_INVALID_ORDER_TARGET_MAGIC_IMMUNE_ENEMY = 21
+DOTA_INVALID_ORDER_TARGET_INVULNERABLE = 22
+DOTA_INVALID_ORDER_TARGET_ATTACK_IMMUNE = 23
+DOTA_INVALID_ORDER_UNIT_SILENCED = 24
+DOTA_INVALID_ORDER_ABILITY_CANT_BE_TOGGLED = 25
+DOTA_INVALID_ORDER_TARGET_CANT_BE_SEEN = 26
+DOTA_INVALID_ORDER_TARGET_INVISIBLE = 27
+DOTA_INVALID_ORDER_HERO_CANT_BE_DENIED = 28
+DOTA_INVALID_ORDER_CANT_CAST_ON_TEAMMATE = 29
+DOTA_INVALID_ORDER_CANT_CAST_ON_ENEMY = 30
+DOTA_INVALID_ORDER_UNIT_CANT_MOVE = 31
+DOTA_INVALID_ORDER_CANT_CAST_ON_ATTACK_IMMUNE = 32
+DOTA_INVALID_ORDER_PURCHASE_INVALID_ITEM = 33
+DOTA_INVALID_ORDER_ITEM_NOT_IN_INVENTORY = 34
+DOTA_INVALID_ORDER_ITEM_NOT_IN_UNIT_INVENTORY = 35
+DOTA_INVALID_ORDER_TARGET_UNSELECTABLE = 36
+DOTA_INVALID_ORDER_ITEM_NOT_IN_ACTIVE_INVENTORY = 37
+DOTA_INVALID_ORDER_UNIT_CANT_PICK_UP_RUNES = 38
+DOTA_INVALID_ORDER_UNIT_CANT_MANIPULATE_ITEMS = 39
+DOTA_INVALID_ORDER_UNIT_IS_ILLUSION = 40
+DOTA_INVALID_ORDER_UNIT_CANT_ATTACK = 41
+DOTA_INVALID_ORDER_ITEM_CANT_BE_DROPPED = 42
+DOTA_INVALID_ORDER_TARGET_TREE_NOT_ACTIVE = 43
+DOTA_INVALID_ORDER_ABILITY_CANT_AUTO_CAST = 44
+DOTA_INVALID_ORDER_TARGET_POSITION_OFF_MAP = 45
+DOTA_INVALID_ORDER_UNIT_CANT_MOVE_TARGET_OUT_OF_RANGE = 46
+DOTA_INVALID_ORDER_CANT_CAST_ON_HERO = 47
+DOTA_INVALID_ORDER_CANT_CAST_ON_OTHER = 48
+DOTA_INVALID_ORDER_CANT_CAST_ON_BUILDING = 49
+DOTA_INVALID_ORDER_CANT_CAST_ON_ANCIENT = 50
+DOTA_INVALID_ORDER_ITEM_CANT_BE_MOVED_TO_STASH = 51
+DOTA_INVALID_ORDER_ITEM_CANT_BE_MOVED_TO_SLOT = 52
+DOTA_INVALID_ORDER_CANT_CAST_ON_MECHANICAL = 53
+DOTA_INVALID_ORDER_CANT_ACCEPT_ATTACK_TARGET = 54
+DOTA_INVALID_ORDER_CANT_CAST_NO_CHARGES = 55
+DOTA_INVALID_ORDER_CANT_CAST_ON_CREEP = 56
+DOTA_INVALID_ORDER_TARGET_CANT_TAKE_ITEMS = 57
 DOTA_INVALID_ORDER_CANT_GIVE_ITEM_TO_ENEMY = 58
-DOTA_INVALID_ORDER_CANT_GLYPH = 86
-DOTA_INVALID_ORDER_CANT_LOCKCOMBINE_NEUTRAL_ITEMS = 117
+DOTA_INVALID_ORDER_CANT_CAST_ON_COURIER = 59
+DOTA_INVALID_ORDER_ABILITY_IS_HIDDEN = 60
+DOTA_INVALID_ORDER_ITEM_IN_COOLDOWN = 61
+DOTA_INVALID_ORDER_SECRET_SHOP_NOT_IN_RANGE = 62
+DOTA_INVALID_ORDER_NOT_ENOUGH_GOLD = 63
+DOTA_INVALID_ORDER_PURCHASE_AUTOCOMBINE_RECIPE = 64
+DOTA_INVALID_ORDER_CANT_DENY_HEALTH_TOO_HIGH = 65
+DOTA_INVALID_ORDER_SIDE_SHOP_NOT_IN_RANGE = 66
+DOTA_INVALID_ORDER_HOME_SHOP_NOT_IN_RANGE = 67
 DOTA_INVALID_ORDER_CANT_PICK_UP_ITEM = 68
-DOTA_INVALID_ORDER_CANT_PURCHASE_DISALLOWED_ITEM = 78
-DOTA_INVALID_ORDER_CANT_RADAR = 104
+DOTA_INVALID_ORDER_CANT_SELL_NO_SHOP_IN_RANGE = 69
 DOTA_INVALID_ORDER_CANT_SELL_ITEM = 70
 DOTA_INVALID_ORDER_CANT_SELL_ITEM_WHILE_DEAD = 71
-DOTA_INVALID_ORDER_CANT_SELL_NO_SHOP_IN_RANGE = 69
-DOTA_INVALID_ORDER_CANT_SHOP_AUTO_BUY_ENABLED = 96
-DOTA_INVALID_ORDER_CAST_CUSTOM = 80
-DOTA_INVALID_ORDER_COUNT = 122
-DOTA_INVALID_ORDER_CUSTOM_SHOP_NOT_IN_RANGE = 106
-DOTA_INVALID_ORDER_DEAD_TARGET = 19
-DOTA_INVALID_ORDER_GAME_IS_PAUSED = 94
-DOTA_INVALID_ORDER_HERO_CANT_BE_DENIED = 28
-DOTA_INVALID_ORDER_HOME_SHOP_NOT_IN_RANGE = 67
-DOTA_INVALID_ORDER_ITEM_ALREADY_PURCHASED = 114
-DOTA_INVALID_ORDER_ITEM_CANNOT_BE_CONSUMED = 119
-DOTA_INVALID_ORDER_ITEM_CANT_BE_DROPPED = 42
-DOTA_INVALID_ORDER_ITEM_CANT_BE_MOVED_TO_SLOT = 52
-DOTA_INVALID_ORDER_ITEM_CANT_BE_MOVED_TO_STASH = 51
-DOTA_INVALID_ORDER_ITEM_IN_COOLDOWN = 61
-DOTA_INVALID_ORDER_ITEM_NOT_DISASSEMBLABLE = 81
-DOTA_INVALID_ORDER_ITEM_NOT_IN_ACTIVE_INVENTORY = 37
-DOTA_INVALID_ORDER_ITEM_NOT_IN_INVENTORY = 34
-DOTA_INVALID_ORDER_ITEM_NOT_IN_MAIN_INVENTORY = 85
-DOTA_INVALID_ORDER_ITEM_NOT_IN_NEUTRAL_ITEM_STASH = 113
-DOTA_INVALID_ORDER_ITEM_NOT_IN_UNIT_INVENTORY = 35
-DOTA_INVALID_ORDER_ITEM_OUT_OF_STOCK = 82
-DOTA_INVALID_ORDER_NOT_CONTROLLABLE_BY_PLAYER = 0
-DOTA_INVALID_ORDER_NOT_ENOUGH_GOLD = 63
-DOTA_INVALID_ORDER_NOT_ENOUGH_MANA = 14
-DOTA_INVALID_ORDER_NO_COURIER = 105
-DOTA_INVALID_ORDER_NO_POINTS_FOR_ABILITY_UPGRADE = 13
-DOTA_INVALID_ORDER_NPC_TARGET_REQUIRED = 5
-DOTA_INVALID_ORDER_ONLY_DELIBERATE_CHANNELING_CANCEL = 97
-DOTA_INVALID_ORDER_PHANTOM_TARGET = 18
-DOTA_INVALID_ORDER_PHYSICAL_ITEM_TARGET_REQUIRED = 9
-DOTA_INVALID_ORDER_PURCHASE_AUTOCOMBINE_RECIPE = 64
-DOTA_INVALID_ORDER_PURCHASE_INVALID_ITEM = 33
-DOTA_INVALID_ORDER_RUNE_TARGET_REQUIRED = 10
-DOTA_INVALID_ORDER_SECRET_SHOP_NOT_IN_RANGE = 62
-DOTA_INVALID_ORDER_SIDE_SHOP_NOT_IN_RANGE = 66
-DOTA_INVALID_ORDER_TARGET_ATTACK_IMMUNE = 23
 DOTA_INVALID_ORDER_TARGET_CANT_BE_DENIED = 72
-DOTA_INVALID_ORDER_TARGET_CANT_BE_SEEN = 26
-DOTA_INVALID_ORDER_TARGET_CANT_TAKE_ITEMS = 57
-DOTA_INVALID_ORDER_TARGET_ENTITY_INDEX_OUT_OF_RANGE = 7
-DOTA_INVALID_ORDER_TARGET_INVISIBLE = 27
-DOTA_INVALID_ORDER_TARGET_INVULNERABLE = 22
-DOTA_INVALID_ORDER_TARGET_MAGIC_IMMUNE_ALLY = 77
-DOTA_INVALID_ORDER_TARGET_MAGIC_IMMUNE_ENEMY = 21
-DOTA_INVALID_ORDER_TARGET_POSITION_OFF_MAP = 45
-DOTA_INVALID_ORDER_TARGET_TREE_INDEX_NOT_A_TREE = 6
-DOTA_INVALID_ORDER_TARGET_TREE_NOT_ACTIVE = 43
-DOTA_INVALID_ORDER_TARGET_UNSELECTABLE = 36
-DOTA_INVALID_ORDER_UNIT_CANT_ATTACK = 41
-DOTA_INVALID_ORDER_UNIT_CANT_MANIPULATE_ITEMS = 39
-DOTA_INVALID_ORDER_UNIT_CANT_MOVE = 31
-DOTA_INVALID_ORDER_UNIT_CANT_MOVE_TARGET_OUT_OF_RANGE = 46
-DOTA_INVALID_ORDER_UNIT_CANT_PICK_UP_RUNES = 38
+DOTA_INVALID_ORDER_ABILITY_DISABLED_BY_ROOT = 73
 DOTA_INVALID_ORDER_UNIT_COMMAND_RESTRICTED = 74
-DOTA_INVALID_ORDER_UNIT_IS_DEAD = 20
-DOTA_INVALID_ORDER_UNIT_IS_ILLUSION = 40
-DOTA_INVALID_ORDER_UNIT_IS_NOT_NPC = 1
 DOTA_INVALID_ORDER_UNIT_MUTED = 75
+DOTA_INVALID_ORDER_CANT_CAST_ON_SUMMONED = 76
+DOTA_INVALID_ORDER_TARGET_MAGIC_IMMUNE_ALLY = 77
+DOTA_INVALID_ORDER_CANT_PURCHASE_DISALLOWED_ITEM = 78
+DOTA_INVALID_ORDER_CANT_CAST_ON_DOMINATED = 79
+DOTA_INVALID_ORDER_CAST_CUSTOM = 80
+DOTA_INVALID_ORDER_ITEM_NOT_DISASSEMBLABLE = 81
+DOTA_INVALID_ORDER_ITEM_OUT_OF_STOCK = 82
+DOTA_INVALID_ORDER_ABILITY_CANT_BE_UPGRADED_AT_MAX = 83
+DOTA_INVALID_ORDER_ABILITY_INACTIVE = 84
+DOTA_INVALID_ORDER_ITEM_NOT_IN_MAIN_INVENTORY = 85
+DOTA_INVALID_ORDER_CANT_GLYPH = 86
+DOTA_INVALID_ORDER_CANT_DRAG_CHANNELING_ITEM = 87
+DOTA_INVALID_ORDER_CANT_BUYBACK_UNIT_NOT_A_HERO = 88
+DOTA_INVALID_ORDER_CANT_BUYBACK_UNIT_NOT_DEAD = 89
+DOTA_INVALID_ORDER_CANT_BUYBACK_NOT_ENOUGH_GOLD = 90
+DOTA_INVALID_ORDER_CANT_BUYBACK_IN_COOLDOWN = 91
+DOTA_INVALID_ORDER_CANT_DISASSEMBLE_STASH_OUT_OF_RANGE = 92
+DOTA_INVALID_ORDER_CANT_EJECT_ITEM_NOT_IN_STASH = 93
+DOTA_INVALID_ORDER_GAME_IS_PAUSED = 94
+DOTA_INVALID_ORDER_CANT_CAST_ON_CONSIDERED_HERO = 95
+DOTA_INVALID_ORDER_CANT_SHOP_AUTO_BUY_ENABLED = 96
+DOTA_INVALID_ORDER_ONLY_DELIBERATE_CHANNELING_CANCEL = 97
+DOTA_INVALID_ORDER_CANT_BUYBACK_DEVILS_BARGAIN = 98
+DOTA_INVALID_ORDER_CANT_BUYBACK_DISABLED_BY_GAME_MODE = 99
+DOTA_INVALID_ORDER_CANT_ABILITY_PING_BAD_TEAM = 100
+DOTA_INVALID_ORDER_ABILITY_NOT_POSITIONED = 101
+DOTA_INVALID_ORDER_ABILITY_NOT_TARGETTED = 102
+DOTA_INVALID_ORDER_ABILITY_REQUIRES_TARGET = 103
+DOTA_INVALID_ORDER_CANT_RADAR = 104
+DOTA_INVALID_ORDER_NO_COURIER = 105
+DOTA_INVALID_ORDER_CUSTOM_SHOP_NOT_IN_RANGE = 106
+DOTA_INVALID_ORDER_CANT_CAST_RIVER_PAINT = 107
 DOTA_INVALID_ORDER_UNIT_OBSTRUCTED = 108
-DOTA_INVALID_ORDER_UNIT_SILENCED = 24
-DOTA_INVALID_ORDER_UNRECOGNIZED_ORDER = 3
-DOTA_ORDER_SUCCESS = -1
+DOTA_INVALID_ORDER_CANT_CAST_DRAG_REQUIRED = 109
+DOTA_INVALID_ORDER_ABILITY_DISABLED_BY_TETHER = 110
+DOTA_INVALID_ORDER_ABILITY_NOT_UNLOCKED = 111
+DOTA_INVALID_ORDER_CANT_FOUNTAIN_DROP_UNIT_NOT_DEAD = 112
+DOTA_INVALID_ORDER_ITEM_NOT_IN_NEUTRAL_ITEM_STASH = 113
+DOTA_INVALID_ORDER_ITEM_ALREADY_PURCHASED = 114
+DOTA_INVALID_ORDER_BEYOND_PHYSICAL_ITEM_LIMIT = 115
+DOTA_INVALID_ORDER_ABILITY_PING_DEAD_ALLY = 116
+DOTA_INVALID_ORDER_CANT_LOCKCOMBINE_NEUTRAL_ITEMS = 117
+DOTA_INVALID_ORDER_ABILITY_CANT_ALT_CAST = 118
+DOTA_INVALID_ORDER_ITEM_CANNOT_BE_CONSUMED = 119
+DOTA_INVALID_ORDER_CANT_BUYBACK_CEASELESS_DIRGE = 120
+DOTA_INVALID_ORDER_CANT_ATTACK_BUILDINGS = 121
+DOTA_INVALID_ORDER_PURCHASE_LEVEL = 122
+DOTA_INVALID_ORDER_COUNT = 123
 
 --- Enum DOTA_MOTION_CONTROLLER_PRIORITY
+DOTA_MOTION_CONTROLLER_PRIORITY_LOWEST = 0
+DOTA_MOTION_CONTROLLER_PRIORITY_LOW = 1
+DOTA_MOTION_CONTROLLER_PRIORITY_MEDIUM = 2
 DOTA_MOTION_CONTROLLER_PRIORITY_HIGH = 3
 DOTA_MOTION_CONTROLLER_PRIORITY_HIGHEST = 4
-DOTA_MOTION_CONTROLLER_PRIORITY_LOW = 1
-DOTA_MOTION_CONTROLLER_PRIORITY_LOWEST = 0
-DOTA_MOTION_CONTROLLER_PRIORITY_MEDIUM = 2
 DOTA_MOTION_CONTROLLER_PRIORITY_ULTRA = 5
 
 --- Enum DOTA_RUNES
-DOTA_RUNE_ARCANE = 6
-DOTA_RUNE_BOUNTY = 5
-DOTA_RUNE_COUNT = 10
+DOTA_RUNE_INVALID = -1
 DOTA_RUNE_DOUBLEDAMAGE = 0
 DOTA_RUNE_HASTE = 1
 DOTA_RUNE_ILLUSION = 2
-DOTA_RUNE_INVALID = -1
 DOTA_RUNE_INVISIBILITY = 3
 DOTA_RUNE_REGENERATION = 4
-DOTA_RUNE_SHIELD = 9
+DOTA_RUNE_BOUNTY = 5
+DOTA_RUNE_ARCANE = 6
 DOTA_RUNE_WATER = 7
 DOTA_RUNE_XP = 8
+DOTA_RUNE_SHIELD = 9
+DOTA_RUNE_COUNT = 10
 
 --- Enum DOTA_SHOP_TYPE
-DOTA_SHOP_CUSTOM = 6
-DOTA_SHOP_GROUND = 3
 DOTA_SHOP_HOME = 0
+DOTA_SHOP_SIDE = 1
+DOTA_SHOP_SECRET = 2
+DOTA_SHOP_GROUND = 3
+DOTA_SHOP_SIDE2 = 4
+DOTA_SHOP_SECRET2 = 5
+DOTA_SHOP_CUSTOM = 6
 DOTA_SHOP_NEUTRALS = 7
 DOTA_SHOP_NONE = 8
-DOTA_SHOP_SECRET = 2
-DOTA_SHOP_SECRET2 = 5
-DOTA_SHOP_SIDE = 1
-DOTA_SHOP_SIDE2 = 4
 
 --- Enum DOTA_UNIT_TARGET_FLAGS
-DOTA_UNIT_TARGET_FLAG_CAN_BE_SEEN = 384
-DOTA_UNIT_TARGET_FLAG_CHECK_DISABLE_HELP = 65536
-DOTA_UNIT_TARGET_FLAG_DEAD = 8
-DOTA_UNIT_TARGET_FLAG_FOW_VISIBLE = 128
-DOTA_UNIT_TARGET_FLAG_INVULNERABLE = 64
-DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES = 16
-DOTA_UNIT_TARGET_FLAG_MANA_ONLY = 32768
-DOTA_UNIT_TARGET_FLAG_MELEE_ONLY = 4
 DOTA_UNIT_TARGET_FLAG_NONE = 0
-DOTA_UNIT_TARGET_FLAG_NOT_ANCIENTS = 512
-DOTA_UNIT_TARGET_FLAG_NOT_ATTACK_IMMUNE = 16384
-DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO = 131072
-DOTA_UNIT_TARGET_FLAG_NOT_DOMINATED = 2048
-DOTA_UNIT_TARGET_FLAG_NOT_ILLUSIONS = 8192
-DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES = 32
-DOTA_UNIT_TARGET_FLAG_NOT_NIGHTMARED = 524288
-DOTA_UNIT_TARGET_FLAG_NOT_SUMMONED = 4096
-DOTA_UNIT_TARGET_FLAG_NO_INVIS = 256
-DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD = 262144
-DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED = 1024
-DOTA_UNIT_TARGET_FLAG_PREFER_ENEMIES = 1048576
 DOTA_UNIT_TARGET_FLAG_RANGED_ONLY = 2
+DOTA_UNIT_TARGET_FLAG_MELEE_ONLY = 4
+DOTA_UNIT_TARGET_FLAG_DEAD = 8
+DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES = 16
+DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES = 32
+DOTA_UNIT_TARGET_FLAG_INVULNERABLE = 64
+DOTA_UNIT_TARGET_FLAG_FOW_VISIBLE = 128
+DOTA_UNIT_TARGET_FLAG_NO_INVIS = 256
+DOTA_UNIT_TARGET_FLAG_CAN_BE_SEEN = 384
+DOTA_UNIT_TARGET_FLAG_NOT_ANCIENTS = 512
+DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED = 1024
+DOTA_UNIT_TARGET_FLAG_NOT_DOMINATED = 2048
+DOTA_UNIT_TARGET_FLAG_NOT_SUMMONED = 4096
+DOTA_UNIT_TARGET_FLAG_NOT_ILLUSIONS = 8192
+DOTA_UNIT_TARGET_FLAG_NOT_ATTACK_IMMUNE = 16384
+DOTA_UNIT_TARGET_FLAG_MANA_ONLY = 32768
+DOTA_UNIT_TARGET_FLAG_CHECK_DISABLE_HELP = 65536
+DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO = 131072
+DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD = 262144
+DOTA_UNIT_TARGET_FLAG_NOT_NIGHTMARED = 524288
+DOTA_UNIT_TARGET_FLAG_PREFER_ENEMIES = 1048576
 DOTA_UNIT_TARGET_FLAG_RESPECT_OBSTRUCTIONS = 2097152
 
 --- Enum DOTA_UNIT_TARGET_TEAM
+DOTA_UNIT_TARGET_TEAM_NONE = 0
+DOTA_UNIT_TARGET_TEAM_FRIENDLY = 1
+DOTA_UNIT_TARGET_TEAM_ENEMY = 2
 DOTA_UNIT_TARGET_TEAM_BOTH = 3
 DOTA_UNIT_TARGET_TEAM_CUSTOM = 4
-DOTA_UNIT_TARGET_TEAM_ENEMY = 2
-DOTA_UNIT_TARGET_TEAM_FRIENDLY = 1
-DOTA_UNIT_TARGET_TEAM_NONE = 0
 
 --- Enum DOTA_UNIT_TARGET_TYPE
-DOTA_UNIT_TARGET_ALL = 55
-DOTA_UNIT_TARGET_BASIC = 18
+DOTA_UNIT_TARGET_NONE = 0
+DOTA_UNIT_TARGET_HERO = 1
+DOTA_UNIT_TARGET_CREEP = 2
 DOTA_UNIT_TARGET_BUILDING = 4
 DOTA_UNIT_TARGET_COURIER = 16
-DOTA_UNIT_TARGET_CREEP = 2
-DOTA_UNIT_TARGET_CUSTOM = 128
-DOTA_UNIT_TARGET_HERO = 1
+DOTA_UNIT_TARGET_BASIC = 18
 DOTA_UNIT_TARGET_HEROES_AND_CREEPS = 19
-DOTA_UNIT_TARGET_NONE = 0
 DOTA_UNIT_TARGET_OTHER = 32
-DOTA_UNIT_TARGET_SELF = 256
+DOTA_UNIT_TARGET_ALL = 55
 DOTA_UNIT_TARGET_TREE = 64
+DOTA_UNIT_TARGET_CUSTOM = 128
+DOTA_UNIT_TARGET_SELF = 256
 
---- Enum DotaPseudoRandomType
-DOTA_PSEUDO_RANDOM_ARMADILLO_HEARTPIERCER = 65
-DOTA_PSEUDO_RANDOM_ATOS = 25
+--- Enum DOTAAbilitySpeakTrigger_t
+DOTA_ABILITY_SPEAK_START_ACTION_PHASE = 0
+DOTA_ABILITY_SPEAK_CAST = 1
+
+--- Enum DOTACustomCameraEventFlags_t
+k_ECustomCameraEventFlags_Zoom = 1
+k_ECustomCameraEventFlags_Position = 2
+k_ECustomCameraEventFlags_PositionPlayerHero = 4
+k_ECustomCameraEventFlags_Pitch = 8
+k_ECustomCameraEventFlags_Yaw = 16
+k_ECustomCameraEventFlags_Lock = 32
+k_ECustomCameraEventFlags_Unlock = 64
+k_ECustomCameraEventFlags_ResetDefault = 128
+k_ECustomCameraEventFlags_SpecificPlayer = 256
+k_ECustomCameraEventFlags_FadeOut = 512
+k_ECustomCameraEventFlags_FadeIn = 1024
+k_ECustomCameraEventFlags_LetterboxOn = 2048
+k_ECustomCameraEventFlags_LetterboxOff = 4096
+
+--- Enum DOTALimits_t
+DOTA_DEFAULT_MAX_TEAM = 5
+DOTA_DEFAULT_MAX_TEAM_PLAYERS = 10
+DOTA_MAX_PLAYER_TEAMS = 10
+DOTA_MAX_SPECTATOR_LOBBY_SIZE = 15
+DOTA_MAX_TEAM = 24
+DOTA_MAX_TEAM_PLAYERS = 24
+DOTA_MAX_SPECTATOR_TEAM_SIZE = 40
+DOTA_MAX_PLAYERS = 64
+
+--- Enum DOTAModifierAttribute_t
+MODIFIER_ATTRIBUTE_NONE = 0
+MODIFIER_ATTRIBUTE_PERMANENT = 1
+MODIFIER_ATTRIBUTE_MULTIPLE = 2
+MODIFIER_ATTRIBUTE_IGNORE_INVULNERABLE = 4
+MODIFIER_ATTRIBUTE_AURA_PRIORITY = 8
+MODIFIER_ATTRIBUTE_IGNORE_DODGE = 16
+MODIFIER_ATTRIBUTE_DUPLICATED = 32
+
+--- Enum DOTAProjectileAttachment_t
+DOTA_PROJECTILE_ATTACHMENT_NONE = 0
+DOTA_PROJECTILE_ATTACHMENT_ATTACK_1 = 1
+DOTA_PROJECTILE_ATTACHMENT_ATTACK_2 = 2
+DOTA_PROJECTILE_ATTACHMENT_HITLOCATION = 3
+DOTA_PROJECTILE_ATTACHMENT_ATTACK_3 = 4
+DOTA_PROJECTILE_ATTACHMENT_ATTACK_4 = 5
+DOTA_PROJECTILE_ATTACHMENT_LAST = 6
+
+--- Enum DOTASpeechType_t
+DOTA_SPEECH_USER_INVALID = 0
+DOTA_SPEECH_USER_SINGLE = 1
+DOTA_SPEECH_USER_TEAM = 2
+DOTA_SPEECH_USER_TEAM_NEARBY = 3
+DOTA_SPEECH_USER_NEARBY = 4
+DOTA_SPEECH_USER_ALL = 5
+DOTA_SPEECH_GOOD_TEAM = 6
+DOTA_SPEECH_BAD_TEAM = 7
+DOTA_SPEECH_SPECTATOR = 8
+DOTA_SPEECH_USER_TEAM_NOSPECTATOR = 9
+DOTA_SPEECH_RECIPIENT_TYPE_MAX = 10
+
+--- Enum DOTATeam_t
+DOTA_TEAM_FIRST = 2
+DOTA_TEAM_GOODGUYS = 2
+DOTA_TEAM_BADGUYS = 3
+DOTA_TEAM_NEUTRALS = 4
+DOTA_TEAM_NOTEAM = 5
+DOTA_TEAM_CUSTOM_1 = 6
+DOTA_TEAM_CUSTOM_MIN = 6
+DOTA_TEAM_CUSTOM_2 = 7
+DOTA_TEAM_CUSTOM_3 = 8
+DOTA_TEAM_CUSTOM_COUNT = 8
+DOTA_TEAM_CUSTOM_4 = 9
+DOTA_TEAM_CUSTOM_5 = 10
+DOTA_TEAM_CUSTOM_6 = 11
+DOTA_TEAM_CUSTOM_7 = 12
+DOTA_TEAM_CUSTOM_8 = 13
+DOTA_TEAM_CUSTOM_MAX = 13
+DOTA_TEAM_DRAFT_POOL = 14
+DOTA_TEAM_COUNT = 15
+
+--- Enum EntityThinkPhase
+PRESIM = 0
+PRESENSING = 1
+POSTSENSING = 2
+
+--- Enum FindOrder
+FIND_ANY_ORDER = 0
+FIND_CLOSEST = 1
+FIND_FARTHEST = 2
+
+--- Enum GameActivity_t
+ACT_RESET = 0
+ACT_IDLE = 1
+ACT_TRANSITION = 2
+ACT_COVER = 3
+ACT_COVER_MED = 4
+ACT_COVER_LOW = 5
+ACT_WALK = 6
+ACT_WALK_AIM = 7
+ACT_WALK_CROUCH = 8
+ACT_WALK_CROUCH_AIM = 9
+ACT_RUN = 10
+ACT_RUN_AIM = 11
+ACT_RUN_CROUCH = 12
+ACT_RUN_CROUCH_AIM = 13
+ACT_RUN_PROTECTED = 14
+ACT_SCRIPT_CUSTOM_MOVE = 15
+ACT_RANGE_ATTACK1 = 16
+ACT_RANGE_ATTACK2 = 17
+ACT_RANGE_ATTACK1_LOW = 18
+ACT_RANGE_ATTACK2_LOW = 19
+ACT_DIESIMPLE = 20
+ACT_DIEBACKWARD = 21
+ACT_DIEFORWARD = 22
+ACT_DIEVIOLENT = 23
+ACT_DIERAGDOLL = 24
+ACT_FLY = 25
+ACT_HOVER = 26
+ACT_GLIDE = 27
+ACT_SWIM = 28
+ACT_JUMP = 29
+ACT_HOP = 30
+ACT_LEAP = 31
+ACT_LAND = 32
+ACT_CLIMB_UP = 33
+ACT_CLIMB_DOWN = 34
+ACT_CLIMB_DISMOUNT = 35
+ACT_SHIPLADDER_UP = 36
+ACT_SHIPLADDER_DOWN = 37
+ACT_STRAFE_LEFT = 38
+ACT_STRAFE_RIGHT = 39
+ACT_ROLL_LEFT = 40
+ACT_ROLL_RIGHT = 41
+ACT_TURN_LEFT = 42
+ACT_TURN_RIGHT = 43
+ACT_CROUCH = 44
+ACT_CROUCHIDLE = 45
+ACT_STAND = 46
+ACT_USE = 47
+ACT_ALIEN_BURROW_IDLE = 48
+ACT_ALIEN_BURROW_OUT = 49
+ACT_SIGNAL1 = 50
+ACT_SIGNAL2 = 51
+ACT_SIGNAL3 = 52
+ACT_SIGNAL_ADVANCE = 53
+ACT_SIGNAL_FORWARD = 54
+ACT_SIGNAL_GROUP = 55
+ACT_SIGNAL_HALT = 56
+ACT_SIGNAL_LEFT = 57
+ACT_SIGNAL_RIGHT = 58
+ACT_SIGNAL_TAKECOVER = 59
+ACT_LOOKBACK_RIGHT = 60
+ACT_LOOKBACK_LEFT = 61
+ACT_COWER = 62
+ACT_SMALL_FLINCH = 63
+ACT_BIG_FLINCH = 64
+ACT_MELEE_ATTACK1 = 65
+ACT_MELEE_ATTACK2 = 66
+ACT_RELOAD = 67
+ACT_RELOAD_START = 68
+ACT_RELOAD_FINISH = 69
+ACT_RELOAD_LOW = 70
+ACT_ARM = 71
+ACT_DISARM = 72
+ACT_DROP_WEAPON = 73
+ACT_DROP_WEAPON_SHOTGUN = 74
+ACT_PICKUP_GROUND = 75
+ACT_PICKUP_RACK = 76
+ACT_IDLE_ANGRY = 77
+ACT_IDLE_RELAXED = 78
+ACT_IDLE_STIMULATED = 79
+ACT_IDLE_AGITATED = 80
+ACT_IDLE_STEALTH = 81
+ACT_IDLE_HURT = 82
+ACT_WALK_RELAXED = 83
+ACT_WALK_STIMULATED = 84
+ACT_WALK_AGITATED = 85
+ACT_WALK_STEALTH = 86
+ACT_RUN_RELAXED = 87
+ACT_RUN_STIMULATED = 88
+ACT_RUN_AGITATED = 89
+ACT_RUN_STEALTH = 90
+ACT_IDLE_AIM_RELAXED = 91
+ACT_IDLE_AIM_STIMULATED = 92
+ACT_IDLE_AIM_AGITATED = 93
+ACT_IDLE_AIM_STEALTH = 94
+ACT_WALK_AIM_RELAXED = 95
+ACT_WALK_AIM_STIMULATED = 96
+ACT_WALK_AIM_AGITATED = 97
+ACT_WALK_AIM_STEALTH = 98
+ACT_RUN_AIM_RELAXED = 99
+ACT_RUN_AIM_STIMULATED = 100
+ACT_RUN_AIM_AGITATED = 101
+ACT_RUN_AIM_STEALTH = 102
+ACT_CROUCHIDLE_STIMULATED = 103
+ACT_CROUCHIDLE_AIM_STIMULATED = 104
+ACT_CROUCHIDLE_AGITATED = 105
+ACT_WALK_HURT = 106
+ACT_RUN_HURT = 107
+ACT_SPECIAL_ATTACK1 = 108
+ACT_SPECIAL_ATTACK2 = 109
+ACT_COMBAT_IDLE = 110
+ACT_WALK_SCARED = 111
+ACT_RUN_SCARED = 112
+ACT_VICTORY_DANCE = 113
+ACT_DIE_HEADSHOT = 114
+ACT_DIE_CHESTSHOT = 115
+ACT_DIE_GUTSHOT = 116
+ACT_DIE_BACKSHOT = 117
+ACT_FLINCH_HEAD = 118
+ACT_FLINCH_CHEST = 119
+ACT_FLINCH_STOMACH = 120
+ACT_FLINCH_LEFTARM = 121
+ACT_FLINCH_RIGHTARM = 122
+ACT_FLINCH_LEFTLEG = 123
+ACT_FLINCH_RIGHTLEG = 124
+ACT_FLINCH_PHYSICS = 125
+ACT_FLINCH_HEAD_BACK = 126
+ACT_FLINCH_CHEST_BACK = 127
+ACT_FLINCH_STOMACH_BACK = 128
+ACT_FLINCH_CROUCH_FRONT = 129
+ACT_FLINCH_CROUCH_BACK = 130
+ACT_FLINCH_CROUCH_LEFT = 131
+ACT_FLINCH_CROUCH_RIGHT = 132
+ACT_IDLE_ON_FIRE = 133
+ACT_WALK_ON_FIRE = 134
+ACT_RUN_ON_FIRE = 135
+ACT_180_LEFT = 137
+ACT_180_RIGHT = 138
+ACT_90_LEFT = 139
+ACT_90_RIGHT = 140
+ACT_STEP_LEFT = 141
+ACT_STEP_RIGHT = 142
+ACT_STEP_BACK = 143
+ACT_STEP_FORE = 144
+ACT_GESTURE_RANGE_ATTACK1 = 145
+ACT_GESTURE_RANGE_ATTACK2 = 146
+ACT_GESTURE_MELEE_ATTACK1 = 147
+ACT_GESTURE_MELEE_ATTACK2 = 148
+ACT_GESTURE_RANGE_ATTACK1_LOW = 149
+ACT_GESTURE_RANGE_ATTACK2_LOW = 150
+ACT_MELEE_ATTACK_SWING_GESTURE = 151
+ACT_GESTURE_SMALL_FLINCH = 152
+ACT_GESTURE_BIG_FLINCH = 153
+ACT_GESTURE_FLINCH_BLAST = 154
+ACT_GESTURE_FLINCH_BLAST_SHOTGUN = 155
+ACT_GESTURE_FLINCH_BLAST_DAMAGED = 156
+ACT_GESTURE_FLINCH_BLAST_DAMAGED_SHOTGUN = 157
+ACT_GESTURE_FLINCH_HEAD = 158
+ACT_GESTURE_FLINCH_CHEST = 159
+ACT_GESTURE_FLINCH_STOMACH = 160
+ACT_GESTURE_FLINCH_LEFTARM = 161
+ACT_GESTURE_FLINCH_RIGHTARM = 162
+ACT_GESTURE_FLINCH_LEFTLEG = 163
+ACT_GESTURE_FLINCH_RIGHTLEG = 164
+ACT_GESTURE_TURN_LEFT = 165
+ACT_GESTURE_TURN_RIGHT = 166
+ACT_GESTURE_TURN_LEFT45 = 167
+ACT_GESTURE_TURN_RIGHT45 = 168
+ACT_GESTURE_TURN_LEFT90 = 169
+ACT_GESTURE_TURN_RIGHT90 = 170
+ACT_GESTURE_TURN_LEFT45_FLAT = 171
+ACT_GESTURE_TURN_RIGHT45_FLAT = 172
+ACT_GESTURE_TURN_LEFT90_FLAT = 173
+ACT_GESTURE_TURN_RIGHT90_FLAT = 174
+ACT_BARNACLE_HIT = 175
+ACT_BARNACLE_PULL = 176
+ACT_BARNACLE_CHOMP = 177
+ACT_BARNACLE_CHEW = 178
+ACT_DO_NOT_DISTURB = 179
+ACT_SPECIFIC_SEQUENCE = 180
+ACT_VM_DEPLOY = 181
+ACT_VM_RELOAD_EMPTY = 182
+ACT_VM_DRAW = 183
+ACT_VM_HOLSTER = 184
+ACT_VM_IDLE = 185
+ACT_VM_FIDGET = 186
+ACT_VM_PULLBACK = 187
+ACT_VM_PULLBACK_HIGH = 188
+ACT_VM_PULLBACK_LOW = 189
+ACT_VM_THROW = 190
+ACT_VM_DROP = 191
+ACT_VM_PULLPIN = 192
+ACT_VM_PRIMARYATTACK = 193
+ACT_VM_SECONDARYATTACK = 194
+ACT_VM_RELOAD = 195
+ACT_VM_DRYFIRE = 196
+ACT_VM_HITLEFT = 197
+ACT_VM_HITLEFT2 = 198
+ACT_VM_HITRIGHT = 199
+ACT_VM_HITRIGHT2 = 200
+ACT_VM_HITCENTER = 201
+ACT_VM_HITCENTER2 = 202
+ACT_VM_MISSLEFT = 203
+ACT_VM_MISSLEFT2 = 204
+ACT_VM_MISSRIGHT = 205
+ACT_VM_MISSRIGHT2 = 206
+ACT_VM_MISSCENTER = 207
+ACT_VM_MISSCENTER2 = 208
+ACT_VM_HAULBACK = 209
+ACT_VM_SWINGHARD = 210
+ACT_VM_SWINGMISS = 211
+ACT_VM_SWINGHIT = 212
+ACT_VM_IDLE_TO_LOWERED = 213
+ACT_VM_IDLE_LOWERED = 214
+ACT_VM_LOWERED_TO_IDLE = 215
+ACT_VM_RECOIL1 = 216
+ACT_VM_RECOIL2 = 217
+ACT_VM_RECOIL3 = 218
+ACT_VM_PICKUP = 219
+ACT_VM_RELEASE = 220
+ACT_VM_MAUL_LOOP = 221
+ACT_VM_ATTACH_SILENCER = 222
+ACT_VM_DETACH_SILENCER = 223
+ACT_SLAM_STICKWALL_IDLE = 224
+ACT_SLAM_STICKWALL_ND_IDLE = 225
+ACT_SLAM_STICKWALL_ATTACH = 226
+ACT_SLAM_STICKWALL_ATTACH2 = 227
+ACT_SLAM_STICKWALL_ND_ATTACH = 228
+ACT_SLAM_STICKWALL_ND_ATTACH2 = 229
+ACT_SLAM_STICKWALL_DETONATE = 230
+ACT_SLAM_STICKWALL_DETONATOR_HOLSTER = 231
+ACT_SLAM_STICKWALL_DRAW = 232
+ACT_SLAM_STICKWALL_ND_DRAW = 233
+ACT_SLAM_STICKWALL_TO_THROW = 234
+ACT_SLAM_STICKWALL_TO_THROW_ND = 235
+ACT_SLAM_STICKWALL_TO_TRIPMINE_ND = 236
+ACT_SLAM_THROW_IDLE = 237
+ACT_SLAM_THROW_ND_IDLE = 238
+ACT_SLAM_THROW_THROW = 239
+ACT_SLAM_THROW_THROW2 = 240
+ACT_SLAM_THROW_THROW_ND = 241
+ACT_SLAM_THROW_THROW_ND2 = 242
+ACT_SLAM_THROW_DRAW = 243
+ACT_SLAM_THROW_ND_DRAW = 244
+ACT_SLAM_THROW_TO_STICKWALL = 245
+ACT_SLAM_THROW_TO_STICKWALL_ND = 246
+ACT_SLAM_THROW_DETONATE = 247
+ACT_SLAM_THROW_DETONATOR_HOLSTER = 248
+ACT_SLAM_THROW_TO_TRIPMINE_ND = 249
+ACT_SLAM_TRIPMINE_IDLE = 250
+ACT_SLAM_TRIPMINE_DRAW = 251
+ACT_SLAM_TRIPMINE_ATTACH = 252
+ACT_SLAM_TRIPMINE_ATTACH2 = 253
+ACT_SLAM_TRIPMINE_TO_STICKWALL_ND = 254
+ACT_SLAM_TRIPMINE_TO_THROW_ND = 255
+ACT_SLAM_DETONATOR_IDLE = 256
+ACT_SLAM_DETONATOR_DRAW = 257
+ACT_SLAM_DETONATOR_DETONATE = 258
+ACT_SLAM_DETONATOR_HOLSTER = 259
+ACT_SLAM_DETONATOR_STICKWALL_DRAW = 260
+ACT_SLAM_DETONATOR_THROW_DRAW = 261
+ACT_SHOTGUN_RELOAD_START = 262
+ACT_SHOTGUN_RELOAD_FINISH = 263
+ACT_SHOTGUN_PUMP = 264
+ACT_SMG2_IDLE2 = 265
+ACT_SMG2_FIRE2 = 266
+ACT_SMG2_DRAW2 = 267
+ACT_SMG2_RELOAD2 = 268
+ACT_SMG2_DRYFIRE2 = 269
+ACT_SMG2_TOAUTO = 270
+ACT_SMG2_TOBURST = 271
+ACT_PHYSCANNON_UPGRADE = 272
+ACT_RANGE_ATTACK_AR1 = 273
+ACT_RANGE_ATTACK_AR2 = 274
+ACT_RANGE_ATTACK_AR2_LOW = 275
+ACT_RANGE_ATTACK_AR2_GRENADE = 276
+ACT_RANGE_ATTACK_HMG1 = 277
+ACT_RANGE_ATTACK_ML = 278
+ACT_RANGE_ATTACK_SMG1 = 279
+ACT_RANGE_ATTACK_SMG1_LOW = 280
+ACT_RANGE_ATTACK_SMG2 = 281
+ACT_RANGE_ATTACK_SHOTGUN = 282
+ACT_RANGE_ATTACK_SHOTGUN_LOW = 283
+ACT_RANGE_ATTACK_PISTOL = 284
+ACT_RANGE_ATTACK_PISTOL_LOW = 285
+ACT_RANGE_ATTACK_SLAM = 286
+ACT_RANGE_ATTACK_TRIPWIRE = 287
+ACT_RANGE_ATTACK_THROW = 288
+ACT_RANGE_ATTACK_SNIPER_RIFLE = 289
+ACT_RANGE_ATTACK_RPG = 290
+ACT_MELEE_ATTACK_SWING = 291
+ACT_RANGE_AIM_LOW = 292
+ACT_RANGE_AIM_SMG1_LOW = 293
+ACT_RANGE_AIM_PISTOL_LOW = 294
+ACT_RANGE_AIM_AR2_LOW = 295
+ACT_COVER_PISTOL_LOW = 296
+ACT_COVER_SMG1_LOW = 297
+ACT_GESTURE_RANGE_ATTACK_AR1 = 298
+ACT_GESTURE_RANGE_ATTACK_AR2 = 299
+ACT_GESTURE_RANGE_ATTACK_AR2_GRENADE = 300
+ACT_GESTURE_RANGE_ATTACK_HMG1 = 301
+ACT_GESTURE_RANGE_ATTACK_ML = 302
+ACT_GESTURE_RANGE_ATTACK_SMG1 = 303
+ACT_GESTURE_RANGE_ATTACK_SMG1_LOW = 304
+ACT_GESTURE_RANGE_ATTACK_SMG2 = 305
+ACT_GESTURE_RANGE_ATTACK_SHOTGUN = 306
+ACT_GESTURE_RANGE_ATTACK_PISTOL = 307
+ACT_GESTURE_RANGE_ATTACK_PISTOL_LOW = 308
+ACT_GESTURE_RANGE_ATTACK_SLAM = 309
+ACT_GESTURE_RANGE_ATTACK_TRIPWIRE = 310
+ACT_GESTURE_RANGE_ATTACK_THROW = 311
+ACT_GESTURE_RANGE_ATTACK_SNIPER_RIFLE = 312
+ACT_GESTURE_MELEE_ATTACK_SWING = 313
+ACT_IDLE_RIFLE = 314
+ACT_IDLE_SMG1 = 315
+ACT_IDLE_ANGRY_SMG1 = 316
+ACT_IDLE_PISTOL = 317
+ACT_IDLE_ANGRY_PISTOL = 318
+ACT_IDLE_ANGRY_SHOTGUN = 319
+ACT_IDLE_STEALTH_PISTOL = 320
+ACT_IDLE_PACKAGE = 321
+ACT_WALK_PACKAGE = 322
+ACT_IDLE_SUITCASE = 323
+ACT_WALK_SUITCASE = 324
+ACT_IDLE_SMG1_RELAXED = 325
+ACT_IDLE_SMG1_STIMULATED = 326
+ACT_WALK_RIFLE_RELAXED = 327
+ACT_RUN_RIFLE_RELAXED = 328
+ACT_WALK_RIFLE_STIMULATED = 329
+ACT_RUN_RIFLE_STIMULATED = 330
+ACT_IDLE_AIM_RIFLE_STIMULATED = 331
+ACT_WALK_AIM_RIFLE_STIMULATED = 332
+ACT_RUN_AIM_RIFLE_STIMULATED = 333
+ACT_IDLE_SHOTGUN_RELAXED = 334
+ACT_IDLE_SHOTGUN_STIMULATED = 335
+ACT_IDLE_SHOTGUN_AGITATED = 336
+ACT_WALK_ANGRY = 337
+ACT_POLICE_HARASS1 = 338
+ACT_POLICE_HARASS2 = 339
+ACT_IDLE_MANNEDGUN = 340
+ACT_IDLE_MELEE = 341
+ACT_IDLE_ANGRY_MELEE = 342
+ACT_IDLE_RPG_RELAXED = 343
+ACT_IDLE_RPG = 344
+ACT_IDLE_ANGRY_RPG = 345
+ACT_COVER_LOW_RPG = 346
+ACT_WALK_RPG = 347
+ACT_RUN_RPG = 348
+ACT_WALK_CROUCH_RPG = 349
+ACT_RUN_CROUCH_RPG = 350
+ACT_WALK_RPG_RELAXED = 351
+ACT_RUN_RPG_RELAXED = 352
+ACT_WALK_RIFLE = 353
+ACT_WALK_AIM_RIFLE = 354
+ACT_WALK_CROUCH_RIFLE = 355
+ACT_WALK_CROUCH_AIM_RIFLE = 356
+ACT_RUN_RIFLE = 357
+ACT_RUN_AIM_RIFLE = 358
+ACT_RUN_CROUCH_RIFLE = 359
+ACT_RUN_CROUCH_AIM_RIFLE = 360
+ACT_RUN_STEALTH_PISTOL = 361
+ACT_WALK_AIM_SHOTGUN = 362
+ACT_RUN_AIM_SHOTGUN = 363
+ACT_WALK_PISTOL = 364
+ACT_RUN_PISTOL = 365
+ACT_WALK_AIM_PISTOL = 366
+ACT_RUN_AIM_PISTOL = 367
+ACT_WALK_STEALTH_PISTOL = 368
+ACT_WALK_AIM_STEALTH_PISTOL = 369
+ACT_RUN_AIM_STEALTH_PISTOL = 370
+ACT_RELOAD_PISTOL = 371
+ACT_RELOAD_PISTOL_LOW = 372
+ACT_RELOAD_SMG1 = 373
+ACT_RELOAD_SMG1_LOW = 374
+ACT_RELOAD_SHOTGUN = 375
+ACT_RELOAD_SHOTGUN_LOW = 376
+ACT_GESTURE_RELOAD = 377
+ACT_GESTURE_RELOAD_PISTOL = 378
+ACT_GESTURE_RELOAD_SMG1 = 379
+ACT_GESTURE_RELOAD_SHOTGUN = 380
+ACT_BUSY_LEAN_LEFT = 381
+ACT_BUSY_LEAN_LEFT_ENTRY = 382
+ACT_BUSY_LEAN_LEFT_EXIT = 383
+ACT_BUSY_LEAN_BACK = 384
+ACT_BUSY_LEAN_BACK_ENTRY = 385
+ACT_BUSY_LEAN_BACK_EXIT = 386
+ACT_BUSY_SIT_GROUND = 387
+ACT_BUSY_SIT_GROUND_ENTRY = 388
+ACT_BUSY_SIT_GROUND_EXIT = 389
+ACT_BUSY_SIT_CHAIR = 390
+ACT_BUSY_SIT_CHAIR_ENTRY = 391
+ACT_BUSY_SIT_CHAIR_EXIT = 392
+ACT_BUSY_STAND = 393
+ACT_BUSY_QUEUE = 394
+ACT_DUCK_DODGE = 395
+ACT_DIE_BARNACLE_SWALLOW = 396
+ACT_GESTURE_BARNACLE_STRANGLE = 397
+ACT_DIE_FRONTSIDE = 402
+ACT_DIE_RIGHTSIDE = 403
+ACT_DIE_BACKSIDE = 404
+ACT_DIE_LEFTSIDE = 405
+ACT_DIE_CROUCH_FRONTSIDE = 406
+ACT_DIE_CROUCH_RIGHTSIDE = 407
+ACT_DIE_CROUCH_BACKSIDE = 408
+ACT_DIE_CROUCH_LEFTSIDE = 409
+ACT_DIE_INCAP = 410
+ACT_DIE_STANDING = 411
+ACT_OPEN_DOOR = 412
+ACT_DI_ALYX_ZOMBIE_MELEE = 413
+ACT_DI_ALYX_ZOMBIE_TORSO_MELEE = 414
+ACT_DI_ALYX_HEADCRAB_MELEE = 415
+ACT_DI_ALYX_ANTLION = 416
+ACT_DI_ALYX_ZOMBIE_SHOTGUN64 = 417
+ACT_DI_ALYX_ZOMBIE_SHOTGUN26 = 418
+ACT_READINESS_RELAXED_TO_STIMULATED = 419
+ACT_READINESS_RELAXED_TO_STIMULATED_WALK = 420
+ACT_READINESS_AGITATED_TO_STIMULATED = 421
+ACT_READINESS_STIMULATED_TO_RELAXED = 422
+ACT_READINESS_PISTOL_RELAXED_TO_STIMULATED = 423
+ACT_READINESS_PISTOL_RELAXED_TO_STIMULATED_WALK = 424
+ACT_READINESS_PISTOL_AGITATED_TO_STIMULATED = 425
+ACT_READINESS_PISTOL_STIMULATED_TO_RELAXED = 426
+ACT_IDLE_CARRY = 427
+ACT_WALK_CARRY = 428
+ACT_STARTDYING = 429
+ACT_DYINGLOOP = 430
+ACT_DYINGTODEAD = 431
+ACT_RIDE_MANNED_GUN = 432
+ACT_VM_SPRINT_ENTER = 433
+ACT_VM_SPRINT_IDLE = 434
+ACT_VM_SPRINT_LEAVE = 435
+ACT_FIRE_START = 436
+ACT_FIRE_LOOP = 437
+ACT_FIRE_END = 438
+ACT_CROUCHING_GRENADEIDLE = 439
+ACT_CROUCHING_GRENADEREADY = 440
+ACT_CROUCHING_PRIMARYATTACK = 441
+ACT_OVERLAY_GRENADEIDLE = 442
+ACT_OVERLAY_GRENADEREADY = 443
+ACT_OVERLAY_PRIMARYATTACK = 444
+ACT_OVERLAY_SHIELD_UP = 445
+ACT_OVERLAY_SHIELD_DOWN = 446
+ACT_OVERLAY_SHIELD_UP_IDLE = 447
+ACT_OVERLAY_SHIELD_ATTACK = 448
+ACT_OVERLAY_SHIELD_KNOCKBACK = 449
+ACT_SHIELD_UP = 450
+ACT_SHIELD_DOWN = 451
+ACT_SHIELD_UP_IDLE = 452
+ACT_SHIELD_ATTACK = 453
+ACT_SHIELD_KNOCKBACK = 454
+ACT_CROUCHING_SHIELD_UP = 455
+ACT_CROUCHING_SHIELD_DOWN = 456
+ACT_CROUCHING_SHIELD_UP_IDLE = 457
+ACT_CROUCHING_SHIELD_ATTACK = 458
+ACT_CROUCHING_SHIELD_KNOCKBACK = 459
+ACT_TURNRIGHT45 = 460
+ACT_TURNLEFT45 = 461
+ACT_TURN = 462
+ACT_OBJ_ASSEMBLING = 463
+ACT_OBJ_DISMANTLING = 464
+ACT_OBJ_STARTUP = 465
+ACT_OBJ_RUNNING = 466
+ACT_OBJ_IDLE = 467
+ACT_OBJ_PLACING = 468
+ACT_OBJ_DETERIORATING = 469
+ACT_OBJ_UPGRADING = 470
+ACT_DEPLOY = 471
+ACT_DEPLOY_IDLE = 472
+ACT_UNDEPLOY = 473
+ACT_CROSSBOW_DRAW_UNLOADED = 474
+ACT_GAUSS_SPINUP = 475
+ACT_GAUSS_SPINCYCLE = 476
+ACT_VM_PRIMARYATTACK_SILENCED = 477
+ACT_VM_RELOAD_SILENCED = 478
+ACT_VM_DRYFIRE_SILENCED = 479
+ACT_VM_IDLE_SILENCED = 480
+ACT_VM_DRAW_SILENCED = 481
+ACT_VM_IDLE_EMPTY_LEFT = 482
+ACT_VM_DRYFIRE_LEFT = 483
+ACT_VM_IS_DRAW = 484
+ACT_VM_IS_HOLSTER = 485
+ACT_VM_IS_IDLE = 486
+ACT_VM_IS_PRIMARYATTACK = 487
+ACT_PLAYER_IDLE_FIRE = 488
+ACT_PLAYER_CROUCH_FIRE = 489
+ACT_PLAYER_CROUCH_WALK_FIRE = 490
+ACT_PLAYER_WALK_FIRE = 491
+ACT_PLAYER_RUN_FIRE = 492
+ACT_IDLETORUN = 493
+ACT_RUNTOIDLE = 494
+ACT_VM_DRAW_DEPLOYED = 495
+ACT_HL2MP_IDLE_MELEE = 496
+ACT_HL2MP_RUN_MELEE = 497
+ACT_HL2MP_IDLE_CROUCH_MELEE = 498
+ACT_HL2MP_WALK_CROUCH_MELEE = 499
+ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE = 500
+ACT_HL2MP_GESTURE_RELOAD_MELEE = 501
+ACT_HL2MP_JUMP_MELEE = 502
+ACT_MP_STAND_IDLE = 503
+ACT_MP_CROUCH_IDLE = 504
+ACT_MP_CROUCH_DEPLOYED_IDLE = 505
+ACT_MP_CROUCH_DEPLOYED = 506
+ACT_MP_DEPLOYED_IDLE = 507
+ACT_MP_RUN = 508
+ACT_MP_WALK = 509
+ACT_MP_AIRWALK = 510
+ACT_MP_CROUCHWALK = 511
+ACT_MP_SPRINT = 512
+ACT_MP_JUMP = 513
+ACT_MP_JUMP_START = 514
+ACT_MP_JUMP_FLOAT = 515
+ACT_MP_JUMP_LAND = 516
+ACT_MP_DOUBLEJUMP = 517
+ACT_MP_SWIM = 518
+ACT_MP_DEPLOYED = 519
+ACT_MP_SWIM_DEPLOYED = 520
+ACT_MP_VCD = 521
+ACT_MP_ATTACK_STAND_PRIMARYFIRE = 522
+ACT_MP_ATTACK_STAND_PRIMARYFIRE_DEPLOYED = 523
+ACT_MP_ATTACK_STAND_SECONDARYFIRE = 524
+ACT_MP_ATTACK_STAND_GRENADE = 525
+ACT_MP_ATTACK_CROUCH_PRIMARYFIRE = 526
+ACT_MP_ATTACK_CROUCH_PRIMARYFIRE_DEPLOYED = 527
+ACT_MP_ATTACK_CROUCH_SECONDARYFIRE = 528
+ACT_MP_ATTACK_CROUCH_GRENADE = 529
+ACT_MP_ATTACK_SWIM_PRIMARYFIRE = 530
+ACT_MP_ATTACK_SWIM_SECONDARYFIRE = 531
+ACT_MP_ATTACK_SWIM_GRENADE = 532
+ACT_MP_ATTACK_AIRWALK_PRIMARYFIRE = 533
+ACT_MP_ATTACK_AIRWALK_SECONDARYFIRE = 534
+ACT_MP_ATTACK_AIRWALK_GRENADE = 535
+ACT_MP_RELOAD_STAND = 536
+ACT_MP_RELOAD_STAND_LOOP = 537
+ACT_MP_RELOAD_STAND_END = 538
+ACT_MP_RELOAD_CROUCH = 539
+ACT_MP_RELOAD_CROUCH_LOOP = 540
+ACT_MP_RELOAD_CROUCH_END = 541
+ACT_MP_RELOAD_SWIM = 542
+ACT_MP_RELOAD_SWIM_LOOP = 543
+ACT_MP_RELOAD_SWIM_END = 544
+ACT_MP_RELOAD_AIRWALK = 545
+ACT_MP_RELOAD_AIRWALK_LOOP = 546
+ACT_MP_RELOAD_AIRWALK_END = 547
+ACT_MP_ATTACK_STAND_PREFIRE = 548
+ACT_MP_ATTACK_STAND_POSTFIRE = 549
+ACT_MP_ATTACK_STAND_STARTFIRE = 550
+ACT_MP_ATTACK_CROUCH_PREFIRE = 551
+ACT_MP_ATTACK_CROUCH_POSTFIRE = 552
+ACT_MP_ATTACK_SWIM_PREFIRE = 553
+ACT_MP_ATTACK_SWIM_POSTFIRE = 554
+ACT_MP_STAND_PRIMARY = 555
+ACT_MP_CROUCH_PRIMARY = 556
+ACT_MP_RUN_PRIMARY = 557
+ACT_MP_WALK_PRIMARY = 558
+ACT_MP_AIRWALK_PRIMARY = 559
+ACT_MP_CROUCHWALK_PRIMARY = 560
+ACT_MP_JUMP_PRIMARY = 561
+ACT_MP_JUMP_START_PRIMARY = 562
+ACT_MP_JUMP_FLOAT_PRIMARY = 563
+ACT_MP_JUMP_LAND_PRIMARY = 564
+ACT_MP_SWIM_PRIMARY = 565
+ACT_MP_DEPLOYED_PRIMARY = 566
+ACT_MP_SWIM_DEPLOYED_PRIMARY = 567
+ACT_MP_ATTACK_STAND_PRIMARY = 568
+ACT_MP_ATTACK_STAND_PRIMARY_DEPLOYED = 569
+ACT_MP_ATTACK_CROUCH_PRIMARY = 570
+ACT_MP_ATTACK_CROUCH_PRIMARY_DEPLOYED = 571
+ACT_MP_ATTACK_SWIM_PRIMARY = 572
+ACT_MP_ATTACK_AIRWALK_PRIMARY = 573
+ACT_MP_RELOAD_STAND_PRIMARY = 574
+ACT_MP_RELOAD_STAND_PRIMARY_LOOP = 575
+ACT_MP_RELOAD_STAND_PRIMARY_END = 576
+ACT_MP_RELOAD_CROUCH_PRIMARY = 577
+ACT_MP_RELOAD_CROUCH_PRIMARY_LOOP = 578
+ACT_MP_RELOAD_CROUCH_PRIMARY_END = 579
+ACT_MP_RELOAD_SWIM_PRIMARY = 580
+ACT_MP_RELOAD_SWIM_PRIMARY_LOOP = 581
+ACT_MP_RELOAD_SWIM_PRIMARY_END = 582
+ACT_MP_RELOAD_AIRWALK_PRIMARY = 583
+ACT_MP_RELOAD_AIRWALK_PRIMARY_LOOP = 584
+ACT_MP_RELOAD_AIRWALK_PRIMARY_END = 585
+ACT_MP_ATTACK_STAND_GRENADE_PRIMARY = 586
+ACT_MP_ATTACK_CROUCH_GRENADE_PRIMARY = 587
+ACT_MP_ATTACK_SWIM_GRENADE_PRIMARY = 588
+ACT_MP_ATTACK_AIRWALK_GRENADE_PRIMARY = 589
+ACT_MP_STAND_SECONDARY = 590
+ACT_MP_CROUCH_SECONDARY = 591
+ACT_MP_RUN_SECONDARY = 592
+ACT_MP_WALK_SECONDARY = 593
+ACT_MP_AIRWALK_SECONDARY = 594
+ACT_MP_CROUCHWALK_SECONDARY = 595
+ACT_MP_JUMP_SECONDARY = 596
+ACT_MP_JUMP_START_SECONDARY = 597
+ACT_MP_JUMP_FLOAT_SECONDARY = 598
+ACT_MP_JUMP_LAND_SECONDARY = 599
+ACT_MP_SWIM_SECONDARY = 600
+ACT_MP_ATTACK_STAND_SECONDARY = 601
+ACT_MP_ATTACK_CROUCH_SECONDARY = 602
+ACT_MP_ATTACK_SWIM_SECONDARY = 603
+ACT_MP_ATTACK_AIRWALK_SECONDARY = 604
+ACT_MP_RELOAD_STAND_SECONDARY = 605
+ACT_MP_RELOAD_STAND_SECONDARY_LOOP = 606
+ACT_MP_RELOAD_STAND_SECONDARY_END = 607
+ACT_MP_RELOAD_CROUCH_SECONDARY = 608
+ACT_MP_RELOAD_CROUCH_SECONDARY_LOOP = 609
+ACT_MP_RELOAD_CROUCH_SECONDARY_END = 610
+ACT_MP_RELOAD_SWIM_SECONDARY = 611
+ACT_MP_RELOAD_SWIM_SECONDARY_LOOP = 612
+ACT_MP_RELOAD_SWIM_SECONDARY_END = 613
+ACT_MP_RELOAD_AIRWALK_SECONDARY = 614
+ACT_MP_RELOAD_AIRWALK_SECONDARY_LOOP = 615
+ACT_MP_RELOAD_AIRWALK_SECONDARY_END = 616
+ACT_MP_ATTACK_STAND_GRENADE_SECONDARY = 617
+ACT_MP_ATTACK_CROUCH_GRENADE_SECONDARY = 618
+ACT_MP_ATTACK_SWIM_GRENADE_SECONDARY = 619
+ACT_MP_ATTACK_AIRWALK_GRENADE_SECONDARY = 620
+ACT_MP_STAND_MELEE = 621
+ACT_MP_CROUCH_MELEE = 622
+ACT_MP_RUN_MELEE = 623
+ACT_MP_WALK_MELEE = 624
+ACT_MP_AIRWALK_MELEE = 625
+ACT_MP_CROUCHWALK_MELEE = 626
+ACT_MP_JUMP_MELEE = 627
+ACT_MP_JUMP_START_MELEE = 628
+ACT_MP_JUMP_FLOAT_MELEE = 629
+ACT_MP_JUMP_LAND_MELEE = 630
+ACT_MP_SWIM_MELEE = 631
+ACT_MP_ATTACK_STAND_MELEE = 632
+ACT_MP_ATTACK_STAND_MELEE_SECONDARY = 633
+ACT_MP_ATTACK_CROUCH_MELEE = 634
+ACT_MP_ATTACK_CROUCH_MELEE_SECONDARY = 635
+ACT_MP_ATTACK_SWIM_MELEE = 636
+ACT_MP_ATTACK_AIRWALK_MELEE = 637
+ACT_MP_ATTACK_STAND_GRENADE_MELEE = 638
+ACT_MP_ATTACK_CROUCH_GRENADE_MELEE = 639
+ACT_MP_ATTACK_SWIM_GRENADE_MELEE = 640
+ACT_MP_ATTACK_AIRWALK_GRENADE_MELEE = 641
+ACT_MP_STAND_ITEM1 = 642
+ACT_MP_CROUCH_ITEM1 = 643
+ACT_MP_RUN_ITEM1 = 644
+ACT_MP_WALK_ITEM1 = 645
+ACT_MP_AIRWALK_ITEM1 = 646
+ACT_MP_CROUCHWALK_ITEM1 = 647
+ACT_MP_JUMP_ITEM1 = 648
+ACT_MP_JUMP_START_ITEM1 = 649
+ACT_MP_JUMP_FLOAT_ITEM1 = 650
+ACT_MP_JUMP_LAND_ITEM1 = 651
+ACT_MP_SWIM_ITEM1 = 652
+ACT_MP_ATTACK_STAND_ITEM1 = 653
+ACT_MP_ATTACK_STAND_ITEM1_SECONDARY = 654
+ACT_MP_ATTACK_CROUCH_ITEM1 = 655
+ACT_MP_ATTACK_CROUCH_ITEM1_SECONDARY = 656
+ACT_MP_ATTACK_SWIM_ITEM1 = 657
+ACT_MP_ATTACK_AIRWALK_ITEM1 = 658
+ACT_MP_STAND_ITEM2 = 659
+ACT_MP_CROUCH_ITEM2 = 660
+ACT_MP_RUN_ITEM2 = 661
+ACT_MP_WALK_ITEM2 = 662
+ACT_MP_AIRWALK_ITEM2 = 663
+ACT_MP_CROUCHWALK_ITEM2 = 664
+ACT_MP_JUMP_ITEM2 = 665
+ACT_MP_JUMP_START_ITEM2 = 666
+ACT_MP_JUMP_FLOAT_ITEM2 = 667
+ACT_MP_JUMP_LAND_ITEM2 = 668
+ACT_MP_SWIM_ITEM2 = 669
+ACT_MP_ATTACK_STAND_ITEM2 = 670
+ACT_MP_ATTACK_STAND_ITEM2_SECONDARY = 671
+ACT_MP_ATTACK_CROUCH_ITEM2 = 672
+ACT_MP_ATTACK_CROUCH_ITEM2_SECONDARY = 673
+ACT_MP_ATTACK_SWIM_ITEM2 = 674
+ACT_MP_ATTACK_AIRWALK_ITEM2 = 675
+ACT_MP_GESTURE_FLINCH = 676
+ACT_MP_GESTURE_FLINCH_PRIMARY = 677
+ACT_MP_GESTURE_FLINCH_SECONDARY = 678
+ACT_MP_GESTURE_FLINCH_MELEE = 679
+ACT_MP_GESTURE_FLINCH_ITEM1 = 680
+ACT_MP_GESTURE_FLINCH_ITEM2 = 681
+ACT_MP_GESTURE_FLINCH_HEAD = 682
+ACT_MP_GESTURE_FLINCH_CHEST = 683
+ACT_MP_GESTURE_FLINCH_STOMACH = 684
+ACT_MP_GESTURE_FLINCH_LEFTARM = 685
+ACT_MP_GESTURE_FLINCH_RIGHTARM = 686
+ACT_MP_GESTURE_FLINCH_LEFTLEG = 687
+ACT_MP_GESTURE_FLINCH_RIGHTLEG = 688
+ACT_MP_GRENADE1_DRAW = 689
+ACT_MP_GRENADE1_IDLE = 690
+ACT_MP_GRENADE1_ATTACK = 691
+ACT_MP_GRENADE2_DRAW = 692
+ACT_MP_GRENADE2_IDLE = 693
+ACT_MP_GRENADE2_ATTACK = 694
+ACT_MP_PRIMARY_GRENADE1_DRAW = 695
+ACT_MP_PRIMARY_GRENADE1_IDLE = 696
+ACT_MP_PRIMARY_GRENADE1_ATTACK = 697
+ACT_MP_PRIMARY_GRENADE2_DRAW = 698
+ACT_MP_PRIMARY_GRENADE2_IDLE = 699
+ACT_MP_PRIMARY_GRENADE2_ATTACK = 700
+ACT_MP_SECONDARY_GRENADE1_DRAW = 701
+ACT_MP_SECONDARY_GRENADE1_IDLE = 702
+ACT_MP_SECONDARY_GRENADE1_ATTACK = 703
+ACT_MP_SECONDARY_GRENADE2_DRAW = 704
+ACT_MP_SECONDARY_GRENADE2_IDLE = 705
+ACT_MP_SECONDARY_GRENADE2_ATTACK = 706
+ACT_MP_MELEE_GRENADE1_DRAW = 707
+ACT_MP_MELEE_GRENADE1_IDLE = 708
+ACT_MP_MELEE_GRENADE1_ATTACK = 709
+ACT_MP_MELEE_GRENADE2_DRAW = 710
+ACT_MP_MELEE_GRENADE2_IDLE = 711
+ACT_MP_MELEE_GRENADE2_ATTACK = 712
+ACT_MP_ITEM1_GRENADE1_DRAW = 713
+ACT_MP_ITEM1_GRENADE1_IDLE = 714
+ACT_MP_ITEM1_GRENADE1_ATTACK = 715
+ACT_MP_ITEM1_GRENADE2_DRAW = 716
+ACT_MP_ITEM1_GRENADE2_IDLE = 717
+ACT_MP_ITEM1_GRENADE2_ATTACK = 718
+ACT_MP_ITEM2_GRENADE1_DRAW = 719
+ACT_MP_ITEM2_GRENADE1_IDLE = 720
+ACT_MP_ITEM2_GRENADE1_ATTACK = 721
+ACT_MP_ITEM2_GRENADE2_DRAW = 722
+ACT_MP_ITEM2_GRENADE2_IDLE = 723
+ACT_MP_ITEM2_GRENADE2_ATTACK = 724
+ACT_MP_STAND_BUILDING = 725
+ACT_MP_CROUCH_BUILDING = 726
+ACT_MP_RUN_BUILDING = 727
+ACT_MP_WALK_BUILDING = 728
+ACT_MP_AIRWALK_BUILDING = 729
+ACT_MP_CROUCHWALK_BUILDING = 730
+ACT_MP_JUMP_BUILDING = 731
+ACT_MP_JUMP_START_BUILDING = 732
+ACT_MP_JUMP_FLOAT_BUILDING = 733
+ACT_MP_JUMP_LAND_BUILDING = 734
+ACT_MP_SWIM_BUILDING = 735
+ACT_MP_ATTACK_STAND_BUILDING = 736
+ACT_MP_ATTACK_CROUCH_BUILDING = 737
+ACT_MP_ATTACK_SWIM_BUILDING = 738
+ACT_MP_ATTACK_AIRWALK_BUILDING = 739
+ACT_MP_ATTACK_STAND_GRENADE_BUILDING = 740
+ACT_MP_ATTACK_CROUCH_GRENADE_BUILDING = 741
+ACT_MP_ATTACK_SWIM_GRENADE_BUILDING = 742
+ACT_MP_ATTACK_AIRWALK_GRENADE_BUILDING = 743
+ACT_MP_STAND_PDA = 744
+ACT_MP_CROUCH_PDA = 745
+ACT_MP_RUN_PDA = 746
+ACT_MP_WALK_PDA = 747
+ACT_MP_AIRWALK_PDA = 748
+ACT_MP_CROUCHWALK_PDA = 749
+ACT_MP_JUMP_PDA = 750
+ACT_MP_JUMP_START_PDA = 751
+ACT_MP_JUMP_FLOAT_PDA = 752
+ACT_MP_JUMP_LAND_PDA = 753
+ACT_MP_SWIM_PDA = 754
+ACT_MP_ATTACK_STAND_PDA = 755
+ACT_MP_ATTACK_SWIM_PDA = 756
+ACT_MP_GESTURE_VC_HANDMOUTH = 757
+ACT_MP_GESTURE_VC_FINGERPOINT = 758
+ACT_MP_GESTURE_VC_FISTPUMP = 759
+ACT_MP_GESTURE_VC_THUMBSUP = 760
+ACT_MP_GESTURE_VC_NODYES = 761
+ACT_MP_GESTURE_VC_NODNO = 762
+ACT_MP_GESTURE_VC_HANDMOUTH_PRIMARY = 763
+ACT_MP_GESTURE_VC_FINGERPOINT_PRIMARY = 764
+ACT_MP_GESTURE_VC_FISTPUMP_PRIMARY = 765
+ACT_MP_GESTURE_VC_THUMBSUP_PRIMARY = 766
+ACT_MP_GESTURE_VC_NODYES_PRIMARY = 767
+ACT_MP_GESTURE_VC_NODNO_PRIMARY = 768
+ACT_MP_GESTURE_VC_HANDMOUTH_SECONDARY = 769
+ACT_MP_GESTURE_VC_FINGERPOINT_SECONDARY = 770
+ACT_MP_GESTURE_VC_FISTPUMP_SECONDARY = 771
+ACT_MP_GESTURE_VC_THUMBSUP_SECONDARY = 772
+ACT_MP_GESTURE_VC_NODYES_SECONDARY = 773
+ACT_MP_GESTURE_VC_NODNO_SECONDARY = 774
+ACT_MP_GESTURE_VC_HANDMOUTH_MELEE = 775
+ACT_MP_GESTURE_VC_FINGERPOINT_MELEE = 776
+ACT_MP_GESTURE_VC_FISTPUMP_MELEE = 777
+ACT_MP_GESTURE_VC_THUMBSUP_MELEE = 778
+ACT_MP_GESTURE_VC_NODYES_MELEE = 779
+ACT_MP_GESTURE_VC_NODNO_MELEE = 780
+ACT_MP_GESTURE_VC_HANDMOUTH_ITEM1 = 781
+ACT_MP_GESTURE_VC_FINGERPOINT_ITEM1 = 782
+ACT_MP_GESTURE_VC_FISTPUMP_ITEM1 = 783
+ACT_MP_GESTURE_VC_THUMBSUP_ITEM1 = 784
+ACT_MP_GESTURE_VC_NODYES_ITEM1 = 785
+ACT_MP_GESTURE_VC_NODNO_ITEM1 = 786
+ACT_MP_GESTURE_VC_HANDMOUTH_ITEM2 = 787
+ACT_MP_GESTURE_VC_FINGERPOINT_ITEM2 = 788
+ACT_MP_GESTURE_VC_FISTPUMP_ITEM2 = 789
+ACT_MP_GESTURE_VC_THUMBSUP_ITEM2 = 790
+ACT_MP_GESTURE_VC_NODYES_ITEM2 = 791
+ACT_MP_GESTURE_VC_NODNO_ITEM2 = 792
+ACT_MP_GESTURE_VC_HANDMOUTH_BUILDING = 793
+ACT_MP_GESTURE_VC_FINGERPOINT_BUILDING = 794
+ACT_MP_GESTURE_VC_FISTPUMP_BUILDING = 795
+ACT_MP_GESTURE_VC_THUMBSUP_BUILDING = 796
+ACT_MP_GESTURE_VC_NODYES_BUILDING = 797
+ACT_MP_GESTURE_VC_NODNO_BUILDING = 798
+ACT_MP_GESTURE_VC_HANDMOUTH_PDA = 799
+ACT_MP_GESTURE_VC_FINGERPOINT_PDA = 800
+ACT_MP_GESTURE_VC_FISTPUMP_PDA = 801
+ACT_MP_GESTURE_VC_THUMBSUP_PDA = 802
+ACT_MP_GESTURE_VC_NODYES_PDA = 803
+ACT_MP_GESTURE_VC_NODNO_PDA = 804
+ACT_VM_UNUSABLE = 805
+ACT_VM_UNUSABLE_TO_USABLE = 806
+ACT_VM_USABLE_TO_UNUSABLE = 807
+ACT_PRIMARY_VM_DRAW = 808
+ACT_PRIMARY_VM_HOLSTER = 809
+ACT_PRIMARY_VM_IDLE = 810
+ACT_PRIMARY_VM_PULLBACK = 811
+ACT_PRIMARY_VM_PRIMARYATTACK = 812
+ACT_PRIMARY_VM_SECONDARYATTACK = 813
+ACT_PRIMARY_VM_RELOAD = 814
+ACT_PRIMARY_VM_DRYFIRE = 815
+ACT_PRIMARY_VM_IDLE_TO_LOWERED = 816
+ACT_PRIMARY_VM_IDLE_LOWERED = 817
+ACT_PRIMARY_VM_LOWERED_TO_IDLE = 818
+ACT_SECONDARY_VM_DRAW = 819
+ACT_SECONDARY_VM_HOLSTER = 820
+ACT_SECONDARY_VM_IDLE = 821
+ACT_SECONDARY_VM_PULLBACK = 822
+ACT_SECONDARY_VM_PRIMARYATTACK = 823
+ACT_SECONDARY_VM_SECONDARYATTACK = 824
+ACT_SECONDARY_VM_RELOAD = 825
+ACT_SECONDARY_VM_DRYFIRE = 826
+ACT_SECONDARY_VM_IDLE_TO_LOWERED = 827
+ACT_SECONDARY_VM_IDLE_LOWERED = 828
+ACT_SECONDARY_VM_LOWERED_TO_IDLE = 829
+ACT_MELEE_VM_DRAW = 830
+ACT_MELEE_VM_HOLSTER = 831
+ACT_MELEE_VM_IDLE = 832
+ACT_MELEE_VM_PULLBACK = 833
+ACT_MELEE_VM_PRIMARYATTACK = 834
+ACT_MELEE_VM_SECONDARYATTACK = 835
+ACT_MELEE_VM_RELOAD = 836
+ACT_MELEE_VM_DRYFIRE = 837
+ACT_MELEE_VM_IDLE_TO_LOWERED = 838
+ACT_MELEE_VM_IDLE_LOWERED = 839
+ACT_MELEE_VM_LOWERED_TO_IDLE = 840
+ACT_PDA_VM_DRAW = 841
+ACT_PDA_VM_HOLSTER = 842
+ACT_PDA_VM_IDLE = 843
+ACT_PDA_VM_PULLBACK = 844
+ACT_PDA_VM_PRIMARYATTACK = 845
+ACT_PDA_VM_SECONDARYATTACK = 846
+ACT_PDA_VM_RELOAD = 847
+ACT_PDA_VM_DRYFIRE = 848
+ACT_PDA_VM_IDLE_TO_LOWERED = 849
+ACT_PDA_VM_IDLE_LOWERED = 850
+ACT_PDA_VM_LOWERED_TO_IDLE = 851
+ACT_ITEM1_VM_DRAW = 852
+ACT_ITEM1_VM_HOLSTER = 853
+ACT_ITEM1_VM_IDLE = 854
+ACT_ITEM1_VM_PULLBACK = 855
+ACT_ITEM1_VM_PRIMARYATTACK = 856
+ACT_ITEM1_VM_SECONDARYATTACK = 857
+ACT_ITEM1_VM_RELOAD = 858
+ACT_ITEM1_VM_DRYFIRE = 859
+ACT_ITEM1_VM_IDLE_TO_LOWERED = 860
+ACT_ITEM1_VM_IDLE_LOWERED = 861
+ACT_ITEM1_VM_LOWERED_TO_IDLE = 862
+ACT_ITEM2_VM_DRAW = 863
+ACT_ITEM2_VM_HOLSTER = 864
+ACT_ITEM2_VM_IDLE = 865
+ACT_ITEM2_VM_PULLBACK = 866
+ACT_ITEM2_VM_PRIMARYATTACK = 867
+ACT_ITEM2_VM_SECONDARYATTACK = 868
+ACT_ITEM2_VM_RELOAD = 869
+ACT_ITEM2_VM_DRYFIRE = 870
+ACT_ITEM2_VM_IDLE_TO_LOWERED = 871
+ACT_ITEM2_VM_IDLE_LOWERED = 872
+ACT_ITEM2_VM_LOWERED_TO_IDLE = 873
+ACT_RELOAD_SUCCEED = 874
+ACT_RELOAD_FAIL = 875
+ACT_WALK_AIM_AUTOGUN = 876
+ACT_RUN_AIM_AUTOGUN = 877
+ACT_IDLE_AUTOGUN = 878
+ACT_IDLE_AIM_AUTOGUN = 879
+ACT_RELOAD_AUTOGUN = 880
+ACT_CROUCH_IDLE_AUTOGUN = 881
+ACT_RANGE_ATTACK_AUTOGUN = 882
+ACT_JUMP_AUTOGUN = 883
+ACT_IDLE_AIM_PISTOL = 884
+ACT_WALK_AIM_DUAL = 885
+ACT_RUN_AIM_DUAL = 886
+ACT_IDLE_DUAL = 887
+ACT_IDLE_AIM_DUAL = 888
+ACT_RELOAD_DUAL = 889
+ACT_CROUCH_IDLE_DUAL = 890
+ACT_RANGE_ATTACK_DUAL = 891
+ACT_JUMP_DUAL = 892
+ACT_IDLE_AIM_SHOTGUN = 893
+ACT_CROUCH_IDLE_SHOTGUN = 894
+ACT_IDLE_AIM_RIFLE = 895
+ACT_CROUCH_IDLE_RIFLE = 896
+ACT_RANGE_ATTACK_RIFLE = 897
+ACT_SLEEP = 898
+ACT_WAKE = 899
+ACT_FLICK_LEFT = 900
+ACT_FLICK_LEFT_MIDDLE = 901
+ACT_FLICK_RIGHT_MIDDLE = 902
+ACT_FLICK_RIGHT = 903
+ACT_SPINAROUND = 904
+ACT_PREP_TO_FIRE = 905
+ACT_FIRE = 906
+ACT_FIRE_RECOVER = 907
+ACT_SPRAY = 908
+ACT_PREP_EXPLODE = 909
+ACT_EXPLODE = 910
+ACT_SCRIPT_CUSTOM_0 = 911
+ACT_SCRIPT_CUSTOM_1 = 912
+ACT_SCRIPT_CUSTOM_2 = 913
+ACT_SCRIPT_CUSTOM_3 = 914
+ACT_SCRIPT_CUSTOM_4 = 915
+ACT_SCRIPT_CUSTOM_5 = 916
+ACT_SCRIPT_CUSTOM_6 = 917
+ACT_SCRIPT_CUSTOM_7 = 918
+ACT_SCRIPT_CUSTOM_8 = 919
+ACT_SCRIPT_CUSTOM_9 = 920
+ACT_SCRIPT_CUSTOM_10 = 921
+ACT_SCRIPT_CUSTOM_11 = 922
+ACT_SCRIPT_CUSTOM_12 = 923
+ACT_SCRIPT_CUSTOM_13 = 924
+ACT_SCRIPT_CUSTOM_14 = 925
+ACT_SCRIPT_CUSTOM_15 = 926
+ACT_SCRIPT_CUSTOM_16 = 927
+ACT_SCRIPT_CUSTOM_17 = 928
+ACT_SCRIPT_CUSTOM_18 = 929
+ACT_SCRIPT_CUSTOM_19 = 930
+ACT_SCRIPT_CUSTOM_20 = 931
+ACT_SCRIPT_CUSTOM_21 = 932
+ACT_SCRIPT_CUSTOM_22 = 933
+ACT_SCRIPT_CUSTOM_23 = 934
+ACT_SCRIPT_CUSTOM_24 = 935
+ACT_SCRIPT_CUSTOM_25 = 936
+ACT_SCRIPT_CUSTOM_26 = 937
+ACT_SCRIPT_CUSTOM_27 = 938
+ACT_SCRIPT_CUSTOM_28 = 939
+ACT_SCRIPT_CUSTOM_29 = 940
+ACT_SCRIPT_CUSTOM_30 = 941
+ACT_SCRIPT_CUSTOM_31 = 942
+ACT_VR_PISTOL_LAST_SHOT = 943
+ACT_VR_PISTOL_SLIDE_RELEASE = 944
+ACT_VR_PISTOL_CLIP_OUT_CHAMBERED = 945
+ACT_VR_PISTOL_CLIP_OUT_SLIDE_BACK = 946
+ACT_VR_PISTOL_CLIP_IN_CHAMBERED = 947
+ACT_VR_PISTOL_CLIP_IN_SLIDE_BACK = 948
+ACT_VR_PISTOL_IDLE_SLIDE_BACK = 949
+ACT_VR_PISTOL_IDLE_SLIDE_BACK_CLIP_READY = 950
+ACT_RAGDOLL_RECOVERY_FRONT = 951
+ACT_RAGDOLL_RECOVERY_BACK = 952
+ACT_RAGDOLL_RECOVERY_LEFT = 953
+ACT_RAGDOLL_RECOVERY_RIGHT = 954
+ACT_GRABBITYGLOVES_GRAB = 955
+ACT_GRABBITYGLOVES_RELEASE = 956
+ACT_GRABBITYGLOVES_GRAB_IDLE = 957
+ACT_GRABBITYGLOVES_ACTIVE = 958
+ACT_GRABBITYGLOVES_ACTIVE_IDLE = 959
+ACT_GRABBITYGLOVES_DEACTIVATE = 960
+ACT_GRABBITYGLOVES_PULL = 961
+ACT_HEADCRAB_SMOKE_BOMB = 962
+ACT_HEADCRAB_SPIT = 963
+ACT_ZOMBIE_TRIP = 964
+ACT_ZOMBIE_LUNGE = 965
+ACT_NEUTRAL_REF_POSE = 966
+ACT_ANTLION_SCUTTLE_FORWARD = 967
+ACT_ANTLION_SCUTTLE_BACK = 968
+ACT_ANTLION_SCUTTLE_LEFT = 969
+ACT_ANTLION_SCUTTLE_RIGHT = 970
+ACT_VR_PISTOL_EMPTY_CLIP_IN_SLIDE_BACK = 971
+ACT_VR_SHOTGUN_IDLE = 972
+ACT_VR_SHOTGUN_OPEN_CHAMBER = 973
+ACT_VR_SHOTGUN_RELOAD_1 = 974
+ACT_VR_SHOTGUN_RELOAD_2 = 975
+ACT_VR_SHOTGUN_RELOAD_3 = 976
+ACT_VR_SHOTGUN_CLOSE_CHAMBER = 977
+ACT_VR_SHOTGUN_TRIGGER_SQUEEZE = 978
+ACT_VR_SHOTGUN_SHOOT = 979
+ACT_VR_SHOTGUN_SLIDE_BACK = 980
+ACT_VR_SHOTGUN_SLIDE_FORWARD = 981
+ACT_VR_PISTOL_LONG_CLIP_IN_CHAMBERED = 982
+ACT_VR_PISTOL_LONG_CLIP_IN_SLIDE_BACK = 983
+ACT_VR_PISTOL_BURST_TOGGLE = 984
+ACT_VR_PISTOL_LOW_KICK = 985
+ACT_VR_PISTOL_BURST_ATTACK = 986
+ACT_VR_SHOTGUN_GRENADE_TWIST = 987
+ACT_DIE_STAND = 988
+ACT_DIE_STAND_HEADSHOT = 989
+ACT_DIE_CROUCH = 990
+ACT_DIE_CROUCH_HEADSHOT = 991
+ACT_CSGO_NULL = 992
+ACT_CSGO_DEFUSE = 993
+ACT_CSGO_DEFUSE_WITH_KIT = 994
+ACT_CSGO_FLASHBANG_REACTION = 995
+ACT_CSGO_FIRE_PRIMARY = 996
+ACT_CSGO_FIRE_PRIMARY_OPT_1 = 997
+ACT_CSGO_FIRE_PRIMARY_OPT_2 = 998
+ACT_CSGO_FIRE_SECONDARY = 999
+ACT_CSGO_FIRE_SECONDARY_OPT_1 = 1000
+ACT_CSGO_FIRE_SECONDARY_OPT_2 = 1001
+ACT_CSGO_RELOAD = 1002
+ACT_CSGO_RELOAD_START = 1003
+ACT_CSGO_RELOAD_LOOP = 1004
+ACT_CSGO_RELOAD_END = 1005
+ACT_CSGO_OPERATE = 1006
+ACT_CSGO_DEPLOY = 1007
+ACT_CSGO_CATCH = 1008
+ACT_CSGO_SILENCER_DETACH = 1009
+ACT_CSGO_SILENCER_ATTACH = 1010
+ACT_CSGO_TWITCH = 1011
+ACT_CSGO_TWITCH_BUYZONE = 1012
+ACT_CSGO_PLANT_BOMB = 1013
+ACT_CSGO_IDLE_TURN_BALANCEADJUST = 1014
+ACT_CSGO_IDLE_ADJUST_STOPPEDMOVING = 1015
+ACT_CSGO_ALIVE_LOOP = 1016
+ACT_CSGO_FLINCH = 1017
+ACT_CSGO_FLINCH_HEAD = 1018
+ACT_CSGO_FLINCH_MOLOTOV = 1019
+ACT_CSGO_JUMP = 1020
+ACT_CSGO_FALL = 1021
+ACT_CSGO_CLIMB_LADDER = 1022
+ACT_CSGO_LAND_LIGHT = 1023
+ACT_CSGO_LAND_HEAVY = 1024
+ACT_CSGO_EXIT_LADDER_TOP = 1025
+ACT_CSGO_EXIT_LADDER_BOTTOM = 1026
+ACT_CSGO_PARACHUTE = 1027
+ACT_CSGO_TAUNT = 1028
+ACT_DOTA_IDLE = 1500
+ACT_DOTA_IDLE_RARE = 1501
+ACT_DOTA_RUN = 1502
+ACT_DOTA_ATTACK = 1503
+ACT_DOTA_ATTACK2 = 1504
+ACT_DOTA_ATTACK_EVENT = 1505
+ACT_DOTA_DIE = 1506
+ACT_DOTA_FLINCH = 1507
+ACT_DOTA_FLAIL = 1508
+ACT_DOTA_DISABLED = 1509
+ACT_DOTA_CAST_ABILITY_1 = 1510
+ACT_DOTA_CAST_ABILITY_2 = 1511
+ACT_DOTA_CAST_ABILITY_3 = 1512
+ACT_DOTA_CAST_ABILITY_4 = 1513
+ACT_DOTA_CAST_ABILITY_5 = 1514
+ACT_DOTA_CAST_ABILITY_6 = 1515
+ACT_DOTA_OVERRIDE_ABILITY_1 = 1516
+ACT_DOTA_OVERRIDE_ABILITY_2 = 1517
+ACT_DOTA_OVERRIDE_ABILITY_3 = 1518
+ACT_DOTA_OVERRIDE_ABILITY_4 = 1519
+ACT_DOTA_CHANNEL_ABILITY_1 = 1520
+ACT_DOTA_CHANNEL_ABILITY_2 = 1521
+ACT_DOTA_CHANNEL_ABILITY_3 = 1522
+ACT_DOTA_CHANNEL_ABILITY_4 = 1523
+ACT_DOTA_CHANNEL_ABILITY_5 = 1524
+ACT_DOTA_CHANNEL_ABILITY_6 = 1525
+ACT_DOTA_CHANNEL_END_ABILITY_1 = 1526
+ACT_DOTA_CHANNEL_END_ABILITY_2 = 1527
+ACT_DOTA_CHANNEL_END_ABILITY_3 = 1528
+ACT_DOTA_CHANNEL_END_ABILITY_4 = 1529
+ACT_DOTA_CHANNEL_END_ABILITY_5 = 1530
+ACT_DOTA_CHANNEL_END_ABILITY_6 = 1531
+ACT_DOTA_CONSTANT_LAYER = 1532
+ACT_DOTA_CAPTURE = 1533
+ACT_DOTA_SPAWN = 1534
+ACT_DOTA_KILLTAUNT = 1535
+ACT_DOTA_TAUNT = 1536
+ACT_DOTA_THIRST = 1537
+ACT_DOTA_CAST_DRAGONBREATH = 1538
+ACT_DOTA_ECHO_SLAM = 1539
+ACT_DOTA_CAST_ABILITY_1_END = 1540
+ACT_DOTA_CAST_ABILITY_2_END = 1541
+ACT_DOTA_CAST_ABILITY_3_END = 1542
+ACT_DOTA_CAST_ABILITY_4_END = 1543
+ACT_MIRANA_LEAP_END = 1544
+ACT_WAVEFORM_START = 1545
+ACT_WAVEFORM_END = 1546
+ACT_DOTA_CAST_ABILITY_ROT = 1547
+ACT_DOTA_DIE_SPECIAL = 1548
+ACT_DOTA_RATTLETRAP_BATTERYASSAULT = 1549
+ACT_DOTA_RATTLETRAP_POWERCOGS = 1550
+ACT_DOTA_RATTLETRAP_HOOKSHOT_START = 1551
+ACT_DOTA_RATTLETRAP_HOOKSHOT_LOOP = 1552
+ACT_DOTA_RATTLETRAP_HOOKSHOT_END = 1553
+ACT_STORM_SPIRIT_OVERLOAD_RUN_OVERRIDE = 1554
+ACT_DOTA_TINKER_REARM1 = 1555
+ACT_DOTA_TINKER_REARM2 = 1556
+ACT_DOTA_TINKER_REARM3 = 1557
+ACT_TINY_AVALANCHE = 1558
+ACT_TINY_TOSS = 1559
+ACT_TINY_GROWL = 1560
+ACT_DOTA_WEAVERBUG_ATTACH = 1561
+ACT_DOTA_CAST_WILD_AXES_END = 1562
+ACT_DOTA_CAST_LIFE_BREAK_START = 1563
+ACT_DOTA_CAST_LIFE_BREAK_END = 1564
+ACT_DOTA_NIGHTSTALKER_TRANSITION = 1565
+ACT_DOTA_LIFESTEALER_RAGE = 1566
+ACT_DOTA_LIFESTEALER_OPEN_WOUNDS = 1567
+ACT_DOTA_SAND_KING_BURROW_IN = 1568
+ACT_DOTA_SAND_KING_BURROW_OUT = 1569
+ACT_DOTA_EARTHSHAKER_TOTEM_ATTACK = 1570
+ACT_DOTA_WHEEL_LAYER = 1571
+ACT_DOTA_ALCHEMIST_CHEMICAL_RAGE_START = 1572
+ACT_DOTA_ALCHEMIST_CONCOCTION = 1573
+ACT_DOTA_JAKIRO_LIQUIDFIRE_START = 1574
+ACT_DOTA_JAKIRO_LIQUIDFIRE_LOOP = 1575
+ACT_DOTA_LIFESTEALER_INFEST = 1576
+ACT_DOTA_LIFESTEALER_INFEST_END = 1577
+ACT_DOTA_LASSO_LOOP = 1578
+ACT_DOTA_ALCHEMIST_CONCOCTION_THROW = 1579
+ACT_DOTA_ALCHEMIST_CHEMICAL_RAGE_END = 1580
+ACT_DOTA_CAST_COLD_SNAP = 1581
+ACT_DOTA_CAST_GHOST_WALK = 1582
+ACT_DOTA_CAST_TORNADO = 1583
+ACT_DOTA_CAST_EMP = 1584
+ACT_DOTA_CAST_ALACRITY = 1585
+ACT_DOTA_CAST_CHAOS_METEOR = 1586
+ACT_DOTA_CAST_SUN_STRIKE = 1587
+ACT_DOTA_CAST_FORGE_SPIRIT = 1588
+ACT_DOTA_CAST_ICE_WALL = 1589
+ACT_DOTA_CAST_DEAFENING_BLAST = 1590
+ACT_DOTA_VICTORY = 1591
+ACT_DOTA_DEFEAT = 1592
+ACT_DOTA_SPIRIT_BREAKER_CHARGE_POSE = 1593
+ACT_DOTA_SPIRIT_BREAKER_CHARGE_END = 1594
+ACT_DOTA_TELEPORT = 1595
+ACT_DOTA_TELEPORT_END = 1596
+ACT_DOTA_CAST_REFRACTION = 1597
+ACT_DOTA_CAST_ABILITY_7 = 1598
+ACT_DOTA_CANCEL_SIREN_SONG = 1599
+ACT_DOTA_CHANNEL_ABILITY_7 = 1600
+ACT_DOTA_LOADOUT = 1601
+ACT_DOTA_FORCESTAFF_END = 1602
+ACT_DOTA_POOF_END = 1603
+ACT_DOTA_SLARK_POUNCE = 1604
+ACT_DOTA_MAGNUS_SKEWER_START = 1605
+ACT_DOTA_MAGNUS_SKEWER_END = 1606
+ACT_DOTA_MEDUSA_STONE_GAZE = 1607
+ACT_DOTA_RELAX_START = 1608
+ACT_DOTA_RELAX_LOOP = 1609
+ACT_DOTA_RELAX_END = 1610
+ACT_DOTA_CENTAUR_STAMPEDE = 1611
+ACT_DOTA_BELLYACHE_START = 1612
+ACT_DOTA_BELLYACHE_LOOP = 1613
+ACT_DOTA_BELLYACHE_END = 1614
+ACT_DOTA_ROQUELAIRE_LAND = 1615
+ACT_DOTA_ROQUELAIRE_LAND_IDLE = 1616
+ACT_DOTA_GREEVIL_CAST = 1617
+ACT_DOTA_GREEVIL_OVERRIDE_ABILITY = 1618
+ACT_DOTA_GREEVIL_HOOK_START = 1619
+ACT_DOTA_GREEVIL_HOOK_END = 1620
+ACT_DOTA_GREEVIL_BLINK_BONE = 1621
+ACT_DOTA_IDLE_SLEEPING = 1622
+ACT_DOTA_INTRO = 1623
+ACT_DOTA_GESTURE_POINT = 1624
+ACT_DOTA_GESTURE_ACCENT = 1625
+ACT_DOTA_SLEEPING_END = 1626
+ACT_DOTA_AMBUSH = 1627
+ACT_DOTA_ITEM_LOOK = 1628
+ACT_DOTA_STARTLE = 1629
+ACT_DOTA_FRUSTRATION = 1630
+ACT_DOTA_TELEPORT_REACT = 1631
+ACT_DOTA_TELEPORT_END_REACT = 1632
+ACT_DOTA_SHRUG = 1633
+ACT_DOTA_RELAX_LOOP_END = 1634
+ACT_DOTA_PRESENT_ITEM = 1635
+ACT_DOTA_IDLE_IMPATIENT = 1636
+ACT_DOTA_SHARPEN_WEAPON = 1637
+ACT_DOTA_SHARPEN_WEAPON_OUT = 1638
+ACT_DOTA_IDLE_SLEEPING_END = 1639
+ACT_DOTA_BRIDGE_DESTROY = 1640
+ACT_DOTA_TAUNT_SNIPER = 1641
+ACT_DOTA_DEATH_BY_SNIPER = 1642
+ACT_DOTA_LOOK_AROUND = 1643
+ACT_DOTA_CAGED_CREEP_RAGE = 1644
+ACT_DOTA_CAGED_CREEP_RAGE_OUT = 1645
+ACT_DOTA_CAGED_CREEP_SMASH = 1646
+ACT_DOTA_CAGED_CREEP_SMASH_OUT = 1647
+ACT_DOTA_IDLE_IMPATIENT_SWORD_TAP = 1648
+ACT_DOTA_INTRO_LOOP = 1649
+ACT_DOTA_BRIDGE_THREAT = 1650
+ACT_DOTA_DAGON = 1651
+ACT_DOTA_CAST_ABILITY_2_ES_ROLL_START = 1652
+ACT_DOTA_CAST_ABILITY_2_ES_ROLL = 1653
+ACT_DOTA_CAST_ABILITY_2_ES_ROLL_END = 1654
+ACT_DOTA_NIAN_PIN_START = 1655
+ACT_DOTA_NIAN_PIN_LOOP = 1656
+ACT_DOTA_NIAN_PIN_END = 1657
+ACT_DOTA_LEAP_STUN = 1658
+ACT_DOTA_LEAP_SWIPE = 1659
+ACT_DOTA_NIAN_INTRO_LEAP = 1660
+ACT_DOTA_AREA_DENY = 1661
+ACT_DOTA_NIAN_PIN_TO_STUN = 1662
+ACT_DOTA_RAZE_1 = 1663
+ACT_DOTA_RAZE_2 = 1664
+ACT_DOTA_RAZE_3 = 1665
+ACT_DOTA_UNDYING_DECAY = 1666
+ACT_DOTA_UNDYING_SOUL_RIP = 1667
+ACT_DOTA_UNDYING_TOMBSTONE = 1668
+ACT_DOTA_WHIRLING_AXES_RANGED = 1669
+ACT_DOTA_SHALLOW_GRAVE = 1670
+ACT_DOTA_COLD_FEET = 1671
+ACT_DOTA_ICE_VORTEX = 1672
+ACT_DOTA_CHILLING_TOUCH = 1673
+ACT_DOTA_ENFEEBLE = 1674
+ACT_DOTA_FATAL_BONDS = 1675
+ACT_DOTA_MIDNIGHT_PULSE = 1676
+ACT_DOTA_ANCESTRAL_SPIRIT = 1677
+ACT_DOTA_THUNDER_STRIKE = 1678
+ACT_DOTA_KINETIC_FIELD = 1679
+ACT_DOTA_STATIC_STORM = 1680
+ACT_DOTA_MINI_TAUNT = 1681
+ACT_DOTA_ARCTIC_BURN_END = 1682
+ACT_DOTA_LOADOUT_RARE = 1683
+ACT_DOTA_SWIM = 1684
+ACT_DOTA_FLEE = 1685
+ACT_DOTA_TROT = 1686
+ACT_DOTA_SHAKE = 1687
+ACT_DOTA_SWIM_IDLE = 1688
+ACT_DOTA_WAIT_IDLE = 1689
+ACT_DOTA_GREET = 1690
+ACT_DOTA_TELEPORT_COOP_START = 1691
+ACT_DOTA_TELEPORT_COOP_WAIT = 1692
+ACT_DOTA_TELEPORT_COOP_END = 1693
+ACT_DOTA_TELEPORT_COOP_EXIT = 1694
+ACT_DOTA_SHOPKEEPER_PET_INTERACT = 1695
+ACT_DOTA_ITEM_PICKUP = 1696
+ACT_DOTA_ITEM_DROP = 1697
+ACT_DOTA_CAPTURE_PET = 1698
+ACT_DOTA_PET_WARD_OBSERVER = 1699
+ACT_DOTA_PET_WARD_SENTRY = 1700
+ACT_DOTA_PET_LEVEL = 1701
+ACT_DOTA_CAST_BURROW_END = 1702
+ACT_DOTA_LIFESTEALER_ASSIMILATE = 1703
+ACT_DOTA_LIFESTEALER_EJECT = 1704
+ACT_DOTA_ATTACK_EVENT_BASH = 1705
+ACT_DOTA_CAPTURE_RARE = 1706
+ACT_DOTA_AW_MAGNETIC_FIELD = 1707
+ACT_DOTA_CAST_GHOST_SHIP = 1708
+ACT_DOTA_FXANIM = 1709
+ACT_DOTA_VICTORY_START = 1710
+ACT_DOTA_DEFEAT_START = 1711
+ACT_DOTA_DP_SPIRIT_SIPHON = 1712
+ACT_DOTA_TRICKS_END = 1713
+ACT_DOTA_ES_STONE_CALLER = 1714
+ACT_DOTA_MK_STRIKE = 1715
+ACT_DOTA_VERSUS = 1716
+ACT_DOTA_CAPTURE_CARD = 1717
+ACT_DOTA_MK_SPRING_SOAR = 1718
+ACT_DOTA_MK_SPRING_END = 1719
+ACT_DOTA_MK_TREE_SOAR = 1720
+ACT_DOTA_MK_TREE_END = 1721
+ACT_DOTA_MK_FUR_ARMY = 1722
+ACT_DOTA_MK_SPRING_CAST = 1723
+ACT_DOTA_NECRO_GHOST_SHROUD = 1724
+ACT_DOTA_OVERRIDE_ARCANA = 1725
+ACT_DOTA_SLIDE = 1726
+ACT_DOTA_SLIDE_LOOP = 1727
+ACT_DOTA_GENERIC_CHANNEL_1 = 1728
+ACT_DOTA_GS_SOUL_CHAIN = 1729
+ACT_DOTA_GS_INK_CREATURE = 1730
+ACT_DOTA_TRANSITION = 1731
+ACT_DOTA_BLINK_DAGGER = 1732
+ACT_DOTA_BLINK_DAGGER_END = 1733
+ACT_DOTA_CUSTOM_TOWER_ATTACK = 1734
+ACT_DOTA_CUSTOM_TOWER_IDLE = 1735
+ACT_DOTA_CUSTOM_TOWER_DIE = 1736
+ACT_DOTA_CAST_COLD_SNAP_ORB = 1737
+ACT_DOTA_CAST_GHOST_WALK_ORB = 1738
+ACT_DOTA_CAST_TORNADO_ORB = 1739
+ACT_DOTA_CAST_EMP_ORB = 1740
+ACT_DOTA_CAST_ALACRITY_ORB = 1741
+ACT_DOTA_CAST_CHAOS_METEOR_ORB = 1742
+ACT_DOTA_CAST_SUN_STRIKE_ORB = 1743
+ACT_DOTA_CAST_FORGE_SPIRIT_ORB = 1744
+ACT_DOTA_CAST_ICE_WALL_ORB = 1745
+ACT_DOTA_CAST_DEAFENING_BLAST_ORB = 1746
+ACT_DOTA_NOTICE = 1747
+ACT_DOTA_CAST_ABILITY_2_ALLY = 1748
+ACT_DOTA_SHUFFLE_L = 1749
+ACT_DOTA_SHUFFLE_R = 1750
+ACT_DOTA_OVERRIDE_LOADOUT = 1751
+ACT_DOTA_TAUNT_SPECIAL = 1752
+ACT_DOTA_TELEPORT_START = 1753
+ACT_DOTA_GENERIC_CHANNEL_1_START = 1754
+ACT_DOTA_CUSTOM_TOWER_IDLE_RARE = 1755
+ACT_DOTA_CUSTOM_TOWER_TAUNT = 1756
+ACT_DOTA_CUSTOM_TOWER_HIGH_FIVE = 1757
+ACT_DOTA_ATTACK_SPECIAL = 1758
+ACT_DOTA_TRANSITION_IDLE = 1759
+ACT_DOTA_PIERCE_THE_VEIL = 1760
+ACT_DOTA_RUN_RARE = 1761
+ACT_DOTA_VIPER_DIVE = 1762
+ACT_DOTA_VIPER_DIVE_END = 1763
+ACT_DOTA_MK_STRIKE_END = 1764
+ACT_DOTA_SHADOW_VAULT = 1765
+ACT_DOTA_KEZ_KATANA_ULT_START = 1766
+ACT_DOTA_KEZ_KATANA_ULT_CHAIN_A = 1767
+ACT_DOTA_KEZ_KATANA_ULT_CHAIN_B = 1768
+ACT_DOTA_KEZ_KATANA_ULT_END = 1769
+ACT_DOTA_KEZ_KATANA_IMPALE = 1770
+ACT_DOTA_KEZ_KATANA_IMPALE_FAST = 1771
+ACT_DOTA_UNICYCLE = 1772
+ACT_DOTA_UNICYCLE_END = 1773
+ACT_DOTA_LARGO_ULT_STRUM_SUCCESS = 1774
+ACT_DOTA_LARGO_ULT_STRUM_FAIL = 1775
+ACT_DOTA_MVP_SCREEN = 1776
+ACT_DOTA_LARGO_ULT_TOGGLE_ON = 1777
+ACT_DOTA_LARGO_ULT_TOGGLE_OFF = 1778
+ACT_DOTA_RUN_STATUE = 1779
+ACT_DOTA_CAST1_STATUE = 1780
+ACT_DOTA_CAST2_STATUE = 1781
+ACT_DOTA_STUN_STATUE = 1782
+ACT_DOTA_FLAIL_STATUE = 1783
+ACT_DOTA_SPAWN_STATUE = 1784
+ACT_DOTA_TELEPORT_END_STATUE = 1785
+ACT_DOTA_ATTACK_STATUE = 1786
+ACT_DOTA_FORCESTAFF_STATUE = 1787
+ACT_DOTA_TELEPORT_STATUE = 1788
+ACT_DOTA_VICTORY_STATUE = 1789
+ACT_DOTA_TAUNT_STATUE = 1790
+ACT_DOTA_DISABLED_END = 1791
+ACT_DOTA_CAST3_STATUE = 1792
+ACT_DOTA_CAST4_STATUE = 1793
+ACT_DOTA_CAST5_STATUE = 1794
+ACT_DOTA_IDLE_STATUE = 1795
+ACT_DOTA_RELAX_IN = 1796
+ACT_DOTA_RELAX_OUT = 1797
+ACT_DOTA_CAST_FENCE = 1798
+ACT_DOTA_RADIANT_CREEP_HAMMER = 1800
+ACT_DOTA_SPWN = 1801
+ACT_DOTA_RUN_ALT = 1805
+ACT_DOTA_VOODOO_REST = 1806
+ACT_DOTA_CYCLONE = 1807
+ACT_DOTA_IMPALE = 1808
+
+--- Enum LuaModifierType
+LUA_MODIFIER_MOTION_NONE = 0
+LUA_MODIFIER_MOTION_HORIZONTAL = 1
+LUA_MODIFIER_MOTION_VERTICAL = 2
+LUA_MODIFIER_MOTION_BOTH = 3
+LUA_MODIFIER_INVALID = 4
+
+--- Enum modifierfunction
+MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE = 0
+MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE_TARGET = 1
+MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE_PROC = 2
+MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE_POST_CRIT = 3
+MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE = 4
+MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_PHYSICAL = 5
+MODIFIER_PROPERTY_PROCATTACK_CONVERT_PHYSICAL_TO_MAGICAL = 6
+MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_MAGICAL = 7
+MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_PURE = 8
+MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_MAGICAL_TARGET = 9
+MODIFIER_PROPERTY_PROCATTACK_FEEDBACK = 10
+MODIFIER_PROPERTY_OVERRIDE_ATTACK_DAMAGE = 11
+MODIFIER_PROPERTY_PRE_ATTACK = 12
+MODIFIER_PROPERTY_INVISIBILITY_LEVEL = 13
+MODIFIER_PROPERTY_INVISIBILITY_ATTACK_BEHAVIOR_EXCEPTION = 14
+MODIFIER_PROPERTY_PERSISTENT_INVISIBILITY = 15
+MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT = 16
+MODIFIER_PROPERTY_MOVESPEED_BASE_OVERRIDE = 17
+MODIFIER_PROPERTY_MOVESPEED_MIN_OVERRIDE = 18
+MODIFIER_PROPERTY_MOVESPEED_MAX_OVERRIDE = 19
+MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE = 20
+MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE_UNIQUE = 21
+MODIFIER_PROPERTY_MOVESPEED_BONUS_UNIQUE = 22
+MODIFIER_PROPERTY_MOVESPEED_BONUS_UNIQUE_2 = 23
+MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT_UNIQUE = 24
+MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT_UNIQUE_2 = 25
+MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE = 26
+MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE_MIN = 27
+MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE_MAX = 28
+MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT = 29
+MODIFIER_PROPERTY_MOVESPEED_LIMIT = 30
+MODIFIER_PROPERTY_ATTACKSPEED_BASE_OVERRIDE = 31
+MODIFIER_PROPERTY_FIXED_ATTACK_RATE = 32
+MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT = 33
+MODIFIER_PROPERTY_IGNORE_ATTACKSPEED_LIMIT = 34
+MODIFIER_PROPERTY_COOLDOWN_REDUCTION_CONSTANT = 35
+MODIFIER_PROPERTY_MANACOST_REDUCTION_CONSTANT = 36
+MODIFIER_PROPERTY_HEALTHCOST_REDUCTION_CONSTANT = 37
+MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT = 38
+MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT_ADJUST = 39
+MODIFIER_PROPERTY_BASE_ATTACK_TIME_PERCENTAGE = 40
+MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT = 41
+MODIFIER_PROPERTY_BONUSDAMAGEOUTGOING_PERCENTAGE = 42
+MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE = 43
+MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION = 44
+MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION_AMPLIFY = 45
+MODIFIER_PROPERTY_TOTALDAMAGEOUTGOING_PERCENTAGE = 46
+MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE = 47
+MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_UNIQUE = 48
+MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_TARGET = 49
+MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE = 50
+MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET = 51
+MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE = 52
+MODIFIER_PROPERTY_LIFESTEAL_AMPLIFY_PERCENTAGE = 53
+MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE = 54
+MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE_UNIQUE = 55
+MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE = 56
+MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE_UNIQUE = 57
+MODIFIER_PROPERTY_MANA_DRAIN_AMPLIFY_PERCENTAGE = 58
+MODIFIER_PROPERTY_MP_RESTORE_AMPLIFY_PERCENTAGE = 59
+MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE = 60
+MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE_UNIQUE = 61
+MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE = 62
+MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_PERCENTAGE = 63
+MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_CONSTANT = 64
+MODIFIER_PROPERTY_INCOMING_SPELL_DAMAGE_CONSTANT = 65
+MODIFIER_PROPERTY_EVASION_CONSTANT = 66
+MODIFIER_PROPERTY_NEGATIVE_EVASION_CONSTANT = 67
+MODIFIER_PROPERTY_STATUS_RESISTANCE = 68
+MODIFIER_PROPERTY_STATUS_RESISTANCE_STACKING = 69
+MODIFIER_PROPERTY_STATUS_RESISTANCE_CASTER = 70
+MODIFIER_PROPERTY_AVOID_DAMAGE = 71
+MODIFIER_PROPERTY_AVOID_SPELL = 72
+MODIFIER_PROPERTY_MISS_PERCENTAGE = 73
+MODIFIER_PROPERTY_PHYSICAL_ARMOR_BASE_PERCENTAGE = 74
+MODIFIER_PROPERTY_PHYSICAL_ARMOR_TOTAL_PERCENTAGE = 75
+MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS = 76
+MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE = 77
+MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE_ACTIVE = 78
+MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_POST = 79
+MODIFIER_PROPERTY_MIN_PHYSICAL_ARMOR = 80
+MODIFIER_PROPERTY_IGNORE_PHYSICAL_ARMOR = 81
+MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BASE_REDUCTION = 82
+MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DIRECT_MODIFICATION = 83
+MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS = 84
+MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_ILLUSIONS = 85
+MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_UNIQUE = 86
+MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE = 87
+MODIFIER_PROPERTY_BASE_MANA_REGEN = 88
+MODIFIER_PROPERTY_MANA_REGEN_CONSTANT = 89
+MODIFIER_PROPERTY_MANA_REGEN_CONSTANT_UNIQUE = 90
+MODIFIER_PROPERTY_MANA_REGEN_TOTAL_PERCENTAGE = 91
+MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT = 92
+MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE = 93
+MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE_UNIQUE = 94
+MODIFIER_PROPERTY_HEALTH_BONUS = 95
+MODIFIER_PROPERTY_MANA_BONUS = 96
+MODIFIER_PROPERTY_EXTRA_STRENGTH_BONUS = 97
+MODIFIER_PROPERTY_EXTRA_HEALTH_BONUS = 98
+MODIFIER_PROPERTY_EXTRA_MANA_BONUS = 99
+MODIFIER_PROPERTY_EXTRA_MANA_BONUS_PERCENTAGE = 100
+MODIFIER_PROPERTY_EXTRA_HEALTH_PERCENTAGE = 101
+MODIFIER_PROPERTY_EXTRA_MANA_PERCENTAGE = 102
+MODIFIER_PROPERTY_STATS_STRENGTH_BONUS = 103
+MODIFIER_PROPERTY_STATS_AGILITY_BONUS = 104
+MODIFIER_PROPERTY_STATS_INTELLECT_BONUS = 105
+MODIFIER_PROPERTY_STATS_STRENGTH_BONUS_PERCENTAGE = 106
+MODIFIER_PROPERTY_STATS_AGILITY_BONUS_PERCENTAGE = 107
+MODIFIER_PROPERTY_STATS_INTELLECT_BONUS_PERCENTAGE = 108
+MODIFIER_PROPERTY_STATS_INTELLECT_NONE = 109
+MODIFIER_PROPERTY_CAST_RANGE_BONUS = 110
+MODIFIER_PROPERTY_CAST_RANGE_BONUS_PERCENTAGE = 111
+MODIFIER_PROPERTY_CAST_RANGE_BONUS_TARGET = 112
+MODIFIER_PROPERTY_CAST_RANGE_BONUS_STACKING = 113
+MODIFIER_PROPERTY_ATTACK_RANGE_BASE_OVERRIDE = 114
+MODIFIER_PROPERTY_ATTACK_RANGE_BONUS = 115
+MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_UNIQUE = 116
+MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_PERCENTAGE = 117
+MODIFIER_PROPERTY_MAX_ATTACK_RANGE = 118
+MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS = 119
+MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS_PERCENTAGE = 120
+MODIFIER_PROPERTY_PROJECTILE_NAME = 121
+MODIFIER_PROPERTY_REINCARNATION = 122
+MODIFIER_PROPERTY_REINCARNATION_SUPPRESS_FX = 123
+MODIFIER_PROPERTY_RESPAWNTIME = 124
+MODIFIER_PROPERTY_RESPAWNTIME_PERCENTAGE = 125
+MODIFIER_PROPERTY_RESPAWNTIME_STACKING = 126
+MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE = 127
+MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_ONGOING = 128
+MODIFIER_PROPERTY_CASTTIME_PERCENTAGE = 129
+MODIFIER_PROPERTY_ATTACK_ANIM_TIME_PERCENTAGE = 130
+MODIFIER_PROPERTY_MANACOST_PERCENTAGE = 131
+MODIFIER_PROPERTY_MANACOST_PERCENTAGE_STACKING = 132
+MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE = 133
+MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE_STACKING = 134
+MODIFIER_PROPERTY_DEATHGOLDCOST = 135
+MODIFIER_PROPERTY_PERCENTAGE_DEATHGOLDCOST = 136
+MODIFIER_PROPERTY_EXP_RATE_BOOST = 137
+MODIFIER_PROPERTY_GOLD_RATE_BOOST = 138
+MODIFIER_PROPERTY_KILL_ASSIST_GOLD_BOOST = 139
+MODIFIER_PROPERTY_CONVERT_EXP_TO_GOLD_PCT = 140
+MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE = 141
+MODIFIER_PROPERTY_PREATTACK_TARGET_CRITICALSTRIKE = 142
+MODIFIER_PROPERTY_MAGICAL_CONSTANT_BLOCK = 143
+MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK = 144
+MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK_SPECIAL = 145
+MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK_BONUS = 146
+MODIFIER_PROPERTY_INNATE_DAMAGE_BLOCK_PCT_OVERRIDE = 147
+MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_UNAVOIDABLE_PRE_ARMOR = 148
+MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK = 149
+MODIFIER_PROPERTY_OVERRIDE_ANIMATION = 150
+MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE = 151
+MODIFIER_PROPERTY_ABSORB_SPELL = 152
+MODIFIER_PROPERTY_REFLECT_SPELL = 153
+MODIFIER_PROPERTY_DISABLE_AUTOATTACK = 154
+MODIFIER_PROPERTY_BONUS_DAY_VISION = 155
+MODIFIER_PROPERTY_BONUS_DAY_VISION_PERCENTAGE = 156
+MODIFIER_PROPERTY_BONUS_NIGHT_VISION = 157
+MODIFIER_PROPERTY_BONUS_NIGHT_VISION_UNIQUE = 158
+MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE = 159
+MODIFIER_PROPERTY_FIXED_DAY_VISION = 160
+MODIFIER_PROPERTY_FIXED_NIGHT_VISION = 161
+MODIFIER_PROPERTY_MIN_HEALTH = 162
+MODIFIER_PROPERTY_MIN_MANA = 163
+MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL = 164
+MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL = 165
+MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE = 166
+MODIFIER_PROPERTY_IS_ILLUSION = 167
+MODIFIER_PROPERTY_ILLUSION_LABEL = 168
+MODIFIER_PROPERTY_STRONG_ILLUSION = 169
+MODIFIER_PROPERTY_SUPER_ILLUSION = 170
+MODIFIER_PROPERTY_SUPER_ILLUSION_WITH_ULTIMATE = 171
+MODIFIER_PROPERTY_XP_DURING_DEATH = 172
+MODIFIER_PROPERTY_TURN_RATE_PERCENTAGE = 173
+MODIFIER_PROPERTY_TURN_RATE_OVERRIDE = 174
+MODIFIER_PROPERTY_DISABLE_HEALING = 175
+MODIFIER_PROPERTY_DISABLE_MANA_GAIN = 176
+MODIFIER_PROPERTY_ALWAYS_ALLOW_ATTACK = 177
+MODIFIER_PROPERTY_ALWAYS_ETHEREAL_ATTACK = 178
+MODIFIER_PROPERTY_OVERRIDE_ATTACK_MAGICAL = 179
+MODIFIER_PROPERTY_UNIT_STATS_NEEDS_REFRESH = 180
+MODIFIER_PROPERTY_BOUNTY_CREEP_MULTIPLIER = 181
+MODIFIER_PROPERTY_BOUNTY_OTHER_MULTIPLIER = 182
+MODIFIER_PROPERTY_UNIT_DISALLOW_UPGRADING = 183
+MODIFIER_PROPERTY_DODGE_PROJECTILE = 184
+MODIFIER_PROPERTY_TRIGGER_COSMETIC_AND_END_ATTACK = 185
+MODIFIER_PROPERTY_PRIMARY_STAT_DAMAGE_MULTIPLIER = 186
+MODIFIER_PROPERTY_PREATTACK_DEADLY_BLOW = 187
+MODIFIER_PROPERTY_ALWAYS_AUTOATTACK_WHILE_HOLD_POSITION = 188
+MODIFIER_PROPERTY_PHYSICAL_ARMOR_PIERCING_PERCENTAGE_TARGET = 189
+MODIFIER_PROPERTY_MAGICAL_ARMOR_PIERCING_PERCENTAGE_TARGET = 190
+MODIFIER_PROPERTY_CRITICAL_STRIKE_BONUS = 191
+MODIFIER_PROPERTY_CONVERT_ATTACK_PHYSICAL_TO_PURE = 192
+MODIFIER_PROPERTY_BUFF_AMPLIFICATION = 193
+MODIFIER_EVENT_ON_SPELL_TARGET_READY = 194
+MODIFIER_EVENT_ON_ATTACK_RECORD = 195
+MODIFIER_EVENT_ON_ATTACK_START = 196
+MODIFIER_EVENT_ON_ATTACK = 197
+MODIFIER_EVENT_ON_ATTACK_LANDED = 198
+MODIFIER_EVENT_ON_ATTACK_FAIL = 199
+MODIFIER_EVENT_ON_ATTACK_ALLIED = 200
+MODIFIER_EVENT_ON_PROJECTILE_DODGE = 201
+MODIFIER_EVENT_ON_ORDER = 202
+MODIFIER_EVENT_ON_ORDER_RECEIVED = 203
+MODIFIER_EVENT_ON_UNIT_MOVED = 204
+MODIFIER_EVENT_ON_ABILITY_START = 205
+MODIFIER_EVENT_ON_ABILITY_EXECUTED = 206
+MODIFIER_EVENT_ON_ABILITY_FULLY_CAST = 207
+MODIFIER_EVENT_ON_BREAK_INVISIBILITY = 208
+MODIFIER_EVENT_ON_ABILITY_END_CHANNEL = 209
+MODIFIER_EVENT_ON_PROCESS_UPGRADE = 210
+MODIFIER_EVENT_ON_REFRESH = 211
+MODIFIER_EVENT_ON_TAKEDAMAGE = 212
+MODIFIER_EVENT_ON_DEATH_PREVENTED = 213
+MODIFIER_EVENT_ON_STATE_CHANGED = 214
+MODIFIER_EVENT_ON_ORB_EFFECT = 215
+MODIFIER_EVENT_ON_PROCESS_CLEAVE = 216
+MODIFIER_EVENT_ON_DAMAGE_CALCULATED = 217
+MODIFIER_EVENT_ON_MAGIC_DAMAGE_CALCULATED = 218
+MODIFIER_EVENT_ON_ATTACKED = 219
+MODIFIER_EVENT_ON_DEATH = 220
+MODIFIER_EVENT_ON_DEATH_COMPLETED = 221
+MODIFIER_EVENT_ON_RESPAWN = 222
+MODIFIER_EVENT_ON_SPENT_MANA = 223
+MODIFIER_EVENT_ON_SPENT_HEALTH = 224
+MODIFIER_EVENT_ON_SPENT_ITEM_CHARGE = 225
+MODIFIER_EVENT_ON_TELEPORTING = 226
+MODIFIER_EVENT_ON_TELEPORTED = 227
+MODIFIER_EVENT_ON_SET_LOCATION = 228
+MODIFIER_EVENT_ON_HEALTH_GAINED = 229
+MODIFIER_EVENT_ON_MANA_GAINED = 230
+MODIFIER_EVENT_ON_TAKEDAMAGE_KILLCREDIT = 231
+MODIFIER_EVENT_ON_HERO_KILLED = 232
+MODIFIER_EVENT_ON_HEAL_RECEIVED = 233
+MODIFIER_EVENT_ON_BUILDING_KILLED = 234
+MODIFIER_EVENT_ON_MODEL_CHANGED = 235
+MODIFIER_EVENT_ON_MODIFIER_ADDED = 236
+MODIFIER_EVENT_ON_MODIFIER_REMOVED = 237
+MODIFIER_EVENT_ON_KNOCKBACK_ATTEMPTED = 238
+MODIFIER_EVENT_ON_SCEPTER_UPGRADE_SELECTED = 239
+MODIFIER_EVENT_ON_SHARD_UPGRADE_SELECTED = 240
+MODIFIER_PROPERTY_TOOLTIP = 241
+MODIFIER_PROPERTY_MODEL_CHANGE = 242
+MODIFIER_PROPERTY_MODEL_SCALE = 243
+MODIFIER_PROPERTY_MODEL_SCALE_ANIMATE_TIME = 244
+MODIFIER_PROPERTY_MODEL_SCALE_USE_IN_OUT_EASE = 245
+MODIFIER_PROPERTY_MODEL_SCALE_CONSTANT = 246
+MODIFIER_PROPERTY_IS_SCEPTER = 247
+MODIFIER_PROPERTY_IS_SHARD = 248
+MODIFIER_PROPERTY_RADAR_COOLDOWN_REDUCTION = 249
+MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS = 250
+MODIFIER_PROPERTY_TRANSLATE_ATTACK_SOUND = 251
+MODIFIER_PROPERTY_LIFETIME_FRACTION = 252
+MODIFIER_PROPERTY_PROVIDES_FOW_POSITION = 253
+MODIFIER_PROPERTY_SPELLS_REQUIRE_HP = 254
+MODIFIER_PROPERTY_CONVERT_MANA_COST_TO_HEALTH_COST = 255
+MODIFIER_PROPERTY_FORCE_DRAW_MINIMAP = 256
+MODIFIER_PROPERTY_DISABLE_TURNING = 257
+MODIFIER_PROPERTY_IGNORE_CAST_ANGLE = 258
+MODIFIER_PROPERTY_CHANGE_ABILITY_VALUE = 259
+MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL = 260
+MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL_VALUE = 261
+MODIFIER_PROPERTY_ABILITY_LAYOUT = 262
+MODIFIER_EVENT_ON_DOMINATED = 263
+MODIFIER_EVENT_ON_KILL = 264
+MODIFIER_EVENT_ON_ASSIST = 265
+MODIFIER_PROPERTY_TEMPEST_DOUBLE = 266
+MODIFIER_PROPERTY_PRESERVE_PARTICLES_ON_MODEL_CHANGE = 267
+MODIFIER_EVENT_ON_ATTACK_FINISHED = 268
+MODIFIER_PROPERTY_IGNORE_COOLDOWN = 269
+MODIFIER_PROPERTY_CAN_ATTACK_TREES = 270
+MODIFIER_PROPERTY_VISUAL_Z_DELTA = 271
+MODIFIER_PROPERTY_VISUAL_Z_SPEED_BASE_OVERRIDE = 272
+MODIFIER_PROPERTY_INCOMING_DAMAGE_ILLUSION = 273
+MODIFIER_PROPERTY_DONT_GIVE_VISION_OF_ATTACKER = 274
+MODIFIER_PROPERTY_TOOLTIP2 = 275
+MODIFIER_EVENT_ON_ATTACK_RECORD_DESTROY = 276
+MODIFIER_EVENT_ON_PROJECTILE_OBSTRUCTION_HIT = 277
+MODIFIER_PROPERTY_SUPPRESS_TELEPORT = 278
+MODIFIER_EVENT_ON_ATTACK_CANCELLED = 279
+MODIFIER_PROPERTY_SUPPRESS_CLEAVE = 280
+MODIFIER_PROPERTY_BOT_ATTACK_SCORE_BONUS = 281
+MODIFIER_PROPERTY_ATTACKSPEED_REDUCTION_PERCENTAGE = 282
+MODIFIER_PROPERTY_MOVESPEED_REDUCTION_PERCENTAGE = 283
+MODIFIER_PROPERTY_ATTACK_WHILE_MOVING_TARGET = 284
+MODIFIER_PROPERTY_ATTACKSPEED_PERCENTAGE = 285
+MODIFIER_EVENT_ON_ATTEMPT_PROJECTILE_DODGE = 286
+MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_STACKING = 287
+MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET = 288
+MODIFIER_PROPERTY_TURN_RATE_CONSTANT = 289
+MODIFIER_PROPERTY_PACK_RAT = 290
+MODIFIER_PROPERTY_PHYSICALDAMAGEOUTGOING_PERCENTAGE = 291
+MODIFIER_PROPERTY_KNOCKBACK_AMPLIFICATION_PERCENTAGE = 292
+MODIFIER_PROPERTY_HEALTHBAR_PIPS = 293
+MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT = 294
+MODIFIER_EVENT_SPELL_APPLIED_SUCCESSFULLY = 295
+MODIFIER_PROPERTY_AVOID_DAMAGE_AFTER_REDUCTIONS = 296
+MODIFIER_PROPERTY_FAIL_ATTACK = 297
+MODIFIER_PROPERTY_PREREDUCE_INCOMING_DAMAGE_MULT = 298
+MODIFIER_PROPERTY_SUPPRESS_FULLSCREEN_DEATH_FX = 299
+MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST = 300
+MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_MULTIPLICATIVE = 301
+MODIFIER_PROPERTY_TICK_GOLD_MULTIPLIER = 302
+MODIFIER_PROPERTY_SLOW_RESISTANCE_UNIQUE = 303
+MODIFIER_PROPERTY_SLOW_RESISTANCE_STACKING = 304
+MODIFIER_PROPERTY_SLOW_RESISTANCE_APPLIES_TO_ATTACKS = 305
+MODIFIER_PROPERTY_AOE_BONUS_PERCENTAGE = 306
+MODIFIER_PROPERTY_PROJECTILE_SPEED = 307
+MODIFIER_PROPERTY_PROJECTILE_SPEED_TARGET = 308
+MODIFIER_PROPERTY_BECOME_STRENGTH = 309
+MODIFIER_PROPERTY_BECOME_AGILITY = 310
+MODIFIER_PROPERTY_BECOME_INTELLIGENCE = 311
+MODIFIER_PROPERTY_BECOME_UNIVERSAL = 312
+MODIFIER_EVENT_ON_FORCE_PROC_MAGIC_STICK = 313
+MODIFIER_EVENT_ON_DAMAGE_HPLOSS = 314
+MODIFIER_PROPERTY_SHARE_XPRUNE = 315
+MODIFIER_PROPERTY_XP_FOUNTAIN_COUNTDOWN_TIME_OVERRIDE = 316
+MODIFIER_PROPERTY_NO_FREE_TP_SCROLL_ON_DEATH = 317
+MODIFIER_PROPERTY_HAS_BONUS_NEUTRAL_ITEM_CHOICE = 318
+MODIFIER_PROPERTY_HAS_BONUS_NEUTRAL_ITEM_PASSIVE = 319
+MODIFIER_PROPERTY_PRESERVE_NEUTRAL_ITEM_PASSIVES = 320
+MODIFIER_PROPERTY_FORCE_MAX_HEALTH = 321
+MODIFIER_PROPERTY_FORCE_MAX_MANA = 322
+MODIFIER_PROPERTY_AOE_BONUS_CONSTANT = 323
+MODIFIER_PROPERTY_AOE_BONUS_CONSTANT_STACKING = 324
+MODIFIER_EVENT_ON_TAKEDAMAGE_POST_UNAVOIDABLE_BLOCK = 325
+MODIFIER_EVENT_ON_MUTE_DAMAGE_ABILITIES = 326
+MODIFIER_PROPERTY_SUPPRESS_CRIT = 327
+MODIFIER_PROPERTY_ABILITY_POINTS = 328
+MODIFIER_PROPERTY_BUYBACK_PENALTY_PERCENT = 329
+MODIFIER_PROPERTY_ITEM_SELLBACK_COST = 330
+MODIFIER_PROPERTY_DISASSEMBLE_ANYTHING = 331
+MODIFIER_PROPERTY_FIXED_MANA_REGEN = 332
+MODIFIER_PROPERTY_BONUS_UPHILL_MISS_CHANCE = 333
+MODIFIER_PROPERTY_CREEP_DENY_PERCENT = 334
+MODIFIER_PROPERTY_ATTACKSPEED_ABSOLUTE_MAX = 335
+MODIFIER_PROPERTY_FOW_TEAM = 336
+MODIFIER_EVENT_ON_HERO_BEGIN_DYING = 337
+MODIFIER_PROPERTY_BONUS_LOTUS_HEAL = 338
+MODIFIER_PROPERTY_BASE_HP_REGEN_PER_STR_BONUS_PERCENTAGE = 339
+MODIFIER_PROPERTY_BASE_ARMOR_PER_AGI_BONUS_PERCENTAGE = 340
+MODIFIER_PROPERTY_BASE_ATTACKSPEED_PER_AGI_BONUS_PERCENTAGE = 341
+MODIFIER_PROPERTY_BASE_MP_REGEN_PER_INT_BONUS_PERCENTAGE = 342
+MODIFIER_PROPERTY_BASE_MRES_PER_INT_BONUS_PERCENTAGE = 343
+MODIFIER_EVENT_ON_DAY_STARTED = 344
+MODIFIER_EVENT_ON_NIGHT_STARTED = 345
+MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_CHANCE = 346
+MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_COUNT = 347
+MODIFIER_PROPERTY_PSEUDORANDOM_BONUS = 348
+MODIFIER_PROPERTY_ATTACK_HEIGHT_BONUS = 349
+MODIFIER_PROPERTY_SKIP_ATTACK_REGULATOR = 350
+MODIFIER_PROPERTY_MISS_PERCENTAGE_TARGET = 351
+MODIFIER_PROPERTY_ADDITIONAL_NEUTRAL_ITEM_DROPS = 352
+MODIFIER_PROPERTY_KILL_STREAK_BONUS_GOLD_PERCENTAGE = 353
+MODIFIER_PROPERTY_HP_REGEN_MULTIPLIER_PRE_AMPLIFICATION = 354
+MODIFIER_PROPERTY_HEROFACET_OVERRIDE = 355
+MODIFIER_EVENT_ON_TREE_CUT_DOWN = 356
+MODIFIER_EVENT_ON_CLEAVE_ATTACK_LANDED = 357
+MODIFIER_PROPERTY_MIN_ATTRIBUTE_LEVEL = 358
+MODIFIER_PROPERTY_TIER_TOKEN_REROLL = 359
+MODIFIER_PROPERTY_VISION_DEGREES_RESTRICTION = 360
+MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_STACKING = 361
+MODIFIER_PROPERTY_INVENTORY_SLOT_RESTRICTED = 362
+MODIFIER_EVENT_ON_TIER_TOKEN_REROLLED = 363
+MODIFIER_PROPERTY_REDIRECT_SPELL = 364
+MODIFIER_PROPERTY_BASEATTACK_POSTBONUS = 365
+MODIFIER_EVENT_ON_FOW_TEAM_CHANGED = 366
+MODIFIER_PROPERTY_SUPPRESS_ATTACK_PROCS = 367
+MODIFIER_EVENT_ON_ABILITY_TOGGLED = 368
+MODIFIER_PROPERTY_AVOID_ATTACK_PROCS = 369
+MODIFIER_EVENT_ON_RUNE_SPAWN = 370
+MODIFIER_PROPERTY_PHYSICAL_LIFESTEAL = 371
+MODIFIER_PROPERTY_MAGICAL_LIFESTEAL = 372
+MODIFIER_EVENT_ON_PURE_DAMAGE_CALCULATED = 373
+MODIFIER_EVENT_NEUTRAL_TRINKET_OPTIONS = 374
+MODIFIER_EVENT_NEUTRAL_ENHANCEMENT_OPTIONS = 375
+MODIFIER_PROPERTY_MOVESPEED_MAX_BONUS_CONSTANT = 376
+MODIFIER_PROPERTY_MOVESPEED_POST_MULTIPLIER_BONUS_CONSTANT = 377
+MODIFIER_PROPERTY_FORBID_ILLUSIONS = 378
+MODIFIER_PROPERTY_MANACOST_OVERRIDE = 379
+MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION = 380
+MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION_UNIQUE = 381
+MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE_UNIQUE = 382
+MODIFIER_PROPERTY_SUPPRESS_INCOMING_CRIT = 383
+MODIFIER_PROPERTY_UPGRADE_NEUTRAL_ARTIFACTS = 384
+MODIFIER_PROPERTY_SUPPRESS_INVALID_MOVE_ATTACK_ORDERS = 385
+MODIFIER_PROPERTY_CONSUMABLE_USE_SPEED = 386
+MODIFIER_PROPERTY_REQUIRED_LEVEL = 387
+MODIFIER_EVENT_ON_MODIFIER_REFRESHED = 388
+MODIFIER_EVENT_ON_ABILITY_SWAPPED = 389
+MODIFIER_PROPERTY_OVERRIDE_CREEP_BOUNTY = 390
+MODIFIER_PROPERTY_OVERRIDE_BASE_DAMAGE = 391
+MODIFIER_PROPERTY_UNTARGETABLE_FROM = 392
+MODIFIER_PROPERTY_UNTARGETABLE_TO = 393
+MODIFIER_PROPERTY_SUPER_ILLUSION_WITH_ITEMS = 394
+MODIFIER_EVENT_ON_PURGE = 395
+MODIFIER_EVENT_ON_ILLUSION_CREATED = 396
+MODIFIER_PROPERTY_HEROLEVELSCALE = 397
+MODIFIER_FUNCTION_LAST = 398
+MODIFIER_FUNCTION_INVALID = 65535
+
+--- Enum modifierpriority
+MODIFIER_PRIORITY_LOW = 0
+MODIFIER_PRIORITY_NORMAL = 1
+MODIFIER_PRIORITY_HIGH = 2
+MODIFIER_PRIORITY_ULTRA = 3
+MODIFIER_PRIORITY_SUPER_ULTRA = 4
+
+--- Enum modifierremove
+DOTA_BUFF_REMOVE_ALL = 0
+DOTA_BUFF_REMOVE_ENEMY = 1
+DOTA_BUFF_REMOVE_ALLY = 2
+
+--- Enum modifierstate
+MODIFIER_STATE_ROOTED = 0
+MODIFIER_STATE_DISARMED = 1
+MODIFIER_STATE_ATTACK_IMMUNE = 2
+MODIFIER_STATE_SILENCED = 3
+MODIFIER_STATE_MUTED = 4
+MODIFIER_STATE_STUNNED = 5
+MODIFIER_STATE_HEXED = 6
+MODIFIER_STATE_INVISIBLE = 7
+MODIFIER_STATE_INVULNERABLE = 8
+MODIFIER_STATE_MAGIC_IMMUNE = 9
+MODIFIER_STATE_PROVIDES_VISION = 10
+MODIFIER_STATE_NIGHTMARED = 11
+MODIFIER_STATE_BLOCK_DISABLED = 12
+MODIFIER_STATE_EVADE_DISABLED = 13
+MODIFIER_STATE_UNSELECTABLE = 14
+MODIFIER_STATE_CANNOT_TARGET_ENEMIES = 15
+MODIFIER_STATE_CANNOT_TARGET_BUILDINGS = 16
+MODIFIER_STATE_CANNOT_MISS = 17
+MODIFIER_STATE_SPECIALLY_DENIABLE = 18
+MODIFIER_STATE_FROZEN = 19
+MODIFIER_STATE_COMMAND_RESTRICTED = 20
+MODIFIER_STATE_NOT_ON_MINIMAP = 21
+MODIFIER_STATE_LOW_ATTACK_PRIORITY = 22
+MODIFIER_STATE_NO_HEALTH_BAR = 23
+MODIFIER_STATE_NO_HEALTH_BAR_FOR_ENEMIES = 24
+MODIFIER_STATE_NO_HEALTH_BAR_FOR_OTHER_PLAYERS = 25
+MODIFIER_STATE_FLYING = 26
+MODIFIER_STATE_NO_UNIT_COLLISION = 27
+MODIFIER_STATE_NO_TEAM_MOVE_TO = 28
+MODIFIER_STATE_NO_TEAM_SELECT = 29
+MODIFIER_STATE_PASSIVES_DISABLED = 30
+MODIFIER_STATE_DOMINATED = 31
+MODIFIER_STATE_BLIND = 32
+MODIFIER_STATE_OUT_OF_GAME = 33
+MODIFIER_STATE_FAKE_ALLY = 34
+MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY = 35
+MODIFIER_STATE_TRUESIGHT_IMMUNE = 36
+MODIFIER_STATE_UNTARGETABLE = 37
+MODIFIER_STATE_UNTARGETABLE_ALLIED = 38
+MODIFIER_STATE_UNTARGETABLE_ENEMY = 39
+MODIFIER_STATE_UNTARGETABLE_SELF = 40
+MODIFIER_STATE_IGNORING_MOVE_AND_ATTACK_ORDERS = 41
+MODIFIER_STATE_ALLOW_PATHING_THROUGH_TREES = 42
+MODIFIER_STATE_NOT_ON_MINIMAP_FOR_ENEMIES = 43
+MODIFIER_STATE_UNSLOWABLE = 44
+MODIFIER_STATE_TETHERED = 45
+MODIFIER_STATE_IGNORING_STOP_ORDERS = 46
+MODIFIER_STATE_FEARED = 47
+MODIFIER_STATE_TAUNTED = 48
+MODIFIER_STATE_CANNOT_BE_MOTION_CONTROLLED = 49
+MODIFIER_STATE_FORCED_FLYING_VISION = 50
+MODIFIER_STATE_ATTACK_ALLIES = 51
+MODIFIER_STATE_ALLOW_PATHING_THROUGH_CLIFFS = 52
+MODIFIER_STATE_ALLOW_PATHING_THROUGH_POWER_COGS = 53
+MODIFIER_STATE_SPECIALLY_UNDENIABLE = 54
+MODIFIER_STATE_ALLOW_PATHING_THROUGH_OBSTRUCTIONS = 55
+MODIFIER_STATE_DEBUFF_IMMUNE = 56
+MODIFIER_STATE_ALLOW_PATHING_THROUGH_BASE_BLOCKER = 57
+MODIFIER_STATE_IGNORING_MOVE_ORDERS = 58
+MODIFIER_STATE_ATTACKS_ARE_MELEE = 59
+MODIFIER_STATE_CAN_USE_BACKPACK_ITEMS = 60
+MODIFIER_STATE_CASTS_IGNORE_CHANNELING = 61
+MODIFIER_STATE_ATTACKS_DONT_REVEAL = 62
+MODIFIER_STATE_NEUTRALS_DONT_ATTACK = 63
+MODIFIER_STATE_LAST = 64
+
+--- Enum ParticleAttachment_t
+PATTACH_INVALID = -1
+PATTACH_ABSORIGIN = 0
+PATTACH_ABSORIGIN_FOLLOW = 1
+PATTACH_CUSTOMORIGIN = 2
+PATTACH_CUSTOMORIGIN_FOLLOW = 3
+PATTACH_POINT = 4
+PATTACH_POINT_FOLLOW = 5
+PATTACH_EYES_FOLLOW = 6
+PATTACH_OVERHEAD_FOLLOW = 7
+PATTACH_WORLDORIGIN = 8
+PATTACH_ROOTBONE_FOLLOW = 9
+PATTACH_RENDERORIGIN_FOLLOW = 10
+PATTACH_MAIN_VIEW = 11
+PATTACH_WATERWAKE = 12
+PATTACH_CENTER_FOLLOW = 13
+PATTACH_CUSTOM_GAME_STATE_1 = 14
+PATTACH_HEALTHBAR = 15
+MAX_PATTACH_TYPES = 16
+
+--- Enum PseudoRandom
+DOTA_PSEUDO_RANDOM_NONE = 0
+DOTA_PSEUDO_RANDOM_MAGNUS_SHARD = 1
+DOTA_PSEUDO_RANDOM_PHANTOMASSASSIN_CRIT = 2
+DOTA_PSEUDO_RANDOM_PHANTOMASSASSIN_DAGGER = 3
+DOTA_PSEUDO_RANDOM_PHANTOMLANCER_JUXTAPOSE = 4
+DOTA_PSEUDO_RANDOM_TINY_CRAGGY = 5
+DOTA_PSEUDO_RANDOM_COLD_REBUKE = 6
+DOTA_PSEUDO_RANDOM_WOLF_CRIT = 7
 DOTA_PSEUDO_RANDOM_AXE_HELIX = 8
 DOTA_PSEUDO_RANDOM_AXE_HELIX_ATTACK = 9
-DOTA_PSEUDO_RANDOM_BREWMASTER_CINDER_BREW = 23
-DOTA_PSEUDO_RANDOM_BREWMASTER_CRIT = 22
-DOTA_PSEUDO_RANDOM_CHAOS_CRIT = 28
-DOTA_PSEUDO_RANDOM_CHAOS_DOUBLE_CRIT = 60
-DOTA_PSEUDO_RANDOM_CHAOS_KNIGHT_INNATE_REFUND = 67
-DOTA_PSEUDO_RANDOM_CHAOS_TRIPLE_CRIT = 61
-DOTA_PSEUDO_RANDOM_CM_FREEZING_FIELD = 31
-DOTA_PSEUDO_RANDOM_COLD_REBUKE = 6
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_1 = 81
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_2 = 82
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_3 = 83
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_4 = 84
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_5 = 85
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_6 = 86
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_7 = 87
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_8 = 88
-DOTA_PSEUDO_RANDOM_CUSTOM_GAME_9 = 89
-DOTA_PSEUDO_RANDOM_CUSTOM_GENERIC = 80
-DOTA_PSEUDO_RANDOM_DAZZLE_SCEPTER = 27
+DOTA_PSEUDO_RANDOM_LEGION_MOMENT = 10
+DOTA_PSEUDO_RANDOM_SLARDAR_BASH = 11
+DOTA_PSEUDO_RANDOM_OD_ESSENCE = 12
 DOTA_PSEUDO_RANDOM_DROW_MARKSMANSHIP = 13
+DOTA_PSEUDO_RANDOM_OGRE_MAGI_FIREBLAST = 14
+DOTA_PSEUDO_RANDOM_OGRE_ITEM_MULTICAST = 15
+DOTA_PSEUDO_RANDOM_SPIRITBREAKER_GREATERBASH = 16
+DOTA_PSEUDO_RANDOM_LONE_DRUID_ENTANGLE = 17
 DOTA_PSEUDO_RANDOM_FACELESS_BASH = 18
-DOTA_PSEUDO_RANDOM_FACELESS_EVADE_ATTACK = 20
 DOTA_PSEUDO_RANDOM_FACELESS_EVADE_SPELL = 19
+DOTA_PSEUDO_RANDOM_FACELESS_EVADE_ATTACK = 20
 DOTA_PSEUDO_RANDOM_FACELESS_VOID_BACKTRACK = 21
+DOTA_PSEUDO_RANDOM_BREWMASTER_CRIT = 22
+DOTA_PSEUDO_RANDOM_BREWMASTER_CINDER_BREW = 23
+DOTA_PSEUDO_RANDOM_SNIPER_HEADSHOT = 24
+DOTA_PSEUDO_RANDOM_ATOS = 25
+DOTA_PSEUDO_RANDOM_JUGG_CRIT = 26
+DOTA_PSEUDO_RANDOM_DAZZLE_SCEPTER = 27
+DOTA_PSEUDO_RANDOM_CHAOS_CRIT = 28
+DOTA_PSEUDO_RANDOM_LYCAN_CRIT = 29
+DOTA_PSEUDO_RANDOM_TUSK_CRIT = 30
+DOTA_PSEUDO_RANDOM_CM_FREEZING_FIELD = 31
 DOTA_PSEUDO_RANDOM_GENERIC_BASHER = 32
-DOTA_PSEUDO_RANDOM_GENERIC_EVASION = 62
-DOTA_PSEUDO_RANDOM_GENERIC_HEIGHT_MISS = 63
-DOTA_PSEUDO_RANDOM_GENERIC_MISS = 64
-DOTA_PSEUDO_RANDOM_HOODWINK_REDIRECT = 78
+DOTA_PSEUDO_RANDOM_SKELETONKING_CRIT = 33
+DOTA_PSEUDO_RANDOM_SKELETONKING_CRIT_MORTAL = 34
+DOTA_PSEUDO_RANDOM_ITEM_GREATERCRIT = 35
+DOTA_PSEUDO_RANDOM_ITEM_LESSERCRIT = 36
+DOTA_PSEUDO_RANDOM_ITEM_BASHER = 37
+DOTA_PSEUDO_RANDOM_ITEM_SOLAR_CREST = 38
+DOTA_PSEUDO_RANDOM_ITEM_JAVELIN_ACCURACY = 39
+DOTA_PSEUDO_RANDOM_ITEM_TRIDENT = 40
 DOTA_PSEUDO_RANDOM_ITEM_ABYSSAL = 41
 DOTA_PSEUDO_RANDOM_ITEM_ABYSSAL_BLOCK = 42
-DOTA_PSEUDO_RANDOM_ITEM_BASHER = 37
-DOTA_PSEUDO_RANDOM_ITEM_BUTTERFLY = 51
+DOTA_PSEUDO_RANDOM_ITEM_STOUT = 43
+DOTA_PSEUDO_RANDOM_ITEM_VANGUARD = 44
 DOTA_PSEUDO_RANDOM_ITEM_CRIMSON_GUARD = 45
-DOTA_PSEUDO_RANDOM_ITEM_GREATERCRIT = 35
+DOTA_PSEUDO_RANDOM_ITEM_PMS = 46
 DOTA_PSEUDO_RANDOM_ITEM_HALBRED_MAIM = 47
-DOTA_PSEUDO_RANDOM_ITEM_JAVELIN_ACCURACY = 39
-DOTA_PSEUDO_RANDOM_ITEM_LESSERCRIT = 36
+DOTA_PSEUDO_RANDOM_ITEM_SANGEYASHA_MAIM = 48
+DOTA_PSEUDO_RANDOM_ITEM_SANGEKAYA_MAIM = 49
+DOTA_PSEUDO_RANDOM_ITEM_SANGE_MAIM = 50
+DOTA_PSEUDO_RANDOM_ITEM_BUTTERFLY = 51
 DOTA_PSEUDO_RANDOM_ITEM_MAELSTROM = 52
 DOTA_PSEUDO_RANDOM_ITEM_MJOLLNIR = 53
 DOTA_PSEUDO_RANDOM_ITEM_MJOLLNIR_STATIC = 54
 DOTA_PSEUDO_RANDOM_ITEM_MKB = 55
-DOTA_PSEUDO_RANDOM_ITEM_NAGINATA = 57
-DOTA_PSEUDO_RANDOM_ITEM_PMS = 46
-DOTA_PSEUDO_RANDOM_ITEM_SANGEKAYA_MAIM = 49
-DOTA_PSEUDO_RANDOM_ITEM_SANGEYASHA_MAIM = 48
-DOTA_PSEUDO_RANDOM_ITEM_SANGE_MAIM = 50
 DOTA_PSEUDO_RANDOM_ITEM_SILVER_EDGE = 56
-DOTA_PSEUDO_RANDOM_ITEM_SOLAR_CREST = 38
-DOTA_PSEUDO_RANDOM_ITEM_STOUT = 43
-DOTA_PSEUDO_RANDOM_ITEM_TRIDENT = 40
-DOTA_PSEUDO_RANDOM_ITEM_VANGUARD = 44
-DOTA_PSEUDO_RANDOM_JUGG_CRIT = 26
-DOTA_PSEUDO_RANDOM_KEZ_SAI = 79
-DOTA_PSEUDO_RANDOM_LEGION_MOMENT = 10
-DOTA_PSEUDO_RANDOM_LONE_DRUID_ENTANGLE = 17
-DOTA_PSEUDO_RANDOM_LYCAN_CRIT = 29
-DOTA_PSEUDO_RANDOM_MAGNUS_SHARD = 1
-DOTA_PSEUDO_RANDOM_MARS_BULWARK = 73
+DOTA_PSEUDO_RANDOM_ITEM_NAGINATA = 57
+DOTA_PSEUDO_RANDOM_TROLL_BASH = 58
+DOTA_PSEUDO_RANDOM_RIKI_SMOKE_SCREEN = 59
+DOTA_PSEUDO_RANDOM_CHAOS_DOUBLE_CRIT = 60
+DOTA_PSEUDO_RANDOM_CHAOS_TRIPLE_CRIT = 61
+DOTA_PSEUDO_RANDOM_GENERIC_EVASION = 62
+DOTA_PSEUDO_RANDOM_GENERIC_HEIGHT_MISS = 63
+DOTA_PSEUDO_RANDOM_GENERIC_MISS = 64
+DOTA_PSEUDO_RANDOM_ARMADILLO_HEARTPIERCER = 65
 DOTA_PSEUDO_RANDOM_MARS_SHIELD = 66
-DOTA_PSEUDO_RANDOM_MUERTA_GUNSLINGER = 74
+DOTA_PSEUDO_RANDOM_CHAOS_KNIGHT_INNATE_REFUND = 67
 DOTA_PSEUDO_RANDOM_NEUTRAL_DROP_TIER1 = 68
 DOTA_PSEUDO_RANDOM_NEUTRAL_DROP_TIER2 = 69
 DOTA_PSEUDO_RANDOM_NEUTRAL_DROP_TIER3 = 70
 DOTA_PSEUDO_RANDOM_NEUTRAL_DROP_TIER4 = 71
 DOTA_PSEUDO_RANDOM_NEUTRAL_DROP_TIER5 = 72
-DOTA_PSEUDO_RANDOM_NONE = 0
-DOTA_PSEUDO_RANDOM_OD_ESSENCE = 12
-DOTA_PSEUDO_RANDOM_OGRE_ITEM_MULTICAST = 15
-DOTA_PSEUDO_RANDOM_OGRE_MAGI_FIREBLAST = 14
-DOTA_PSEUDO_RANDOM_PANGOLIER_PARRY = 77
-DOTA_PSEUDO_RANDOM_PHANTOMASSASSIN_CRIT = 2
-DOTA_PSEUDO_RANDOM_PHANTOMASSASSIN_DAGGER = 3
-DOTA_PSEUDO_RANDOM_PHANTOMLANCER_JUXTAPOSE = 4
-DOTA_PSEUDO_RANDOM_RIKI_SMOKE_SCREEN = 59
-DOTA_PSEUDO_RANDOM_SKELETONKING_CRIT = 33
-DOTA_PSEUDO_RANDOM_SKELETONKING_CRIT_MORTAL = 34
-DOTA_PSEUDO_RANDOM_SLARDAR_BASH = 11
-DOTA_PSEUDO_RANDOM_SNAPFIRE_GLANCING = 76
-DOTA_PSEUDO_RANDOM_SNIPER_HEADSHOT = 24
-DOTA_PSEUDO_RANDOM_SPIRITBREAKER_GREATERBASH = 16
-DOTA_PSEUDO_RANDOM_TINY_CRAGGY = 5
-DOTA_PSEUDO_RANDOM_TROLL_BASH = 58
+DOTA_PSEUDO_RANDOM_MARS_BULWARK = 73
+DOTA_PSEUDO_RANDOM_MUERTA_GUNSLINGER = 74
 DOTA_PSEUDO_RANDOM_TROLL_FERVOR_SHARD = 75
-DOTA_PSEUDO_RANDOM_TUSK_CRIT = 30
-DOTA_PSEUDO_RANDOM_WOLF_CRIT = 7
+DOTA_PSEUDO_RANDOM_SNAPFIRE_GLANCING = 76
+DOTA_PSEUDO_RANDOM_PANGOLIER_PARRY = 77
+DOTA_PSEUDO_RANDOM_HOODWINK_REDIRECT = 78
+DOTA_PSEUDO_RANDOM_KEZ_SAI = 79
+DOTA_PSEUDO_RANDOM_CHAOS_KNIGHT_HAVOC = 80
+DOTA_PSEUDO_RANDOM_LARGO_FROGSTOMP = 81
+DOTA_PSEUDO_RANDOM_NAGA_RIPTIDE = 82
+DOTA_PSEUDO_RANDOM_CUSTOM_GENERIC = 83
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_1 = 84
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_2 = 85
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_3 = 86
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_4 = 87
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_5 = 88
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_6 = 89
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_7 = 90
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_8 = 91
+DOTA_PSEUDO_RANDOM_CUSTOM_GAME_9 = 92
 
---- Enum LuaModifierType
-LUA_MODIFIER_INVALID = 4
-LUA_MODIFIER_MOTION_BOTH = 3
-LUA_MODIFIER_MOTION_HORIZONTAL = 1
-LUA_MODIFIER_MOTION_NONE = 0
-LUA_MODIFIER_MOTION_VERTICAL = 2
+--- Enum SourceEngineAnimationEvent
+AE_EMPTY = 0
+AE_CL_PLAYSOUND = 1
+AE_CL_PLAYSOUND_ATTACHMENT = 2
+AE_CL_PLAYSOUND_POSITION = 3
+AE_SV_PLAYSOUND = 4
+AE_CL_STOPSOUND = 5
+AE_CL_PLAYSOUND_LOOPING = 6
+AE_CL_CREATE_PARTICLE_EFFECT = 7
+AE_CL_STOP_PARTICLE_EFFECT = 8
+AE_CL_CREATE_PARTICLE_EFFECT_CFG = 9
+AE_SV_CREATE_PARTICLE_EFFECT_CFG = 10
+AE_SV_STOP_PARTICLE_EFFECT = 11
+AE_FOOTSTEP = 12
+AE_CL_STOP_RAGDOLL_CONTROL = 13
+AE_CL_ENABLE_BODYGROUP = 14
+AE_CL_DISABLE_BODYGROUP = 15
+AE_BODYGROUP_SET_VALUE = 16
+AE_WEAPON_PERFORM_ATTACK = 17
+AE_FIRE_INPUT = 18
+AE_CL_CLOTH_ATTR = 19
+AE_CL_CLOTH_GROUND_OFFSET = 20
+AE_CL_CLOTH_STIFFEN = 21
+AE_CL_CLOTH_EFFECT = 22
+AE_CL_CREATE_ANIM_SCOPE_PROP = 23
+AE_SV_IKLOCK = 24
+AE_PULSE_GRAPH = 25
+AE_DISABLE_PLATFORM = 26
+AE_ENABLE_PLATFORM_PLAYER_FOLLOWS_YAW = 27
+AE_ENABLE_PLATFORM_PLAYER_IGNORES_YAW = 28
+AE_DESTRUCTIBLE_PART_DESTROY = 29
+AE_CL_SUPPRESS_EVENTS_WITH_TAG = 30
+AE_CL_HIDE_PARTICLE_EFFECT = 31
+AE_CL_SHOW_PARTICLE_EFFECT = 32
+AE_CL_ADD_PARTICLE_EFFECT_CP = 33
+AE_CL_SPEECH = 34
+AE_CL_PANORAMA_EVENT = 35
+AE_CL_DOTA_PLAY_STATUS_EFFECT = 36
+AE_CL_DOTA_STOP_STATUS_EFFECT = 37
+AE_CL_DOTA_NPC_CREATE_PARTICLE_EFFECT = 38
+AE_CL_DOTA_RUBICK_ARCANA_CREATE_PARTICLE_EFFECT = 39
+AE_DOTA_PET_ITEM_PICKUP = 40
+AE_DOTA_PET_ITEM_DROP = 41
+AE_DOTA_SUPPRESS_CONSTANT_LAYER = 42
+AE_DOTA_PLAY_SOUND_ATTACK_SPECIAL = 43
+AE_DOTA_CREATE_CLINKZ_ATTACK = 44
+AE_DOTA_PLAY_SOUND_ATTACK_BACKSTAB = 45
+AE_DOTA_DIE_PHANTOM_DEATH_PARTICLES = 46
+AE_DOTA_SWITCH_ATTACK_COMBO = 47
+AE_EF_NODRAW = 48
+AE_EF_DRAW = 49
+AE_DOTA_PLAY_SOUND_ATTACK = 50
+AE_CL_CREATE_PARTICLE_BRASS = 51
 
---- Enum ParticleAttachment_t
-MAX_PATTACH_TYPES = 16
-PATTACH_ABSORIGIN = 0
-PATTACH_ABSORIGIN_FOLLOW = 1
-PATTACH_CENTER_FOLLOW = 13
-PATTACH_CUSTOMORIGIN = 2
-PATTACH_CUSTOMORIGIN_FOLLOW = 3
-PATTACH_CUSTOM_GAME_STATE_1 = 14
-PATTACH_EYES_FOLLOW = 6
-PATTACH_HEALTHBAR = 15
-PATTACH_INVALID = -1
-PATTACH_MAIN_VIEW = 11
-PATTACH_OVERHEAD_FOLLOW = 7
-PATTACH_POINT = 4
-PATTACH_POINT_FOLLOW = 5
-PATTACH_RENDERORIGIN_FOLLOW = 10
-PATTACH_ROOTBONE_FOLLOW = 9
-PATTACH_WATERWAKE = 12
-PATTACH_WORLDORIGIN = 8
+--- Enum SourceEngineDamageTypes
+DMG_GENERIC = 0
+DMG_CRUSH = 1
+DMG_BULLET = 2
+DMG_SLASH = 4
+DMG_BURN = 8
+DMG_VEHICLE = 16
+DMG_FALL = 32
+DMG_BLAST = 64
+DMG_CLUB = 128
+DMG_SHOCK = 256
+DMG_SONIC = 512
+DMG_ENERGYBEAM = 1024
+DMG_PREVENT_PHYSICS_FORCE = 2048
+DMG_NEVERGIB = 4096
+DMG_ALWAYSGIB = 8192
+DMG_DROWN = 16384
+DMG_PARALYZE = 32768
+DMG_NERVEGAS = 65536
+DMG_POISON = 131072
+DMG_RADIATION = 262144
+
+--- Enum SourceEngineSoundData
+EMPTY = 0
+SINGLE_SHOT = 2
+DOUBLE_SHOT = 3
+MELEE_MISS = 4
+MELEE_HIT = 5
+MELEE_HIT_WORLD = 6
+SPECIAL1 = 9
+SPECIAL2 = 10
+SPECIAL3 = 11
 
 --- Enum UnitFilterResult
-UF_FAIL_ANCIENT = 9
-UF_FAIL_ATTACK_IMMUNE = 22
-UF_FAIL_BUILDING = 6
-UF_FAIL_CONSIDERED_HERO = 4
-UF_FAIL_COURIER = 7
-UF_FAIL_CREEP = 5
-UF_FAIL_CUSTOM = 23
-UF_FAIL_DEAD = 15
-UF_FAIL_DISABLE_HELP = 25
-UF_FAIL_DOMINATED = 12
-UF_FAIL_ENEMY = 2
+UF_SUCCESS = 0
 UF_FAIL_FRIENDLY = 1
+UF_FAIL_ENEMY = 2
 UF_FAIL_HERO = 3
+UF_FAIL_CONSIDERED_HERO = 4
+UF_FAIL_CREEP = 5
+UF_FAIL_BUILDING = 6
+UF_FAIL_COURIER = 7
+UF_FAIL_OTHER = 8
+UF_FAIL_ANCIENT = 9
 UF_FAIL_ILLUSION = 10
-UF_FAIL_INVALID_LOCATION = 24
-UF_FAIL_INVISIBLE = 20
-UF_FAIL_INVULNERABLE = 18
-UF_FAIL_IN_FOW = 19
+UF_FAIL_SUMMONED = 11
+UF_FAIL_DOMINATED = 12
+UF_FAIL_MELEE = 13
+UF_FAIL_RANGED = 14
+UF_FAIL_DEAD = 15
 UF_FAIL_MAGIC_IMMUNE_ALLY = 16
 UF_FAIL_MAGIC_IMMUNE_ENEMY = 17
-UF_FAIL_MELEE = 13
-UF_FAIL_NIGHTMARED = 27
+UF_FAIL_INVULNERABLE = 18
+UF_FAIL_IN_FOW = 19
+UF_FAIL_INVISIBLE = 20
 UF_FAIL_NOT_PLAYER_CONTROLLED = 21
-UF_FAIL_OBSTRUCTED = 28
-UF_FAIL_OTHER = 8
+UF_FAIL_ATTACK_IMMUNE = 22
+UF_FAIL_CUSTOM = 23
+UF_FAIL_INVALID_LOCATION = 24
+UF_FAIL_DISABLE_HELP = 25
 UF_FAIL_OUT_OF_WORLD = 26
-UF_FAIL_RANGED = 14
-UF_FAIL_SUMMONED = 11
-UF_SUCCESS = 0
-
---- Enum modifierfunction
-MODIFIER_EVENT_NEUTRAL_ENHANCEMENT_OPTIONS = 369 -- GetModifierNeutralEnhancementOptions
-MODIFIER_EVENT_NEUTRAL_TRINKET_OPTIONS = 368 -- GetModifierNeutralTrinketOptions
-MODIFIER_EVENT_ON_ABILITY_END_CHANNEL = 208 -- OnAbilityEndChannel
-MODIFIER_EVENT_ON_ABILITY_EXECUTED = 205 -- OnAbilityExecuted
-MODIFIER_EVENT_ON_ABILITY_FULLY_CAST = 206 -- OnAbilityFullyCast
-MODIFIER_EVENT_ON_ABILITY_START = 204 -- OnAbilityStart
-MODIFIER_EVENT_ON_ABILITY_SWAPPED = 383 -- OnAbilitySwapped
-MODIFIER_EVENT_ON_ABILITY_TOGGLED = 362 -- OnAbilityToggled
-MODIFIER_EVENT_ON_ASSIST = 260 -- OnAssist
-MODIFIER_EVENT_ON_ATTACK = 196 -- OnAttack
-MODIFIER_EVENT_ON_ATTACKED = 218 -- OnAttacked
-MODIFIER_EVENT_ON_ATTACK_ALLIED = 199 -- OnAttackAllied
-MODIFIER_EVENT_ON_ATTACK_CANCELLED = 274 -- OnAttackCancelled
-MODIFIER_EVENT_ON_ATTACK_FAIL = 198 -- OnAttackFail
-MODIFIER_EVENT_ON_ATTACK_FINISHED = 263 -- OnAttackFinished
-MODIFIER_EVENT_ON_ATTACK_LANDED = 197 -- OnAttackLanded
-MODIFIER_EVENT_ON_ATTACK_RECORD = 194 -- OnAttackRecord
-MODIFIER_EVENT_ON_ATTACK_RECORD_DESTROY = 271 -- OnAttackRecordDestroy
-MODIFIER_EVENT_ON_ATTACK_START = 195 -- OnAttackStart
-MODIFIER_EVENT_ON_ATTEMPT_PROJECTILE_DODGE = 281 -- OnAttemptProjectileDodge
-MODIFIER_EVENT_ON_BREAK_INVISIBILITY = 207 -- OnBreakInvisibility
-MODIFIER_EVENT_ON_BUILDING_KILLED = 232 -- OnBuildingKilled
-MODIFIER_EVENT_ON_CLEAVE_ATTACK_LANDED = 351 -- OnCleaveAttackLanded
-MODIFIER_EVENT_ON_DAMAGE_CALCULATED = 216 -- OnDamageCalculated
-MODIFIER_EVENT_ON_DAMAGE_HPLOSS = 310 -- OnDamageHPLoss
-MODIFIER_EVENT_ON_DAY_STARTED = 338 -- OnDayStarted
-MODIFIER_EVENT_ON_DEATH = 219 -- OnDeath
-MODIFIER_EVENT_ON_DEATH_COMPLETED = 220 -- OnDeathCompleted
-MODIFIER_EVENT_ON_DEATH_PREVENTED = 212 -- OnDamagePrevented
-MODIFIER_EVENT_ON_DOMINATED = 258 -- OnDominated
-MODIFIER_EVENT_ON_FORCE_PROC_MAGIC_STICK = 309 -- OnForceProcMagicStick
-MODIFIER_EVENT_ON_FOW_TEAM_CHANGED = 360 -- OnFoWTeamChanged
-MODIFIER_EVENT_ON_HEALTH_GAINED = 227 -- OnHealthGained
-MODIFIER_EVENT_ON_HEAL_RECEIVED = 231 -- OnHealReceived
-MODIFIER_EVENT_ON_HERO_BEGIN_DYING = 332 -- OnHeroBeginDying
-MODIFIER_EVENT_ON_HERO_KILLED = 230 -- OnHeroKilled
-MODIFIER_EVENT_ON_KILL = 259 -- OnKill
-MODIFIER_EVENT_ON_MAGIC_DAMAGE_CALCULATED = 217 -- OnMagicDamageCalculated
-MODIFIER_EVENT_ON_MANA_GAINED = 228 -- OnManaGained
-MODIFIER_EVENT_ON_MODEL_CHANGED = 233 -- OnModelChanged
-MODIFIER_EVENT_ON_MODIFIER_ADDED = 234 -- OnModifierAdded
-MODIFIER_EVENT_ON_MODIFIER_REFRESHED = 382 -- OnModifierRefreshed
-MODIFIER_EVENT_ON_MODIFIER_REMOVED = 235 -- OnModifierRemoved
-MODIFIER_EVENT_ON_MUTE_DAMAGE_ABILITIES = 321 -- OnMuteDamageAbilities
-MODIFIER_EVENT_ON_NIGHT_STARTED = 339 -- OnNightStarted
-MODIFIER_EVENT_ON_ORB_EFFECT = 214 -- Unused
-MODIFIER_EVENT_ON_ORDER = 201 -- OnOrder
-MODIFIER_EVENT_ON_ORDER_RECEIVED = 202 -- OnOrderReceived
-MODIFIER_EVENT_ON_PREDEBUFF_APPLIED = 282 -- OnPreDebuffApplied
-MODIFIER_EVENT_ON_PROCESS_CLEAVE = 215 -- OnProcessCleave
-MODIFIER_EVENT_ON_PROCESS_UPGRADE = 209 -- Unused
-MODIFIER_EVENT_ON_PROJECTILE_DODGE = 200 -- OnProjectileDodge
-MODIFIER_EVENT_ON_PROJECTILE_OBSTRUCTION_HIT = 272 -- OnProjectileObstructionHit
-MODIFIER_EVENT_ON_PURE_DAMAGE_CALCULATED = 367 -- OnPureDamageCalculated
-MODIFIER_EVENT_ON_REFRESH = 210 -- Unused
-MODIFIER_EVENT_ON_RESPAWN = 221 -- OnRespawn
-MODIFIER_EVENT_ON_RUNE_SPAWN = 364 -- OnRuneSpawn
-MODIFIER_EVENT_ON_SET_LOCATION = 226 -- OnSetLocation
-MODIFIER_EVENT_ON_SPELL_TARGET_READY = 193 -- OnSpellTargetReady
-MODIFIER_EVENT_ON_SPENT_HEALTH = 223 -- OnSpentHealth
-MODIFIER_EVENT_ON_SPENT_MANA = 222 -- OnSpentMana
-MODIFIER_EVENT_ON_STATE_CHANGED = 213 -- OnStateChanged
-MODIFIER_EVENT_ON_TAKEDAMAGE = 211 -- OnTakeDamage
-MODIFIER_EVENT_ON_TAKEDAMAGE_KILLCREDIT = 229 -- OnTakeDamageKillCredit
-MODIFIER_EVENT_ON_TAKEDAMAGE_POST_UNAVOIDABLE_BLOCK = 320 -- OnTakeDamagePostUnavoidableBlock
-MODIFIER_EVENT_ON_TELEPORTED = 225 -- OnTeleported
-MODIFIER_EVENT_ON_TELEPORTING = 224 -- OnTeleporting
-MODIFIER_EVENT_ON_TIER_TOKEN_REROLLED = 357 -- OnTierTokenRerolled
-MODIFIER_EVENT_ON_TREE_CUT_DOWN = 350 -- OnTreeCutDown
-MODIFIER_EVENT_ON_UNIT_MOVED = 203 -- OnUnitMoved
-MODIFIER_EVENT_SPELL_APPLIED_SUCCESSFULLY = 291 -- OnSpellAppliedSuccessfully
-MODIFIER_FUNCTION_INVALID = 65535
-MODIFIER_FUNCTION_LAST = 386
-MODIFIER_PROPERTY_ABILITY_LAYOUT = 257 -- GetModifierAbilityLayout
-MODIFIER_PROPERTY_ABILITY_POINTS = 323 -- GetModifierAbilityPoints
-MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL = 163 -- GetAbsoluteNoDamageMagical
-MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL = 162 -- GetAbsoluteNoDamagePhysical
-MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE = 164 -- GetAbsoluteNoDamagePure
-MODIFIER_PROPERTY_ABSORB_SPELL = 150 -- GetAbsorbSpell
-MODIFIER_PROPERTY_ADDITIONAL_NEUTRAL_ITEM_DROPS = 346 -- GetModifierAdditionalNutralItemDrops
-MODIFIER_PROPERTY_ALWAYS_ALLOW_ATTACK = 175 -- GetAlwaysAllowAttack
-MODIFIER_PROPERTY_ALWAYS_AUTOATTACK_WHILE_HOLD_POSITION = 187 -- GetAlwaysAutoAttackWhileHoldPosition
-MODIFIER_PROPERTY_ALWAYS_ETHEREAL_ATTACK = 176 -- GetAllowEtherealAttack
-MODIFIER_PROPERTY_AOE_BONUS_CONSTANT = 318 -- GetModifierAoEBonusConstant
-MODIFIER_PROPERTY_AOE_BONUS_CONSTANT_STACKING = 319 -- GetModifierAoEBonusConstantStacking
-MODIFIER_PROPERTY_AOE_BONUS_PERCENTAGE = 302 -- GetModifierAoEBonusPercentage
-MODIFIER_PROPERTY_ATTACKSPEED_ABSOLUTE_MAX = 330 -- GetModifierAttackSpeedAbsoluteMax
-MODIFIER_PROPERTY_ATTACKSPEED_BASE_OVERRIDE = 31 -- GetModifierAttackSpeedBaseOverride
-MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT = 33 -- GetModifierAttackSpeedBonus_Constant
-MODIFIER_PROPERTY_ATTACKSPEED_PERCENTAGE = 280 -- GetModifierAttackSpeedPercentage
-MODIFIER_PROPERTY_ATTACKSPEED_REDUCTION_PERCENTAGE = 277 -- GetModifierAttackSpeedReductionPercentage
-MODIFIER_PROPERTY_ATTACK_ANIM_TIME_PERCENTAGE = 130 -- GetModifierPercentageAttackAnimTime
-MODIFIER_PROPERTY_ATTACK_HEIGHT_BONUS = 343 -- GetModifierAttackHeightBonus
-MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT = 41 -- GetModifierAttackPointConstant
-MODIFIER_PROPERTY_ATTACK_RANGE_BASE_OVERRIDE = 114 -- GetModifierAttackRangeOverride
-MODIFIER_PROPERTY_ATTACK_RANGE_BONUS = 115 -- GetModifierAttackRangeBonus
-MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_PERCENTAGE = 117 -- GetModifierAttackRangeBonusPercentage
-MODIFIER_PROPERTY_ATTACK_RANGE_BONUS_UNIQUE = 116 -- GetModifierAttackRangeBonusUnique
-MODIFIER_PROPERTY_ATTACK_WHILE_MOVING_TARGET = 279
-MODIFIER_PROPERTY_AVOID_ATTACK_PROCS = 363 -- GetModifierAvoidAttackProcs
-MODIFIER_PROPERTY_AVOID_DAMAGE = 72 -- GetModifierAvoidDamage
-MODIFIER_PROPERTY_AVOID_DAMAGE_AFTER_REDUCTIONS = 292 -- GetModifierAvoidDamageAfterReductions
-MODIFIER_PROPERTY_AVOID_SPELL = 73 -- GetModifierAvoidSpell
-MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE = 4 -- GetModifierBaseAttack_BonusDamage
-MODIFIER_PROPERTY_BASEATTACK_POSTBONUS = 359 -- GetBaseAttackPostBonus
-MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE = 61 -- GetModifierBaseDamageOutgoing_Percentage
-MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE_UNIQUE = 62 -- GetModifierBaseDamageOutgoing_PercentageUnique
-MODIFIER_PROPERTY_BASE_ARMOR_PER_AGI_BONUS_PERCENTAGE = 335 -- GetModifierBonusLotusHeal
-MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT = 38 -- GetModifierBaseAttackTimeConstant
-MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT_ADJUST = 39 -- GetModifierBaseAttackTimeConstant_Adjust
-MODIFIER_PROPERTY_BASE_ATTACK_TIME_PERCENTAGE = 40 -- GetModifierBaseAttackTimePercentage
-MODIFIER_PROPERTY_BASE_HP_REGEN_PER_STR_BONUS_PERCENTAGE = 334 -- GetModifierBonusLotusHeal
-MODIFIER_PROPERTY_BASE_MANA_REGEN = 89 -- GetModifierBaseRegen
-MODIFIER_PROPERTY_BASE_MP_REGEN_PER_INT_BONUS_PERCENTAGE = 336 -- GetModifierBonusLotusHeal
-MODIFIER_PROPERTY_BASE_MRES_PER_INT_BONUS_PERCENTAGE = 337 -- GetModifierBonusLotusHeal
-MODIFIER_PROPERTY_BECOME_AGILITY = 306 -- GetModifierBecomeAgility
-MODIFIER_PROPERTY_BECOME_INTELLIGENCE = 307 -- GetModifierBecomeIntelligence
-MODIFIER_PROPERTY_BECOME_STRENGTH = 305 -- GetModifierBecomeStrength
-MODIFIER_PROPERTY_BECOME_UNIVERSAL = 308 -- GetModifierBecomeUniversal
-MODIFIER_PROPERTY_BONUSDAMAGEOUTGOING_PERCENTAGE = 42 -- GetModifierBonusDamageOutgoing_Percentage
-MODIFIER_PROPERTY_BONUS_DAY_VISION = 153 -- GetBonusDayVision
-MODIFIER_PROPERTY_BONUS_DAY_VISION_PERCENTAGE = 154 -- GetBonusDayVisionPercentage
-MODIFIER_PROPERTY_BONUS_LOTUS_HEAL = 333 -- GetModifierBonusLotusHeal
-MODIFIER_PROPERTY_BONUS_NIGHT_VISION = 155 -- GetBonusNightVision
-MODIFIER_PROPERTY_BONUS_NIGHT_VISION_UNIQUE = 156 -- GetBonusNightVisionUnique
-MODIFIER_PROPERTY_BONUS_UPHILL_MISS_CHANCE = 328 -- GetModifierBonusUphillMissChance
-MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE = 157 -- GetBonusVisionPercentage
-MODIFIER_PROPERTY_BOT_ATTACK_SCORE_BONUS = 276 -- BotAttackScoreBonus
-MODIFIER_PROPERTY_BOUNTY_CREEP_MULTIPLIER = 179 -- Unused
-MODIFIER_PROPERTY_BOUNTY_OTHER_MULTIPLIER = 180 -- Unused
-MODIFIER_PROPERTY_BUFF_AMPLIFICATION = 192 -- GetBuffAmplification
-MODIFIER_PROPERTY_BUYBACK_PENALTY_PERCENT = 324 -- GetModifierBuybackPenaltyPercent
-MODIFIER_PROPERTY_CAN_ATTACK_TREES = 265 -- GetModifierCanAttackTrees
-MODIFIER_PROPERTY_CASTTIME_PERCENTAGE = 129 -- GetModifierPercentageCasttime
-MODIFIER_PROPERTY_CAST_RANGE_BONUS = 110 -- GetModifierCastRangeBonus
-MODIFIER_PROPERTY_CAST_RANGE_BONUS_PERCENTAGE = 111 -- GetModifierCastRangeBonusPercentage
-MODIFIER_PROPERTY_CAST_RANGE_BONUS_STACKING = 113 -- GetModifierCastRangeBonusStacking
-MODIFIER_PROPERTY_CAST_RANGE_BONUS_TARGET = 112 -- GetModifierCastRangeBonusTarget
-MODIFIER_PROPERTY_CHANGE_ABILITY_VALUE = 254 -- GetModifierChangeAbilityValue
-MODIFIER_PROPERTY_CONSUMABLE_USE_SPEED = 380 -- GetModifierPropertyConsumableUseSpeed
-MODIFIER_PROPERTY_CONVERT_ATTACK_PHYSICAL_TO_PURE = 191 -- GetConvertAttackPhysicalToPure
-MODIFIER_PROPERTY_CONVERT_EXP_TO_GOLD_PCT = 139 -- GetModifierPercentageConvertExpToGold
-MODIFIER_PROPERTY_CONVERT_MANA_COST_TO_HEALTH_COST = 250 -- GetModifierConvertManaCostToHealthCost
-MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE = 127 -- GetModifierPercentageCooldown
-MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_ONGOING = 128 -- GetModifierPercentageCooldownOngoing
-MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_STACKING = 283 -- GetModifierPercentageCooldownStacking
-MODIFIER_PROPERTY_COOLDOWN_REDUCTION_CONSTANT = 35 -- GetModifierCooldownReduction_Constant
-MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_CHANCE = 340 -- GetModifierCreateBonusIllusionChance
-MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_COUNT = 341 -- GetModifierCreateBonusIllusionCount
-MODIFIER_PROPERTY_CREEP_DENY_PERCENT = 329 -- GetModifierCreepDenyPercent
-MODIFIER_PROPERTY_CRITICAL_STRIKE_BONUS = 190 -- GetCriticalStrikeBonus
-MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE = 43 -- GetModifierDamageOutgoing_Percentage
-MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION = 44 -- GetModifierDamageOutgoing_Percentage_Illusion
-MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_ILLUSION_AMPLIFY = 45 -- GetModifierDamageOutgoing_Percentage_Illusion_Amplify
-MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE_MULTIPLICATIVE = 297 -- GetModifierDamageOutgoing_PercentageMultiplicative
-MODIFIER_PROPERTY_DEATHGOLDCOST = 135 -- GetModifierConstantDeathGoldCost
-MODIFIER_PROPERTY_DISABLE_AUTOATTACK = 152 -- GetDisableAutoAttack
-MODIFIER_PROPERTY_DISABLE_HEALING = 173 -- GetDisableHealing
-MODIFIER_PROPERTY_DISABLE_MANA_GAIN = 174 -- GetDisableManaGain
-MODIFIER_PROPERTY_DISABLE_TURNING = 252 -- GetModifierDisableTurning
-MODIFIER_PROPERTY_DISASSEMBLE_ANYTHING = 326 -- GetModifierDisassembleAnything
-MODIFIER_PROPERTY_DODGE_PROJECTILE = 182 -- GetModifierDodgeProjectile
-MODIFIER_PROPERTY_DONT_GIVE_VISION_OF_ATTACKER = 269 -- GetModifierNoVisionOfAttacker
-MODIFIER_PROPERTY_EVASION_CONSTANT = 67 -- GetModifierEvasion_Constant
-MODIFIER_PROPERTY_EXP_RATE_BOOST = 137 -- GetModifierPercentageExpRateBoost
-MODIFIER_PROPERTY_EXTRA_HEALTH_BONUS = 99 -- GetModifierExtraHealthBonus
-MODIFIER_PROPERTY_EXTRA_HEALTH_PERCENTAGE = 102 -- GetModifierExtraHealthPercentage
-MODIFIER_PROPERTY_EXTRA_MANA_BONUS = 100 -- GetModifierExtraManaBonus
-MODIFIER_PROPERTY_EXTRA_MANA_BONUS_PERCENTAGE = 101 -- GetModifierExtraManaBonusPercentage
-MODIFIER_PROPERTY_EXTRA_MANA_PERCENTAGE = 103 -- GetModifierExtraManaPercentage
-MODIFIER_PROPERTY_EXTRA_STRENGTH_BONUS = 98 -- GetModifierExtraStrengthBonus
-MODIFIER_PROPERTY_FAIL_ATTACK = 293 -- GetModifierPropetyFailAttack
-MODIFIER_PROPERTY_FIXED_ATTACK_RATE = 32 -- GetModifierFixedAttackRate
-MODIFIER_PROPERTY_FIXED_DAY_VISION = 158 -- GetFixedDayVision
-MODIFIER_PROPERTY_FIXED_MANA_REGEN = 327 -- GetModifierFixedManaRegen
-MODIFIER_PROPERTY_FIXED_NIGHT_VISION = 159 -- GetFixedNightVision
-MODIFIER_PROPERTY_FORBID_ILLUSIONS = 372 -- GetModifierPropertyForbidIllusions
-MODIFIER_PROPERTY_FORCE_DRAW_MINIMAP = 251 -- GetForceDrawOnMinimap
-MODIFIER_PROPERTY_FORCE_MAX_HEALTH = 316 -- GetModifierForceMaxHealth
-MODIFIER_PROPERTY_FORCE_MAX_MANA = 317 -- GetModifierForceMaxMana
-MODIFIER_PROPERTY_FOW_TEAM = 331 -- GetModifierFoWTeam
-MODIFIER_PROPERTY_GOLD_RATE_BOOST = 138 -- GetModifierPercentageGoldRateBoost
-MODIFIER_PROPERTY_HAS_BONUS_NEUTRAL_ITEM_CHOICE = 314 -- GetModifierHasBonusNeutralItemChoice
-MODIFIER_PROPERTY_HEALTHBAR_PIPS = 289 -- GetModifierHealthBarPips
-MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE = 133 -- GetModifierPercentageHealthcost
-MODIFIER_PROPERTY_HEALTHCOST_PERCENTAGE_STACKING = 134 -- GetModifierPercentageHealthcostStacking
-MODIFIER_PROPERTY_HEALTHCOST_REDUCTION_CONSTANT = 37 -- GetModifierHealthcostReduction_Constant
-MODIFIER_PROPERTY_HEALTH_BONUS = 96 -- GetModifierHealthBonus
-MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT = 93 -- GetModifierConstantHealthRegen
-MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE = 94 -- GetModifierHealthRegenPercentage
-MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE_UNIQUE = 95 -- GetModifierHealthRegenPercentageUnique
-MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE = 51 -- GetModifierHealAmplify_PercentageSource
-MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE_UNIQUE = 376 -- GetModifierPropertyHealingAmplificationUnique
-MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET = 52 -- GetModifierHealAmplify_PercentageTarget
-MODIFIER_PROPERTY_HEROFACET_OVERRIDE = 349 -- GetModifierHeroFacetOverride
-MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE = 53 -- GetModifierHPRegenAmplify_Percentage
-MODIFIER_PROPERTY_HP_REGEN_MULTIPLIER_PRE_AMPLIFICATION = 348 -- GetModifierHPRegenMultiplierPreAmplification
-MODIFIER_PROPERTY_IGNORE_ATTACKSPEED_LIMIT = 34 -- GetModifierAttackSpeed_Limit
-MODIFIER_PROPERTY_IGNORE_CAST_ANGLE = 253 -- GetModifierIgnoreCastAngle
-MODIFIER_PROPERTY_IGNORE_COOLDOWN = 264 -- GetModifierIgnoreCooldown
-MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT = 29 -- GetModifierIgnoreMovespeedLimit
-MODIFIER_PROPERTY_IGNORE_PHYSICAL_ARMOR = 82 -- GetModifierIgnorePhysicalArmor
-MODIFIER_PROPERTY_ILLUSION_LABEL = 166 -- GetModifierIllusionLabel
-MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT = 290 -- GetModifierIncomingDamageConstant
-MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST = 296 -- MODIFIER_PROPERTY_INCOMING_DAMAGE_CONSTANT_POST
-MODIFIER_PROPERTY_INCOMING_DAMAGE_ILLUSION = 268
-MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE = 63 -- GetModifierIncomingDamage_Percentage
-MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_CONSTANT = 65 -- GetModifierIncomingPhysicalDamageConstant
-MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_PERCENTAGE = 64 -- GetModifierIncomingPhysicalDamage_Percentage
-MODIFIER_PROPERTY_INCOMING_SPELL_DAMAGE_CONSTANT = 66 -- GetModifierIncomingSpellDamageConstant
-MODIFIER_PROPERTY_INNATE_DAMAGE_BLOCK_PCT_OVERRIDE = 145 -- GetModifierInnateDamageBlockPctOverride
-MODIFIER_PROPERTY_INVENTORY_SLOT_RESTRICTED = 356 -- GetModifierInventorySlotRestricted
-MODIFIER_PROPERTY_INVISIBILITY_ATTACK_BEHAVIOR_EXCEPTION = 14 -- GetModifierInvisibilityAttackBehaviorException
-MODIFIER_PROPERTY_INVISIBILITY_LEVEL = 13 -- GetModifierInvisibilityLevel
-MODIFIER_PROPERTY_IS_ILLUSION = 165 -- GetIsIllusion
-MODIFIER_PROPERTY_IS_SCEPTER = 242 -- GetModifierScepter
-MODIFIER_PROPERTY_IS_SHARD = 243 -- GetModifierShard
-MODIFIER_PROPERTY_ITEM_SELLBACK_COST = 325 -- GetModifierItemSellbackCost
-MODIFIER_PROPERTY_KILL_STREAK_BONUS_GOLD_PERCENTAGE = 347 -- GetModifierKillStreakBonusGoldPercentage
-MODIFIER_PROPERTY_KNOCKBACK_AMPLIFICATION_PERCENTAGE = 288 -- GetModifierKnockbackAmplification_Percentage
-MODIFIER_PROPERTY_LIFESTEAL_AMPLIFY_PERCENTAGE = 54 -- GetModifierLifestealRegenAmplify_Percentage
-MODIFIER_PROPERTY_LIFETIME_FRACTION = 247 -- GetUnitLifetimeFraction
-MODIFIER_PROPERTY_MAGICAL_ARMOR_PIERCING_PERCENTAGE_TARGET = 189 -- GetMagicalArmorPiercingPercentageTarget
-MODIFIER_PROPERTY_MAGICAL_CONSTANT_BLOCK = 142 -- GetModifierMagical_ConstantBlock
-MODIFIER_PROPERTY_MAGICAL_LIFESTEAL = 366 -- GetModifierProperty_MagicalLifesteal
-MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BASE_REDUCTION = 83 -- GetModifierMagicalResistanceBaseReduction
-MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS = 85 -- GetModifierMagicalResistanceBonus
-MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_ILLUSIONS = 86 -- GetModifierMagicalResistanceBonusIllusions
-MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS_UNIQUE = 87 -- GetModifierMagicalResistanceBonusUnique
-MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE = 88 -- GetModifierMagicalResistanceDecrepifyUnique
-MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DIRECT_MODIFICATION = 84 -- GetModifierMagicalResistanceDirectModification
-MODIFIER_PROPERTY_MANACOST_OVERRIDE = 373 -- GetModifierPropertyManacostOverride
-MODIFIER_PROPERTY_MANACOST_PERCENTAGE = 131 -- GetModifierPercentageManacost
-MODIFIER_PROPERTY_MANACOST_PERCENTAGE_STACKING = 132 -- GetModifierPercentageManacostStacking
-MODIFIER_PROPERTY_MANACOST_REDUCTION_CONSTANT = 36 -- GetModifierManacostReduction_Constant
-MODIFIER_PROPERTY_MANA_BONUS = 97 -- GetModifierManaBonus
-MODIFIER_PROPERTY_MANA_DRAIN_AMPLIFY_PERCENTAGE = 59 -- GetModifierManaDrainAmplify_Percentage
-MODIFIER_PROPERTY_MANA_REGEN_CONSTANT = 90 -- GetModifierConstantManaRegen
-MODIFIER_PROPERTY_MANA_REGEN_CONSTANT_UNIQUE = 91 -- GetModifierConstantManaRegenUnique
-MODIFIER_PROPERTY_MANA_REGEN_TOTAL_PERCENTAGE = 92 -- GetModifierTotalPercentageManaRegen
-MODIFIER_PROPERTY_MAX_ATTACK_RANGE = 118 -- GetModifierMaxAttackRange
-MODIFIER_PROPERTY_MAX_DEBUFF_DURATION = 184 -- GetModifierMaxDebuffDuration
-MODIFIER_PROPERTY_MIN_ATTRIBUTE_LEVEL = 352 -- MinAttributeLevel
-MODIFIER_PROPERTY_MIN_HEALTH = 160 -- GetMinHealth
-MODIFIER_PROPERTY_MIN_MANA = 161 -- GetMinMana
-MODIFIER_PROPERTY_MIN_PHYSICAL_ARMOR = 81 -- GetModifierMinPhysicalArmor
-MODIFIER_PROPERTY_MISS_PERCENTAGE = 74 -- GetModifierMiss_Percentage
-MODIFIER_PROPERTY_MISS_PERCENTAGE_TARGET = 345 -- GetModifierMiss_Percentage_Target
-MODIFIER_PROPERTY_MODEL_CHANGE = 237 -- GetModifierModelChange
-MODIFIER_PROPERTY_MODEL_SCALE = 238 -- GetModifierModelScale
-MODIFIER_PROPERTY_MODEL_SCALE_ANIMATE_TIME = 239 -- GetModifierModelScaleAnimateTime
-MODIFIER_PROPERTY_MODEL_SCALE_CONSTANT = 241 -- GetModifierModelScaleConstant
-MODIFIER_PROPERTY_MODEL_SCALE_USE_IN_OUT_EASE = 240 -- GetModifierModelScaleUseInOutEase
-MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE = 26 -- GetModifierMoveSpeed_Absolute
-MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE_MAX = 28 -- GetModifierMoveSpeed_AbsoluteMax
-MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE_MIN = 27 -- GetModifierMoveSpeed_AbsoluteMin
-MODIFIER_PROPERTY_MOVESPEED_BASE_OVERRIDE = 17 -- GetModifierMoveSpeedOverride
-MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT = 16 -- GetModifierMoveSpeedBonus_Constant
-MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT_UNIQUE = 24 -- GetModifierMoveSpeedBonus_Constant_Unique
-MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT_UNIQUE_2 = 25 -- GetModifierMoveSpeedBonus_Constant_Unique_2
-MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE = 20 -- GetModifierMoveSpeedBonus_Percentage
-MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE_UNIQUE = 21 -- GetModifierMoveSpeedBonus_Percentage_Unique
-MODIFIER_PROPERTY_MOVESPEED_BONUS_UNIQUE = 22 -- GetModifierMoveSpeedBonus_Special_Boots
-MODIFIER_PROPERTY_MOVESPEED_BONUS_UNIQUE_2 = 23 -- GetModifierMoveSpeedBonus_Special_Boots_2
-MODIFIER_PROPERTY_MOVESPEED_LIMIT = 30 -- GetModifierMoveSpeed_Limit
-MODIFIER_PROPERTY_MOVESPEED_MAX_BONUS_CONSTANT = 370 -- GetModifierMoveSpeedMax_BonusConstant
-MODIFIER_PROPERTY_MOVESPEED_MAX_OVERRIDE = 19 -- GetModifierMoveSpeed_MaxOverride
-MODIFIER_PROPERTY_MOVESPEED_MIN_OVERRIDE = 18 -- GetModifierMoveSpeed_MinOverride
-MODIFIER_PROPERTY_MOVESPEED_POST_MULTIPLIER_BONUS_CONSTANT = 371 -- GetModifierMoveSpeedPostMultiplierBonus_Constant 
-MODIFIER_PROPERTY_MOVESPEED_REDUCTION_PERCENTAGE = 278 -- GetModifierMoveSpeedReductionPercentage
-MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE = 57 -- GetModifierMPRegenAmplify_Percentage
-MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE_UNIQUE = 58 -- GetModifierMPRegenAmplify_Percentage_Unique
-MODIFIER_PROPERTY_MP_RESTORE_AMPLIFY_PERCENTAGE = 60 -- GetModifierMPRestoreAmplify_Percentage
-MODIFIER_PROPERTY_NEGATIVE_EVASION_CONSTANT = 68 -- GetModifierNegativeEvasion_Constant
-MODIFIER_PROPERTY_NO_FREE_TP_SCROLL_ON_DEATH = 313 -- GetModifierNoFreeTPScrollOnDeath
-MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL = 255 -- GetModifierOverrideAbilitySpecial
-MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL_VALUE = 256 -- GetModifierOverrideAbilitySpecialValue
-MODIFIER_PROPERTY_OVERRIDE_ANIMATION = 148 -- GetOverrideAnimation
-MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE = 149 -- GetOverrideAnimationRate
-MODIFIER_PROPERTY_OVERRIDE_ATTACK_DAMAGE = 11 -- GetModifierOverrideAttackDamage
-MODIFIER_PROPERTY_OVERRIDE_ATTACK_MAGICAL = 177 -- GetOverrideAttackMagical
-MODIFIER_PROPERTY_OVERRIDE_BASE_DAMAGE = 385 -- GetModifierOverrideBaseDamage
-MODIFIER_PROPERTY_OVERRIDE_CREEP_BOUNTY = 384 -- GetModifierOverrideCreepBounty
-MODIFIER_PROPERTY_PACK_RAT = 286 -- GetModifierIsPackRat
-MODIFIER_PROPERTY_PERCENTAGE_DEATHGOLDCOST = 136 -- GetModifierPercentageDeathGoldCost
-MODIFIER_PROPERTY_PERSISTENT_INVISIBILITY = 15 -- GetModifierPersistentInvisibility
-MODIFIER_PROPERTY_PHYSICALDAMAGEOUTGOING_PERCENTAGE = 287 -- GetModifierPhysicalDamageOutgoing_Percentage
-MODIFIER_PROPERTY_PHYSICAL_ARMOR_BASE_PERCENTAGE = 75 -- GetModifierPhysicalArmorBase_Percentage
-MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS = 77 -- GetModifierPhysicalArmorBonus
-MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_POST = 80 -- GetModifierPhysicalArmorBonusPost
-MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE = 78 -- GetModifierPhysicalArmorBonusUnique
-MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE_ACTIVE = 79 -- GetModifierPhysicalArmorBonusUniqueActive
-MODIFIER_PROPERTY_PHYSICAL_ARMOR_PIERCING_PERCENTAGE_TARGET = 188 -- GetPhysicalArmorPiercingPercentageTarget
-MODIFIER_PROPERTY_PHYSICAL_ARMOR_TOTAL_PERCENTAGE = 76 -- GetModifierPhysicalArmorTotal_Percentage
-MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK = 143 -- GetModifierPhysical_ConstantBlock
-MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK_SPECIAL = 144 -- GetModifierPhysical_ConstantBlockSpecial
-MODIFIER_PROPERTY_PHYSICAL_LIFESTEAL = 365 -- GetModifierProperty_PhysicalLifesteal
-MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE = 0 -- GetModifierPreAttack_BonusDamage
-MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE_POST_CRIT = 3 -- GetModifierPreAttack_BonusDamagePostCrit
-MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE_PROC = 2 -- GetModifierPreAttack_BonusDamage_Proc
-MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE_TARGET = 1 -- GetModifierPreAttack_BonusDamage_Target
-MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE = 140 -- GetModifierPreAttack_CriticalStrike
-MODIFIER_PROPERTY_PREATTACK_DEADLY_BLOW = 186 -- GetModifierPreAttack_DeadlyBlow
-MODIFIER_PROPERTY_PREATTACK_TARGET_CRITICALSTRIKE = 141 -- GetModifierPreAttack_Target_CriticalStrike
-MODIFIER_PROPERTY_PREREDUCE_INCOMING_DAMAGE_MULT = 294 -- GetModifierPrereduceIncomingDamage_Mult
-MODIFIER_PROPERTY_PRESERVE_NEUTRAL_ITEM_PASSIVES = 315 -- GetModifierPreserveNeutralItemPassives
-MODIFIER_PROPERTY_PRESERVE_PARTICLES_ON_MODEL_CHANGE = 262 -- PreserveParticlesOnModelChanged
-MODIFIER_PROPERTY_PRE_ATTACK = 12 -- GetModifierPreAttack
-MODIFIER_PROPERTY_PRIMARY_STAT_DAMAGE_MULTIPLIER = 185 -- GetPrimaryStatDamageMultiplier
-MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_MAGICAL = 7 -- GetModifierProcAttack_BonusDamage_Magical
-MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_MAGICAL_TARGET = 9 -- GetModifierProcAttack_BonusDamage_Magical_Target
-MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_PHYSICAL = 5 -- GetModifierProcAttack_BonusDamage_Physical
-MODIFIER_PROPERTY_PROCATTACK_BONUS_DAMAGE_PURE = 8 -- GetModifierProcAttack_BonusDamage_Pure
-MODIFIER_PROPERTY_PROCATTACK_CONVERT_PHYSICAL_TO_MAGICAL = 6 -- GetModifierProcAttack_ConvertPhysicalToMagical
-MODIFIER_PROPERTY_PROCATTACK_FEEDBACK = 10 -- GetModifierProcAttack_Feedback
-MODIFIER_PROPERTY_PROJECTILE_NAME = 121 -- GetModifierProjectileName
-MODIFIER_PROPERTY_PROJECTILE_SPEED = 303 -- GetModifierProjectileSpeed
-MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS = 119 -- GetModifierProjectileSpeedBonus
-MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS_PERCENTAGE = 120 -- GetModifierProjectileSpeedBonusPercentage
-MODIFIER_PROPERTY_PROJECTILE_SPEED_TARGET = 304 -- GetModifierProjectileSpeedTarget
-MODIFIER_PROPERTY_PROVIDES_FOW_POSITION = 248 -- GetModifierProvidesFOWVision
-MODIFIER_PROPERTY_PSEUDORANDOM_BONUS = 342 -- GetModofierPropertyPseudoRandomBonus
-MODIFIER_PROPERTY_RADAR_COOLDOWN_REDUCTION = 244 -- GetModifierRadarCooldownReduction
-MODIFIER_PROPERTY_REDIRECT_SPELL = 358 -- GetRedirectSpell
-MODIFIER_PROPERTY_REFLECT_SPELL = 151 -- GetReflectSpell
-MODIFIER_PROPERTY_REINCARNATION = 122 -- ReincarnateTime
-MODIFIER_PROPERTY_REINCARNATION_SUPPRESS_FX = 123 -- ReincarnateSuppressFX
-MODIFIER_PROPERTY_REQUIRED_LEVEL = 381 -- GetRequiredLevel
-MODIFIER_PROPERTY_RESPAWNTIME = 124 -- GetModifierConstantRespawnTime
-MODIFIER_PROPERTY_RESPAWNTIME_PERCENTAGE = 125 -- GetModifierPercentageRespawnTime
-MODIFIER_PROPERTY_RESPAWNTIME_STACKING = 126 -- GetModifierStackingRespawnTime
-MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION = 374 -- GetModifierPropertyRestorationAmplification
-MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION_UNIQUE = 375 -- GetModifierPropertyRestorationAmplificationUnique
-MODIFIER_PROPERTY_SHARE_XPRUNE = 311 -- GetModifierShareXPRune
-MODIFIER_PROPERTY_SKIP_ATTACK_REGULATOR = 344 -- GetSkipAttackRegulator
-MODIFIER_PROPERTY_SLOW_RESISTANCE_APPLIES_TO_ATTACKS = 301 -- GetModifierSlowResistanceAppliesToAttacks
-MODIFIER_PROPERTY_SLOW_RESISTANCE_STACKING = 300 -- GetModifierSlowResistance_Stacking
-MODIFIER_PROPERTY_SLOW_RESISTANCE_UNIQUE = 299 -- GEtModifierSlowResistance_Unique
-MODIFIER_PROPERTY_SPELLS_REQUIRE_HP = 249 -- GetModifierSpellsRequireHP
-MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE = 48 -- GetModifierSpellAmplify_Percentage
-MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_CREEP = 47 -- GetModifierSpellAmplify_PercentageCreep
-MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_TARGET = 50 -- GetModifierSpellAmplify_PercentageTarget
-MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_UNIQUE = 49 -- GetModifierSpellAmplify_PercentageUnique
-MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE = 55 -- GetModifierSpellLifestealRegenAmplify_Percentage
-MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE_UNIQUE = 56 -- GetModifierSpellLifestealRegenAmplify_Percentage_Unique
-MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET = 284 -- GetModifierSpellRedirectTarget
-MODIFIER_PROPERTY_STATS_AGILITY_BONUS = 105 -- GetModifierBonusStats_Agility
-MODIFIER_PROPERTY_STATS_AGILITY_BONUS_PERCENTAGE = 108 -- GetModifierBonusStats_Agility_Percentage
-MODIFIER_PROPERTY_STATS_INTELLECT_BONUS = 106 -- GetModifierBonusStats_Intellect
-MODIFIER_PROPERTY_STATS_INTELLECT_BONUS_PERCENTAGE = 109 -- GetModifierBonusStats_Intellect_Percentage
-MODIFIER_PROPERTY_STATS_STRENGTH_BONUS = 104 -- GetModifierBonusStats_Strength
-MODIFIER_PROPERTY_STATS_STRENGTH_BONUS_PERCENTAGE = 107 -- GetModifierBonusStats_Strength_Percentage
-MODIFIER_PROPERTY_STATUS_RESISTANCE = 69 -- GetModifierStatusResistance
-MODIFIER_PROPERTY_STATUS_RESISTANCE_CASTER = 71 -- GetModifierStatusResistanceCaster
-MODIFIER_PROPERTY_STATUS_RESISTANCE_STACKING = 70 -- GetModifierStatusResistanceStacking
-MODIFIER_PROPERTY_STRONG_ILLUSION = 167 -- GetModifierStrongIllusion
-MODIFIER_PROPERTY_SUPER_ILLUSION = 168 -- GetModifierSuperIllusion
-MODIFIER_PROPERTY_SUPER_ILLUSION_WITH_ULTIMATE = 169 -- GetModifierSuperIllusionWithUltimate
-MODIFIER_PROPERTY_SUPPRESS_ATTACK_PROCS = 361 -- GetSuppressAttackProcs
-MODIFIER_PROPERTY_SUPPRESS_CLEAVE = 275 -- GetSuppressCleave
-MODIFIER_PROPERTY_SUPPRESS_CRIT = 322 -- GetSuppressCrit
-MODIFIER_PROPERTY_SUPPRESS_FULLSCREEN_DEATH_FX = 295 -- GetModifierSuppressFullscreenDeathFX
-MODIFIER_PROPERTY_SUPPRESS_INCOMING_CRIT = 377 -- GetSuppressIncomingCrit
-MODIFIER_PROPERTY_SUPPRESS_INVALID_MOVE_ATTACK_ORDERS = 379 -- GetModifierPropertySuppressInvalidMoveAttackOrders
-MODIFIER_PROPERTY_SUPPRESS_TELEPORT = 273 -- GetSuppressTeleport
-MODIFIER_PROPERTY_TEMPEST_DOUBLE = 261 -- GetModifierTempestDouble
-MODIFIER_PROPERTY_TICK_GOLD_MULTIPLIER = 298 -- GetModifierTickGold_Multiplier
-MODIFIER_PROPERTY_TIER_TOKEN_REROLL = 353 -- GetTierTokenReroll
-MODIFIER_PROPERTY_TOOLTIP = 236 -- OnTooltip
-MODIFIER_PROPERTY_TOOLTIP2 = 270 -- OnTooltip2
-MODIFIER_PROPERTY_TOTALDAMAGEOUTGOING_PERCENTAGE = 46 -- GetModifierTotalDamageOutgoing_Percentage
-MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK = 147 -- GetModifierTotal_ConstantBlock
-MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_STACKING = 355 -- GetModifierTotal_ConstantBlockStacking
-MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_UNAVOIDABLE_PRE_ARMOR = 146 -- GetModifierPhysical_ConstantBlockUnavoidablePreArmor
-MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS = 245 -- GetActivityTranslationModifiers
-MODIFIER_PROPERTY_TRANSLATE_ATTACK_SOUND = 246 -- GetAttackSound
-MODIFIER_PROPERTY_TRIGGER_COSMETIC_AND_END_ATTACK = 183 -- GetTriggerCosmeticAndEndAttack
-MODIFIER_PROPERTY_TURN_RATE_CONSTANT = 285 -- GetModifierTurnRateConstant
-MODIFIER_PROPERTY_TURN_RATE_OVERRIDE = 172 -- GetModifierTurnRate_Override
-MODIFIER_PROPERTY_TURN_RATE_PERCENTAGE = 171 -- GetModifierTurnRate_Percentage
-MODIFIER_PROPERTY_UNIT_DISALLOW_UPGRADING = 181 -- GetModifierUnitDisllowUpgrading
-MODIFIER_PROPERTY_UNIT_STATS_NEEDS_REFRESH = 178 -- GetModifierUnitStatsNeedsRefresh
-MODIFIER_PROPERTY_UPGRADE_NEUTRAL_ARTIFACTS = 378 -- GetModifierPropertyUpgradeNeutralArtifacts
-MODIFIER_PROPERTY_VISION_DEGREES_RESTRICTION = 354 -- GetVisionDegreeRestriction
-MODIFIER_PROPERTY_VISUAL_Z_DELTA = 266 -- GetVisualZDelta
-MODIFIER_PROPERTY_VISUAL_Z_SPEED_BASE_OVERRIDE = 267 -- GetVisualZSpeedBaseOverride
-MODIFIER_PROPERTY_XP_DURING_DEATH = 170 -- GetModifierXPDuringDeath
-MODIFIER_PROPERTY_XP_FOUNTAIN_COUNTDOWN_TIME_OVERRIDE = 312 -- GetModifierXPFountainCountdownTimeOverride
-
---- Enum modifierpriority
-MODIFIER_PRIORITY_HIGH = 2
-MODIFIER_PRIORITY_LOW = 0
-MODIFIER_PRIORITY_NORMAL = 1
-MODIFIER_PRIORITY_SUPER_ULTRA = 4
-MODIFIER_PRIORITY_ULTRA = 3
-
---- Enum modifierremove
-DOTA_BUFF_REMOVE_ALL = 0
-DOTA_BUFF_REMOVE_ALLY = 2
-DOTA_BUFF_REMOVE_ENEMY = 1
-
---- Enum modifierstate
-MODIFIER_STATE_ALLOW_PATHING_THROUGH_BASE_BLOCKER = 57
-MODIFIER_STATE_ALLOW_PATHING_THROUGH_CLIFFS = 52
-MODIFIER_STATE_ALLOW_PATHING_THROUGH_FISSURE = 53
-MODIFIER_STATE_ALLOW_PATHING_THROUGH_OBSTRUCTIONS = 55
-MODIFIER_STATE_ALLOW_PATHING_THROUGH_TREES = 42
-MODIFIER_STATE_ATTACKS_ARE_MELEE = 59
-MODIFIER_STATE_ATTACKS_DONT_REVEAL = 62
-MODIFIER_STATE_ATTACK_ALLIES = 51
-MODIFIER_STATE_ATTACK_IMMUNE = 2
-MODIFIER_STATE_BLIND = 32
-MODIFIER_STATE_BLOCK_DISABLED = 12
-MODIFIER_STATE_CANNOT_BE_MOTION_CONTROLLED = 49
-MODIFIER_STATE_CANNOT_MISS = 17
-MODIFIER_STATE_CANNOT_TARGET_BUILDINGS = 16
-MODIFIER_STATE_CANNOT_TARGET_ENEMIES = 15
-MODIFIER_STATE_CAN_USE_BACKPACK_ITEMS = 60
-MODIFIER_STATE_CASTS_IGNORE_CHANNELING = 61
-MODIFIER_STATE_COMMAND_RESTRICTED = 20
-MODIFIER_STATE_DEBUFF_IMMUNE = 56
-MODIFIER_STATE_DISARMED = 1
-MODIFIER_STATE_DOMINATED = 31
-MODIFIER_STATE_EVADE_DISABLED = 13
-MODIFIER_STATE_FAKE_ALLY = 34
-MODIFIER_STATE_FEARED = 47
-MODIFIER_STATE_FLYING = 26
-MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY = 35
-MODIFIER_STATE_FORCED_FLYING_VISION = 50
-MODIFIER_STATE_FROZEN = 19
-MODIFIER_STATE_HEXED = 6
-MODIFIER_STATE_IGNORING_MOVE_AND_ATTACK_ORDERS = 41
-MODIFIER_STATE_IGNORING_MOVE_ORDERS = 58
-MODIFIER_STATE_IGNORING_STOP_ORDERS = 46
-MODIFIER_STATE_INVISIBLE = 7
-MODIFIER_STATE_INVULNERABLE = 8
-MODIFIER_STATE_LAST = 64
-MODIFIER_STATE_LOW_ATTACK_PRIORITY = 22
-MODIFIER_STATE_MAGIC_IMMUNE = 9
-MODIFIER_STATE_MUTED = 4
-MODIFIER_STATE_NEUTRALS_DONT_ATTACK = 63
-MODIFIER_STATE_NIGHTMARED = 11
-MODIFIER_STATE_NOT_ON_MINIMAP = 21
-MODIFIER_STATE_NOT_ON_MINIMAP_FOR_ENEMIES = 43
-MODIFIER_STATE_NO_HEALTH_BAR = 23
-MODIFIER_STATE_NO_HEALTH_BAR_FOR_ENEMIES = 24
-MODIFIER_STATE_NO_HEALTH_BAR_FOR_OTHER_PLAYERS = 25
-MODIFIER_STATE_NO_TEAM_MOVE_TO = 28
-MODIFIER_STATE_NO_TEAM_SELECT = 29
-MODIFIER_STATE_NO_UNIT_COLLISION = 27
-MODIFIER_STATE_OUT_OF_GAME = 33
-MODIFIER_STATE_PASSIVES_DISABLED = 30
-MODIFIER_STATE_PROVIDES_VISION = 10
-MODIFIER_STATE_ROOTED = 0
-MODIFIER_STATE_SILENCED = 3
-MODIFIER_STATE_SPECIALLY_DENIABLE = 18
-MODIFIER_STATE_SPECIALLY_UNDENIABLE = 54
-MODIFIER_STATE_STUNNED = 5
-MODIFIER_STATE_TAUNTED = 48
-MODIFIER_STATE_TETHERED = 45
-MODIFIER_STATE_TRUESIGHT_IMMUNE = 36
-MODIFIER_STATE_UNSELECTABLE = 14
-MODIFIER_STATE_UNSLOWABLE = 44
-MODIFIER_STATE_UNTARGETABLE = 37
-MODIFIER_STATE_UNTARGETABLE_ALLIED = 38
-MODIFIER_STATE_UNTARGETABLE_ENEMY = 39
-MODIFIER_STATE_UNTARGETABLE_SELF = 40
-
----[[ CBodyComponent:AddImpulseAtPosition  Apply an impulse at a worldspace position to the physics ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
-function CBodyComponent:AddImpulseAtPosition( Vector_1, Vector_2 ) end
-
----[[ CBodyComponent:AddVelocity  Add linear and angular velocity to the physics object ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
-function CBodyComponent:AddVelocity( Vector_1, Vector_2 ) end
-
----[[ CBodyComponent:DetachFromParent  Detach from its parent ]]
--- @return void
-function CBodyComponent:DetachFromParent(  ) end
-
----[[ CBodyComponent:IsAttachedToParent  Is attached to parent ]]
--- @return bool
-function CBodyComponent:IsAttachedToParent(  ) end
-
----[[ CBodyComponent:SetAngularVelocity   ]]
--- @return void
--- @param Vector_1 Vector
-function CBodyComponent:SetAngularVelocity( Vector_1 ) end
-
----[[ CBodyComponent:SetMaterialGroup   ]]
--- @return void
--- @param utlstringtoken_1 utlstringtoken
-function CBodyComponent:SetMaterialGroup( utlstringtoken_1 ) end
-
----[[ CBodyComponent:SetVelocity   ]]
--- @return void
--- @param Vector_1 Vector
-function CBodyComponent:SetVelocity( Vector_1 ) end
-
----[[ CCustomNetTableManager:GetTableValue  ( string TableName, string KeyName ) ]]
--- @return table
--- @param string_1 string
--- @param string_2 string
-function CCustomNetTableManager:GetTableValue( string_1, string_2 ) end
-
----[[ CDOTAGameManager:GetHeroDataByName_Script  Get the hero unit  ]]
--- @return table
--- @param string_1 string
-function CDOTAGameManager:GetHeroDataByName_Script( string_1 ) end
-
----[[ CDOTAGameManager:GetHeroIDByName  Get the hero ID given the hero name. ]]
--- @return int
--- @param string_1 string
-function CDOTAGameManager:GetHeroIDByName( string_1 ) end
-
----[[ CDOTAGameManager:GetHeroLocTokenByID  Get the localization token for the given hero ID. ]]
--- @return string
--- @param int_1 int
-function CDOTAGameManager:GetHeroLocTokenByID( int_1 ) end
-
----[[ CDOTAGameManager:GetHeroNameByID  Get the hero name given a hero ID. ]]
--- @return string
--- @param int_1 int
-function CDOTAGameManager:GetHeroNameByID( int_1 ) end
-
----[[ CDOTAGameManager:GetHeroNameForUnitName  Get the hero name given a unit name. ]]
--- @return string
--- @param string_1 string
-function CDOTAGameManager:GetHeroNameForUnitName( string_1 ) end
-
----[[ CDOTAGameManager:GetHeroUnitNameByID  Get the hero unit name given the hero ID. ]]
--- @return string
--- @param int_1 int
-function CDOTAGameManager:GetHeroUnitNameByID( int_1 ) end
-
----[[ CDOTAGameRules:GetBannedHeroIDs  Returns the hero unit IDs banned in this game, if any ]]
--- @return table
-function CDOTAGameRules:GetBannedHeroIDs(  ) end
-
----[[ CDOTAGameRules:GetBannedHeroes  Returns the hero unit names banned in this game, if any ]]
--- @return table
-function CDOTAGameRules:GetBannedHeroes(  ) end
-
----[[ CDOTAGameRules:GetCustomGameDifficulty  Returns the difficulty level of the custom game mode ]]
--- @return int
-function CDOTAGameRules:GetCustomGameDifficulty(  ) end
-
----[[ CDOTAGameRules:GetDOTATime  (b IncludePregameTime b IncludeNegativeTime) Returns the actual DOTA in-game clock time. ]]
--- @return float
--- @param bool_1 bool
--- @param bool_2 bool
-function CDOTAGameRules:GetDOTATime( bool_1, bool_2 ) end
-
----[[ CDOTAGameRules:GetDifficulty  Returns difficulty level of the custom game mode ]]
--- @return int
-function CDOTAGameRules:GetDifficulty(  ) end
-
----[[ CDOTAGameRules:GetGameFrameTime  Returns the number of seconds elapsed since the last frame was renderered. This time doesn't count up when the game is paused ]]
--- @return float
-function CDOTAGameRules:GetGameFrameTime(  ) end
-
----[[ CDOTAGameRules:GetGameTime  Returns the number of seconds elapsed since map start. This time doesn't count up when the game is paused ]]
--- @return float
-function CDOTAGameRules:GetGameTime(  ) end
-
----[[ CDOTAGameRules:GetIetmStockDuration  Get the time it takes to add a new item to stock ]]
--- @return float
--- @param int_1 int
--- @param string_2 string
--- @param int_3 int
-function CDOTAGameRules:GetIetmStockDuration( int_1, string_2, int_3 ) end
-
----[[ CDOTAGameRules:GetItemStockCount  Get the stock count of the item ]]
--- @return int
--- @param int_1 int
--- @param string_2 string
--- @param int_3 int
-function CDOTAGameRules:GetItemStockCount( int_1, string_2, int_3 ) end
-
----[[ CDOTAGameRules:GetItemStockTime  Get the time an item will be added to stock ]]
--- @return float
--- @param int_1 int
--- @param string_2 string
--- @param int_3 int
-function CDOTAGameRules:GetItemStockTime( int_1, string_2, int_3 ) end
-
----[[ CDOTAGameRules:GetNeutralInitialSpawnOffset  Gets the extra offset to initial neutral creep spawn delay ]]
--- @return float
-function CDOTAGameRules:GetNeutralInitialSpawnOffset(  ) end
-
----[[ CDOTAGameRules:GetWeatherWindDirection  Get Weather Wind Direction Vector ]]
--- @return Vector
-function CDOTAGameRules:GetWeatherWindDirection(  ) end
-
----[[ CDOTAGameRules:IsCheatMode  Are cheats enabled on the server ]]
--- @return bool
-function CDOTAGameRules:IsCheatMode(  ) end
-
----[[ CDOTAGameRules:IsDev   ]]
--- @return bool
-function CDOTAGameRules:IsDev(  ) end
-
----[[ CDOTAGameRules:IsHeroEnabledViaLists  Is the hero not blacklisted, and is it either whitelisted or the whitelist is empty? ]]
--- @return bool
--- @param string_1 string
-function CDOTAGameRules:IsHeroEnabledViaLists( string_1 ) end
-
----[[ CDOTAGameRules:ShouldHideBlacklistedHeroes  Are blacklisted heroes hidden, or just dimmed, in hero picking? ]]
--- @return bool
-function CDOTAGameRules:ShouldHideBlacklistedHeroes(  ) end
-
----[[ CDOTAGameRules:State_Get  Get the current Gamerules state ]]
--- @return int
-function CDOTAGameRules:State_Get(  ) end
-
----[[ CDOTA_Buff:AddParticle  (index, bDestroyImmediately, bStatusEffect, priority, bHeroEffect, bOverheadEffect ]]
--- @return void
--- @param i int
--- @param bDestroyImmediately bool
--- @param bStatusEffect bool
--- @param iPriority int
--- @param bHeroEffect bool
--- @param bOverheadEffect bool
-function CDOTA_Buff:AddParticle( i, bDestroyImmediately, bStatusEffect, iPriority, bHeroEffect, bOverheadEffect ) end
-
----[[ CDOTA_Buff:CheckStateToTable   ]]
--- @return void
--- @param table handle
-function CDOTA_Buff:CheckStateToTable( table ) end
-
----[[ CDOTA_Buff:DecrementStackCount  Decrease this modifier's stack count by 1. ]]
--- @return void
-function CDOTA_Buff:DecrementStackCount(  ) end
-
----[[ CDOTA_Buff:Destroy  Run all associated destroy functions, then remove the modifier. ]]
--- @return void
-function CDOTA_Buff:Destroy(  ) end
-
----[[ CDOTA_Buff:DestroyOnExpire   ]]
--- @return bool
-function CDOTA_Buff:DestroyOnExpire(  ) end
-
----[[ CDOTA_Buff:ForceRefresh  Run all associated refresh functions on this modifier as if it was re-applied. ]]
--- @return void
-function CDOTA_Buff:ForceRefresh(  ) end
-
----[[ CDOTA_Buff:GetAbility  Get the ability that generated the modifier. ]]
--- @return handle
-function CDOTA_Buff:GetAbility(  ) end
-
----[[ CDOTA_Buff:GetAuraDuration  Returns aura stickiness (default 0.5) ]]
--- @return float
-function CDOTA_Buff:GetAuraDuration(  ) end
-
----[[ CDOTA_Buff:GetAuraOwner   ]]
--- @return handle
-function CDOTA_Buff:GetAuraOwner(  ) end
-
----[[ CDOTA_Buff:GetCaster  Get the owner of the ability responsible for the modifier. ]]
--- @return handle
-function CDOTA_Buff:GetCaster(  ) end
-
----[[ CDOTA_Buff:GetClass   ]]
--- @return string
-function CDOTA_Buff:GetClass(  ) end
-
----[[ CDOTA_Buff:GetCreationTime   ]]
--- @return float
-function CDOTA_Buff:GetCreationTime(  ) end
-
----[[ CDOTA_Buff:GetDieTime   ]]
--- @return float
-function CDOTA_Buff:GetDieTime(  ) end
-
----[[ CDOTA_Buff:GetDuration   ]]
--- @return float
-function CDOTA_Buff:GetDuration(  ) end
-
----[[ CDOTA_Buff:GetElapsedTime   ]]
--- @return float
-function CDOTA_Buff:GetElapsedTime(  ) end
-
----[[ CDOTA_Buff:GetLastAppliedTime   ]]
--- @return float
-function CDOTA_Buff:GetLastAppliedTime(  ) end
-
----[[ CDOTA_Buff:GetName   ]]
--- @return string
-function CDOTA_Buff:GetName(  ) end
-
----[[ CDOTA_Buff:GetParent  Get the unit the modifier is parented to. ]]
--- @return handle
-function CDOTA_Buff:GetParent(  ) end
-
----[[ CDOTA_Buff:GetRemainingTime   ]]
--- @return float
-function CDOTA_Buff:GetRemainingTime(  ) end
-
----[[ CDOTA_Buff:GetSerialNumber   ]]
--- @return int
-function CDOTA_Buff:GetSerialNumber(  ) end
-
----[[ CDOTA_Buff:GetStackCount   ]]
--- @return int
-function CDOTA_Buff:GetStackCount(  ) end
-
----[[ CDOTA_Buff:HasFunction   ]]
--- @return bool
--- @param iFunction int
-function CDOTA_Buff:HasFunction( iFunction ) end
-
----[[ CDOTA_Buff:IncrementStackCount  Increase this modifier's stack count by 1. ]]
--- @return void
-function CDOTA_Buff:IncrementStackCount(  ) end
-
----[[ CDOTA_Buff:IsDebuff   ]]
--- @return bool
-function CDOTA_Buff:IsDebuff(  ) end
-
----[[ CDOTA_Buff:IsHexDebuff   ]]
--- @return bool
-function CDOTA_Buff:IsHexDebuff(  ) end
-
----[[ CDOTA_Buff:IsStunDebuff   ]]
--- @return bool
-function CDOTA_Buff:IsStunDebuff(  ) end
-
----[[ CDOTA_Buff:SetDuration  (flTime, bInformClients) ]]
--- @return void
--- @param flDuration float
--- @param bInformClient bool
-function CDOTA_Buff:SetDuration( flDuration, bInformClient ) end
-
----[[ CDOTA_Buff:SetOverheadEffectOffset   ]]
--- @return bool
--- @param flOffset float
-function CDOTA_Buff:SetOverheadEffectOffset( flOffset ) end
-
----[[ CDOTA_Buff:SetStackCount   ]]
--- @return void
--- @param iCount int
-function CDOTA_Buff:SetStackCount( iCount ) end
-
----[[ CDOTA_Buff:StartIntervalThink  Start this modifier's think function (OnIntervalThink) with the given interval (float).  To stop, call with -1. ]]
--- @return void
--- @param flInterval float
-function CDOTA_Buff:StartIntervalThink( flInterval ) end
-
----[[ CDOTA_Modifier_Lua:AllowIllusionDuplicate  True/false if this modifier is active on illusions. ]]
--- @return bool
-function CDOTA_Modifier_Lua:AllowIllusionDuplicate(  ) end
-
----[[ CDOTA_Modifier_Lua:CanParentBeAutoAttacked   ]]
--- @return bool
-function CDOTA_Modifier_Lua:CanParentBeAutoAttacked(  ) end
-
----[[ CDOTA_Modifier_Lua:DestroyOnExpire  True/false if this buff is removed when the duration expires. ]]
--- @return bool
-function CDOTA_Modifier_Lua:DestroyOnExpire(  ) end
-
----[[ CDOTA_Modifier_Lua:GetAttributes  Return the types of attributes applied to this modifier (enum value from DOTAModifierAttribute_t ]]
--- @return int
-function CDOTA_Modifier_Lua:GetAttributes(  ) end
-
----[[ CDOTA_Modifier_Lua:GetAuraDuration  Returns aura stickiness ]]
--- @return float
-function CDOTA_Modifier_Lua:GetAuraDuration(  ) end
-
----[[ CDOTA_Modifier_Lua:GetAuraEntityReject  Return true/false if this entity should receive the aura under specific conditions ]]
--- @return bool
--- @param hEntity handle
-function CDOTA_Modifier_Lua:GetAuraEntityReject( hEntity ) end
-
----[[ CDOTA_Modifier_Lua:GetAuraRadius  Return the range around the parent this aura tries to apply its buff. ]]
--- @return float
-function CDOTA_Modifier_Lua:GetAuraRadius(  ) end
-
----[[ CDOTA_Modifier_Lua:GetAuraSearchFlags  Return the unit flags this aura respects when placing buffs. ]]
--- @return int
-function CDOTA_Modifier_Lua:GetAuraSearchFlags(  ) end
-
----[[ CDOTA_Modifier_Lua:GetAuraSearchTeam  Return the teams this aura applies its buff to. ]]
--- @return int
-function CDOTA_Modifier_Lua:GetAuraSearchTeam(  ) end
-
----[[ CDOTA_Modifier_Lua:GetAuraSearchType  Return the unit classifications this aura applies its buff to. ]]
--- @return int
-function CDOTA_Modifier_Lua:GetAuraSearchType(  ) end
-
----[[ CDOTA_Modifier_Lua:GetCritDamage  A Modifier that listens to MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE has to have a GetCritDamage implementation so we can know when to evaluate it. Value should be in 'times the original value format' e.g: 1.5 not 150 ]]
--- @return float
-function CDOTA_Modifier_Lua:GetCritDamage(  ) end
-
----[[ CDOTA_Modifier_Lua:GetEffectAttachType  Return the attach type of the particle system from GetEffectName. ]]
--- @return int
-function CDOTA_Modifier_Lua:GetEffectAttachType(  ) end
-
----[[ CDOTA_Modifier_Lua:GetEffectName  Return the name of the particle system that is created while this modifier is active. ]]
--- @return string
-function CDOTA_Modifier_Lua:GetEffectName(  ) end
-
----[[ CDOTA_Modifier_Lua:GetHeroEffectName  Return the name of the hero effect particle system that is created while this modifier is active. ]]
--- @return string
-function CDOTA_Modifier_Lua:GetHeroEffectName(  ) end
-
----[[ CDOTA_Modifier_Lua:GetModifierAura  The name of the secondary modifier that will be applied by this modifier (if it is an aura). ]]
--- @return string
-function CDOTA_Modifier_Lua:GetModifierAura(  ) end
-
----[[ CDOTA_Modifier_Lua:GetPriority  Return the priority order this modifier will be applied over others. ]]
--- @return int
-function CDOTA_Modifier_Lua:GetPriority(  ) end
-
----[[ CDOTA_Modifier_Lua:GetStatusEffectName  Return the name of the status effect particle system that is created while this modifier is active. ]]
--- @return string
-function CDOTA_Modifier_Lua:GetStatusEffectName(  ) end
-
----[[ CDOTA_Modifier_Lua:GetTexture  Return the name of the buff icon to be shown for this modifier. ]]
--- @return string
-function CDOTA_Modifier_Lua:GetTexture(  ) end
-
----[[ CDOTA_Modifier_Lua:HeroEffectPriority  Relationship of this hero effect with those from other buffs (higher is more likely to be shown). ]]
--- @return int
-function CDOTA_Modifier_Lua:HeroEffectPriority(  ) end
-
----[[ CDOTA_Modifier_Lua:IsAura  True/false if this modifier is an aura. ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsAura(  ) end
-
----[[ CDOTA_Modifier_Lua:IsAuraActiveOnDeath  True/false if this aura provides buffs when the parent is dead. ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsAuraActiveOnDeath(  ) end
-
----[[ CDOTA_Modifier_Lua:IsDebuff  True/false if this modifier should be displayed as a debuff. ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsDebuff(  ) end
-
----[[ CDOTA_Modifier_Lua:IsHidden  True/false if this modifier should be displayed on the buff bar. ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsHidden(  ) end
-
----[[ CDOTA_Modifier_Lua:IsPermanent   ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsPermanent(  ) end
-
----[[ CDOTA_Modifier_Lua:IsPurgable  True/false if this modifier can be purged. ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsPurgable(  ) end
-
----[[ CDOTA_Modifier_Lua:IsPurgeException  True/false if this modifier can be purged by strong dispels. ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsPurgeException(  ) end
-
----[[ CDOTA_Modifier_Lua:IsStunDebuff  True/false if this modifier is considered a stun for purge reasons. ]]
--- @return bool
-function CDOTA_Modifier_Lua:IsStunDebuff(  ) end
-
----[[ CDOTA_Modifier_Lua:OnCreated  Runs when the modifier is created. ]]
--- @return void
--- @param table handle
-function CDOTA_Modifier_Lua:OnCreated( table ) end
-
----[[ CDOTA_Modifier_Lua:OnDestroy  Runs when the modifier is destroyed (after unit loses modifier). ]]
--- @return void
-function CDOTA_Modifier_Lua:OnDestroy(  ) end
-
----[[ CDOTA_Modifier_Lua:OnIntervalThink  Runs when the think interval occurs. ]]
--- @return void
-function CDOTA_Modifier_Lua:OnIntervalThink(  ) end
-
----[[ CDOTA_Modifier_Lua:OnRefresh  Runs when the modifier is refreshed. ]]
--- @return void
--- @param table handle
-function CDOTA_Modifier_Lua:OnRefresh( table ) end
-
----[[ CDOTA_Modifier_Lua:OnRemoved  Runs when the modifier is destroyed (before unit loses modifier). ]]
--- @return void
--- @param bDeath bool
-function CDOTA_Modifier_Lua:OnRemoved( bDeath ) end
-
----[[ CDOTA_Modifier_Lua:OnStackCountChanged  Runs when stack count changes (param is old count). ]]
--- @return void
--- @param iStackCount int
-function CDOTA_Modifier_Lua:OnStackCountChanged( iStackCount ) end
-
----[[ CDOTA_Modifier_Lua:RemoveOnDeath  True/false if this modifier is removed when the parent dies. ]]
--- @return bool
-function CDOTA_Modifier_Lua:RemoveOnDeath(  ) end
-
----[[ CDOTA_Modifier_Lua:SetHasCustomTransmitterData   ]]
--- @return void
--- @param bHasCustomData bool
-function CDOTA_Modifier_Lua:SetHasCustomTransmitterData( bHasCustomData ) end
-
----[[ CDOTA_Modifier_Lua:ShouldUseOverheadOffset  Apply the overhead offset to the attached effect. ]]
--- @return bool
-function CDOTA_Modifier_Lua:ShouldUseOverheadOffset(  ) end
-
----[[ CDOTA_Modifier_Lua:StatusEffectPriority  Relationship of this status effect with those from other buffs (higher is more likely to be shown). ]]
--- @return int
-function CDOTA_Modifier_Lua:StatusEffectPriority(  ) end
-
----[[ CDebugOverlayScriptHelper:Axis  Draws an axis. Specify origin + orientation in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param <unknown>_2 <unknown>
--- @param float_3 float
--- @param bool_4 bool
--- @param float_5 float
-function CDebugOverlayScriptHelper:Axis( Vector_1, <unknown>_2, float_3, bool_4, float_5 ) end
-
----[[ CDebugOverlayScriptHelper:Box  Draws a world-space axis-aligned box. Specify bounds in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param bool_7 bool
--- @param float_8 float
-function CDebugOverlayScriptHelper:Box( Vector_1, Vector_2, int_3, int_4, int_5, int_6, bool_7, float_8 ) end
-
----[[ CDebugOverlayScriptHelper:BoxAngles  Draws an oriented box at the origin. Specify bounds in local space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param Vector_3 Vector
--- @param <unknown>_4 <unknown>
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param bool_9 bool
--- @param float_10 float
-function CDebugOverlayScriptHelper:BoxAngles( Vector_1, Vector_2, Vector_3, <unknown>_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
-
----[[ CDebugOverlayScriptHelper:Capsule  Draws a capsule. Specify base in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param <unknown>_2 <unknown>
--- @param float_3 float
--- @param float_4 float
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param bool_9 bool
--- @param float_10 float
-function CDebugOverlayScriptHelper:Capsule( Vector_1, <unknown>_2, float_3, float_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
-
----[[ CDebugOverlayScriptHelper:Circle  Draws a circle. Specify center in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param <unknown>_2 <unknown>
--- @param float_3 float
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param bool_8 bool
--- @param float_9 float
-function CDebugOverlayScriptHelper:Circle( Vector_1, <unknown>_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
-
----[[ CDebugOverlayScriptHelper:CircleScreenOriented  Draws a circle oriented to the screen. Specify center in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param float_2 float
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param bool_7 bool
--- @param float_8 float
-function CDebugOverlayScriptHelper:CircleScreenOriented( Vector_1, float_2, int_3, int_4, int_5, int_6, bool_7, float_8 ) end
-
----[[ CDebugOverlayScriptHelper:Cone  Draws a wireframe cone. Specify endpoint and direction in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
--- @param float_4 float
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param bool_9 bool
--- @param float_10 float
-function CDebugOverlayScriptHelper:Cone( Vector_1, Vector_2, float_3, float_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
-
----[[ CDebugOverlayScriptHelper:Cross  Draws a screen-aligned cross. Specify origin in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param float_2 float
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param bool_7 bool
--- @param float_8 float
-function CDebugOverlayScriptHelper:Cross( Vector_1, float_2, int_3, int_4, int_5, int_6, bool_7, float_8 ) end
-
----[[ CDebugOverlayScriptHelper:Cross3D  Draws a world-aligned cross. Specify origin in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param float_2 float
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param bool_7 bool
--- @param float_8 float
-function CDebugOverlayScriptHelper:Cross3D( Vector_1, float_2, int_3, int_4, int_5, int_6, bool_7, float_8 ) end
-
----[[ CDebugOverlayScriptHelper:Cross3DOriented  Draws an oriented cross. Specify origin in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param <unknown>_2 <unknown>
--- @param float_3 float
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param bool_8 bool
--- @param float_9 float
-function CDebugOverlayScriptHelper:Cross3DOriented( Vector_1, <unknown>_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
-
----[[ CDebugOverlayScriptHelper:DrawTickMarkedLine  Draws a dashed line. Specify endpoints in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param bool_9 bool
--- @param float_10 float
-function CDebugOverlayScriptHelper:DrawTickMarkedLine( Vector_1, Vector_2, float_3, int_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
-
----[[ CDebugOverlayScriptHelper:EntityAttachments  Draws the attachments of the entity ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param float_2 float
--- @param float_3 float
-function CDebugOverlayScriptHelper:EntityAttachments( ehandle_1, float_2, float_3 ) end
-
----[[ CDebugOverlayScriptHelper:EntityAxis  Draws the axis of the entity origin ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param float_2 float
--- @param bool_3 bool
--- @param float_4 float
-function CDebugOverlayScriptHelper:EntityAxis( ehandle_1, float_2, bool_3, float_4 ) end
-
----[[ CDebugOverlayScriptHelper:EntityBounds  Draws bounds of an entity ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param int_2 int
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param bool_6 bool
--- @param float_7 float
-function CDebugOverlayScriptHelper:EntityBounds( ehandle_1, int_2, int_3, int_4, int_5, bool_6, float_7 ) end
-
----[[ CDebugOverlayScriptHelper:EntitySkeleton  Draws the skeleton of the entity ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param float_2 float
-function CDebugOverlayScriptHelper:EntitySkeleton( ehandle_1, float_2 ) end
-
----[[ CDebugOverlayScriptHelper:EntityText  Draws text on an entity ]]
--- @return void
--- @param ehandle_1 ehandle
--- @param int_2 int
--- @param string_3 string
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param float_8 float
-function CDebugOverlayScriptHelper:EntityText( ehandle_1, int_2, string_3, int_4, int_5, int_6, int_7, float_8 ) end
-
----[[ CDebugOverlayScriptHelper:FilledRect2D  Draws a screen-space filled 2D rectangle. Coordinates are in pixels. ]]
--- @return void
--- @param Vector2D_1 Vector2D
--- @param Vector2D_2 Vector2D
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param float_7 float
-function CDebugOverlayScriptHelper:FilledRect2D( Vector2D_1, Vector2D_2, int_3, int_4, int_5, int_6, float_7 ) end
-
----[[ CDebugOverlayScriptHelper:HorzArrow  Draws a horizontal arrow. Specify endpoints in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param bool_8 bool
--- @param float_9 float
-function CDebugOverlayScriptHelper:HorzArrow( Vector_1, Vector_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
-
----[[ CDebugOverlayScriptHelper:Line  Draws a line between two points ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param bool_7 bool
--- @param float_8 float
-function CDebugOverlayScriptHelper:Line( Vector_1, Vector_2, int_3, int_4, int_5, int_6, bool_7, float_8 ) end
-
----[[ CDebugOverlayScriptHelper:Line2D  Draws a line between two points in screenspace ]]
--- @return void
--- @param Vector2D_1 Vector2D
--- @param Vector2D_2 Vector2D
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param float_7 float
-function CDebugOverlayScriptHelper:Line2D( Vector2D_1, Vector2D_2, int_3, int_4, int_5, int_6, float_7 ) end
-
----[[ CDebugOverlayScriptHelper:PopDebugOverlayScope  Pops the identifier used to group overlays. Overlays marked with this identifier can be deleted in a big batch. ]]
--- @return void
-function CDebugOverlayScriptHelper:PopDebugOverlayScope(  ) end
-
----[[ CDebugOverlayScriptHelper:PushAndClearDebugOverlayScope  Pushes an identifier used to group overlays. Deletes all existing overlays using this overlay id. ]]
--- @return void
--- @param utlstringtoken_1 utlstringtoken
-function CDebugOverlayScriptHelper:PushAndClearDebugOverlayScope( utlstringtoken_1 ) end
-
----[[ CDebugOverlayScriptHelper:PushDebugOverlayScope  Pushes an identifier used to group overlays. Overlays marked with this identifier can be deleted in a big batch. ]]
--- @return void
--- @param utlstringtoken_1 utlstringtoken
-function CDebugOverlayScriptHelper:PushDebugOverlayScope( utlstringtoken_1 ) end
-
----[[ CDebugOverlayScriptHelper:RemoveAllInScope  Removes all overlays marked with a specific identifier, regardless of their lifetime. ]]
--- @return void
--- @param utlstringtoken_1 utlstringtoken
-function CDebugOverlayScriptHelper:RemoveAllInScope( utlstringtoken_1 ) end
-
----[[ CDebugOverlayScriptHelper:SolidCone  Draws a solid cone. Specify endpoint and direction in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
--- @param float_4 float
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param bool_9 bool
--- @param float_10 float
-function CDebugOverlayScriptHelper:SolidCone( Vector_1, Vector_2, float_3, float_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
-
----[[ CDebugOverlayScriptHelper:Sphere  Draws a wireframe sphere. Specify center in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param float_2 float
--- @param int_3 int
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param bool_7 bool
--- @param float_8 float
-function CDebugOverlayScriptHelper:Sphere( Vector_1, float_2, int_3, int_4, int_5, int_6, bool_7, float_8 ) end
-
----[[ CDebugOverlayScriptHelper:SweptBox  Draws a swept box. Specify endpoints in world space and the bounds in local space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param Vector_3 Vector
--- @param Vector_4 Vector
--- @param <unknown>_5 <unknown>
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param int_9 int
--- @param float_10 float
-function CDebugOverlayScriptHelper:SweptBox( Vector_1, Vector_2, Vector_3, Vector_4, <unknown>_5, int_6, int_7, int_8, int_9, float_10 ) end
-
----[[ CDebugOverlayScriptHelper:Text  Draws 2D text. Specify origin in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param int_2 int
--- @param string_3 string
--- @param float_4 float
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param float_9 float
-function CDebugOverlayScriptHelper:Text( Vector_1, int_2, string_3, float_4, int_5, int_6, int_7, int_8, float_9 ) end
-
----[[ CDebugOverlayScriptHelper:Texture  Draws a screen-space texture. Coordinates are in pixels. ]]
--- @return void
--- @param string_1 string
--- @param Vector2D_2 Vector2D
--- @param Vector2D_3 Vector2D
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param Vector2D_8 Vector2D
--- @param Vector2D_9 Vector2D
--- @param float_10 float
-function CDebugOverlayScriptHelper:Texture( string_1, Vector2D_2, Vector2D_3, int_4, int_5, int_6, int_7, Vector2D_8, Vector2D_9, float_10 ) end
-
----[[ CDebugOverlayScriptHelper:Triangle  Draws a filled triangle. Specify vertices in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param Vector_3 Vector
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param bool_8 bool
--- @param float_9 float
-function CDebugOverlayScriptHelper:Triangle( Vector_1, Vector_2, Vector_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
-
----[[ CDebugOverlayScriptHelper:VectorText3D  Draws 3D text. Specify origin + orientation in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param <unknown>_2 <unknown>
--- @param string_3 string
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param bool_8 bool
--- @param float_9 float
-function CDebugOverlayScriptHelper:VectorText3D( Vector_1, <unknown>_2, string_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
-
----[[ CDebugOverlayScriptHelper:VertArrow  Draws a vertical arrow. Specify endpoints in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param Vector_2 Vector
--- @param float_3 float
--- @param int_4 int
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param bool_8 bool
--- @param float_9 float
-function CDebugOverlayScriptHelper:VertArrow( Vector_1, Vector_2, float_3, int_4, int_5, int_6, int_7, bool_8, float_9 ) end
-
----[[ CDebugOverlayScriptHelper:YawArrow  Draws a arrow associated with a specific yaw. Specify endpoints in world space. ]]
--- @return void
--- @param Vector_1 Vector
--- @param float_2 float
--- @param float_3 float
--- @param float_4 float
--- @param int_5 int
--- @param int_6 int
--- @param int_7 int
--- @param int_8 int
--- @param bool_9 bool
--- @param float_10 float
-function CDebugOverlayScriptHelper:YawArrow( Vector_1, float_2, float_3, float_4, int_5, int_6, int_7, int_8, bool_9, float_10 ) end
-
----[[ CEntities:First  Begin an iteration over the list of entities ]]
--- @return handle
-function CEntities:First(  ) end
-
----[[ CEntities:GetLocalPlayer  Get the local player controller (backcompat). ]]
--- @return handle
-function CEntities:GetLocalPlayer(  ) end
-
----[[ CEntities:GetLocalPlayerController  Get the local player controller. ]]
--- @return handle
-function CEntities:GetLocalPlayerController(  ) end
-
----[[ CEntities:GetLocalPlayerPawn  Get the local player pawn. ]]
--- @return handle
-function CEntities:GetLocalPlayerPawn(  ) end
-
----[[ CEntities:Next  Continue an iteration over the list of entities, providing reference to a previously found entity ]]
--- @return handle
--- @param handle_1 handle
-function CEntities:Next( handle_1 ) end
-
----[[ CEntityInstance:ConnectOutput  Adds an I/O connection that will call the named function on this entity when the specified output fires. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
-function CEntityInstance:ConnectOutput( string_1, string_2 ) end
-
----[[ CEntityInstance:Destroy   ]]
--- @return void
-function CEntityInstance:Destroy(  ) end
-
----[[ CEntityInstance:DisconnectOutput  Removes a connected script function from an I/O event on this entity. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
-function CEntityInstance:DisconnectOutput( string_1, string_2 ) end
-
----[[ CEntityInstance:DisconnectRedirectedOutput  Removes a connected script function from an I/O event on the passed entity. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
--- @param handle_3 handle
-function CEntityInstance:DisconnectRedirectedOutput( string_1, string_2, handle_3 ) end
-
----[[ CEntityInstance:FireOutput  Fire an entity output ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
--- @param handle_3 handle
--- @param table_4 table
--- @param float_5 float
-function CEntityInstance:FireOutput( string_1, handle_2, handle_3, table_4, float_5 ) end
-
----[[ CEntityInstance:GetClassname   ]]
--- @return string
-function CEntityInstance:GetClassname(  ) end
-
----[[ CEntityInstance:GetDebugName  Get the entity name w/help if not defined (i.e. classname/etc) ]]
--- @return string
-function CEntityInstance:GetDebugName(  ) end
-
----[[ CEntityInstance:GetEntityHandle  Get the entity as an EHANDLE ]]
--- @return ehandle
-function CEntityInstance:GetEntityHandle(  ) end
-
----[[ CEntityInstance:GetEntityIndex   ]]
--- @return int
-function CEntityInstance:GetEntityIndex(  ) end
-
----[[ CEntityInstance:GetIntAttr  Get Integer Attribute ]]
--- @return int
--- @param string_1 string
-function CEntityInstance:GetIntAttr( string_1 ) end
-
----[[ CEntityInstance:GetName  Get the entity name ]]
--- @return string
-function CEntityInstance:GetName(  ) end
-
----[[ CEntityInstance:GetOrCreatePrivateScriptScope  Retrieve, creating if necessary, the private per-instance script-side data associated with an entity ]]
--- @return handle
-function CEntityInstance:GetOrCreatePrivateScriptScope(  ) end
-
----[[ CEntityInstance:GetOrCreatePublicScriptScope  Retrieve, creating if necessary, the public script-side data associated with an entity ]]
--- @return handle
-function CEntityInstance:GetOrCreatePublicScriptScope(  ) end
-
----[[ CEntityInstance:GetPrivateScriptScope  Retrieve the private per-instance script-side data associated with an entity ]]
--- @return handle
-function CEntityInstance:GetPrivateScriptScope(  ) end
-
----[[ CEntityInstance:GetPublicScriptScope  Retrieve the public script-side data associated with an entity ]]
--- @return handle
-function CEntityInstance:GetPublicScriptScope(  ) end
-
----[[ CEntityInstance:RedirectOutput  Adds an I/O connection that will call the named function on the passed entity when the specified output fires. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
--- @param handle_3 handle
-function CEntityInstance:RedirectOutput( string_1, string_2, handle_3 ) end
-
----[[ CEntityInstance:RemoveSelf  Delete this entity ]]
--- @return void
-function CEntityInstance:RemoveSelf(  ) end
-
----[[ CEntityInstance:SetIntAttr  Set Integer Attribute ]]
--- @return void
--- @param string_1 string
--- @param int_2 int
-function CEntityInstance:SetIntAttr( string_1, int_2 ) end
-
----[[ CEntityInstance:entindex   ]]
--- @return int
-function CEntityInstance:entindex(  ) end
-
----[[ CInfoWorldLayer:HideWorldLayer  Hides this layer ]]
--- @return void
-function CInfoWorldLayer:HideWorldLayer(  ) end
-
----[[ CInfoWorldLayer:ShowWorldLayer  Shows this layer ]]
--- @return void
-function CInfoWorldLayer:ShowWorldLayer(  ) end
-
----[[ CLogicRelay:Trigger  Trigger( hActivator, hCaller ) : Triggers the logic_relay ]]
--- @return void
--- @param hActivator handle
--- @param hCaller handle
-function CLogicRelay:Trigger( hActivator, hCaller ) end
-
----[[ CNativeOutputs:AddOutput  Add an output ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
-function CNativeOutputs:AddOutput( string_1, string_2 ) end
-
----[[ CNativeOutputs:Init  Initialize with number of outputs ]]
--- @return void
--- @param int_1 int
-function CNativeOutputs:Init( int_1 ) end
-
----[[ CPointTemplate:DeleteCreatedSpawnGroups  DeleteCreatedSpawnGroups() : Deletes any spawn groups that this point_template has spawned. Note: The point_template will not be deleted by this. ]]
--- @return void
-function CPointTemplate:DeleteCreatedSpawnGroups(  ) end
-
----[[ CPointTemplate:ForceSpawn  ForceSpawn() : Spawns all of the entities the point_template is pointing at. ]]
--- @return void
-function CPointTemplate:ForceSpawn(  ) end
-
----[[ CPointTemplate:GetSpawnedEntities  GetSpawnedEntities() : Get the list of the most recent spawned entities ]]
--- @return handle
-function CPointTemplate:GetSpawnedEntities(  ) end
-
----[[ CPointTemplate:SetSpawnCallback  SetSpawnCallback( hCallbackFunc, hCallbackScope, hCallbackData ) : Set a callback for when the template spawns entities. The spawned entities will be passed in as an array. ]]
--- @return void
--- @param hCallbackFunc handle
--- @param hCallbackScope handle
-function CPointTemplate:SetSpawnCallback( hCallbackFunc, hCallbackScope ) end
-
----[[ CScriptHTTPRequest:Send  Send a HTTP request. ]]
--- @return bool
--- @param handle_1 handle
-function CScriptHTTPRequest:Send( handle_1 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestAbsoluteTimeoutMS  Set the total timeout on the request. ]]
--- @return bool
--- @param unsigned_1 unsigned
-function CScriptHTTPRequest:SetHTTPRequestAbsoluteTimeoutMS( unsigned_1 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestGetOrPostParameter  Set a POST or GET parameter on the request. ]]
--- @return bool
--- @param string_1 string
--- @param string_2 string
-function CScriptHTTPRequest:SetHTTPRequestGetOrPostParameter( string_1, string_2 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestHeaderValue  Set a header value on the request. ]]
--- @return bool
--- @param string_1 string
--- @param string_2 string
-function CScriptHTTPRequest:SetHTTPRequestHeaderValue( string_1, string_2 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestNetworkActivityTimeout  Set the network timeout on the request - this timer is reset when any data is received. ]]
--- @return bool
--- @param unsigned_1 unsigned
-function CScriptHTTPRequest:SetHTTPRequestNetworkActivityTimeout( unsigned_1 ) end
-
----[[ CScriptHTTPRequest:SetHTTPRequestRawPostBody  Set the literal body of a post - invalid after setting a post parameter. ]]
--- @return bool
--- @param string_1 string
--- @param string_2 string
-function CScriptHTTPRequest:SetHTTPRequestRawPostBody( string_1, string_2 ) end
-
----[[ CScriptKeyValues:GetValue  Reads a spawn key ]]
--- @return table
--- @param string_1 string
-function CScriptKeyValues:GetValue( string_1 ) end
-
----[[ CScriptParticleManager:CreateParticle  Creates a new particle effect ]]
--- @return int
--- @param string_1 string
--- @param int_2 int
--- @param handle_3 handle
-function CScriptParticleManager:CreateParticle( string_1, int_2, handle_3 ) end
-
----[[ CScriptParticleManager:CreateParticleForPlayer  Creates a new particle effect that only plays for the specified player ]]
--- @return int
--- @param string_1 string
--- @param int_2 int
--- @param handle_3 handle
--- @param handle_4 handle
-function CScriptParticleManager:CreateParticleForPlayer( string_1, int_2, handle_3, handle_4 ) end
-
----[[ CScriptParticleManager:CreateParticleForTeam  Creates a new particle effect that only plays for the specified team ]]
--- @return int
--- @param string_1 string
--- @param int_2 int
--- @param handle_3 handle
--- @param int_4 int
-function CScriptParticleManager:CreateParticleForTeam( string_1, int_2, handle_3, int_4 ) end
-
----[[ CScriptParticleManager:DestroyParticle  (int index, bool bDestroyImmediately) - Destroy a particle, if bDestroyImmediately destroy it without playing end caps. ]]
--- @return void
--- @param int_1 int
--- @param bool_2 bool
-function CScriptParticleManager:DestroyParticle( int_1, bool_2 ) end
-
----[[ CScriptParticleManager:GetParticleReplacement   ]]
--- @return string
--- @param string_1 string
--- @param handle_2 handle
-function CScriptParticleManager:GetParticleReplacement( string_1, handle_2 ) end
-
----[[ CScriptParticleManager:ReleaseParticleIndex  Frees the specified particle index ]]
--- @return void
--- @param int_1 int
-function CScriptParticleManager:ReleaseParticleIndex( int_1 ) end
-
----[[ CScriptParticleManager:SetParticleAlwaysSimulate   ]]
--- @return void
--- @param int_1 int
-function CScriptParticleManager:SetParticleAlwaysSimulate( int_1 ) end
-
----[[ CScriptParticleManager:SetParticleControl  Set the control point data for a control on a particle effect ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param Vector_3 Vector
-function CScriptParticleManager:SetParticleControl( int_1, int_2, Vector_3 ) end
-
----[[ CScriptParticleManager:SetParticleControlEnt   ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param handle_3 handle
--- @param int_4 int
--- @param string_5 string
--- @param Vector_6 Vector
--- @param bool_7 bool
-function CScriptParticleManager:SetParticleControlEnt( int_1, int_2, handle_3, int_4, string_5, Vector_6, bool_7 ) end
-
----[[ CScriptParticleManager:SetParticleControlFallback  (int iIndex, int iPoint, Vector vecPosition) ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param Vector_3 Vector
-function CScriptParticleManager:SetParticleControlFallback( int_1, int_2, Vector_3 ) end
-
----[[ CScriptParticleManager:SetParticleControlForward  [OBSOLETE - Use SetParticleControlTransformForward] (int nFXIndex, int nPoint, vForward) ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param Vector_3 Vector
-function CScriptParticleManager:SetParticleControlForward( int_1, int_2, Vector_3 ) end
-
----[[ CScriptParticleManager:SetParticleControlOrientation  [OBSOLETE - Use SetParticleControlTransform] (int nFXIndex, int nPoint, vForward, vRight, vUp) - Set the orientation for a control on a particle effect (NOTE: This is left handed -- bad!!) ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param Vector_3 Vector
--- @param Vector_4 Vector
--- @param Vector_5 Vector
-function CScriptParticleManager:SetParticleControlOrientation( int_1, int_2, Vector_3, Vector_4, Vector_5 ) end
-
----[[ CScriptParticleManager:SetParticleControlOrientationFLU  [OBSOLETE - Use SetParticleControlTransform] (int nFXIndex, int nPoint, Vector vecForward, Vector vecLeft, Vector vecUp) - Set the orientation for a control on a particle effect ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param Vector_3 Vector
--- @param Vector_4 Vector
--- @param Vector_5 Vector
-function CScriptParticleManager:SetParticleControlOrientationFLU( int_1, int_2, Vector_3, Vector_4, Vector_5 ) end
-
----[[ CScriptParticleManager:SetParticleControlTransform  (int nFXIndex, int nPoint, vOrigin, qAngles) ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param Vector_3 Vector
--- @param QAngle_4 QAngle
-function CScriptParticleManager:SetParticleControlTransform( int_1, int_2, Vector_3, QAngle_4 ) end
-
----[[ CScriptParticleManager:SetParticleControlTransformForward  (int nFXIndex, int nPoint, vOrigin, vForward) ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param Vector_3 Vector
--- @param Vector_4 Vector
-function CScriptParticleManager:SetParticleControlTransformForward( int_1, int_2, Vector_3, Vector_4 ) end
-
----[[ CScriptParticleManager:SetParticleFoWProperties  int nfxindex, int nPoint, int nPoint2, float flRadius ]]
--- @return void
--- @param int_1 int
--- @param int_2 int
--- @param int_3 int
--- @param float_4 float
-function CScriptParticleManager:SetParticleFoWProperties( int_1, int_2, int_3, float_4 ) end
-
----[[ CScriptParticleManager:SetParticleShouldCheckFoW  int nfxindex, bool bCheckFoW ]]
--- @return bool
--- @param int_1 int
--- @param bool_2 bool
-function CScriptParticleManager:SetParticleShouldCheckFoW( int_1, bool_2 ) end
-
----[[ CScriptPrecacheContext:AddResource  Precaches a specific resource ]]
--- @return void
--- @param string_1 string
-function CScriptPrecacheContext:AddResource( string_1 ) end
-
----[[ CScriptPrecacheContext:GetValue  Reads a spawn key ]]
--- @return table
--- @param string_1 string
-function CScriptPrecacheContext:GetValue( string_1 ) end
-
----[[ C_BaseEntity:GetAbsOrigin   ]]
--- @return <unknown>
-function C_BaseEntity:GetAbsOrigin(  ) end
-
----[[ C_BaseEntity:GetHealth   ]]
--- @return int
-function C_BaseEntity:GetHealth(  ) end
-
----[[ C_BaseEntity:GetMaxHealth   ]]
--- @return int
-function C_BaseEntity:GetMaxHealth(  ) end
-
----[[ C_BaseEntity:GetTeamNumber   ]]
--- @return int
-function C_BaseEntity:GetTeamNumber(  ) end
-
----[[ C_BaseEntity:SetContextThink  Set a think function on this entity. ]]
--- @return void
--- @param pszContextName string
--- @param hThinkFunc handle
--- @param flInterval float
-function C_BaseEntity:SetContextThink( pszContextName, hThinkFunc, flInterval ) end
-
----[[ C_BaseModelEntity:GetRenderAlpha  GetRenderAlpha(): Get the alpha modulation of this entity. ]]
--- @return int
-function C_BaseModelEntity:GetRenderAlpha(  ) end
-
----[[ C_DOTABaseAbility:GetAbilityName  Name of this ability. ]]
--- @return string
-function C_DOTABaseAbility:GetAbilityName(  ) end
-
----[[ C_DOTABaseAbility:GetBehavior   ]]
--- @return double
-function C_DOTABaseAbility:GetBehavior(  ) end
-
----[[ C_DOTABaseAbility:GetBehaviorInt  Get ability behavior flags as an int for compatibility. ]]
--- @return int
-function C_DOTABaseAbility:GetBehaviorInt(  ) end
-
----[[ C_DOTABaseAbility:GetCastPointModifier   ]]
--- @return float
-function C_DOTABaseAbility:GetCastPointModifier(  ) end
-
----[[ C_DOTABaseAbility:GetCaster  Get the owner of this ability. ]]
--- @return handle
-function C_DOTABaseAbility:GetCaster(  ) end
-
----[[ C_DOTABaseAbility:GetCurrentAbilityCharges  The number of charges remaining on this ability. ]]
--- @return int
-function C_DOTABaseAbility:GetCurrentAbilityCharges(  ) end
-
----[[ C_DOTABaseAbility:GetLevel  Return the level of the ability ]]
--- @return int
-function C_DOTABaseAbility:GetLevel(  ) end
-
----[[ C_DOTABaseAbility:GetLevelSpecialValueFor  Gets a value from this ability's special value block for passed level. ]]
--- @return table
--- @param szName string
--- @param nLevel int
-function C_DOTABaseAbility:GetLevelSpecialValueFor( szName, nLevel ) end
-
----[[ C_DOTABaseAbility:GetLevelSpecialValueNoOverride   ]]
--- @return table
--- @param szName string
--- @param nLevel int
-function C_DOTABaseAbility:GetLevelSpecialValueNoOverride( szName, nLevel ) end
-
----[[ C_DOTABaseAbility:GetSpecialValueFor  Gets a value from this ability's special value block for its current level. ]]
--- @return table
--- @param szName string
-function C_DOTABaseAbility:GetSpecialValueFor( szName ) end
-
----[[ C_DOTABaseAbility:GetToggleState  Whether or not this ability is toggled. ]]
--- @return bool
-function C_DOTABaseAbility:GetToggleState(  ) end
-
----[[ C_DOTABaseAbility:IsItem  Whether or not this ability is an item. ]]
--- @return bool
-function C_DOTABaseAbility:IsItem(  ) end
-
----[[ C_DOTAPlayerController:GetActiveAbility   ]]
--- @return handle
-function C_DOTAPlayerController:GetActiveAbility(  ) end
-
----[[ C_DOTAPlayerController:GetClickBehaviors   ]]
--- @return <unknown>
-function C_DOTAPlayerController:GetClickBehaviors(  ) end
-
----[[ C_DOTAPlayerController:GetQueryUnit   ]]
--- @return handle
-function C_DOTAPlayerController:GetQueryUnit(  ) end
-
----[[ C_DOTAPlayerController:ShouldDisplayInWorldUIElements   ]]
--- @return bool
-function C_DOTAPlayerController:ShouldDisplayInWorldUIElements(  ) end
-
----[[ C_DOTA_Ability_Lua:CastFilterResult  Determine whether an issued command with no target is valid. ]]
--- @return int
-function C_DOTA_Ability_Lua:CastFilterResult(  ) end
-
----[[ C_DOTA_Ability_Lua:CastFilterResultLocation  (Vector vLocation) Determine whether an issued command on a location is valid. ]]
--- @return int
--- @param vLocation Vector
-function C_DOTA_Ability_Lua:CastFilterResultLocation( vLocation ) end
-
----[[ C_DOTA_Ability_Lua:CastFilterResultTarget  (HSCRIPT hTarget) Determine whether an issued command on a target is valid. ]]
--- @return int
--- @param hTarget handle
-function C_DOTA_Ability_Lua:CastFilterResultTarget( hTarget ) end
-
----[[ C_DOTA_Ability_Lua:GetAOERadius  Controls the size of the AOE casting cursor. ]]
--- @return float
-function C_DOTA_Ability_Lua:GetAOERadius(  ) end
-
----[[ C_DOTA_Ability_Lua:GetAbilityChargeRestoreTime   ]]
--- @return float
--- @param iLevel int
-function C_DOTA_Ability_Lua:GetAbilityChargeRestoreTime( iLevel ) end
-
----[[ C_DOTA_Ability_Lua:GetAbilityTextureName  Allows code overriding of the ability texture shown in the HUD. ]]
--- @return string
-function C_DOTA_Ability_Lua:GetAbilityTextureName(  ) end
-
----[[ C_DOTA_Ability_Lua:GetBehavior  Return cast behavior type of this ability. ]]
--- @return uint64
-function C_DOTA_Ability_Lua:GetBehavior(  ) end
-
----[[ C_DOTA_Ability_Lua:GetCastPoint  Return cast point of this ability. ]]
--- @return float
-function C_DOTA_Ability_Lua:GetCastPoint(  ) end
-
----[[ C_DOTA_Ability_Lua:GetCastRange  Return cast range of this ability. ]]
--- @return int
--- @param vLocation Vector
--- @param hTarget handle
-function C_DOTA_Ability_Lua:GetCastRange( vLocation, hTarget ) end
-
----[[ C_DOTA_Ability_Lua:GetCastRangeBonus   ]]
--- @return int
--- @param hTarget handle
--- @param iPseudoCastRange int
-function C_DOTA_Ability_Lua:GetCastRangeBonus( hTarget, iPseudoCastRange ) end
-
----[[ C_DOTA_Ability_Lua:GetChannelStartTime  Return the channel start time of this ability. ]]
--- @return float
-function C_DOTA_Ability_Lua:GetChannelStartTime(  ) end
-
----[[ C_DOTA_Ability_Lua:GetChannelTime  Return the channel time of this ability. ]]
--- @return float
-function C_DOTA_Ability_Lua:GetChannelTime(  ) end
-
----[[ C_DOTA_Ability_Lua:GetChannelledHealthCostPerSecond  Return health cost per second of channeling at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Ability_Lua:GetChannelledHealthCostPerSecond( iLevel ) end
-
----[[ C_DOTA_Ability_Lua:GetChannelledManaCostPerSecond  Return mana cost at the given level per second while channeling (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Ability_Lua:GetChannelledManaCostPerSecond( iLevel ) end
-
----[[ C_DOTA_Ability_Lua:GetCooldown  Return cooldown of this ability. ]]
--- @return float
--- @param iLevel int
-function C_DOTA_Ability_Lua:GetCooldown( iLevel ) end
-
----[[ C_DOTA_Ability_Lua:GetCustomCastError  Return the error string of a failed command with no target. ]]
--- @return string
-function C_DOTA_Ability_Lua:GetCustomCastError(  ) end
-
----[[ C_DOTA_Ability_Lua:GetCustomCastErrorLocation  (Vector vLocation) Return the error string of a failed command on a location. ]]
--- @return string
--- @param vLocation Vector
-function C_DOTA_Ability_Lua:GetCustomCastErrorLocation( vLocation ) end
-
----[[ C_DOTA_Ability_Lua:GetCustomCastErrorTarget  (HSCRIPT hTarget) Return the error string of a failed command on a target. ]]
--- @return string
--- @param hTarget handle
-function C_DOTA_Ability_Lua:GetCustomCastErrorTarget( hTarget ) end
-
----[[ C_DOTA_Ability_Lua:GetCustomHudErrorMessage  (DOTA_INVALID_ORDERS nReason) Return the error string of a failed order. ]]
--- @return string
--- @param nReason int
-function C_DOTA_Ability_Lua:GetCustomHudErrorMessage( nReason ) end
-
----[[ C_DOTA_Ability_Lua:GetEffectiveCastRange  Return cast range of this ability, accounting for modifiers. ]]
--- @return int
--- @param vLocation Vector
--- @param hTarget handle
-function C_DOTA_Ability_Lua:GetEffectiveCastRange( vLocation, hTarget ) end
-
----[[ C_DOTA_Ability_Lua:GetGoldCost  Return gold cost at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Ability_Lua:GetGoldCost( iLevel ) end
-
----[[ C_DOTA_Ability_Lua:GetHealthCost  Return health cost at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Ability_Lua:GetHealthCost( iLevel ) end
-
----[[ C_DOTA_Ability_Lua:GetManaCost  Return mana cost at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Ability_Lua:GetManaCost( iLevel ) end
-
----[[ C_DOTA_Ability_Lua:IsAttributeBonus  Is this ability an Attribute Bonus. ]]
--- @return bool
-function C_DOTA_Ability_Lua:IsAttributeBonus(  ) end
-
----[[ C_DOTA_Ability_Lua:IsHiddenAbilityCastable  Returns true if this ability can be used when not on the action panel. ]]
--- @return bool
-function C_DOTA_Ability_Lua:IsHiddenAbilityCastable(  ) end
-
----[[ C_DOTA_BaseNPC:FindAbilityByName  Retrieve an ability by name from the unit. ]]
--- @return handle
--- @param pAbilityName string
-function C_DOTA_BaseNPC:FindAbilityByName( pAbilityName ) end
-
----[[ C_DOTA_BaseNPC:GetAbilityCount   ]]
--- @return int
-function C_DOTA_BaseNPC:GetAbilityCount(  ) end
-
----[[ C_DOTA_BaseNPC:GetAttackSpeed   ]]
--- @return float
--- @param bIgnoreTempAttackSpeed bool
-function C_DOTA_BaseNPC:GetAttackSpeed( bIgnoreTempAttackSpeed ) end
-
----[[ C_DOTA_BaseNPC:GetAttacksPerSecond   ]]
--- @return float
--- @param bIgnoreTempAttackSpeed bool
-function C_DOTA_BaseNPC:GetAttacksPerSecond( bIgnoreTempAttackSpeed ) end
-
----[[ C_DOTA_BaseNPC:GetBaseAttackTime   ]]
--- @return float
-function C_DOTA_BaseNPC:GetBaseAttackTime(  ) end
-
----[[ C_DOTA_BaseNPC:GetBaseMagicalResistanceValue  Returns base magical armor value. ]]
--- @return float
-function C_DOTA_BaseNPC:GetBaseMagicalResistanceValue(  ) end
-
----[[ C_DOTA_BaseNPC:GetBaseMoveSpeed   ]]
--- @return float
-function C_DOTA_BaseNPC:GetBaseMoveSpeed(  ) end
-
----[[ C_DOTA_BaseNPC:GetCastRangeBonus   ]]
--- @return float
-function C_DOTA_BaseNPC:GetCastRangeBonus(  ) end
-
----[[ C_DOTA_BaseNPC:GetCollisionPadding  Returns the size of the collision padding around the hull. ]]
--- @return float
-function C_DOTA_BaseNPC:GetCollisionPadding(  ) end
-
----[[ C_DOTA_BaseNPC:GetCooldownReduction   ]]
--- @return float
-function C_DOTA_BaseNPC:GetCooldownReduction(  ) end
-
----[[ C_DOTA_BaseNPC:GetCurrentVisionRange  Gets the current vision range. ]]
--- @return int
-function C_DOTA_BaseNPC:GetCurrentVisionRange(  ) end
-
----[[ C_DOTA_BaseNPC:GetDamageMax   ]]
--- @return int
-function C_DOTA_BaseNPC:GetDamageMax(  ) end
-
----[[ C_DOTA_BaseNPC:GetDamageMin   ]]
--- @return int
-function C_DOTA_BaseNPC:GetDamageMin(  ) end
-
----[[ C_DOTA_BaseNPC:GetDayTimeVisionRange  Returns the vision range after modifiers. ]]
--- @return int
-function C_DOTA_BaseNPC:GetDayTimeVisionRange(  ) end
-
----[[ C_DOTA_BaseNPC:GetHasteFactor   ]]
--- @return float
-function C_DOTA_BaseNPC:GetHasteFactor(  ) end
-
----[[ C_DOTA_BaseNPC:GetHealthPercent  Get the current health percent of the unit. ]]
--- @return int
-function C_DOTA_BaseNPC:GetHealthPercent(  ) end
-
----[[ C_DOTA_BaseNPC:GetHullRadius  Get the collision hull radius of this NPC. ]]
--- @return float
-function C_DOTA_BaseNPC:GetHullRadius(  ) end
-
----[[ C_DOTA_BaseNPC:GetIdealSpeed  Returns speed after all modifiers. ]]
--- @return float
-function C_DOTA_BaseNPC:GetIdealSpeed(  ) end
-
----[[ C_DOTA_BaseNPC:GetIdealSpeedNoSlows  Returns speed after all modifiers, but excluding those that reduce speed. ]]
--- @return float
-function C_DOTA_BaseNPC:GetIdealSpeedNoSlows(  ) end
-
----[[ C_DOTA_BaseNPC:GetIncreasedAttackSpeed   ]]
--- @return float
--- @param bIgnoreTempAttackSpeed bool
-function C_DOTA_BaseNPC:GetIncreasedAttackSpeed( bIgnoreTempAttackSpeed ) end
-
----[[ C_DOTA_BaseNPC:GetLevel  Returns the level of this unit. ]]
--- @return int
-function C_DOTA_BaseNPC:GetLevel(  ) end
-
----[[ C_DOTA_BaseNPC:GetMana  Get the mana on this unit. ]]
--- @return float
-function C_DOTA_BaseNPC:GetMana(  ) end
-
----[[ C_DOTA_BaseNPC:GetManaRegen   ]]
--- @return float
-function C_DOTA_BaseNPC:GetManaRegen(  ) end
-
----[[ C_DOTA_BaseNPC:GetMaxMana  Get the maximum mana of this unit. ]]
--- @return float
-function C_DOTA_BaseNPC:GetMaxMana(  ) end
-
----[[ C_DOTA_BaseNPC:GetModelRadius   ]]
--- @return float
-function C_DOTA_BaseNPC:GetModelRadius(  ) end
-
----[[ C_DOTA_BaseNPC:GetModifierStackCount  Gets the stack count of a given modifier. ]]
--- @return int
--- @param pszScriptName string
--- @param hCaster handle
-function C_DOTA_BaseNPC:GetModifierStackCount( pszScriptName, hCaster ) end
-
----[[ C_DOTA_BaseNPC:GetMoveSpeedModifier   ]]
--- @return float
--- @param flBaseSpeed float
--- @param bReturnUnslowed bool
-function C_DOTA_BaseNPC:GetMoveSpeedModifier( flBaseSpeed, bReturnUnslowed ) end
-
----[[ C_DOTA_BaseNPC:GetNightTimeVisionRange  Returns the vision range after modifiers. ]]
--- @return int
-function C_DOTA_BaseNPC:GetNightTimeVisionRange(  ) end
-
----[[ C_DOTA_BaseNPC:GetOpposingTeamNumber   ]]
--- @return int
-function C_DOTA_BaseNPC:GetOpposingTeamNumber(  ) end
-
----[[ C_DOTA_BaseNPC:GetPaddedCollisionRadius  Get the collision hull radius (including padding) of this NPC. ]]
--- @return float
-function C_DOTA_BaseNPC:GetPaddedCollisionRadius(  ) end
-
----[[ C_DOTA_BaseNPC:GetPhysicalArmorBaseValue  Returns base physical armor value. ]]
--- @return float
-function C_DOTA_BaseNPC:GetPhysicalArmorBaseValue(  ) end
-
----[[ C_DOTA_BaseNPC:GetPhysicalArmorValue  Returns current physical armor value. ]]
--- @return float
--- @param bIgnoreBase bool
-function C_DOTA_BaseNPC:GetPhysicalArmorValue( bIgnoreBase ) end
-
----[[ C_DOTA_BaseNPC:GetPlayerOwnerID  Get the owner player ID for this unit. ]]
--- @return int
-function C_DOTA_BaseNPC:GetPlayerOwnerID(  ) end
-
----[[ C_DOTA_BaseNPC:GetSecondsPerAttack   ]]
--- @return float
--- @param bIgnoreTempAttackSpeed bool
-function C_DOTA_BaseNPC:GetSecondsPerAttack( bIgnoreTempAttackSpeed ) end
-
----[[ C_DOTA_BaseNPC:GetTotalPurchasedUpgradeGoldCost  Get how much gold has been spent on ability upgrades. ]]
--- @return int
-function C_DOTA_BaseNPC:GetTotalPurchasedUpgradeGoldCost(  ) end
-
----[[ C_DOTA_BaseNPC:GetUnitLabel   ]]
--- @return string
-function C_DOTA_BaseNPC:GetUnitLabel(  ) end
-
----[[ C_DOTA_BaseNPC:GetUnitLocToken  Get the localization token for this unit's name. ]]
--- @return string
-function C_DOTA_BaseNPC:GetUnitLocToken(  ) end
-
----[[ C_DOTA_BaseNPC:GetUnitName  Get the name of this unit. ]]
--- @return string
-function C_DOTA_BaseNPC:GetUnitName(  ) end
-
----[[ C_DOTA_BaseNPC:HasAttackCapability   ]]
--- @return bool
-function C_DOTA_BaseNPC:HasAttackCapability(  ) end
-
----[[ C_DOTA_BaseNPC:HasFlyMovementCapability   ]]
--- @return bool
-function C_DOTA_BaseNPC:HasFlyMovementCapability(  ) end
-
----[[ C_DOTA_BaseNPC:HasFlyingVision   ]]
--- @return bool
-function C_DOTA_BaseNPC:HasFlyingVision(  ) end
-
----[[ C_DOTA_BaseNPC:HasGroundMovementCapability   ]]
--- @return bool
-function C_DOTA_BaseNPC:HasGroundMovementCapability(  ) end
-
----[[ C_DOTA_BaseNPC:HasItemInInventory  See whether this unit has an item by name. ]]
--- @return bool
--- @param pItemName string
-function C_DOTA_BaseNPC:HasItemInInventory( pItemName ) end
-
----[[ C_DOTA_BaseNPC:HasModifier  Sees if this unit has a given modifier. ]]
--- @return bool
--- @param pszScriptName string
-function C_DOTA_BaseNPC:HasModifier( pszScriptName ) end
-
----[[ C_DOTA_BaseNPC:HasMovementCapability   ]]
--- @return bool
-function C_DOTA_BaseNPC:HasMovementCapability(  ) end
-
----[[ C_DOTA_BaseNPC:HasScepter   ]]
--- @return bool
-function C_DOTA_BaseNPC:HasScepter(  ) end
-
----[[ C_DOTA_BaseNPC:IsAncient  Is this unit an Ancient? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsAncient(  ) end
-
----[[ C_DOTA_BaseNPC:IsAttackImmune   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsAttackImmune(  ) end
-
----[[ C_DOTA_BaseNPC:IsBarracks  Is this unit a Barracks? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsBarracks(  ) end
-
----[[ C_DOTA_BaseNPC:IsBlind   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsBlind(  ) end
-
----[[ C_DOTA_BaseNPC:IsBoss  Is this unit a boss? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsBoss(  ) end
-
----[[ C_DOTA_BaseNPC:IsBuilding  Is this unit a building? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsBuilding(  ) end
-
----[[ C_DOTA_BaseNPC:IsCommandRestricted   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsCommandRestricted(  ) end
-
----[[ C_DOTA_BaseNPC:IsConsideredHero  Is this unit a considered a hero for targeting purposes? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsConsideredHero(  ) end
-
----[[ C_DOTA_BaseNPC:IsControllableByAnyPlayer  Is this unit controlled by any non-bot player? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsControllableByAnyPlayer(  ) end
-
----[[ C_DOTA_BaseNPC:IsCourier  Is this unit a courier? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsCourier(  ) end
-
----[[ C_DOTA_BaseNPC:IsCreature  Is this a Creature type NPC? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsCreature(  ) end
-
----[[ C_DOTA_BaseNPC:IsCreep  Is this unit a creep? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsCreep(  ) end
-
----[[ C_DOTA_BaseNPC:IsCreepHero  Is this a creep hero? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsCreepHero(  ) end
-
----[[ C_DOTA_BaseNPC:IsDebuffImmune   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsDebuffImmune(  ) end
-
----[[ C_DOTA_BaseNPC:IsDisarmed   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsDisarmed(  ) end
-
----[[ C_DOTA_BaseNPC:IsDominated   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsDominated(  ) end
-
----[[ C_DOTA_BaseNPC:IsEvadeDisabled   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsEvadeDisabled(  ) end
-
----[[ C_DOTA_BaseNPC:IsFeared   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsFeared(  ) end
-
----[[ C_DOTA_BaseNPC:IsFort  Is this unit an Ancient? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsFort(  ) end
-
----[[ C_DOTA_BaseNPC:IsFrozen   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsFrozen(  ) end
-
----[[ C_DOTA_BaseNPC:IsHero  Is this a hero or hero illusion? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsHero(  ) end
-
----[[ C_DOTA_BaseNPC:IsHexed   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsHexed(  ) end
-
----[[ C_DOTA_BaseNPC:IsIllusion   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsIllusion(  ) end
-
----[[ C_DOTA_BaseNPC:IsInventoryEnabled  Does this unit have an inventory. ]]
--- @return bool
-function C_DOTA_BaseNPC:IsInventoryEnabled(  ) end
-
----[[ C_DOTA_BaseNPC:IsInvisible   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsInvisible(  ) end
-
----[[ C_DOTA_BaseNPC:IsInvulnerable   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsInvulnerable(  ) end
-
----[[ C_DOTA_BaseNPC:IsLowAttackPriority   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsLowAttackPriority(  ) end
-
----[[ C_DOTA_BaseNPC:IsMagicImmune   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsMagicImmune(  ) end
-
----[[ C_DOTA_BaseNPC:IsMoving  Is this unit moving? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsMoving(  ) end
-
----[[ C_DOTA_BaseNPC:IsMuted   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsMuted(  ) end
-
----[[ C_DOTA_BaseNPC:IsNeutralUnitType  Is this a neutral? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsNeutralUnitType(  ) end
-
----[[ C_DOTA_BaseNPC:IsNightmared   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsNightmared(  ) end
-
----[[ C_DOTA_BaseNPC:IsOther  Is this unit a ward-type unit? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsOther(  ) end
-
----[[ C_DOTA_BaseNPC:IsOutOfGame   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsOutOfGame(  ) end
-
----[[ C_DOTA_BaseNPC:IsOwnedByAnyPlayer  Is this unit owned by any non-bot player? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsOwnedByAnyPlayer(  ) end
-
----[[ C_DOTA_BaseNPC:IsPhantom  Is this a phantom unit? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsPhantom(  ) end
-
----[[ C_DOTA_BaseNPC:IsRangedAttacker  Is this unit a ranged attacker? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsRangedAttacker(  ) end
-
----[[ C_DOTA_BaseNPC:IsRealHero  Is this a real hero? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsRealHero(  ) end
-
----[[ C_DOTA_BaseNPC:IsRooted   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsRooted(  ) end
-
----[[ C_DOTA_BaseNPC:IsSilenced   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsSilenced(  ) end
-
----[[ C_DOTA_BaseNPC:IsSpeciallyDeniable   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsSpeciallyDeniable(  ) end
-
----[[ C_DOTA_BaseNPC:IsSpeciallyUndeniable   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsSpeciallyUndeniable(  ) end
-
----[[ C_DOTA_BaseNPC:IsStrongIllusion   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsStrongIllusion(  ) end
-
----[[ C_DOTA_BaseNPC:IsStunned   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsStunned(  ) end
-
----[[ C_DOTA_BaseNPC:IsSummoned  Is this unit summoned? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsSummoned(  ) end
-
----[[ C_DOTA_BaseNPC:IsTaunted   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsTaunted(  ) end
-
----[[ C_DOTA_BaseNPC:IsTower  Is this a tower? ]]
--- @return bool
-function C_DOTA_BaseNPC:IsTower(  ) end
-
----[[ C_DOTA_BaseNPC:IsUnselectable   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsUnselectable(  ) end
-
----[[ C_DOTA_BaseNPC:IsUntargetable   ]]
--- @return bool
-function C_DOTA_BaseNPC:IsUntargetable(  ) end
-
----[[ C_DOTA_BaseNPC:IsUntargetableFrom   ]]
--- @return bool
--- @param pTargettingSource handle
-function C_DOTA_BaseNPC:IsUntargetableFrom( pTargettingSource ) end
-
----[[ C_DOTA_BaseNPC:NoHealthBar   ]]
--- @return bool
-function C_DOTA_BaseNPC:NoHealthBar(  ) end
-
----[[ C_DOTA_BaseNPC:NoTeamMoveTo   ]]
--- @return bool
-function C_DOTA_BaseNPC:NoTeamMoveTo(  ) end
-
----[[ C_DOTA_BaseNPC:NoTeamSelect   ]]
--- @return bool
-function C_DOTA_BaseNPC:NoTeamSelect(  ) end
-
----[[ C_DOTA_BaseNPC:NoUnitCollision   ]]
--- @return bool
-function C_DOTA_BaseNPC:NoUnitCollision(  ) end
-
----[[ C_DOTA_BaseNPC:NotOnMinimap   ]]
--- @return bool
-function C_DOTA_BaseNPC:NotOnMinimap(  ) end
-
----[[ C_DOTA_BaseNPC:NotOnMinimapForEnemies   ]]
--- @return bool
-function C_DOTA_BaseNPC:NotOnMinimapForEnemies(  ) end
-
----[[ C_DOTA_BaseNPC:PassivesDisabled   ]]
--- @return bool
-function C_DOTA_BaseNPC:PassivesDisabled(  ) end
-
----[[ C_DOTA_BaseNPC:ProvidesVision   ]]
--- @return bool
-function C_DOTA_BaseNPC:ProvidesVision(  ) end
-
----[[ C_DOTA_BaseNPC:Script_GetAttackRange  Gets this unit's attack range after all modifiers. ]]
--- @return float
-function C_DOTA_BaseNPC:Script_GetAttackRange(  ) end
-
----[[ C_DOTA_BaseNPC:Script_GetMagicalArmorValue  Returns current magical armor value. ]]
--- @return float
--- @param bUseExperimentalFormula bool
--- @param inflictor handle
-function C_DOTA_BaseNPC:Script_GetMagicalArmorValue( bUseExperimentalFormula, inflictor ) end
-
----[[ C_DOTA_BaseNPC:Script_IsDeniable   ]]
--- @return bool
-function C_DOTA_BaseNPC:Script_IsDeniable(  ) end
-
----[[ C_DOTA_BaseNPC:UnitCanRespawn  Can the unit respawn? ]]
--- @return bool
-function C_DOTA_BaseNPC:UnitCanRespawn(  ) end
-
----[[ C_DOTA_BaseNPC_Hero:GetAgility   ]]
--- @return float
-function C_DOTA_BaseNPC_Hero:GetAgility(  ) end
-
----[[ C_DOTA_BaseNPC_Hero:GetHeroFacetID   ]]
--- @return unsigned
-function C_DOTA_BaseNPC_Hero:GetHeroFacetID(  ) end
-
----[[ C_DOTA_BaseNPC_Hero:GetIntellect   ]]
--- @return float
--- @param bSkipNoConsume bool
-function C_DOTA_BaseNPC_Hero:GetIntellect( bSkipNoConsume ) end
-
----[[ C_DOTA_BaseNPC_Hero:GetStrength   ]]
--- @return float
-function C_DOTA_BaseNPC_Hero:GetStrength(  ) end
-
----[[ C_DOTA_Item:CanOnlyPlayerHeroPickup   ]]
--- @return bool
-function C_DOTA_Item:CanOnlyPlayerHeroPickup(  ) end
-
----[[ C_DOTA_Item:GetCurrentCharges   ]]
--- @return int
-function C_DOTA_Item:GetCurrentCharges(  ) end
-
----[[ C_DOTA_Item:GetInitialCharges   ]]
--- @return int
-function C_DOTA_Item:GetInitialCharges(  ) end
-
----[[ C_DOTA_Item:GetItemSlot   ]]
--- @return int
-function C_DOTA_Item:GetItemSlot(  ) end
-
----[[ C_DOTA_Item:GetSecondaryCharges   ]]
--- @return int
-function C_DOTA_Item:GetSecondaryCharges(  ) end
-
----[[ C_DOTA_Item:GetShareability   ]]
--- @return int
-function C_DOTA_Item:GetShareability(  ) end
-
----[[ C_DOTA_Item:IsAlertableItem   ]]
--- @return bool
-function C_DOTA_Item:IsAlertableItem(  ) end
-
----[[ C_DOTA_Item:IsCastOnPickup   ]]
--- @return bool
-function C_DOTA_Item:IsCastOnPickup(  ) end
-
----[[ C_DOTA_Item:IsDisassemblable   ]]
--- @return bool
-function C_DOTA_Item:IsDisassemblable(  ) end
-
----[[ C_DOTA_Item:IsDroppable   ]]
--- @return bool
-function C_DOTA_Item:IsDroppable(  ) end
-
----[[ C_DOTA_Item:IsInBackpack   ]]
--- @return bool
-function C_DOTA_Item:IsInBackpack(  ) end
-
----[[ C_DOTA_Item:IsItem   ]]
--- @return bool
-function C_DOTA_Item:IsItem(  ) end
-
----[[ C_DOTA_Item:IsKillable   ]]
--- @return bool
-function C_DOTA_Item:IsKillable(  ) end
-
----[[ C_DOTA_Item:IsMuted   ]]
--- @return bool
-function C_DOTA_Item:IsMuted(  ) end
-
----[[ C_DOTA_Item:IsPermanent   ]]
--- @return bool
-function C_DOTA_Item:IsPermanent(  ) end
-
----[[ C_DOTA_Item:IsPurchasable   ]]
--- @return bool
-function C_DOTA_Item:IsPurchasable(  ) end
-
----[[ C_DOTA_Item:IsRecipe   ]]
--- @return bool
-function C_DOTA_Item:IsRecipe(  ) end
-
----[[ C_DOTA_Item:IsRecipeGenerated   ]]
--- @return bool
-function C_DOTA_Item:IsRecipeGenerated(  ) end
-
----[[ C_DOTA_Item:IsSellable   ]]
--- @return bool
-function C_DOTA_Item:IsSellable(  ) end
-
----[[ C_DOTA_Item:IsStackable   ]]
--- @return bool
-function C_DOTA_Item:IsStackable(  ) end
-
----[[ C_DOTA_Item:RequiresCharges   ]]
--- @return bool
-function C_DOTA_Item:RequiresCharges(  ) end
-
----[[ C_DOTA_Item_Lua:CastFilterResult  Determine whether an issued command with no target is valid. ]]
--- @return int
-function C_DOTA_Item_Lua:CastFilterResult(  ) end
-
----[[ C_DOTA_Item_Lua:CastFilterResultLocation  (Vector vLocation) Determine whether an issued command on a location is valid. ]]
--- @return int
--- @param vLocation Vector
-function C_DOTA_Item_Lua:CastFilterResultLocation( vLocation ) end
-
----[[ C_DOTA_Item_Lua:CastFilterResultTarget  (HSCRIPT hTarget) Determine whether an issued command on a target is valid. ]]
--- @return int
--- @param hTarget handle
-function C_DOTA_Item_Lua:CastFilterResultTarget( hTarget ) end
-
----[[ C_DOTA_Item_Lua:GetAOERadius  Controls the size of the AOE casting cursor. ]]
--- @return float
-function C_DOTA_Item_Lua:GetAOERadius(  ) end
-
----[[ C_DOTA_Item_Lua:GetAbilityTextureName  Allows code overriding of the item texture shown in the HUD. ]]
--- @return string
-function C_DOTA_Item_Lua:GetAbilityTextureName(  ) end
-
----[[ C_DOTA_Item_Lua:GetBehavior  Return cast behavior type of this ability. ]]
--- @return double
-function C_DOTA_Item_Lua:GetBehavior(  ) end
-
----[[ C_DOTA_Item_Lua:GetCastRange  Return cast range of this ability. ]]
--- @return int
--- @param vLocation Vector
--- @param hTarget handle
-function C_DOTA_Item_Lua:GetCastRange( vLocation, hTarget ) end
-
----[[ C_DOTA_Item_Lua:GetChannelStartTime  Return the channel start time of this ability. ]]
--- @return float
-function C_DOTA_Item_Lua:GetChannelStartTime(  ) end
-
----[[ C_DOTA_Item_Lua:GetChannelTime  Return the channel time of this ability. ]]
--- @return float
-function C_DOTA_Item_Lua:GetChannelTime(  ) end
-
----[[ C_DOTA_Item_Lua:GetChannelledHealthCostPerSecond  Return health cost per second of channeling at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Item_Lua:GetChannelledHealthCostPerSecond( iLevel ) end
-
----[[ C_DOTA_Item_Lua:GetChannelledManaCostPerSecond  Return mana cost at the given level per second while channeling (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Item_Lua:GetChannelledManaCostPerSecond( iLevel ) end
-
----[[ C_DOTA_Item_Lua:GetCooldown  Return cooldown of this ability. ]]
--- @return float
--- @param iLevel int
-function C_DOTA_Item_Lua:GetCooldown( iLevel ) end
-
----[[ C_DOTA_Item_Lua:GetCustomCastError  Return the error string of a failed command with no target. ]]
--- @return string
-function C_DOTA_Item_Lua:GetCustomCastError(  ) end
-
----[[ C_DOTA_Item_Lua:GetCustomCastErrorLocation  (Vector vLocation) Return the error string of a failed command on a location. ]]
--- @return string
--- @param vLocation Vector
-function C_DOTA_Item_Lua:GetCustomCastErrorLocation( vLocation ) end
-
----[[ C_DOTA_Item_Lua:GetCustomCastErrorTarget  (HSCRIPT hTarget) Return the error string of a failed command on a target. ]]
--- @return string
--- @param hTarget handle
-function C_DOTA_Item_Lua:GetCustomCastErrorTarget( hTarget ) end
-
----[[ C_DOTA_Item_Lua:GetCustomHudErrorMessage  (DOTA_INVALID_ORDERS nReason) Return the error string of a failed order. ]]
--- @return string
--- @param nReason int
-function C_DOTA_Item_Lua:GetCustomHudErrorMessage( nReason ) end
-
----[[ C_DOTA_Item_Lua:GetEffectiveCastRange  Return cast range of this ability, taking modifiers into account. ]]
--- @return int
--- @param vLocation Vector
--- @param hTarget handle
-function C_DOTA_Item_Lua:GetEffectiveCastRange( vLocation, hTarget ) end
-
----[[ C_DOTA_Item_Lua:GetGoldCost  Return gold cost at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Item_Lua:GetGoldCost( iLevel ) end
-
----[[ C_DOTA_Item_Lua:GetHealthCost  Return health cost at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Item_Lua:GetHealthCost( iLevel ) end
-
----[[ C_DOTA_Item_Lua:GetManaCost  Return mana cost at the given level (-1 is current). ]]
--- @return int
--- @param iLevel int
-function C_DOTA_Item_Lua:GetManaCost( iLevel ) end
-
----[[ C_DOTA_Item_Lua:IsMuted  Returns whether this item is muted or not. ]]
--- @return bool
-function C_DOTA_Item_Lua:IsMuted(  ) end
-
----[[ C_PointWorldText:SetMessage  Set the message on this entity. ]]
--- @return void
--- @param pMessage string
-function C_PointWorldText:SetMessage( pMessage ) end
-
----[[ Convars:GetBool  GetBool(name) : returns the convar as a boolean flag. ]]
--- @return table
--- @param string_1 string
-function Convars:GetBool( string_1 ) end
-
----[[ Convars:GetCommandClient  GetCommandClient() : returns the player who issued this console command. ]]
--- @return handle
-function Convars:GetCommandClient(  ) end
-
----[[ Convars:GetDOTACommandClient  GetDOTACommandClient() : returns the DOTA player who issued this console command. ]]
--- @return handle
-function Convars:GetDOTACommandClient(  ) end
-
----[[ Convars:GetFloat  GetFloat(name) : returns the convar as a float. May return null if no such convar. ]]
--- @return table
--- @param string_1 string
-function Convars:GetFloat( string_1 ) end
-
----[[ Convars:GetInt  GetInt(name) : returns the convar as an int. May return null if no such convar. ]]
--- @return table
--- @param string_1 string
-function Convars:GetInt( string_1 ) end
-
----[[ Convars:GetStr  GetStr(name) : returns the convar as a string. May return null if no such convar. ]]
--- @return table
--- @param string_1 string
-function Convars:GetStr( string_1 ) end
-
----[[ Convars:RegisterCommand  RegisterCommand(name, fn, helpString, flags) : register a console command. ]]
--- @return void
--- @param string_1 string
--- @param handle_2 handle
--- @param string_3 string
--- @param int_4 int
-function Convars:RegisterCommand( string_1, handle_2, string_3, int_4 ) end
-
----[[ Convars:RegisterConvar  RegisterConvar(name, defaultValue, helpString, flags): register a new console variable. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
--- @param string_3 string
--- @param int_4 int
-function Convars:RegisterConvar( string_1, string_2, string_3, int_4 ) end
-
----[[ Convars:SetBool  SetBool(name, val) : sets the value of the convar to the bool. ]]
--- @return void
--- @param string_1 string
--- @param bool_2 bool
-function Convars:SetBool( string_1, bool_2 ) end
-
----[[ Convars:SetFloat  SetFloat(name, val) : sets the value of the convar to the float. ]]
--- @return void
--- @param string_1 string
--- @param float_2 float
-function Convars:SetFloat( string_1, float_2 ) end
-
----[[ Convars:SetInt  SetInt(name, val) : sets the value of the convar to the int. ]]
--- @return void
--- @param string_1 string
--- @param int_2 int
-function Convars:SetInt( string_1, int_2 ) end
-
----[[ Convars:SetStr  SetStr(name, val) : sets the value of the convar to the string. ]]
--- @return void
--- @param string_1 string
--- @param string_2 string
-function Convars:SetStr( string_1, string_2 ) end
-
----[[ GlobalSys:CommandLineCheck  CommandLineCheck(name) : returns true if the command line param was used, otherwise false. ]]
--- @return table
--- @param string_1 string
-function GlobalSys:CommandLineCheck( string_1 ) end
-
----[[ GlobalSys:CommandLineFloat  CommandLineFloat(name) : returns the command line param as a float. ]]
--- @return table
--- @param string_1 string
--- @param float_2 float
-function GlobalSys:CommandLineFloat( string_1, float_2 ) end
-
----[[ GlobalSys:CommandLineInt  CommandLineInt(name) : returns the command line param as an int. ]]
--- @return table
--- @param string_1 string
--- @param int_2 int
-function GlobalSys:CommandLineInt( string_1, int_2 ) end
-
----[[ GlobalSys:CommandLineStr  CommandLineStr(name) : returns the command line param as a string. ]]
--- @return table
--- @param string_1 string
--- @param string_2 string
-function GlobalSys:CommandLineStr( string_1, string_2 ) end
+UF_FAIL_NIGHTMARED = 27
+UF_FAIL_OBSTRUCTED = 28

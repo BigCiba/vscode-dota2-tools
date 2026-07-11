@@ -7,7 +7,7 @@ export enum EventType {
 export class EventManager {
 	private static eventList: { [k: number]: Function[]; } = {};
 
-	/** 发起事件 */
+	/** Fire an event */
 	static fireEvent<T>(eventType: EventType, event: T) {
 		if (EventManager.eventList[eventType]) {
 			for (const callback of EventManager.eventList[eventType]) {
@@ -16,7 +16,7 @@ export class EventManager {
 		}
 	}
 
-	/** 监听事件 */
+	/** Listen to an event */
 	static listenToEvent<T>(eventType: EventType, callback: (event: T) => void) {
 		if (EventManager.eventList[eventType] === undefined) {
 			EventManager.eventList[eventType] = [];
@@ -24,7 +24,7 @@ export class EventManager {
 		EventManager.eventList[eventType].push(callback);
 		return EventManager.eventList[eventType].length - 1;
 	}
-	/** 停止监听事件 */
+	/** Stop listening to an event */
 	static stopListenToEvent(eventType: EventType, index: number) {
 		if (EventManager.eventList[eventType]) {
 			EventManager.eventList[eventType].splice(index, 1);

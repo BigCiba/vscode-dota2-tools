@@ -1,0 +1,202 @@
+@import "tailwindcss";
+
+/* ===== Light theme (default) ===== */
+:root {
+  --color-bg: #ffffff;
+  --color-highlight: #89a62e;
+  --color-text: #101010;
+  --color-text-dim: #606060;
+  --color-text-faded: #888888;
+  --color-border: #e0e0e0;
+  --color-content-bg: #ffffff;
+  --color-sidebar-hover: #f0f0f0;
+
+  --color-author-epitaph: #89a62e;
+
+  --color-navbar: #ffffff;
+  --color-navbar-link-shadow: transparent;
+  --color-navbar-shadow: #00000030;
+  --color-sidebar: #ebedf0;
+  --color-group: #ffffff;
+  --color-group-members: #f8f8fa;
+  --color-group-highlight: #f0f0f0;
+  --color-group-shadow: #00000030;
+  --color-group-separator: #cccccc;
+  --color-group-border: #cccccc;
+
+  --color-syntax-literal: #116e51;
+  --color-syntax-interface: #116e51;
+  --color-syntax-parameter: #0b5872;
+  --color-syntax-nil: #752a7e;
+
+  --color-scrollbar-track: #ebedf0;
+  --color-scrollbar-thumb: #cfd4db;
+
+  --color-searchbox-bg: #ebedf0;
+  --color-searchbox-placeholder: #888888;
+  --color-searchbox-border: none;
+  --color-searchbox-button: transparent;
+  --color-searchbox-button-fill: #888888;
+  --color-searchbox-button-fill-updated: #000000;
+}
+
+/* ===== Dark theme ===== */
+[data-theme="dark"] {
+  --color-bg: #101010;
+  --color-highlight: #89a62e;
+  --color-text: #d0d0d0;
+  --color-text-dim: #808080;
+  --color-text-faded: #666666;
+  --color-border: #303030;
+  --color-content-bg: #181818;
+  --color-sidebar-hover: #282828;
+
+  --color-author-epitaph: #89a62e;
+
+  --color-navbar: #202020;
+  --color-navbar-link-shadow: transparent;
+  --color-navbar-shadow: #00000030;
+  --color-sidebar: #202020;
+  --color-group: #202020;
+  --color-group-members: #303030;
+  --color-group-highlight: #282828;
+  --color-group-shadow: #00000030;
+  --color-group-separator: #303030;
+  --color-group-border: #303030;
+
+  --color-syntax-literal: #74f2ca;
+  --color-syntax-interface: #74f2ca;
+  --color-syntax-parameter: #adebff;
+  --color-syntax-nil: #ead0ff;
+
+  --color-scrollbar-track: #202020;
+  --color-scrollbar-thumb: #505050;
+
+  --color-searchbox-bg: #404040;
+  --color-searchbox-placeholder: #888888;
+  --color-searchbox-border: none;
+  --color-searchbox-button: transparent;
+  --color-searchbox-button-fill: #888888;
+  --color-searchbox-button-fill-updated: #000000;
+}
+
+/* ===== Base styles ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  height: 100%;
+}
+
+a {
+  color: var(--color-highlight);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-scrollbar-thumb) 80%, black);
+}
+
+/* Code blocks */
+code {
+  font-family: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  background-color: var(--color-content-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+pre code {
+  font-size: 0.85em;
+}
+
+/* ===== API component styles ===== */
+
+/* Group member spacing */
+.group-members > *:not(:last-child) {
+  margin-bottom: 3px;
+}
+
+/* Content area responsive padding */
+@media (max-width: 1100px) {
+  .api-content-main {
+    padding-left: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .api-content-main {
+    padding-left: 0 !important;
+  }
+  .group-members {
+    padding: 8px 4px 8px 8px !important;
+  }
+}
+
+/* Keep the signature + badges (s/c/github/google/#) on one row even in the narrow
+   VS Code sidebar: the badges sit to the right of the signature, never stacked below.
+   The signature wraps within its flex:1 column; the badges keep their natural width. */
+.api-group-header {
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* Navbar link hover */
+.nav-desktop-links a:hover,
+.mobile-menu-items a:hover {
+  color: var(--color-highlight) !important;
+}
+
+/* Sidebar link hover */
+.api-sidebar a:hover {
+  background: var(--color-sidebar-hover) !important;
+}
+
+/* Instant tab navigation: disable the default Astro view-transition cross-fade so
+   client-side navigation between API pages swaps immediately rather than animating. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

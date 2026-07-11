@@ -3,12 +3,12 @@ import * as vscode from 'vscode';
 export async function findFile(currentPath: string, fileName: string, fordersLimit?: number, interest?: string[], exclude?: string[], stopAfterFind?: boolean): Promise<string[] | false> {
 	let pathList: string[] = [];
 	let folders: [string, vscode.FileType][] = await vscode.workspace.fs.readDirectory(vscode.Uri.file(currentPath));
-	// 过滤掉大文件夹
+	// Filter out large folders
 	if (fordersLimit && folders.length > fordersLimit) {
 		return false;
 	}
 
-	// 感兴趣的文件夹
+	// Folders of interest
 	if (interest) {
 		for (const interestName of interest) {
 			for (let i: number = 0; i < folders.length; i++) {
@@ -28,7 +28,7 @@ export async function findFile(currentPath: string, fileName: string, fordersLim
 		if (folderName === '.git' || folderName === 'node_modules') {
 			continue;
 		}
-		// 排除文件夹
+		// Exclude folders
 		if (exclude) {
 			for (const excludeName of exclude) {
 				if (folderName === excludeName) {

@@ -4,9 +4,10 @@ import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 import { getDotaApiNoteClass } from '../module/apiNote';
 import { getPathConfiguration } from '../utils/getPathConfiguration';
+import { localize } from '../utils/localize';
 
 /**
- * 用来生成Emmylua插件跳转使用的文件
+ * Generates the file used by the Emmylua plugin for navigation
  * @export
  */
 export function generateLuaApiDocument(context: vscode.ExtensionContext) {
@@ -18,7 +19,7 @@ export function generateLuaApiDocument(context: vscode.ExtensionContext) {
 	let setting = getPathConfiguration("dota2-tools.lua api document path");
 	if (setting) {
 		let outPath = path.normalize(setting);
-		vscode.window.showInputBox({ prompt: "确定生成至这个路径吗？", value: path.join(outPath, "lua_api.lua") }).then((msg) => {
+		vscode.window.showInputBox({ prompt: localize('msg_generate_path_prompt'), value: path.join(outPath, "lua_api.lua") }).then((msg) => {
 			if (msg !== undefined) {
 				mkdirp(path.dirname(msg));
 
