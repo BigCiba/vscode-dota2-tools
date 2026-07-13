@@ -1,0 +1,86 @@
+:root { color-scheme: light dark; font-family: var(--vscode-font-family); font-size: var(--vscode-font-size); color: var(--vscode-foreground); background: var(--vscode-editor-background); }
+* { box-sizing: border-box; }
+html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+button, input, select { font: inherit; color: inherit; }
+button { border: 1px solid var(--vscode-button-border, transparent); border-radius: 2px; padding: 4px 10px; color: var(--vscode-button-foreground); background: var(--vscode-button-background); cursor: pointer; }
+button:hover { background: var(--vscode-button-hoverBackground); }
+button:disabled { opacity: .55; cursor: default; }
+input, select { min-width: 0; border: 1px solid var(--vscode-input-border, transparent); border-radius: 2px; padding: 4px 6px; color: var(--vscode-input-foreground); background: var(--vscode-input-background); outline: none; }
+input:focus, select:focus, button:focus-visible, [tabindex]:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
+main { display: grid; grid-template-rows: auto auto auto 1fr; height: 100%; min-height: 0; }
+.toolbar, .formula-bar, .row-actions { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-bottom: 1px solid var(--vscode-panel-border); background: var(--vscode-editor-background); }
+.toolbar { justify-content: space-between; min-height: 50px; }
+.title { display: grid; gap: 2px; overflow: hidden; }
+.title strong { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.title span, .pending { color: var(--vscode-descriptionForeground); font-size: 12px; }
+.actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.formula-bar label { width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--vscode-descriptionForeground); }
+.formula-bar input { flex: 1; font-family: var(--vscode-editor-font-family); }
+.formula-error { max-width: 300px; overflow: hidden; color: var(--vscode-errorForeground); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.row-actions { min-height: 38px; }
+.row-actions .pending { margin-left: auto; }
+.banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 10px; border-bottom: 1px solid var(--vscode-panel-border); }
+.banner.warning { background: var(--vscode-inputValidation-warningBackground); color: var(--vscode-inputValidation-warningForeground, var(--vscode-foreground)); }
+.banner.error { background: var(--vscode-inputValidation-errorBackground); color: var(--vscode-inputValidation-errorForeground, var(--vscode-foreground)); }
+.banner.info { background: var(--vscode-inputValidation-infoBackground); }
+.grid { min-height: 0; overflow: hidden; display: grid; grid-template-rows: 53px 1fr; }
+.row-grid { display: grid; grid-template-columns: var(--grid-columns); min-width: max-content; }
+.grid-header { position: relative; z-index: 4; overflow: hidden; border-bottom: 1px solid var(--vscode-panel-border); background: var(--vscode-editorGroupHeader-tabsBackground); }
+.grid-header > div { border-right: 1px solid var(--vscode-panel-border); padding: 5px; font-weight: 600; }
+.header-cell { display: grid; grid-template-rows: 18px 23px; gap: 2px; overflow: hidden; }
+.header-cell span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.header-cell input { width: 100%; height: 22px; padding: 2px 4px; font-weight: normal; }
+.grid-viewport { min-height: 0; overflow: auto; scrollbar-color: var(--vscode-scrollbarSlider-background) transparent; }
+.grid-spacer { position: relative; min-width: max-content; }
+.virtual-rows { position: absolute; inset: 0 auto auto 0; }
+.row-grid.selected > * { background: var(--vscode-list-activeSelectionBackground); color: var(--vscode-list-activeSelectionForeground); }
+.row-number, .cell { height: 100%; border: 0; border-right: 1px solid var(--vscode-panel-border); border-bottom: 1px solid var(--vscode-panel-border); border-radius: 0; background: var(--vscode-editor-background); color: var(--vscode-foreground); }
+.row-number { padding: 0; color: var(--vscode-editorLineNumber-foreground); background: var(--vscode-editorGutter-background); cursor: grab; }
+.cell { position: relative; display: flex; align-items: center; min-width: 0; padding: 0 7px; cursor: default; overflow: hidden; }
+.cell > span { display: flex; align-items: center; gap: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cell > span img { flex: none; object-fit: contain; }
+.header-cell.selected { outline: 2px solid var(--vscode-focusBorder); outline-offset: -2px; }
+.row-actions { flex-wrap: wrap; }
+.cell:hover { background: var(--vscode-list-hoverBackground); }
+.cell.selected { outline: 2px solid var(--vscode-focusBorder); outline-offset: -2px; z-index: 2; }
+.cell-editor { position: absolute; inset: 1px; width: calc(100% - 2px); height: calc(100% - 2px); border-color: var(--vscode-focusBorder); }
+.cell.ability { justify-content: flex-start; color: var(--vscode-textLink-foreground); background: var(--vscode-editor-background); }
+.empty { margin: 24px; padding: 18px; border: 1px solid var(--vscode-panel-border); }
+.empty.error { color: var(--vscode-errorForeground); }
+.compact .grid { grid-template-rows: 45px 1fr; }
+.compact .grid-header { font-size: 11px; }
+.modal-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.45); }
+.modal { display: grid; grid-template-rows: auto minmax(120px, 1fr) auto; width: min(850px, 95vw); max-height: 80vh; border: 1px solid var(--vscode-widget-border); box-shadow: 0 8px 24px var(--vscode-widget-shadow); background: var(--vscode-editorWidget-background); }
+.modal header, .modal footer { display: flex; align-items: center; gap: 8px; padding: 10px; border-bottom: 1px solid var(--vscode-panel-border); }
+.modal header { justify-content: space-between; }
+.modal footer { border-top: 1px solid var(--vscode-panel-border); border-bottom: 0; }
+.modal footer span { flex: 1; }
+.ability-list { overflow: auto; padding: 10px; }
+.ability-entry { display: grid; grid-template-columns: minmax(120px, 1fr) 90px minmax(180px, 2fr) auto; gap: 6px; margin-bottom: 6px; }
+@media (max-width: 700px) { .toolbar { align-items: flex-start; } .title span { display: none; } .formula-bar label { width: 100px; } .ability-entry { grid-template-columns: 1fr 90px; } }
+
+.texture-cell { gap: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.texture-cell img { flex: none; object-fit: contain; }
+.texture-dialog { width: min(980px, 96vw); }
+.texture-toolbar { display: flex; gap: 6px; padding: 10px; border-bottom: 1px solid var(--vscode-panel-border); }
+.texture-toolbar input { flex: 1; }
+.texture-toolbar button.active { outline: 1px solid var(--vscode-focusBorder); }
+.texture-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 7px; min-height: 180px; max-height: 58vh; overflow: auto; padding: 10px; }
+.texture-option { display: grid; grid-template-rows: 52px auto auto; justify-items: center; gap: 3px; min-width: 0; padding: 7px; color: var(--vscode-foreground); background: var(--vscode-editor-background); border-color: var(--vscode-panel-border); }
+.texture-option img { object-fit: contain; }
+.texture-option span, .texture-option small { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.texture-option small { color: var(--vscode-descriptionForeground); }
+.ability-dialog { width: min(980px, 96vw); }
+.ability-dialog .ability-list { display: grid; gap: 10px; }
+.ability-dialog .ability-entry { display: grid; grid-template-columns: 1fr; gap: 7px; margin: 0; padding: 9px; border: 1px solid var(--vscode-panel-border); }
+.ability-main { display: grid; grid-template-columns: minmax(120px, 1fr) 90px minmax(160px, 2fr) auto auto auto; gap: 6px; }
+.ability-description { width: 100%; }
+.modifier-list { display: grid; gap: 5px; padding-left: 18px; }
+.modifier-row { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(160px, 2fr) auto; gap: 6px; }
+@media (max-width: 700px) { .ability-main { grid-template-columns: 1fr 90px; } .modifier-list { padding-left: 0; } }
+.corner-cell, .row-number { position: sticky; left: 0; z-index: 5; }
+.row-grid > .frozen { position: sticky; z-index: 3; box-shadow: 1px 0 0 var(--vscode-panel-border); }
+.grid-header .frozen { z-index: 6; background: var(--vscode-editorGroupHeader-tabsBackground); }
+.virtual-rows .frozen { background: var(--vscode-editor-background); }
+.header-cell { position: relative; }
+.column-resizer { position: absolute; z-index: 8; inset: 0 -3px 0 auto; width: 7px; cursor: col-resize; }

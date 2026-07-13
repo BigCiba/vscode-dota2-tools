@@ -39,7 +39,13 @@
 
 路径支持变量：`${workspace}`、`${game}`、`${content}`。
 
-#### 主要功能
+#### KvEditor V2（Solid  TypeScript）
+
+NaN
+NaN
+NaN
+NaN
+0#### 主要功能
 
 - 行编辑：插入、批量插入、删除、拖拽排序、复制/粘贴行。
 - 列编辑：插入、删除、拖拽排序、冻结列、列宽保存。

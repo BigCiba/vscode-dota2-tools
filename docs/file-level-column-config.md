@@ -34,7 +34,7 @@
 
 ## 配置文件位置
 
-所有配置保存在工作区的 `.vscode/kv-editor-column-options.json` 文件中。
+所有配置保存在工作区的 `.vscode/kv_editor_setting.json` 文件中。
 
 ### 文件结构示例
 
@@ -78,7 +78,7 @@
 
 ### 列描述
 
-列描述的配置保存在 `.vscode/kv-editor-user-settings.json` 中：
+列描述的配置保存在 `.vscode/kv_editor_setting.json` 中：
 
 1. **工作区默认** (`columnDescriptions` 字段)：
    - 作为所有文件的默认描述

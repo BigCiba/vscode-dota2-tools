@@ -39,7 +39,7 @@
             },
             {
                 "selector": "classProperty",
-                "format": [""]
+                "format": null
             }
           ],
         "@typescript-eslint/semi": "warn",

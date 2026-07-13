@@ -415,8 +415,8 @@
 				"category": "Dota2 Tools"
 			},
 			{
-				"command": "dota2tools.kvEditor.openFile",
-				"title": "%dota2tools.kvEditor.openFile%",
+				"command": "dota2tools.kvEditor.switchVersion",
+				"title": "KvEditor: Switch Legacy / V2",
 				"category": "Dota2 Tools"
 			},
 			{
@@ -824,6 +824,14 @@
 								"%dota2-tools.kv_editor.type.custom%"
 							]
 						}
+					},
+					"dota2-tools.A10.kv_editor.version": {
+						"scope": "resource",
+						"type": "string",
+						"default": "legacy",
+						"enum": ["legacy", "v2"],
+						"enumDescriptions": ["Use the original KvEditor.", "Use the Solid + TypeScript KvEditor V2."],
+						"markdownDescription": "Select the KvEditor implementation. V2 can be switched back to legacy at any time."
 					}
 				}
 			},
