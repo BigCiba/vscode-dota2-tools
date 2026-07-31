@@ -1,12 +1,19 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { getWebviewContent } from '../utils/getWebViewContent';
+import { getBundledWebviewContent } from '../utils/getBundledWebviewContent';
 import { readFile } from '../utils/readFile';
 import { readKeyValue2 } from '../utils/kvUtils';
 import { hasLocalize, hasReverseLocalize, localize, reverseLocalize } from '../utils/localize';
 import { isNumber } from '../utils/isNumber';
 import { TextEncoder } from 'util';
 import path = require('path');
+import type {
+	Dota2ItemsGameDetail,
+	Dota2ItemsGameField,
+	Dota2ItemsGameHostMessage,
+	Dota2ItemsGameSearchResult,
+	Dota2ItemsGameWebviewMessage,
+} from '../types/dota2ItemsGameWebviewMessages';
 
 let itemsGame: Table;
 let language: Table;
@@ -37,39 +44,69 @@ export async function dota2ItemsGame(context: vscode.ExtensionContext) {
 		{
 			enableScripts: true, // 启用JS，默认禁用
 			retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+			localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'dist', 'webview')],
 			// enableFindWidget: true
 		}
 	);
-	panel.webview.html = await getWebviewContent(panel.webview, context.extensionUri, 'dota2ItemsGame');
+	panel.webview.html = await getBundledWebviewContent(panel.webview, context.extensionUri, 'dota2-items-game');
 
 	// 监听消息
-	panel.webview.onDidReceiveMessage(async (message: { type: string, text: string, language: string; }) => {
-		const type = message.type;
-		const text = message.text;
+	panel.webview.onDidReceiveMessage(async (message: Dota2ItemsGameWebviewMessage) => {
+		if (!message || typeof message.type !== 'string' || message.type === 'ready') {
+			return;
+		}
+		const text = message.payload.query;
 		// 加载资源
 		if (itemsGame === undefined) {
 			await dota2ItemsGameInit(context);
 		}
 
-		switch (type) {
-			case "query_item_data":	// 获取物品数据
-				let inputResult = validInput(text);
-				if (typeof (inputResult) === "string") {
-					panel.webview.postMessage({
-						type: "query_item_data",
-						data: getItemInfo(inputResult),
-					});
-				} else if (typeof (inputResult) === "object") {
-					panel.webview.postMessage({
-						type: "query_item_list_data",
-						data: inputResult,
-					});
-				}
-				return;
+		if (message.type === 'search') {
+			const inputResult = validInput(text);
+			const response: Dota2ItemsGameHostMessage = {
+				type: 'searchResult',
+				payload: {
+					query: text,
+					result: typeof inputResult === 'string'
+						? toItemDetail(getItemInfo(inputResult))
+						: Array.isArray(inputResult) ? toItemList(inputResult) : undefined,
+				},
+			};
+			await panel.webview.postMessage(response);
 		}
 	}, null, context.subscriptions);
 }
 /** 验证输入的内容是否有效 */
+function toItemDetail(data: Table): Dota2ItemsGameDetail {
+	const result: Dota2ItemsGameDetail = { fields: [], bundle: [], bundleContain: [], visualModifiers: [], priceInfo: [] };
+	for (const [key, value] of Object.entries(data)) {
+		if (key === 'econImg') { result.imageData = String(value); continue; }
+		if (key === 'bundle') { result.bundle = toFields(value as Table); continue; }
+		if (key === 'bundle_contain') { result.bundleContain = toFields(value as Table); continue; }
+		if (key === 'price_info') { result.priceInfo = toFields(value as Table); continue; }
+		if (key === 'visuals') {
+			for (const [name, fields] of Object.entries(value as Table)) {
+				if (name !== 'localize') { result.visualModifiers.push({ name, fields: toFields(fields as Table) }); }
+			}
+			continue;
+		}
+		result.fields.push(toField(key, value));
+	}
+	return result;
+}
+
+function toFields(data: Table): Dota2ItemsGameField[] {
+	return Object.entries(data).filter(([key]) => key !== 'localize').map(([key, value]) => toField(key, value));
+}
+
+function toField(label: string, value: unknown): Dota2ItemsGameField {
+	return { label, value: typeof value === 'string' ? value : String(value ?? '') };
+}
+
+function toItemList(data: string[][]): Dota2ItemsGameSearchResult {
+	const [headers = [], ...rows] = data;
+	return { headers, rows };
+}
 function validInput(text: string) {
 	if (isNumber(text)) {
 		if (itemsGame[text]) {
