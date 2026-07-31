@@ -20,10 +20,10 @@ import { getBundledWebviewContent } from '../utils/getBundledWebviewContent';
 import { getWebviewContent } from '../utils/getWebViewContent';
 import { readKeyValue2, writeKeyValue } from '../utils/kvUtils';
 
-export class kvEditorProvider implements vscode.CustomTextEditorProvider {
+export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 
 	public static register(context: vscode.ExtensionContext): vscode.Disposable {
-		return vscode.window.registerCustomEditorProvider(kvEditorProvider.viewType, new kvEditorProvider(context), {
+		return vscode.window.registerCustomEditorProvider(KvEditorProvider.viewType, new KvEditorProvider(context), {
 			webviewOptions: {
 				retainContextWhenHidden: true,
 				enableFindWidget: true,
@@ -122,8 +122,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	private async resolveLegacyCustomTextEditor(
 		document: vscode.TextDocument,
 		webviewPanel: vscode.WebviewPanel,
-		_token: vscode.CancellationToken
+		token: vscode.CancellationToken
 	): Promise<void> {
+		void token;
 		webviewPanel.webview.options = {
 			enableScripts: true,
 		};
@@ -395,7 +396,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 			if (message.type === 'openLocalizationFile') {
-				void this.handleOpenLocalizationFile(message.payload);
+				void this.handleOpenLocalizationFile(document, message.payload);
 				return;
 			}
 			if (message.type === 'reloadData') {
@@ -431,32 +432,34 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		];
 		const contentDir = getContentDir();
 		const gameDir = getGameDir();
-		if (contentDir) roots.push(vscode.Uri.file(contentDir));
-		if (gameDir) roots.push(vscode.Uri.file(gameDir));
+		if (contentDir) {roots.push(vscode.Uri.file(contentDir));}
+		if (gameDir) {roots.push(vscode.Uri.file(gameDir));}
 		webviewPanel.webview.options = { enableScripts: true, localResourceRoots: roots };
 		webviewPanel.webview.html = await getBundledWebviewContent(webviewPanel.webview, this.context.extensionUri, 'kv-editor');
 
 		let ready = false;
 		let executingCommand = false;
+		let commandQueue: Promise<void> = Promise.resolve();
+		let latestTextureRequestId: string | undefined;
 		const post = (message: KvEditorV2HostMessage): Thenable<boolean> => webviewPanel.webview.postMessage(message);
 		const snapshot = (): KvEditorV2Snapshot => this.buildV2Snapshot(document, webviewPanel.webview);
 		const postSnapshot = (type: 'initialize' | 'documentChanged') => {
-			if (ready) void post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type, snapshot: snapshot() });
+			if (ready) {void post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type, snapshot: snapshot() });}
 		};
 
 		const documentSubscription = vscode.workspace.onDidChangeTextDocument((event) => {
-			if (event.document.uri.toString() !== document.uri.toString() || !event.contentChanges.length) return;
-			if (executingCommand || this.hasTrackedDocumentMutation(document)) return;
+			if (event.document.uri.toString() !== document.uri.toString() || !event.contentChanges.length) {return;}
+			if (executingCommand || this.hasTrackedDocumentMutation(document)) {return;}
 			postSnapshot('documentChanged');
 		});
 		const saveSubscription = vscode.workspace.onDidSaveTextDocument((savedDocument) => {
-			if (savedDocument.uri.toString() !== document.uri.toString()) return;
+			if (savedDocument.uri.toString() !== document.uri.toString()) {return;}
 			void this.exportLocalizationOnSave(savedDocument).catch((error: unknown) => {
 				void post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'notification', level: 'error', message: error instanceof Error ? error.message : String(error) });
 			});
 		});
 		const messageSubscription = webviewPanel.webview.onDidReceiveMessage(async (raw: unknown) => {
-			if (!isValidKvEditorV2Message(raw)) return;
+			if (!isValidKvEditorV2Message(raw)) {return;}
 			const message: KvEditorV2WebviewMessage = raw;
 			if (message.type === 'clientReady') {
 				ready = true;
@@ -466,51 +469,61 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 			if (message.type === 'reloadData') { postSnapshot('initialize'); return; }
 			if (message.type === 'requestResource') {
+				const folderType = this.detectFolderType(document.uri);
+				latestTextureRequestId = message.requestId;
 				try {
 					const settings = readKvEditorSettings();
 					const entry = settings ? findKvEntryForUri(document.uri, settings) : undefined;
-					const response = await this.buildTextureMenuResponse(webviewPanel.webview, this.detectFolderType(document.uri), entry, document.uri.fsPath);
+					const response = await this.buildTextureMenuResponse(webviewPanel.webview, folderType, entry, document.uri.fsPath);
+					if (latestTextureRequestId !== message.requestId) {return;}
 					await post({
 						protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'resourceResult', requestId: message.requestId, resource: 'textureMenu',
-						payload: { defaultKind: response.defaultKind, icons: response.icons.map((icon) => { const { filePath, ...webviewIcon } = icon; void filePath; return webviewIcon; }) },
+						payload: { defaultKind: response.defaultKind, icons: response.icons.map((icon) => { const { filePath, ...webviewIcon } = icon; void filePath; return webviewIcon; }), heroFilters: response.heroFilters ?? [] },
 					});
 				} catch (error) {
-					await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'notification', level: 'error', message: error instanceof Error ? error.message : String(error) });
+					if (latestTextureRequestId !== message.requestId) {return;}
+					await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'resourceResult', requestId: message.requestId, resource: 'textureMenu', payload: { defaultKind: folderType === 'item' ? 'item' : 'spell', icons: [], heroFilters: [], error: error instanceof Error ? error.message : String(error) } });
 				}
 				return;
-			}			if (message.type === 'openTarget') {
-				if (message.target === 'textEditor') await this.handleOpenTextEditor(document);
-				else if (message.target === 'formulaHelp') await this.handleOpenFormulaHelp();
-				else if (message.target === 'localizationFile') await this.handleOpenLocalizationFile({ path: message.path });
-				else if (message.target === 'scriptFile') await this.handleOpenScriptFile(document, { scriptPath: message.path ?? '', folderType: this.detectFolderType(document.uri) });
+			}
+			if (message.type === 'openTarget') {
+				if (message.target === 'textEditor') {await this.handleOpenTextEditor(document);}
+				else if (message.target === 'formulaHelp') {await this.handleOpenFormulaHelp();}
+				else if (message.target === 'localizationFile') {await this.handleOpenLocalizationFile(document, { path: message.path });}
+				else if (message.target === 'scriptFile') {await this.handleOpenScriptFile(document, { scriptPath: message.path ?? '', folderType: this.detectFolderType(document.uri) });}
 				return;
 			}
 			if (message.type === 'updatePreference') {
 				try {
-					if (message.preference.type === 'compactMode') await this.handleSaveCompactMode(document, { compactMode: message.preference.value });
-					else if (message.preference.type === 'localizedMode') await this.handleSaveLocalizedMode(document, { localizedMode: message.preference.value });
-					else if (message.preference.type === 'frozenColumn') await this.handleSaveFrozenColumns(document, { frozenColumns: message.preference.value ?? null });
-					else await this.handleSaveColumnWidths(document, { widths: message.preference.value });
+					if (message.preference.type === 'compactMode') {await this.handleSaveCompactMode(document, { compactMode: message.preference.value });}
+					else if (message.preference.type === 'localizedMode') {await this.handleSaveLocalizedMode(document, { localizedMode: message.preference.value });}
+					else if (message.preference.type === 'frozenColumn') {await this.handleSaveFrozenColumns(document, { frozenColumns: message.preference.value ?? null });}
+					else {await this.handleSaveColumnWidths(document, { widths: message.preference.value });}
 					postSnapshot('documentChanged');
 				} catch (error) {
 					void post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'notification', level: 'error', message: error instanceof Error ? error.message : String(error) });
 				}
 				return;
 			}
-			if (message.documentUri !== document.uri.toString()) return;
-			if (message.baseVersion !== document.version) {
-				await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'commandRejected', requestId: message.requestId, reason: 'stale', message: '文档已经变化，此操作未执行。已加载最新数据。', snapshot: snapshot() });
-				return;
-			}
-			executingCommand = true;
-			try {
-				await this.executeV2Command(document, message.command);
-				await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'commandResult', requestId: message.requestId, documentVersion: document.version, snapshot: snapshot() });
-			} catch (error) {
-				await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'commandRejected', requestId: message.requestId, reason: 'failed', message: error instanceof Error ? error.message : String(error), snapshot: snapshot() });
-			} finally {
-				executingCommand = false;
-			}
+			if (message.documentUri !== document.uri.toString()) {return;}
+			const runCommand = async () => {
+				if (message.baseVersion !== document.version) {
+					await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'commandRejected', requestId: message.requestId, reason: 'stale', message: '文档已经变化，此操作未执行。已加载最新数据。', snapshot: snapshot() });
+					return;
+				}
+				executingCommand = true;
+				try {
+					await this.executeV2Command(document, message.command);
+					await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'commandResult', requestId: message.requestId, documentVersion: document.version, snapshot: snapshot() });
+				} catch (error) {
+					await post({ protocolVersion: KV_EDITOR_PROTOCOL_VERSION, type: 'commandRejected', requestId: message.requestId, reason: 'failed', message: error instanceof Error ? error.message : String(error), snapshot: snapshot() });
+				} finally {
+					executingCommand = false;
+				}
+			};
+			const queuedCommand = commandQueue.then(runCommand, runCommand);
+			commandQueue = queuedCommand.catch(() => undefined);
+			await queuedCommand;
 		});
 		webviewPanel.onDidDispose(() => {
 			this.nativeSaveLifecycleDocuments.delete(document.uri.toString());
@@ -523,6 +536,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 	private buildV2Snapshot(document: vscode.TextDocument, webview: vscode.Webview): KvEditorV2Snapshot {
 		const payload = this.buildPayload(document, webview);
+		payload.columns = payload.columns.filter((columnKey) => columnKey !== 'id');
 		return {
 			documentUri: document.uri.toString(),
 			documentVersion: document.version,
@@ -550,7 +564,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			columnDescriptions: payload.columnDescriptions ?? {},
 			formulas: payload.formulas.flatMap((formula) => {
 				const rowId = formula.rowId ?? payload.rows[formula.rowIndex]?.id;
-				if (!rowId) return [];
+				if (!rowId) {return [];}
 				const validation = validateSafeFormula(formula.formula);
 				const runtimeError = this.formulaRuntimeErrors.get(document.uri.toString())?.get(`${rowId}::${formula.column}`);
 				return [{
@@ -577,7 +591,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		formulaChanges: Array<{ rowId: string; columnKey: string; formula?: string }> = [],
 	): KvTextReplacement[] {
 		const deduplicated = new Map<string, FormulaValueEdit>();
-		for (const edit of baseEdits) deduplicated.set(`${edit.rowId}::${edit.columnKey}`, edit);
+		for (const edit of baseEdits) {deduplicated.set(`${edit.rowId}::${edit.columnKey}`, edit);}
 		const recalculation = recalculateAffectedFormulas({
 			columns: payload.columns,
 			rows: payload.rows.map((row) => ({ rowId: row.id, values: row.values })),
@@ -590,13 +604,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			formulaChanges,
 		});
 		const documentErrors = this.formulaRuntimeErrors.get(document.uri.toString()) ?? new Map<string, string>();
-		for (const edit of [...baseEdits, ...recalculation.edits]) documentErrors.delete(`${edit.rowId}::${edit.columnKey}`);
-		for (const change of formulaChanges) if (!change.formula) documentErrors.delete(`${change.rowId}::${change.columnKey}`);
-		for (const error of recalculation.errors) documentErrors.set(`${error.rowId}::${error.columnKey}`, error.message);
-		if (documentErrors.size) this.formulaRuntimeErrors.set(document.uri.toString(), documentErrors);
-		else this.formulaRuntimeErrors.delete(document.uri.toString());
-		for (const edit of recalculation.edits) deduplicated.set(`${edit.rowId}::${edit.columnKey}`, edit);
-		return [...deduplicated.values()].map((edit) => model.editScalar(edit.rowId, edit.columnKey, edit.value));
+		for (const edit of [...baseEdits, ...recalculation.edits]) {documentErrors.delete(`${edit.rowId}::${edit.columnKey}`);}
+		for (const change of formulaChanges) {if (!change.formula) {documentErrors.delete(`${change.rowId}::${change.columnKey}`);}}
+		for (const error of recalculation.errors) {documentErrors.set(`${error.rowId}::${error.columnKey}`, error.message);}
+		if (documentErrors.size) {this.formulaRuntimeErrors.set(document.uri.toString(), documentErrors);}
+		else {this.formulaRuntimeErrors.delete(document.uri.toString());}
+		for (const edit of recalculation.edits) {deduplicated.set(`${edit.rowId}::${edit.columnKey}`, edit);}
+		return [...deduplicated.values()].map((edit) => model.editScalarOrdered(edit.rowId, edit.columnKey, edit.value, payload.columns));
 	}
 
 	private async clearV2CellFormulas(document: vscode.TextDocument, payload: KvEditorPayload, edits: FormulaValueEdit[]): Promise<void> {
@@ -605,7 +619,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			return rowId ? `${rowId}::${entry.column}` : '';
 		}));
 		for (const edit of edits) {
-			if (!formulaTargets.has(`${edit.rowId}::${edit.columnKey}`)) continue;
+			if (!formulaTargets.has(`${edit.rowId}::${edit.columnKey}`)) {continue;}
 			await this.handleSaveFormula(document, {
 				column: edit.columnKey,
 				rowId: edit.rowId,
@@ -616,30 +630,30 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 
 	private async applyV2Replacements(document: vscode.TextDocument, replacements: KvTextReplacement[]): Promise<void> {
-		if (!replacements.length) return;
+		if (!replacements.length) {return;}
 		const ordered = [...replacements].sort((left, right) => left.start - right.start);
 		for (let index = 1; index < ordered.length; index++) {
-			if (ordered[index].start < ordered[index - 1].end) throw new Error('编辑范围发生重叠，操作未执行。');
+			if (ordered[index].start < ordered[index - 1].end) {throw new Error('编辑范围发生重叠，操作未执行。');}
 		}
 		const edit = new vscode.WorkspaceEdit();
 		for (const replacement of ordered) {
 			edit.replace(document.uri, new vscode.Range(document.positionAt(replacement.start), document.positionAt(replacement.end)), replacement.text);
 		}
 		const applied = await this.applyWorkspaceEditTracked(document, edit);
-		if (!applied) throw new Error('无法把修改应用到 KV 文档。');
+		if (!applied) {throw new Error('无法把修改应用到 KV 文档。');}
 	}
 
 	private migrateV2FormulaRowId(document: vscode.TextDocument, oldId: string, newId: string): void {
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-		if (!workspaceFolder) return;
+		if (!workspaceFolder) {return;}
 		const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
-		if (!documentKey) return;
+		if (!documentKey) {return;}
 		const overrides = this.copyColumnOptionOverrides(this.getColumnOptionOverrides(workspaceFolder));
 		const formulas = overrides.formulas?.[documentKey];
-		if (!formulas) return;
+		if (!formulas) {return;}
 		const oldKey = `id:${oldId}`;
 		const newKey = `id:${newId}`;
-		if (!formulas[oldKey]) return;
+		if (!formulas[oldKey]) {return;}
 		formulas[newKey] = { ...formulas[oldKey] };
 		delete formulas[oldKey];
 		this.writeColumnOptionOverrides(workspaceFolder, overrides);
@@ -650,21 +664,21 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const formulas = new Map<string, string>();
 		for (const entry of payload.formulas) {
 			const rowId = entry.rowId ?? payload.rows[entry.rowIndex]?.id;
-			if (rowId && validateSafeFormula(entry.formula).compatible) formulas.set(address(rowId, entry.column), entry.formula);
+			if (rowId && validateSafeFormula(entry.formula).compatible) {formulas.set(address(rowId, entry.column), entry.formula);}
 		}
 		for (const [columnKey, formula] of Object.entries(payload.columnFormulas ?? {})) {
-			if (!validateSafeFormula(formula).compatible) continue;
-			for (const row of payload.rows) if (!formulas.has(address(row.id, columnKey))) formulas.set(address(row.id, columnKey), formula);
+			if (!validateSafeFormula(formula).compatible) {continue;}
+			for (const row of payload.rows) {if (!formulas.has(address(row.id, columnKey))) {formulas.set(address(row.id, columnKey), formula);}}
 		}
 		for (const candidate of candidates) {
 			const key = address(candidate.rowId, candidate.columnKey);
-			if (candidate.formula) formulas.set(key, candidate.formula); else formulas.delete(key);
+			if (candidate.formula) {formulas.set(key, candidate.formula);} else {formulas.delete(key);}
 		}
 		assertNoFormulaCycles(formulas, (reference) => {
 			const match = /^\$?([A-Z]{1,3})\$?([1-9][0-9]*)$/u.exec(reference);
-			if (!match) return undefined;
+			if (!match) {return undefined;}
 			let columnIndex = 0;
-			for (const character of match[1]) columnIndex = columnIndex * 26 + character.charCodeAt(0) - 64;
+			for (const character of match[1]) {columnIndex = columnIndex * 26 + character.charCodeAt(0) - 64;}
 			const row = payload.rows[Number(match[2]) - 1];
 			const columnKey = ['id', ...payload.columns][columnIndex - 1];
 			return row && columnKey ? address(row.id, columnKey) : undefined;
@@ -672,17 +686,17 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	}
 	private evaluateV2Formula(formula: string, payload: KvEditorPayload, rowIndex: number): string {
 		const row = payload.rows[rowIndex];
-		if (!row) throw new Error('公式目标行不存在。');
+		if (!row) {throw new Error('公式目标行不存在。');}
 		const result = evaluateSafeFormula(formula, {
 			rowId: row.id, rowIndex, row: row.values,
 			resolveCell: (reference) => {
 				const match = /^\$?([A-Z]{1,3})\$?([1-9][0-9]*)$/u.exec(reference);
-				if (!match) throw new Error(`单元格引用无效：${reference}`);
+				if (!match) {throw new Error(`单元格引用无效：${reference}`);}
 				let columnIndex = 0;
-				for (const character of match[1]) columnIndex = columnIndex * 26 + character.charCodeAt(0) - 64;
+				for (const character of match[1]) {columnIndex = columnIndex * 26 + character.charCodeAt(0) - 64;}
 				const referencedRow = payload.rows[Number(match[2]) - 1];
 				const columnKey = ['id', ...payload.columns][columnIndex - 1];
-				if (!referencedRow || !columnKey) throw new Error(`单元格引用超出范围：${reference}`);
+				if (!referencedRow || !columnKey) {throw new Error(`单元格引用超出范围：${reference}`);}
 				return columnKey === 'id' ? referencedRow.id : referencedRow.values[columnKey] ?? '';
 			},
 		});
@@ -693,11 +707,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		const result: Record<string, unknown> = {};
 		for (const rawEntry of entries) {
 			const entry = this.normalizeAbilityValuesEditEntry(rawEntry);
-			if (!entry) throw new Error('AbilityValues key 不能为空。');
-			if (Object.prototype.hasOwnProperty.call(result, entry.key)) throw new Error(`AbilityValues key “${entry.key}” 重复。`);
+			if (!entry) {throw new Error('AbilityValues key 不能为空。');}
+			if (Object.prototype.hasOwnProperty.call(result, entry.key)) {throw new Error(`AbilityValues key “${entry.key}” 重复。`);}
 			const modifierKeys = new Set<string>();
 			for (const modifier of entry.modifiers) {
-				if (modifierKeys.has(modifier.key)) throw new Error(`AbilityValues “${entry.key}” 的 modifier “${modifier.key}” 重复。`);
+				if (modifierKeys.has(modifier.key)) {throw new Error(`AbilityValues “${entry.key}” 的 modifier “${modifier.key}” 重复。`);}
 				modifierKeys.add(modifier.key);
 			}
 			if (entry.type === 'scalar' && entry.modifiers.length === 0) {
@@ -723,11 +737,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		payload: KvEditorPayload,
 		command: Extract<KvEditorV2Command, { type: 'insertRows' }>,
 	): Promise<void> {
-		if (!command.rows.length) return;
+		if (!command.rows.length) {return;}
 		const anchorRowId = command.anchorRowId ?? payload.rows[payload.rows.length - 1]?.id;
-		if (!anchorRowId) throw new Error('空文档暂不支持批量粘贴，请先在文本编辑器中建立一个条目。');
+		if (!anchorRowId) {throw new Error('空文档暂不支持批量粘贴，请先在文本编辑器中建立一个条目。');}
 		const insertionRowIndex = payload.rows.findIndex((row) => row.id === anchorRowId) + 1;
-		if (insertionRowIndex <= 0) throw new Error(`无法找到批量插入锚点 “${anchorRowId}”。`);
+		if (insertionRowIndex <= 0) {throw new Error(`无法找到批量插入锚点 “${anchorRowId}”。`);}
 
 		const usedIds = new Set(payload.rows.map((row) => row.id));
 		const inserted: Array<{ rowId: string; value: Record<string, unknown>; formulas: Record<string, string> }> = [];
@@ -746,13 +760,13 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				? JSON.parse(JSON.stringify(sourceRow.rawObject)) as Record<string, unknown>
 				: { ...sourceRow.values };
 			delete value.AbilityValues;
-			if (sourceRow.abilityValues?.length) value.AbilityValues = this.buildV2AbilityValues(sourceRow.abilityValues);
+			if (sourceRow.abilityValues?.length) {value.AbilityValues = this.buildV2AbilityValues(sourceRow.abilityValues);}
 			const formulas: Record<string, string> = {};
 			for (const [columnKey, formula] of Object.entries(sourceRow.formulas ?? {})) {
 				const normalized = formula.trim();
-				if (!normalized) continue;
+				if (!normalized) {continue;}
 				const validation = validateSafeFormula(normalized);
-				if (!validation.compatible) throw new Error(validation.error ?? `列 “${columnKey}” 的复制公式不属于安全语法子集。`);
+				if (!validation.compatible) {throw new Error(validation.error ?? `列 “${columnKey}” 的复制公式不属于安全语法子集。`);}
 				formulas[columnKey] = normalized;
 			}
 			inserted.push({ rowId, value: usedRawObject ? value : this.rebuildCreatureStructure(value), formulas });
@@ -773,26 +787,27 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 	private removeV2FormulaRows(document: vscode.TextDocument, rowIds: string[]): void {
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-		if (!workspaceFolder) return;
+		if (!workspaceFolder) {return;}
 		const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
-		if (!documentKey) return;
+		if (!documentKey) {return;}
 		const overrides = this.copyColumnOptionOverrides(this.getColumnOptionOverrides(workspaceFolder));
 		const formulas = overrides.formulas?.[documentKey];
-		if (!formulas) return;
+		if (!formulas) {return;}
 		let changed = false;
 		for (const rowId of rowIds) {
 			const key = `id:${rowId}`;
 			if (formulas[key]) { delete formulas[key]; changed = true; }
 		}
-		if (changed) this.writeColumnOptionOverrides(workspaceFolder, overrides);
+		if (changed) {this.writeColumnOptionOverrides(workspaceFolder, overrides);}
 	}
 	private async executeV2Command(document: vscode.TextDocument, command: KvEditorV2Command): Promise<void> {
 		const payload = this.buildPayload(document, { asWebviewUri: (uri: vscode.Uri) => uri } as vscode.Webview);
+		payload.columns = payload.columns.filter((columnKey) => columnKey !== 'id');
 		const rowIndex = (rowId: string) => payload.rows.findIndex((row) => row.id === rowId);
 		const documentModel = () => KvDocumentModel.parse(document.getText());
 		switch (command.type) {
 			case 'editCell': {
-				if (!command.rowId || !command.columnKey || command.columnKey === 'id') throw new Error('单元格地址无效。');
+				if (!command.rowId || !command.columnKey || command.columnKey === 'id') {throw new Error('单元格地址无效。');}
 				const edits = [{ rowId: command.rowId, columnKey: command.columnKey, value: command.value }];
 				await this.applyV2Replacements(document, this.buildV2CellReplacements(document, payload, documentModel(), edits));
 				await this.clearV2CellFormulas(document, payload, edits);
@@ -800,7 +815,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 			case 'bulkEdit': {
 				const edits = command.edits.map((edit) => ({ ...edit }));
-				if (edits.some((edit) => !edit.rowId || !edit.columnKey || edit.columnKey === 'id')) throw new Error('批量编辑包含无效单元格地址。');
+				if (edits.some((edit) => !edit.rowId || !edit.columnKey || edit.columnKey === 'id')) {throw new Error('批量编辑包含无效单元格地址。');}
 				await this.applyV2Replacements(document, this.buildV2CellReplacements(document, payload, documentModel(), edits));
 				await this.clearV2CellFormulas(document, payload, edits);
 				return;
@@ -808,10 +823,10 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			case 'fillCells': {
 				this.assertV2FormulaCycles(payload, command.entries.map((entry) => ({ rowId: entry.rowId, columnKey: entry.columnKey, formula: entry.formula })));
 				for (const entry of command.entries) {
-					if (rowIndex(entry.rowId) < 0 || entry.columnKey === 'id') throw new Error('填充目标单元格无效。');
+					if (rowIndex(entry.rowId) < 0 || entry.columnKey === 'id') {throw new Error('填充目标单元格无效。');}
 					if (entry.formula !== undefined) {
 						const validation = validateSafeFormula(entry.formula);
-						if (!validation.compatible) throw new Error(validation.error ?? '填充公式不属于安全语法子集。');
+						if (!validation.compatible) {throw new Error(validation.error ?? '填充公式不属于安全语法子集。');}
 					}
 				}
 				const valueEdits = command.entries.filter((entry) => entry.formula === undefined)
@@ -829,15 +844,15 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				await this.handleV2InsertRows(document, payload, command);
 				return;
 			case 'renameRow':
-				if (!command.newRowId.trim()) throw new Error('行 ID 不能为空。');
+				if (!command.newRowId.trim()) {throw new Error('行 ID 不能为空。');}
 				await this.applyV2Replacements(document, [documentModel().renameRow(command.rowId, command.newRowId.trim())]);
 				this.migrateV2FormulaRowId(document, command.rowId, command.newRowId.trim());
 				return;
 			case 'insertRow': {
 				const anchorRowId = command.anchorRowId ?? payload.rows[payload.rows.length - 1]?.id;
-				if (!anchorRowId) throw new Error('空文档暂不支持图形化插入，请先在文本编辑器中建立一个条目。');
+				if (!anchorRowId) {throw new Error('空文档暂不支持图形化插入，请先在文本编辑器中建立一个条目。');}
 				let rowId = 'new_entry'; let suffix = 2;
-				while (payload.rows.some((row) => row.id === rowId)) rowId = `new_entry_${suffix++}`;
+				while (payload.rows.some((row) => row.id === rowId)) {rowId = `new_entry_${suffix++}`;}
 				const values = Object.fromEntries(payload.columns.filter((column) => column !== 'AbilityValues').map((column) => [column, '']));
 				await this.applyV2Replacements(document, [documentModel().insertRow(anchorRowId, command.position, rowId, values)]);
 				const anchorIndex = rowIndex(anchorRowId);
@@ -858,24 +873,28 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			case 'reorderRow': {
 				const sourceIndex = rowIndex(command.rowId);
 				const anchorIndex = rowIndex(command.anchorRowId);
-				if (sourceIndex < 0 || anchorIndex < 0) throw new Error('无法找到要移动的行。');
+				if (sourceIndex < 0 || anchorIndex < 0) {throw new Error('无法找到要移动的行。');}
 				await this.applyV2Replacements(document, documentModel().moveRow(command.rowId, command.anchorRowId, command.position));
 				const previousRowIds = payload.rows.map((row) => row.id);
 				const nextRowIds = previousRowIds.slice();
 				const [movedRowId] = nextRowIds.splice(sourceIndex, 1);
 				let targetIndex = anchorIndex + (command.position === 'after' ? 1 : 0);
-				if (sourceIndex < targetIndex) targetIndex--;
+				if (sourceIndex < targetIndex) {targetIndex--;}
 				nextRowIds.splice(targetIndex, 0, movedRowId);
 				this.syncStoredFormulasForRowChange(document, previousRowIds, nextRowIds);
 				return;
 			}
 			case 'insertColumn': {
-				const referenceIndex = payload.columns.indexOf(command.anchorColumnKey);
-				if (referenceIndex < 0) throw new Error('无法找到参考列。');
-				if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/u.test(command.columnKey)) throw new Error('列名只能包含字母、数字和下划线，且不能以数字开头。');
-				if (payload.columns.includes(command.columnKey) || command.columnKey === 'id') throw new Error(`列 “${command.columnKey}” 已存在。`);
+				const referenceIndex = command.anchorColumnKey === 'id' ? -1 : payload.columns.indexOf(command.anchorColumnKey);
+				if (referenceIndex < 0 && command.anchorColumnKey !== 'id') {throw new Error('无法找到参考列。');}
+				if (command.anchorColumnKey === 'id' && command.position !== 'after') {throw new Error('不能在 ID 列之前插入 KV 字段。');}
+				if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/u.test(command.columnKey)) {throw new Error('列名只能包含字母、数字和下划线，且不能以数字开头。');}
+				if (payload.columns.includes(command.columnKey) || command.columnKey === 'id') {throw new Error(`列 “${command.columnKey}” 已存在。`);}
 				const model = documentModel();
-				await this.applyV2Replacements(document, payload.rows.map((row) => model.insertScalarRelative(row.id, command.columnKey, '', command.anchorColumnKey, command.position)));
+				const replacements = command.anchorColumnKey === 'id'
+					? payload.rows.map((row) => model.editScalarOrdered(row.id, command.columnKey, '', [command.columnKey, ...payload.columns]))
+					: payload.rows.map((row) => model.insertScalarRelative(row.id, command.columnKey, '', command.anchorColumnKey, command.position));
+				await this.applyV2Replacements(document, replacements);
 				const nextColumns = payload.columns.slice();
 				nextColumns.splice(referenceIndex + (command.position === 'after' ? 1 : 0), 0, command.columnKey);
 				this.syncStoredFormulasForColumnChange(document, payload.columns, nextColumns);
@@ -888,9 +907,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					const replacement = this.isCreatureField(command.columnKey)
 						? model.deleteNestedField(row.id, 'Creature', command.columnKey)
 						: model.deleteScalar(row.id, command.columnKey);
-					if (replacement) replacements.push(replacement);
+					if (replacement) {replacements.push(replacement);}
 				}
-				if (!replacements.length) throw new Error(`无法在源文本中安全定位列 “${command.columnKey}”。`);
+				if (!replacements.length) {throw new Error(`无法在源文本中安全定位列 “${command.columnKey}”。`);}
 				await this.applyV2Replacements(document, replacements);
 				this.syncStoredFormulasForColumnChange(document, payload.columns, payload.columns.filter((key) => key !== command.columnKey), command.columnKey);
 				return;
@@ -898,26 +917,51 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			case 'reorderColumn': {
 				const sourceIndex = payload.columns.indexOf(command.columnKey);
 				const anchorIndex = payload.columns.indexOf(command.anchorColumnKey);
-				if (sourceIndex < 0 || anchorIndex < 0) throw new Error('无法找到要移动的列。');
-				const model = documentModel();
-				const replacements = payload.rows.flatMap((row) => model.moveScalar(row.id, command.columnKey, command.anchorColumnKey, command.position));
-				if (!replacements.length) throw new Error('没有可安全移动的直接标量字段。');
-				await this.applyV2Replacements(document, replacements);
+				if (sourceIndex < 0 || anchorIndex < 0) {throw new Error('无法找到要移动的列。');}
 				const nextColumns = payload.columns.slice();
 				const [moved] = nextColumns.splice(sourceIndex, 1);
 				let targetIndex = anchorIndex + (command.position === 'after' ? 1 : 0);
-				if (sourceIndex < targetIndex) targetIndex--;
+				if (sourceIndex < targetIndex) {targetIndex--;}
 				nextColumns.splice(targetIndex, 0, moved);
+				const model = documentModel();
+				const movedIndex = nextColumns.indexOf(command.columnKey);
+				const replacements = payload.rows.flatMap((row) => {
+					if (!model.hasScalar(row.id, command.columnKey)) {return [];}
+					for (let index = movedIndex + 1; index < nextColumns.length; index++) {
+						if (model.hasScalar(row.id, nextColumns[index])) {return model.moveScalar(row.id, command.columnKey, nextColumns[index], 'before');}
+					}
+					for (let index = movedIndex - 1; index >= 0; index--) {
+						if (model.hasScalar(row.id, nextColumns[index])) {return model.moveScalar(row.id, command.columnKey, nextColumns[index], 'after');}
+					}
+					return [];
+				});
+				if (!replacements.length) {throw new Error('没有可安全移动的直接标量字段。');}
+				await this.applyV2Replacements(document, replacements);
 				this.syncStoredFormulasForColumnChange(document, payload.columns, nextColumns);
 				return;
 			}
 			case 'editAbilityValues':
 				await this.handleV2AbilityValuesEdit(document, command.rowId, command.entries);
-				if (command.descriptions) await this.handleSaveAbilityValuesDescriptions(document, { rowId: command.rowId, descriptions: command.descriptions }, false);
+				if (command.descriptions) {await this.handleSaveAbilityValuesDescriptions(document, { rowId: command.rowId, descriptions: command.descriptions }, false);}
 				return;
 			case 'saveLocalizationSettings':
 				await this.handleSaveLocalizationSettings(document, command.settings, false);
-				return;			case 'saveColumnOptions':
+				return;
+			case 'runLocalizationAction': {
+				const settings = payload.localizationSettings;
+				if (!settings?.filePath || !settings.mappings.length) {throw new Error('请先配置本地化文件路径和列映射。');}
+				if (command.action === 'export') {
+					await this.exportLocalizationFile(document, settings);
+					return;
+				}
+				await this.importLocalizationFile(document, settings);
+				const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+				const documentKey = workspaceFolder ? this.getDocumentSettingsKey(document.uri, workspaceFolder) : undefined;
+				if (documentKey) {await this.importAbilityValuesDescriptions(document, settings, documentKey);}
+				void vscode.window.showInformationMessage('本地化内容已导入当前 KV 文档。');
+				return;
+			}
+			case 'saveColumnOptions':
 				await this.handleSaveColumnOptions(document, {
 					column: command.columnKey, folderType: this.detectFolderType(document.uri), options: command.options,
 					multiple: command.multiple, separator: command.separator, scope: command.scope,
@@ -927,11 +971,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					columnKey: command.columnKey, label: command.label, description: command.description, scope: command.scope,
 				});
 				return;			case 'saveCellFormula': {
-				if (rowIndex(command.rowId) < 0 || command.columnKey === 'id') throw new Error('公式目标单元格无效。');
+				if (rowIndex(command.rowId) < 0 || command.columnKey === 'id') {throw new Error('公式目标单元格无效。');}
 				if (command.formula) {
 					this.assertV2FormulaCycles(payload, [{ rowId: command.rowId, columnKey: command.columnKey, formula: command.formula }]);
 					const validation = validateSafeFormula(command.formula);
-					if (!validation.compatible) throw new Error(validation.error ?? '公式不属于安全语法子集。');
+					if (!validation.compatible) {throw new Error(validation.error ?? '公式不属于安全语法子集。');}
 					const formulaChanges = [{ rowId: command.rowId, columnKey: command.columnKey, formula: command.formula }];
 					await this.applyV2Replacements(document, this.buildV2CellReplacements(document, payload, documentModel(), [], formulaChanges));
 				}
@@ -941,7 +985,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			case 'saveColumnFormula': {
 				if (command.formula) {
 					const validation = validateSafeFormula(command.formula);
-					if (!validation.compatible) throw new Error(validation.error ?? '公式不属于安全语法子集。');
+					if (!validation.compatible) {throw new Error(validation.error ?? '公式不属于安全语法子集。');}
 					const cellFormulaTargets = new Set(payload.formulas.map((entry) => {
 						const rowId = entry.rowId ?? payload.rows[entry.rowIndex]?.id;
 						return rowId ? `${rowId}::${entry.column}` : '';
@@ -1078,21 +1122,21 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 	private readColumnLocalizationConfig(): Record<string, { label?: string; description?: string; }> {
 		try {
 			const configPath = this.context.asAbsolutePath(path.join('resource', 'kv_editor_field_localization.json'));
-			if (!this.pathExists(configPath)) return {};
+			if (!this.pathExists(configPath)) {return {};}
 			const raw = fs.readFileSync(configPath, 'utf8');
 			const parsed = JSON.parse(raw) as Record<string, unknown> | undefined;
-			if (!parsed || typeof parsed !== 'object') return {};
+			if (!parsed || typeof parsed !== 'object') {return {};}
 			const result: Record<string, { label?: string; description?: string; }> = {};
 			for (const [key, value] of Object.entries(parsed)) {
-				if (!key || typeof key !== 'string') continue;
-				if (!value || typeof value !== 'object') continue;
+				if (!key || typeof key !== 'string') {continue;}
+				if (!value || typeof value !== 'object') {continue;}
 				const entry = value as Record<string, unknown>;
 				const label = typeof entry.label === 'string' && entry.label.length ? entry.label : undefined;
 				const description = typeof entry.description === 'string' && entry.description.length ? entry.description : undefined;
-				if (label === undefined && description === undefined) continue;
+				if (label === undefined && description === undefined) {continue;}
 				result[key] = {};
-				if (label !== undefined) result[key].label = label;
-				if (description !== undefined) result[key].description = description;
+				if (label !== undefined) {result[key].label = label;}
+				if (description !== undefined) {result[key].description = description;}
 			}
 			return result;
 		} catch (error) {
@@ -1622,7 +1666,6 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			globalOrder.splice(insertIndex, 0, key);
 		}
 	}
-
 	private parseKv(text: string): ParsedKvTable {
 		try {
 			const kvObject = readKeyValue2(text ?? '');
@@ -1634,7 +1677,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 			const columnOrder: string[] = [];
 			const rows = Object.entries(block)
-				.filter(([_, value]) => value && typeof value === 'object')
+				.filter(([, value]) => value && typeof value === 'object')
 				.map(([id, value]) => {
 					const entry = value as Record<string, unknown>;
 					const rowValues: Record<string, string> = {};
@@ -1916,26 +1959,26 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 	private getLocalizationFileCandidates(): string[] {
 		const language = (vscode.env.language ?? '').toLowerCase();
-		const mapping: Record<string, string> = {
-			'zh-cn': 'addon_schinese.txt',
-			'zh-hans': 'addon_schinese.txt',
-			'zh': 'addon_schinese.txt',
-			'en': 'addon_english.txt',
-			'en-us': 'addon_english.txt',
-			'en-gb': 'addon_english.txt',
-			'ru': 'addon_russian.txt',
-			'ru-ru': 'addon_russian.txt',
-		};
+		const mapping = new Map<string, string>([
+			['zh-cn', 'addon_schinese.txt'],
+			['zh-hans', 'addon_schinese.txt'],
+			['zh', 'addon_schinese.txt'],
+			['en', 'addon_english.txt'],
+			['en-us', 'addon_english.txt'],
+			['en-gb', 'addon_english.txt'],
+			['ru', 'addon_russian.txt'],
+			['ru-ru', 'addon_russian.txt'],
+		]);
 		const candidates: string[] = [];
 		const pushUnique = (value: string | undefined) => {
 			if (value && !candidates.includes(value)) {
 				candidates.push(value);
 			}
 		};
-		pushUnique(mapping[language]);
+		pushUnique(mapping.get(language));
 		const baseLanguage = language.split('-')[0];
 		if (baseLanguage && baseLanguage !== language) {
-			pushUnique(mapping[baseLanguage]);
+			pushUnique(mapping.get(baseLanguage));
 		}
 		pushUnique('addon_schinese.txt');
 		pushUnique('addon_english.txt');
@@ -2917,20 +2960,20 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 	}
 
-	private async handleOpenLocalizationFile(payload: { path?: string; } | undefined): Promise<void> {
+	private async handleOpenLocalizationFile(document: vscode.TextDocument, payload: { path?: string; } | undefined): Promise<void> {
 		try {
 			const rawPath = typeof payload?.path === 'string' ? payload.path.trim() : '';
 			if (!rawPath) {
 				void vscode.window.showWarningMessage('未配置本地化文件路径。');
 				return;
 			}
-			const filePath = this.resolveRelativeDocumentKey(rawPath) ?? rawPath;
+			const filePath = this.resolveLocalizationFilePath(document, { filePath: rawPath });
 			if (!fs.existsSync(filePath)) {
 				void vscode.window.showErrorMessage(`本地化文件不存在：${rawPath}`);
 				return;
 			}
-			const document = await vscode.workspace.openTextDocument(vscode.Uri.file(filePath));
-			await vscode.window.showTextDocument(document, { preview: false });
+			const localizationDocument = await vscode.workspace.openTextDocument(vscode.Uri.file(filePath));
+			await vscode.window.showTextDocument(localizationDocument, { preview: false });
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			void vscode.window.showErrorMessage(`无法打开本地化文件：${message}`);
@@ -3109,11 +3152,21 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 		} catch (error) {
 			console.error('Error saving localization settings:', error);
-			if (!exportImmediately) throw error;
+			if (!exportImmediately) {throw error;}
 			vscode.window.showErrorMessage(`保存本地化设置失败: ${error}`);
 		}
 	}
 
+	private resolveLocalizationFilePath(document: vscode.TextDocument, settings: { filePath?: unknown }): string {
+		const rawPath = typeof settings.filePath === 'string' ? settings.filePath.trim() : '';
+		if (!rawPath) {throw new Error('未配置本地化文件路径。');}
+		const macroPath = this.resolveRelativeDocumentKey(rawPath);
+		if (macroPath) {return path.normalize(macroPath);}
+		if (path.isAbsolute(rawPath)) {return path.normalize(rawPath);}
+		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+		const basePath = workspaceFolder?.uri.fsPath ?? path.dirname(document.uri.fsPath);
+		return path.resolve(basePath, rawPath);
+	}
 	private async exportLocalizationFile(document: vscode.TextDocument, settings: any, silent = false): Promise<void> {
 		try {
 			const language = settings.language || 'schinese';
@@ -3123,26 +3176,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 构建实际的文件路径
-			const contentDir = getContentDir();
-			if (!contentDir) {
-				throw new Error('未找到content目录');
-			}
-
-			// 从document.uri获取KV文件的相对路径
-			const kvFilePath = document.uri.fsPath;
-			const normalizedPath = kvFilePath.replace(/\\/g, '/');
-			const npcMatch = normalizedPath.match(/\/scripts\/npc\/(.+)$/i);
-			if (!npcMatch || !npcMatch[1]) {
-				throw new Error('无法解析KV文件路径');
-			}
-
-			let kvRelativePath = npcMatch[1];
-			// 移除文件扩展名
-			kvRelativePath = kvRelativePath.replace(/\.(txt|kv)$/, '');
-
-			// 构建VDF文件路径
-			const vdfPath = path.join(contentDir, 'localization', language, kvRelativePath + '.vdf');
+			const vdfPath = this.resolveLocalizationFilePath(document, settings);
 
 			// 解析KV文件
 			const kvText = document.getText();
@@ -3254,39 +3288,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return;
 			}
 
-			// 构建实际的文件路径
-			const contentDir = getContentDir();
-			if (!contentDir) {
-				throw new Error('未找到content目录');
-			}
+			const vdfPath = this.resolveLocalizationFilePath(document, settings);
 
-			// 从document.uri获取KV文件的相对路径
-			const kvFilePath = document.uri.fsPath;
-			const normalizedPath = kvFilePath.replace(/\\/g, '/');
-			const npcMatch = normalizedPath.match(/\/scripts\/npc\/(.+)$/i);
-			if (!npcMatch || !npcMatch[1]) {
-				throw new Error('无法解析KV文件路径');
-			}
-
-			let kvRelativePath = npcMatch[1];
-			// 移除文件扩展名
-			kvRelativePath = kvRelativePath.replace(/\.(txt|kv)$/, '');
-
-			// 构建VDF文件路径
-			const vdfPath = path.join(contentDir, 'localization', language, kvRelativePath + '.vdf');
-
-			// 检查VDF文件是否存在
-			if (!fs.existsSync(vdfPath)) {
-				console.warn(`本地化文件不存在: ${vdfPath}`);
-				return;
-			}
-
-			// 读取并解析VDF文件
+			if (!fs.existsSync(vdfPath)) {throw new Error(`本地化文件不存在：${vdfPath}`);}
 			const tokens = this.loadLocalizationTokens(vdfPath);
-			if (!tokens) {
-				console.warn('无法加载本地化tokens');
-				return;
-			}
+			if (!tokens) {throw new Error('无法读取本地化文件中的 Tokens。');}
 
 			// 解析KV文件
 			const kvText = document.getText();
@@ -3361,22 +3367,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				return 0;
 			}
 
-			// 构建VDF文件路径
-			const contentDir = getContentDir();
-			if (!contentDir) {
-				return 0;
-			}
-
-			const kvFilePath = document.uri.fsPath;
-			const normalizedPath = kvFilePath.replace(/\\/g, '/');
-			const npcMatch = normalizedPath.match(/\/scripts\/npc\/(.+)$/i);
-			if (!npcMatch || !npcMatch[1]) {
-				return 0;
-			}
-
-			let kvRelativePath = npcMatch[1];
-			kvRelativePath = kvRelativePath.replace(/\.(txt|kv)$/, '');
-			const vdfPath = path.join(contentDir, 'localization', language, kvRelativePath + '.vdf');
+			const vdfPath = this.resolveLocalizationFilePath(document, settings);
 
 			if (!fs.existsSync(vdfPath)) {
 				return 0;
@@ -4784,11 +4775,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const existingEntry = files[documentKey] ? { ...files[documentKey] } : {};
 			const descriptions = existingEntry.columnDescriptions ? { ...existingEntry.columnDescriptions } : {};
 			if (label === undefined && description === undefined) {
-				if (descriptions[columnKey]) delete descriptions[columnKey];
+				if (descriptions[columnKey]) {delete descriptions[columnKey];}
 			} else {
 				descriptions[columnKey] = {};
-				if (label !== undefined) descriptions[columnKey].label = label;
-				if (description !== undefined) descriptions[columnKey].description = description;
+				if (label !== undefined) {descriptions[columnKey].label = label;}
+				if (description !== undefined) {descriptions[columnKey].description = description;}
 			}
 			existingEntry.columnDescriptions = Object.keys(descriptions).length ? descriptions : undefined;
 			if (Object.keys(existingEntry).filter(k => existingEntry[k as keyof KvEditorFileColumnOptions] !== undefined).length) {
@@ -4803,11 +4794,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 			const overrides = this.copyColumnOptionOverrides(this.getColumnOptionOverrides(workspaceFolder));
 			const global = overrides.columnDescriptions ? { ...overrides.columnDescriptions } : {};
 			if (label === undefined && description === undefined) {
-				if (global[columnKey]) delete global[columnKey];
+				if (global[columnKey]) {delete global[columnKey];}
 			} else {
 				global[columnKey] = {};
-				if (label !== undefined) global[columnKey].label = label;
-				if (description !== undefined) global[columnKey].description = description;
+				if (label !== undefined) {global[columnKey].label = label;}
+				if (description !== undefined) {global[columnKey].description = description;}
 			}
 			overrides.columnDescriptions = Object.keys(global).length ? global : undefined;
 			this.writeColumnOptionOverrides(workspaceFolder, overrides);
@@ -4949,10 +4940,10 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 		if (this.pathExists(targetPath)) {
 			try {
 				const parsed = JSON.parse(fs.readFileSync(targetPath, 'utf8')) as unknown;
-				if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) existing = { ...(parsed as Record<string, unknown>) };
+				if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {existing = { ...(parsed as Record<string, unknown>) };}
 			} catch { /* The normal write path will replace malformed JSON. */ }
 		}
-		for (const key of knownKeys) delete existing[key];
+		for (const key of knownKeys) {delete existing[key];}
 		const generated = JSON.parse(serialized) as Record<string, unknown>;
 		return JSON.stringify({ ...existing, ...generated, schemaVersion: 2 }, null, 2);
 	}
@@ -6267,9 +6258,9 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 
 	private syncStoredFormulasForRowChange(document: vscode.TextDocument, previousRowIds: string[], nextRowIds: string[]): void {
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-		if (!workspaceFolder) return;
+		if (!workspaceFolder) {return;}
 		const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
-		if (!documentKey) return;
+		if (!documentKey) {return;}
 		const overrides = this.copyColumnOptionOverrides(this.getColumnOptionOverrides(workspaceFolder));
 		let changed = false;
 		const rewrite = (formula: string) => rewriteFormulaRowReferences(formula, previousRowIds, nextRowIds);
@@ -6291,11 +6282,11 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 					}
 					if (!nextRowKey) { changed = true; continue; }
 					const rewritten = Object.fromEntries(Object.entries(columnMap).map(([columnKey, formula]) => [columnKey, rewrite(formula)]));
-					if (nextRowKey !== rowKey || Object.entries(columnMap).some(([columnKey, formula]) => rewritten[columnKey] !== formula)) changed = true;
+					if (nextRowKey !== rowKey || Object.entries(columnMap).some(([columnKey, formula]) => rewritten[columnKey] !== formula)) {changed = true;}
 					nextFormulas[nextRowKey] = { ...(nextFormulas[nextRowKey] ?? {}), ...rewritten };
 				}
-				if (Object.keys(nextFormulas).length) overrides.formulas[resolved.key] = nextFormulas;
-				else delete overrides.formulas[resolved.key];
+				if (Object.keys(nextFormulas).length) {overrides.formulas[resolved.key] = nextFormulas;}
+				else {delete overrides.formulas[resolved.key];}
 			}
 		}
 
@@ -6308,7 +6299,7 @@ export class kvEditorProvider implements vscode.CustomTextEditorProvider {
 				}
 			}
 		}
-		if (changed) this.writeColumnOptionOverrides(workspaceFolder, overrides);
+		if (changed) {this.writeColumnOptionOverrides(workspaceFolder, overrides);}
 	}
 
 	private shiftFormulaRowIndices(document: vscode.TextDocument, insertionIndex: number, delta: number): void {

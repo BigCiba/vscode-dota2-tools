@@ -25,6 +25,15 @@ suite('Lossless KV column operations', () => {
 		assert.ok(result.indexOf('"B"') < result.indexOf('"A"'));
 		assert.ok(result.includes('// A'));
 	});
+
+	test('inserts a missing edited field at the shared column position', () => {
+		const orderedSource = '"Root"\n{\n\t"row"\n\t{\n\t\t"A"\t"1"\n\t\t"B"\t"2"\n\t}\n}\n';
+		const model = KvDocumentModel.parse(orderedSource);
+		const result = apply(orderedSource, [model.editScalarOrdered('row', 'Cooldown', '5', ['A', 'Cooldown', 'B'])]);
+		assert.ok(result.indexOf('"A"') < result.indexOf('"Cooldown"'));
+		assert.ok(result.indexOf('"Cooldown"') < result.indexOf('"B"'));
+		assert.ok(result.includes('"Cooldown"\t"5"'));
+	});
 });
 
 function apply(source: string, replacements: KvTextReplacement[]): string {

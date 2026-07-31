@@ -4,6 +4,7 @@ export type KvEditorFolderType = 'ability' | 'item' | 'unit' | 'custom';
 export interface KvEditorV2ColumnOption { value: string; label: string; description?: string; color?: string; }
 export interface KvEditorV2ColumnOptions { options: KvEditorV2ColumnOption[]; multiple: boolean; separator: string; }
 export interface KvEditorV2TextureIcon { textureName: string; label: string; relativePath: string; searchKey: string; source: 'extension' | 'addon'; kind: 'spell' | 'item'; hero?: string; uri: string; }
+export interface KvEditorV2TextureHero { id: string; name: string; searchTerm: string; uri: string; attribute?: string; }
 export interface KvEditorV2AbilityValueModifier { key: string; value: string; }
 export interface KvEditorV2AbilityValue { key: string; originalKey?: string; value: string; type: 'object' | 'scalar'; modifiers: KvEditorV2AbilityValueModifier[]; }
 export interface KvEditorV2Row { rowId: string; values: Record<string, string>; abilityValues?: KvEditorV2AbilityValue[]; localization?: { name?: string; description?: string }; rawObject?: Record<string, unknown>; formulas?: Record<string, string>; }
@@ -37,7 +38,8 @@ export type KvEditorV2Command =
 	| { type: 'saveColumnFormula'; columnKey: string; formula?: string }
 	| { type: 'saveColumnDescription'; columnKey: string; label?: string; description?: string; scope: 'global' | 'file' }
 	| { type: 'saveColumnOptions'; columnKey: string; options: KvEditorV2ColumnOption[]; multiple: boolean; separator: string; scope: 'global' | 'file' }
-	| { type: 'saveLocalizationSettings'; settings: { enabled: boolean; language: string; filePath: string; autoUpdateOnOpen: boolean; mappings: Array<{ columnName: string; rule: string }> } };
+	| { type: 'saveLocalizationSettings'; settings: { enabled: boolean; language: string; filePath: string; autoUpdateOnOpen: boolean; mappings: Array<{ columnName: string; rule: string }> } }
+	| { type: 'runLocalizationAction'; action: 'import' | 'export' };
 export interface KvEditorV2CommandEnvelope {
 	protocolVersion: typeof KV_EDITOR_PROTOCOL_VERSION; type: 'executeCommand'; requestId: string;
 	documentUri: string; baseVersion: number; command: KvEditorV2Command;
@@ -59,7 +61,7 @@ export type KvEditorV2HostMessage =
 	| { protocolVersion: typeof KV_EDITOR_PROTOCOL_VERSION; type: 'commandResult'; requestId: string; documentVersion: number; snapshot: KvEditorV2Snapshot }
 	| { protocolVersion: typeof KV_EDITOR_PROTOCOL_VERSION; type: 'commandRejected'; requestId: string; reason: 'stale' | 'invalid' | 'failed'; message: string; snapshot: KvEditorV2Snapshot }
 	| { protocolVersion: typeof KV_EDITOR_PROTOCOL_VERSION; type: 'externalChange'; message: string; documentVersion: number }
-	| { protocolVersion: typeof KV_EDITOR_PROTOCOL_VERSION; type: 'resourceResult'; requestId: string; resource: 'textureMenu'; payload: { defaultKind: 'spell' | 'item'; icons: KvEditorV2TextureIcon[] } }
+	| { protocolVersion: typeof KV_EDITOR_PROTOCOL_VERSION; type: 'resourceResult'; requestId: string; resource: 'textureMenu'; payload: { defaultKind: 'spell' | 'item'; icons: KvEditorV2TextureIcon[]; heroFilters: KvEditorV2TextureHero[]; error?: string } }
 	| { protocolVersion: typeof KV_EDITOR_PROTOCOL_VERSION; type: 'notification'; level: 'info' | 'warning' | 'error'; message: string };
 export function isKvEditorV2WebviewMessage(value: unknown): value is KvEditorV2WebviewMessage {
 	if (!value || typeof value !== 'object') {

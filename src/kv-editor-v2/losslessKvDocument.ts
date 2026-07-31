@@ -40,14 +40,31 @@ export class KvDocumentModel {
 		return this.insertScalarAtEnd(row, columnKey, value);
 	}
 
+	editScalarOrdered(rowId: string, columnKey: string, value: string, columnOrder: string[]): KvTextReplacement {
+		const row = this.requireRow(rowId);
+		const field = row.fields.get(columnKey);
+		if (field) {return replaceToken(field.valueToken, value);}
+		const columnIndex = columnOrder.indexOf(columnKey);
+		if (columnIndex < 0) {return this.insertScalarAtEnd(row, columnKey, value);}
+		for (let index = columnIndex + 1; index < columnOrder.length; index++) {
+			const anchor = row.fields.get(columnOrder[index]);
+			if (anchor) {return this.insertScalarBeside(row, columnKey, value, anchor, 'before');}
+		}
+		for (let index = columnIndex - 1; index >= 0; index--) {
+			const anchor = row.fields.get(columnOrder[index]);
+			if (anchor) {return this.insertScalarBeside(row, columnKey, value, anchor, 'after');}
+		}
+		return this.insertScalarAtEnd(row, columnKey, value);
+	}
+
+	hasScalar(rowId: string, columnKey: string): boolean { return this.requireRow(rowId).fields.has(columnKey); }
+
 	insertScalarRelative(rowId: string, columnKey: string, value: string, anchorColumnKey: string, position: 'before' | 'after'): KvTextReplacement {
 		const row = this.requireRow(rowId);
 		if (row.fields.has(columnKey)) {throw new Error(`字段 “${columnKey}” 已存在于行 “${rowId}”。`);}
 		const anchor = row.fields.get(anchorColumnKey);
 		if (!anchor) {return this.insertScalarAtEnd(row, columnKey, value);}
-		const indentation = this.source.slice(lineStart(this.source, anchor.keyToken.start), anchor.keyToken.start);
-		const text = `${indentation}"${escapeKv(columnKey)}"\t"${escapeKv(value)}"${this.eol}`;
-		return { start: position === 'before' ? anchor.start : anchor.end, end: position === 'before' ? anchor.start : anchor.end, text };
+		return this.insertScalarBeside(row, columnKey, value, anchor, position);
 	}
 	insertRow(anchorRowId: string, position: 'before' | 'after', rowId: string, values: Record<string, string>): KvTextReplacement {
 		if (this.rows.has(rowId)) {throw new Error(`行 ID “${rowId}” 已存在。`);}
@@ -144,6 +161,13 @@ export class KvDocumentModel {
 			end: closeLineStart,
 			text: `${closeIndent}\t"${escapeKv(columnKey)}"\t"${escapeKv(value)}"${this.eol}`,
 		};
+	}
+
+	private insertScalarBeside(row: KvRowRange, columnKey: string, value: string, anchor: KvFieldRange, position: 'before' | 'after'): KvTextReplacement {
+		const indentation = this.source.slice(lineStart(this.source, anchor.keyToken.start), anchor.keyToken.start);
+		const text = `${indentation}"${escapeKv(columnKey)}"\t"${escapeKv(value)}"${this.eol}`;
+		const insertion = position === 'before' ? anchor.start : anchor.end;
+		return { start: insertion, end: insertion, text };
 	}
 
 	private requireRow(rowId: string): KvRowRange {

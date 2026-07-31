@@ -13,7 +13,7 @@ import { addonInfoInit } from './module/addonInfo';
 import { apiNoteInit } from './module/apiNote';
 import { cssCompletionInit, jsCompletionInit, luaCompletionInit } from './module/completion';
 import { errorLogsInit } from './module/errorLogs';
-import { kvEditorInit } from './module/kvEditor';
+import { kvEditorCoreInit, kvEditorInit } from './module/kvEditor';
 import { sheetCloudInit } from './module/sheet_cloud';
 import { getStatusBarItem, refreshStatusBarMessage, showStatusBarMessage } from './module/statusBar';
 import { translateInit } from './module/translate';
@@ -83,6 +83,10 @@ let moduleListConfig: ModuleListConfig | undefined = vscode.workspace.getConfigu
  * @param context 
  */
 export async function init(context: vscode.ExtensionContext) {
+	// KvEditor path classification depends on the game/content roots; resolve them before restored custom editors request their first snapshot.
+	await addonInfoInit(context);
+	kvEditorCoreInit(context);
+
 	// 监听配置变更
 	if (eventID === undefined) {
 		eventID = EventManager.listenToEvent<vscode.ConfigurationChangeEvent>(EventType.EVENT_ON_DID_CHANGE_CONFIGURATION, async (event) => {
