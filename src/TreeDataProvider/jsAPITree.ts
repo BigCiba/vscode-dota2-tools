@@ -1,194 +1,132 @@
-import * as vscode from 'vscode';
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as fs from 'fs';
 import * as path from 'path';
-import { getWebviewContent } from '../utils/getWebViewContent';
+import * as vscode from 'vscode';
 import { showStatusBarMessage } from '../module/statusBar';
+import { getDotaApiNoteClass } from '../module/apiNote';
+import { createEntryId, createGroupId, getApiBrowserPanel } from '../webview/ApiBrowserPanel';
 
-// 类型
-enum APIType {
-	class = 'class',
-	function = 'function',
-	enum = 'enum',
-	enumType = 'enum_type',
-}
+enum APIType { class = 'class', function = 'function', enum = 'enum', enumType = 'enum_type' }
+
+type JsApiValue = { Function?: string; Enumerator?: string; Signature?: string; Description?: string; Value?: string; };
+type JsApiData = Record<string, Record<string, JsApiValue>>;
 
 export class JsApiTreeProvider implements vscode.TreeDataProvider<NodeItem> {
-	apiTreeData: any = {};
-	filteredApiTreeData: any = undefined;
-	jsAPIBrowserView: vscode.WebviewPanel | undefined = undefined;
+	apiTreeData: JsApiData;
+	filteredApiTreeData: JsApiData | undefined;
 	public collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-	private _onDidChangeTreeData: vscode.EventEmitter<NodeItem | undefined> = new vscode.EventEmitter<NodeItem | undefined>();
-	readonly onDidChangeTreeData: vscode.Event<NodeItem | undefined> = this._onDidChangeTreeData.event;
+	private readonly _onDidChangeTreeData = new vscode.EventEmitter<NodeItem | undefined>();
+	readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
 	constructor(private context: vscode.ExtensionContext) {
 		this.apiTreeData = JSON.parse(fs.readFileSync(path.join(context.extensionPath, 'resource', 'cl_panorama_script_help_2.json'), 'utf-8'));
-		// 复制
-		vscode.commands.registerCommand("dota2tools.dota2jsapi.copy", async (data) => {
-			vscode.env.clipboard.writeText(data.label);
-			showStatusBarMessage('复制到剪切板：' + data.label);
+		const apiBrowser = getApiBrowserPanel(context, getDotaApiNoteClass());
+		const register = (command: string, callback: (...args: any[]) => unknown) => {
+			context.subscriptions.push(vscode.commands.registerCommand(command, callback));
+		};
+
+		register('dota2tools.dota2jsapi.copy', async (data) => {
+			await vscode.env.clipboard.writeText(data.label);
+			showStatusBarMessage(`复制到剪切板：${data.label}`);
 		});
-		vscode.commands.registerCommand('dota2tools.dota2jsapi.list', (nodeItem: NodeItem) => {
-			if (nodeItem.itemType === ItemType.class) {
-				vscode.commands.executeCommand('dota2tools.js_api_browser', this.apiTreeData[nodeItem.label], APIType.class, nodeItem.label);
-			}
+		register('dota2tools.dota2jsapi.list', async (nodeItem: NodeItem) => {
+			await apiBrowser.open({ source: 'javascript', groupId: createGroupId('javascript', this.getGroupKind(nodeItem.label), nodeItem.label) });
 		});
-		// 搜索
-		vscode.commands.registerCommand("dota2tools.dota2jsapi.filter", async () => {
-			vscode.window.showInputBox({ prompt: "输入过滤词搜索API" }).then((msg) => {
-				if (msg !== undefined) {
-					this.filteredApiTreeData = {};
-					for (const className in this.apiTreeData) {
-						const funcList = this.apiTreeData[className];
-						if (className.search(new RegExp(msg, 'i')) !== -1) {
-							this.filteredApiTreeData[className] = funcList;
-						} else {
-							for (const funcName in funcList) {
-								const funcInfo = funcList[funcName];
-								if (funcName.search(new RegExp(msg, 'i')) !== -1) {
-									if (this.filteredApiTreeData[className] === undefined) {
-										this.filteredApiTreeData[className] = {};
-									}
-									this.filteredApiTreeData[className][funcName] = funcInfo;
-								}
-							}
-						}
-					}
-					this._onDidChangeTreeData.fire(undefined);
-				}
-			});
+		register('dota2tools.dota2jsapi.filter', async () => {
+			const query = await vscode.window.showInputBox({ prompt: '输入过滤词搜索 API' });
+			if (query !== undefined) {apiBrowser.runCatalogAction('javascript', 'setQuery', query);}
 		});
-		// 清除搜索
-		vscode.commands.registerCommand("dota2tools.dota2jsapi.clearfilter", async () => {
-			this.filteredApiTreeData = undefined;
-			this._onDidChangeTreeData.fire(undefined);
+		register('dota2tools.dota2jsapi.clearfilter', () => {
+			apiBrowser.runCatalogAction('javascript', 'setQuery', '');
 		});
-		// 展开
-		vscode.commands.registerCommand("dota2tools.dota2jsapi.expand", async () => {
+		register('dota2tools.dota2jsapi.expand', () => {
 			this.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
-			this.rebuild();
-			context.workspaceState.update('js-expanded', true);
-			vscode.commands.executeCommand('setContext', 'dota2tools-js-expanded', context.workspaceState.get('js-expanded', true));
-		});
-		// 折叠
-		vscode.commands.registerCommand("dota2tools.dota2jsapi.collapse", async () => {
-			this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-			this.rebuild();
-			context.workspaceState.update('js-expanded', false);
-			vscode.commands.executeCommand('setContext', 'dota2tools-js-expanded', context.workspaceState.get('js-expanded', false));
-		});
-		// 复制
-		vscode.commands.registerCommand("dota2tools.js_api_browser.copy", async (funcName) => {
-			vscode.env.clipboard.writeText(funcName);
-			showStatusBarMessage('复制到剪切板：' + funcName);
-		});
-		// JS API 相关
-		vscode.commands.registerCommand("dota2tools.js_api_browser", async (funInfo, infoType: APIType, name) => {
-			if (this.jsAPIBrowserView === undefined) {
-				this.jsAPIBrowserView = vscode.window.createWebviewPanel(
-					'JSAPIBrowser', // viewType
-					"JS API Browser", // 视图标题
-					vscode.ViewColumn.One, // 显示在编辑器的哪个部位
-					{
-						enableScripts: true, // 启用JS，默认禁用
-						retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
-						enableFindWidget: true
-					}
-				);
-				this.jsAPIBrowserView.onDidDispose(() => {
-					this.jsAPIBrowserView = undefined;
-				});
-			}
-			if (this.jsAPIBrowserView.active === false) {
-				this.jsAPIBrowserView.reveal(vscode.ViewColumn.One);
-			}
-			this.jsAPIBrowserView.webview.postMessage({
-				type: infoType,
-				data: funInfo,
-				name: name
-			});
-			this.jsAPIBrowserView.webview.html = await getWebviewContent(this.jsAPIBrowserView.webview, context.extensionUri, 'jsAPIBrowser');
-			if (infoType === APIType.function) {
-				vscode.env.clipboard.writeText(funInfo.function);
-			} else if (infoType === APIType.enum) {
-				vscode.env.clipboard.writeText(funInfo.name);
-			}
-		});
-
-	}
-	refresh(): void {
-		this._onDidChangeTreeData.fire(undefined);
-	}
-	rebuild(): void {
-		let temp = this.filteredApiTreeData ? this.filteredApiTreeData : this.apiTreeData;
-		this.filteredApiTreeData = {};
-		this._onDidChangeTreeData.fire(undefined);
-		setTimeout(() => {
-			this.filteredApiTreeData = temp;
 			this._onDidChangeTreeData.fire(undefined);
-		}, 10);
+			void context.workspaceState.update('js-expanded', true);
+			void vscode.commands.executeCommand('setContext', 'dota2tools-js-expanded', true);
+		});
+		register('dota2tools.dota2jsapi.collapse', async () => {
+			this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+			await context.workspaceState.update('js-expanded', false);
+			await vscode.commands.executeCommand('setContext', 'dota2tools-js-expanded', false);
+			apiBrowser.runCatalogAction('javascript', 'collapse');
+		});
+		register('dota2tools.js_api_browser.copy', async (name) => {
+			await vscode.env.clipboard.writeText(name);
+			showStatusBarMessage(`复制到剪切板：${name}`);
+		});
+		register('dota2tools.js_api_browser', async (data: Record<string, JsApiValue> | JsApiValue, infoType: APIType, groupName?: string) => {
+			if (!groupName) {return;}
+			const groupKind = this.getGroupKind(groupName);
+			const value = data as JsApiValue;
+			const entryName = value.Function || value.Enumerator;
+			await apiBrowser.open({
+				source: 'javascript',
+				groupId: createGroupId('javascript', groupKind, groupName),
+				entryId: infoType === APIType.function && entryName
+					? createEntryId('javascript', value.Enumerator ? 'enum' : 'function', groupName, entryName)
+					: undefined,
+			});
+		});
 	}
 
-	getTreeItem(element: NodeItem): vscode.TreeItem {
-		return element;
+	private getGroupKind(groupName: string): 'class' | 'enum' {
+		const first = Object.values(this.apiTreeData[groupName] ?? {})[0];
+		return first?.Enumerator && !first.Function ? 'enum' : 'class';
 	}
+
+	private applyFilter(query: string): void {
+		const words = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+		const matches = (value: string) => words.every((word) => value.toLocaleLowerCase().includes(word));
+		this.filteredApiTreeData = {};
+		for (const [groupName, entries] of Object.entries(this.apiTreeData)) {
+			if (matches(groupName)) {
+				this.filteredApiTreeData[groupName] = entries;
+				continue;
+			}
+			const filteredEntries = Object.fromEntries(Object.entries(entries).filter(([entryName, entry]) => matches(`${entryName} ${entry.Signature ?? ''} ${entry.Description ?? ''}`)));
+			if (Object.keys(filteredEntries).length > 0) {this.filteredApiTreeData[groupName] = filteredEntries;}
+		}
+		this._onDidChangeTreeData.fire(undefined);
+	}
+
+	refresh(): void { this._onDidChangeTreeData.fire(undefined); }
+	rebuild(): void { this._onDidChangeTreeData.fire(undefined); }
+	getTreeItem(element: NodeItem): vscode.TreeItem { return element; }
 
 	getChildren(element?: NodeItem): Thenable<NodeItem[]> {
-		let apiTreeData = this.filteredApiTreeData ? this.filteredApiTreeData : this.apiTreeData;
-		if (element) {
-			if (element.itemType === ItemType.class) {
-				let funcItems = [];
-				for (const funcName in apiTreeData[element.label]) {
-					let funcData = apiTreeData[element.label][funcName];
-					funcItems.push(new NodeItem(funcData.Function || funcData.Enumerator, vscode.TreeItemCollapsibleState.None, ItemType.function, funcData.Description, undefined, {
-						command: 'dota2tools.js_api_browser.copy',
-						title: '',
-						arguments: [funcName]
-					}));
-				}
-				return Promise.resolve(funcItems);
-			}
-			return Promise.resolve([]);
-		} else {
-			let classItems = [];
-			for (const className in apiTreeData) {
-				classItems.push(new NodeItem(className, this.collapsibleState, ItemType.class));
-			}
-			return Promise.resolve(classItems);
+		const data = this.filteredApiTreeData ?? this.apiTreeData;
+		if (!element) {
+			return Promise.resolve(Object.keys(data).map((groupName) => new NodeItem(groupName, this.collapsibleState, ItemType.class)));
 		}
+		if (element.itemType !== ItemType.class) {return Promise.resolve([]);}
+		return Promise.resolve(Object.values(data[element.label] ?? {}).map((entry) => {
+			const name = entry.Function || entry.Enumerator || '';
+			return new NodeItem(
+				name,
+				vscode.TreeItemCollapsibleState.None,
+				ItemType.function,
+				entry.Description,
+				entry.Signature,
+				{ command: 'dota2tools.js_api_browser', title: '', arguments: [entry, APIType.function, element.label] },
+			);
+		}));
 	}
 }
-// 类型
-enum ItemType {
-	class = 0,
-	function = 1,
-	constants = 2,
-	enumType = 3,
-	enum = 4,
-}
+
+enum ItemType { class, function, constants, enumType, enum }
+
 export class NodeItem extends vscode.TreeItem {
 	constructor(
-		public readonly label: string,	// 用来保存名字
-		public collapsibleState: vscode.TreeItemCollapsibleState,	// 折叠状态
-		public readonly itemType: ItemType,	// 类型
-		public readonly description?: string,	// 描述
-		public readonly tooltip?: string,	// tooltip
-		public readonly command?: vscode.Command	// 注册指令
+		public readonly label: string,
+		public collapsibleState: vscode.TreeItemCollapsibleState,
+		public readonly itemType: ItemType,
+		public readonly description?: string,
+		public readonly tooltip?: string,
+		public readonly command?: vscode.Command,
 	) {
 		super(label, collapsibleState);
-		if (this.itemType === ItemType.function) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'function.svg');
-			this.contextValue = 'NodeItem';
-		} else if (this.itemType === ItemType.class) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'class.svg');
-			this.contextValue = 'Class';
-		} else if (this.itemType === ItemType.enumType) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
-			this.contextValue = 'Class';
-		} else if (this.itemType === ItemType.constants) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum_type.svg');
-		} else if (this.itemType === ItemType.enum) {
-			this.iconPath = path.join(__filename, '..', '..', 'images', 'enum.svg');
-			this.contextValue = 'NodeItem';
-		}
+		this.iconPath = path.join(__filename, '..', '..', 'images', itemType === ItemType.function ? 'function.svg' : 'class.svg');
+		this.contextValue = itemType === ItemType.function ? 'NodeItem' : 'Class';
 	}
 }

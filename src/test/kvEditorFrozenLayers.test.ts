@@ -30,4 +30,27 @@ suite('KvEditor frozen layer contract', () => {
 		assert.match(css, /\.row-grid:not\(\.selected\) \.cell:hover\s*\{[^}]*linear-gradient[^}]*var\(--kv-canvas\)/u);
 		assert.match(css, /\.header-cell\.selected\s*\{[^}]*linear-gradient[^}]*var\(--kv-surface-3\)/u);
 	});
+
+	test('composites every sticky row-number state over the opaque canvas', () => {
+		assert.match(css, /\.row-number\s*\{[^}]*background:\s*var\(--kv-canvas\)/u);
+		assert.match(css, /\.row-number:hover\s*\{[^}]*linear-gradient[^}]*var\(--kv-canvas\)/u);
+		assert.match(css, /\.row-grid\.selected\s*>\s*\.row-number\s*\{[^}]*linear-gradient[^}]*var\(--kv-canvas\)/u);
+		assert.match(css, /\.row-grid\.selected\s*>\s*\.row-number:hover\s*\{[^}]*linear-gradient[^}]*var\(--kv-canvas\)/u);
+	});
+
+	test('keeps range decorations clipped inside cells so frozen values cannot bleed into later columns', () => {
+		assert.doesNotMatch(css, /\.cell\.range-handle\s*\{[^}]*overflow:\s*visible/u);
+		assert.match(css, /\.fill-handle\s*\{[^}]*right:\s*1px[^}]*bottom:\s*1px/u);
+	});
+
+	test('does not let range selection reset a frozen cell from sticky positioning', () => {
+		assert.doesNotMatch(css, /\.cell\.range-selected\s*\{[^}]*position:\s*relative/u);
+		assert.match(css, /\.virtual-rows \.row-grid > \.frozen\.range-selected\s*\{[^}]*position:\s*sticky/u);
+		assert.match(css, /\.frozen\.range-selected\.editing\s*\{[^}]*z-index:\s*var\(--kv-z-frozen-active\)/u);
+	});
+
+	test('anchors an inline editor to the cell that owns it', () => {
+		assert.match(css, /\.cell-editor\s*\{[^}]*top:\s*1px[^}]*right:\s*1px[^}]*bottom:\s*1px[^}]*left:\s*1px/u);
+		assert.match(css, /\.cell\.editing\s*\{[^}]*overflow:\s*hidden/u);
+	});
 });

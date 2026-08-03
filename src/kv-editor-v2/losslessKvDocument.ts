@@ -57,6 +57,28 @@ export class KvDocumentModel {
 		return this.insertScalarAtEnd(row, columnKey, value);
 	}
 
+	/** Applies a record form as one replacement so ID and field changes share one undo step. */
+	editRecord(rowId: string, newRowId: string, edits: Array<{ columnKey: string; value: string }>, columnOrder: string[], objectBlocks: Array<{ columnKey: string; text: string }> = []): KvTextReplacement {
+		const originalRow = this.requireRow(rowId);
+		let source = this.source;
+		let currentRowId = rowId;
+		for (const edit of edits) {
+			const replacement = KvDocumentModel.parse(source).editScalarOrdered(currentRowId, edit.columnKey, edit.value, columnOrder);
+			source = applyReplacement(source, replacement);
+		}
+		for (const block of objectBlocks) {
+			const replacement = KvDocumentModel.parse(source).replaceObjectBlock(currentRowId, block.columnKey, block.text);
+			source = applyReplacement(source, replacement);
+		}
+		if (newRowId !== rowId) {
+			const replacement = KvDocumentModel.parse(source).renameRow(currentRowId, newRowId);
+			source = applyReplacement(source, replacement);
+			currentRowId = newRowId;
+		}
+		const updatedRow = KvDocumentModel.parse(source).requireRow(currentRowId);
+		return { start: originalRow.start, end: originalRow.end, text: source.slice(updatedRow.start, updatedRow.end) };
+	}
+
 	hasScalar(rowId: string, columnKey: string): boolean { return this.requireRow(rowId).fields.has(columnKey); }
 
 	insertScalarRelative(rowId: string, columnKey: string, value: string, anchorColumnKey: string, position: 'before' | 'after'): KvTextReplacement {
@@ -228,6 +250,9 @@ export class KvDocumentModel {
 
 function normalizeLineEndings(value: string, eol: string): string {
 	return value.replace(/\r?\n/gu, eol);
+}
+function applyReplacement(source: string, replacement: KvTextReplacement): string {
+	return source.slice(0, replacement.start) + replacement.text + source.slice(replacement.end);
 }
 function replaceToken(token: Token, value: string): KvTextReplacement {
 	return { start: token.start, end: token.end, text: `"${escapeKv(value)}"` };

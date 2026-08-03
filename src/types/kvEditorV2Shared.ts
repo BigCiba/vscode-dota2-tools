@@ -23,6 +23,7 @@ export interface KvEditorV2Snapshot {
 }
 export type KvEditorV2Command =
 	| { type: 'editCell'; rowId: string; columnKey: string; value: string }
+	| { type: 'editRecord'; rowId: string; newRowId: string; edits: Array<{ columnKey: string; value: string }>; abilityValues?: KvEditorV2AbilityValue[]; abilityValueDescriptions?: Record<string, string> }
 	| { type: 'bulkEdit'; edits: Array<{ rowId: string; columnKey: string; value: string }> }
 	| { type: 'fillCells'; entries: Array<{ rowId: string; columnKey: string; value?: string; formula?: string }> }
 	| { type: 'insertRows'; anchorRowId?: string; rows: KvEditorV2Row[] }

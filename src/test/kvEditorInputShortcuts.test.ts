@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { isNativeTextShortcut, type KeyboardShortcutLike } from '../kv-editor-v2/inputShortcuts';
+import { isNativeTextShortcut, resolveRowSelectionShortcut, type KeyboardShortcutLike } from '../kv-editor-v2/inputShortcuts';
 
 function shortcut(key: string, patch: Partial<KeyboardShortcutLike> = {}): KeyboardShortcutLike {
 	return { key, ctrlKey: false, metaKey: false, shiftKey: false, altKey: false, ...patch };
@@ -25,5 +25,21 @@ suite('KvEditor text input shortcuts', () => {
 		assert.strictEqual(isNativeTextShortcut(shortcut('ArrowDown')), false);
 		assert.strictEqual(isNativeTextShortcut(shortcut('p', { ctrlKey: true })), false);
 		assert.strictEqual(isNativeTextShortcut(shortcut('ArrowLeft', { altKey: true })), false);
+	});
+});
+
+suite('KvEditor row selection shortcuts', () => {
+	test('maps the standard row copy, paste, insert and delete keys', () => {
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('c', { ctrlKey: true })), 'copy');
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('v', { metaKey: true })), 'paste');
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('Insert')), 'insert');
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('Delete')), 'delete');
+	});
+
+	test('supports Windows alternate clipboard keys without stealing modified commands', () => {
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('Insert', { ctrlKey: true })), 'copy');
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('Insert', { shiftKey: true })), 'paste');
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('Delete', { shiftKey: true })), undefined);
+		assert.strictEqual(resolveRowSelectionShortcut(shortcut('c', { ctrlKey: true, altKey: true })), undefined);
 	});
 });

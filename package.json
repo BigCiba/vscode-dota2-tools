@@ -93,22 +93,12 @@
 		"views": {
 			"dota2api": [
 				{
-					"id": "dota2apiExplorer",
-					"when": "config.dota2-tools.A1.module_list.lua_api_tree",
-					"name": "Dota2 API",
-					"icon": "$(notebook)"
-				},
-				{
-					"id": "dota2JSApiExplorer",
-					"when": "config.dota2-tools.A1.module_list.js_api_tree",
-					"name": "Dota2 JS API",
-					"icon": "$(notebook)"
-				},
-				{
-					"id": "dota2CssApiExplorer",
-					"when": "config.dota2-tools.A1.module_list.css_api_tree",
-					"name": "Dota2 CSS Document",
-					"icon": "$(notebook)"
+					"id": "dota2UnifiedApiExplorer",
+					"type": "webview",
+					"when": "config.dota2-tools.A1.module_list.lua_api_tree || config.dota2-tools.A1.module_list.js_api_tree || config.dota2-tools.A1.module_list.css_api_tree",
+					"name": "API Browser",
+					"contextualTitle": "Dota 2 API",
+					"icon": "$(library)"
 				},
 				{
 					"id": "dota2PanelExplorer",
@@ -505,52 +495,52 @@
 			"view/title": [
 				{
 					"command": "dota2tools.lua_api_changelog",
-					"when": "view == dota2apiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == lua",
 					"group": "navigation@4"
 				},
 				{
 					"command": "dota2tools.dota2api.overview",
-					"when": "view == dota2apiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == lua",
 					"group": "navigation@5"
 				},
 				{
 					"command": "dota2tools.dota2api.filter",
-					"when": "view == dota2apiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == lua",
 					"group": "navigation@6"
 				},
 				{
 					"command": "dota2tools.dota2api.clearfilter",
-					"when": "view == dota2apiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == lua",
 					"group": "navigation@6"
 				},
 				{
 					"command": "dota2tools.dota2api.collapse",
-					"when": "view == dota2apiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == lua",
 					"group": "navigation@7"
 				},
 				{
 					"command": "dota2tools.dota2jsapi.filter",
-					"when": "view == dota2JSApiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == javascript",
 					"group": "navigation@6"
 				},
 				{
 					"command": "dota2tools.dota2jsapi.clearfilter",
-					"when": "view == dota2JSApiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == javascript",
 					"group": "navigation@6"
 				},
 				{
 					"command": "dota2tools.dota2jsapi.collapse",
-					"when": "view == dota2JSApiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == javascript",
 					"group": "navigation@7"
 				},
 				{
 					"command": "dota2tools.dota2cssapi.filter",
-					"when": "view == dota2CssApiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == css",
 					"group": "navigation@6"
 				},
 				{
 					"command": "dota2tools.dota2cssapi.clearfilter",
-					"when": "view == dota2CssApiExplorer",
+					"when": "view == dota2UnifiedApiExplorer && dota2tools.apiBrowser.source == css",
 					"group": "navigation@6"
 				},
 				{

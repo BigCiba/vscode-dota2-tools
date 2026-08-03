@@ -27,7 +27,7 @@
 	--kv-z-popover: 120;
 }
 * { box-sizing: border-box; }
-html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+html, body, #root { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { border: 1px solid var(--vscode-button-secondaryBackground, var(--vscode-panel-border)); border-radius: 3px; padding: 4px 9px; color: var(--vscode-button-secondaryForeground, var(--vscode-foreground)); background: var(--vscode-button-secondaryBackground, transparent); cursor: pointer; }
 button:hover { background: var(--vscode-button-secondaryHoverBackground, var(--vscode-toolbar-hoverBackground)); }
@@ -84,7 +84,8 @@ main { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 .virtual-rows .row-grid.selected { --row-cell-overlay: var(--kv-accent-soft); --row-cell-fg: var(--vscode-foreground); --row-action-fg: var(--vscode-foreground); }
 .row-grid.drop-target > *, .header-cell.drop-target { box-shadow: inset 0 2px 0 var(--vscode-focusBorder); }
 .row-number, .cell { height: 100%; border: 0; border-right: 1px solid var(--vscode-panel-border); border-bottom: 1px solid var(--vscode-panel-border); border-radius: 0; }
-.row-number { padding: 0; color: var(--vscode-editorLineNumber-foreground); background: var(--vscode-editorGutter-background); cursor: grab; isolation: isolate; }
+.row-number { padding: 0; color: var(--vscode-editorLineNumber-foreground); background: var(--kv-canvas); cursor: grab; isolation: isolate; }
+.row-number:hover { background: linear-gradient(var(--vscode-list-hoverBackground), var(--vscode-list-hoverBackground)), var(--kv-canvas); }
 .cell { position: relative; display: flex; align-items: center; min-width: 0; padding: 0 7px; cursor: default; overflow: hidden; color: var(--row-cell-fg); background: linear-gradient(var(--row-cell-overlay), var(--row-cell-overlay)), var(--kv-canvas); }
 .cell > span { display: flex; align-items: center; gap: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cell > span img { flex: none; object-fit: contain; }
@@ -92,8 +93,8 @@ main { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 
 .row-grid:not(.selected) .cell:hover { background: linear-gradient(var(--vscode-list-hoverBackground), var(--vscode-list-hoverBackground)), var(--kv-canvas); }
 .cell.selected { z-index: var(--kv-z-cell-active); outline: 2px solid var(--vscode-focusBorder); outline-offset: -2px; }
-.cell-editor { position: absolute; inset: 1px; width: calc(100% - 2px); height: calc(100% - 2px); border-color: var(--vscode-focusBorder); }
-.cell.editing { z-index: var(--kv-z-cell-editing); overflow: visible; }
+.cell-editor { position: absolute; top: 1px; right: 1px; bottom: 1px; left: 1px; width: auto; height: auto; margin: 0; border-color: var(--vscode-focusBorder); }
+.cell.editing { z-index: var(--kv-z-cell-editing); overflow: hidden; }
 .multi-select-editor { inset: 1px auto auto 1px; width: max(100%, 260px); height: auto; min-height: 96px; padding: 3px; box-shadow: 0 6px 18px var(--vscode-widget-shadow); background: var(--vscode-dropdown-background); }
 .cell.ability { justify-content: flex-start; gap: 6px; color: var(--row-action-fg); }
 
@@ -211,7 +212,8 @@ main { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 .column-resizer { position: absolute; z-index: 8; inset: 0 -3px 0 auto; width: 7px; cursor: col-resize; }
 body.resizing-column, body.resizing-column * { cursor: col-resize !important; user-select: none !important; }
 /* V2 interaction corrections: frozen layers remain opaque and only the final frozen column owns the divider. */
-.virtual-rows .row-grid.selected > .row-number { z-index: var(--kv-z-row-number); color: var(--vscode-editorLineNumber-activeForeground, var(--vscode-foreground)); background: var(--vscode-editorGutter-background); box-shadow: inset 3px 0 0 var(--vscode-focusBorder), 1px 0 0 var(--vscode-panel-border); }
+.virtual-rows .row-grid.selected > .row-number { z-index: var(--kv-z-row-number); color: var(--vscode-editorLineNumber-activeForeground, var(--vscode-foreground)); background: linear-gradient(var(--kv-accent-soft), var(--kv-accent-soft)), var(--kv-canvas); box-shadow: inset 3px 0 0 var(--vscode-focusBorder), 1px 0 0 var(--vscode-panel-border); }
+.virtual-rows .row-grid.selected > .row-number:hover { background: linear-gradient(var(--vscode-list-hoverBackground), var(--vscode-list-hoverBackground)), linear-gradient(var(--kv-accent-soft), var(--kv-accent-soft)), var(--kv-canvas); }
 
 
 .row-grid > .frozen-last { box-shadow: 2px 0 0 var(--vscode-widget-border, var(--vscode-panel-border)), 6px 0 8px -6px var(--vscode-widget-shadow); }
@@ -222,6 +224,7 @@ body.resizing-column, body.resizing-column * { cursor: col-resize !important; us
 .cell-option-backdrop { position: fixed; z-index: var(--kv-z-popover); inset: 0; display: grid; place-items: center; padding: 16px; background: rgba(0,0,0,.2); }
 .cell-option-picker { position: static; display: grid; grid-template-rows: auto auto minmax(120px,1fr) auto; width: min(520px, calc(100vw - 32px)); height: min(540px, calc(100vh - 32px)); border: 1px solid var(--vscode-widget-border); box-shadow: 0 8px 26px var(--vscode-widget-shadow); background: var(--vscode-quickInput-background, var(--vscode-editorWidget-background)); }
 .cell-option-picker > header, .cell-option-picker > footer { display: flex; align-items: center; gap: 8px; padding: 8px; border-bottom: 1px solid var(--vscode-panel-border); }
+.cell-option-picker > header .icon-button { flex:0 0 28px; margin-left:auto; align-self:flex-start; }
 .cell-option-picker > header span { flex: 1; color: var(--vscode-descriptionForeground); font-size: 11px; }
 .cell-option-picker > footer { justify-content: flex-end; border-top: 1px solid var(--vscode-panel-border); border-bottom: 0; }
 .cell-option-picker > footer span { flex: 1; color: var(--vscode-descriptionForeground); }
@@ -237,9 +240,9 @@ body.resizing-column, body.resizing-column * { cursor: col-resize !important; us
 .cell-option-item small { color: var(--vscode-descriptionForeground); font-weight: normal; }
 .cell-option-item.selected small { color: inherit; opacity: .8; }
 .option-swatch { width: 11px; height: 11px; border: 1px solid var(--vscode-contrastBorder, var(--vscode-panel-border)); border-radius: 50%; }
-.option-swatch.empty { background: repeating-linear-gradient(135deg, transparent 0 3px, var(--vscode-panel-border) 3px 4px); }
+.empty-option-mark { display:grid; width:14px; height:20px; place-items:center; color:var(--vscode-descriptionForeground); }
 .cell-option-empty { padding: 20px; color: var(--vscode-descriptionForeground); text-align: center; }
-.option-value { gap: 3px !important; }
+.option-value { display: inline-flex; align-items: center; gap: 5px !important; }
 .option-chip { position: relative; max-width: 100%; overflow: hidden; padding-left: 8px; text-overflow: ellipsis; }
 .option-chip::before { position: absolute; left: 0; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: var(--option-color); transform: translateY(-50%); content: ''; }
 
@@ -437,9 +440,10 @@ input, select, textarea { border-radius: 3px; }
 .form-dialog > .modal-body > .dialog-content, .value-filter-dialog > .modal-body > .value-filter-content { min-height: 0; height: 100%; }
 .texture-dialog > .modal-body { display: grid; grid-template-rows: auto minmax(190px, 1fr); min-height: 0; }
 .ability-dialog > .modal-body { display: grid; grid-template-rows: auto auto minmax(220px, 1fr); min-height: 0; }
-.cell-option-item.empty-option { height: 32px; min-height: 32px; max-height: 32px; padding-block: 3px; border-bottom: 1px solid var(--kv-border); }
-.cell-option-item.empty-option > span:nth-child(2) { display: flex; align-items: baseline; gap: 7px; }
-.cell-option-item.empty-option small { font-size: 10px; }
+.cell-option-item.empty-option { box-sizing: border-box; height: 42px; min-height: 42px; max-height: 42px; margin-bottom: 3px; padding: 5px 8px; border-bottom: 1px solid var(--kv-border); }
+.cell-option-item.empty-option > span:nth-child(2) { display: grid; gap: 1px; }
+.cell-option-item.empty-option strong { line-height: 15px; }
+.cell-option-item.empty-option small { font-size: 10px; line-height: 12px; }
 .texture-toolbar .segmented button + button { margin-left: -1px; }
 .texture-toolbar .segmented button { min-width: 34px; padding-inline: 8px; }
 .texture-toolbar .segmented button.active { position: relative; z-index: 1; outline: 0; }
@@ -474,3 +478,163 @@ input, select, textarea { border-radius: 3px; }
 	.ability-column-guide > span:last-child, .ability-entry-actions { display: none; }
 	.localization-source-row { grid-template-columns: 1fr; }
 }
+/* Stable resource viewport and aligned structured rows: 2026-07-31. */
+.texture-dialog { height: 760px; max-height: calc(100vh - 36px); }
+.texture-dialog > .modal-body { min-height: 0; }
+.texture-dialog .texture-grid { height: auto; min-height: 0; max-height: none; }
+.hero-filter-panel { max-height: 460px; }
+.formula-bar .formula-address { display: flex; flex: 0 1 clamp(220px, 27vw, 420px); width: clamp(220px, 27vw, 420px); min-width: 180px; overflow: hidden; user-select: text; }
+.formula-address > .codicon { flex: none; }
+.formula-address-text { display: flex; flex: 1; align-items: center; gap: 5px; min-width: 0; overflow: hidden; }
+.formula-address-text > strong, .formula-address-text > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.formula-address-text > strong { flex: 0 1 auto; max-width: 55%; color: var(--vscode-foreground); font-weight: 600; }
+.formula-address-text > span:last-child { flex: 1 1 80px; min-width: 48px; }
+.formula-bar > input { min-width: 220px; }
+.ability-kind { min-width: 0; padding-inline: 4px; white-space: nowrap; }
+.ability-index { align-self: center; width: 26px; height: 27px; margin: 0; }
+.modifier-index { align-self: center; width: 24px; height: 25px; margin: 0; }
+.modifier-header { min-height: 20px; padding: 0 2px 2px; color: var(--vscode-descriptionForeground); font-size: 10px; letter-spacing: .04em; }
+.modifier-row { grid-template-columns: 24px minmax(130px, .8fr) minmax(180px, 1.4fr) 102px; align-items: center; gap: 4px; }
+.modifier-actions { display: grid; grid-template-columns: repeat(4, 24px); align-items: center; gap: 2px; }
+.modifier-actions .icon-button { width: 24px; height: 24px; min-height: 24px; }
+.modifier-empty-row { display: flex; align-items: center; justify-content: space-between; min-height: 29px; padding: 2px 4px 2px 8px; color: var(--vscode-descriptionForeground); border: 1px dashed var(--kv-border); }
+@media (max-width: 700px) {
+	.formula-bar .formula-address { flex-basis: 100%; width: 100%; max-width: none; border-right: 0; }
+	.modifier-row { grid-template-columns: 24px minmax(150px, 1fr) 102px; }
+	.modifier-row > input:first-of-type { grid-column: 2; }
+	.modifier-row > input:last-of-type { grid-column: 2; }
+	.modifier-actions { grid-column: 3; grid-row: 1 / span 2; }
+	.modifier-index { grid-row: 1 / span 2; }
+}
+
+/* Record mode: a compact KV property inspector with one key/value rail. */
+.record-workspace {
+	--record-label-width: clamp(150px, 18vw, 224px);
+	display: grid;
+	grid-template-columns: clamp(196px, 19vw, 252px) minmax(0, 1fr);
+	min-height: 0;
+	flex: 1;
+	overflow: hidden;
+	background: var(--vscode-editor-background);
+}
+.record-index { display:flex; min-width:0; flex-direction:column; border-right:1px solid var(--vscode-sideBar-border,var(--vscode-panel-border)); background:var(--vscode-sideBar-background,var(--kv-surface-2)); }
+.record-index-head { display:flex; height:34px; flex:0 0 34px; align-items:center; justify-content:space-between; padding:0 9px; border-bottom:1px solid var(--vscode-sideBar-border,var(--vscode-panel-border)); }
+.record-index-head strong { font-size:11px; font-weight:600; letter-spacing:.02em; }
+.record-index-head span { color:var(--vscode-descriptionForeground); font-size:10px; font-variant-numeric:tabular-nums; }
+.record-search { display:flex; height:27px; flex:0 0 27px; align-items:center; gap:6px; margin:6px; padding:0 7px; border:1px solid var(--vscode-input-border,transparent); background:var(--vscode-input-background); color:var(--vscode-descriptionForeground); }
+.record-search:focus-within { border-color:var(--vscode-focusBorder); outline:1px solid var(--vscode-focusBorder); outline-offset:-1px; }
+.record-search input { width:100%; height:25px; padding:0; border:0; outline:0; background:transparent; }
+.record-id-list { min-height:0; flex:1; overflow:auto; padding:1px 4px 6px; }
+.record-id { display:grid; grid-template-columns:25px minmax(0,1fr) 7px; width:100%; min-height:26px; align-items:center; padding:0 6px 0 2px; border:0; border-left:2px solid transparent; border-radius:0; background:transparent; color:var(--vscode-sideBar-foreground,var(--vscode-foreground)); text-align:left; }
+.record-id:hover { background:var(--vscode-list-hoverBackground); color:var(--vscode-list-hoverForeground,var(--vscode-foreground)); }
+.record-id.active { border-left-color:var(--vscode-focusBorder); background:var(--vscode-list-inactiveSelectionBackground,var(--vscode-editor-inactiveSelectionBackground)); color:var(--vscode-list-inactiveSelectionForeground,var(--vscode-foreground)); }
+.record-id:focus-visible { outline:1px solid var(--vscode-focusBorder); outline-offset:-1px; }
+.record-id > span:nth-child(2) { overflow:hidden; font-family:var(--vscode-editor-font-family); font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
+.record-id-order { color:var(--vscode-descriptionForeground); font-size:9px; font-variant-numeric:tabular-nums; }
+.record-id.active .record-id-order { color:inherit; opacity:.65; }
+.record-id i { width:5px; height:5px; border-radius:50%; background:var(--vscode-inputValidation-warningBorder); }
+.record-index-empty { padding:20px 10px; color:var(--vscode-descriptionForeground); font-size:11px; text-align:center; }
+.record-detail { display:flex; min-width:0; flex-direction:column; overflow:hidden; }
+.record-detail-head { display:flex; min-height:56px; flex:0 0 56px; align-items:center; justify-content:space-between; padding:7px 14px; border-bottom:1px solid var(--vscode-panel-border); background:var(--vscode-editor-background); }
+.record-detail-head .title-eyebrow { font-size:9px; letter-spacing:.08em; }
+.record-detail-head h2 { max-width:min(70vw,960px); margin:1px 0 0; overflow:hidden; color:var(--vscode-editor-foreground); font-family:var(--vscode-editor-font-family); font-size:15px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+.record-detail-head p { margin:2px 0 0; color:var(--vscode-descriptionForeground); font-size:10px; }
+.record-save-state { padding:2px 7px; border:1px solid var(--vscode-panel-border); border-radius:2px; color:var(--vscode-descriptionForeground); font-size:10px; white-space:nowrap; }
+.record-save-state.dirty { border-color:var(--vscode-inputValidation-warningBorder); color:var(--vscode-editorWarning-foreground); }
+.record-draft-warning { display:flex; align-items:center; gap:7px; padding:5px 10px; border-bottom:1px solid var(--vscode-inputValidation-warningBorder); background:var(--vscode-inputValidation-warningBackground); color:var(--vscode-inputValidation-warningForeground); }
+.record-draft-warning span { flex:1; }
+.record-draft-warning button { border:0; background:transparent; }
+.record-fields { display:grid; flex:1; align-content:start; gap:0; overflow:auto; padding:6px 12px 12px; }
+.record-field { position:relative; display:grid; grid-template-columns:var(--record-label-width) minmax(260px,1fr); min-height:30px; align-items:center; padding:0; }
+.record-field:hover { background:color-mix(in srgb,var(--vscode-list-hoverBackground) 34%,transparent); }
+.record-field:focus-within { background:color-mix(in srgb,var(--vscode-editor-inactiveSelectionBackground) 36%,transparent); }
+.record-field.changed { box-shadow:inset 2px 0 var(--vscode-inputValidation-warningBorder); background:color-mix(in srgb,var(--vscode-inputValidation-warningBackground) 20%,transparent); }
+.record-field-label { display:flex; align-self:stretch; min-width:0; align-items:center; padding:0 10px 0 7px; border-right:1px solid color-mix(in srgb,var(--vscode-panel-border) 58%,transparent); }
+.record-field-label strong { overflow:hidden; color:var(--vscode-foreground); font-size:11px; font-weight:500; opacity:.78; text-overflow:ellipsis; white-space:nowrap; }
+.record-field:hover .record-field-label strong,.record-field:focus-within .record-field-label strong,.record-field.changed .record-field-label strong { opacity:1; }
+.record-control-wrap { position:relative; display:flex; min-width:0; align-items:center; gap:3px; padding-left:8px; }
+.record-field-control,.record-special { width:100%; height:25px; min-width:0; padding:0 6px; border:1px solid transparent; border-radius:0; outline:0; background:transparent; color:var(--vscode-input-foreground); font-family:var(--vscode-editor-font-family); font-size:11px; }
+.record-field:hover .record-field-control,.record-field:hover .record-special { background:color-mix(in srgb,var(--vscode-input-background) 48%,transparent); }
+.record-field-control:focus,.record-special:focus-visible { border-color:var(--vscode-focusBorder); outline:1px solid var(--vscode-focusBorder); outline-offset:-1px; background:var(--vscode-input-background); }
+.record-inline-action { display:inline-flex; width:24px; height:24px; min-height:24px; flex:0 0 24px; align-items:center; justify-content:center; padding:0; border-color:transparent; background:transparent; }
+.record-inline-action:hover { background:var(--vscode-toolbar-hoverBackground); }
+.record-special { display:flex; align-items:center; gap:6px; text-align:left; }
+.record-special span { min-width:0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.record-texture-preview-button { display:grid; width:24px; height:24px; min-height:24px; flex:0 0 24px; padding:0; overflow:hidden; place-items:center; border:1px solid transparent; border-radius:0; background:var(--vscode-checkerboard-background,#252526); }
+.record-texture-preview-button:hover:not(:disabled) { border-color:var(--vscode-focusBorder); }
+.record-texture-preview-button:focus-visible { outline:1px solid var(--vscode-focusBorder); outline-offset:1px; }
+.record-texture-preview { display:block; width:22px; height:22px; object-fit:contain; }
+.record-option { position:relative; width:100%; min-width:0; }
+.record-option-trigger { display:grid; grid-template-columns:minmax(0,1fr) 18px; width:100%; height:25px; align-items:center; padding:0 2px 0 6px; border:1px solid transparent; border-radius:0; background:transparent; color:var(--vscode-dropdown-foreground); font-size:11px; text-align:left; }
+.record-field:hover .record-option-trigger { background:color-mix(in srgb,var(--vscode-dropdown-background) 48%,transparent); }
+.record-option-trigger:focus-visible,.record-option-trigger[aria-expanded=true] { border-color:var(--vscode-focusBorder); outline:1px solid var(--vscode-focusBorder); outline-offset:-1px; background:var(--vscode-dropdown-background); }
+.record-option-trigger > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.record-option-values { display:flex; min-width:0; align-items:center; gap:5px; }
+.record-option-chip { display:inline-flex; min-width:0; flex:0 1 auto; align-items:center; gap:4px; }
+.record-option-chip > span:last-child { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.record-option-dot { width:6px; height:6px; flex:0 0 6px; border:1px solid var(--vscode-contrastBorder,var(--vscode-panel-border)); border-radius:50%; }
+.record-option-trigger .placeholder { color:var(--vscode-input-placeholderForeground); }
+.record-option-trigger .codicon { display:grid; width:18px; height:22px; place-items:center; color:var(--vscode-descriptionForeground); }
+.record-option-trigger:hover .codicon,.record-option-trigger[aria-expanded=true] .codicon { color:var(--vscode-foreground); }
+.record-option-popover { position:fixed; z-index:var(--kv-z-popover); overflow:hidden; border:1px solid var(--vscode-widget-border,var(--vscode-panel-border)); border-radius:3px; background:var(--vscode-editorWidget-background); box-shadow:var(--kv-shadow); }
+.record-option-popover > label { display:flex; height:29px; align-items:center; gap:6px; padding:0 7px; border-bottom:1px solid var(--vscode-panel-border); }
+.record-option-popover > label input { width:100%; border:0; outline:0; background:transparent; }
+.record-option-popover > div { max-height:var(--record-option-list-height,230px); overflow:auto; padding:2px; overscroll-behavior:contain; }
+.record-option-popover > div > button { display:grid; grid-template-columns:12px minmax(0,1fr) 16px; width:100%; height:32px; min-height:32px; max-height:32px; align-items:center; gap:6px; padding:2px 6px; border-left:2px solid transparent; text-align:left; }
+.record-option-popover > div > button:first-child { margin-bottom:2px; border-bottom-color:var(--vscode-panel-border); }
+.record-option-popover > div > button:hover { background:var(--vscode-list-hoverBackground); }
+.record-option-popover > div > button.selected { border-left-color:var(--vscode-focusBorder); background:var(--vscode-list-inactiveSelectionBackground); color:var(--vscode-list-inactiveSelectionForeground,var(--vscode-foreground)); }
+.record-option-popover > div > button > span:nth-child(2) { display:grid; min-width:0; }
+.record-option-popover strong,.record-option-popover small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.record-option-popover strong { font-size:11px; line-height:14px; }
+.record-option-popover small { color:var(--vscode-descriptionForeground); font-size:9px; font-weight:normal; line-height:11px; }
+.record-option-check,.option-check { display:grid; width:16px; height:16px; place-items:center; }
+.record-option-empty { padding:14px; color:var(--vscode-descriptionForeground); text-align:center; }
+.record-field.complex { min-height:46px; align-items:start; }
+.record-field.complex > .record-field-label { position:sticky; top:0; min-height:30px; padding-top:7px; align-items:flex-start; }
+.record-field.complex .record-control-wrap { padding:4px 0 7px 8px; }
+.record-ability-values { display:grid; width:100%; gap:3px; }
+.record-ability-head { display:flex; height:24px; align-items:center; justify-content:space-between; color:var(--vscode-descriptionForeground); font-size:9px; }
+.record-ability-head button,.record-ability-empty,.record-add-modifier { display:inline-flex; min-height:22px; align-items:center; gap:4px; color:var(--vscode-descriptionForeground); }
+.record-ability-entry { overflow:hidden; border:1px solid var(--vscode-panel-border); border-radius:2px; background:var(--vscode-editor-background); }
+.record-ability-main { display:grid; grid-template-columns:23px minmax(110px,1fr) minmax(135px,1.25fr) minmax(150px,1.35fr) 96px; align-items:center; gap:3px; padding:3px; }
+.record-ability-main input,.record-modifier-row input { width:100%; min-width:0; height:24px; }
+.record-ability-index,.record-modifier-row > span { display:grid; height:22px; place-items:center; border-right:1px solid var(--vscode-panel-border); color:var(--vscode-descriptionForeground); font-family:var(--vscode-editor-font-family); font-size:9px; font-variant-numeric:tabular-nums; }
+.record-ability-actions,.record-modifier-row > div { display:grid; grid-template-columns:repeat(4,22px); gap:2px; }
+.record-ability-actions button,.record-modifier-row button { display:grid; width:22px; min-height:22px; padding:0; place-items:center; }
+.record-modifier-list { display:grid; gap:2px; padding:3px 3px 3px 29px; border-top:1px solid var(--vscode-panel-border); background:color-mix(in srgb,var(--vscode-sideBar-background) 45%,transparent); }
+.record-modifier-row { display:grid; grid-template-columns:21px minmax(125px,1fr) minmax(170px,1.4fr) 96px; align-items:center; gap:3px; }
+.record-add-modifier { margin:0 3px 3px 29px; }
+.record-ability-empty { justify-content:center; min-height:30px; border:1px dashed var(--vscode-panel-border); }
+.record-actions { display:flex; min-height:42px; flex:0 0 42px; align-items:center; justify-content:space-between; gap:10px; padding:6px 12px; border-top:1px solid var(--vscode-panel-border); background:var(--vscode-editor-background); }
+.record-actions > span { min-width:0; overflow:hidden; color:var(--vscode-descriptionForeground); font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
+.record-actions > div { display:flex; gap:5px; }
+.record-actions button { display:inline-flex; min-height:26px; align-items:center; gap:4px; }
+.record-actions button.primary { border-color:var(--vscode-button-background); background:var(--vscode-button-background); color:var(--vscode-button-foreground); }
+.cell-option-item .option-check { justify-self:end; }
+.cell-option-item.empty-option > span:nth-child(2) { display:grid; gap:1px; }
+@media (max-width:900px) {
+	.record-workspace { --record-label-width:130px; grid-template-columns:176px minmax(0,1fr); }
+	.record-ability-main { grid-template-columns:23px minmax(100px,1fr) minmax(120px,1fr) 96px; }
+	.record-ability-main > input:nth-of-type(3) { grid-column:2 / 4; }
+}
+/* Excel-style range selection and fill handle. */
+.grid .cell, .grid .row-number { user-select: none; -webkit-user-select: none; }
+.grid .cell-editor, .grid input, .grid textarea { user-select: text; -webkit-user-select: text; }
+body.selecting-cells, body.selecting-cells .grid, body.selecting-cells .cell { cursor: cell !important; user-select: none !important; }
+body.dragging-fill-handle, body.dragging-fill-handle .grid, body.dragging-fill-handle .cell { cursor: crosshair !important; }
+.cell.range-selected { isolation: isolate; background: linear-gradient(var(--kv-accent-soft), var(--kv-accent-soft)), var(--kv-canvas); }
+/* .cell is already the positioning context. Do not reset sticky frozen cells to
+ * position: relative when a range becomes selected: that made the editor drift
+ * into the next column after horizontal scrolling. */
+.virtual-rows .row-grid > .frozen.range-selected { position: sticky; z-index: var(--kv-z-frozen-cell); background: linear-gradient(var(--kv-accent-soft), var(--kv-accent-soft)), var(--kv-canvas); }
+.virtual-rows .row-grid > .frozen.range-selected.selected, .virtual-rows .row-grid > .frozen.range-selected.editing { z-index: var(--kv-z-frozen-active); }
+.cell.range-selected.selected { outline: none; }
+.cell.range-selected::after { content: ''; position: absolute; z-index: 3; inset: 0; pointer-events: none; border: 0 solid var(--kv-accent); }
+.cell.range-top::after { border-top-width: 2px; }
+.cell.range-right::after { border-right-width: 2px; }
+.cell.range-bottom::after { border-bottom-width: 2px; }
+.cell.range-left::after { border-left-width: 2px; }
+.cell.range-anchor { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kv-accent) 55%, transparent); }
+.fill-handle { position: absolute; z-index: 6; right: 1px; bottom: 1px; width: 7px; height: 7px; padding: 0; border: 1px solid var(--kv-canvas); border-radius: 1px; background: var(--kv-accent); box-shadow: 0 0 0 1px var(--kv-accent); cursor: crosshair; }
+.fill-handle:hover { background: var(--vscode-focusBorder, var(--kv-accent)); }

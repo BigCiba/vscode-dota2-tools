@@ -60,6 +60,21 @@ export function AbilityDialog(props: AbilityDialogProps) {
 	};
 	const updateModifiers = (entryIndex: number, modifiers: KvEditorV2AbilityValue['modifiers']) => update(entryIndex, { modifiers, type: modifiers.length ? 'object' : 'scalar' });
 	const updateModifier = (entryIndex: number, modifierIndex: number, patch: { key?: string; value?: string }) => updateModifiers(entryIndex, props.entries[entryIndex].modifiers.map((modifier, current) => current === modifierIndex ? { ...modifier, ...patch } : modifier));
+	const insertModifier = (entryIndex: number, afterIndex: number) => {
+		const modifiers = props.entries[entryIndex].modifiers.slice();
+		const nextIndex = afterIndex + 1;
+		modifiers.splice(nextIndex, 0, { key: '', value: '' });
+		updateModifiers(entryIndex, modifiers);
+		setExpanded((current) => new Set([...current, entryIndex]));
+		queueMicrotask(() => dialogElement.querySelector<HTMLInputElement>('.ability-entry[data-entry-index="' + entryIndex + '"] .modifier-row[data-modifier-index="' + nextIndex + '"] input')?.focus());
+	};
+	const moveModifier = (entryIndex: number, modifierIndex: number, offset: number) => {
+		const target = modifierIndex + offset;
+		const modifiers = props.entries[entryIndex].modifiers.slice();
+		if (target < 0 || target >= modifiers.length) {return;}
+		[modifiers[modifierIndex], modifiers[target]] = [modifiers[target], modifiers[modifierIndex]];
+		updateModifiers(entryIndex, modifiers);
+	};
 	const toggleExpanded = (index: number) => setExpanded((current) => {
 		const next = new Set(current);
 		if (next.has(index)) {
@@ -103,7 +118,7 @@ export function AbilityDialog(props: AbilityDialogProps) {
 							<input class="ability-key" value={entry.key} placeholder="Key" aria-label={`第 ${index + 1} 项 Key`} onInput={(event) => updateKey(index, event.currentTarget.value)} />
 							<input class="ability-value" value={entry.value} placeholder="Value / 等级值" aria-label={`第 ${index + 1} 项 Value`} onInput={(event) => update(index, { value: event.currentTarget.value })} />
 							<input class="ability-description" value={props.descriptions[entry.key] ?? ''} placeholder="本地化描述（可选）" aria-label={`第 ${index + 1} 项本地化描述`} onInput={(event) => props.onDescriptions({ ...props.descriptions, [entry.key]: event.currentTarget.value })} />
-							<span classList={{ 'ability-kind': true, object: entry.modifiers.length > 0 }} title={entry.modifiers.length ? '有 Modifier，将保存为 object' : '无 Modifier，将保存为 scalar'}><Icon name={entry.modifiers.length ? 'symbol-object' : 'symbol-value'} />{entry.modifiers.length ? `${entry.modifiers.length} M` : '值'}</span>
+							<span classList={{ 'ability-kind': true, object: entry.modifiers.length > 0 }} title={entry.modifiers.length ? `对象结构，${entry.modifiers.length} 个 Modifier` : '标量值'}><Icon name={entry.modifiers.length ? 'symbol-object' : 'symbol-value'} />{entry.modifiers.length ? '对象' : '数值'}</span>
 							<span class="ability-entry-actions">
 								<button class="icon-button" aria-label="上移" title="上移" disabled={index === 0 || !!search()} onClick={() => move(index, -1)}><Icon name="arrow-up" /></button>
 								<button class="icon-button" aria-label="下移" title="下移" disabled={index === props.entries.length - 1 || !!search()} onClick={() => move(index, 1)}><Icon name="arrow-down" /></button>
@@ -114,12 +129,12 @@ export function AbilityDialog(props: AbilityDialogProps) {
 							<div class="ability-entry-details">
 								
 								<div class="modifier-list">
-									<div class="modifier-header"><span><strong>Modifiers</strong><small>{entry.modifiers.length ? ` ${entry.modifiers.length} 项 · 自动识别为 object` : ' 无 · 自动识别为 scalar'}</small></span><button onClick={() => updateModifiers(index, [...entry.modifiers, { key: '', value: '' }])}><Icon name="add" />添加</button></div>
-									<For each={entry.modifiers}>{(modifier, modifierIndex) => <div class="modifier-row">
+									<div class="modifier-header"><strong>Modifiers</strong></div>
+									<For each={entry.modifiers} fallback={<div class="modifier-empty-row"><span>暂无 Modifier</span><button class="icon-button" title="添加第一个 Modifier" aria-label="添加第一个 Modifier" onClick={() => insertModifier(index, -1)}><Icon name="add" /></button></div>}>{(modifier, modifierIndex) => <div class="modifier-row" data-modifier-index={modifierIndex()}>
 										<span class="modifier-index">{modifierIndex() + 1}</span>
 										<input value={modifier.key} placeholder="Modifier Key" aria-label="Modifier Key" onInput={(event) => updateModifier(index, modifierIndex(), { key: event.currentTarget.value })} />
 										<input value={modifier.value} placeholder="Modifier Value" aria-label="Modifier Value" onInput={(event) => updateModifier(index, modifierIndex(), { value: event.currentTarget.value })} />
-										<button class="icon-button danger" aria-label="删除 Modifier" onClick={() => updateModifiers(index, entry.modifiers.filter((_, current) => current !== modifierIndex()))}><Icon name="close" /></button>
+										<span class="modifier-actions"><button class="icon-button" title="在下方添加" aria-label="在下方添加 Modifier" onClick={() => insertModifier(index, modifierIndex())}><Icon name="add" /></button><button class="icon-button" title="上移" aria-label="上移 Modifier" disabled={modifierIndex() === 0} onClick={() => moveModifier(index, modifierIndex(), -1)}><Icon name="arrow-up" /></button><button class="icon-button" title="下移" aria-label="下移 Modifier" disabled={modifierIndex() === entry.modifiers.length - 1} onClick={() => moveModifier(index, modifierIndex(), 1)}><Icon name="arrow-down" /></button><button class="icon-button danger" title="删除" aria-label="删除 Modifier" onClick={() => updateModifiers(index, entry.modifiers.filter((_, current) => current !== modifierIndex()))}><Icon name="trash" /></button></span>
 									</div>}</For>
 								</div>
 							</div>

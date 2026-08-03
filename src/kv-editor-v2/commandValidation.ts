@@ -7,6 +7,10 @@ export function isValidKvEditorV2Command(value: unknown): value is KvEditorV2Com
 	const position = () => value.position === 'before' || value.position === 'after';
 	switch (value.type) {
 		case 'editCell': return string('rowId') && string('columnKey') && string('value');
+		case 'editRecord': return string('rowId') && string('newRowId') && isArray(value.edits, (edit) => isRecord(edit)
+			&& typeof edit.columnKey === 'string' && typeof edit.value === 'string')
+			&& (value.abilityValues === undefined || isArray(value.abilityValues, isAbilityValue))
+			&& (value.abilityValueDescriptions === undefined || isStringRecord(value.abilityValueDescriptions));
 		case 'bulkEdit': return isArray(value.edits, (edit) => isRecord(edit)
 			&& typeof edit.rowId === 'string' && typeof edit.columnKey === 'string' && typeof edit.value === 'string');
 		case 'fillCells': return isArray(value.entries, (entry) => isRecord(entry)

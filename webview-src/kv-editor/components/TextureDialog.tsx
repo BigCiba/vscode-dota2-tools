@@ -40,7 +40,6 @@ export function TextureDialog(props: TextureDialogProps) {
 		const endRow = Math.min(rowCount, Math.ceil((gridScrollTop() + gridHeight()) / height) + 3);
 		return { columns, rowCount, startRow, icons: props.icons.slice(startRow * columns, endRow * columns) };
 	});
-	const adaptiveGridHeight = createMemo(() => Math.max(190, Math.min(620, gridRange().rowCount * itemMetrics().height + 18)));
 	const heroGroups = createMemo(() => {
 		const labels: Record<string, string> = { strength: '力量', agility: '敏捷', intelligence: '智力', universal: '全才', all: '全才', other: '其他' };
 		const groups = new Map<string, KvEditorV2TextureHero[]>();
@@ -122,7 +121,7 @@ export function TextureDialog(props: TextureDialogProps) {
 					<button classList={{ active: displayMode() === 'detail' }} title="图标和名称" aria-label="图标和名称" onClick={() => setDisplayMode('detail')}><Icon name="list-flat" /></button>
 				</div>
 			</div>
-			<div class="texture-grid" ref={gridElement} style={{ height: `${adaptiveGridHeight()}px` }} onScroll={(event) => setGridScrollTop(event.currentTarget.scrollTop)}>
+			<div class="texture-grid" ref={gridElement} onScroll={(event) => setGridScrollTop(event.currentTarget.scrollTop)}>
 				<Show when={!props.loading} fallback={<div class="texture-status"><Icon name="loading" spin />正在扫描并加载纹理…</div>}>
 					<Show when={!props.error} fallback={<div class="texture-status error" role="alert">{props.error}</div>}>
 						<Show when={props.icons.length} fallback={<div class="texture-status">没有匹配的纹理</div>}>

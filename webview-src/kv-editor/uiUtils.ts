@@ -22,8 +22,21 @@ export function splitOptionValues(value: string, separator: string): string[] {
 	return value ? value.split(separator || '|').map((part) => part.trim()).filter(Boolean) : [];
 }
 
+const DEFAULT_OPTION_COLORS = ['#4A90E2', '#50C878', '#F5A623', '#9B59B6', '#E24A4A', '#1ABC9C'];
+
 export function validOptionColor(value?: string): string {
 	return value && /^#[0-9a-f]{6}$/iu.test(value) ? value : '#808080';
+}
+
+export function resolveOptionColor(optionValue: string, configuredColor?: string): string {
+	if (configuredColor && /^#[0-9a-f]{6}$/iu.test(configuredColor)) {
+		return configuredColor;
+	}
+	let hash = 0;
+	for (const character of optionValue) {
+		hash = (hash * 31 + character.charCodeAt(0)) | 0;
+	}
+	return DEFAULT_OPTION_COLORS[Math.abs(hash) % DEFAULT_OPTION_COLORS.length];
 }
 
 export function heroAttributeLabel(value: string): string {

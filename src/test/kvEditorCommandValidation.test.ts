@@ -29,4 +29,16 @@ suite('KvEditor V2 command validation', () => {
 			entries: [{ key: 'damage', value: '10', type: 'object', modifiers: [{ key: 'bad' }] }],
 		})), false);
 	});
-});
+
+	test('accepts a rectangular paste as one bulk edit command', () => {
+		assert.strictEqual(isValidKvEditorV2Message(envelope({
+			type: 'bulkEdit',
+			edits: [
+				{ rowId: 'row_a', columnKey: 'Damage', value: '10' },
+				{ rowId: 'row_b', columnKey: 'Damage', value: '20' },
+			],
+		})), true);
+		assert.strictEqual(isValidKvEditorV2Message(envelope({
+			type: 'bulkEdit', edits: [{ rowId: 'row_a', columnKey: 'Damage' }],
+		})), false);
+	});});

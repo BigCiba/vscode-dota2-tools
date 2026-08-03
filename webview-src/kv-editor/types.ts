@@ -5,6 +5,8 @@ export interface CellAddress {
 	columnKey: string;
 }
 
+export type { CellRangeSelection } from '../../src/kv-editor-v2/cellRange';
+
 export type FillMode = 'copy' | 'arithmetic' | 'geometric' | 'formula';
 
 export type DialogState =
@@ -15,5 +17,5 @@ export type DialogState =
 	| { kind: 'columnFormula'; columnKey: string; formula: string }
 	| { kind: 'columnOptions'; columnKey: string; options: KvEditorV2ColumnOption[]; multiple: boolean; separator: string }
 	| { kind: 'columnDescription'; columnKey: string; label: string; description: string }
-	| { kind: 'fill'; source: CellAddress; sourceValue: string; targetRowIds: string[]; mode: FillMode; factor: string; formula: string }
+	| { kind: 'fill'; source: CellAddress; sourceValue: string; targetCells: CellAddress[]; mode: FillMode; factor: string; formula: string }
 	| { kind: 'deleteRows'; rowIds: string[] };

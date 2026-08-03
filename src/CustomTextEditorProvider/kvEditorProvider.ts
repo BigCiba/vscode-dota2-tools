@@ -706,6 +706,7 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 	private buildV2AbilityValues(entries: AbilityValuesEditEntry[]): Record<string, unknown> {
 		const result: Record<string, unknown> = {};
 		for (const rawEntry of entries) {
+			if ((rawEntry.modifiers ?? []).some((modifier) => !modifier.key.trim())) {throw new Error('AbilityValues 包含空的 modifier key。');}
 			const entry = this.normalizeAbilityValuesEditEntry(rawEntry);
 			if (!entry) {throw new Error('AbilityValues key 不能为空。');}
 			if (Object.prototype.hasOwnProperty.call(result, entry.key)) {throw new Error(`AbilityValues key “${entry.key}” 重复。`);}
@@ -813,17 +814,41 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 				await this.clearV2CellFormulas(document, payload, edits);
 				return;
 			}
+			case 'editRecord': {
+				const newRowId = command.newRowId.trim();
+				if (!command.rowId || !newRowId) {throw new Error('行 ID 不能为空。');}
+				if (command.edits.some((edit) => !edit.columnKey || edit.columnKey === 'id')) {throw new Error('记录编辑包含无效字段。');}
+				const duplicateColumns = command.edits.map((edit) => edit.columnKey);
+				if (new Set(duplicateColumns).size !== duplicateColumns.length) {throw new Error('记录编辑包含重复字段。');}
+				if (newRowId !== command.rowId && payload.rows.some((row) => row.id === newRowId)) {throw new Error('行 ID 已存在：' + newRowId);}
+				const edits = command.edits.map((edit) => ({ rowId: command.rowId, ...edit }));
+				const objectBlocks = command.abilityValues === undefined ? [] : [{
+					columnKey: 'AbilityValues',
+					text: command.abilityValues.length ? writeKeyValue({ AbilityValues: this.buildV2AbilityValues(command.abilityValues) }, 2) : '',
+				}];
+				await this.applyV2Replacements(document, [documentModel().editRecord(command.rowId, newRowId, command.edits, payload.columns, objectBlocks)]);
+				await this.clearV2CellFormulas(document, payload, edits);
+				if (newRowId !== command.rowId) {this.migrateV2FormulaRowId(document, command.rowId, newRowId);}
+				if (command.abilityValueDescriptions) {await this.handleSaveAbilityValuesDescriptions(document, { rowId: newRowId, descriptions: command.abilityValueDescriptions }, false);}
+				return;
+			}
 			case 'bulkEdit': {
 				const edits = command.edits.map((edit) => ({ ...edit }));
-				if (edits.some((edit) => !edit.rowId || !edit.columnKey || edit.columnKey === 'id')) {throw new Error('批量编辑包含无效单元格地址。');}
+				if (!edits.length || edits.some((edit) => !edit.rowId || !edit.columnKey || edit.columnKey === 'id' || edit.columnKey === 'AbilityValues'
+					|| rowIndex(edit.rowId) < 0 || !payload.columns.includes(edit.columnKey))) {throw new Error('批量编辑包含无效单元格地址。');}
+				const targets = edits.map((edit) => `${edit.rowId}\u0000${edit.columnKey}`);
+				if (new Set(targets).size !== targets.length) {throw new Error('批量编辑包含重复的目标单元格。');}
 				await this.applyV2Replacements(document, this.buildV2CellReplacements(document, payload, documentModel(), edits));
 				await this.clearV2CellFormulas(document, payload, edits);
 				return;
 			}
 			case 'fillCells': {
+				if (!command.entries.length) {throw new Error('填充目标不能为空。');}
+				const targets = command.entries.map((entry) => `${entry.rowId}\u0000${entry.columnKey}`);
+				if (new Set(targets).size !== targets.length) {throw new Error('填充包含重复的目标单元格。');}
 				this.assertV2FormulaCycles(payload, command.entries.map((entry) => ({ rowId: entry.rowId, columnKey: entry.columnKey, formula: entry.formula })));
 				for (const entry of command.entries) {
-					if (rowIndex(entry.rowId) < 0 || entry.columnKey === 'id') {throw new Error('填充目标单元格无效。');}
+					if (rowIndex(entry.rowId) < 0 || entry.columnKey === 'id' || entry.columnKey === 'AbilityValues' || !payload.columns.includes(entry.columnKey)) {throw new Error('填充目标单元格无效。');}
 					if (entry.formula !== undefined) {
 						const validation = validateSafeFormula(entry.formula);
 						if (!validation.compatible) {throw new Error(validation.error ?? '填充公式不属于安全语法子集。');}
@@ -1873,12 +1898,14 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 				continue;
 			}
 			const iconUri = webview.asWebviewUri(vscode.Uri.file(asset.fullPath)).toString();
-			previewMap[rowId] = {
+			const preview = {
 				uri: iconUri,
 				kind: asset.kind,
 				source: asset.source,
 				fileName: path.basename(asset.fullPath),
 			};
+			previewMap[rowId] = preview;
+			previewMap[textureName] = preview;
 		}
 		return previewMap;
 	}
@@ -2133,17 +2160,13 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 				if (name) {
 					localizationInfo.name = name;
 				}
-				let description = this.findLocalizationToken(tokens, [
+				const description = this.findLocalizationToken(tokens, [
 					`${baseKey}_description`,
 					`${baseKey}_Description`,
 					`dota_tooltip_ability_${rowId}_description`,
 					`dota_tooltip_ability_${rowId}_Description`,
 				]);
-				if (description) {
-					const replacements = this.buildLocalizationReplacementMap(row);
-					description = this.applyLocalizationReplacements(description, replacements);
-					localizationInfo.description = description;
-				}
+				if (description) {localizationInfo.description = description;}
 			} else {
 				const name = this.findLocalizationToken(tokens, [rowId, rowId.toLowerCase()]);
 				if (name) {
@@ -2163,51 +2186,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 		}
 	}
 
-	private buildLocalizationReplacementMap(row: ParsedKvRow): Map<string, string> {
-		const replacements = new Map<string, string>();
-		for (const [key, value] of Object.entries(row.values ?? {})) {
-			const normalizedKey = key.trim().toLowerCase();
-			const normalizedValue = typeof value === 'string' ? value.trim() : '';
-			if (normalizedKey && normalizedValue) {
-				replacements.set(normalizedKey, normalizedValue);
-			}
-		}
-		for (const entry of row.abilityValues ?? []) {
-			const entryValue = (entry.value ?? '').trim();
-			if (entryValue) {
-				const entryKey = entry.key?.trim().toLowerCase();
-				const originalKey = entry.originalKey?.trim().toLowerCase();
-				if (entryKey) {
-					replacements.set(entryKey, entryValue);
-				}
-				if (originalKey && originalKey !== entryKey) {
-					replacements.set(originalKey, entryValue);
-				}
-			}
-			for (const modifier of entry.modifiers ?? []) {
-				const modifierKey = modifier.key?.trim().toLowerCase();
-				const modifierValue = (modifier.value ?? '').trim();
-				if (modifierKey && modifierValue) {
-					replacements.set(modifierKey, modifierValue);
-				}
-			}
-		}
-		return replacements;
-	}
-
-	private applyLocalizationReplacements(input: string, replacements: Map<string, string>): string {
-		if (!input || !replacements.size) {
-			return input;
-		}
-		return input.replace(/%([^%]+)%/g, (match, token) => {
-			const normalizedToken = typeof token === 'string' ? token.trim().toLowerCase() : '';
-			if (!normalizedToken) {
-				return match;
-			}
-			const replacement = replacements.get(normalizedToken);
-			return replacement !== undefined ? replacement : match;
-		});
-	}
 
 	private findTextureAsset(textureName: string, addonImagesRoot: string | undefined, entry: KvEditorEntry | undefined): TextureAssetMatch | undefined {
 		const normalized = textureName.trim().replace(/\\/g, '/');

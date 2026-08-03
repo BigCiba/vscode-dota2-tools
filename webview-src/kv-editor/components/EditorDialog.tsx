@@ -2,7 +2,7 @@
 import { For, Match, Show, Switch } from 'solid-js';
 import type { KvEditorV2ColumnOption } from '../../../src/types/kvEditorV2Shared';
 import type { DialogState } from '../types';
-import { validOptionColor } from '../uiUtils';
+import { resolveOptionColor } from '../uiUtils';
 import { Icon } from './Icon';
 import { ModalFormShell } from './ModalShell';
 
@@ -52,7 +52,7 @@ export function EditorDialog(props: { state: DialogState; error?: string; onChan
 						<div class="column-options-editor">
 							<div class="column-option-head"><span>颜色</span><span>保存值</span><span>显示文本</span><span>说明</span><span>操作</span></div>
 							<For each={state().options} fallback={<div class="column-options-empty">暂无选项。点击下方按钮添加。</div>}>{(option, index) => <div class="column-option-row">
-								<label class="option-color" title="选项颜色"><input type="color" value={validOptionColor(option.color)} onInput={(event) => updateColumnOption(index(), { color: event.currentTarget.value })} /><span style={{ background: option.color || 'transparent' }} /></label>
+								<label class="option-color" title="选项颜色"><input type="color" value={resolveOptionColor(option.value, option.color)} onInput={(event) => updateColumnOption(index(), { color: event.currentTarget.value })} /><span style={{ background: resolveOptionColor(option.value, option.color) }} /></label>
 								<input autofocus={index() === 0} value={option.value} placeholder="例如 passive" aria-label={`选项 ${index() + 1} 的保存值`} onInput={(event) => updateColumnOption(index(), { value: event.currentTarget.value })} />
 								<input value={option.label} placeholder="留空则显示保存值" aria-label={`选项 ${index() + 1} 的显示文本`} onInput={(event) => updateColumnOption(index(), { label: event.currentTarget.value })} />
 								<input value={option.description ?? ''} placeholder="可选说明，可被搜索" aria-label={`选项 ${index() + 1} 的说明`} onInput={(event) => updateColumnOption(index(), { description: event.currentTarget.value })} />
@@ -71,7 +71,7 @@ export function EditorDialog(props: { state: DialogState; error?: string; onChan
 						<div class="fill-summary">
 							<div><span>源单元格</span><strong>{state().source.columnKey} · {state().source.rowId}</strong><code>{state().sourceValue || '(空值)'}</code></div>
 							<Icon name="arrow-right" />
-							<div><span>目标范围</span><strong>{state().targetRowIds.length} 行 · 同一列</strong><small title={state().targetRowIds.join(', ')}>{state().targetRowIds.slice(0, 4).join(', ')}{state().targetRowIds.length > 4 ? ` 等 ${state().targetRowIds.length} 行` : ''}</small></div>
+							<div><span>目标范围</span><strong>{state().targetCells.length} 个单元格</strong><small title={state().targetCells.map((cell) => `${cell.columnKey} · ${cell.rowId}`).join(', ')}>{state().targetCells.slice(0, 4).map((cell) => `${cell.columnKey} · ${cell.rowId}`).join(', ')}{state().targetCells.length > 4 ? ` 等 ${state().targetCells.length} 个单元格` : ''}</small></div>
 						</div>
 						<fieldset class="fill-mode-grid"><legend>选择填充规则</legend>
 							<label classList={{ selected: state().mode === 'copy' }}><input autofocus type="radio" name="fill-mode" checked={state().mode === 'copy'} onChange={() => update({ mode: 'copy' })} /><Icon name="copy" /><span><strong>复制相同值</strong><small>每个目标单元格都写入源值</small></span></label>
@@ -104,6 +104,6 @@ function dialogTitle(state: DialogState): string {
 function dialogSubmitLabel(state: DialogState): string {
 	if (state.kind === 'localizationAction') {return state.action === 'import' ? '确认导入' : '确认导出';}
 	if (state.kind === 'deleteColumn' || state.kind === 'deleteRows') {return '删除';}
-	if (state.kind === 'fill') {return `填充 ${state.targetRowIds.length} 个单元格`;}
+	if (state.kind === 'fill') {return `填充 ${state.targetCells.length} 个单元格`;}
 	return '保存';
 }

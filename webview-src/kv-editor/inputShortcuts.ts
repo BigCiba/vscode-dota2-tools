@@ -1,5 +1,6 @@
 import { isNativeTextShortcut } from '../../src/kv-editor-v2/inputShortcuts';
-export { isNativeTextShortcut } from '../../src/kv-editor-v2/inputShortcuts';
+export { isNativeTextShortcut, resolveRowSelectionShortcut } from '../../src/kv-editor-v2/inputShortcuts';
+export type { RowSelectionShortcut } from '../../src/kv-editor-v2/inputShortcuts';
 
 export type TextInputElement = HTMLInputElement | HTMLTextAreaElement;
 

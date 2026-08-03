@@ -1,6 +1,6 @@
 :root { color: var(--vscode-foreground); background: var(--vscode-editor-background); font-family: var(--vscode-font-family); font-synthesis: none; }
 * { box-sizing: border-box; }
-body { min-width: 320px; margin: 0; background: var(--vscode-editor-background); }
+body { min-width: 320px; margin: 0; padding: 0; background: var(--vscode-editor-background); }
 button, input { font: inherit; }
 button { color: inherit; }
 .page-shell { min-height: 100vh; }
