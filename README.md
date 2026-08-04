@@ -60,7 +60,7 @@ NaN
 - 工作区 KV 编辑器设置：`.vscode/kv_editor_setting.json`
   - 保存列选项覆盖、公式、列公式、列描述、本地化映射等。
 - 用户布局设置：`.vscode/kv_editor_user_setting.json`
-  - 保存列宽、紧凑模式、本地化显示模式等个人偏好。
+  - 保存列宽、本地化显示模式等个人偏好。
 
 #### 公式说明
 

@@ -351,14 +351,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 			if (message.type === 'openTextEditor') {
 				void this.handleOpenTextEditor(document);
 			}
-			if (message.type === 'saveCompactMode') {
-				const saveMessage: KvEditorSaveCompactModeMessage | undefined = message.payload;
-				this.handleSaveCompactMode(document, saveMessage).catch((error: unknown) => {
-					const messageText = error instanceof Error ? error.message : String(error);
-					vscode.window.showErrorMessage(messageText);
-				});
-				return;
-			}
 			if (message.type === 'saveLocalizedMode') {
 				const saveMessage: KvEditorSaveLocalizedModeMessage | undefined = message.payload;
 				this.handleSaveLocalizedMode(document, saveMessage).catch((error: unknown) => {
@@ -495,8 +487,7 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 			}
 			if (message.type === 'updatePreference') {
 				try {
-					if (message.preference.type === 'compactMode') {await this.handleSaveCompactMode(document, { compactMode: message.preference.value });}
-					else if (message.preference.type === 'localizedMode') {await this.handleSaveLocalizedMode(document, { localizedMode: message.preference.value });}
+					if (message.preference.type === 'localizedMode') {await this.handleSaveLocalizedMode(document, { localizedMode: message.preference.value });}
 					else if (message.preference.type === 'frozenColumn') {await this.handleSaveFrozenColumns(document, { frozenColumns: message.preference.value ?? null });}
 					else {await this.handleSaveColumnWidths(document, { widths: message.preference.value });}
 					postSnapshot('documentChanged');
@@ -558,7 +549,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 			error: payload.error,
 			columnOptions: payload.columnOptions,
 			columnWidths: payload.columnLayout?.columnWidths ?? {},
-			compactMode: payload.compactMode ?? false,
 			localizedMode: payload.localizedMode ?? false,
 			frozenColumn: payload.frozenColumns,
 			columnDescriptions: payload.columnDescriptions ?? {},
@@ -1043,9 +1033,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 		const columnFormulas = workspaceFolder && documentKey
 			? this.buildColumnFormulaPayload(workspaceFolder, documentKey)
 			: undefined;
-
-		// 加载精简模式设置
-		let compactMode: boolean | undefined;
 		let localizedMode: boolean | undefined;
 		let frozenColumns: string | undefined;
 		let columnDescriptions: Record<string, { label?: string; description?: string; }> | undefined;
@@ -1054,9 +1041,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 		if (workspaceFolder && documentKey) {
 			const userSettings = this.getUserSettings(workspaceFolder);
 			const fileSettings = userSettings.files[documentKey];
-			if (fileSettings && typeof fileSettings.compactMode === 'boolean') {
-				compactMode = fileSettings.compactMode;
-			}
 			if (fileSettings && typeof fileSettings.localizedMode === 'boolean') {
 				localizedMode = fileSettings.localizedMode;
 			}
@@ -1107,7 +1091,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 			scriptSupport: this.buildScriptSupport(folderType),
 			formulas,
 			columnFormulas,
-			compactMode,
 			localizedMode,
 			columnDescriptions,
 			frozenColumns,
@@ -4641,33 +4624,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 		this.writeUserSettings(workspaceFolder, settings);
 	}
 
-	private async handleSaveCompactMode(
-		document: vscode.TextDocument,
-		message?: KvEditorSaveCompactModeMessage,
-	): Promise<void> {
-		if (!message || typeof message !== 'object' || typeof message.compactMode !== 'boolean') {
-			return;
-		}
-		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-		if (!workspaceFolder) {
-			return;
-		}
-		const documentKey = this.getDocumentSettingsKey(document.uri, workspaceFolder);
-		if (!documentKey) {
-			return;
-		}
-
-		const settings = this.copyUserSettings(this.getUserSettings(workspaceFolder));
-		const existingEntry = settings.files[documentKey];
-
-		// 更新精简模式设置
-		settings.files[documentKey] = existingEntry
-			? { ...existingEntry, compactMode: message.compactMode }
-			: { compactMode: message.compactMode };
-
-		this.writeUserSettings(workspaceFolder, settings);
-	}
-
 	private async handleSaveLocalizedMode(
 		document: vscode.TextDocument,
 		message?: KvEditorSaveLocalizedModeMessage,
@@ -4833,7 +4789,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 		for (const [key, value] of Object.entries(source.files) as Array<[string, KvEditorUserFileSettings]>) {
 			files[key] = {
 				columnWidths: value.columnWidths ? { ...value.columnWidths } : undefined,
-				compactMode: value.compactMode,
 				localizedMode: value.localizedMode,
 				frozenColumns: value.frozenColumns,
 			};
@@ -4875,16 +4830,12 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 				}
 				const recordEntry = entry as Record<string, unknown>;
 				const columnWidths = this.sanitizeColumnWidthMap(recordEntry.columnWidths);
-				const compactMode = typeof recordEntry.compactMode === 'boolean' ? recordEntry.compactMode : undefined;
 				const localizedMode = typeof recordEntry.localizedMode === 'boolean' ? recordEntry.localizedMode : undefined;
 				const frozenColumns = this.sanitizeFrozenColumn(recordEntry.frozenColumns);
 
 				const fileEntry: KvEditorUserFileSettings = {};
 				if (columnWidths && Object.keys(columnWidths).length) {
 					fileEntry.columnWidths = columnWidths;
-				}
-				if (compactMode !== undefined) {
-					fileEntry.compactMode = compactMode;
 				}
 				if (localizedMode !== undefined) {
 					fileEntry.localizedMode = localizedMode;
@@ -4949,11 +4900,10 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 		const files: Record<string, KvEditorUserFileSettings> = {};
 		for (const [key, value] of Object.entries(settings.files) as Array<[string, KvEditorUserFileSettings]>) {
 			const hasColumnWidths = value.columnWidths && Object.keys(value.columnWidths).length > 0;
-			const hasCompactMode = typeof value.compactMode === 'boolean';
 			const hasLocalizedMode = typeof value.localizedMode === 'boolean';
 			const hasFrozenColumns = typeof value.frozenColumns === 'string' && value.frozenColumns.length > 0;
 
-			if (!hasColumnWidths && !hasCompactMode && !hasLocalizedMode && !hasFrozenColumns) {
+			if (!hasColumnWidths && !hasLocalizedMode && !hasFrozenColumns) {
 				continue;
 			}
 
@@ -4967,10 +4917,6 @@ export class KvEditorProvider implements vscode.CustomTextEditorProvider {
 						return acc;
 					}, {});
 				fileEntry.columnWidths = sorted;
-			}
-
-			if (hasCompactMode) {
-				fileEntry.compactMode = value.compactMode;
 			}
 
 			if (hasLocalizedMode) {
@@ -6453,7 +6399,6 @@ interface KvEditorPayload {
 	scriptSupport: KvEditorScriptSupport;
 	formulas: KvEditorFormulaPayloadEntry[];
 	columnFormulas?: Record<string, string>; // columnKey -> formula
-	compactMode?: boolean;
 	localizedMode?: boolean;
 	columnDescriptions?: Record<string, { label?: string; description?: string; }>;
 	frozenColumns?: string;
@@ -6687,10 +6632,6 @@ interface KvEditorSaveColumnWidthsMessage {
 	widths: Record<string, number>;
 }
 
-interface KvEditorSaveCompactModeMessage {
-	compactMode: boolean;
-}
-
 interface KvEditorSaveFrozenColumnsMessage {
 	frozenColumns: string | null;
 }
@@ -6713,7 +6654,6 @@ interface KvEditorUserSettings {
 
 interface KvEditorUserFileSettings {
 	columnWidths?: Record<string, number>;
-	compactMode?: boolean;
 	localizedMode?: boolean;
 	frozenColumns?: string;
 }

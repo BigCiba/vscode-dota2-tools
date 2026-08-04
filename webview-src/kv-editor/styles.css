@@ -100,8 +100,6 @@ main { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 
 .empty { margin: 24px; padding: 18px; border: 1px solid var(--vscode-panel-border); }
 .empty.error { color: var(--vscode-errorForeground); }
-.compact .grid-header { height: 28px; font-size: 11px; }
-.compact .grid.filters-visible .grid-header { height: 49px; }
 .modal-backdrop { position: fixed; z-index: var(--kv-z-modal); inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.45); }
 .modal { display: grid; grid-template-rows: auto minmax(120px, 1fr) auto; width: min(850px, 95vw); max-height: 80vh; border: 1px solid var(--vscode-widget-border); box-shadow: 0 8px 24px var(--vscode-widget-shadow); background: var(--vscode-editorWidget-background); }
 .modal header, .modal footer { display: flex; align-items: center; gap: 8px; padding: 10px; border-bottom: 1px solid var(--vscode-panel-border); }
@@ -128,7 +126,6 @@ main { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 .checkbox-field { display: flex; align-items: center; gap: 7px; width: fit-content; }
 .checkbox-field input { width: 16px; height: 16px; margin: 0; }
 .form-row { display: flex; align-items: end; gap: 20px; }
-.compact-field { width: 120px; }
 .dialog-hint, .confirm-body p { margin: 0; color: var(--vscode-descriptionForeground); line-height: 1.5; }
 .dialog-error { padding: 7px 9px; border: 1px solid var(--vscode-inputValidation-errorBorder, var(--vscode-errorForeground)); color: var(--vscode-inputValidation-errorForeground, var(--vscode-errorForeground)); background: var(--vscode-inputValidation-errorBackground); }
 .dialog-hint code, .impact-summary code { color: var(--vscode-textLink-foreground); font-family: var(--vscode-editor-font-family); }
@@ -629,7 +626,7 @@ body.dragging-fill-handle, body.dragging-fill-handle .grid, body.dragging-fill-h
  * into the next column after horizontal scrolling. */
 .virtual-rows .row-grid > .frozen.range-selected { position: sticky; z-index: var(--kv-z-frozen-cell); background: linear-gradient(var(--kv-accent-soft), var(--kv-accent-soft)), var(--kv-canvas); }
 .virtual-rows .row-grid > .frozen.range-selected.selected, .virtual-rows .row-grid > .frozen.range-selected.editing { z-index: var(--kv-z-frozen-active); }
-.cell.range-selected.selected { outline: none; }
+.cell.range-selected.selected { outline: none; box-shadow: none; }
 .cell.range-selected::after { content: ''; position: absolute; z-index: 3; inset: 0; pointer-events: none; border: 0 solid var(--kv-accent); }
 .cell.range-top::after { border-top-width: 2px; }
 .cell.range-right::after { border-right-width: 2px; }
@@ -638,3 +635,44 @@ body.dragging-fill-handle, body.dragging-fill-handle .grid, body.dragging-fill-h
 .cell.range-anchor { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kv-accent) 55%, transparent); }
 .fill-handle { position: absolute; z-index: 6; right: 1px; bottom: 1px; width: 7px; height: 7px; padding: 0; border: 1px solid var(--kv-canvas); border-radius: 1px; background: var(--kv-accent); box-shadow: 0 0 0 1px var(--kv-accent); cursor: crosshair; }
 .fill-handle:hover { background: var(--vscode-focusBorder, var(--kv-accent)); }
+/* AbilityValues: operation-first structured editor. */
+.ability-column-guide, .ability-entry-row { grid-template-columns: 24px 26px minmax(125px, .75fr) minmax(170px, 1.15fr) minmax(150px, .9fr) 72px 116px; }
+.ability-entry-row { min-height: 39px; padding-inline: 5px 7px; }
+.ability-entry.expanded .ability-entry-row { background: linear-gradient(90deg, var(--kv-accent-soft), transparent 58%), var(--kv-surface-3); }
+.ability-entry-details { padding: 5px 8px 7px 55px; }
+.ability-kind { min-height: 25px; padding: 2px 6px; cursor: pointer; }
+.ability-kind:disabled { cursor: default; opacity: .72; }
+.ability-kind:not(:disabled):hover, .ability-kind:not(:disabled):focus-visible { border-color: var(--kv-accent); color: var(--vscode-foreground); background: var(--kv-accent-soft); }
+.drag-handle, .record-drag-handle { display: grid; width: 22px; height: 24px; place-items: center; color: var(--vscode-descriptionForeground); cursor: grab; border-radius: 3px; }
+.drag-handle:hover, .drag-handle:focus-visible, .record-drag-handle:hover, .record-drag-handle:focus-visible { color: var(--vscode-foreground); background: var(--vscode-toolbar-hoverBackground); outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
+.drag-handle:active, .record-drag-handle:active { cursor: grabbing; }
+.ability-entry.dragging, .modifier-row.dragging, .record-ability-entry.dragging, .record-modifier-row.dragging { opacity: .48; }
+.modifier-list { gap: 4px; padding: 5px 6px; border: 0; background: transparent; }
+.modifier-row { grid-template-columns: 22px 22px minmax(130px, .8fr) minmax(180px, 1.4fr) 78px; min-height: 31px; gap: 4px; }
+.modifier-actions { grid-template-columns: repeat(3, 24px); }
+.ability-entry-actions { gap: 2px; }
+.ability-entry-actions .icon-button { width: 26px; }
+.record-ability-main { grid-template-columns: 22px 23px minmax(110px,1fr) minmax(135px,1.25fr) minmax(150px,1.35fr) 96px; }
+.record-modifier-row { grid-template-columns: 20px 21px minmax(125px,1fr) minmax(170px,1.4fr) 72px; }
+.record-modifier-row > div { grid-template-columns: repeat(3,22px); }
+.record-modifier-row > span { border-right: 1px solid var(--vscode-panel-border); }
+.record-ability-head span { display: inline-flex; align-items: center; gap: 4px; }
+@media (max-width: 820px) {
+	.ability-column-guide, .ability-entry-row { grid-template-columns: 24px 26px minmax(110px, .8fr) minmax(140px, 1.2fr) 54px; }
+	.ability-column-guide > span:nth-child(5), .ability-column-guide > span:nth-child(6), .ability-column-guide > span:nth-child(7), .ability-entry-row > .ability-description, .ability-entry-row > .ability-kind, .ability-entry-actions { display: none; }
+	.ability-entry-details { padding-left: 8px; }
+}
+/* Keep the record navigator independently scrollable inside the editor viewport. */
+.record-index { min-height: 0; overflow: hidden; }
+.record-id-list { min-height: 0; max-height: 100%; overscroll-behavior: contain; scrollbar-gutter: stable; }/* The range perimeter is the sole selection indicator; anchors never redraw an internal edge. */
+.cell.range-anchor { box-shadow: none; }
+@media (max-width: 900px) {
+	.record-ability-main { grid-template-columns: 22px 23px minmax(100px,1fr) minmax(120px,1fr) 96px; }
+	.record-ability-main > input:nth-of-type(3) { grid-column: 3 / 5; }
+}
+
+/* Texture sources are grouped once, rather than repeating a tag on every icon. */
+.texture-grid-window { display: block; padding: 0; }
+.texture-icon-row { position: absolute; right: 0; left: 0; display: grid; gap: 4px; padding: 0 8px; }
+.texture-source-divider { position: absolute; right: 10px; left: 10px; display: flex; align-items: center; gap: 8px; color: var(--vscode-descriptionForeground); font-size: 10px; font-weight: 600; letter-spacing: .04em; }
+.texture-source-divider::after { height: 1px; flex: 1; background: var(--kv-border); content: ''; }

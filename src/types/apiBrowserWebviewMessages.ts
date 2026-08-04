@@ -77,6 +77,7 @@ export type ApiBrowserHostMessage =
 	| { type: 'navigate'; selection: ApiBrowserSelection; }
 	| { type: 'preferencesChanged'; listLocation: ApiBrowserListLocation; }
 	| { type: 'saveComplete'; entry: ApiBrowserEntry; }
+	| { type: 'saveFailed'; entryId: string; message: string; }
 	| { type: 'copyComplete'; text: string; }
 	| { type: 'catalogAction'; source: ApiBrowserSource; action: 'setQuery' | 'collapse' | 'overview'; query?: string; };
 

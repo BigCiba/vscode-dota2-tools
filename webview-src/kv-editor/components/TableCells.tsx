@@ -100,10 +100,12 @@ export interface CellProps {
 export function Cell(props: CellProps) {
 	const address = { rowId: props.rowId, columnKey: props.column };
 	return <div role="gridcell" aria-label={`${props.column} ${props.value}`} title={`${props.value || '(空值)'} — 双击、Enter 或 F2 编辑`} classList={{ cell: true, selected: props.selected, editing: props.editing, frozen: props.frozenLeft !== undefined, 'frozen-last': props.frozenLast, 'range-selected': props.range?.selected, 'range-anchor': props.range?.anchor, 'range-top': props.range?.top, 'range-right': props.range?.right, 'range-bottom': props.range?.bottom, 'range-left': props.range?.left, 'range-handle': props.range?.handle }} style={{ left: props.frozenLeft !== undefined ? `${props.frozenLeft}px` : undefined }} data-row-id={props.rowId} data-column={props.column} tabindex={props.tabIndex} onPointerDown={(event) => {
-		if (!(event.target as Element).closest('.cell-editor, .fill-handle') && props.onPointerSelect?.(event, address)) {props.onBeginEdit(address, props.value, true);}
+		if (!(event.target as Element).closest('.cell-editor, .fill-handle')) {props.onPointerSelect?.(event, address);}
 	}} onClick={(event) => {
 		if ((event.target as Element).closest('.cell-editor')) {return;}
 		if (event.detail === 0) {props.onSelect(address);}
+	}} onDblClick={(event) => {
+		if (!(event.target as Element).closest('.cell-editor, .fill-handle')) {props.onBeginEdit(address, props.value, false);}
 	}} onKeyDown={(event) => {
 		if (event.key === 'Enter' || event.key === ' ' || event.key === 'F2') {event.preventDefault(); props.onBeginEdit(address, props.value, true); return;}
 		if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {event.preventDefault(); props.onBeginEdit(address, event.key, false);}

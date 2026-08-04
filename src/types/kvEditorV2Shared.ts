@@ -13,7 +13,7 @@ export interface KvEditorV2Snapshot {
 	documentUri: string; documentVersion: number; fileName: string; documentKey?: string;
 	folderType: KvEditorFolderType; header: string; columns: string[]; rows: KvEditorV2Row[]; error?: string;
 	columnOptions: Record<string, KvEditorV2ColumnOptions>; columnWidths: Record<string, number>;
-	compactMode: boolean; localizedMode: boolean; frozenColumn?: string;
+	localizedMode: boolean; frozenColumn?: string;
 	columnDescriptions: Record<string, { label?: string; description?: string }>;
 	formulas: KvEditorV2Formula[]; columnFormulas: Record<string, string>;
 	texturePreviews: Record<string, { uri: string; kind: 'spell' | 'item'; source: 'extension' | 'addon'; fileName: string }>;
@@ -46,7 +46,6 @@ export interface KvEditorV2CommandEnvelope {
 	documentUri: string; baseVersion: number; command: KvEditorV2Command;
 }
 export type KvEditorV2Preference =
-	| { type: 'compactMode'; value: boolean }
 	| { type: 'localizedMode'; value: boolean }
 	| { type: 'frozenColumn'; value?: string }
 	| { type: 'columnWidths'; value: Record<string, number> };

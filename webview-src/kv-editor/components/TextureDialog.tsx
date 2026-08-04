@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention -- Solid components and CSS keys intentionally use framework-native names. */
 import { For, Show, createEffect, createMemo, createSignal, onCleanup, onMount } from 'solid-js';
 import type { KvEditorV2TextureHero, KvEditorV2TextureIcon } from '../../../src/types/kvEditorV2Shared';
-import { heroAttributeLabel, textureSourceLabel } from '../uiUtils';
+import { heroAttributeLabel } from '../uiUtils';
 import { Icon } from './Icon';
 import { ModalShell } from './ModalShell';
 
@@ -32,15 +32,35 @@ export function TextureDialog(props: TextureDialogProps) {
 	const activeHero = createMemo(() => props.heroes.find((hero) => hero.id === props.hero));
 	const itemMetrics = createMemo(() => displayMode() === 'icon' ? { width: 64, height: 66 } : { width: 112, height: 98 });
 	const gridColumns = createMemo(() => Math.max(1, Math.floor((gridWidth() - 16 + 4) / (itemMetrics().width + 4))));
-	const gridRange = createMemo(() => {
+	const gridLayout = createMemo(() => {
 		const columns = gridColumns();
-		const height = itemMetrics().height;
-		const rowCount = Math.ceil(props.icons.length / columns);
-		const startRow = Math.max(0, Math.floor(gridScrollTop() / height) - 3);
-		const endRow = Math.min(rowCount, Math.ceil((gridScrollTop() + gridHeight()) / height) + 3);
-		return { columns, rowCount, startRow, icons: props.icons.slice(startRow * columns, endRow * columns) };
+		const itemHeight = itemMetrics().height;
+		const rows: Array<
+			| { type: 'divider'; key: 'addon' | 'builtin'; label: string; top: number; height: number }
+			| { type: 'icons'; key: string; icons: KvEditorV2TextureIcon[]; top: number; height: number }
+		> = [];
+		let top = 0;
+		const groups = [
+			{ key: 'addon' as const, label: '项目资源', icons: props.icons.filter((icon) => icon.source === 'addon') },
+			{ key: 'builtin' as const, label: '内置资源', icons: props.icons.filter((icon) => icon.source !== 'addon') },
+		];
+		for (const group of groups) {
+			if (!group.icons.length) {continue;}
+			rows.push({ type: 'divider', key: group.key, label: group.label, top, height: 28 });
+			top += 28;
+			for (let index = 0; index < group.icons.length; index += columns) {
+				rows.push({ type: 'icons', key: group.key + '-' + String(index), icons: group.icons.slice(index, index + columns), top, height: itemHeight });
+				top += itemHeight;
+			}
+		}
+		return { columns, rows, height: top };
 	});
-	const heroGroups = createMemo(() => {
+	const visibleGridRows = createMemo(() => {
+		const overscan = itemMetrics().height * 3;
+		const start = Math.max(0, gridScrollTop() - overscan);
+		const end = gridScrollTop() + gridHeight() + overscan;
+		return gridLayout().rows.filter((row) => row.top + row.height >= start && row.top <= end);
+	});	const heroGroups = createMemo(() => {
 		const labels: Record<string, string> = { strength: '力量', agility: '敏捷', intelligence: '智力', universal: '全才', all: '全才', other: '其他' };
 		const groups = new Map<string, KvEditorV2TextureHero[]>();
 		for (const hero of props.heroes) {
@@ -125,13 +145,17 @@ export function TextureDialog(props: TextureDialogProps) {
 				<Show when={!props.loading} fallback={<div class="texture-status"><Icon name="loading" spin />正在扫描并加载纹理…</div>}>
 					<Show when={!props.error} fallback={<div class="texture-status error" role="alert">{props.error}</div>}>
 						<Show when={props.icons.length} fallback={<div class="texture-status">没有匹配的纹理</div>}>
-							<div class="texture-grid-spacer" style={{ height: `${gridRange().rowCount * itemMetrics().height}px` }}>
-								<div class="texture-grid-window" classList={{ detailed: displayMode() === 'detail' }} style={{ transform: `translateY(${gridRange().startRow * itemMetrics().height}px)`, 'grid-template-columns': `repeat(${gridRange().columns}, minmax(0, 1fr))` }}>
-									<For each={gridRange().icons}>{(icon) => <button class="texture-option" classList={{ detailed: displayMode() === 'detail' }} aria-label={icon.label || icon.textureName} title={`${icon.textureName}\n${icon.relativePath}\n${textureSourceLabel(icon.source)}`} onClick={() => props.onChoose(icon)}>
-										<img src={icon.uri} width="48" height="48" alt="" />
-										<Show when={displayMode() === 'detail'}><span>{icon.label || icon.textureName}</span></Show>
-										<small classList={{ addon: icon.source === 'addon' }}>{icon.source === 'addon' ? '项目' : ''}</small>
-									</button>}</For>
+							<div class="texture-grid-spacer" style={{ height: String(gridLayout().height) + 'px' }}>
+								<div class="texture-grid-window">
+									<For each={visibleGridRows()}>{(row) => row.type === 'divider'
+										? <div class="texture-source-divider" style={{ top: String(row.top) + 'px', height: String(row.height) + 'px' }}><span>{row.label}</span></div>
+										: <div class="texture-icon-row" style={{ top: String(row.top) + 'px', height: String(row.height) + 'px', 'grid-template-columns': 'repeat(' + String(gridLayout().columns) + ', minmax(0, 1fr))' }}>
+											<For each={row.icons}>{(icon) => <button class="texture-option" classList={{ detailed: displayMode() === 'detail' }} aria-label={icon.label || icon.textureName} title={icon.textureName + '\n' + icon.relativePath} onClick={() => props.onChoose(icon)}>
+												<img src={icon.uri} width="48" height="48" alt="" />
+												<Show when={displayMode() === 'detail'}><span>{icon.label || icon.textureName}</span></Show>
+											</button>}</For>
+										</div>}
+									</For>
 								</div>
 							</div>
 						</Show>

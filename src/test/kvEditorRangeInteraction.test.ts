@@ -15,9 +15,9 @@ suite('KvEditor range interaction contract', () => {
 		assert.match(appSource, /Math\.hypot\(event\.clientX - start\.x, event\.clientY - start\.y\) < 4/u);
 	});
 
-	test('activates every double-click action from a controlled second pointer press', () => {
+	test('keeps native double-click editing available alongside range selection', () => {
 		assert.match(appSource, /previous\?\.key === key && time - previous\.time <= 450/u);
-		assert.match(cellSource, /onPointerSelect\?\.\(event, address\)\) \{props\.onBeginEdit/u);
+		assert.match(cellSource, /onDblClick=\{\(event\) => \{[^}]*props\.onBeginEdit\(address, props\.value, false\)/u);
 		assert.match(appSource, /beginCellPointerSelection\(event, \{ rowId: row\.rowId, columnKey: column \}\)\) \{openAbilityValues/u);
 		assert.match(appSource, /beginCellPointerSelection\(event, \{ rowId: row\.rowId, columnKey: column \}\)\) \{openTexturePicker/u);
 		assert.match(appSource, /beginCellPointerSelection\(event, \{ rowId: row\.rowId, columnKey: column \}\)\) \{post\(\{ protocolVersion: 2, type: 'openTarget', target: 'scriptFile'/u);

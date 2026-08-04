@@ -88,13 +88,17 @@ export class DotaApiNote {
 		});
 	}
 	// 操作数据库
-	action(sql: string, callback?: (results: any) => {} | void) {
+	action(sql: string, callback?: (results: any) => {} | void): void;
+	action(sql: string, values: any[], callback?: (results: any) => {} | void): void;
+	action(sql: string, valuesOrCallback?: any[] | ((results: any) => {} | void), callback?: (results: any) => {} | void): void {
 		let connection = mysql.createConnection(this.config);
+		const values = Array.isArray(valuesOrCallback) ? valuesOrCallback : [];
+		const resultCallback = typeof valuesOrCallback === 'function' ? valuesOrCallback : callback;
 		connection.connect();
-		connection.query(sql, function (error, results, fields) {
+		connection.query(sql, values, function (error, results) {
 			if (error) { throw error; };
-			if (callback) {
-				callback(results);
+			if (resultCallback) {
+				resultCallback(results);
 			}
 		});
 		connection.end();
@@ -223,14 +227,16 @@ export class DotaApiNote {
 			}
 			this.api_note[funcInfo.class][funcInfo.function] = this.formatLuaFunction(funcInfo);
 		}
-		let col_class = `class='${funcInfo.class}'`;
-		let col_return = `\`return\`='${funcInfo.return}'`;
-		let col_description = funcInfo.description == undefined ? `description=''` : `description='${funcInfo.description?.replace(/\n/g, '').replace(/\t/g, '\\t').replace(/'/g, '`')}'`;
-		let col_example = funcInfo.example == undefined ? `example=''` : `example='${funcInfo.example?.replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/'/g, '`')}'`;
-		let col_params = `params='${JSON.stringify(funcInfo.params)}'`;
-		let sql = `UPDATE function SET ${col_class}, ${col_description}, ${col_return}, ${col_example}, ${col_params} WHERE (class='${funcInfo.class}' AND function='${funcInfo.function}');`;
-
-		this.action(sql);
+		const sql = 'UPDATE `function` SET `class`=?, `description`=?, `return`=?, `example`=?, `params`=? WHERE (`class`=? AND `function`=?);';
+		this.action(sql, [
+			funcInfo.class ?? '',
+			funcInfo.description ?? '',
+			funcInfo.return ?? '',
+			funcInfo.example ?? '',
+			JSON.stringify(funcInfo.params ?? {}),
+			funcInfo.class ?? '',
+			funcInfo.function ?? '',
+		]);
 	}
 	// 更新数据库常量注释
 	updataEnumNote(enumInfo: LuaEnum): void {
@@ -240,32 +246,32 @@ export class DotaApiNote {
 			}
 			this.api_note[enumInfo.class][enumInfo.name] = this.formatLuaEnum(enumInfo);
 		}
-		let col_class = `class='${enumInfo.class}'`;
-		let col_description = enumInfo.description == undefined ? `description=''` : `description='${enumInfo.description?.replace(/\n/g, '').replace(/\t/g, '\\t').replace(/'/g, '`')}'`;
-		let col_description_lite = enumInfo.description_lite == undefined ? `description_lite=''` : `description_lite='${enumInfo.description_lite?.replace(/\n/g, '').replace(/\t/g, '\\t').replace(/'/g, '`')}'`;
-		let col_example = enumInfo.example == undefined ? `example=''` : `example='${enumInfo.example?.replace(/\n/g, '\\n').replace(/\t/g, '\\t')}'`;
-		let sql = `UPDATE enum SET ${col_class}, ${col_description}, ${col_example}, ${col_description_lite} WHERE (class='${enumInfo.class}' AND name='${enumInfo.name}');`;
-
-		this.action(sql);
+		const sql = 'UPDATE `enum` SET `class`=?, `description`=?, `example`=?, `description_lite`=? WHERE (`class`=? AND `name`=?);';
+		this.action(sql, [
+			enumInfo.class ?? '',
+			enumInfo.description ?? '',
+			enumInfo.example ?? '',
+			enumInfo.description_lite ?? '',
+			enumInfo.class ?? '',
+			enumInfo.name ?? '',
+		]);
 	}
 	// 更新数据库CSS注释
 	updataCssNote(cssProperty: CssProperty): void {
-		let sql = 'SELECT * FROM `css_property` WHERE class="' + cssProperty.class + '"';
-		this.action('SELECT * FROM `css_property` WHERE class="' + cssProperty.class + '"', (result) => {
+		this.action('SELECT * FROM `css_property` WHERE `class`=?', [cssProperty.class ?? ''], (result) => {
+			const values = [
+				cssProperty.class ?? '',
+				JSON.stringify(cssProperty.value ?? {}),
+				cssProperty.description ?? '',
+				cssProperty.example ?? '',
+			];
 			if (result.length == 0) {
-				let col_class = `'${cssProperty.class}'`;
-				let col_description = cssProperty.description == undefined ? `''` : `'${cssProperty.description?.replace(/\n/g, '').replace(/\t/g, '\\t').replace(/'/g, '`')}'`;
-				let col_value = cssProperty.value == undefined ? `''` : `'${JSON.stringify(cssProperty.value)}'`;
-				let col_example = cssProperty.example == undefined ? `''` : `'${cssProperty.example?.replace(/\n/g, '\\n').replace(/\t/g, '\\t')}'`;
-				let sql = `INSERT INTO css_property VALUES (${col_class}, ${col_value}, ${col_description}, ${col_example});`;
-				this.action(sql);
+				this.action('INSERT INTO `css_property` (`class`, `value`, `description`, `example`) VALUES (?, ?, ?, ?);', values);
 			} else if (result.length > 0) {
-				let col_class = `class='${cssProperty.class}'`;
-				let col_description = cssProperty.description == undefined ? `description=''` : `description='${cssProperty.description?.replace(/\n/g, '').replace(/\t/g, '\\t').replace(/'/g, '`')}'`;
-				let col_value = cssProperty.value == undefined ? `value=''` : `value='${JSON.stringify(cssProperty.value)}'`;
-				let col_example = cssProperty.example == undefined ? `example=''` : `example='${cssProperty.example?.replace(/\n/g, '\\n').replace(/\t/g, '\\t')}'`;
-				let sql = `UPDATE css_property SET ${col_class}, ${col_description}, ${col_example}, ${col_value} WHERE class='${cssProperty.class}';`;
-				this.action(sql);
+				this.action(
+					'UPDATE `css_property` SET `class`=?, `value`=?, `description`=?, `example`=? WHERE `class`=?;',
+					[...values, cssProperty.class ?? ''],
+				);
 			}
 		});
 	}

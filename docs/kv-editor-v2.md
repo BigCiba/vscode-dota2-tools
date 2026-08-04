@@ -36,7 +36,7 @@ Reopen the KV file after changing the setting. Set the value back to
 V2 supports cell and row selection, Shift/Ctrl row selection, keyboard
 navigation, filters, virtual scrolling, row and column insertion/deletion,
 drag reordering, row copy/paste, frozen columns, column widths/descriptions,
-single and multi-select options, compact mode, and localized display.
+single and multi-select options and localized display.
 
 The fill action supports copy, arithmetic sequence, geometric sequence, and
 safe-formula sequence modes. The complete fill is submitted as one command and

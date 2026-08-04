@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { DotaApiNote } from '../Class/DotaApiNote';
+import { JavaScriptApiNoteStore } from '../Class/JavaScriptApiNoteStore';
 import { showStatusBarMessage } from '../module/statusBar';
 import type {
 	ApiBrowserCatalog,
@@ -44,6 +45,8 @@ export class ApiBrowserPanel {
 	private pendingSelection: ApiBrowserSelection | undefined;
 	private readonly readyWebviews = new Set<vscode.Webview>();
 	private readonly jsApiData: Record<string, JsApiRecord>;
+	private readonly javascriptApiNotes: JavaScriptApiNoteStore;
+	private readonly javascriptApiNotesReady: Promise<void>;
 	private listLocation: ApiBrowserListLocation;
 
 	constructor(
@@ -54,6 +57,13 @@ export class ApiBrowserPanel {
 			path.join(context.extensionPath, 'resource', 'cl_panorama_script_help_2.json'),
 			'utf-8',
 		));
+		this.javascriptApiNotes = new JavaScriptApiNoteStore(dotaApiNote.config);
+		this.javascriptApiNotesReady = this.javascriptApiNotes.initialize().then(() => {
+			this.refreshCatalog();
+		}).catch((error: unknown) => {
+			console.error('[ApiBrowser] Failed to initialize JavaScript documentation storage.', error);
+			void vscode.window.showWarningMessage('JavaScript API 文档存储初始化失败，当前暂时只能浏览。');
+		});
 		this.listLocation = context.globalState.get<ApiBrowserListLocation>(listLocationStateKey, 'sidebar');
 		context.subscriptions.push(vscode.window.registerWebviewViewProvider(
 			'dota2UnifiedApiExplorer',
@@ -130,6 +140,7 @@ export class ApiBrowserPanel {
 		message: ApiBrowserWebviewMessage,
 	): Promise<void> {
 		if (message.type === 'ready') {
+			await this.javascriptApiNotesReady;
 			if (surface === 'sidebar') {
 				await vscode.commands.executeCommand('setContext', 'dota2tools.apiBrowser.source', message.source);
 			}
@@ -183,16 +194,38 @@ export class ApiBrowserPanel {
 		}
 
 		if (message.type === 'saveEntry') {
-			const savedEntry = this.saveEntry(message.entry);
-			for (const readyWebview of this.readyWebviews) {
-				void readyWebview.postMessage({ type: 'saveComplete', entry: savedEntry });
+			try {
+				const savedEntry = await this.saveEntry(message.entry);
+				for (const readyWebview of this.readyWebviews) {
+					void readyWebview.postMessage({ type: 'saveComplete', entry: savedEntry });
+				}
+				showStatusBarMessage(`已保存：${savedEntry.name}`);
+			} catch (error) {
+				const errorMessage = error instanceof Error ? error.message : String(error);
+				console.error('[ApiBrowser] Failed to save API documentation.', error);
+				await webview.postMessage({ type: 'saveFailed', entryId: message.entry.id, message: errorMessage });
 			}
-			showStatusBarMessage(`已保存：${savedEntry.name}`);
 		}
 	}
 
-	private saveEntry(entry: ApiBrowserEntry): ApiBrowserEntry {
-		if (!entry.editable) return entry;
+	private async saveEntry(entry: ApiBrowserEntry): Promise<ApiBrowserEntry> {
+		if (!entry.editable) {
+			return entry;
+		}
+
+		if (entry.source === 'javascript') {
+			if (entry.kind === 'property') {
+				return entry;
+			}
+			await this.javascriptApiNotes.save({
+				groupName: entry.groupName,
+				entryName: entry.name,
+				kind: entry.kind,
+				description: entry.description,
+				example: entry.example ?? '',
+			});
+			return entry;
+		}
 
 		if (entry.source === 'css') {
 			const value = Object.fromEntries((entry.cssValues ?? []).filter((item) => item.name.trim()).map((item) => [item.name, { description: item.description }]));
@@ -291,18 +324,21 @@ export class ApiBrowserPanel {
 				description: '',
 				entries: Object.entries(values).map(([entryKey, value]): ApiBrowserEntry => {
 					const name = value.Function || value.Enumerator || entryKey;
+					const entryKind = isEnum ? 'enum' : 'function';
+					const note = this.javascriptApiNotes.get(groupName, name, entryKind);
 					return {
-						id: createEntryId('javascript', isEnum ? 'enum' : 'function', groupName, name),
+						id: createEntryId('javascript', entryKind, groupName, name),
 						source: 'javascript',
-						kind: isEnum ? 'enum' : 'function',
+						kind: entryKind,
 						groupId,
 						groupName,
 						name,
 						signature: value.Signature || (isEnum ? `${name} = ${value.Value ?? ''}` : `${name}()`),
-						description: value.Description || '',
+						description: note?.description ?? value.Description ?? '',
 						value: value.Value,
 						params: [],
-						editable: false,
+						example: note?.example,
+						editable: this.javascriptApiNotes.isReady,
 					};
 				}),
 			};

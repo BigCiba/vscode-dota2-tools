@@ -125,7 +125,7 @@ export default function App() {
 		...Object.entries(filters()).filter(([, value]) => value.trim()).map(([column]) => column),
 		...Object.keys(valueFilters()),
 	]).size);
-	const gridHeaderHeight = createMemo(() => filtersVisible() ? (snapshot()?.compactMode ? 49 : 55) : (snapshot()?.compactMode ? 28 : 32));
+	const gridHeaderHeight = createMemo(() => filtersVisible() ? 55 : 32);
 	const range = createMemo(() => {
 		const bodyScrollTop = Math.max(0, scrollTop() - gridHeaderHeight());
 		const start = Math.max(0, Math.floor(bodyScrollTop / rowHeight) - overscan);
@@ -581,10 +581,10 @@ export default function App() {
 		const current = snapshot()?.localizationSettings ?? { enabled: false, language: 'schinese', filePath: '', autoUpdateOnOpen: false, mappings: [] };
 		showDialog({ kind: 'localization', enabled: current.enabled, language: current.language, filePath: current.filePath, autoUpdateOnOpen: current.autoUpdateOnOpen, mappings: current.mappings.map((mapping) => ({ ...mapping })) });
 	};
-	const openTexturePicker = (rowId: string, value: string) => {
+	const openTexturePicker = (rowId: string, _value: string) => {
 		const requestId = createRequestId();
 		setTextureTarget({ rowId, columnKey: 'AbilityTextureName' });
-		setTextureSearch(value);
+		setTextureSearch('');
 		setTextureHero('');
 		setTextureLoading(true);
 		setTextureError(undefined);
@@ -777,7 +777,7 @@ export default function App() {
 		onCleanup(() => { window.removeEventListener('message', receive); window.removeEventListener('blur', cancelCellPointerSelection); cancelCellPointerSelection(); viewportObserver?.disconnect(); });
 	});
 
-	return <main classList={{ compact: snapshot()?.compactMode }}>
+	return <main>
 		<header class="toolbar">
 			<div class="title">
 				<span class="title-eyebrow">KV 数据工作台</span>
@@ -788,11 +788,10 @@ export default function App() {
 				<div class="action-cluster view-switch" aria-label="编辑模式">
 					<span>模式</span>
 					<button classList={{ active: viewMode() === 'table' }} aria-pressed={viewMode() === 'table'} onClick={() => changeViewMode('table')}><Icon name="table" />表格</button>
-					<button classList={{ active: viewMode() === 'record' }} aria-pressed={viewMode() === 'record'} onClick={() => changeViewMode('record')}><Icon name="list-flat" />单条记录</button>
+					<button classList={{ active: viewMode() === 'record' }} aria-pressed={viewMode() === 'record'} onClick={() => changeViewMode('record')}><Icon name="list-flat" />记录编辑</button>
 				</div>
 				<div class="action-cluster" aria-label="显示">
 					<span>显示</span>
-					<button classList={{ active: snapshot()?.compactMode }} aria-pressed={Boolean(snapshot()?.compactMode)} onClick={() => updatePreference({ type: 'compactMode', value: !snapshot()?.compactMode })}><Icon name="list-tree" />紧凑</button>
 					<button classList={{ active: snapshot()?.localizedMode }} aria-pressed={Boolean(snapshot()?.localizedMode)} onClick={() => updatePreference({ type: 'localizedMode', value: !snapshot()?.localizedMode })}><Icon name="globe" />本地化</button>
 				</div>
 				<div class="action-cluster" aria-label="本地化">
@@ -878,7 +877,7 @@ export default function App() {
 		</Show>
 		</Show>
 		<Show when={textureTarget()}><TextureDialog icons={visibleTextureIcons()} kind={textureKind()} hero={textureHero()} heroes={textureHeroes()} search={textureSearch()} loading={textureLoading()} error={textureError()}
-			onKind={(kind) => { setTextureKind(kind); setTextureHero(''); if (kind === 'item') {setTextureSearch('');} }} onHero={(hero) => { setTextureHero(hero.id); setTextureSearch(hero.searchTerm); }} onClearHero={() => { setTextureHero(''); setTextureSearch(''); }} onSearch={(value) => { setTextureSearch(value); const active = textureHeroes().find((hero) => hero.id === textureHero()); if (active && value.trim() !== active.searchTerm.trim()) {setTextureHero('');} }} onChoose={chooseTexture} onCancel={() => setTextureTarget(undefined)} /></Show>
+			onKind={(kind) => { setTextureKind(kind); setTextureHero(''); if (kind === 'item') {setTextureSearch('');} }} onHero={(hero) => { setTextureHero(hero.id); setTextureSearch(hero.searchTerm); }} onClearHero={() => { setTextureHero(''); setTextureSearch(''); }} onSearch={(value) => { setTextureSearch(''); const active = textureHeroes().find((hero) => hero.id === textureHero()); if (active && value.trim() !== active.searchTerm.trim()) {setTextureHero('');} }} onChoose={chooseTexture} onCancel={() => setTextureTarget(undefined)} /></Show>
 		<Show when={abilityRowId()}><AbilityDialog rowId={abilityRowId()!} entries={abilityDraft()} descriptions={abilityDescriptions()} error={abilityError()} onChange={(entries) => { setAbilityError(undefined); setAbilityDraft(entries); }} onDescriptions={(descriptions) => { setAbilityError(undefined); setAbilityDescriptions(descriptions); }} onSave={saveAbilityValues} onCancel={() => { setAbilityError(undefined); setAbilityRowId(undefined); }} /></Show>
 		<Show when={dialog()} keyed>{(state) => <EditorDialog state={state} error={dialogError()} onChange={(next) => { setDialogError(undefined); setDialog(next); }} onSubmit={submitDialog} onCancel={() => { setDialogError(undefined); setDialog(undefined); }} />}</Show>
 		<Show when={valueFilterColumn()} keyed>{(column) => <ValueFilterDialog column={column} title={column === 'id' ? 'ID' : snapshot() ? kvEditorColumnDisplayName(snapshot()!, column) : column} values={uniqueValuesByColumn()[column] ?? []} selectedValues={valueFilters()[column]} onApply={(values) => applyValueFilter(column, values)} onCancel={() => setValueFilterColumn(undefined)} />}</Show>

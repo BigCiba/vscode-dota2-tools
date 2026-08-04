@@ -20,7 +20,7 @@ export function isValidKvEditorV2Message(value: unknown): value is KvEditorV2Web
 		case 'updatePreference':
 			return typeof value.requestId === 'string'
 				&& isRecord(value.preference)
-				&& ['compactMode', 'localizedMode', 'frozenColumn', 'columnWidths'].includes(String(value.preference.type));
+				&& ['localizedMode', 'frozenColumn', 'columnWidths'].includes(String(value.preference.type));
 		case 'openTarget':
 			return ['textEditor', 'formulaHelp', 'localizationFile', 'scriptFile'].includes(String(value.target))
 				&& (value.path === undefined || typeof value.path === 'string');

@@ -99,7 +99,7 @@ export function RecordEditor(props: RecordEditorProps) {
 		<div class="record-detail">
 			<Show when={row()}>{(current) => <>
 				<header class="record-detail-head">
-					<div><span class="title-eyebrow">单条记录</span><h2 title={current().rowId}>{current().rowId}</h2><p>{columns().length} 个字段 · 按当前表格列顺序显示</p></div>
+					<div><span class="title-eyebrow">记录编辑</span><h2 title={current().rowId}>{current().rowId}</h2><p>{columns().length} 个字段 · 按当前表格列顺序显示</p></div>
 					<div class="record-save-state" classList={{ dirty: dirty() }}><span>{dirty() ? `${dirtyColumns().length} 处修改` : '已同步'}</span></div>
 				</header>
 				<Show when={switchWarning()}><div class="record-draft-warning"><Icon name="warning" /><span>当前记录有未保存修改，请先保存或放弃，再切换 ID。</span><button onClick={() => setSwitchWarning(false)} aria-label="关闭"><Icon name="close" /></button></div></Show>

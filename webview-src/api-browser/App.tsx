@@ -34,6 +34,7 @@ export function App() {
 	const [editing, setEditing] = createSignal(false);
 	const [draft, setDraft] = createSignal<ApiBrowserEntry>();
 	const [status, setStatus] = createSignal('');
+	const [saving, setSaving] = createSignal(false);
 	let searchInput: HTMLInputElement | undefined;
 	let statusTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -88,9 +89,15 @@ export function App() {
 			}
 			if (message.type === 'saveComplete') {
 				replaceEntry(message.entry);
+				setSaving(false);
 				setEditing(false);
 				setDraft(undefined);
 				showStatus(`已保存 ${message.entry.name}`);
+				return;
+			}
+			if (message.type === 'saveFailed') {
+				setSaving(false);
+				showStatus(`保存失败：${message.message}`);
 				return;
 			}
 			if (message.type === 'catalogAction') {
@@ -195,12 +202,14 @@ export function App() {
 
 	const saveDraft = () => {
 		const entry = draft() ?? selectedEntry();
-		if (!entry) return;
-		const signature = entry.kind === 'function'
+		if (!entry || saving()) return;
+		const signature = entry.source === 'lua' && entry.kind === 'function'
 			? `${entry.name}(${entry.params.map((param) => `${param.name}: ${param.type}`).join(', ')}): ${entry.returnType || 'void'}`
 			: entry.kind === 'property'
 				? `${entry.name}: ${(entry.cssValues ?? []).map((item) => item.name).filter(Boolean).join(' | ') || '<value>'};`
 				: entry.signature;
+		setSaving(true);
+		showStatus('正在保存…');
 		postMessage({ type: 'saveEntry', entry: { ...entry, signature } });
 	};
 
@@ -246,7 +255,7 @@ export function App() {
 								</Show>
 							}>
 								{(entry) => <Show when={editing() && entry.editable} fallback={<EntryDetail entry={entry} onCopy={(text) => postMessage({ type: 'copy', text })} onEdit={beginEditing} />}>
-									<EditEntry entry={draft() ?? cloneEntry(entry)} onChange={setDraft} onCancel={() => { setEditing(false); setDraft(undefined); }} onSave={saveDraft} />
+									<EditEntry entry={draft() ?? cloneEntry(entry)} saving={saving()} onChange={setDraft} onCancel={() => { if (!saving()) { setEditing(false); setDraft(undefined); } }} onSave={saveDraft} />
 								</Show>}
 							</Show>
 						</Show>
@@ -283,7 +292,7 @@ function Catalog(props: { source: ApiBrowserSource; query: string; groups: ApiBr
 			<Show when={props.groups.length > 0} fallback={<EmptySearch query={props.query} />}>
 				<For each={props.groups}>{(group) => <div class="group-block">
 					<button type="button" class="group-row" classList={{ selected: props.selectedId === group.id }} onClick={() => props.onSelect(group.id)}>
-						<span class={`kind-marker ${group.kind}`}>{kindMarker(group)}</span><span class="group-name">{group.name}</span><span class="group-count">{group.entries.length}</span>
+						<span class={`kind-marker ${group.kind} codicon ${kindIcon(group)}`} aria-hidden="true" /><span class="group-name">{group.name}</span><span class="group-count">{group.entries.length}</span>
 					</button>
 					<Show when={props.query || props.selectedGroupId === group.id}><div class="entry-list"><For each={group.entries}>{(entry) => <button type="button" class="entry-row" classList={{ selected: props.selectedId === entry.id }} onClick={() => props.onSelect(entry.id)}><span class="entry-name">{entry.name}</span><span class="entry-type">{entryType(entry)}</span></button>}</For></div></Show>
 				</div>}</For>
@@ -325,16 +334,17 @@ function CssValueTable(props: { values: ApiBrowserCssValue[]; }) {
 	return <section class="section-block"><h2>可用值</h2><div class="css-value-table"><For each={props.values}>{(value) => <div class="css-value-row"><code>{value.name}</code><span>{value.description || '—'}</span></div>}</For></div></section>;
 }
 
-function EditEntry(props: { entry: ApiBrowserEntry; onChange: (entry: ApiBrowserEntry) => void; onCancel: () => void; onSave: () => void; }) {
+function EditEntry(props: { entry: ApiBrowserEntry; saving: boolean; onChange: (entry: ApiBrowserEntry) => void; onCancel: () => void; onSave: () => void; }) {
 	const update = (change: Partial<ApiBrowserEntry>) => props.onChange({ ...props.entry, ...change });
 	const updateParam = (index: number, change: Partial<ApiBrowserParameter>) => update({ params: props.entry.params.map((param, itemIndex) => itemIndex === index ? { ...param, ...change } : param) });
 	const updateCssValue = (index: number, change: Partial<ApiBrowserCssValue>) => update({ cssValues: (props.entry.cssValues ?? []).map((item, itemIndex) => itemIndex === index ? { ...item, ...change } : item) });
 	return <form class="detail-content edit-form" onSubmit={(event) => { event.preventDefault(); props.onSave(); }}>
 		<div class="breadcrumb"><span>{sourceLabel(props.entry.source)}</span><span>{props.entry.groupName}</span><span>编辑</span></div>
-		<header class="detail-header"><div><p class="eyebrow">Editing documentation</p><h1>{props.entry.name}</h1></div><div class="form-actions"><button type="button" class="secondary-button" onClick={props.onCancel}>取消</button><button type="submit" class="primary-button">保存更改</button></div></header>
+		<header class="detail-header"><div><p class="eyebrow">Editing documentation</p><h1>{props.entry.name}</h1></div><div class="form-actions"><button type="button" class="secondary-button" disabled={props.saving} onClick={props.onCancel}>取消</button><button type="submit" class="primary-button" disabled={props.saving}>{props.saving ? '正在保存…' : '保存更改'}</button></div></header>
+		<Show when={props.entry.source === 'javascript'}><div class="signature-block readonly-signature"><span>官方签名</span><code>{props.entry.signature}</code></div></Show>
 		<label class="form-field"><span>说明</span><textarea rows="5" value={props.entry.description} onInput={(event) => update({ description: event.currentTarget.value })} /></label>
-		<Show when={props.entry.kind === 'enum'}><label class="form-field"><span>简短说明</span><input value={props.entry.conciseDescription ?? ''} onInput={(event) => update({ conciseDescription: event.currentTarget.value })} /></label></Show>
-		<Show when={props.entry.kind === 'function'}><label class="form-field narrow"><span>返回类型</span><input value={props.entry.returnType ?? ''} onInput={(event) => update({ returnType: event.currentTarget.value })} /></label><Show when={props.entry.params.length > 0}><section class="section-block"><h2>参数</h2><div class="parameter-editor"><For each={props.entry.params}>{(param, index) => <div class="parameter-edit-row"><input aria-label="参数名称" value={param.name} onInput={(event) => updateParam(index(), { name: event.currentTarget.value })} /><input aria-label="参数类型" value={param.type} onInput={(event) => updateParam(index(), { type: event.currentTarget.value })} /><input aria-label="参数说明" value={param.description} onInput={(event) => updateParam(index(), { description: event.currentTarget.value })} /></div>}</For></div></section></Show></Show>
+		<Show when={props.entry.source === 'lua' && props.entry.kind === 'enum'}><label class="form-field"><span>简短说明</span><input value={props.entry.conciseDescription ?? ''} onInput={(event) => update({ conciseDescription: event.currentTarget.value })} /></label></Show>
+		<Show when={props.entry.source === 'lua' && props.entry.kind === 'function'}><label class="form-field narrow"><span>返回类型</span><input value={props.entry.returnType ?? ''} onInput={(event) => update({ returnType: event.currentTarget.value })} /></label><Show when={props.entry.params.length > 0}><section class="section-block"><h2>参数</h2><div class="parameter-editor"><For each={props.entry.params}>{(param, index) => <div class="parameter-edit-row"><input aria-label="参数名称" value={param.name} onInput={(event) => updateParam(index(), { name: event.currentTarget.value })} /><input aria-label="参数类型" value={param.type} onInput={(event) => updateParam(index(), { type: event.currentTarget.value })} /><input aria-label="参数说明" value={param.description} onInput={(event) => updateParam(index(), { description: event.currentTarget.value })} /></div>}</For></div></section></Show></Show>
 		<Show when={props.entry.kind === 'property'}><section class="section-block"><div class="section-heading-row"><h2>可用值</h2><button type="button" class="secondary-button small" onClick={() => update({ cssValues: [...(props.entry.cssValues ?? []), { name: '', description: '' }] })}>添加值</button></div><div class="css-value-editor"><For each={props.entry.cssValues ?? []}>{(item, index) => <div class="css-value-edit-row"><input aria-label="CSS 值" value={item.name} onInput={(event) => updateCssValue(index(), { name: event.currentTarget.value })} /><input aria-label="值说明" value={item.description} onInput={(event) => updateCssValue(index(), { description: event.currentTarget.value })} /><button type="button" aria-label={`删除 ${item.name || '此值'}`} onClick={() => update({ cssValues: (props.entry.cssValues ?? []).filter((_, itemIndex) => itemIndex !== index()) })}>删除</button></div>}</For></div></section></Show>
 		<label class="form-field"><span>示例</span><textarea class="code-input" rows="8" value={props.entry.example ?? ''} onInput={(event) => update({ example: event.currentTarget.value })} /></label>
 	</form>;
@@ -361,7 +371,7 @@ const overviewGroupNames = new Set([
 	'modifierstate',
 ]);
 function catalogTitle(source: ApiBrowserSource): string { return source === 'lua' ? '类与常量' : source === 'javascript' ? '命名空间与枚举' : '属性分类'; }
-function kindMarker(group: ApiBrowserGroup): string { return group.kind === 'class' ? 'C' : group.kind === 'enum' ? 'E' : '#'; }
+function kindIcon(group: ApiBrowserGroup): string { return group.kind === 'class' ? 'codicon-symbol-class' : group.kind === 'enum' ? 'codicon-symbol-enum' : 'codicon-symbol-property'; }
 function groupKindLabel(group: ApiBrowserGroup): string { return group.kind === 'class' ? 'API class' : group.kind === 'enum' ? 'Enumeration' : 'CSS category'; }
 function entryKindLabel(entry: ApiBrowserEntry): string { return entry.kind === 'function' ? 'Function' : entry.kind === 'enum' ? 'Enum value' : 'CSS property'; }
 function entryType(entry: ApiBrowserEntry): string { return entry.kind === 'function' ? 'fn' : entry.kind === 'property' ? 'css' : String(entry.value ?? 'enum'); }

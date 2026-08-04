@@ -41,7 +41,7 @@ export function RecordOptionControl(props: { column: string; value: string; opti
 		const rect = root.getBoundingClientRect();
 		const margin = 8;
 		const width = Math.min(620, Math.max(300, rect.width), window.innerWidth - margin * 2);
-		const left = Math.min(Math.max(margin, rect.right - width), window.innerWidth - width - margin);
+		const left = Math.min(Math.max(margin, rect.left), window.innerWidth - width - margin);
 		const below = window.innerHeight - rect.bottom - margin;
 		const above = rect.top - margin;
 		const desiredHeight = Math.min(362, 42 + (props.options.options.length + 1) * 36);
