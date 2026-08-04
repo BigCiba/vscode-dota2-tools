@@ -2,7 +2,7 @@
 	"name": "dota2-tools",
 	"displayName": "dota2-作图工具",
 	"description": "dota2 作图工具",
-	"version": "3.1.117",
+	"version": "3.2.1",
 	"icon": "images/logo.png",
 	"publisher": "bigciba",
 	"engines": {
@@ -551,41 +551,6 @@
 			],
 			"view/item/context": [
 				{
-					"command": "dota2tools.dota2api.edit",
-					"when": "view == dota2apiExplorer && viewItem == NodeItem",
-					"group": "inline"
-				},
-				{
-					"command": "dota2tools.dota2api.copy",
-					"when": "view == dota2apiExplorer && viewItem == NodeItem",
-					"group": "inline"
-				},
-				{
-					"command": "dota2tools.dota2api.list",
-					"when": "view == dota2apiExplorer && viewItem == Class",
-					"group": "inline"
-				},
-				{
-					"command": "dota2tools.dota2jsapi.list",
-					"when": "view == dota2JSApiExplorer && viewItem == Class",
-					"group": "inline"
-				},
-				{
-					"command": "dota2tools.dota2jsapi.copy",
-					"when": "view == dota2JSApiExplorer && viewItem == NodeItem",
-					"group": "inline"
-				},
-				{
-					"command": "dota2tools.css_api_browser.copy",
-					"when": "view == dota2CssApiExplorer && viewItem == Class",
-					"group": "inline"
-				},
-				{
-					"command": "dota2tools.css_property.edit",
-					"when": "view == dota2CssApiExplorer && viewItem == Class",
-					"group": "inline"
-				},
-				{
 					"command": "dota2tools.logs.refreshCategory",
 					"when": "view == errorLogExplorer && viewItem == errorLog.category",
 					"group": "inline"
@@ -819,8 +784,14 @@
 						"scope": "resource",
 						"type": "string",
 						"default": "legacy",
-						"enum": ["legacy", "v2"],
-						"enumDescriptions": ["Use the original KvEditor.", "Use the Solid + TypeScript KvEditor V2."],
+						"enum": [
+							"legacy",
+							"v2"
+						],
+						"enumDescriptions": [
+							"Use the original KvEditor.",
+							"Use the Solid + TypeScript KvEditor V2."
+						],
 						"markdownDescription": "Select the KvEditor implementation. V2 can be switched back to legacy at any time."
 					}
 				}
@@ -1124,11 +1095,6 @@
 		"html": {
 			"customData": [
 				"./html.html-data.json"
-			]
-		},
-		"css": {
-			"customData": [
-				"./css.css-data.json"
 			]
 		}
 	},
